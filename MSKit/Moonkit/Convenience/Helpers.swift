@@ -25,7 +25,7 @@ private let fileManager = NSFileManager.defaultManager()
   @objc public class func libraryPath() -> String? {
     let urls = fileManager.URLsForDirectory(NSSearchPathDirectory.LibraryDirectory,
                                   inDomains: NSSearchPathDomainMask.UserDomainMask)
-    return ((urls.count > 0 && urls[0] is NSURL) ? (urls[0] as NSURL).path : nil)
+    return ((urls.count > 0 && urls[0] is NSURL) ? (urls[0] as! NSURL).path : nil)
   }
 
   /**
@@ -67,7 +67,7 @@ private let fileManager = NSFileManager.defaultManager()
   @objc public class func documentsPath() -> String! {
     let urls = fileManager.URLsForDirectory(NSSearchPathDirectory.DocumentDirectory,
                                                      inDomains: NSSearchPathDomainMask.UserDomainMask)
-    return ((urls.count > 0 && urls[0] is NSURL) ? (urls[0] as NSURL).path : nil)
+    return ((urls.count > 0 && urls[0] is NSURL) ? (urls[0] as! NSURL).path : nil)
   }
 
   /**

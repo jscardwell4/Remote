@@ -59,7 +59,7 @@ final class RemoteElementViewConstraint: NSLayoutConstraint {
     }
   }
 
-  var firstElement: RemoteElementView { return firstItem as RemoteElementView }
+  var firstElement: RemoteElementView { return firstItem as! RemoteElementView }
   var secondElement: RemoteElementView? { return secondItem as? RemoteElementView }
 
   /** removeFromOwner */

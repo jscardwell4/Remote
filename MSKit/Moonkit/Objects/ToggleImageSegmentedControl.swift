@@ -90,7 +90,7 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
 
   :param: items [AnyObject]!
   */
-  override public init(items: [AnyObject]!) {
+  override public init(items: [AnyObject]) {
     var defaultImages: [UIImage]?
     var selectedImages: [UIImage]?
     if let images = items as? [UIImage] {
@@ -105,7 +105,7 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
       selectedImages = nil
     }
 
-    super.init(items: defaultImages)
+    super.init(items: defaultImages!)
 
     if defaultImages != nil {
       for i in 0 ..< defaultImages!.count {

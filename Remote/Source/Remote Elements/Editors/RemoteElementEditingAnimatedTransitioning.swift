@@ -63,14 +63,14 @@ class RemoteElementEditingAnimatedTransitioning: NSObject, UIViewControllerAnima
     if subview == nil {
       image = snapshotFromRemoteElementView(elementView)
     } else {
-      let backdropImage = snapshotFromView(elementView.subviews[0] as UIView)
-      let contentImage = snapshotFromView(elementView.subviews[1] as UIView)
+      let backdropImage = snapshotFromView(elementView.subviews[0] as! UIView)
+      let contentImage = snapshotFromView(elementView.subviews[1] as! UIView)
       var subelementImages: [(UIImage, CGRect)?] = []
       for subelementView in elementView.subelementViews {
         if subelementView == subview! { subelementImages.append(nil) }
         else { subelementImages.append((snapshotFromRemoteElementView(subelementView), subelementView.frame)) }
       }
-      let overlayImage = snapshotFromView(elementView.subviews[3] as UIView)
+      let overlayImage = snapshotFromView(elementView.subviews[3] as! UIView)
       UIGraphicsBeginImageContextWithOptions(elementView.bounds.size, false, 0.0)
       backdropImage.drawInRect(elementView.bounds)
       contentImage.drawInRect(elementView.bounds)
@@ -114,8 +114,8 @@ class RemoteElementEditingAnimatedTransitioning: NSObject, UIViewControllerAnima
 	*/
 	func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
 
-		let to = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) as RemoteElementEditingController
-		let from = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) as RemoteElementEditingController
+		let to = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) as! RemoteElementEditingController
+		let from = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) as! RemoteElementEditingController
 
     if forDismissal { animateForDismissalOfController(from, presentingController: to, transitionContext: transitionContext) }
     else { animateForPresentationOfController(to, presentingController: from, transitionContext: transitionContext) }

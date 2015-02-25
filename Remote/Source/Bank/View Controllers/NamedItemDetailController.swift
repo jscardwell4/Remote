@@ -26,16 +26,16 @@ class NamedItemDetailController: DetailController {
   :param: nibNameOrNil String?
   :param: nibBundleOrNil NSBundle?
   */
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-  }
+//  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+//    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+//  }
 
   /**
   initWithStyle:
 
   :param: style UITableViewStyle
   */
-  override init(style: UITableViewStyle) { super.init(style: style) }
+//  override init(style: UITableViewStyle) { super.init(style: style) }
 
   /**
   initWithCoder:

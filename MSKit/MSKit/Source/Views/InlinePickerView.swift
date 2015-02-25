@@ -28,7 +28,8 @@ public class InlinePickerView: UIView {
   private var toolbar: UIToolbar!
   private var picker: UIPickerView!
 
-  class var requiresConstraintBasedLayout: Bool { return true }
+  
+  override public class func requiresConstraintBasedLayout() -> Bool { return true }
 
   /** cancelAction */
   func cancelAction() {

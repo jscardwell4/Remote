@@ -21,7 +21,7 @@ class ISYDeviceGroup: NamedModelObject {
   override func updateWithData(data: [NSObject : AnyObject]!) {
     super.updateWithData(data)
     flag =    data["flag"]    as? NSNumber ?? flag
-    address = data["address"] as? NSString ?? address
+    address = data["address"] as?   String ?? address
     family =  data["family"]  as? NSNumber ?? family
     if let members = ISYDeviceNode.importObjectsFromData(data["members"], context: managedObjectContext) as? [ISYDeviceNode] {
       mutableSetValueForKey("members").addObjectsFromArray(members)

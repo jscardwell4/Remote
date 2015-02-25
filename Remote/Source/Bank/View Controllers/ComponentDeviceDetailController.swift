@@ -45,7 +45,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
   /** loadManufacturerSection */
   private func loadManufacturerSection() {
 
-    let componentDevice = model as ComponentDevice
+    let componentDevice = model as! ComponentDevice
 
     if componentDevice.managedObjectContext == nil { return }
 
@@ -109,7 +109,8 @@ class ComponentDeviceDetailController: BankItemDetailController {
 
         self.presentViewController(alert, animated: true, completion: nil)
       }
-      pickerRow.data = sortedByName(Manufacturer.findAllInContext(moc) as? [Manufacturer] ?? [])
+      let data = sortedByName((Manufacturer.findAllInContext(moc) as? [Manufacturer] ?? []))
+      pickerRow.data = data
       pickerRow.info = componentDevice.manufacturer
 
       row.detailPickerRow = pickerRow
@@ -163,7 +164,8 @@ class ComponentDeviceDetailController: BankItemDetailController {
 
         self.presentViewController(alert, animated: true, completion: nil)
       }
-      pickerRow.data = sortedByName(componentDevice.manufacturer?.codeSets?.allObjects as? [IRCodeSet] ?? [])
+      let data = sortedByName(componentDevice.manufacturer?.codeSets?.allObjects as? [IRCodeSet] ?? [])
+      pickerRow.data = data
       pickerRow.info = componentDevice.codeSet
 
       row.detailPickerRow = pickerRow
@@ -177,7 +179,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
   /** loadNetworkDeviceSection */
   private func loadNetworkDeviceSection() {
 
-    let componentDevice = model as ComponentDevice
+    let componentDevice = model as! ComponentDevice
 
     if componentDevice.managedObjectContext == nil { return }
 
@@ -207,7 +209,8 @@ class ComponentDeviceDetailController: BankItemDetailController {
           pickerRow.info = $0
         }
       }
-      pickerRow.data = sortedByName(NetworkDevice.findAllInContext(moc) as? [NetworkDevice] ?? [])
+      let data = sortedByName(NetworkDevice.findAllInContext(moc) as? [NetworkDevice] ?? [])
+      pickerRow.data = data
       pickerRow.info = componentDevice.networkDevice
 
       row.detailPickerRow = pickerRow
@@ -233,7 +236,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
   /** loadPowerSection */
   private func loadPowerSection() {
 
-    let componentDevice = model as ComponentDevice
+    let componentDevice = model as! ComponentDevice
 
     if componentDevice.managedObjectContext == nil { return }
 
@@ -272,7 +275,8 @@ class ComponentDeviceDetailController: BankItemDetailController {
             pickerRow.info = selection
           }
       }
-      pickerRow.data = sortedByName(componentDevice.codeSet?.items as? [IRCode] ?? [])
+      let data = sortedByName(componentDevice.codeSet?.items as? [IRCode] ?? [])
+      pickerRow.data = data
       pickerRow.info = componentDevice.onCommand?.code
 
       row.detailPickerRow = pickerRow
@@ -307,7 +311,8 @@ class ComponentDeviceDetailController: BankItemDetailController {
             pickerRow.info = selection
           }
       }
-      pickerRow.data = sortedByName(componentDevice.codeSet?.items as? [IRCode] ?? [])
+      let data = sortedByName(componentDevice.codeSet?.items as? [IRCode] ?? [])
+      pickerRow.data = data
       pickerRow.info = componentDevice.offCommand?.code
 
       row.detailPickerRow = pickerRow
@@ -320,7 +325,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
   /** loadInputsSection */
   private func loadInputsSection() {
 
-    let componentDevice = model as ComponentDevice
+    let componentDevice = model as! ComponentDevice
 
     if componentDevice.managedObjectContext == nil { return }
 
@@ -336,7 +341,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
       var row = DetailSwitchRow()
       row.name = "Inputs Power On Device"
       row.info = NSNumber(bool: componentDevice.inputPowersOn)
-      row.valueDidChange = { componentDevice.inputPowersOn = $0 as Bool }
+      row.valueDidChange = { componentDevice.inputPowersOn = $0 as! Bool }
 
       return row
     }, forKey: RowKey.InputPowersOn)

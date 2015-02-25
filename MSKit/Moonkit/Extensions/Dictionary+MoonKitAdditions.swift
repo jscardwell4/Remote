@@ -63,7 +63,7 @@ public func formattedDescription<C: KeyValueCollectionType where C.Generator: Ke
   var components: [String] = []
 
   let keyDescriptions = keys(dictionary).map { "\($0)" }
-  let maxKeyLength = keyDescriptions.reduce(0) { max($0, countElements($1)) }
+  let maxKeyLength = keyDescriptions.reduce(0) { max($0, count($1)) }
   let indentation = " " * (indent * 4)
   for (key, value) in Zip2(keyDescriptions, values(dictionary)) {
     let keyLength = key.characterCount

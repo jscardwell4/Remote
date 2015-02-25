@@ -245,7 +245,7 @@ class RemoteElementView: UIView {
 
   var model: RemoteElement!
   var modeledConstraints: [RemoteElementViewConstraint] {
-    return constraints().filter{$0 is RemoteElementViewConstraint} as [RemoteElementViewConstraint]
+    return constraints().filter{$0 is RemoteElementViewConstraint} as! [RemoteElementViewConstraint]
   }
   var subelementViews: OrderedSet<RemoteElementView> {
     return OrderedSet(subelementsView.subviews as? [RemoteElementView] ?? [])

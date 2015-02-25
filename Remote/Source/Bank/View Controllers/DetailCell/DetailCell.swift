@@ -178,7 +178,7 @@ class DetailCell: UITableViewCell {
     */
     func objectFromText(text: String?) -> AnyObject? {
       if let t = text {
-        let scanner = NSScanner.localizedScannerWithString(t) as NSScanner
+        let scanner = NSScanner.localizedScannerWithString(t) as! NSScanner
         switch self {
           case .IntData(let r):
             var n: Int32 = 0
@@ -213,7 +213,7 @@ class DetailCell: UITableViewCell {
     */
     func objectFromAttributedText(text: NSAttributedString?) -> AnyObject? {
       if let t = text {
-        let scanner = NSScanner.localizedScannerWithString(t.string) as NSScanner
+        let scanner = NSScanner.localizedScannerWithString(t.string) as! NSScanner
         switch self {
           case .IntData(let r):
             var n: Int32 = 0

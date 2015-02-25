@@ -81,8 +81,8 @@ class ConstraintManager: NSObject {
         let indexRange = Range<String.Index>(start: start, end: end)
 
         replacementFormat.replaceRange(indexRange, with: identifiers[i])
-        removeCount += countElements(matchedSubstring)
-        insertCount += countElements(replacement)
+        removeCount += count(matchedSubstring)
+        insertCount += count(replacement)
       }
     }
     let result = replacementFormat.stringByReplacingOccurrencesOfString("self", withString: remoteElement.identifier)
@@ -103,7 +103,7 @@ class ConstraintManager: NSObject {
       let pseudoConstraints = NSLayoutPseudoConstraint.pseudoConstraintsByParsingFormat(format)
 
       if self.remoteElement.ownedConstraints.count > 0 {
-        self.remoteElement.managedObjectContext?.deleteObjects(self.remoteElement.constraints)
+        self.remoteElement.managedObjectContext?.deleteObjects(self.remoteElement.constraints as Set<NSObject>)
       }
 
       var directory: OrderedDictionary<String, RemoteElement> = [self.remoteElement.identifier: self.remoteElement]
@@ -175,7 +175,7 @@ class ConstraintManager: NSObject {
         default: break
       }
 
-      self.remoteElement.managedObjectContext?.deleteObjects(NSSet(array: constraintsToRemove))
+      self.remoteElement.managedObjectContext?.deleteObjects(NSSet(array: constraintsToRemove) as Set<NSObject>)
       let constraint = Constraint(item: subelement,
                                   attribute: firstAttribute,
                                   relatedBy: .Equal,
@@ -203,36 +203,36 @@ class ConstraintManager: NSObject {
 
       for constraint in constraints {
         if attributes ∌ constraint.firstAttribute { continue }
-        var constraintValues = constraint.dictionaryWithValuesForKeys(Constraint.propertyList()) as [String:AnyObject]
+        var constraintValues = constraint.dictionaryWithValuesForKeys(Constraint.propertyList()) as! [String:AnyObject]
         constraint.managedObjectContext?.deleteObject(constraint)
         let bounds = CGRect(origin: CGPoint.zeroPoint, size: metrics[self.remoteElement.uuid]!.size)
         let frame = metrics[constraint.firstItem.uuid]!
-        let attribute = NSLayoutAttribute(rawValue: (constraintValues["firstAttribute"] as NSNumber).integerValue)!
+        let attribute = NSLayoutAttribute(rawValue: (constraintValues["firstAttribute"] as! NSNumber).integerValue)!
         switch attribute {
           case .Bottom:
             constraintValues["constant"] = frame.maxY - bounds.height
             constraintValues["secondAttribute"] = NSLayoutAttribute.Bottom.rawValue
-            constraintValues["secondItem"] = (constraintValues["firstItem"] as RemoteElement).parentElement!
+            constraintValues["secondItem"] = (constraintValues["firstItem"] as! RemoteElement).parentElement!
           case .Top:
             constraintValues["constant"] = frame.minY
             constraintValues["secondAttribute"] = NSLayoutAttribute.Top.rawValue
-            constraintValues["secondItem"] = (constraintValues["firstItem"] as RemoteElement).parentElement!
+            constraintValues["secondItem"] = (constraintValues["firstItem"] as! RemoteElement).parentElement!
           case .Left, .Leading:
             constraintValues["constant"] = frame.minX
             constraintValues["secondAttribute"] = NSLayoutAttribute.Left.rawValue
-            constraintValues["secondItem"] = (constraintValues["firstItem"] as RemoteElement).parentElement!
+            constraintValues["secondItem"] = (constraintValues["firstItem"] as! RemoteElement).parentElement!
           case .Right, .Trailing:
             constraintValues["constant"] = frame.maxX - bounds.width
             constraintValues["secondAttribute"] = NSLayoutAttribute.Right.rawValue
-            constraintValues["secondItem"] = (constraintValues["firstItem"] as RemoteElement).parentElement!
+            constraintValues["secondItem"] = (constraintValues["firstItem"] as! RemoteElement).parentElement!
           case .CenterX:
             constraintValues["constant"] = frame.midX - bounds.midX
             constraintValues["secondAttribute"] = NSLayoutAttribute.CenterX.rawValue
-            constraintValues["secondItem"] = (constraintValues["firstItem"] as RemoteElement).parentElement!
+            constraintValues["secondItem"] = (constraintValues["firstItem"] as! RemoteElement).parentElement!
           case .CenterY:
             constraintValues["constant"] = frame.midY - bounds.midY
             constraintValues["secondAttribute"] = NSLayoutAttribute.CenterY.rawValue
-            constraintValues["secondItem"] = (constraintValues["firstItem"] as RemoteElement).parentElement!
+            constraintValues["secondItem"] = (constraintValues["firstItem"] as! RemoteElement).parentElement!
           case .Width:
             constraintValues["constant"] = frame.width
             constraintValues["secondAttribute"] = NSLayoutAttribute.NotAnAttribute.rawValue
@@ -471,11 +471,11 @@ class ConstraintManager: NSObject {
 
         for constraint in self.dependentChildConstraints {
           if constraint.multiplier != 1.0 {
-            var constraintValues = constraint.dictionaryWithValuesForKeys(Constraint.propertyList()) as [String:AnyObject]
+            var constraintValues = constraint.dictionaryWithValuesForKeys(Constraint.propertyList()) as! [String:AnyObject]
             constraintValues["multiplier"] = 1.0
             self.remoteElement.managedObjectContext?.deleteObject(constraint)
             precondition(constraintValues["firstItem"] != nil)
-            if let frame = metrics[(constraintValues["firstItem"] as RemoteElement).uuid] {
+            if let frame = metrics[(constraintValues["firstItem"] as! RemoteElement).uuid] {
               switch constraint.firstAttribute {
                 case .Baseline, .Bottom: constraintValues["constant"] = frame.maxY - boundingHeight
                 case .Top:               constraintValues["constant"] = frame.minY
@@ -538,7 +538,7 @@ class ConstraintManager: NSObject {
 
       let (replacements, additions) = constraint.manager.replacementCandidatesForAddingAttribute(constraint.firstAttribute)
       self.remoteElement.managedObjectContext?
-        .deleteObjects(NSSet(array: constraint.firstItem.firstOrderConstraints.filter{replacements ∋ $0.firstAttribute}))
+        .deleteObjects(NSSet(array: constraint.firstItem.firstOrderConstraints.filter{replacements ∋ $0.firstAttribute}) as Set<NSObject>)
 
       let frame = metrics[constraint.firstItem.uuid]!
       let bounds = frame.rectWithOrigin(CGPoint.zeroPoint)

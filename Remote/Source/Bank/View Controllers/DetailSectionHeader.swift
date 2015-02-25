@@ -137,9 +137,9 @@ class DetailSectionHeader: UITableViewHeaderFooterView {
       CGContextSetShadowWithColor(context,
                                   textOuterShadow.shadowOffset,
                                   textOuterShadow.shadowBlurRadius,
-                                  (textOuterShadow.shadowColor as UIColor).CGColor)
+                                  (textOuterShadow.shadowColor as! UIColor).CGColor)
 
-      let textStyle = NSMutableParagraphStyle.defaultParagraphStyle().mutableCopy() as NSMutableParagraphStyle
+      let textStyle = NSMutableParagraphStyle.defaultParagraphStyle().mutableCopy() as! NSMutableParagraphStyle
       textStyle.alignment = NSTextAlignment.Left
 
       let textFontAttributes = [NSFontAttributeName: DetailSectionHeader.headerFont,
@@ -170,11 +170,11 @@ class DetailSectionHeader: UITableViewHeaderFooterView {
       UIRectClip(textRect)
 
       CGContextSetShadow(context, CGSize.zeroSize, 0)
-      CGContextSetAlpha(context, CGColorGetAlpha((textInnerShadow.shadowColor as UIColor).CGColor))
+      CGContextSetAlpha(context, CGColorGetAlpha((textInnerShadow.shadowColor as! UIColor).CGColor))
 
       CGContextBeginTransparencyLayer(context, nil)
 
-      let textOpaqueTextShadow = (textInnerShadow.shadowColor as UIColor).colorWithAlphaComponent(1)
+      let textOpaqueTextShadow = (textInnerShadow.shadowColor as! UIColor).colorWithAlphaComponent(1)
 
       CGContextSetShadowWithColor(context,
                                   textInnerShadow.shadowOffset,

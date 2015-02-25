@@ -203,7 +203,7 @@ class DocumentSelectionController: UIViewController {
     :returns: UITableViewCell
     */
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-      let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as DocumentCell
+      let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! DocumentCell
       cell.label.text = files[indexPath.row]
 //      var margins = cell.contentView.layoutMargins
 //      if indexPath.row == 0 { margins.top = 80.0 }

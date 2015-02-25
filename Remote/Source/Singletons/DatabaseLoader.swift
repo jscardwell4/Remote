@@ -55,7 +55,7 @@ import MoonKit
     if let filePath = NSBundle.mainBundle().pathForResource("RemoteController", ofType: "json") {
       let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSDictionary
       assert(MSHandleError(error) == false)
-      let importedObject = RemoteController.importObjectFromData(importData, context: context)
+      let importedObject = RemoteController.importObjectFromData(importData as! [NSObject : AnyObject], context: context)
       MSLogDebug("remote controller imported? \(importedObject != nil)")
     }
   }

@@ -12,9 +12,9 @@ import MoonKit
 
 class RemoteElementEditingPresentationController: UIPresentationController {
 
-	var presentingEditor: RemoteElementEditingController { return presentingViewController as RemoteElementEditingController }
+	var presentingEditor: RemoteElementEditingController { return presentingViewController as! RemoteElementEditingController }
 
-	var presentedEditor: RemoteElementEditingController { return presentedViewController as RemoteElementEditingController }
+	var presentedEditor: RemoteElementEditingController { return presentedViewController as! RemoteElementEditingController }
 
 
 	/**

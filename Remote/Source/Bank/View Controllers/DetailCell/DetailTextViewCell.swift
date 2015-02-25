@@ -112,7 +112,7 @@ final class DetailTextViewCell: DetailTextInputCell, UITextViewDelegate {
 
   :returns: Bool
   */
-  func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String?) -> Bool {
+  func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
     if Array(text ?? "") ∋ Character("\n") && !shouldAllowReturnsInTextView {
       textView.resignFirstResponder()
       return false

@@ -83,7 +83,7 @@ class RemoteElementPreview: UIView {
 
     let baseID = createIdentifier(self, ["Internal", "Base"])
     if constraintsWithIdentifier(baseID).count == 0 {
-      let subviews = self.subviews as [UIView]
+      let subviews = self.subviews as! [UIView]
       apply(subviews) {
         (subview: UIView) in _ = self.stretchSubview(subview, identifier: baseID)
       }
@@ -130,7 +130,7 @@ class RemoteElementPreview: UIView {
   func initializeViewFromPreset() {
     elementBackgroundColor = preset.backgroundColor
     if let childPresets = preset.childPresets {
-      for childPreset in childPresets.array as [Preset] {
+      for childPreset in childPresets.array as! [Preset] {
         if let childView = RemoteElementPreview.viewWithPreset(childPreset) {
           subelementsView.addSubview(childView)
         }

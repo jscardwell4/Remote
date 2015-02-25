@@ -13,13 +13,13 @@ extension NSManagedObjectModel {
 
   public override var description: String {
     var description = ""
-    apply(entities as [NSEntityDescription]) {
+    apply(entities as! [NSEntityDescription]) {
       entity in
 
       description += "\(entity.name) {\n"
       if let userInfo = entity.userInfo { description += "\tuserInfo: {\n\(formattedDescription(userInfo, indent: 2))\n\t}" }
 
-      for property in (entity.properties as [NSPropertyDescription]) {
+      for property in (entity.properties as! [NSPropertyDescription]) {
 
         var propertyDescription: OrderedDictionary<String, String> = [:]
         propertyDescription["optional"]                  = "\(property.optional)"

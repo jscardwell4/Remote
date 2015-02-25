@@ -276,8 +276,8 @@ class Constraint: ModelObject, Printable, DebugPrintable {
   */
   func hasAttributeValues(values: [String:AnyObject]) -> Bool {
     if let item: AnyObject = values["firstItem"] {
-      if item is RemoteElement && (item as RemoteElement) != firstItem { return false }
-      else if item is String && (item as String) != firstItem.uuid { return false }
+      if item is RemoteElement && (item as! RemoteElement) != firstItem { return false }
+      else if item is String && (item as! String) != firstItem.uuid { return false }
     }
     if let identifier = values["identifier"] as? String {
       if self.identifier == nil || self.identifier! != identifier { return false }
@@ -293,8 +293,8 @@ class Constraint: ModelObject, Printable, DebugPrintable {
     }
     if let item: AnyObject = values["secondItem"] {
       if secondItem == nil { return false }
-      else if item is RemoteElement && (item as RemoteElement) != secondItem! { return false }
-      else if item is String && (item as String) != secondItem!.uuid { return false }
+      else if item is RemoteElement && (item as! RemoteElement) != secondItem! { return false }
+      else if item is String && (item as! String) != secondItem!.uuid { return false }
     }
     if let m = values["multiplier"] as? NSNumber {
       if m.doubleValue != Double(multiplier) { return false }
@@ -307,8 +307,8 @@ class Constraint: ModelObject, Printable, DebugPrintable {
     }
     if let o: AnyObject = values["owner"] {
       if owner == nil { return false }
-      else if o is RemoteElement && (o as RemoteElement) != owner! { return false }
-      else if o is String && (o as String) != owner!.uuid { return false }
+      else if o is RemoteElement && (o as! RemoteElement) != owner! { return false }
+      else if o is String && (o as! String) != owner!.uuid { return false }
     }
     return true
   }
@@ -360,7 +360,7 @@ class Constraint: ModelObject, Printable, DebugPrintable {
       if let index = rootDictionary["index"] as? [String:String] {
         if let formatData: AnyObject = rootDictionary["format"] {
           if formatData is String || formatData is [String] {
-            let formatStrings: [String] = formatData is String ? [(formatData as String)] : (formatData as [String])
+            let formatStrings: [String] = formatData is String ? [(formatData as! String)] : (formatData as! [String])
             for format in formatStrings {
               if let constraint = constraintFromFormat(format, index: index, context: context) { constraints.append(constraint) }
             }

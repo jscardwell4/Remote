@@ -45,7 +45,7 @@ public class JSONParser: NSObject {
 
   :param: string String
   */
-  public init(string: String) { scanner = NSScanner.localizedScannerWithString(string) as NSScanner; super.init() }
+  public init(string: String) { scanner = NSScanner.localizedScannerWithString(string) as! NSScanner; super.init() }
 
 
   ////////////////////////////////////////////////////////////////////////////////

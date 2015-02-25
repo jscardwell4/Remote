@@ -22,23 +22,23 @@ class BankItemDetailController: NamedItemDetailController {
   :param: nibNameOrNil String?
   :param: nibBundleOrNil NSBundle?
   */
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-  }
+//  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+//    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+//  }
 
   /**
   initWithStyle:
 
   :param: style UITableViewStyle
   */
-  override init(style: UITableViewStyle) { super.init(style: style) }
+//  override init(style: UITableViewStyle) { super.init(style: style) }
 
   /**
   initWithCoder:
 
   :param: aDecoder NSCoder
   */
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
+  required init(coder aDecoder: NSCoder) { context = nil; super.init(coder: aDecoder) }
 
   /**
   initWithModel:
@@ -53,7 +53,7 @@ class BankItemDetailController: NamedItemDetailController {
     var error: NSError?
     let existingObject = context.existingObjectWithID(objectID, error: &error)
     if MSHandleError(error, message: "failed to retrieve existing object by ID") { fatalError("aborting…") }
-    super.init(namedItem: existingObject as BankableModelObject)
+    super.init(namedItem: existingObject as! BankableModelObject)
   }
 
 }

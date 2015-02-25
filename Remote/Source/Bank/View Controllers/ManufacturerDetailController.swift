@@ -35,7 +35,7 @@ class ManufacturerDetailController: BankItemDetailController {
   /** loadDevicesSection */
   private func loadDevicesSection() {
 
-    let manufacturer = model as Manufacturer
+    let manufacturer = model as! Manufacturer
 
     // Devices
     // section 0 - row 0
@@ -52,7 +52,7 @@ class ManufacturerDetailController: BankItemDetailController {
   /** loadCodeSetsSection */
   private func loadCodeSetsSection() {
 
-    let manufacturer = model as Manufacturer
+    let manufacturer = model as! Manufacturer
 
     // Code Sets
     // section 1 - row 0

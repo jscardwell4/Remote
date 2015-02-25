@@ -55,16 +55,16 @@ class Image: BankableModelObject, PreviewableItem {
 
   override func updateWithData(data: [NSObject : AnyObject]!) {
     super.updateWithData(data)
-    imageCategory = ImageCategory.importObjectFromData(data["category"] as? NSDictionary,
+    imageCategory = ImageCategory.importObjectFromData(data["category"] as? NSDictionary as! [NSObject : AnyObject],
                                                context: managedObjectContext) ?? imageCategory
-    assetName = data["asset-name"] as? NSString ?? assetName
+    assetName = data["asset-name"] as? String ?? assetName
     leftCap = (data["left-cap"] as? NSNumber)?.intValue ?? leftCap
     topCap = (data["top-cap"] as? NSNumber)?.intValue ?? topCap
   }
 
   var image: UIImage? { return UIImage(named: assetName) }
   var templateImage: UIImage? { return image?.imageWithRenderingMode(.AlwaysTemplate) }
-  override var commentedUUID: String { var uuidCopy: NSString = uuid!; uuidCopy.comment = " // \(assetName)"; return uuidCopy }
+  override var commentedUUID: String { var uuidCopy: NSString = uuid!; uuidCopy.comment = " // \(assetName)"; return uuidCopy as String }
 
   /**
   JSONDictionary
@@ -86,7 +86,7 @@ class Image: BankableModelObject, PreviewableItem {
 
 
   class var rootCategory: Bank.RootCategory {
-    var categories = ImageCategory.findAllMatchingPredicate(∀"parentCategory == nil") as [ImageCategory]
+    var categories = ImageCategory.findAllMatchingPredicate(∀"parentCategory == nil") as! [ImageCategory]
     categories.sort{$0.0.title < $0.1.title}
     return Bank.RootCategory(label: "Images",
                              icon: UIImage(named: "926-photos")!,

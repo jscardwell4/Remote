@@ -228,7 +228,6 @@
 		C28E509B1A143FDC00DF3206 /* MultiselectGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28E509A1A143FDC00DF3206 /* MultiselectGestureRecognizer.swift */; };
 		C29692AA19CE53D400992240 /* JSONSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29692A919CE53D400992240 /* JSONSerialization.swift */; };
 		C2A6261F1A33598300152E97 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A6261E1A33598300152E97 /* Slider.swift */; };
-		C2B84B0A1A27890A000D699C /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B84B091A27890A000D699C /* Set.swift */; };
 		C2BE96E81A467E85007599B2 /* NSManagedObjectModel+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BE96E71A467E85007599B2 /* NSManagedObjectModel+MoonKitAdditions.swift */; };
 		C2C482DB19C9FA0B002E84A9 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2358F1619C78D6D00920F8D /* MoonKit.framework */; };
 		C2C482DE19C9FA73002E84A9 /* Moonkit_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2C482D619C9F98A002E84A9 /* Moonkit_Tests.m */; };
@@ -1320,7 +1319,6 @@
 				C2358F5B19C78E0C00920F8D /* MSPickerInputButton.m in Sources */,
 				C2358F5C19C78E0C00920F8D /* MSPopupBarButton.m in Sources */,
 				C23592F519C8E04200920F8D /* OrderedDictionary.swift in Sources */,
-				C2B84B0A1A27890A000D699C /* Set.swift in Sources */,
 				C28E50991A13CB1E00DF3206 /* IntegerInputView.swift in Sources */,
 				C2358F5D19C78E0C00920F8D /* MSPopupBarButtonItem.m in Sources */,
 				C2358F5E19C78E0C00920F8D /* MSScrollWheel.m in Sources */,

@@ -129,7 +129,7 @@ extension BankRootController: UITableViewDataSource {
   :returns: UITableViewCell
   */
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier(RootCellIdentifier, forIndexPath: indexPath) as BankRootCell
+    let cell = tableView.dequeueReusableCellWithIdentifier(RootCellIdentifier, forIndexPath: indexPath) as! BankRootCell
     cell.rootCategory = rootCategories[indexPath.row]
     return cell
   }

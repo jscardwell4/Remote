@@ -43,7 +43,7 @@ class IRCodeSet: BankableModelCategory {
     }
 
     if let manufacturerData = data["manufacturer"] as? NSDictionary {
-      manufacturer = Manufacturer.importObjectFromData(manufacturerData, context: managedObjectContext) ?? manufacturer
+      manufacturer = Manufacturer.importObjectFromData(manufacturerData as [NSObject : AnyObject], context: managedObjectContext) ?? manufacturer
     }
 
   }

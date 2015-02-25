@@ -22,7 +22,7 @@ class NetworkDevice: BankableModelObject {
 
   override func updateWithData(data: [NSObject : AnyObject]!) {
     super.updateWithData(data)
-    uniqueIdentifier = data["unique-identifier"] as? NSString ?? uniqueIdentifier
+    uniqueIdentifier = data["unique-identifier"] as? String ?? uniqueIdentifier
   }
 
   override class func importObjectFromData(data: [NSObject : AnyObject]!, context: NSManagedObjectContext) -> NetworkDevice? {

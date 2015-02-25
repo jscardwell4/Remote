@@ -44,7 +44,7 @@ class Preset: BankableModelObject, PreviewableItem {
   }
 
   class var rootCategory: Bank.RootCategory {
-    var categories = PresetCategory.findAllMatchingPredicate(∀"parentCategory == nil") as [PresetCategory]
+    var categories = PresetCategory.findAllMatchingPredicate(∀"parentCategory == nil") as! [PresetCategory]
     categories.sort{$0.0.title < $0.1.title}
     return Bank.RootCategory(label: "Presets",
                              icon: UIImage(named: "1059-sliders")!,
@@ -53,7 +53,7 @@ class Preset: BankableModelObject, PreviewableItem {
                              previewableItems: true)
   }
 
-  subscript(key: String) -> AnyObject? {
+  override subscript(key: String) -> AnyObject? {
     get { return storage[key] }
     set { storage[key] = newValue }
   }

@@ -19,7 +19,7 @@ class ButtonView: RemoteElementView {
 
   var tapAction: ((Void) -> Void)?
   var pressAction: ((Void) -> Void)?
-  var button: Button { return model as Button }
+  var button: Button { return model as! Button }
 
   /** init */
   override init() { super.init() }

@@ -17,7 +17,7 @@ public extension String {
   public static let Quote:       String = "'"
   public static let DoubleQuote: String = "\""
 
-  public var length: Int { return countElements(self) }
+  public var length: Int { return count(self) }
 
   public var dashcaseString: String {
     if isDashcase { return self }
@@ -187,7 +187,7 @@ public extension String {
   :returns: Bool
   */
   public func matchesRegEx(regex: NSRegularExpression) -> Bool {
-    return regex.numberOfMatchesInString(self, options: nil, range: NSRange(location: 0,  length: countElements(self))) > 0
+    return regex.numberOfMatchesInString(self, options: nil, range: NSRange(location: 0,  length: count(self))) > 0
   }
 
   /**
@@ -199,7 +199,7 @@ public extension String {
   */
   public func substringFromFirstMatchForRegEx(regex: NSRegularExpression) -> String? {
     var matchString: String?
-    let range = NSRange(location: 0, length: countElements(self))
+    let range = NSRange(location: 0, length: count(self))
     if let match = regex.firstMatchInString(self, options: nil, range: range) {
       let matchRange = match.rangeAtIndex(0)
       precondition(matchRange.location != NSNotFound, "didn't expect a match object with no overall match range")
@@ -237,7 +237,7 @@ public extension String {
     self = stringByReplacingMatchesForRegEx(regex, withTemplate: template)
   }
 
-  public var characterCount: Int { return countElements(self) }
+  public var characterCount: Int { return count(self) }
 
   /**
   substringForCapture:inFirstMatchFor:
@@ -261,7 +261,7 @@ public extension String {
   */
   public func matchingSubstringsForRegEx(regex: NSRegularExpression) -> [String] {
     var substrings: [String] = []
-    let range = NSRange(location: 0, length: countElements(self))
+    let range = NSRange(location: 0, length: count(self))
     if let matches = regex.matchesInString(self, options: nil, range: range) as? [NSTextCheckingResult] {
       for match in matches {
         let matchRange = match.rangeAtIndex(0)
@@ -297,7 +297,7 @@ public extension String {
   */
   public func rangeForCapture(capture: Int, inFirstMatchFor regex: NSRegularExpression) -> Range<Int>? {
     var range: Range<Int>?
-    if let match = regex.firstMatchInString(self, options: nil, range: NSRange(location: 0, length: countElements(self))) {
+    if let match = regex.firstMatchInString(self, options: nil, range: NSRange(location: 0, length: count(self))) {
       if capture >= 0 && capture <= regex.numberOfCaptureGroups {
         let matchRange = match.rangeAtIndex(capture)
         if matchRange.location != NSNotFound {
@@ -318,7 +318,7 @@ public extension String {
   */
   public func rangesForCapture(capture: Int, byMatching regex: NSRegularExpression) -> [Range<Int>?] {
     var ranges: [Range<Int>?] = []
-    let r = NSRange(location: 0, length: countElements(self))
+    let r = NSRange(location: 0, length: count(self))
     if let matches = regex.matchesInString(self, options: nil, range: r) as? [NSTextCheckingResult] {
       for match in matches {
         var range: Range<Int>?

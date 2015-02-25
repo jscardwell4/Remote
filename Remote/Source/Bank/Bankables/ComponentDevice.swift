@@ -126,15 +126,15 @@ class ComponentDevice: BankableModelObject {
     super.updateWithData(data)
 
     port = (data["port"] as? NSNumber)?.shortValue ?? port
-    onCommand = SendIRCommand.importObjectFromData(data["on-command"] as? NSDictionary,
+    onCommand = SendIRCommand.importObjectFromData(data["on-command"] as? NSDictionary as! [NSObject : AnyObject],
                                            context: managedObjectContext!) ?? onCommand
-    offCommand = SendIRCommand.importObjectFromData(data["off-command"] as? NSDictionary,
+    offCommand = SendIRCommand.importObjectFromData(data["off-command"] as? NSDictionary as! [NSObject : AnyObject],
                                             context: managedObjectContext!) ?? offCommand
-    manufacturer = Manufacturer.importObjectFromData(data["manufacturer"] as? NSDictionary,
+    manufacturer = Manufacturer.importObjectFromData(data["manufacturer"] as? NSDictionary as! [NSObject : AnyObject],
                                              context: managedObjectContext!) ?? manufacturer
-    networkDevice = NetworkDevice.importObjectFromData(data["network-device"] as? NSDictionary,
+    networkDevice = NetworkDevice.importObjectFromData(data["network-device"] as? NSDictionary as! [NSObject : AnyObject],
                                                context: managedObjectContext!) ?? networkDevice
-    codeSet = IRCodeSet.importObjectFromData(data["code-set"] as? NSDictionary,
+    codeSet = IRCodeSet.importObjectFromData(data["code-set"] as? NSDictionary as! [NSObject : AnyObject],
                                      context: managedObjectContext) ?? codeSet
   }
 

@@ -508,7 +508,7 @@ UIColor *colorFromImportValue(id importValue) {
   if (!color && [importValue hasSubstring:@"@.*%"]) {
     NSArray * baseAndAlpha = [importValue componentsSeparatedByString:@"@"];
 
-    if (![baseAndAlpha count] == 2) return nil;
+    if ([baseAndAlpha count] != 2) return nil;
 
     NSString * base    = baseAndAlpha[0];
     NSString * percent = [baseAndAlpha[1] substringToIndex:[baseAndAlpha[1] length] - 1];
@@ -523,7 +523,7 @@ UIColor *colorFromImportValue(id importValue) {
   } else if (!color) {
     NSArray * components = [importValue componentsSeparatedByString:@" "];
 
-    if (![components count] == 4) return nil;
+    if ([components count] != 4) return nil;
 
     color = [UIColor colorWithRed:[(NSString *)components[0] floatValue]
                             green:[(NSString *)components[1] floatValue]

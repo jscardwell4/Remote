@@ -28,13 +28,13 @@ class ISYDeviceNode: NamedModelObject {
   override func updateWithData(data: [NSObject : AnyObject]!) {
     super.updateWithData(data)
     flag              = data["flag"]               as? NSNumber ?? flag
-    address           = data["address"]            as? NSString ?? address
-    type              = data["type"]               as? NSString ?? type
+    address           = data["address"]            as? String   ?? address
+    type              = data["type"]               as? String   ?? type
     enabled           = data["enabled"]            as? NSNumber ?? enabled
-    pnode             = data["pnode"]              as? NSString ?? pnode
-    propertyFormatted = data["property-formatted"] as? NSString ?? propertyFormatted
-    propertyID        = data["property-id"]        as? NSString ?? propertyID
-    propertyUOM       = data["property-uom"]       as? NSString ?? propertyUOM
+    pnode             = data["pnode"]              as? String   ?? pnode
+    propertyFormatted = data["property-formatted"] as? String   ?? propertyFormatted
+    propertyID        = data["property-id"]        as? String   ?? propertyID
+    propertyUOM       = data["property-uom"]       as? String   ?? propertyUOM
     propertyValue     = data["property-value"]     as? NSNumber ?? propertyValue
     if let groups = ISYDeviceGroup.importObjectsFromData(data["groups"], context: managedObjectContext) as? [ISYDeviceGroup] {
       mutableSetValueForKey("groups").addObjectsFromArray(groups)

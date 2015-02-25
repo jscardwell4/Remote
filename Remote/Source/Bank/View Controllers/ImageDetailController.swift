@@ -37,7 +37,7 @@ class ImageDetailController: BankItemDetailController {
   /** loadDetailsSection */
   private func loadDetailsSection() {
 
-    let image = model as Image
+    let image = model as! Image
 
     let detailsSection = DetailSection(section: 0)
 
@@ -51,7 +51,7 @@ class ImageDetailController: BankItemDetailController {
   /** loadPreviewSection */
   private func loadPreviewSection() {
 
-    let image = model as Image
+    let image = model as! Image
 
     let previewSection = DetailSection(section: 1)
     previewSection.addRow({ DetailImageRow(previewableItem: image) }, forKey: RowKey.Preview)

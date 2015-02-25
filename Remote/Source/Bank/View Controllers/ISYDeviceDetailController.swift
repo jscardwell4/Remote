@@ -54,7 +54,7 @@ class ISYDeviceDetailController: BankItemDetailController {
 /** loadIDSection */
 private func loadIDSection() {
 
-    let iSYDevice = model as ISYDevice
+    let iSYDevice = model as! ISYDevice
 
     /// Identification section: Identifier, Base URL
     ////////////////////////////////////////////////////////////////////////////////
@@ -69,7 +69,7 @@ private func loadIDSection() {
 /** loadModelSection */
 private func loadModelSection() {
 
-    let iSYDevice = model as ISYDevice
+    let iSYDevice = model as! ISYDevice
 
     /// Model section: Name, Number, Description, Friendly Name
     ////////////////////////////////////////////////////////////////////////////////
@@ -86,7 +86,7 @@ private func loadModelSection() {
 /** loadManufacturerSection */
 private func loadManufacturerSection() {
 
-    let iSYDevice = model as ISYDevice
+    let iSYDevice = model as! ISYDevice
 
     /// Manufacturer section: Name, URL
     ////////////////////////////////////////////////////////////////////////////////
@@ -101,7 +101,7 @@ private func loadManufacturerSection() {
 /** loadNodesSection */
 private func loadNodesSection() {
 
-    let iSYDevice = model as ISYDevice
+    let iSYDevice = model as! ISYDevice
 
     /// Nodes section
     ////////////////////////////////////////////////////////////////////////////////
@@ -115,7 +115,7 @@ private func loadNodesSection() {
 /** loadGroupsSection */
 private func loadGroupsSection() {
 
-    let iSYDevice = model as ISYDevice
+    let iSYDevice = model as! ISYDevice
 
     /// Groups section
     ////////////////////////////////////////////////////////////////////////////////
@@ -129,7 +129,7 @@ private func loadGroupsSection() {
 /** loadComponentDevicesSection */
 private func loadComponentDevicesSection() {
 
-    let iSYDevice = model as ISYDevice
+    let iSYDevice = model as! ISYDevice
 
     /// Component Devices section
     ////////////////////////////////////////////////////////////////////////////////

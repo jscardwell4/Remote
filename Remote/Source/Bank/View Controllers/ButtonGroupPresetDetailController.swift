@@ -33,7 +33,7 @@ class ButtonGroupPresetDetailController: PresetDetailController {
 
   private func loadButtonGroupAttributesSection() {
 
-    let preset = model as Preset
+    let preset = model as! Preset
 
 
     let buttonGroupAttributesSection = DetailSection(section: 1, title: "Button Group Attributes")

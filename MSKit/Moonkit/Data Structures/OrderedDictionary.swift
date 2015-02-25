@@ -57,7 +57,7 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
 
   :param: dict NSDictionary
   */
-  public init(_ dict: NSDictionary) { self.init(dict as [NSObject:AnyObject]) }
+  public init(_ dict: NSDictionary) { self.init(dict as! [NSObject:AnyObject]) }
 
   /**
   init:
@@ -94,7 +94,7 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   public static func fromMSDictionary(msdict: MSDictionary) -> OrderedDictionary<NSObject, AnyObject> {
     var orderedDict = OrderedDictionary<NSObject,AnyObject>(minimumCapacity: 4)
 
-    let keys = msdict.allKeys as [NSObject]
+    let keys = msdict.allKeys as! [NSObject]
     let values = msdict.allValues as [AnyObject]
 
     for i in 0..<keys.count {
@@ -354,11 +354,11 @@ extension  OrderedDictionary: Printable, DebugPrintable {
   public func formattedDescription(indent:Int = 0, colonFormat:ColonFormatOption? = nil) -> String {
     var descriptionComponents = [String]()
     let keyDescriptions = indexKeys.map { "\($0)" }
-    let maxKeyLength = keyDescriptions.reduce(0) { max($0, countElements($1)) }
+    let maxKeyLength = keyDescriptions.reduce(0) { max($0, Swift.count($1)) }
     let space = Character(" ")
     let indentString = String(count:indent*4, repeatedValue:space)
     for (key, value) in Zip2(keyDescriptions, values) {
-      let spacer = String(count:maxKeyLength-countElements(key)+1, repeatedValue:space)
+      let spacer = String(count:maxKeyLength-Swift.count(key)+1, repeatedValue:space)
       var keyString = indentString + key
       if let opt = colonFormat {
         switch opt {

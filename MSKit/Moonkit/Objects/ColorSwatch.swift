@@ -56,7 +56,7 @@ public class ColorSwatch: UIControl {
     CGContextSetShadowWithColor(context,
                                 dropShadow.shadowOffset,
                                 dropShadow.shadowBlurRadius,
-                                (dropShadow.shadowColor as UIColor).CGColor)
+                                (dropShadow.shadowColor as! UIColor).CGColor)
     UIColor.whiteColor().setFill()
     rectanglePath.fill()
 
@@ -64,9 +64,9 @@ public class ColorSwatch: UIControl {
     CGContextSaveGState(context)
     CGContextClipToRect(context, rectanglePath.bounds)
     CGContextSetShadow(context, CGSizeMake(0, 0), 0)
-    CGContextSetAlpha(context, CGColorGetAlpha((swatchBaseInnerShadow.shadowColor as UIColor).CGColor))
+    CGContextSetAlpha(context, CGColorGetAlpha((swatchBaseInnerShadow.shadowColor as! UIColor).CGColor))
     CGContextBeginTransparencyLayer(context, nil)
-    let rectangleOpaqueShadow = (swatchBaseInnerShadow.shadowColor as UIColor).colorWithAlphaComponent(1)
+    let rectangleOpaqueShadow = (swatchBaseInnerShadow.shadowColor as! UIColor).colorWithAlphaComponent(1)
     CGContextSetShadowWithColor(context,
                                 swatchBaseInnerShadow.shadowOffset,
                                 swatchBaseInnerShadow.shadowBlurRadius,
@@ -87,7 +87,7 @@ public class ColorSwatch: UIControl {
     CGContextSetShadowWithColor(context,
                                 swatchBaseStrokeShadow.shadowOffset,
                                 swatchBaseStrokeShadow.shadowBlurRadius,
-                                (swatchBaseStrokeShadow.shadowColor as UIColor).CGColor)
+                                (swatchBaseStrokeShadow.shadowColor as! UIColor).CGColor)
     UIColor.whiteColor().setStroke()
     rectanglePath.lineWidth = 0.5
     rectanglePath.stroke()
@@ -103,7 +103,7 @@ public class ColorSwatch: UIControl {
     CGContextSetShadowWithColor(context,
                                 swatchInnerShadow.shadowOffset,
                                 swatchInnerShadow.shadowBlurRadius,
-                                (swatchInnerShadow.shadowColor as UIColor).CGColor)
+                                (swatchInnerShadow.shadowColor as! UIColor).CGColor)
     (color ?? UIColor.whiteColor()).setFill()
     swatchPath.fill()
     CGContextRestoreGState(context)

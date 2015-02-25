@@ -33,12 +33,12 @@ class PresetCategory: BankableModelCategory {
   @NSManaged var presets: NSSet?
 
   override var subcategories: [BankDisplayItemCategory] {
-    get { return ((subcategoriesSet?.allObjects ?? []) as [PresetCategory]).sorted{$0.0.title < $0.1.title} }
+    get { return ((subcategoriesSet?.allObjects ?? []) as! [PresetCategory]).sorted{$0.0.title < $0.1.title} }
     set { if let newSubcategories = newValue as? [PresetCategory] { subcategoriesSet = NSSet(array: newSubcategories) } }
   }
 
   override var items: [BankDisplayItemModel] {
-    get { return sortedByName((presets?.allObjects ?? []) as [Preset]) }
+    get { return sortedByName((presets?.allObjects ?? []) as! [Preset]) }
     set { if let newItems = newValue as? [Preset] { presets = NSSet(array: newItems) } }
   }
 

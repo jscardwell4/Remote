@@ -34,8 +34,8 @@ class ModeSelectionView: ButtonGroupView {
   */
   func selectButton(newSelection: ButtonView) {
     if selectedButton != newSelection && newSelection.model.key != nil && !newSelection.model.key!.isEmpty {
-      (selectedButton?.model as Button).selected = false
-      (newSelection.model as Button).selected = true
+      (selectedButton?.model as! Button).selected = false
+      (newSelection.model as! Button).selected = true
       selectedButton = newSelection
       RemoteController(model.managedObjectContext).currentRemote?.currentMode = newSelection.model.key!
     }
@@ -48,7 +48,7 @@ class ModeSelectionView: ButtonGroupView {
   */
   func handleSelection(sender: ButtonView) {
     if selectedButton != sender { selectButton(sender) }
-    if (model as ButtonGroup).autohide { MSDelayedRunOnMain(1){self.tuck()} }
+    if (model as! ButtonGroup).autohide { MSDelayedRunOnMain(1){self.tuck()} }
   }
 
   /**
@@ -58,7 +58,7 @@ class ModeSelectionView: ButtonGroupView {
   :param: inRect CGRect
   */
   override func drawBackdropInContext(ctx: CGContextRef, inRect: CGRect) {
-    let panelLocation = (model as ButtonGroup).panelLocation
+    let panelLocation = (model as! ButtonGroup).panelLocation
     CGContextClearRect(ctx, bounds)
     var roundedCorners: UIRectCorner
     switch panelLocation {

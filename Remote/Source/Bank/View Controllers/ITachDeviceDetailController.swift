@@ -45,7 +45,7 @@ class ITachDeviceDetailController: BankItemDetailController {
     /// Main section: Identifier, Make, Model, Config-URL, Revision, Pcb_PN, Pkg_Level, SDKClass
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-    let iTachDevice = model as ITachDevice
+    let iTachDevice = model as! ITachDevice
 
     let mainSection = DetailSection(section: 0)
 
@@ -65,7 +65,7 @@ class ITachDeviceDetailController: BankItemDetailController {
   /** loadComponentDevicesSection */
   private func loadComponentDevicesSection() {
 
-    let iTachDevice = model as ITachDevice
+    let iTachDevice = model as! ITachDevice
 
     /// Component Devices section
     ////////////////////////////////////////////////////////////////////////////////

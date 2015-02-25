@@ -104,7 +104,7 @@ public class Checkbox: UIControl {
         context,
         DrawingKit.semiDarkShadow.shadowOffset,
         DrawingKit.semiDarkShadow.shadowBlurRadius,
-        (DrawingKit.semiDarkShadow.shadowColor as UIColor).CGColor
+        (DrawingKit.semiDarkShadow.shadowColor as! UIColor).CGColor
       )
       UIColor.whiteColor().setFill()
       UIRectFill(boxRect)
@@ -113,10 +113,10 @@ public class Checkbox: UIControl {
       UIGraphicsPushContext(context)
       UIRectClip(boxRect.rectWithOrigin(CGPoint.zeroPoint))
       CGContextSetShadow(context, CGSize.zeroSize, 0)
-      CGContextSetAlpha(context, CGColorGetAlpha((DrawingKit.semiDarkShadow.shadowColor as UIColor).CGColor))
+      CGContextSetAlpha(context, CGColorGetAlpha((DrawingKit.semiDarkShadow.shadowColor as! UIColor).CGColor))
       CGContextBeginTransparencyLayer(context, nil)
 
-      let boxOpaqueShadow = (DrawingKit.semiDarkShadow.shadowColor as UIColor).colorWithAlphaComponent(1)
+      let boxOpaqueShadow = (DrawingKit.semiDarkShadow.shadowColor as! UIColor).colorWithAlphaComponent(1)
       CGContextSetShadowWithColor(
         context,
         DrawingKit.semiDarkShadow.shadowOffset,
@@ -183,7 +183,7 @@ public class Checkbox: UIControl {
             context,
             DrawingKit.semiDarkShadow.shadowOffset,
             DrawingKit.semiDarkShadow.shadowBlurRadius,
-            (DrawingKit.semiDarkShadow.shadowColor as UIColor).CGColor
+            (DrawingKit.semiDarkShadow.shadowColor as! UIColor).CGColor
           )
 
           checkmarkColor.setFill()
@@ -193,9 +193,9 @@ public class Checkbox: UIControl {
           UIGraphicsPushContext(context)
           UIRectClip(checkmarkPath.bounds)
           CGContextSetShadow(context, CGSize.zeroSize, 0)
-          CGContextSetAlpha(context, CGColorGetAlpha((DrawingKit.lightShadow.shadowColor as UIColor).CGColor))
+          CGContextSetAlpha(context, CGColorGetAlpha((DrawingKit.lightShadow.shadowColor as! UIColor).CGColor))
           CGContextBeginTransparencyLayer(context, nil)
-          let checkmarkOpaqueShadow = (DrawingKit.lightShadow.shadowColor as UIColor).colorWithAlphaComponent(1)
+          let checkmarkOpaqueShadow = (DrawingKit.lightShadow.shadowColor as! UIColor).colorWithAlphaComponent(1)
           CGContextSetShadowWithColor(
             context,
             DrawingKit.lightShadow.shadowOffset,

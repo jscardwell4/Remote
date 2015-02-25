@@ -82,14 +82,14 @@ class ITachDevice: NetworkDevice {
   */
   override func updateWithData(data: [NSObject : AnyObject]!) {
     super.updateWithData(data)
-    pcbPN     = data["pcb-pn"]     as? NSString ?? pcbPN
-    pkgLevel  = data["pkg-level"]  as? NSString ?? pkgLevel
-    sdkClass  = data["sdk-class"]  as? NSString ?? sdkClass
-    make      = data["make"]       as? NSString ?? make
-    model     = data["model"]      as? NSString ?? model
-    status    = data["status"]     as? NSString ?? status
-    configURL = data["config-url"] as? NSString ?? configURL
-    revision  = data["revision"]   as? NSString ?? revision
+    pcbPN     = data["pcb-pn"]     as? String ?? pcbPN
+    pkgLevel  = data["pkg-level"]  as? String ?? pkgLevel
+    sdkClass  = data["sdk-class"]  as? String ?? sdkClass
+    make      = data["make"]       as? String ?? make
+    model     = data["model"]      as? String ?? model
+    status    = data["status"]     as? String ?? status
+    configURL = data["config-url"] as? String ?? configURL
+    revision  = data["revision"]   as? String ?? revision
   }
 
   /**

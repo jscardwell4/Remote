@@ -19,7 +19,7 @@ class DictionaryStorage: NSManagedObject {
       willAccessValueForKey("dictionary")
       let dictionary = primitiveDictionary
       didAccessValueForKey("dictionary")
-      return dictionary
+      return dictionary as [NSObject : AnyObject]
     }
     set {
       willChangeValueForKey("dictionary")

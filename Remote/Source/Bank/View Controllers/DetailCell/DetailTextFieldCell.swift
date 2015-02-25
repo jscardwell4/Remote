@@ -114,7 +114,7 @@ final class DetailTextFieldCell: DetailTextInputCell, UITextFieldDelegate {
   /// Placeholders for nil info value
   var placeholderText: String? {
     didSet {
-      if let textField = textInput? as? UITextField {
+      if let textField = textInput as? UITextField {
         textField.placeholder = placeholderText
       }
     }
@@ -122,7 +122,7 @@ final class DetailTextFieldCell: DetailTextInputCell, UITextFieldDelegate {
 
   var placeholderAttributedText: NSAttributedString? {
     didSet {
-      if let textField = textInput? as? UITextField {
+      if let textField = textInput as? UITextField {
         textField.attributedPlaceholder = placeholderAttributedText
       }
     }
@@ -190,7 +190,7 @@ final class DetailTextFieldCell: DetailTextInputCell, UITextFieldDelegate {
 
     if textField.text.isEmpty { shouldEnd = allowEmptyString }
     else {
-      let scanner = NSScanner.localizedScannerWithString(textField.text) as NSScanner
+      let scanner = NSScanner.localizedScannerWithString(textField.text) as! NSScanner
       switch infoDataType {
         case .IntData(let r):
           var n: Int32 = 0

@@ -67,7 +67,7 @@ class ButtonPresetDetailController: PresetDetailController {
   :returns: DetailColorRow
   */
   private func generateBackgroundColorDisplayRowForState(state: UIControlState) -> DetailColorRow {
-    let preset = model as Preset
+    let preset = model as! Preset
 
     let row = DetailColorRow()
     row.tag = state
@@ -94,7 +94,7 @@ class ButtonPresetDetailController: PresetDetailController {
   :returns: DetailListRow
   */
   private func generateBackgroundColorCreationRowForState(state: UIControlState) -> DetailListRow {
-    let preset = model as Preset
+    let preset = model as! Preset
     let row = DetailListRow()
     row.tag = state
     row.infoDataType = .AttributedStringData
@@ -130,7 +130,7 @@ class ButtonPresetDetailController: PresetDetailController {
   :returns: DetailRow
   */
   private func generateBackgroundColorRowForState(state: UIControlState) -> DetailRow {
-    let row = ((model as Preset).backgroundColors?.keys.array ?? []) ∋ state.JSONValue
+    let row = ((model as! Preset).backgroundColors?.keys.array ?? []) ∋ state.JSONValue
                 ? generateBackgroundColorDisplayRowForState(state)
                 : generateBackgroundColorCreationRowForState(state)
     return row
@@ -148,15 +148,15 @@ class ButtonPresetDetailController: PresetDetailController {
       backgroundColorSection!.singleRowDisplay = true
       backgroundColorSection!.predicates = [
         FilteringDetailSection.Predicate(name: "Highlighted", includeRow: {
-          ($0.tag as UIControlState) & .Highlighted != nil
+          ($0.tag as! UIControlState) & .Highlighted != nil
         },
         active: self.backgroundColorState & .Highlighted != nil),
         FilteringDetailSection.Predicate(name: "Selected", includeRow: {
-          ($0.tag as UIControlState) & .Selected != nil
+          ($0.tag as! UIControlState) & .Selected != nil
         },
         active: self.backgroundColorState & .Selected != nil),
         FilteringDetailSection.Predicate(name: "Disabled", includeRow: {
-          ($0.tag as UIControlState) & .Disabled != nil
+          ($0.tag as! UIControlState) & .Disabled != nil
         },
         active: self.backgroundColorState & .Disabled != nil)
       ]
@@ -196,7 +196,7 @@ class ButtonPresetDetailController: PresetDetailController {
   :returns: DetailAttributedTextRow
   */
   private func generateTitleDisplayRowForState(state: UIControlState) -> DetailAttributedTextRow {
-    let preset = model as Preset
+    let preset = model as! Preset
     let normalAttributes = TitleAttributes(storage: preset.titles?["normal"] ?? [:])
     let stateAttributes = TitleAttributes(storage: preset.titles?[state.JSONValue] ?? [:])
     let mergedAttributes = stateAttributes.mergedWithTitleAttributes(normalAttributes)
@@ -229,7 +229,7 @@ class ButtonPresetDetailController: PresetDetailController {
   :returns: DetailListRow
   */
   private func generateTitleCreationRowForState(state: UIControlState) -> DetailListRow {
-    let preset = model as Preset
+    let preset = model as! Preset
     let row = DetailListRow()
     row.infoDataType = .AttributedStringData
     row.tag = state
@@ -265,7 +265,7 @@ class ButtonPresetDetailController: PresetDetailController {
   :returns: DetailRow
   */
   private func generateTitleRowForState(state: UIControlState) -> DetailRow {
-    let row = ((model as Preset).titles?.keys.array ?? []) ∋ state.JSONValue
+    let row = ((model as! Preset).titles?.keys.array ?? []) ∋ state.JSONValue
                 ? generateTitleDisplayRowForState(state)
                 : generateTitleCreationRowForState(state)
     return row
@@ -283,15 +283,15 @@ class ButtonPresetDetailController: PresetDetailController {
       titleSection!.singleRowDisplay = true
       titleSection!.predicates = [
         FilteringDetailSection.Predicate(name: "Highlighted", includeRow: {
-          ($0.tag as UIControlState) & .Highlighted != nil
+          ($0.tag as! UIControlState) & .Highlighted != nil
         },
         active: self.titleState & .Highlighted != nil),
         FilteringDetailSection.Predicate(name: "Selected", includeRow: {
-          ($0.tag as UIControlState) & .Selected != nil
+          ($0.tag as! UIControlState) & .Selected != nil
         },
         active: self.titleState & .Selected != nil),
         FilteringDetailSection.Predicate(name: "Disabled", includeRow: {
-          ($0.tag as UIControlState) & .Disabled != nil
+          ($0.tag as! UIControlState) & .Disabled != nil
         },
         active: self.titleState & .Disabled != nil)
       ]
@@ -332,7 +332,7 @@ class ButtonPresetDetailController: PresetDetailController {
   */
   private func generateIconDisplayRowForState(state: UIControlState) -> DetailImageRow {
 
-    let preset = model as Preset
+    let preset = model as! Preset
     let json = preset.icons?[state.JSONValue]
     let image = ImageCategory.imageForPath(json?["image"] as? String, context: preset.managedObjectContext)
 
@@ -364,7 +364,7 @@ class ButtonPresetDetailController: PresetDetailController {
   :returns: DetailListRow
   */
   private func generateIconCreationRowForState(state: UIControlState) -> DetailListRow {
-    let preset = model as Preset
+    let preset = model as! Preset
     let row = DetailListRow()
     row.tag = state
     row.infoDataType = .AttributedStringData
@@ -400,7 +400,7 @@ class ButtonPresetDetailController: PresetDetailController {
   :returns: DetailRow
   */
   private func generateIconRowForState(state: UIControlState) -> DetailRow {
-    let row = ((model as Preset).icons?.keys.array ?? []) ∋ state.JSONValue
+    let row = ((model as! Preset).icons?.keys.array ?? []) ∋ state.JSONValue
                 ? generateIconDisplayRowForState(state)
                 : generateIconCreationRowForState(state)
     return row
@@ -418,15 +418,15 @@ class ButtonPresetDetailController: PresetDetailController {
       iconSection!.singleRowDisplay = true
       iconSection!.predicates = [
         FilteringDetailSection.Predicate(name: "Highlighted", includeRow: {
-          ($0.tag as UIControlState) & .Highlighted != nil
+          ($0.tag as! UIControlState) & .Highlighted != nil
         },
         active: self.iconState & .Highlighted != nil),
         FilteringDetailSection.Predicate(name: "Selected", includeRow: {
-          ($0.tag as UIControlState) & .Selected != nil
+          ($0.tag as! UIControlState) & .Selected != nil
         },
         active: self.iconState & .Selected != nil),
         FilteringDetailSection.Predicate(name: "Disabled", includeRow: {
-          ($0.tag as UIControlState) & .Disabled != nil
+          ($0.tag as! UIControlState) & .Disabled != nil
         },
         active: self.iconState & .Disabled != nil)
       ]
@@ -465,7 +465,7 @@ class ButtonPresetDetailController: PresetDetailController {
   :returns: DetailImageRow
   */
   private func generateImageDisplayRowForState(state: UIControlState) -> DetailImageRow {
-    let preset = model as Preset
+    let preset = model as! Preset
     let json = preset.images?[state.JSONValue]
     let image = ImageCategory.imageForPath(json?["image"] as? String, context: preset.managedObjectContext)
 
@@ -497,7 +497,7 @@ class ButtonPresetDetailController: PresetDetailController {
   :returns: DetailListRow
   */
   private func generateImageCreationRowForState(state: UIControlState) -> DetailListRow {
-    let preset = model as Preset
+    let preset = model as! Preset
     let row = DetailListRow()
     row.tag = state
     row.infoDataType = .AttributedStringData
@@ -533,7 +533,7 @@ class ButtonPresetDetailController: PresetDetailController {
   :returns: DetailRow
   */
   private func generateImageRowForState(state: UIControlState) -> DetailRow {
-    let row = ((model as Preset).images?.keys.array ?? []) ∋ state.JSONValue
+    let row = ((model as! Preset).images?.keys.array ?? []) ∋ state.JSONValue
                 ? generateImageDisplayRowForState(state)
                 : generateImageCreationRowForState(state)
     return row
@@ -551,15 +551,15 @@ class ButtonPresetDetailController: PresetDetailController {
       imageSection!.singleRowDisplay = true
       imageSection!.predicates = [
         FilteringDetailSection.Predicate(name: "Highlighted", includeRow: {
-          ($0.tag as UIControlState) & .Highlighted != nil
+          ($0.tag as! UIControlState) & .Highlighted != nil
         },
         active: self.imageState & .Highlighted != nil),
         FilteringDetailSection.Predicate(name: "Selected", includeRow: {
-          ($0.tag as UIControlState) & .Selected != nil
+          ($0.tag as! UIControlState) & .Selected != nil
         },
         active: self.imageState & .Selected != nil),
         FilteringDetailSection.Predicate(name: "Disabled", includeRow: {
-          ($0.tag as UIControlState) & .Disabled != nil
+          ($0.tag as! UIControlState) & .Disabled != nil
         },
         active: self.imageState & .Disabled != nil)
       ]
@@ -596,7 +596,7 @@ extension ButtonPresetDetailController: TitleAttributesDelegateObserver {
   */
   func saveInvokedForTitleAttributesDelegate(titleAttributesDelegate: TitleAttributesDelegate) {
     assert(pushedTitleAttributesKey != nil)
-    let preset = model as Preset
+    let preset = model as! Preset
     if var titles = preset.titles {
       titles[pushedTitleAttributesKey!] = titleAttributesDelegate.titleAttributes.JSONValue
       preset.titles = titles
@@ -612,7 +612,7 @@ extension ButtonPresetDetailController: TitleAttributesDelegateObserver {
   */
   func deleteInvokedForTitleAttributesDelegate(titleAttributesDelegate: TitleAttributesDelegate) {
     assert(pushedTitleAttributesKey != nil)
-    let preset = model as Preset
+    let preset = model as! Preset
     if var titles = preset.titles {
       titles[pushedTitleAttributesKey!] = nil
       preset.titles = titles

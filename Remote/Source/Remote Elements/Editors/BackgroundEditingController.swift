@@ -90,9 +90,9 @@ class BackgroundEditingController: UIViewController {
   */
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if segue.identifier == "Embed Color Selection" {
-      colorSelectionVC = segue.destinationViewController as ColorSelectionController
+      colorSelectionVC = segue.destinationViewController as! ColorSelectionController
     } else if segue.identifier == "Embed Image Collection" {
-      imageCollectionNav = segue.destinationViewController as UINavigationController
+      imageCollectionNav = segue.destinationViewController as! UINavigationController
     }
   }
 

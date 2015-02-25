@@ -48,7 +48,7 @@ class RemoteElement: NamedModelObject {
     setBackgroundImageAlpha(preset.backgroundImageAlpha, forMode: RemoteElement.DefaultMode)
     var elements: OrderedSet<RemoteElement> = []
     if let subelementPresets = preset.childPresets {
-      for subelementPreset in subelementPresets.array as [Preset] {
+      for subelementPreset in subelementPresets.array as! [Preset] {
         if let element = RemoteElement.remoteElementFromPreset(subelementPreset) {
           elements.append(element)
         }
@@ -201,7 +201,7 @@ class RemoteElement: NamedModelObject {
   /** prepareForDeletion */
   override func prepareForDeletion() {
     if let moc = managedObjectContext {
-      apply(flattened(Array(configurations.values).map{Array($0.values).filter{$0 is NSURL}})){moc.deleteObject($0 as NSManagedObject)}
+      apply(flattened(Array(configurations.values).map{Array($0.values).filter{$0 is NSURL}})){moc.deleteObject($0 as! NSManagedObject)}
       moc.processPendingChanges()
     }
   }
@@ -245,7 +245,7 @@ class RemoteElement: NamedModelObject {
       }
 
       if let constraintsJSON = data["constraints"] as? [String:AnyObject] {
-        ownedConstraints = Constraint.importObjectsFromData(constraintsJSON, context: moc) as [Constraint]
+        ownedConstraints = Constraint.importObjectsFromData(constraintsJSON, context: moc) as! [Constraint]
       }
 
     }
@@ -260,9 +260,9 @@ class RemoteElement: NamedModelObject {
   override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
-    func ifNotDefaultSetValue(value: @autoclosure () -> NSObject?, forKey key: String) {
+    func ifNotDefaultSetValue(@autoclosure value: () -> NSObject?, forKey key: String) {
       if let v = value() {
-        if !attributeValueIsDefault(key) {
+        if !self.attributeValueIsDefault(key) {
           dictionary[key.camelCaseToDashCase()] = v
         }
       }
@@ -466,7 +466,7 @@ class RemoteElement: NamedModelObject {
 
   :returns: RemoteElement?
   */
-  subscript(key: String) -> AnyObject? {
+  override subscript(key: String) -> AnyObject? {
     get {
       let keypath = split(key){$0 == "."}
       if keypath.count == 2 {

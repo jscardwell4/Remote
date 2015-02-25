@@ -23,7 +23,7 @@ class ColorSelectionController: SelectionViewController {
 
 //	var hidesToolbar: Bool = false { didSet { buttonToolbar?.hidden = hidesToolbar } }
 
-	let colorNames: [String] = (UIColor.colorNames() as [String]).sorted(<)
+	let colorNames: [String] = (UIColor.colorNames() as! [String]).sorted(<)
 
 	@IBOutlet weak var redSlider:  UISlider!
 	@IBOutlet weak var greenSlider:  UISlider!
@@ -165,7 +165,7 @@ extension ColorSelectionController: UIPickerViewDelegate, UIPickerViewDataSource
 	  let colorName = colorNames[row]
 
     view.viewWithTag(1)!.backgroundColor = UIColor(name: colorName)
-	  (view.viewWithTag(2) as UILabel).text = colorName
+	  (view.viewWithTag(2) as! UILabel).text = colorName
 
 	  return view!
 

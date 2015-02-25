@@ -23,8 +23,8 @@ public protocol Divisible {
 }
 
 public protocol EnumerableType {
-  class func enumerate(block: (Self) -> Void)
-  class var all: [Self] { get }
+  static func enumerate(block: (Self) -> Void)
+  static var all: [Self] { get }
 }
 
 // causes ambiguity

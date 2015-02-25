@@ -59,12 +59,12 @@ class ImageCategory: BankableModelCategory {
   }
 
   override var subcategories: [BankDisplayItemCategory] {
-    get { return ((subcategoriesSet?.allObjects ?? []) as [ImageCategory]).sorted{$0.0.title < $0.1.title} }
+    get { return ((subcategoriesSet?.allObjects ?? []) as! [ImageCategory]).sorted{$0.0.title < $0.1.title} }
     set { if let newSubcategories = newValue as? [ImageCategory] { subcategoriesSet = NSSet(array: newSubcategories) } }
   }
 
   override var items: [BankDisplayItemModel] {
-    get { return sortedByName((images?.allObjects ?? []) as [Image]) }
+    get { return sortedByName((images?.allObjects ?? []) as! [Image]) }
     set { if let newItems = newValue as? [Image] { images = NSSet(array: newItems) } }
   }
 

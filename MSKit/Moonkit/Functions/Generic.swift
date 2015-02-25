@@ -182,7 +182,7 @@ Returns true if `lhs` is nil or `rhs` evaluates to true
 
 :returns: Bool
 */
-public func ∅||<T>(lhs: Optional<T>, rhs: @autoclosure () -> Bool) -> Bool {
+public func ∅||<T>(lhs: Optional<T>, @autoclosure rhs: () -> Bool) -> Bool {
   return lhs == nil || rhs()
 }
 

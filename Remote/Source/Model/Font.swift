@@ -16,7 +16,7 @@ class Font: JSONValueConvertible {
   var size: CGFloat = UIFont.systemFontSize()
   var font: UIFont? { return UIFont(name: name, size: size) }
 
-  init?(name: String) { if (UIFont.familyNames() as [String]) ∋ name { self.name = name } else { return nil } }
+  init?(name: String) { if (UIFont.familyNames() as! [String]) ∋ name { self.name = name } else { return nil } }
   init(_ font: UIFont) { name = font.fontName; size = font.pointSize }
   init(size: CGFloat) { self.size = size }
   convenience init?(name: String, size: CGFloat) { self.init(name: name); self.size = size }
@@ -26,7 +26,7 @@ class Font: JSONValueConvertible {
     let components: [String?] = JSONValue.matchFirst("^([^@]*)@?([0-9]*\\.?[0-9]*)")
     if let nameComponent = components.first {
       if nameComponent != nil {
-        if (UIFont.familyNames() as [String]) ∋ nameComponent! { self.name = nameComponent! } else { return nil }
+        if (UIFont.familyNames() as! [String]) ∋ nameComponent! { self.name = nameComponent! } else { return nil }
         if let sizeComponent = components.last {
           if sizeComponent != nil {
             let scanner = NSScanner(string: sizeComponent!)

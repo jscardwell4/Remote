@@ -467,7 +467,7 @@ NSData *scaledImageDataFromImageData(NSData *imageData, NSUInteger bytesPerRow, 
     CGSize stringSize = [text sizeWithAttributes:@{NSFontAttributeName: font}];
     CGPoint textCenter = CGRectGetCenter(rect);
     CGPoint textLocation = CGPointMake(textCenter.x - endPoint.x/2.0f,
-                                       fabsf(textCenter.y - stringSize.height/2.0f));
+                                       fabs(textCenter.y - stringSize.height/2.0f));
 #pragma unused(textLocation)
     // Draw text
     [textColor setFill];

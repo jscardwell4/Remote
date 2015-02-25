@@ -33,7 +33,7 @@ class RemotePresetDetailController: PresetDetailController {
  /** loadRemoteAttributesSection */
  private func loadRemoteAttributesSection() {
 
-   let preset = model as Preset
+   let preset = model as! Preset
 
    let remoteAttributesSection = DetailSection(section: 2, title: "Remote Attributes")
 

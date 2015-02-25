@@ -115,7 +115,7 @@ class ImportExportFileManager {
     // Create the export action
     let exportAlertAction = UIAlertAction(title: "Export", style: .Default){
       (action: UIAlertAction!) -> Void in
-      let text = (alert.textFields as [UITextField])[0].text
+      let text = (alert.textFields as! [UITextField])[0].text
       precondition(text.length > 0 && text ∉ _existingFiles, "text field should not be empty or match an existing file")
       self.exportItems(items, toFile: MoonFunctions.documentsPathToFile(text + ".json")!)
       completion?(true)

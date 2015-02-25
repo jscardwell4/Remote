@@ -231,7 +231,7 @@ class RemoteElementEditingController: UIViewController {
     context = DataManager.childContextForContext(element.managedObjectContext!)
     context.performBlockAndWait {
       self.changedModelValues = element.changedValues()
-      self.remoteElement = self.context.existingObjectWithID(element.objectID, error: nil) as RemoteElement
+      self.remoteElement = self.context.existingObjectWithID(element.objectID, error: nil) as! RemoteElement
     }
     modalPresentationStyle = .Custom
     LogManager.setLogLevel(.Debug)
@@ -765,7 +765,7 @@ extension RemoteElementEditingController {
       let longPress = LongPressGesture(handler: {
         [unowned self] gesture -> Void in
 
-        let pressGesture = gesture as LongPressGesture
+        let pressGesture = gesture as! LongPressGesture
 
         switch pressGesture.state {
           case .Began:
@@ -864,14 +864,14 @@ extension RemoteElementEditingController {
       var previousState: UIGestureRecognizerState = .Possible
       let gesture = TouchTrackingGesture(handler: {
         [unowned self] gesture -> Void in
-          let trackingGesture = gesture as TouchTrackingGesture
+          let trackingGesture = gesture as! TouchTrackingGesture
           MSLogDebug("state: \(trackingGesture.state)")
           switch trackingGesture.state {
             case .Ended:
               if previousState != .Ended {
                 let touchedSubelementViews = OrderedSet(trackingGesture.touchedSubviewsInView(self.sourceView, includeView: {
                   self.sourceView.objectIsSubelementKind($0)
-                }).array as [RemoteElementView])
+                }).array as! [RemoteElementView])
                 if touchedSubelementViews.count > 0 { self.selectViews(touchedSubelementViews) }
                 else { self.deselectAll() }
               }
@@ -889,12 +889,12 @@ extension RemoteElementEditingController {
     anchoredSelectGesture = {
       let gesture = TouchTrackingGesture(handler: {
         [unowned self] gesture -> Void in
-          let trackingGesture = gesture as TouchTrackingGesture
+          let trackingGesture = gesture as! TouchTrackingGesture
           switch trackingGesture.state {
             case .Ended:
               let touchedSubelementViews = OrderedSet(trackingGesture.touchedSubviewsInView(self.sourceView, includeView: {
                 self.sourceView.objectIsSubelementKind($0)
-              }).array as [RemoteElementView])
+              }).array as! [RemoteElementView])
               if touchedSubelementViews.count > 0 { self.deselectViews(touchedSubelementViews) }
             default: break
           }
@@ -915,7 +915,7 @@ extension RemoteElementEditingController {
       let panGesture = PanGesture(handler: {
         [unowned self] gesture -> Void in
 
-        let pan = gesture as PanGesture
+        let pan = gesture as! PanGesture
         switch pan.state {
           case .Began: startingPanOffset = self.sourceViewCenterYConstraint.constant
           case .Changed:
@@ -964,7 +964,7 @@ extension RemoteElementEditingController {
       let longPress = LongPressGesture(handler: {
         [unowned self] gesture -> Void in
 
-          let pressGesture = gesture as LongPressGesture
+          let pressGesture = gesture as! LongPressGesture
           switch pressGesture.state {
             case .Began:
               if pressGesture.pressRecognized {
@@ -1310,7 +1310,7 @@ extension RemoteElementEditingController {
     selectedViews.removeAll()
     focusView = nil
     context.performBlockAndWait {
-      self.context.deleteObjects(NSSet(array: elementsToDelete.array))
+      self.context.deleteObjects(NSSet(array: elementsToDelete.array) as Set<NSObject>)
       self.context.processPendingChanges()
     }
     sourceView.setNeedsUpdateConstraints()

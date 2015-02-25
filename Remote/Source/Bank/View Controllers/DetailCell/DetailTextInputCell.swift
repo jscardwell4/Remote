@@ -34,13 +34,13 @@ class DetailTextInputCell: DetailCell {
 
   var currentText: String? {
     get {
-      return textInput != nil && (textInput! as AnyObject).respondsToSelector("text")
-               ? (textInput! as AnyObject).valueForKey("text") as? String
+      return textInput != nil && (textInput as! AnyObject).respondsToSelector("text")
+               ? (textInput as! AnyObject).valueForKey("text") as? String
                : nil
     }
     set {
-      if textInput != nil && (textInput! as AnyObject).respondsToSelector("text") {
-        (textInput! as AnyObject).setValue(newValue, forKey: "text")
+      if textInput != nil && (textInput as! AnyObject).respondsToSelector("text") {
+        (textInput as! AnyObject).setValue(newValue, forKey: "text")
       }
     }
   }

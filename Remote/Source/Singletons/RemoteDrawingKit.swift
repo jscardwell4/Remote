@@ -64,7 +64,7 @@ public class RemoteDrawingKit : NSObject {
         //// Rectangle Drawing
         let rectanglePath = UIBezierPath(roundedRect: CGRectMake(frame.minX + 2, frame.minY + 2, frame.width - 4, frame.height - 4), cornerRadius: radius)
         CGContextSaveGState(context)
-        CGContextSetShadowWithColor(context, RemoteDrawingKit.outerShadow.shadowOffset, RemoteDrawingKit.outerShadow.shadowBlurRadius, (RemoteDrawingKit.outerShadow.shadowColor as UIColor).CGColor)
+        CGContextSetShadowWithColor(context, RemoteDrawingKit.outerShadow.shadowOffset, RemoteDrawingKit.outerShadow.shadowBlurRadius, (RemoteDrawingKit.outerShadow.shadowColor as! UIColor).CGColor)
         color.setFill()
         rectanglePath.fill()
 
@@ -72,9 +72,9 @@ public class RemoteDrawingKit : NSObject {
         CGContextSaveGState(context)
         CGContextClipToRect(context, rectanglePath.bounds)
         CGContextSetShadow(context, CGSizeMake(0, 0), 0)
-        CGContextSetAlpha(context, CGColorGetAlpha((RemoteDrawingKit.innerShadow.shadowColor as UIColor).CGColor))
+        CGContextSetAlpha(context, CGColorGetAlpha((RemoteDrawingKit.innerShadow.shadowColor as! UIColor).CGColor))
         CGContextBeginTransparencyLayer(context, nil)
-        let rectangleOpaqueShadow = (RemoteDrawingKit.innerShadow.shadowColor as UIColor).colorWithAlphaComponent(1)
+        let rectangleOpaqueShadow = (RemoteDrawingKit.innerShadow.shadowColor as! UIColor).colorWithAlphaComponent(1)
         CGContextSetShadowWithColor(context, RemoteDrawingKit.innerShadow.shadowOffset, RemoteDrawingKit.innerShadow.shadowBlurRadius, (rectangleOpaqueShadow as UIColor).CGColor)
         CGContextSetBlendMode(context, kCGBlendModeSourceOut)
         CGContextBeginTransparencyLayer(context, nil)
@@ -89,7 +89,7 @@ public class RemoteDrawingKit : NSObject {
         CGContextRestoreGState(context)
 
         CGContextSaveGState(context)
-        CGContextSetShadowWithColor(context, RemoteDrawingKit.strokeShadow.shadowOffset, RemoteDrawingKit.strokeShadow.shadowBlurRadius, (RemoteDrawingKit.strokeShadow.shadowColor as UIColor).CGColor)
+        CGContextSetShadowWithColor(context, RemoteDrawingKit.strokeShadow.shadowOffset, RemoteDrawingKit.strokeShadow.shadowBlurRadius, (RemoteDrawingKit.strokeShadow.shadowColor as! UIColor).CGColor)
         strokeColor.setStroke()
         rectanglePath.lineWidth = 1
         rectanglePath.stroke()
@@ -178,7 +178,7 @@ public class RemoteDrawingKit : NSObject {
         //// Rectangle Drawing
         let rectanglePath = UIBezierPath(rect: CGRectMake(frame.minX + 2, frame.minY + 2, frame.width - 4, frame.height - 4))
         CGContextSaveGState(context)
-        CGContextSetShadowWithColor(context, RemoteDrawingKit.outerShadow.shadowOffset, RemoteDrawingKit.outerShadow.shadowBlurRadius, (RemoteDrawingKit.outerShadow.shadowColor as UIColor).CGColor)
+        CGContextSetShadowWithColor(context, RemoteDrawingKit.outerShadow.shadowOffset, RemoteDrawingKit.outerShadow.shadowBlurRadius, (RemoteDrawingKit.outerShadow.shadowColor as! UIColor).CGColor)
         color.setFill()
         rectanglePath.fill()
 
@@ -186,9 +186,9 @@ public class RemoteDrawingKit : NSObject {
         CGContextSaveGState(context)
         CGContextClipToRect(context, rectanglePath.bounds)
         CGContextSetShadow(context, CGSizeMake(0, 0), 0)
-        CGContextSetAlpha(context, CGColorGetAlpha((RemoteDrawingKit.innerShadow.shadowColor as UIColor).CGColor))
+        CGContextSetAlpha(context, CGColorGetAlpha((RemoteDrawingKit.innerShadow.shadowColor as! UIColor).CGColor))
         CGContextBeginTransparencyLayer(context, nil)
-        let rectangleOpaqueShadow = (RemoteDrawingKit.innerShadow.shadowColor as UIColor).colorWithAlphaComponent(1)
+        let rectangleOpaqueShadow = (RemoteDrawingKit.innerShadow.shadowColor as! UIColor).colorWithAlphaComponent(1)
         CGContextSetShadowWithColor(context, RemoteDrawingKit.innerShadow.shadowOffset, RemoteDrawingKit.innerShadow.shadowBlurRadius, (rectangleOpaqueShadow as UIColor).CGColor)
         CGContextSetBlendMode(context, kCGBlendModeSourceOut)
         CGContextBeginTransparencyLayer(context, nil)
@@ -203,7 +203,7 @@ public class RemoteDrawingKit : NSObject {
         CGContextRestoreGState(context)
 
         CGContextSaveGState(context)
-        CGContextSetShadowWithColor(context, RemoteDrawingKit.strokeShadow.shadowOffset, RemoteDrawingKit.strokeShadow.shadowBlurRadius, (RemoteDrawingKit.strokeShadow.shadowColor as UIColor).CGColor)
+        CGContextSetShadowWithColor(context, RemoteDrawingKit.strokeShadow.shadowOffset, RemoteDrawingKit.strokeShadow.shadowBlurRadius, (RemoteDrawingKit.strokeShadow.shadowColor as! UIColor).CGColor)
         strokeColor.setStroke()
         rectanglePath.lineWidth = 1
         rectanglePath.stroke()
@@ -255,7 +255,7 @@ public class RemoteDrawingKit : NSObject {
         //// Oval Drawing
         var ovalPath = UIBezierPath(ovalInRect: CGRectMake(frame.minX + 2, frame.minY + 2, frame.width - 4, frame.height - 4))
         CGContextSaveGState(context)
-        CGContextSetShadowWithColor(context, RemoteDrawingKit.outerShadow.shadowOffset, RemoteDrawingKit.outerShadow.shadowBlurRadius, (RemoteDrawingKit.outerShadow.shadowColor as UIColor).CGColor)
+        CGContextSetShadowWithColor(context, RemoteDrawingKit.outerShadow.shadowOffset, RemoteDrawingKit.outerShadow.shadowBlurRadius, (RemoteDrawingKit.outerShadow.shadowColor as! UIColor).CGColor)
         color.setFill()
         ovalPath.fill()
 
@@ -263,9 +263,9 @@ public class RemoteDrawingKit : NSObject {
         CGContextSaveGState(context)
         CGContextClipToRect(context, ovalPath.bounds)
         CGContextSetShadow(context, CGSizeMake(0, 0), 0)
-        CGContextSetAlpha(context, CGColorGetAlpha((RemoteDrawingKit.innerShadow.shadowColor as UIColor).CGColor))
+        CGContextSetAlpha(context, CGColorGetAlpha((RemoteDrawingKit.innerShadow.shadowColor as! UIColor).CGColor))
         CGContextBeginTransparencyLayer(context, nil)
-        let ovalOpaqueShadow = (RemoteDrawingKit.innerShadow.shadowColor as UIColor).colorWithAlphaComponent(1)
+        let ovalOpaqueShadow = (RemoteDrawingKit.innerShadow.shadowColor as! UIColor).colorWithAlphaComponent(1)
         CGContextSetShadowWithColor(context, RemoteDrawingKit.innerShadow.shadowOffset, RemoteDrawingKit.innerShadow.shadowBlurRadius, (ovalOpaqueShadow as UIColor).CGColor)
         CGContextSetBlendMode(context, kCGBlendModeSourceOut)
         CGContextBeginTransparencyLayer(context, nil)
@@ -280,7 +280,7 @@ public class RemoteDrawingKit : NSObject {
         CGContextRestoreGState(context)
 
         CGContextSaveGState(context)
-        CGContextSetShadowWithColor(context, RemoteDrawingKit.strokeShadow.shadowOffset, RemoteDrawingKit.strokeShadow.shadowBlurRadius, (RemoteDrawingKit.strokeShadow.shadowColor as UIColor).CGColor)
+        CGContextSetShadowWithColor(context, RemoteDrawingKit.strokeShadow.shadowOffset, RemoteDrawingKit.strokeShadow.shadowBlurRadius, (RemoteDrawingKit.strokeShadow.shadowColor as! UIColor).CGColor)
         strokeColor.setStroke()
         ovalPath.lineWidth = 1
         ovalPath.stroke()
@@ -338,7 +338,7 @@ public class RemoteDrawingKit : NSObject {
         bezierPath.addLineToPoint(CGPointMake(frame.minX + 2, frame.minY + 0.50000 * frame.height))
         bezierPath.closePath()
         CGContextSaveGState(context)
-        CGContextSetShadowWithColor(context, RemoteDrawingKit.outerShadow.shadowOffset, RemoteDrawingKit.outerShadow.shadowBlurRadius, (RemoteDrawingKit.outerShadow.shadowColor as UIColor).CGColor)
+        CGContextSetShadowWithColor(context, RemoteDrawingKit.outerShadow.shadowOffset, RemoteDrawingKit.outerShadow.shadowBlurRadius, (RemoteDrawingKit.outerShadow.shadowColor as! UIColor).CGColor)
         color.setFill()
         bezierPath.fill()
 
@@ -346,9 +346,9 @@ public class RemoteDrawingKit : NSObject {
         CGContextSaveGState(context)
         CGContextClipToRect(context, bezierPath.bounds)
         CGContextSetShadow(context, CGSizeMake(0, 0), 0)
-        CGContextSetAlpha(context, CGColorGetAlpha((RemoteDrawingKit.innerShadow.shadowColor as UIColor).CGColor))
+        CGContextSetAlpha(context, CGColorGetAlpha((RemoteDrawingKit.innerShadow.shadowColor as! UIColor).CGColor))
         CGContextBeginTransparencyLayer(context, nil)
-        let bezierOpaqueShadow = (RemoteDrawingKit.innerShadow.shadowColor as UIColor).colorWithAlphaComponent(1)
+        let bezierOpaqueShadow = (RemoteDrawingKit.innerShadow.shadowColor as! UIColor).colorWithAlphaComponent(1)
         CGContextSetShadowWithColor(context, RemoteDrawingKit.innerShadow.shadowOffset, RemoteDrawingKit.innerShadow.shadowBlurRadius, (bezierOpaqueShadow as UIColor).CGColor)
         CGContextSetBlendMode(context, kCGBlendModeSourceOut)
         CGContextBeginTransparencyLayer(context, nil)
@@ -363,7 +363,7 @@ public class RemoteDrawingKit : NSObject {
         CGContextRestoreGState(context)
 
         CGContextSaveGState(context)
-        CGContextSetShadowWithColor(context, RemoteDrawingKit.strokeShadow.shadowOffset, RemoteDrawingKit.strokeShadow.shadowBlurRadius, (RemoteDrawingKit.strokeShadow.shadowColor as UIColor).CGColor)
+        CGContextSetShadowWithColor(context, RemoteDrawingKit.strokeShadow.shadowOffset, RemoteDrawingKit.strokeShadow.shadowBlurRadius, (RemoteDrawingKit.strokeShadow.shadowColor as! UIColor).CGColor)
         strokeColor.setStroke()
         bezierPath.lineWidth = 1
         bezierPath.stroke()
@@ -429,7 +429,7 @@ public class RemoteDrawingKit : NSObject {
         starPath.addLineToPoint(CGPointMake(frame.minX + 0.50500 * frame.width, frame.minY + 9.5))
         starPath.closePath()
         CGContextSaveGState(context)
-        CGContextSetShadowWithColor(context, RemoteDrawingKit.outerShadow.shadowOffset, RemoteDrawingKit.outerShadow.shadowBlurRadius, (RemoteDrawingKit.outerShadow.shadowColor as UIColor).CGColor)
+        CGContextSetShadowWithColor(context, RemoteDrawingKit.outerShadow.shadowOffset, RemoteDrawingKit.outerShadow.shadowBlurRadius, (RemoteDrawingKit.outerShadow.shadowColor as! UIColor).CGColor)
         color.setFill()
         starPath.fill()
 
@@ -437,9 +437,9 @@ public class RemoteDrawingKit : NSObject {
         CGContextSaveGState(context)
         CGContextClipToRect(context, starPath.bounds)
         CGContextSetShadow(context, CGSizeMake(0, 0), 0)
-        CGContextSetAlpha(context, CGColorGetAlpha((RemoteDrawingKit.innerShadow.shadowColor as UIColor).CGColor))
+        CGContextSetAlpha(context, CGColorGetAlpha((RemoteDrawingKit.innerShadow.shadowColor as! UIColor).CGColor))
         CGContextBeginTransparencyLayer(context, nil)
-        let starOpaqueShadow = (RemoteDrawingKit.innerShadow.shadowColor as UIColor).colorWithAlphaComponent(1)
+        let starOpaqueShadow = (RemoteDrawingKit.innerShadow.shadowColor as! UIColor).colorWithAlphaComponent(1)
         CGContextSetShadowWithColor(context, RemoteDrawingKit.innerShadow.shadowOffset, RemoteDrawingKit.innerShadow.shadowBlurRadius, (starOpaqueShadow as UIColor).CGColor)
         CGContextSetBlendMode(context, kCGBlendModeSourceOut)
         CGContextBeginTransparencyLayer(context, nil)
@@ -454,7 +454,7 @@ public class RemoteDrawingKit : NSObject {
         CGContextRestoreGState(context)
 
         CGContextSaveGState(context)
-        CGContextSetShadowWithColor(context, RemoteDrawingKit.strokeShadow.shadowOffset, RemoteDrawingKit.strokeShadow.shadowBlurRadius, (RemoteDrawingKit.strokeShadow.shadowColor as UIColor).CGColor)
+        CGContextSetShadowWithColor(context, RemoteDrawingKit.strokeShadow.shadowOffset, RemoteDrawingKit.strokeShadow.shadowBlurRadius, (RemoteDrawingKit.strokeShadow.shadowColor as! UIColor).CGColor)
         strokeColor.setStroke()
         starPath.lineWidth = 1
         starPath.stroke()

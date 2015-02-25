@@ -27,7 +27,7 @@ public class PanGesture: ConfiningBlockActionGesture {
 
   The default value is `UINT_MAX`.
   */
-  public var maximumNumberOfTouches: Int = Int(UINT_MAX) {
+  public var maximumNumberOfTouches: Int = Int.max {
     didSet {
       if maximumNumberOfTouches < 1 { maximumNumberOfTouches = 1 }
     }
@@ -149,8 +149,8 @@ public class PanGesture: ConfiningBlockActionGesture {
   :param: touches NSSet
   :param: event UIEvent
   */
-  public override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
-    let beginningTouches = touches.allObjects as [UITouch]
+  public override func touchesBegan(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+    let beginningTouches = (touches as NSSet).allObjects as! [UITouch]
     if panningTouches.count == 0 {
       if contains(minimumNumberOfTouches ... maximumNumberOfTouches, beginningTouches.count) {
         if validateTouchLocations(beginningTouches, withEvent: event) {
@@ -168,8 +168,8 @@ public class PanGesture: ConfiningBlockActionGesture {
   :param: touches NSSet
   :param: event UIEvent
   */
-  public override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
-    if validateTouchLocations(touches.allObjects as [UITouch], withEvent: event) {
+  public override func touchesMoved(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+    if validateTouchLocations((touches as NSSet).allObjects as! [UITouch], withEvent: event) {
       updateVelocity()
       if panRecognized {
         state = .Changed
@@ -186,8 +186,8 @@ public class PanGesture: ConfiningBlockActionGesture {
   :param: touches NSSet
   :param: event UIEvent
   */
-  public override func touchesCancelled(touches: NSSet, withEvent event: UIEvent) {
-    if panningTouches ⊃ (touches.allObjects as [UITouch]) {
+  public override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+    if panningTouches ⊃ ((touches as NSSet).allObjects as! [UITouch]) {
       state = .Cancelled
     }
   }
@@ -198,8 +198,8 @@ public class PanGesture: ConfiningBlockActionGesture {
   :param: touches NSSet
   :param: event UIEvent
   */
-  public override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
-    let endedTouches = touches.allObjects as [UITouch]
+  public override func touchesEnded(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+    let endedTouches = (touches as NSSet).allObjects as! [UITouch]
     if panningTouches ⊃ endedTouches {
       if !(panRecognized && validateTouchLocations(endedTouches, withEvent: event)) { state = .Failed }
       else {

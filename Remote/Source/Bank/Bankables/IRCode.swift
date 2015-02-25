@@ -43,7 +43,7 @@ class IRCode: BankableModelObject {
     while !scanner.atEnd {
       var scannedCompressionCharacters: NSString?
       if scanner.scanCharactersFromSet(availableCompressionCharacters, intoString: &scannedCompressionCharacters) {
-        compressed += scannedCompressionCharacters!
+        compressed += scannedCompressionCharacters! as String
       } else {
         var on: Int32 = 0, off: Int32 = 0
         if !scanner.scanInt(&on) || on <= 0 || on > max { break }
@@ -64,11 +64,11 @@ class IRCode: BankableModelObject {
 
   override func updateWithData(data: [NSObject : AnyObject]!) {
     super.updateWithData(data)
-    codeSet      = IRCodeSet.importObjectFromData(data["codeset"] as? NSDictionary, context: managedObjectContext) ?? codeSet
+    codeSet      = IRCodeSet.importObjectFromData(data["codeset"] as? NSDictionary as! [NSObject : AnyObject], context: managedObjectContext) ?? codeSet
     frequency    = (data["frequency"]      as? NSNumber)?.longLongValue ?? frequency
     offset       = (data["offset"]         as? NSNumber)?.shortValue    ?? offset
     repeatCount  = (data["repeat-count"]   as? NSNumber)?.shortValue    ?? repeatCount
-    onOffPattern = data["on-off-pattern"]  as? NSString                 ?? onOffPattern
+    onOffPattern = data["on-off-pattern"]  as? String                   ?? onOffPattern
   }
 
 //  override class func categoryType() -> BankDisplayItemCategory.Protocol { return IRCodeSet.self }

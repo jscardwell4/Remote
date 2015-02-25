@@ -29,7 +29,7 @@ class StateMap<T:AnyObject>: ModelObject {
   var storage: DictionaryStorage {
     get {
       willAccessValueForKey("storage")
-      let dictionary = primitiveValueForKey("storage") as DictionaryStorage
+      let dictionary = primitiveValueForKey("storage") as! DictionaryStorage
       didAccessValueForKey("storage")
       return dictionary
     }

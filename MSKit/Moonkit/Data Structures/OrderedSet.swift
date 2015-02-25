@@ -77,7 +77,7 @@ public struct OrderedSet<T:Equatable> : MutableCollectionType, Sliceable {
   public var first: T?       { return storage.first    }
   public var last: T?        { return storage.last     }
   public var array: [T]      { return storage          }
-  public var bridgedValue: NSOrderedSet? { return NSOrderedSet(array: storage._bridgeToObjectiveC()) }
+  public var bridgedValue: NSOrderedSet? { return NSOrderedSet(array: storage._bridgeToObjectiveC() as [AnyObject]) }
   public var NSArrayValue: NSArray? {
     var elements: [NSObject] = []
     for element in storage {
@@ -88,7 +88,7 @@ public struct OrderedSet<T:Equatable> : MutableCollectionType, Sliceable {
     return elements.count == storage.count ? NSArray(array: elements) : nil
   }
 
-  public var NSSetValue: NSSet? { if let array = NSArrayValue { return NSSet(array: array) } else { return nil } }
+  public var NSSetValue: NSSet? { if let array = NSArrayValue { return NSSet(array: array as [AnyObject]) } else { return nil } }
 
   /**
   reserveCapacity:
@@ -153,7 +153,11 @@ public struct OrderedSet<T:Equatable> : MutableCollectionType, Sliceable {
 
   :returns: [T]
   */
-  public func join<S : SequenceType where S.Generator.Element == T>(elements: S) -> [T] { return storage.join(elements) }
+  public func join<S : SequenceType where S.Generator.Element == T>(elements: S) -> [T] {
+    let elementsArray = Array(elements)
+    let currentArray = storage
+    return uniqued(elementsArray + currentArray)
+  }
 
   /**
   reduce:combine:

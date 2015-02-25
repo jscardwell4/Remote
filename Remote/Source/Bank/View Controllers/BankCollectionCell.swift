@@ -187,7 +187,7 @@ class BankCollectionCell: UICollectionViewCell {
       let gesture = PanGesture(handler: {
         [unowned self] gesture -> Void in
 
-        let pan = gesture as PanGesture
+        let pan = gesture as! PanGesture
 
         let x = pan.translationInView(view: self).x
 

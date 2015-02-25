@@ -65,7 +65,7 @@ class RockerView: ButtonGroupView {
   */
   override func addSubelementView(view: RemoteElementView) {
     super.addSubelementView(view)
-    apply(view.gestureRecognizers as [UIGestureRecognizer]){$0.requireGestureRecognizerToFail(self.labelPanGesture)}
+    apply(view.gestureRecognizers as! [UIGestureRecognizer]){$0.requireGestureRecognizerToFail(self.labelPanGesture)}
   }
 
   /**
@@ -109,7 +109,7 @@ class RockerView: ButtonGroupView {
     let labelPanGesture = UIPanGestureRecognizer(target: self, action: "handlePan:")
     labelPanGesture.maximumNumberOfTouches = 1
     apply(subelementViews) {
-      apply($0.gestureRecognizers as [UIGestureRecognizer]) {
+      apply($0.gestureRecognizers as! [UIGestureRecognizer]) {
         $0.requireGestureRecognizerToFail(labelPanGesture)}
     }
     self.labelPanGesture = labelPanGesture
@@ -148,7 +148,7 @@ class RockerView: ButtonGroupView {
   to the `scrollingLabels` are removed first.
   */
   func buildLabels() {
-    apply(labelContainer.subviews as [UIView]){$0.removeFromSuperview()}
+    apply(labelContainer.subviews as! [UIView]){$0.removeFromSuperview()}
     if let collection = buttonGroup.commandContainer as? CommandSetCollection {
       labelCount = Int(collection.count)
       if labelCount > 0 {

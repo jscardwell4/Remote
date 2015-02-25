@@ -38,7 +38,7 @@ class BankCollectionController: UICollectionViewController, BankController {
     cellShowingDelete = cell.showingDelete ? cell : nil
   }
 
-  private var layout: BankCollectionLayout { return collectionViewLayout as BankCollectionLayout }
+  private var layout: BankCollectionLayout { return collectionViewLayout as! BankCollectionLayout }
 
   private(set) var exportSelection: [MSJSONExport] = []
 
@@ -79,7 +79,7 @@ class BankCollectionController: UICollectionViewController, BankController {
       navigationItem.rightBarButtonItems = rightBarButtonItems  // Update right bar button items
 
       // Update visible cells
-      for cell in collectionView?.visibleCells() as [BankCollectionCell] {
+      for cell in collectionView?.visibleCells() as! [BankCollectionCell] {
       	cell.showIndicator(showIndicator)
       }
 
@@ -383,7 +383,7 @@ extension BankCollectionController {
       exportSelection.removeAll(keepCapacity: false)
 
       // Enumerate the selected index paths
-      for indexPath in collectionView?.indexPathsForSelectedItems() as [NSIndexPath] {
+      for indexPath in collectionView?.indexPathsForSelectedItems() as! [NSIndexPath] {
 
         // Deselect the cell
         collectionView?.deselectItemAtIndexPath(indexPath, animated: true)
@@ -432,7 +432,7 @@ extension BankCollectionController: UICollectionViewDataSource {
     switch indexPath.section {
       case 0:
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(categoryCellIdentifier,
-                                                            forIndexPath: indexPath) as BankCollectionCategoryCell
+                                                            forIndexPath: indexPath) as! BankCollectionCategoryCell
         let subcategory = category.subcategories[indexPath.row]
         cell.category = subcategory
         if mode == .Default {
@@ -445,7 +445,7 @@ extension BankCollectionController: UICollectionViewDataSource {
 
       default:
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(itemCellIdentifier,
-                                                            forIndexPath: indexPath) as BankCollectionItemCell
+                                                            forIndexPath: indexPath) as! BankCollectionItemCell
         let item = category.items[indexPath.row]
         cell.item = item
         if mode == .Default {
@@ -488,7 +488,7 @@ extension BankCollectionController: UICollectionViewDelegate {
                willDisplayCell cell: UICollectionViewCell,
             forItemAtIndexPath indexPath: NSIndexPath)
   {
-    let isSelected = (collectionView.indexPathsForSelectedItems() as [NSIndexPath]) ∋ indexPath
+    let isSelected = (collectionView.indexPathsForSelectedItems() as! [NSIndexPath]) ∋ indexPath
     if let bankCell = cell as? BankCollectionCell {
     	bankCell.showIndicator(exportSelectionMode, selected: isSelected)
     }
@@ -547,7 +547,7 @@ extension BankCollectionController: UICollectionViewDelegate {
       	// Check if the cell is an item cell
       	if cell is BankCollectionItemCell {
 	      	cell.showIndicator(true, selected: true)
-	        selectionDelegate?.bankController(self, didSelectItem: (cell as BankCollectionItemCell).item!)
+	        selectionDelegate?.bankController(self, didSelectItem: (cell as! BankCollectionItemCell).item!)
         }
 
         // Otherwise check if the cell is a category cell

@@ -74,11 +74,11 @@ public class MultiselectGestureRecognizer: UIGestureRecognizer {
   :param: touches NSSet
   :param: event UIEvent
   */
-  override public func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+  override public func touchesBegan(touches: Set<NSObject>!, withEvent event: UIEvent!) {
 
     // ???: Why aren't we setting state to .Began?
 
-    let beginningTouches = OrderedSet(touches.allObjects as [UITouch])
+    let beginningTouches = OrderedSet((touches as NSSet).allObjects as! [UITouch])
     registeredTouches ∪= beginningTouches
 
     if registeredTouches.count > maximumNumberOfTouches + numberOfAnchorTouchesRequired { state = .Failed; return }
@@ -100,8 +100,8 @@ public class MultiselectGestureRecognizer: UIGestureRecognizer {
   :param: touches NSSet
   :param: event UIEvent
   */
-  public override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
-    let movedTouches = OrderedSet(touches.allObjects as [UITouch])
+  public override func touchesMoved(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+    let movedTouches = OrderedSet((touches as NSSet).allObjects as! [UITouch])
     registeredTouches ∪= movedTouches
     let movedAnchors = anchoringTouches ∩ movedTouches
     if movedAnchors.count > 0 {
@@ -122,7 +122,7 @@ public class MultiselectGestureRecognizer: UIGestureRecognizer {
   :param: touches NSSet
   :param: event UIEvent
   */
-  public override func touchesCancelled(touches: NSSet, withEvent event: UIEvent) { state = .Cancelled }
+  public override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) { state = .Cancelled }
 
   /**
   touchesEnded:withEvent:
@@ -130,9 +130,9 @@ public class MultiselectGestureRecognizer: UIGestureRecognizer {
   :param: touches NSSet
   :param: event UIEvent
   */
-  public override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
-    anchoringTouches ∖= touches.allObjects as [UITouch]
-    registeredTouches ∖= touches.allObjects as [UITouch]
+  public override func touchesEnded(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+    anchoringTouches ∖= (touches as NSSet).allObjects as! [UITouch]
+    registeredTouches ∖= (touches as NSSet).allObjects as! [UITouch]
 
     if anchoringTouches.count == 0 {
       state = touchLocations.count > 0 && NSDate().timeIntervalSinceDate(firstTouchDate!) > tolerance ? .Ended : .Failed

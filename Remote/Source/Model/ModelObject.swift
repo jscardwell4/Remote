@@ -54,8 +54,8 @@ extension ModelObject {
     var model: ModelObject?
     if data != nil {
       if let uuid = data?["uuid"] as? NSString {
-        model = existingObjectForEntity(entityName, withUUID: uuid, context: context)
-        if model == nil { model = objectForEntity(entityName, withUUID: uuid, ofType: type, context: context) }
+        model = existingObjectForEntity(entityName, withUUID: uuid as String, context: context)
+        if model == nil { model = objectForEntity(entityName, withUUID: uuid as String, ofType: type, context: context) }
         model?.updateWithData(data)
       }
     }

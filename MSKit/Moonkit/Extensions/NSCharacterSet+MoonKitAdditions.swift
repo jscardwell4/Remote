@@ -17,7 +17,7 @@ extension UInt16 {
   */
   public init?(_ character: Character) {
     let characterString = String(character)
-    if characterString.utf16Count == 1 { self = Array(characterString.utf16).first! }
+    if count(characterString.utf16) == 1 { self = Array(characterString.utf16).first! }
     else { return nil }
   }
 

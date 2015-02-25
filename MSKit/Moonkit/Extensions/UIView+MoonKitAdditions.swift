@@ -66,7 +66,7 @@ public extension UIView {
     var dict: [String:AnyObject] = views ?? [:]
     dict["self"] = self
 
-    let constraints = NSLayoutConstraint.constraintsByParsingString(format, views: dict) as [NSLayoutConstraint]
+    let constraints = NSLayoutConstraint.constraintsByParsingString(format, views: dict) as! [NSLayoutConstraint]
     apply(constraints){$0.identifier = identifier}
     addConstraints(constraints)
     return constraints
@@ -332,7 +332,7 @@ public extension UIView {
   :returns: [NSLayoutConstraint]
   */
   public func alignSubview(subview1: UIView, besideSubview subview2: UIView, offset: CGFloat, identifier: String? = nil) -> [NSLayoutConstraint] {
-    return (subviews as [UIView]) ⊃ [subview1, subview2]
+    return (subviews as! [UIView]) ⊃ [subview1, subview2]
             ? constrain("H:[s1]-\(offset)-[s2]", views: ["s1": subview1, "s2": subview2], identifier: identifier)
             : []
   }
@@ -348,7 +348,7 @@ public extension UIView {
   :returns: [NSLayoutConstraint]
   */
   public func alignSubview(subview1: UIView, aboveSubview subview2: UIView, offset: CGFloat, identifier: String? = nil) -> [NSLayoutConstraint] {
-    return (subviews as [UIView]) ⊃ [subview1, subview2]
+    return (subviews as! [UIView]) ⊃ [subview1, subview2]
             ? constrain("V:[s1]-\(offset)-[s2]", views: ["s1": subview1, "s2": subview2], identifier: identifier)
             : []
   }
@@ -363,7 +363,7 @@ public extension UIView {
   :returns: [NSLayoutConstraint]
   */
   public func stretchSubview(subview1: UIView, toSubview subview2: UIView, identifier: String? = nil) -> [NSLayoutConstraint] {
-    return (subviews as [UIView]) ⊃ [subview1, subview2]
+    return (subviews as! [UIView]) ⊃ [subview1, subview2]
         ? constrain("s1.left = s2.left :: s1.right = s2.right :: s1.top = s2.top :: s1.bottom = s2.bottom",
               views: ["s1": subview1, "s2": subview2],
               identifier: identifier)

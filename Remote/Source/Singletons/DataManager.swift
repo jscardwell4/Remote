@@ -248,10 +248,10 @@ private var databasePrepared = false
           userInfo["\(MSDefaultValueForContainingClassKey).\(entity.name)"] = defaultValue ?? NSNull()
           attributeDescription.userInfo = userInfo
           let keypath = "attributesByName.\(attribute).userInfo"
-          var subentities = superentity!.subentities as [NSEntityDescription]
+          var subentities = superentity!.subentities as! [NSEntityDescription]
           while subentities.count > 0 {
             apply(subentities) { _ = ($0.attributesByName[attribute] as? NSAttributeDescription)?.userInfo = userInfo }
-            subentities = flattened(subentities.map{$0.subentities as [NSEntityDescription]})
+            subentities = flattened(subentities.map{$0.subentities as! [NSEntityDescription]})
           }
 
           superentity!.setValue(userInfo, forKeyPath: keypath) // ???: Pretty sure this is redundant
@@ -260,8 +260,8 @@ private var databasePrepared = false
     }
 
 
-    let augmentedModel = model.mutableCopy() as NSManagedObjectModel
-    let entities = augmentedModel.entitiesByName as [String:NSEntityDescription]
+    let augmentedModel = model.mutableCopy() as! NSManagedObjectModel
+    let entities = augmentedModel.entitiesByName as! [String:NSEntityDescription]
 
 
     // set `user` default value

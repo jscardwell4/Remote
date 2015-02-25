@@ -104,7 +104,7 @@ extension NSTextAlignment: JSONValueConvertible, EnumerableType {
 extension NSShadow {
   public var JSONValue: [String:AnyObject] {
     var dict: [String:AnyObject] = ["offset": NSStringFromCGSize(shadowOffset), "radius": shadowBlurRadius]
-    if shadowColor != nil { dict["color"] = (shadowColor as UIColor).JSONValue }
+    if shadowColor != nil { dict["color"] = (shadowColor as! UIColor).JSONValue }
     return dict
   }
 
@@ -369,10 +369,10 @@ struct TitleAttributes: JSONValueConvertible {
     let pointSize: CGFloat = (attrs[PropertyKey.Font.attributeKey!] as? UIFont)?.pointSize ?? 18.0
     let font = UIFont(awesomeFontWithSize: pointSize)
     attrs[PropertyKey.Font.attributeKey!] = font
-    return NSAttributedString(string: icon, attributes: attrs)
+    return NSAttributedString(string: icon, attributes: attrs as [NSObject : AnyObject])
   }
 
-  var textString: NSAttributedString { return NSAttributedString(string: text, attributes: attributes) }
+  var textString: NSAttributedString { return NSAttributedString(string: text, attributes: attributes as [NSObject : AnyObject]) }
 
   var string: NSAttributedString { return stringWithAttributes(attributes) }
 
@@ -385,7 +385,7 @@ struct TitleAttributes: JSONValueConvertible {
   */
   private func stringWithAttributes(attrs: MSDictionary) -> NSAttributedString {
     let text = attrs[PropertyKey.Text.rawValue] as? String ?? ""
-    return NSAttributedString(string: text, attributes: attrs)
+    return NSAttributedString(string: text, attributes: attrs as [NSObject : AnyObject])
   }
 
   /**
@@ -398,7 +398,7 @@ struct TitleAttributes: JSONValueConvertible {
   func stringWithFillers(fillers: MSDictionary?) -> NSAttributedString {
     if fillers != nil {
       var attrs = fillers!
-      attrs.setValuesForKeysWithDictionary(attributes)
+      attrs.setValuesForKeysWithDictionary(attributes as [NSObject : AnyObject])
       return stringWithAttributes(attrs)
     } else { return string }
   }
@@ -659,7 +659,7 @@ struct TitleAttributes: JSONValueConvertible {
             if let i = value as? Int { if i == 0 || i == 1 { storedValue = i } }
 
           case .IconName:
-            if let s = value as? String { if (UIFont.fontAwesomeIconNames().allObjects as [String]) ∋ s { storedValue = s } }
+            if let s = value as? String { if ((UIFont.fontAwesomeIconNames() as NSSet).allObjects as! [String]) ∋ s { storedValue = s } }
 
           case .Text:
             if let s = value as? String { storedValue = s }

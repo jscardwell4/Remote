@@ -22,7 +22,7 @@ class ButtonGroupView: RemoteElementView {
   var untuckDirection: UISwipeGestureRecognizerDirection = .Left
   var quadrant: MSSwipeGestureRecognizerQuadrant = .Up
 
-  var buttonGroup: ButtonGroup! { return model as ButtonGroup }
+  var buttonGroup: ButtonGroup! { return model as! ButtonGroup }
 
   /** init */
   override init() { super.init() }

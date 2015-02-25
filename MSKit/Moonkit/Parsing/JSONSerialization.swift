@@ -56,7 +56,7 @@ public class JSONSerialization: NSObject {
           string += "\n\(valueString)"
 
 					if i + 1 < objectCount { string += "," }
-					if let comment = (array[i] as NSObject).comment { string += comment }
+					if let comment = (array[i] as! NSObject).comment { string += comment }
 
 				}
 
@@ -79,7 +79,7 @@ public class JSONSerialization: NSObject {
 				for var i = 0; i < keyCount; i++ {
 
           let key: AnyObject = keys[i]
-          let value: AnyObject = dict[key as NSCopying]!
+          let value: AnyObject = dict[key as! NSCopying]!
 					let keyString = weakStringFromObject!(key, depth + 1)
           let valueString = weakStringFromObject!(value, depth + 1).stringByTrimmingWhitespace()
 
@@ -87,7 +87,7 @@ public class JSONSerialization: NSObject {
 
           if i + 1 < keyCount { string += "," }
 
-          if let comment = (value as NSObject).comment { string += comment }
+          if let comment = (value as! NSObject).comment { string += comment }
 
 				}
 
@@ -154,7 +154,7 @@ public class JSONSerialization: NSObject {
       if error != nil { error.memory = localError }
     }
 
-    else { returnString = parseString(string!, options: options, error: error) }
+    else { returnString = parseString(string! as String, options: options, error: error) }
 
     return returnString
 	}
@@ -314,7 +314,7 @@ public class JSONSerialization: NSObject {
               string.replaceRange(string.indexRangeFromIntRange(range), with: includeText!)
 
               // Update `offset`
-              offset += includeText!.length - countElements(range)
+              offset += includeText!.length - count(range)
 
             }
 

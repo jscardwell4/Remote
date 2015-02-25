@@ -103,23 +103,23 @@ class DetailController: UITableViewController {
   :param: nibNameOrNil String?
   :param: nibBundleOrNil NSBundle?
   */
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-  }
+//  override init(nibName: String?, bundle: NSBundle?) {
+//    super.init(nibName: nibName, bundle: bundle)
+//  }
 
   /**
   initWithStyle:
 
   :param: style UITableViewStyle
   */
-  override init(style: UITableViewStyle) { super.init(style: style) }
+//  override init(style: UITableViewStyle) { super.init(style: style) }
 
   /**
   initWithCoder:
 
   :param: aDecoder NSCoder
   */
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
+  required init(coder aDecoder: NSCoder) { item = nil; super.init(coder: aDecoder) }
 
 
   /**
@@ -128,8 +128,8 @@ class DetailController: UITableViewController {
   :param: item DetailableItem
   */
   init(item: DetailableItem) {
-    super.init(style: .Grouped)
     self.item = item
+    super.init(style: .Grouped)
     hidesBottomBarWhenPushed = true
   }
 
@@ -538,7 +538,7 @@ extension DetailController: UITableViewDataSource {
   override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let detailSection = sections.values[section]
     let identifier = detailSection.identifier.rawValue
-    let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier(identifier) as DetailSectionHeader
+    let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier(identifier) as! DetailSectionHeader
     detailSection.configureHeader(header)
     return header
   }

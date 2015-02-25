@@ -109,14 +109,14 @@ class ISYDevice: NetworkDevice {
   */
   override func updateWithData(data: [NSObject : AnyObject]!) {
     super.updateWithData(data)
-    modelNumber       = data["model-number"]      as? NSString ?? modelNumber
-    modelName         = data["model-name"]        as? NSString ?? modelName
-    modelDescription  = data["model-description"] as? NSString ?? modelDescription
-    manufacturerURL   = data["manufacturer-url"]  as? NSString ?? manufacturerURL
-    manufacturer      = data["manufacturer"]      as? NSString ?? manufacturer
-    friendlyName      = data["friendly-name"]     as? NSString ?? friendlyName
-    deviceType        = data["device-type"]       as? NSString ?? deviceType
-    baseURL           = data["base-url"]          as? NSString ?? baseURL
+    modelNumber       = data["model-number"]      as? String ?? modelNumber
+    modelName         = data["model-name"]        as? String ?? modelName
+    modelDescription  = data["model-description"] as? String ?? modelDescription
+    manufacturerURL   = data["manufacturer-url"]  as? String ?? manufacturerURL
+    manufacturer      = data["manufacturer"]      as? String ?? manufacturer
+    friendlyName      = data["friendly-name"]     as? String ?? friendlyName
+    deviceType        = data["device-type"]       as? String ?? deviceType
+    baseURL           = data["base-url"]          as? String ?? baseURL
 
     if let nodes = ISYDeviceNode.importObjectsFromData(data["nodes"], context: managedObjectContext) as? [ISYDeviceNode] {
       if primitiveNodes == nil { primitiveNodes = NSMutableSet() }

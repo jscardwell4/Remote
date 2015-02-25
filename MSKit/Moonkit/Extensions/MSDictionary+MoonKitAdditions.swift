@@ -10,7 +10,7 @@ import Foundation
 
 extension MSKeyPath: SequenceType {
   public func generate() -> IndexingGenerator<[String]> {
-    return (keys as [String]!).generate()
+    return (keys as! [String]!).generate()
   }
 }
 
@@ -46,7 +46,7 @@ extension MSDictionary: Printable {
     let inflatableKeys = allKeys.filter {(key) in
       if let k = key as? String { if k.numberOfMatchesForRegEx("(?:\\w\\.)+\\w") > 0 { return true } }
       return false
-    } as [String]
+    } as! [String]
 
     // Enumerate the list inflating each key
     for key in inflatableKeys {
@@ -71,7 +71,7 @@ extension MSDictionary: Printable {
           if !keypath.isEmpty {
             for subkey in keypath {
               subdict[subkey] = MSDictionary()
-              var subsubdict = subdict[subkey] as MSDictionary
+              var subsubdict = subdict[subkey] as! MSDictionary
               subdict = subsubdict
             }
           }
@@ -93,7 +93,7 @@ extension MSDictionary: Printable {
         if !keypath.isEmpty {
           for subkey in keypath {
             subdict[subkey] = MSDictionary()
-            var subsubdict = subdict[subkey] as MSDictionary
+            var subsubdict = subdict[subkey] as! MSDictionary
             subdict = subsubdict
           }
         }

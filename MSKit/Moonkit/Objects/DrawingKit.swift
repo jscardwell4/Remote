@@ -143,7 +143,7 @@ public class DrawingKit : NSObject {
 
         //// halfCircles
         CGContextSaveGState(context)
-        CGContextSetShadowWithColor(context, dropShadow.shadowOffset, dropShadow.shadowBlurRadius, (dropShadow.shadowColor as UIColor).CGColor)
+        CGContextSetShadowWithColor(context, dropShadow.shadowOffset, dropShadow.shadowBlurRadius, (dropShadow.shadowColor as! UIColor).CGColor)
         CGContextBeginTransparencyLayer(context, nil)
 
 
@@ -161,9 +161,9 @@ public class DrawingKit : NSObject {
         CGContextSaveGState(context)
         CGContextClipToRect(context, upperHalfCirclePath.bounds)
         CGContextSetShadow(context, CGSizeMake(0, 0), 0)
-        CGContextSetAlpha(context, CGColorGetAlpha((DrawingKit.thinLightShadow.shadowColor as UIColor).CGColor))
+        CGContextSetAlpha(context, CGColorGetAlpha((DrawingKit.thinLightShadow.shadowColor as! UIColor).CGColor))
         CGContextBeginTransparencyLayer(context, nil)
-        let upperHalfCircleOpaqueShadow = (DrawingKit.thinLightShadow.shadowColor as UIColor).colorWithAlphaComponent(1)
+        let upperHalfCircleOpaqueShadow = (DrawingKit.thinLightShadow.shadowColor as! UIColor).colorWithAlphaComponent(1)
         CGContextSetShadowWithColor(context, DrawingKit.thinLightShadow.shadowOffset, DrawingKit.thinLightShadow.shadowBlurRadius, (upperHalfCircleOpaqueShadow as UIColor).CGColor)
         CGContextSetBlendMode(context, kCGBlendModeSourceOut)
         CGContextBeginTransparencyLayer(context, nil)
@@ -191,9 +191,9 @@ public class DrawingKit : NSObject {
         CGContextSaveGState(context)
         CGContextClipToRect(context, lowerHalfCirclePath.bounds)
         CGContextSetShadow(context, CGSizeMake(0, 0), 0)
-        CGContextSetAlpha(context, CGColorGetAlpha((DrawingKit.thinLightShadow.shadowColor as UIColor).CGColor))
+        CGContextSetAlpha(context, CGColorGetAlpha((DrawingKit.thinLightShadow.shadowColor as! UIColor).CGColor))
         CGContextBeginTransparencyLayer(context, nil)
-        let lowerHalfCircleOpaqueShadow = (DrawingKit.thinLightShadow.shadowColor as UIColor).colorWithAlphaComponent(1)
+        let lowerHalfCircleOpaqueShadow = (DrawingKit.thinLightShadow.shadowColor as! UIColor).colorWithAlphaComponent(1)
         CGContextSetShadowWithColor(context, DrawingKit.thinLightShadow.shadowOffset, DrawingKit.thinLightShadow.shadowBlurRadius, (lowerHalfCircleOpaqueShadow as UIColor).CGColor)
         CGContextSetBlendMode(context, kCGBlendModeSourceOut)
         CGContextBeginTransparencyLayer(context, nil)
@@ -314,7 +314,7 @@ public class DrawingKit : NSObject {
         //// Base Circle Drawing
         var baseCirclePath = UIBezierPath(ovalInRect: CGRectMake(1, 1, 29, 29))
         CGContextSaveGState(context)
-        CGContextSetShadowWithColor(context, thumbShadow.shadowOffset, thumbShadow.shadowBlurRadius, (thumbShadow.shadowColor as UIColor).CGColor)
+        CGContextSetShadowWithColor(context, thumbShadow.shadowOffset, thumbShadow.shadowBlurRadius, (thumbShadow.shadowColor as! UIColor).CGColor)
         UIColor.whiteColor().setFill()
         baseCirclePath.fill()
         CGContextRestoreGState(context)
@@ -348,9 +348,9 @@ public class DrawingKit : NSObject {
         CGContextSaveGState(context)
         CGContextClipToRect(context, colorFilledCirclePath.bounds)
         CGContextSetShadow(context, CGSizeMake(0, 0), 0)
-        CGContextSetAlpha(context, CGColorGetAlpha((colorInnerShadow.shadowColor as UIColor).CGColor))
+        CGContextSetAlpha(context, CGColorGetAlpha((colorInnerShadow.shadowColor as! UIColor).CGColor))
         CGContextBeginTransparencyLayer(context, nil)
-        let colorFilledCircleOpaqueShadow = (colorInnerShadow.shadowColor as UIColor).colorWithAlphaComponent(1)
+        let colorFilledCircleOpaqueShadow = (colorInnerShadow.shadowColor as! UIColor).colorWithAlphaComponent(1)
         CGContextSetShadowWithColor(context, colorInnerShadow.shadowOffset, colorInnerShadow.shadowBlurRadius, (colorFilledCircleOpaqueShadow as UIColor).CGColor)
         CGContextSetBlendMode(context, kCGBlendModeSourceOut)
         CGContextBeginTransparencyLayer(context, nil)
@@ -371,7 +371,7 @@ public class DrawingKit : NSObject {
         //// Color Stroked Circle Drawing
         var colorStrokedCirclePath = UIBezierPath(ovalInRect: CGRectMake(2, 2, 27, 27))
         CGContextSaveGState(context)
-        CGContextSetShadowWithColor(context, colorShadow.shadowOffset, colorShadow.shadowBlurRadius, (colorShadow.shadowColor as UIColor).CGColor)
+        CGContextSetShadowWithColor(context, colorShadow.shadowOffset, colorShadow.shadowBlurRadius, (colorShadow.shadowColor as! UIColor).CGColor)
         halfAlphaColor.setStroke()
         colorStrokedCirclePath.lineWidth = 1
         colorStrokedCirclePath.stroke()
@@ -462,7 +462,7 @@ public class DrawingKit : NSObject {
         //// Base Circle Drawing
         var baseCirclePath = UIBezierPath(ovalInRect: CGRectMake(2, 2, 27, 27))
         CGContextSaveGState(context)
-        CGContextSetShadowWithColor(context, dropShadow.shadowOffset, dropShadow.shadowBlurRadius, (dropShadow.shadowColor as UIColor).CGColor)
+        CGContextSetShadowWithColor(context, dropShadow.shadowOffset, dropShadow.shadowBlurRadius, (dropShadow.shadowColor as! UIColor).CGColor)
         UIColor.whiteColor().setFill()
         baseCirclePath.fill()
 
@@ -470,9 +470,9 @@ public class DrawingKit : NSObject {
         CGContextSaveGState(context)
         CGContextClipToRect(context, baseCirclePath.bounds)
         CGContextSetShadow(context, CGSizeMake(0, 0), 0)
-        CGContextSetAlpha(context, CGColorGetAlpha((baseInnerShadow.shadowColor as UIColor).CGColor))
+        CGContextSetAlpha(context, CGColorGetAlpha((baseInnerShadow.shadowColor as! UIColor).CGColor))
         CGContextBeginTransparencyLayer(context, nil)
-        let baseCircleOpaqueShadow = (baseInnerShadow.shadowColor as UIColor).colorWithAlphaComponent(1)
+        let baseCircleOpaqueShadow = (baseInnerShadow.shadowColor as! UIColor).colorWithAlphaComponent(1)
         CGContextSetShadowWithColor(context, baseInnerShadow.shadowOffset, baseInnerShadow.shadowBlurRadius, (baseCircleOpaqueShadow as UIColor).CGColor)
         CGContextSetBlendMode(context, kCGBlendModeSourceOut)
         CGContextBeginTransparencyLayer(context, nil)
@@ -487,7 +487,7 @@ public class DrawingKit : NSObject {
         CGContextRestoreGState(context)
 
         CGContextSaveGState(context)
-        CGContextSetShadowWithColor(context, baseStrokeShadow.shadowOffset, baseStrokeShadow.shadowBlurRadius, (baseStrokeShadow.shadowColor as UIColor).CGColor)
+        CGContextSetShadowWithColor(context, baseStrokeShadow.shadowOffset, baseStrokeShadow.shadowBlurRadius, (baseStrokeShadow.shadowColor as! UIColor).CGColor)
         color1.setStroke()
         baseCirclePath.lineWidth = 0.5
         baseCirclePath.stroke()

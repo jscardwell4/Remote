@@ -62,7 +62,7 @@ class TitleAttributesDetailController: DetailController {
   /** loadContentSection */
   private func loadContentSection() {
 
-    let attributesDelegate = item as TitleAttributesDelegate
+    let attributesDelegate = item as! TitleAttributesDelegate
 
     /*********************************************************************************
       Content Section
@@ -89,7 +89,7 @@ class TitleAttributesDetailController: DetailController {
       var pickerRow = DetailPickerRow()
 
       pickerRow.nilItemTitle = "No Icon"
-      pickerRow.data = (UIFont.fontAwesomeIconNames().allObjects as [String]).sorted(<)
+      pickerRow.data = ((UIFont.fontAwesomeIconNames() as NSSet).allObjects as! [String]).sorted(<)
       pickerRow.info = attributesDelegate.iconName
       pickerRow.didSelectItem = { [unowned pickerRow] in
         if !self.didCancel {
@@ -118,10 +118,10 @@ class TitleAttributesDetailController: DetailController {
       var pickerRow = DetailPickerRow()
       pickerRow.data = TitleAttributes.IconTextOrderSpecification.all.map{$0.JSONValue}
       pickerRow.info = attributesDelegate.iconTextOrder.JSONValue
-      pickerRow.titleForInfo = {($0 as String).capitalizedString}
+      pickerRow.titleForInfo = {($0 as! String).capitalizedString}
       pickerRow.didSelectItem = {
         if !self.didCancel {
-          attributesDelegate.iconTextOrder = TitleAttributes.IconTextOrderSpecification(JSONValue: ($0 as String))
+          attributesDelegate.iconTextOrder = TitleAttributes.IconTextOrderSpecification(JSONValue: ($0 as! String))
           self.cellDisplayingPicker?.info = attributesDelegate.iconTextOrder.JSONValue.capitalizedString
           pickerRow.info = attributesDelegate.iconTextOrder.JSONValue
         }
@@ -139,7 +139,7 @@ class TitleAttributesDetailController: DetailController {
   /** loadFontSection */
   private func loadFontSection() {
 
-    let attributesDelegate = item as TitleAttributesDelegate
+    let attributesDelegate = item as! TitleAttributesDelegate
 
     /*********************************************************************************
       Font Section
@@ -182,7 +182,7 @@ class TitleAttributesDetailController: DetailController {
   /** loadStrokeSection */
   private func loadStrokeSection() {
 
-    let attributesDelegate = item as TitleAttributesDelegate
+    let attributesDelegate = item as! TitleAttributesDelegate
 
     /*********************************************************************************
       Stroke Section
@@ -210,7 +210,7 @@ class TitleAttributesDetailController: DetailController {
      var row = DetailSwitchRow()
      row.name = "Fill"
      row.info = attributesDelegate.strokeFill
-     row.valueDidChange = { attributesDelegate.strokeFill = ($0 as NSNumber).boolValue }
+     row.valueDidChange = { attributesDelegate.strokeFill = ($0 as! NSNumber).boolValue }
      return row
    }, forKey: RowKey.Fill)
 
@@ -230,7 +230,7 @@ class TitleAttributesDetailController: DetailController {
   /** loadStyleSection */
   private func loadStyleSection() {
 
-    let attributesDelegate = item as TitleAttributesDelegate
+    let attributesDelegate = item as! TitleAttributesDelegate
 
 
     /*********************************************************************************
@@ -258,7 +258,7 @@ class TitleAttributesDetailController: DetailController {
       var row = DetailSwitchRow()
       row.name = "Letterpress"
       row.info = attributesDelegate.textEffect != nil
-      row.valueDidChange = { attributesDelegate.textEffect = ($0 as NSNumber).boolValue ? "letterpress" : nil }
+      row.valueDidChange = { attributesDelegate.textEffect = ($0 as! NSNumber).boolValue ? "letterpress" : nil }
       return row
     }, forKey: RowKey.Letterpress)
 
@@ -269,7 +269,7 @@ class TitleAttributesDetailController: DetailController {
   /** loadUnderlineSection */
   private func loadUnderlineSection() {
 
-    let attributesDelegate = item as TitleAttributesDelegate
+    let attributesDelegate = item as! TitleAttributesDelegate
 
 
     /*********************************************************************************
@@ -316,7 +316,7 @@ class TitleAttributesDetailController: DetailController {
   /** loadStrikethroughSection */
   private func loadStrikethroughSection() {
 
-    let attributesDelegate = item as TitleAttributesDelegate
+    let attributesDelegate = item as! TitleAttributesDelegate
 
 
     /*********************************************************************************
@@ -363,7 +363,7 @@ class TitleAttributesDetailController: DetailController {
   /** loadParagraphStyleSection */
   private func loadParagraphStyleSection() {
 
-    let attributesDelegate = item as TitleAttributesDelegate
+    let attributesDelegate = item as! TitleAttributesDelegate
 
     /********************************************************************************
       Paragraph Style Section

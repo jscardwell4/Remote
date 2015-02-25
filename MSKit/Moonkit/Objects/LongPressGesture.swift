@@ -66,9 +66,9 @@ public class LongPressGesture: ConfiningBlockActionGesture {
   :param: touches NSSet
   :param: event UIEvent
   */
-  public override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+  public override func touchesBegan(touches: Set<NSObject>!, withEvent event: UIEvent!) {
     if pressingTouches.count == 0 {
-      let beginningTouches = touches.allObjects as [UITouch]
+      let beginningTouches = (touches as NSSet).allObjects as! [UITouch]
       if validateTouchLocations(beginningTouches, withEvent: event) && beginningTouches.count == numberOfTouchesRequired {
         if (beginningTouches.filter{$0.tapCount >= self.numberOfTapsRequired}).count == beginningTouches.count {
           pressingTouches = OrderedSet(beginningTouches)
@@ -87,8 +87,8 @@ public class LongPressGesture: ConfiningBlockActionGesture {
   :param: touches NSSet
   :param: event UIEvent
   */
-  public override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
-    let movedTouches = (touches.allObjects as [UITouch])
+  public override func touchesMoved(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+    let movedTouches = ((touches as NSSet).allObjects as! [UITouch])
     if pressingTouches ⊃ movedTouches {
       if !validateTouchLocations(movedTouches, withEvent: event) { state = pressRecognized ? .Cancelled : .Failed }
       else if !pressRecognized {
@@ -108,8 +108,8 @@ public class LongPressGesture: ConfiningBlockActionGesture {
   :param: touches NSSet
   :param: event UIEvent
   */
-  public override func touchesCancelled(touches: NSSet, withEvent event: UIEvent) {
-    if pressingTouches ⊃ (touches.allObjects as [UITouch]) {
+  public override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+    if pressingTouches ⊃ ((touches as NSSet).allObjects as! [UITouch]) {
       state = .Cancelled
     } else { assertionFailure("received touches should be members of pressingTouches set") }
   }
@@ -120,8 +120,8 @@ public class LongPressGesture: ConfiningBlockActionGesture {
   :param: touches NSSet
   :param: event UIEvent
   */
-  public override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
-    let endedTouches = (touches.allObjects as [UITouch])
+  public override func touchesEnded(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+    let endedTouches = ((touches as NSSet).allObjects as! [UITouch])
     if pressingTouches ⊃ endedTouches {
       state = validateTouchLocations(endedTouches, withEvent: event) && pressRecognized ? .Ended : .Failed
     } else { assertionFailure("received touches should be members of pressingTouches set") }

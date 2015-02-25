@@ -113,8 +113,8 @@ public class TouchTrackingGesture: BlockActionGesture {
   :param: touches NSSet
   :param: event UIEvent
   */
-  override public func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
-    let beginningTouches = touches.allObjects as [UITouch]
+  override public func touchesBegan(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+    let beginningTouches = (touches as NSSet).allObjects as! [UITouch]
     if !anchored {
       if beginningTouches.count == numberOfAnchoringTouches { anchoringTouches ∪= beginningTouches }
       else { state = .Failed}
@@ -133,8 +133,8 @@ public class TouchTrackingGesture: BlockActionGesture {
   :param: touches NSSet
   :param: event UIEvent
   */
-  public override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
-    let movedTouches = touches.allObjects as [UITouch]
+  public override func touchesMoved(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+    let movedTouches = (touches as NSSet).allObjects as! [UITouch]
     if (anchoringTouches ∩ movedTouches).count != 0 {
       state = tracking ? .Ended : .Failed
     } else if trackingTouches ⊃ movedTouches {
@@ -148,8 +148,8 @@ public class TouchTrackingGesture: BlockActionGesture {
   :param: touches NSSet
   :param: event UIEvent
   */
-  public override func touchesCancelled(touches: NSSet, withEvent event: UIEvent) {
-    if (anchoringTouches ∪ trackingTouches) ⊃ touches.allObjects as [UITouch] { state = .Cancelled }
+  public override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+    if (anchoringTouches ∪ trackingTouches) ⊃ (touches as NSSet).allObjects as! [UITouch] { state = .Cancelled }
   }
 
   /**
@@ -158,8 +158,8 @@ public class TouchTrackingGesture: BlockActionGesture {
   :param: touches NSSet
   :param: event UIEvent
   */
-  public override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
-    if (anchoringTouches ∪ trackingTouches) ⊃ touches.allObjects as [UITouch] { state = anchored && tracking ? .Ended : .Failed }
+  public override func touchesEnded(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+    if (anchoringTouches ∪ trackingTouches) ⊃ (touches as NSSet).allObjects as! [UITouch] { state = anchored && tracking ? .Ended : .Failed }
   }
 
 }

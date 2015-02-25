@@ -107,7 +107,7 @@ public class LabeledCheckbox: Checkbox {
     CGContextSetShadowWithColor(context,
                                 textOuterShadow.shadowOffset,
                                 textOuterShadow.shadowBlurRadius,
-                                (textOuterShadow.shadowColor as UIColor).CGColor)
+                                (textOuterShadow.shadowColor as! UIColor).CGColor)
 
 
     let (w, h) = rect.size.unpack()
@@ -126,11 +126,11 @@ public class LabeledCheckbox: Checkbox {
     title.drawWithRect(titleRect, options: .UsesLineFragmentOrigin, attributes: titleFontAttributes, context: nil)
 
     CGContextSetShadow(context, CGSize.zeroSize, 0)
-    CGContextSetAlpha(context, CGColorGetAlpha((textInnerShadow.shadowColor as UIColor).CGColor))
+    CGContextSetAlpha(context, CGColorGetAlpha((textInnerShadow.shadowColor as! UIColor).CGColor))
 
     CGContextBeginTransparencyLayer(context, nil)
 
-    let textOpaqueTextShadow = (textInnerShadow.shadowColor as UIColor).colorWithAlphaComponent(1)
+    let textOpaqueTextShadow = (textInnerShadow.shadowColor as! UIColor).colorWithAlphaComponent(1)
 
     CGContextSetShadowWithColor(context,
                                 textInnerShadow.shadowOffset,

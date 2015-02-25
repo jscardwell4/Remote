@@ -87,7 +87,7 @@ class ButtonGroup: RemoteElement {
 
     init(JSONValue: String) {
       rawValue = 0
-      let length = countElements(JSONValue)
+      let length = count(JSONValue)
       if length > 3 {
         location = Location(JSONValue: String(JSONValue[0 ..< (length - 1)]))
         trigger = Trigger(JSONValue: String(JSONValue[(length - 1) ..< length]))
@@ -244,7 +244,7 @@ class ButtonGroup: RemoteElement {
     }
     commandSet = commandSet?.faultedObject()
     if commandSet != nil {
-      for button in childElements.array as [Button] {
+      for button in childElements.array as! [Button] {
          if button.role == RemoteElement.Role.Tuck { continue }
          button.command = commandSet![button.role.rawValue]
          button.enabled = button.command != nil

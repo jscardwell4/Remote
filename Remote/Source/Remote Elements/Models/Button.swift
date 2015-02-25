@@ -439,9 +439,9 @@ class Button: RemoteElement {
     let dictionary = super.JSONDictionary()
     dictionary["background-color"] = NSNull()
 
-    func ifNotDefaultSetValue(value: @autoclosure () -> NSObject?, forKey key: String) {
+    func ifNotDefaultSetValue(@autoclosure value: () -> NSObject?, forKey key: String) {
       if let v = value() {
-        if !attributeValueIsDefault(key) {
+        if !self.attributeValueIsDefault(key) {
           dictionary[key.camelCaseToDashCase()] = v
         }
       }

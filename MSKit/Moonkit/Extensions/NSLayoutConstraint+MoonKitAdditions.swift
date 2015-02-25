@@ -52,7 +52,7 @@ extension NSLayoutConstraint {
 
     var constraints: [NSLayoutConstraint] = []
     for f in standardFormat {
-      let c = constraintsWithVisualFormat(f, options: options, metrics: metrics, views: views) as [NSLayoutConstraint]
+      let c = constraintsWithVisualFormat(f, options: options, metrics: metrics, views: views) as! [NSLayoutConstraint]
       constraints.extend(c)
     }
     for p in extendedFormat {

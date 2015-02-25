@@ -20,15 +20,15 @@ public class HexIntegerInputView: TextInputView {
   public required init(frame: CGRect, target: UITextInput) {
     super.init(frame: frame, target: target)
 
-   let index = [
-     "a": "A",      "b": "B",     "c": "C",
-     "d": "D",      "e": "E",     "f": "F",
-     "one": "1",    "two": "2",   "three": "3",
-     "four": "4",   "five": "5",  "six": "6",
-     "seven": "7",  "eight": "8", "nine": "9",
-     "erase": "⌫", "zero": "0",  "done": "Done"
-   ]
-
+    let index = [
+      "a": "A",      "b": "B",     "c": "C",
+      "d": "D",      "e": "E",     "f": "F",
+      "one": "1",    "two": "2",   "three": "3",
+      "four": "4",   "five": "5",  "six": "6",
+      "seven": "7",  "eight": "8", "nine": "9",
+      "erase": "⌫", "zero": "0",  "done": "Done"
+    ]
+    
     var views: [String: KeyInputButton] = [:]
 
     for (name, value) in index {
