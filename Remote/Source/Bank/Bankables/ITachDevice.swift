@@ -78,9 +78,9 @@ class ITachDevice: NetworkDevice {
   /**
   updateWithData:
 
-  :param: data [NSObject AnyObject]!
+  :param: data [NSObject:AnyObject]!
   */
-  override func updateWithData(data: [NSObject : AnyObject]!) {
+  override func updateWithData(data: [NSObject:AnyObject]!) {
     super.updateWithData(data)
     pcbPN     = data["pcb-pn"]     as? String ?? pcbPN
     pkgLevel  = data["pkg-level"]  as? String ?? pkgLevel
@@ -103,7 +103,7 @@ class ITachDevice: NetworkDevice {
 
 extension ITachDevice: MSJSONExport {
 
-  override func JSONDictionary() -> MSDictionary! {
+  override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
     safeSetValue(pcbPN,     forKey: "pcb-pn",     inDictionary: dictionary)
     safeSetValue(pkgLevel,  forKey: "pkg-level",  inDictionary: dictionary)

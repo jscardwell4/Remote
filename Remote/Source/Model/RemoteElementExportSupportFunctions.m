@@ -6,18 +6,6 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 #import "RemoteElementExportSupportFunctions.h"
-//#import "RemoteElement.h"
-//#import "Remote.h"
-//#import "ButtonGroup.h"
-//#import "Button.h"
-#import "Command.h"
-#import "CommandContainer.h"
-#import "CommandSet.h"
-#import "CommandSetCollection.h"
-#import "ControlStateSet.h"
-#import "ControlStateImageSet.h"
-//#import "ControlStateTitleSet.h"
-#import "ControlStateColorSet.h"
 #import "RemoteElementKeys.h"
 #import "JSONObjectKeys.h"
 #import "Remote-Swift.h"
@@ -232,11 +220,11 @@ NSString *systemCommandTypeJSONValueForSystemCommand(SystemCommand * command) {
   dispatch_once(&onceToken,
                 ^{
     index = @{ @(SystemCommandTypeUndefined)   : SystemCommandTypeUndefinedJSONKey,
-               @(SystemCommandProximitySensor) : SystemCommandProximitySensorJSONKey,
-               @(SystemCommandURLRequest)      : SystemCommandURLRequestJSONKey,
-               @(SystemCommandLaunchScreen)    : SystemCommandLaunchScreenJSONKey,
-               @(SystemCommandOpenSettings)    : SystemCommandOpenSettingsJSONKey,
-               @(SystemCommandOpenEditor)      : SystemCommandOpenEditorJSONKey };
+               @(SystemCommandTypeProximitySensor) : SystemCommandProximitySensorJSONKey,
+               @(SystemCommandTypeURLRequest)      : SystemCommandURLRequestJSONKey,
+               @(SystemCommandTypeLaunchScreen)    : SystemCommandLaunchScreenJSONKey,
+               @(SystemCommandTypeOpenSettings)    : SystemCommandOpenSettingsJSONKey,
+               @(SystemCommandTypeOpenEditor)      : SystemCommandOpenEditorJSONKey };
   });
 
   return (command ? index[@(command.type)] : nil);
@@ -247,27 +235,27 @@ NSString *switchCommandTypeJSONValueForSwitchCommand(SwitchCommand * command) {
   static dispatch_once_t      onceToken;
   dispatch_once(&onceToken,
                 ^{
-    index = @{ @(SwitchRemoteCommand) : SwitchRemoteCommandJSONKey,
-               @(SwitchModeCommand)   : SwitchModeCommandJSONKey };
+    index = @{ @(SwitchTypeRemote) : SwitchRemoteCommandJSONKey,
+               @(SwitchTypeMode)   : SwitchModeCommandJSONKey };
   });
 
   return (command ? index[@(command.type)] : nil);
 }
 
-NSString *commandSetTypeJSONValueForCommandSet(CommandSet * commandSet) {
-  static NSDictionary const * index;
-  static dispatch_once_t      onceToken;
-  dispatch_once(&onceToken,
-                ^{
-    index = @{ @(CommandSetTypeUnspecified) : CommandSetTypeUnspecifiedJSONKey,
-               @(CommandSetTypeDPad)        : CommandSetTypeDPadJSONKey,
-               @(CommandSetTypeTransport)   : CommandSetTypeTransportJSONKey,
-               @(CommandSetTypeNumberpad)   : CommandSetTypeNumberpadJSONKey,
-               @(CommandSetTypeRocker)      : CommandSetTypeRockerJSONKey };
-  });
-
-  return (commandSet ? index[@(commandSet.type)] : nil);
-}
+//NSString *commandSetTypeJSONValueForCommandSet(CommandSet * commandSet) {
+//  static NSDictionary const * index;
+//  static dispatch_once_t      onceToken;
+//  dispatch_once(&onceToken,
+//                ^{
+//    index = @{ @(CommandSetTypeUnspecified) : CommandSetTypeUnspecifiedJSONKey,
+//               @(CommandSetTypeDPad)        : CommandSetTypeDPadJSONKey,
+//               @(CommandSetTypeTransport)   : CommandSetTypeTransportJSONKey,
+//               @(CommandSetTypeNumberpad)   : CommandSetTypeNumberpadJSONKey,
+//               @(CommandSetTypeRocker)      : CommandSetTypeRockerJSONKey };
+//  });
+//
+//  return (commandSet ? index[@(commandSet.type)] : nil);
+//}
 
 NSString *classJSONValueForCommand(Command * command) {
   static NSDictionary const * index;

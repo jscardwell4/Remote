@@ -38,10 +38,10 @@ final class DetailLabelRow: DetailRow {
   /**
   initWithPushableCategory:label:hasEditingState:
 
-  :param: pushableCategory BankDisplayItemCategory
+  :param: pushableCategory BankItemCategory
   :param: label String
   */
-  convenience init(pushableCategory: BankDisplayItemCategory, label: String) {
+  convenience init(pushableCategory: BankItemCategory, label: String) {
     self.init()
     select = {
       if let controller = BankCollectionController(category: pushableCategory) {

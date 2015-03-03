@@ -6,13 +6,10 @@
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
 
-#import "Command_Private.h"
-//#import "RemoteElementView.h"
-#import "RemoteViewController.h"
+#import "Command.h"
 #import "MSRemoteAppController.h"
 #import "RemoteElementImportSupportFunctions.h"
 #import "RemoteElementExportSupportFunctions.h"
-//#import "CoreDataManager.h"
 #import "Remote-Swift.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
@@ -31,7 +28,7 @@ BOOL isValidSystemType(SystemCommandType type) { return ((NSInteger)type > -1 &&
 @end
 
 
-@interface SystemCommandOperation : CommandOperation @end
+//@interface SystemCommandOperation : CommandOperation @end
 
 @implementation SystemCommand
 
@@ -88,55 +85,55 @@ BOOL isValidSystemType(SystemCommandType type) { return ((NSInteger)type > -1 &&
 
 @end
 
-@implementation SystemCommandOperation
-
-- (void)main {
-  @try {
-    __block BOOL    taskComplete  = NO;
-    SystemCommand * systemCommand = (SystemCommand *)_command;
-
-    switch (systemCommand.type) {
-      case SystemCommandProximitySensor: {
-        CurrentDevice.proximityMonitoringEnabled = !CurrentDevice.proximityMonitoringEnabled;
-        _success                                 = YES;
-        taskComplete                             = YES;
-      }   break;
-
-      case SystemCommandURLRequest: {
-        MSLogWarn(@"currently 'SystemCommandURLRequest' does nothing");
-        _success     = YES;
-        taskComplete = YES;
-      }   break;
-
-      case SystemCommandLaunchScreen: {
-        MSRunAsyncOnMain(^{ [AppController dismissViewController:AppController.window.rootViewController
-                                                      completion:^{ taskComplete = YES; }]; });
-      }   break;
-
-      case SystemCommandOpenSettings: {
-        MSRunAsyncOnMain(^{ [AppController showSettings]; });
-        _success     = YES;
-        taskComplete = YES;
-      }  break;
-
-      case SystemCommandOpenEditor: {
-        MSRunAsyncOnMain(^{ [AppController showEditor]; });
-        _success     = YES;
-        taskComplete = YES;
-      }    break;
-
-      default:
-        taskComplete = YES;
-        _success     = NO;
-        break;
-    }
-
-    while (!taskComplete) ;
-
-    [super main];
-  } @catch(NSException * exception)   {
-    MSLogDebugTag(@"wtf?");
-  }
-}
-
-@end
+//@implementation SystemCommandOperation
+//
+//- (void)main {
+//  @try {
+//    __block BOOL    taskComplete  = NO;
+//    SystemCommand * systemCommand = (SystemCommand *)_command;
+//
+//    switch (systemCommand.type) {
+//      case SystemCommandProximitySensor: {
+//        CurrentDevice.proximityMonitoringEnabled = !CurrentDevice.proximityMonitoringEnabled;
+//        _success                                 = YES;
+//        taskComplete                             = YES;
+//      }   break;
+//
+//      case SystemCommandURLRequest: {
+//        MSLogWarn(@"currently 'SystemCommandURLRequest' does nothing");
+//        _success     = YES;
+//        taskComplete = YES;
+//      }   break;
+//
+//      case SystemCommandLaunchScreen: {
+//        MSRunAsyncOnMain(^{ [AppController dismissViewController:AppController.window.rootViewController
+//                                                      completion:^{ taskComplete = YES; }]; });
+//      }   break;
+//
+//      case SystemCommandOpenSettings: {
+//        MSRunAsyncOnMain(^{ [AppController showSettings]; });
+//        _success     = YES;
+//        taskComplete = YES;
+//      }  break;
+//
+//      case SystemCommandOpenEditor: {
+//        MSRunAsyncOnMain(^{ [AppController showEditor]; });
+//        _success     = YES;
+//        taskComplete = YES;
+//      }    break;
+//
+//      default:
+//        taskComplete = YES;
+//        _success     = NO;
+//        break;
+//    }
+//
+//    while (!taskComplete) ;
+//
+//    [super main];
+//  } @catch(NSException * exception)   {
+//    MSLogDebugTag(@"wtf?");
+//  }
+//}
+//
+//@end

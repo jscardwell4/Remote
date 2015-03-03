@@ -27,9 +27,10 @@ public class PanGesture: ConfiningBlockActionGesture {
 
   The default value is `UINT_MAX`.
   */
-  public var maximumNumberOfTouches: Int = Int.max {
+  public var maximumNumberOfTouches: Int = 10 {
     didSet {
       if maximumNumberOfTouches < 1 { maximumNumberOfTouches = 1 }
+      else if maximumNumberOfTouches > 10 {  maximumNumberOfTouches = 10 }
     }
   }
 

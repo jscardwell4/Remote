@@ -18,12 +18,13 @@ class ISYDeviceGroup: NamedModelObject {
   @NSManaged var device: ISYDevice
   @NSManaged var members: NSSet
 
-  override func updateWithData(data: [NSObject : AnyObject]!) {
+  override func updateWithData(data: [NSObject:AnyObject]!) {
     super.updateWithData(data)
     flag =    data["flag"]    as? NSNumber ?? flag
     address = data["address"] as?   String ?? address
     family =  data["family"]  as? NSNumber ?? family
-    if let members = ISYDeviceNode.importObjectsFromData(data["members"], context: managedObjectContext) as? [ISYDeviceNode] {
+    if let membersData = data["members"] as? [NSObject:AnyObject], let moc = managedObjectContext {
+      let members = ISYDeviceNode.importObjectsFromData(membersData, context: moc)
       mutableSetValueForKey("members").addObjectsFromArray(members)
     }
   }
@@ -32,7 +33,7 @@ class ISYDeviceGroup: NamedModelObject {
 
 extension ISYDeviceGroup: MSJSONExport {
 
-  override func JSONDictionary() -> MSDictionary! {
+  override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
     safeSetValue(flag,    forKey: "flag",    inDictionary: dictionary)
     safeSetValue(address, forKey: "address", inDictionary: dictionary)

@@ -26,9 +26,9 @@ final class DetailListRow: DetailRow {
   /**
   initWithPushableItem:hasEditingState:
 
-  :param: pushableItem BankDisplayItemModel
+  :param: pushableItem BankItemModel
   */
-  convenience init(pushableItem: BankDisplayItemModel) {
+  convenience init(pushableItem: BankItemModel) {
     self.init()
     select = {
       let controller = pushableItem.detailController()
@@ -43,9 +43,9 @@ final class DetailListRow: DetailRow {
   /**
   initWithPushableCategory:hasEditingState:
 
-  :param: pushableCategory BankDisplayItemCategory
+  :param: pushableCategory BankItemCategory
   */
-  convenience init(pushableCategory: BankDisplayItemCategory) {
+  convenience init(pushableCategory: BankItemCategory) {
     self.init()
     select = {
       if let controller = BankCollectionController(category: pushableCategory) {

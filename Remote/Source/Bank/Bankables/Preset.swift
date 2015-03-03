@@ -44,7 +44,8 @@ class Preset: BankableModelObject, PreviewableItem {
   }
 
   class var rootCategory: Bank.RootCategory {
-    var categories = PresetCategory.findAllMatchingPredicate(∀"parentCategory == nil") as! [PresetCategory]
+    var categories = PresetCategory.findAllMatchingPredicate(∀"parentCategory == nil",
+                                                     context: DataManager.rootContext) as! [PresetCategory]
     categories.sort{$0.0.title < $0.1.title}
     return Bank.RootCategory(label: "Presets",
                              icon: UIImage(named: "1059-sliders")!,
@@ -53,7 +54,7 @@ class Preset: BankableModelObject, PreviewableItem {
                              previewableItems: true)
   }
 
-  override subscript(key: String) -> AnyObject? {
+  subscript(key: String) -> AnyObject? {
     get { return storage[key] }
     set { storage[key] = newValue }
   }
@@ -61,13 +62,13 @@ class Preset: BankableModelObject, PreviewableItem {
   /**
   updateWithData:
 
-  :param: data [NSObject AnyObject]!
+  :param: data [NSObject:AnyObject]!
   */
   override func updateWithData(data: [NSObject:AnyObject]) {
     super.updateWithData(data)
-    if var jsonData = data as? [String:AnyObject] {
+    if var jsonData = data as? [String:AnyObject], let moc = managedObjectContext {
       if let subelementsJSONData = jsonData.removeValueForKey("subelements") as? [[String:AnyObject]] {
-        childPresets = NSOrderedSet(array: Preset.importObjectsFromData(subelementsJSONData, context: managedObjectContext))
+        childPresets = NSOrderedSet(array: Preset.importObjectsFromData(subelementsJSONData, context: moc))
       }
       storage.dictionary = jsonData
     }

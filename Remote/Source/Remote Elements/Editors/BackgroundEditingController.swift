@@ -31,16 +31,12 @@ class BackgroundEditingController: UIViewController {
   private weak var imageCollectionVC: BankCollectionController!
   private weak var imageCollectionNav: UINavigationController! {
     didSet {
-      if imageCollectionNav != nil {
-        let category = ImageCategory.findFirstByAttribute("name",
-                                                withValue: "Backgrounds",
-                                                  context: subject?.managedObjectContext)
-        assert(category != nil, "should have been able to retrieve backgrounds category")
-        if let controller = BankCollectionController(category: category, mode: .Selection) {
+      if imageCollectionNav != nil, let moc = subject?.managedObjectContext,
+        let category = ImageCategory.findFirstByAttribute("name", withValue: "Backgrounds", context: moc),
+        let controller = BankCollectionController(category: category, mode: .Selection) {
           controller.selectionDelegate = self
           imageCollectionNav!.showViewController(controller, sender: self)
           imageCollectionVC = controller
-        }
       }
     }
   }
@@ -121,7 +117,7 @@ extension BackgroundEditingController: ColorSelectionControllerDelegate {
 }
 
 extension BackgroundEditingController: BankItemSelectionDelegate {
-  func bankController(bankController: BankController, didSelectItem item: BankDisplayItemModel) {
+  func bankController(bankController: BankController, didSelectItem item: BankItemModel) {
     if let image = item as? Image {
       subject?.backgroundImage = image
     }

@@ -8,9 +8,6 @@
 
 #import "CommandEditingViewController.h"
 #import "AttributeEditingViewController_Private.h"
-#import "Command.h"
-//#import "Button.h"
-#import "RemoteController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "CommandDetailViewController.h"
 #import "HTTPCommandEditingViewController.h"
@@ -242,9 +239,9 @@ static NSArray      const * createableCommands;
                            }] anyObject];
 
   Class     commandClass = NSClassFromString(classString);
-  Command * newCommand   = (Command *)[commandClass commandInContext:self.button.managedObjectContext];
+//  Command * newCommand   = (Command *)[commandClass commandInContext:self.button.managedObjectContext];
 
-  if (newCommand) { self.currentCommand = newCommand; [self restoreCurrentValues]; }
+//  if (newCommand) { self.currentCommand = newCommand; [self restoreCurrentValues]; }
 }
 
 /// removeCommandAction:

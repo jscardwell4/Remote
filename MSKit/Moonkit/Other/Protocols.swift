@@ -54,3 +54,15 @@ public protocol Unpackable4 {
   typealias Element
   func unpack() -> (Element, Element, Element, Element)
 }
+
+@objc public protocol Named {
+  var name: String { get }
+}
+
+@objc public protocol Nameable {
+  var name: String? { get }
+}
+
+@objc public protocol Renameable: Nameable {
+  var name: String? { get set }
+}

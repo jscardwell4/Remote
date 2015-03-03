@@ -17,7 +17,7 @@ class ImageCategory: BankableModelCategory {
 
   @NSManaged var subcategoriesSet: NSSet?
   @NSManaged var primitiveParentCategory: ImageCategory?
-  override var parentCategory: BankDisplayItemCategory? {
+  override var parentCategory: BankItemCategory? {
     get {
       willAccessValueForKey("parentCategory")
       let category = primitiveParentCategory
@@ -58,12 +58,12 @@ class ImageCategory: BankableModelCategory {
     return image
   }
 
-  override var subcategories: [BankDisplayItemCategory] {
+  override var subcategories: [BankItemCategory] {
     get { return ((subcategoriesSet?.allObjects ?? []) as! [ImageCategory]).sorted{$0.0.title < $0.1.title} }
     set { if let newSubcategories = newValue as? [ImageCategory] { subcategoriesSet = NSSet(array: newSubcategories) } }
   }
 
-  override var items: [BankDisplayItemModel] {
+  override var items: [BankItemModel] {
     get { return sortedByName((images?.allObjects ?? []) as! [Image]) }
     set { if let newItems = newValue as? [Image] { images = NSSet(array: newItems) } }
   }
@@ -74,27 +74,23 @@ class ImageCategory: BankableModelCategory {
   /**
   updateWithData:
 
-  :param: data [NSObject AnyObject]!
+  :param: data [NSObject:AnyObject]!
   */
-  override func updateWithData(data: [NSObject : AnyObject]!) {
+  override func updateWithData(data: [NSObject:AnyObject]!) {
     super.updateWithData(data) // sets uuid, name
 
     // Try importing images
-    if let imageData = data["images"] as? NSArray {
+    if let imageData = data["images"] as? NSArray, let moc = managedObjectContext {
       if images == nil { images = NSSet() }
       let mutableImages = mutableSetValueForKey("images")
-      if let importedImages = Image.importObjectsFromData(imageData, context: managedObjectContext) {
-        mutableImages.addObjectsFromArray(importedImages)
-      }
+      mutableImages.addObjectsFromArray(Image.importObjectsFromData(imageData, context: moc))
     }
 
     // Try importing subcategories
-    if let subCategoryData = data["subcategories"] as? NSArray {
+    if let subCategoryData = data["subcategories"] as? NSArray, let moc = managedObjectContext {
       if subcategoriesSet == nil { subcategoriesSet = NSSet() }
       let mutableSubcategories = mutableSetValueForKey("subcategoriesSet")
-      if let importedSubcategories = ImageCategory.importObjectsFromData(subCategoryData, context: managedObjectContext) {
-        mutableSubcategories.addObjectsFromArray(importedSubcategories)
-      }
+      mutableSubcategories.addObjectsFromArray(ImageCategory.importObjectsFromData(subCategoryData, context: moc))
     }
 
   }
@@ -104,7 +100,7 @@ class ImageCategory: BankableModelCategory {
 
   :returns: MSDictionary!
   */
-  override func JSONDictionary() -> MSDictionary! {
+  override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     if let imageDictionaries = sortedByName(images?.allObjects as? [Image])?.map({$0.JSONDictionary()}) {

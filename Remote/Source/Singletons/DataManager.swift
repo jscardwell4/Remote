@@ -371,11 +371,11 @@ extension DataManager {
 
     static var allZeros: StartupObjectRemovalOptions { return StartupObjectRemovalOptions.None }
 
-    static var None:       StartupObjectRemovalOptions = StartupObjectRemovalOptions(rawValue: 0b0000)
-    static var Presets:    StartupObjectRemovalOptions = StartupObjectRemovalOptions(rawValue: 0b0001)
-    static var Remotes:    StartupObjectRemovalOptions = StartupObjectRemovalOptions(rawValue: 0b0010)
-    static var Controller: StartupObjectRemovalOptions = StartupObjectRemovalOptions(rawValue: 0b0100)
-    static var All:        StartupObjectRemovalOptions = StartupObjectRemovalOptions(rawValue: 0b1000)
+    static var None       = StartupObjectRemovalOptions(rawValue: 0b0000)
+    static var Presets    = StartupObjectRemovalOptions(rawValue: 0b0001)
+    static var Remotes    = StartupObjectRemovalOptions(rawValue: 0b0010)
+    static var Controller = StartupObjectRemovalOptions(rawValue: 0b0100)
+    static var All        = StartupObjectRemovalOptions(rawValue: 0b1000)
   }
 
 }

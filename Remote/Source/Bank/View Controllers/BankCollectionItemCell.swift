@@ -13,7 +13,7 @@ import MoonKit
 
 class BankCollectionItemCell: BankCollectionCell {
 
-  weak var item: BankDisplayItemModel? {
+  weak var item: BankItemModel? {
     didSet {
       nameLabel.text = item?.name
       previewable = item != nil && item! is PreviewableItem

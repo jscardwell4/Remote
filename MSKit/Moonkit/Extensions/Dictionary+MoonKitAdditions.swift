@@ -109,3 +109,16 @@ public func map<K,V,U>(dict: [K:V], block: (K, V) -> U) -> [K:U] {
   for (key, value) in dict { result[key] = block(key, value) }
   return result
 }
+
+/**
+subscript:rhs:
+
+:param: lhs [K
+:param: rhs K
+
+:returns: [K:V]
+*/
+public func -<K,V>(var lhs: [K:V], rhs: K) -> [K:V] {
+  lhs.removeValueForKey(rhs)
+  return lhs
+}

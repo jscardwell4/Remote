@@ -5,23 +5,20 @@
 // Created by Jason Cardwell on 7/20/11.
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
-#import "Command_Private.h"
+#import "Command.h"
+#import "CommandOperation.h"
 #import "RemoteElementImportSupportFunctions.h"
 #import "RemoteElementExportSupportFunctions.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
 
-@interface MacroCommandOperation : CommandOperation @end
+//@interface MacroCommandOperation : CommandOperation @end
 
 @interface MacroCommand () {
   NSOperationQueue * _queue;
   NSArray          * _operations;
 }
-/// Stores the `Command` objects to be executed in order when the `MacroCommand` is executed.
-@property (nonatomic, strong) NSOrderedSet * commands;
-/// Queue maintained for executing commands
-@property (nonatomic, readonly) NSOperationQueue * queue;
 @end
 
 @interface MacroCommand (CoreDataGeneratedAccessors)
@@ -246,32 +243,32 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
 
 @end
 
-@implementation MacroCommandOperation
+//@implementation MacroCommandOperation
+//
+//- (void)main {
+//  @try {
+//    MacroCommand * command           = (MacroCommand *)_command;
+//    NSOrderedSet * commandOperations = [command.commands valueForKey:@"operation"];
+//
+//    [commandOperations enumerateObjectsUsingBlock:
+//     ^(CommandOperation * operation, NSUInteger idx, BOOL * stop)
+//    {
+//      if (idx) [operation addDependency:(CommandOperation *)commandOperations[idx - 1]];
+//    }];
+//
+//    [command.queue addOperations:[commandOperations array] waitUntilFinished:YES];
+//
+//    _success = !([commandOperations objectPassingTest:
+//                  ^BOOL (CommandOperation * op, NSUInteger idx)
+//    {
+//      return (!op.wasSuccessful && (_error = op.error));
+//    }]);
+//
+//
+//    [super main];
+//  } @catch(NSException * exception) {
+//    MSLogDebugTag(@"wtf?");
+//  }
+//}
 
-- (void)main {
-  @try {
-    MacroCommand * command           = (MacroCommand *)_command;
-    NSOrderedSet * commandOperations = [command.commands valueForKey:@"operation"];
-
-    [commandOperations enumerateObjectsUsingBlock:
-     ^(CommandOperation * operation, NSUInteger idx, BOOL * stop)
-    {
-      if (idx) [operation addDependency:(CommandOperation *)commandOperations[idx - 1]];
-    }];
-
-    [command.queue addOperations:[commandOperations array] waitUntilFinished:YES];
-
-    _success = !([commandOperations objectPassingTest:
-                  ^BOOL (CommandOperation * op, NSUInteger idx)
-    {
-      return (!op.wasSuccessful && (_error = op.error));
-    }]);
-
-
-    [super main];
-  } @catch(NSException * exception) {
-    MSLogDebugTag(@"wtf?");
-  }
-}
-
-@end
+//@end

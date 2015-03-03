@@ -105,9 +105,9 @@ class ISYDevice: NetworkDevice {
   /**
   updateWithData:
 
-  :param: data [NSObject AnyObject]!
+  :param: data [NSObject:AnyObject]!
   */
-  override func updateWithData(data: [NSObject : AnyObject]!) {
+  override func updateWithData(data: [NSObject:AnyObject]!) {
     super.updateWithData(data)
     modelNumber       = data["model-number"]      as? String ?? modelNumber
     modelName         = data["model-name"]        as? String ?? modelName
@@ -118,12 +118,14 @@ class ISYDevice: NetworkDevice {
     deviceType        = data["device-type"]       as? String ?? deviceType
     baseURL           = data["base-url"]          as? String ?? baseURL
 
-    if let nodes = ISYDeviceNode.importObjectsFromData(data["nodes"], context: managedObjectContext) as? [ISYDeviceNode] {
+    if let nodesData: AnyObject = data["nodes"], let moc = managedObjectContext {
+      let nodes = ISYDeviceNode.importObjectsFromData(nodesData, context: moc)
       if primitiveNodes == nil { primitiveNodes = NSMutableSet() }
       primitiveNodes?.addObjectsFromArray(nodes)
     }
 
-    if let groups = ISYDeviceGroup.importObjectsFromData(data["groups"], context: managedObjectContext) as? [ISYDeviceGroup] {
+    if let groupsData: AnyObject = data["groups"], let moc = managedObjectContext {
+      let groups = ISYDeviceGroup.importObjectsFromData(groupsData, context: moc)
       if primitiveGroups == nil { primitiveGroups = NSMutableSet() }
       primitiveGroups?.addObjectsFromArray(groups)
     }
@@ -145,7 +147,7 @@ extension ISYDevice: MSJSONExport {
 
   :returns: MSDictionary!
   */
-  override func JSONDictionary() -> MSDictionary! {
+  override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
       safeSetValue(modelNumber,      forKey: "model-number",      inDictionary: dictionary)
       safeSetValue(modelName,        forKey: "model-name",        inDictionary: dictionary)

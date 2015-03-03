@@ -22,7 +22,7 @@ public class CoreDataStack {
 
   :param: managedObjectModel NSManagedObjectModel
   :param: persistentStoreURL NSURL
-  :param: options [NSObject AnyObject]? = nil
+  :param: options [NSObject:AnyObject]? = nil
   */
   public init?(managedObjectModel: NSManagedObjectModel, persistentStoreURL: NSURL, options: [NSObject:AnyObject]? = nil) {
     self.managedObjectModel = managedObjectModel

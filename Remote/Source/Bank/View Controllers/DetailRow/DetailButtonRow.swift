@@ -36,9 +36,9 @@ final class DetailButtonRow: DetailRow {
   /**
   initWithPushableCategory:
 
-  :param: pushableCategory BankDisplayItemCategory
+  :param: pushableCategory BankItemCategory
   */
-  convenience init(pushableCategory: BankDisplayItemCategory?) {
+  convenience init(pushableCategory: BankItemCategory?) {
     self.init()
     info = pushableCategory
     select = {
@@ -55,9 +55,9 @@ final class DetailButtonRow: DetailRow {
   /**
   initWithPushableItem:
 
-  :param: pushableItem BankDisplayItemModel?
+  :param: pushableItem BankItemModel?
   */
-  convenience init(pushableItem: BankDisplayItemModel?) {
+  convenience init(pushableItem: BankItemModel?) {
     self.init()
     info = pushableItem
     select = {

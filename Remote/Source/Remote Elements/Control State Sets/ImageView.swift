@@ -14,7 +14,7 @@ import MoonKit
 class ImageView: ModelObject {
 
   @NSManaged var color: UIColor?
-  @NSManaged var image: Image?
+  @NSManaged var image: Image
 
   @NSManaged var buttonIcon: Button?
   @NSManaged var buttonImage: Button?
@@ -28,18 +28,53 @@ class ImageView: ModelObject {
   @NSManaged var imageSetSelectedHighlightedDisabled: ControlStateImageSet?
 
 
-  var rawImage: UIImage? { return image?.image }
+  var rawImage: UIImage? { return image.image }
 
   var colorImage: UIImage? {
     if let img = rawImage {
-      if let imgColor = color {
-        return UIImage(fromAlphaOfImage: img, color: imgColor)
-      } else {
-        return img
-      }
+      if let imgColor = color { return UIImage(fromAlphaOfImage: img, color: imgColor) }
+      else { return img }
     } else {
       return nil
     }
   }
+
+  /**
+  updateWithData:
+
+  :param: data [NSObject:AnyObject]!
+  */
+  override func updateWithData(data: [NSObject:AnyObject]!) {
+    super.updateWithData(data)
+
+    if let imageData = data["image"] as? [NSObject:AnyObject], let moc = managedObjectContext,
+      let image = Image.importObjectFromData(imageData, context: moc) {
+        self.image = image
+    }
+
+    if let colorJSON = data["color"] as? String, let color = UIColor(JSONValue: colorJSON) {
+      self.color = color
+    }
+
+  }
+
+  /**
+  JSONDictionary
+
+  :returns: MSDictionary!
+  */
+  override func JSONDictionary() -> MSDictionary {
+    let dictionary = super.JSONDictionary()
+
+    dictionary["image"] = image.commentedUUID
+    if let color = self.color { dictionary["color"] = color.JSONValue }
+
+    dictionary.compact()
+    dictionary.compress()
+
+    return dictionary
+  }
+
+
 
 }

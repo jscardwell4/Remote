@@ -89,7 +89,7 @@ class Remote: RemoteElement {
   /**
   updateWithData:
 
-  :param: data [NSObject AnyObject]
+  :param: data [NSObject:AnyObject]
   */
   override func updateWithData(data: [NSObject:AnyObject]) {
     super.updateWithData(data)
@@ -100,7 +100,7 @@ class Remote: RemoteElement {
 
       if let panels = data["panels"] as? [String:String] {
         for (key, uuid) in panels {
-          if let buttonGroup = memberOfCollectionWithUUID(subelements, uuid) as? ButtonGroup {
+          if let buttonGroup = subelements.objectPassingTest({($0.0 as! RemoteElement).uuid == uuid}) as? ButtonGroup {
             let assignment = ButtonGroup.PanelAssignment(JSONValue: key)
             if assignment != ButtonGroup.PanelAssignment.Unassigned {
               setButtonGroup(buttonGroup, forPanelAssignment: assignment)

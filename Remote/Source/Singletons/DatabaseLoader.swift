@@ -14,18 +14,37 @@ import MoonKit
 
   /** loadData */
   class func loadData(completion: ((Bool, NSError?) -> Void)? = nil) {
-    DataManager.saveContext(DataManager.rootContext, withBlock: {
+
+    let moc = DataManager.rootContext
+
+    moc.performBlock {
+      self.loadPresets(moc)
+      self.loadImages(moc)
+      self.loadManufacturers(moc)
+      self.loadComponentDevices(moc)
+      self.loadActivityController(moc)
+      self.loadActivities(moc)
+      self.loadRemotes(moc)
+      var error: NSError?
+      MSLogDebug("saving context…")
+      let success = moc.save(&error)
+      if success { MSLogDebug("context saved successfully") }
+      else { MSLogDebug("context failed to save") }
+      completion?(success, error)
+    }
+
+/*    DataManager.saveContext(DataManager.rootContext, withBlock: {
         self.loadPresets($0)
         self.loadImages($0)
         self.loadManufacturers($0)
         self.loadComponentDevices($0)
 //        self.loadNetworkDevices($0)
-        self.loadRemoteController($0)
+        self.loadActivityController($0)
         self.loadActivities($0)
         self.loadRemotes($0)
       },
       nonBlocking: true,
-      completion: completion)
+      completion: completion)	*/
   }
 
   /**
@@ -36,27 +55,27 @@ import MoonKit
   private class func loadRemotes(context: NSManagedObjectContext) {
     MSLogDebug("loading remotes...")
     var error: NSError?
-    if let filePath = NSBundle.mainBundle().pathForResource("Remote_Demo", ofType: "json") {
-      let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSArray
+    if let filePath = NSBundle.mainBundle().pathForResource("Remote_Demo", ofType: "json"),
+      let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSArray {
       assert(MSHandleError(error) == false)
       let importedObjects = Remote.importObjectsFromData(importData, context: context)
-      MSLogDebug("\(importedObjects?.count ?? 0) remotes imported")
+      MSLogDebug("\(importedObjects.count ?? 0) remotes imported")
     }
   }
 
   /**
-  loadRemoteController:
+  loadActivityController:
 
   :param: context NSManagedObjectContext
   */
-  private class func loadRemoteController(context: NSManagedObjectContext) {
-    MSLogDebug("loading remote controller...")
+  private class func loadActivityController(context: NSManagedObjectContext) {
+    MSLogDebug("loading activity controller...")
     var error: NSError?
-    if let filePath = NSBundle.mainBundle().pathForResource("RemoteController", ofType: "json") {
+    if let filePath = NSBundle.mainBundle().pathForResource("ActivityController", ofType: "json") {
       let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSDictionary
       assert(MSHandleError(error) == false)
-      let importedObject = RemoteController.importObjectFromData(importData as! [NSObject : AnyObject], context: context)
-      MSLogDebug("remote controller imported? \(importedObject != nil)")
+      let importedObject = ActivityController.importObjectFromData(importData as! [NSObject:AnyObject], context: context)
+      MSLogDebug("activity controller imported? \(importedObject != nil)")
     }
   }
 
@@ -69,8 +88,8 @@ import MoonKit
   private class func loadPresets(context: NSManagedObjectContext) {
     MSLogDebug("loading presets...")
     var error: NSError?
-    if let filePath = NSBundle.mainBundle().pathForResource("Preset", ofType: "json") {
-      let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSArray
+    if let filePath = NSBundle.mainBundle().pathForResource("Preset", ofType: "json"),
+      let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSArray {
       assert(MSHandleError(error) == false)
       let importedObjects = PresetCategory.importObjectsFromData(importData, context: context) as? [PresetCategory]
       MSLogDebug("\(reduce(importedObjects?.map({$0.totalItemCount}) ?? [], 0, {$0 + $1})) presets imported")
@@ -85,11 +104,11 @@ import MoonKit
   private class func loadActivities(context: NSManagedObjectContext) {
     MSLogDebug("loading activities...")
     var error: NSError?
-    if let filePath = NSBundle.mainBundle().pathForResource("Activity", ofType: "json") {
-      let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSArray
+    if let filePath = NSBundle.mainBundle().pathForResource("Activity", ofType: "json"),
+      let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSArray {
       assert(MSHandleError(error) == false)
       let importedObjects = Activity.importObjectsFromData(importData, context: context)
-      MSLogDebug("\(importedObjects?.count ?? 0) activities imported")
+      MSLogDebug("\(importedObjects.count ?? 0) activities imported")
     }
   }
 
@@ -101,11 +120,11 @@ import MoonKit
   private class func loadManufacturers(context: NSManagedObjectContext) {
     MSLogDebug("loading manufacturers...")
     var error: NSError?
-    if let filePath = NSBundle.mainBundle().pathForResource("Manufacturer_Test", ofType: "json") {
-      let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSArray
+    if let filePath = NSBundle.mainBundle().pathForResource("Manufacturer_Test", ofType: "json"),
+      let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSArray {
       assert(MSHandleError(error) == false)
       let importedObjects = Manufacturer.importObjectsFromData(importData, context: context)
-      MSLogDebug("\(importedObjects?.count ?? 0) manufacturers imported")
+      MSLogDebug("\(importedObjects.count ?? 0) manufacturers imported")
     }
   }
 
@@ -117,11 +136,11 @@ import MoonKit
   private class func loadComponentDevices(context: NSManagedObjectContext) {
     MSLogDebug("loading component devices...")
     var error: NSError?
-    if let filePath = NSBundle.mainBundle().pathForResource("ComponentDevice", ofType: "json") {
-      let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSArray
+    if let filePath = NSBundle.mainBundle().pathForResource("ComponentDevice", ofType: "json"),
+      let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSArray {
       assert(MSHandleError(error) == false)
       let importedObjects = ComponentDevice.importObjectsFromData(importData, context: context)
-      MSLogDebug("\(importedObjects?.count ?? 0) component devices imported")
+      MSLogDebug("\(importedObjects.count ?? 0) component devices imported")
     }
   }
 
@@ -133,11 +152,11 @@ import MoonKit
   private class func loadNetworkDevices(context: NSManagedObjectContext) {
     MSLogDebug("loading network devices...")
     var error: NSError?
-    if let filePath = NSBundle.mainBundle().pathForResource("NetworkDevice", ofType: "json") {
-      let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSArray
+    if let filePath = NSBundle.mainBundle().pathForResource("NetworkDevice", ofType: "json"),
+      let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSArray {
       assert(MSHandleError(error) == false)
       let importedObjects = NetworkDevice.importObjectsFromData(importData, context: context)
-      MSLogDebug("\(importedObjects?.count ?? 0) network devices imported")
+      MSLogDebug("\(importedObjects.count ?? 0) network devices imported")
     }
   }
 
@@ -149,11 +168,11 @@ import MoonKit
   private class func loadImages(context: NSManagedObjectContext) {
     MSLogDebug("loading images...")
     var error: NSError?
-    if let filePath = NSBundle.mainBundle().pathForResource("Glyphish", ofType: "json") {
-      let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSArray
+    if let filePath = NSBundle.mainBundle().pathForResource("Glyphish", ofType: "json"),
+      let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSArray {
       assert(MSHandleError(error) == false)
-      let importedObjects = ImageCategory.importObjectsFromData(importData, context: context)
-      MSLogDebug("\(reduce(importedObjects?.map({$0.totalItemCount}) ?? [], 0, {$0 + $1})) images imported")
+      let importedObjects = ImageCategory.importObjectsFromData(importData, context: context) as! [ImageCategory]
+      MSLogDebug("\(reduce(importedObjects.map({$0.totalItemCount}) ?? [], 0, {$0 + $1})) images imported")
     }
   }
 

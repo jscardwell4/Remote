@@ -7,7 +7,6 @@
 //
 #import "ITachDeviceConnection.h"
 #import "ConnectionManager.h"
-#import "Command.h"
 #import "MessageQueueEntry.h"
 #import "Remote-Swift.h"
 @import MoonKit;

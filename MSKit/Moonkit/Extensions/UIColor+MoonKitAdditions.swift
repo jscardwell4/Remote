@@ -12,9 +12,49 @@ import UIKit
 extension UIColor: JSONValueConvertible {
   typealias JSONValueType = String!
   public var JSONValue: String! { return string }
+  public convenience init?(JSONValue: String) { self.init(string: JSONValue) }
 }
 
 extension UIColor {
+
+  /**
+  initWithString:
+
+  :param: string String
+  */
+  public convenience init?(string: String) {
+    if let color = UIColor(name: string), let (r, g, b, a) = color.rgba {
+      self.init(red: r, green: g, blue: b, alpha: a)
+    } else if string.matchesRegEx("@.*%") {
+      let (base, alpha) = disperse2("@".split(string))
+      if let color = UIColor(name: base), let (r, g, b, a) = color.rgba {
+        self.init(red: r, green: g, blue: b, alpha: CGFloat((dropLast(alpha) as NSString).floatValue / 100.0))
+      } else {
+        self.init()
+        return nil
+      }
+    } else if string[0] == "#" {
+      if let color = (count(string) < 8 ? UIColor(RGBHexString: string) : UIColor(RGBAHexString: string)),
+        let (r, g, b, a) = color.rgba {
+          self.init(red: r, green: g, blue: b, alpha: a)
+      } else {
+        self.init()
+        return nil
+      }
+    }
+    else {
+      let components = " ".split(string)
+      let mappedComponents = components.map{CGFloat(($0 as NSString).floatValue)}
+      if mappedComponents.count == 3 {
+        self.init(red: mappedComponents[0], green: mappedComponents[1], blue: mappedComponents[2], alpha: 1.0)
+      } else if mappedComponents.count == 4 {
+        self.init(red: mappedComponents[0], green: mappedComponents[1], blue: mappedComponents[2], alpha: mappedComponents[3])
+      } else {
+        self.init()
+        return nil
+      }
+    }
+  }
 
   public var rgba: (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat)? {
     var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0

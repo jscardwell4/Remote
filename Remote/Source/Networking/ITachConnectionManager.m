@@ -8,7 +8,6 @@
 #import "ITachConnectionManager.h"
 #import "NetworkDeviceMulticastConnection.h"
 #import "ITachDeviceConnection.h"
-#import "Command.h"
 #import "ConnectionManager.h"
 #import "Remote-Swift.h"
 

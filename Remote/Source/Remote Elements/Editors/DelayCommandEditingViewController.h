@@ -14,7 +14,7 @@
 
 @import UIKit;
 #import "CommandDetailViewController.h"
-
+#import "Remote-Swift.h"
 @interface DelayCommandEditingViewController : CommandDetailViewController <UITextFieldDelegate>
 
 @property (nonatomic, strong) DelayCommand * command;

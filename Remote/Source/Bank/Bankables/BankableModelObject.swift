@@ -10,18 +10,23 @@ import Foundation
 import CoreData
 import MoonKit
 
-class BankableModelObject: NamedModelObject, BankDisplayItemModel {
+class BankableModelObject: NamedModelObject, BankItemModel {
 
 	@NSManaged var user: Bool
 
+  /**
+  requiresUniqueNaming
+
+  :returns: Bool
+  */
   override class func requiresUniqueNaming() -> Bool { return true }
 
 	/**
 	updateWithData:
 
-	:param: data [NSObject AnyObject]!
+	:param: data [NSObject:AnyObject]!
 	*/
-	override func updateWithData(data: [NSObject : AnyObject]!) {
+	override func updateWithData(data: [NSObject:AnyObject]!) {
 		super.updateWithData(data)
 		user = (data?["user"] as? NSNumber)?.boolValue ?? user
 	}
@@ -31,7 +36,7 @@ class BankableModelObject: NamedModelObject, BankDisplayItemModel {
 
 	:returns: MSDictionary!
 	*/
-	override func JSONDictionary() -> MSDictionary! {
+	override func JSONDictionary() -> MSDictionary {
 		let dictionary = super.JSONDictionary()
 		setIfNotDefault("user", inDictionary: dictionary)
 		dictionary.compact()

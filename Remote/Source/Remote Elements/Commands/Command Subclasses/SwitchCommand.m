@@ -6,23 +6,20 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 #import "Command_Private.h"
-#import "RemoteController.h"
 //#import "Remote.h"
-#import "RemoteElementExportSupportFunctions.h"
-#import "RemoteElementImportSupportFunctions.h"
 #import "Remote-Swift.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_CONSOLE);
 
+@interface SwitchCommandOperation : CommandOperation @end
+
+/*
 @interface SwitchCommand ()
 
 @property (nonatomic, copy, readwrite) NSString * target;
 
 @end
-
-
-@interface SwitchCommandOperation : CommandOperation @end
 
 @implementation SwitchCommand
 
@@ -59,14 +56,6 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
 }
 
 - (void)updateWithData:(NSDictionary *)data {
-  /*
-       {
-           "class": "switch",
-           "type": "remote",
-           "target": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD" // Home Screen
-       }
-   */
-
   [super updateWithData:data];
 
   [self setPrimitiveValue:@(switchCommandTypeFromImportKey(data[@"type"])) forKey:@"type"];
@@ -78,21 +67,21 @@ static int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CONTEXT_
 }
 
 @end
-
+*/
 @implementation SwitchCommandOperation
 
 - (void)main {
   @try {
     NSManagedObjectContext * moc        = _command.managedObjectContext;
-    RemoteController       * controller = [RemoteController remoteController:moc];
+    ActivityController       * controller = [[ActivityController alloc] initWithContext:moc];
 
-    if (((SwitchCommand *)_command).type == SwitchModeCommand) {
+    if (((SwitchCommand *)_command).type == SwitchTypeMode) {
       Remote   * remote = controller.currentRemote;
       NSString * mode   = ((SwitchCommand *)_command).target;
 
       remote.currentMode = mode;
       _success           = [remote.currentMode isEqualToString:mode];
-    } else if (((SwitchCommand *)_command).type == SwitchRemoteCommand)   {
+    } else if (((SwitchCommand *)_command).type == SwitchTypeRemote)   {
       Remote * remote = [Remote existingObjectWithUUID:((SwitchCommand *)_command).target context:moc];
 
       if (remote) {

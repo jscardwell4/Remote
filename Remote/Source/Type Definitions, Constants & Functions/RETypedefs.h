@@ -396,65 +396,65 @@ static inline NSString *NSStringFromREState(REState state) {
 #pragma mark - Commands
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef NS_ENUM (NSUInteger, CommandOptions) {
-  CommandOptionDefault     = 0 << 0,
-    CommandOptionLongPress = 1 << 0
-};
+//typedef NS_ENUM (NSUInteger, CommandOptions) {
+//  CommandOptionDefault     = 0 << 0,
+//    CommandOptionLongPress = 1 << 0
+//};
 
-typedef NS_ENUM (uint8_t, SystemCommandType) {
-  SystemCommandTypeUndefined   = 0,
-  SystemCommandProximitySensor = 1,
-  SystemCommandURLRequest      = 2,
-  SystemCommandLaunchScreen    = 3,
-  SystemCommandOpenSettings    = 4,
-  SystemCommandOpenEditor      = 5
-};
+//typedef NS_ENUM (uint8_t, SystemCommandType) {
+//  SystemCommandTypeUndefined   = 0,
+//  SystemCommandProximitySensor = 1,
+//  SystemCommandURLRequest      = 2,
+//  SystemCommandLaunchScreen    = 3,
+//  SystemCommandOpenSettings    = 4,
+//  SystemCommandOpenEditor      = 5
+//};
+//
+//static inline NSString *NSStringFromSystemCommandType(SystemCommandType type) {
+//  switch (type) {
+//    case SystemCommandOpenEditor:            return @"SystemCommandOpenEditor";
+//    case SystemCommandOpenSettings:          return @"SystemCommandOpenSettings";
+//    case SystemCommandLaunchScreen:          return @"SystemCommandLaunchScreen";
+//    case SystemCommandProximitySensor:       return @"SystemCommandProximitySensor";
+//    case SystemCommandURLRequest:            return @"SystemCommandURLRequest";
+//    default:                                 return nil;
+//  }
+//}
+//
+//typedef NS_ENUM (uint8_t, SwitchCommandType) {
+//  SwitchUndefinedCommand = 0,
+//  SwitchRemoteCommand    = 1,
+//  SwitchModeCommand      = 2
+//};
+//
+//static inline NSString *NSStringFromSwitchCommandType(SwitchCommandType type) {
+//  switch (type) {
+//    case SwitchModeCommand:   return @"SwitchModeCommand";
+//    case SwitchRemoteCommand: return @"SwitchRemoteCommand";
+//    default:                  return @"Undefined";
+//  }
+//}
 
-static inline NSString *NSStringFromSystemCommandType(SystemCommandType type) {
-  switch (type) {
-    case SystemCommandOpenEditor:            return @"SystemCommandOpenEditor";
-    case SystemCommandOpenSettings:          return @"SystemCommandOpenSettings";
-    case SystemCommandLaunchScreen:          return @"SystemCommandLaunchScreen";
-    case SystemCommandProximitySensor:       return @"SystemCommandProximitySensor";
-    case SystemCommandURLRequest:            return @"SystemCommandURLRequest";
-    default:                                 return nil;
-  }
-}
+//typedef NS_ENUM (uint8_t, CommandSetType) {
+//  CommandSetTypeUnspecified = RERoleUndefined,
+//  CommandSetTypeDPad        = REButtonGroupRoleDPad,
+//  CommandSetTypeTransport   = REButtonGroupRoleTransport,
+//  CommandSetTypeNumberpad   = REButtonGroupRoleNumberpad,
+//  CommandSetTypeRocker      = REButtonGroupRoleRocker
+//};
 
-typedef NS_ENUM (uint8_t, SwitchCommandType) {
-  SwitchUndefinedCommand = 0,
-  SwitchRemoteCommand    = 1,
-  SwitchModeCommand      = 2
-};
-
-static inline NSString *NSStringFromSwitchCommandType(SwitchCommandType type) {
-  switch (type) {
-    case SwitchModeCommand:   return @"SwitchModeCommand";
-    case SwitchRemoteCommand: return @"SwitchRemoteCommand";
-    default:                  return @"Undefined";
-  }
-}
-
-typedef NS_ENUM (uint8_t, CommandSetType) {
-  CommandSetTypeUnspecified = RERoleUndefined,
-  CommandSetTypeDPad        = REButtonGroupRoleDPad,
-  CommandSetTypeTransport   = REButtonGroupRoleTransport,
-  CommandSetTypeNumberpad   = REButtonGroupRoleNumberpad,
-  CommandSetTypeRocker      = REButtonGroupRoleRocker
-};
-
-static inline BOOL CommandSetTypeIsValid(CommandSetType type) {
-  switch (type) {
-    case CommandSetTypeDPad:
-    case CommandSetTypeTransport:
-    case CommandSetTypeNumberpad:
-    case CommandSetTypeRocker:
-      return YES;
-    case CommandSetTypeUnspecified:
-    default:
-      return NO;
-  }
-}
+//static inline BOOL CommandSetTypeIsValid(CommandSetType type) {
+//  switch (type) {
+//    case CommandSetTypeDPad:
+//    case CommandSetTypeTransport:
+//    case CommandSetTypeNumberpad:
+//    case CommandSetTypeRocker:
+//      return YES;
+//    case CommandSetTypeUnspecified:
+//    default:
+//      return NO;
+//  }
+//}
 
 //typedef (void (^)(BOOL success, NSError *));
 

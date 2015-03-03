@@ -53,10 +53,12 @@ class Image: BankableModelObject, PreviewableItem {
   @NSManaged var remoteElements: NSSet
   @NSManaged var views: NSSet
 
-  override func updateWithData(data: [NSObject : AnyObject]!) {
+  override func updateWithData(data: [NSObject:AnyObject]!) {
     super.updateWithData(data)
-    imageCategory = ImageCategory.importObjectFromData(data["category"] as? NSDictionary as! [NSObject : AnyObject],
-                                               context: managedObjectContext) ?? imageCategory
+    if let imageCategoryData = data["category"] as? [NSObject:AnyObject], let moc = managedObjectContext,
+      let imageCategory = ImageCategory.importObjectFromData(imageCategoryData, context: moc) {
+        self.imageCategory = imageCategory
+    }
     assetName = data["asset-name"] as? String ?? assetName
     leftCap = (data["left-cap"] as? NSNumber)?.intValue ?? leftCap
     topCap = (data["top-cap"] as? NSNumber)?.intValue ?? topCap
@@ -64,14 +66,14 @@ class Image: BankableModelObject, PreviewableItem {
 
   var image: UIImage? { return UIImage(named: assetName) }
   var templateImage: UIImage? { return image?.imageWithRenderingMode(.AlwaysTemplate) }
-  override var commentedUUID: String { var uuidCopy: NSString = uuid!; uuidCopy.comment = " // \(assetName)"; return uuidCopy as String }
+  override var commentedUUID: String { var uuidCopy: NSString = uuid; uuidCopy.comment = " // \(assetName)"; return uuidCopy as String }
 
   /**
   JSONDictionary
 
   :returns: MSDictionary!
   */
-  override func JSONDictionary() -> MSDictionary! {
+  override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
     safeSetValueForKeyPath("imageCategory.commentedUUID", forKey: "category", inDictionary: dictionary)
     safeSetValue(assetName, forKey: "asset-name", inDictionary: dictionary)
@@ -86,7 +88,7 @@ class Image: BankableModelObject, PreviewableItem {
 
 
   class var rootCategory: Bank.RootCategory {
-    var categories = ImageCategory.findAllMatchingPredicate(∀"parentCategory == nil") as! [ImageCategory]
+    var categories = ImageCategory.findAllMatchingPredicate(∀"parentCategory == nil", context: DataManager.rootContext) as! [ImageCategory]
     categories.sort{$0.0.title < $0.1.title}
     return Bank.RootCategory(label: "Images",
                              icon: UIImage(named: "926-photos")!,

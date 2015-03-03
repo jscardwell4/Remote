@@ -62,19 +62,22 @@ class IRCode: BankableModelObject {
     return scanner.atEnd ? compressed : nil
   }
 
-  override func updateWithData(data: [NSObject : AnyObject]!) {
+  override func updateWithData(data: [NSObject:AnyObject]!) {
     super.updateWithData(data)
-    codeSet      = IRCodeSet.importObjectFromData(data["codeset"] as? NSDictionary as! [NSObject : AnyObject], context: managedObjectContext) ?? codeSet
+    if let codeSetData = data["codeset"] as? [NSObject:AnyObject], let moc = managedObjectContext,
+      let codeSet = IRCodeSet.importObjectFromData(codeSetData, context: moc) {
+        self.codeSet = codeSet
+    }
     frequency    = (data["frequency"]      as? NSNumber)?.longLongValue ?? frequency
     offset       = (data["offset"]         as? NSNumber)?.shortValue    ?? offset
     repeatCount  = (data["repeat-count"]   as? NSNumber)?.shortValue    ?? repeatCount
     onOffPattern = data["on-off-pattern"]  as? String                   ?? onOffPattern
   }
 
-//  override class func categoryType() -> BankDisplayItemCategory.Protocol { return IRCodeSet.self }
+//  override class func categoryType() -> BankItemCategory.Protocol { return IRCodeSet.self }
 
   class var rootCategory: Bank.RootCategory {
-    let categories = IRCodeSet.findAllSortedBy("name", ascending: true) as? [IRCodeSet]
+    let categories = IRCodeSet.findAllSortedBy("name", ascending: true, context: DataManager.rootContext) as? [IRCodeSet]
     return Bank.RootCategory(label: "IR Codes",
                              icon: UIImage(named: "tv-remote")!,
                              subcategories: categories ?? [],
@@ -87,7 +90,7 @@ class IRCode: BankableModelObject {
 
 extension IRCode: MSJSONExport {
 
-  override func JSONDictionary() -> MSDictionary! {
+  override func JSONDictionary() -> MSDictionary {
 
     let dictionary = super.JSONDictionary()
 

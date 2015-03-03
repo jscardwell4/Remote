@@ -14,6 +14,7 @@
 
 @import UIKit;
 #import "CommandDetailViewController.h"
+#import "Remote-Swift.h"
 
 @interface PowerCommandEditingViewController : CommandDetailViewController <MSPickerInputButtonDelegate>
 

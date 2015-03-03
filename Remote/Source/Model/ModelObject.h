@@ -27,33 +27,33 @@
 
 @interface ModelObject : NSManagedObject <Model>
 
-MSEXTERN_STRING ModelObjectInitializingContextName;
+//MSEXTERN_STRING ModelObjectInitializingContextName;
 
 @property (nonatomic, copy, readonly) NSString * uuid;
 
 + (BOOL)isValidUUID:(NSString *)uuid;
-+ (instancetype)objectWithUUID:(NSString *)uuid;
+//+ (instancetype)objectWithUUID:(NSString *)uuid;
 + (instancetype)objectWithUUID:(NSString *)uuid context:(NSManagedObjectContext *)moc;
 - (instancetype)initWithContext:(NSManagedObjectContext *)moc __attribute__((objc_designated_initializer));
-- (id)objectForKeyedSubscript:(NSString *)uuid;
+//- (id)objectForKeyedSubscript:(NSString *)uuid;
 //- (id)objectAtIndexedSubscript:(NSUInteger)idx;
 
 @end
 
-ModelObject * memberOfCollectionWithUUID(id collection, NSString * uuid);
-ModelObject * memberOfCollectionAtIndex(id collection, NSUInteger idx);
+//ModelObject * memberOfCollectionWithUUID(id collection, NSString * uuid);
+//ModelObject * memberOfCollectionAtIndex(id collection, NSUInteger idx);
 
 @interface ModelObject (Describing)
 
-- (NSString *)deepDescription;
-- (NSString *)deepDescriptionWithOptions:(NSUInteger)options indentLevel:(NSUInteger)level;
+//- (NSString *)deepDescription;
+//- (NSString *)deepDescriptionWithOptions:(NSUInteger)options indentLevel:(NSUInteger)level;
 
-- (MSDictionary *)deepDescriptionDictionary;
+//- (MSDictionary *)deepDescriptionDictionary;
 
 @end
 
-NSString *namedModelObjectDescription(ModelObject<NamedModel> * modelObject);
-NSString *unnamedModelObjectDescription(ModelObject * modelObject);
+//NSString *namedModelObjectDescription(ModelObject<NamedModel> * modelObject);
+//NSString *unnamedModelObjectDescription(ModelObject * modelObject);
 
 @interface ModelObject (Importing)
 
@@ -69,59 +69,59 @@ NSString *unnamedModelObjectDescription(ModelObject * modelObject);
 @property (nonatomic, weak, readonly) NSString * JSONString;
 - (MSDictionary *)JSONDictionary;
 
-- (BOOL)writeJSONToFile:(NSString *)file;
+//- (BOOL)writeJSONToFile:(NSString *)file;
 - (BOOL)attributeValueIsDefault:(NSString *)attributeName;
 
 @end
 
-#define SafeSetValueForKey(VALUE, KEY, DICT) ({ DICT[KEY] = CollectionSafe(VALUE); })
-#define SuppressDefaultValue(ATTRIBUTE, BLOCK) ({ if (![self attributeValueIsDefault:ATTRIBUTE]) { BLOCK;} })
-#define SetValueForKeyIfNotDefault(VALUE, KEY, DICT) \
-  SuppressDefaultValue(KEY, SafeSetValueForKey(VALUE, [KEY camelCaseToDashCase], DICT))
+//#define SafeSetValueForKey(VALUE, KEY, DICT) ({ DICT[KEY] = CollectionSafe(VALUE); })
+//#define SuppressDefaultValue(ATTRIBUTE, BLOCK) ({ if (![self attributeValueIsDefault:ATTRIBUTE]) { BLOCK;} })
+//#define SetValueForKeyIfNotDefault(VALUE, KEY, DICT) \
+//  SuppressDefaultValue(KEY, SafeSetValueForKey(VALUE, [KEY camelCaseToDashCase], DICT))
 
 @interface ModelObject (Finding)
 
-+ (instancetype)existingObjectWithID:(NSManagedObjectID *)objectID error:(NSError **)error;
-+ (instancetype)existingObjectWithID:(NSManagedObjectID *)objectID
-                             context:(NSManagedObjectContext *)moc
-                               error:(NSError **)error;
-+ (instancetype)existingObjectWithUUID:(NSString *)uuid;
+//+ (instancetype)existingObjectWithID:(NSManagedObjectID *)objectID error:(NSError **)error;
+//+ (instancetype)existingObjectWithID:(NSManagedObjectID *)objectID
+//                             context:(NSManagedObjectContext *)moc
+//                               error:(NSError **)error;
+//+ (instancetype)existingObjectWithUUID:(NSString *)uuid;
 + (instancetype)existingObjectWithUUID:(NSString *)uuid context:(NSManagedObjectContext *)moc;
 
 + (NSArray *)findAllInContext:(NSManagedObjectContext *)moc;
-+ (NSArray *)findAll;
+//+ (NSArray *)findAll;
 + (NSArray *)findAllMatchingPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)moc;
-+ (NSArray *)findAllMatchingPredicate:(NSPredicate *)predicate;
+//+ (NSArray *)findAllMatchingPredicate:(NSPredicate *)predicate;
 + (instancetype)findFirstMatchingPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)moc;
-+ (instancetype)findFirstMatchingPredicate:(NSPredicate *)predicate;
+//+ (instancetype)findFirstMatchingPredicate:(NSPredicate *)predicate;
 + (NSArray *)findAllSortedBy:(NSString *)sortBy ascending:(BOOL)ascending context:(NSManagedObjectContext *)moc;
-+ (NSArray *)findAllSortedBy:(NSString *)sortBy ascending:(BOOL)ascending;
+//+ (NSArray *)findAllSortedBy:(NSString *)sortBy ascending:(BOOL)ascending;
 + (instancetype)findFirstByAttribute:(NSString *)attribute withValue:(id)value context:(NSManagedObjectContext *)moc;
-+ (instancetype)findFirstByAttribute:(NSString *)attribute withValue:(id)value;
-+ (NSArray *)allValuesForAttribute:(NSString *)attribute;
+//+ (instancetype)findFirstByAttribute:(NSString *)attribute withValue:(id)value;
+//+ (NSArray *)allValuesForAttribute:(NSString *)attribute;
 + (NSArray *)allValuesForAttribute:(NSString *)attribute context:(NSManagedObjectContext *)moc;
 
 @end
 
 @interface ModelObject (Counting)
 
-+ (NSUInteger)countOfObjects;
+//+ (NSUInteger)countOfObjects;
 + (NSUInteger)countOfObjectsInContext:(NSManagedObjectContext *)moc;
-+ (NSUInteger)countOfObjectsWithPredicate:(NSPredicate *)predicate;
+//+ (NSUInteger)countOfObjectsWithPredicate:(NSPredicate *)predicate;
 + (NSUInteger)countOfObjectsWithPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)moc;
 
 @end
 
 @interface ModelObject (Fetching)
 
-+ (NSFetchedResultsController *)fetchAllGroupedBy:(NSString *)groupBy sortedBy:(NSString *)sortBy;
+//+ (NSFetchedResultsController *)fetchAllGroupedBy:(NSString *)groupBy sortedBy:(NSString *)sortBy;
 + (NSFetchedResultsController *)fetchAllGroupedBy:(NSString *)groupBy
                                          sortedBy:(NSString *)sortBy
                                           context:(NSManagedObjectContext *)moc;
-+ (NSFetchedResultsController *)fetchAllGroupedBy:(NSString *)groupBy
-                                    withPredicate:(NSPredicate *)predicate
-                                         sortedBy:(NSString *)sortBy
-                                        ascending:(BOOL)ascending;
+//+ (NSFetchedResultsController *)fetchAllGroupedBy:(NSString *)groupBy
+//                                    withPredicate:(NSPredicate *)predicate
+//                                         sortedBy:(NSString *)sortBy
+//                                        ascending:(BOOL)ascending;
 + (NSFetchedResultsController *)fetchAllGroupedBy:(NSString *)groupBy
                                     withPredicate:(NSPredicate *)predicate
                                          sortedBy:(NSString *)sortBy
@@ -133,7 +133,7 @@ NSString *unnamedModelObjectDescription(ModelObject * modelObject);
 @interface ModelObject (Deleting)
 
 + (void)deleteAllMatchingPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)moc;
-+ (void)deleteAllMatchingPredicate:(NSPredicate *)predicate;
+//+ (void)deleteAllMatchingPredicate:(NSPredicate *)predicate;
 
 @end
 

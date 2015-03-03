@@ -114,9 +114,9 @@ static UIStoryboard * auxiliaryStoryboard, * mainStoryboard;
 }
 */
 
-+ (MainMenuViewController *)mainMenuViewController
++ (MainMenuController *)mainMenuViewController
 {
-    return (MainMenuViewController *)[mainStoryboard instantiateInitialViewController];
+    return (MainMenuController *)[mainStoryboard instantiateInitialViewController];
 }
 
 + (UIViewController *)mainControllerWithID:(NSString *)storyboardID

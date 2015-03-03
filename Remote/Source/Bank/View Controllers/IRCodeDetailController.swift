@@ -55,7 +55,9 @@ class IRCodeDetailController: BankItemDetailController {
   private func loadDetailsSection() {
 
     let irCode = model as! IRCode
-    let manufacturers = Manufacturer.findAllSortedBy("name", ascending: true) as? [Manufacturer] ?? []
+    let manufacturers = Manufacturer.findAllSortedBy("name",
+                                           ascending: true,
+                                             context: irCode.managedObjectContext!) as? [Manufacturer] ?? []
     let codeSets = sortedByName(irCode.manufacturer.codeSets?.allObjects as? [IRCodeSet] ?? [])
 
     var section = DetailSection(section: 0)

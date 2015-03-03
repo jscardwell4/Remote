@@ -17,7 +17,7 @@ class PresetCategory: BankableModelCategory {
 
   @NSManaged var subcategoriesSet: NSSet?
   @NSManaged var primitiveParentCategory: PresetCategory?
-  override var parentCategory: BankDisplayItemCategory? {
+  override var parentCategory: BankItemCategory? {
     get {
       willAccessValueForKey("parentCategory")
       let category = primitiveParentCategory
@@ -32,12 +32,12 @@ class PresetCategory: BankableModelCategory {
   }
   @NSManaged var presets: NSSet?
 
-  override var subcategories: [BankDisplayItemCategory] {
+  override var subcategories: [BankItemCategory] {
     get { return ((subcategoriesSet?.allObjects ?? []) as! [PresetCategory]).sorted{$0.0.title < $0.1.title} }
     set { if let newSubcategories = newValue as? [PresetCategory] { subcategoriesSet = NSSet(array: newSubcategories) } }
   }
 
-  override var items: [BankDisplayItemModel] {
+  override var items: [BankItemModel] {
     get { return sortedByName((presets?.allObjects ?? []) as! [Preset]) }
     set { if let newItems = newValue as? [Preset] { presets = NSSet(array: newItems) } }
   }
@@ -45,27 +45,23 @@ class PresetCategory: BankableModelCategory {
   /**
   updateWithData:
 
-  :param: data [NSObject AnyObject]!
+  :param: data [NSObject:AnyObject]!
   */
-  override func updateWithData(data: [NSObject : AnyObject]!) {
+  override func updateWithData(data: [NSObject:AnyObject]!) {
     super.updateWithData(data) // sets uuid, name
 
     // Try importing images
-    if let presetData = data["presets"] as? NSArray {
+    if let presetData = data["presets"] as? NSArray, let moc = managedObjectContext {
       if presets == nil { presets = NSSet() }
       let mutablePresets = mutableSetValueForKey("presets")
-      if let importedPresets = Preset.importObjectsFromData(presetData, context: managedObjectContext) {
-        mutablePresets.addObjectsFromArray(importedPresets)
-      }
+      mutablePresets.addObjectsFromArray(Preset.importObjectsFromData(presetData, context: moc))
     }
 
     // Try importing subcategories
-    if let subCategoryData = data["subcategories"] as? NSArray {
+    if let subCategoryData = data["subcategories"] as? NSArray, let moc = managedObjectContext {
       if subcategoriesSet == nil { subcategoriesSet = NSSet() }
       let mutableSubcategories = mutableSetValueForKey("subcategoriesSet")
-      if let importedSubcategories = PresetCategory.importObjectsFromData(subCategoryData, context: managedObjectContext) {
-        mutableSubcategories.addObjectsFromArray(importedSubcategories)
-      }
+      mutableSubcategories.addObjectsFromArray(PresetCategory.importObjectsFromData(subCategoryData, context: moc))
     }
 
   }
@@ -76,7 +72,7 @@ class PresetCategory: BankableModelCategory {
 
   :returns: MSDictionary!
   */
-  override func JSONDictionary() -> MSDictionary! {
+  override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     if let presetDictionaries = sortedByName(presets?.allObjects as? [Preset])?.map({$0.JSONDictionary()}) {

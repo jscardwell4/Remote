@@ -29,7 +29,7 @@ final class DetailImageRow: DetailRow {
   /**
   initWithPreviewableItem:
 
-  :param: previewableItem BankDisplayItemModel
+  :param: previewableItem BankItemModel
   */
   convenience init(previewableItem: PreviewableItem?) { self.init(); info = previewableItem?.preview }
 

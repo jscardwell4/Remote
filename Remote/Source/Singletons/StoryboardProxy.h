@@ -23,7 +23,7 @@
          BackgroundEditingViewController,
          RemoteEditingViewController,
          SettingsViewController,
-         MainMenuViewController,
+         MainMenuController,
          BackgroundEditingController,
          BankTableViewController,
          BankCollectionController,
@@ -48,7 +48,7 @@
 //+ (BankCollectionController *)bankCollectionViewController;
 //+ (BankViewController *)bankViewController;
 + (SettingsViewController *)settingsViewController;
-+ (MainMenuViewController *)mainMenuViewController;
++ (MainMenuController *)mainMenuViewController;
 
 + (UIViewController *)mainControllerWithID:(NSString *)storyboardID;
 + (UIViewController *)auxControllerWithID:(NSString *)storyboardID;

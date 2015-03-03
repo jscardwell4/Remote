@@ -6,9 +6,9 @@
 // Copyright (c) 2011 Moondeer Studios. All rights reserved.
 //
 #import "CommandSetCollection.h"
-#import "CommandSet.h"
 #import "CommandContainer_Private.h"
 
+#import "Remote-Swift.h"
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
 

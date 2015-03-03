@@ -10,94 +10,8 @@ import Foundation
 import UIKit
 import MoonKit
 
-/** Protocol inheriting from `BankDisplayItem` for actual items of interest */
-@objc protocol BankDisplayItemModel: class, NSObjectProtocol, RenameableModel, MSJSONExport, EditableItem {
-}
-
-func sortedByName<T: NamedModel>(array: [T]) -> [T] { return array.sorted{$0.0.name < $0.1.name} }
-func sortedByName<T: NamedModel>(array: [T]?) -> [T]? { return array?.sorted{$0.0.name < $0.1.name} }
-func sortByName<T: NamedModel>(inout array: [T]) { array.sort{$0.0.name < $0.1.name} }
-func sortByName<T: NamedModel>(inout array: [T]?) { array?.sort{$0.0.name < $0.1.name} }
-
-/** Protocol inheriting from `BankDisplayItem` for types that serve as a category for `BankDisplayItemModel` objects */
-@objc protocol BankDisplayItemCategory: class, NSObjectProtocol, MSJSONExport {
-
-  var title: String { get }
-
-  var items: [BankDisplayItemModel] { get set }
-
-  var previewableItems:   Bool { get }
-  var editableItems:      Bool { get }
-
-  var editable: Bool { get }
-
-  func save()
-  func delete()
-  func rollback()
-
-  var subcategories:  [BankDisplayItemCategory] { get set }
-  var parentCategory: BankDisplayItemCategory?   { get set }
-}
-
-
-/**
-recursiveItemCountForCategory:
-
-:param: category BankDisplayItemCategory
-
-:returns: Int
-*/
-func recursiveItemCountForCategory(category: BankDisplayItemCategory) -> Int {
-  return recursiveReduce(0, {$0.subcategories}, {$0.0 + $0.1.items.count}, category)
-}
-
-/**
-categoryPath:
-
-:param: category BankDisplayItemCategory?
-
-:returns: String?
-*/
-func categoryPath(category: BankDisplayItemCategory?) -> String? {
-  if category == nil { return nil }
-  var path: [String] = [category!.title]
-  var tempCategory = category!.parentCategory
-  while tempCategory != nil {
-    path.append(tempCategory!.title)
-    tempCategory = tempCategory!.parentCategory
-  }
-  return "/".join(path.reverse())
-}
-
-/**
-itemForCategory:atPath:
-
-:param: category BankDisplayItemCategory
-:param: path String
-
-:returns: BankDisplayItemModel?
-*/
-func itemForCategory(category: BankDisplayItemCategory, atPath path: String) -> BankDisplayItemModel? {
-  var item: BankDisplayItemModel?
-  var components = split(path){$0 == "/"}
-  let itemName = components.removeLast()
-  var currentCategory: BankDisplayItemCategory? = category
-  if components.count > 0 {
-    components = components.reverse()
-    var categoryName: String
-    while currentCategory != nil && components.count > 0 {
-      categoryName = components.removeLast()
-      currentCategory = currentCategory?.subcategories.filter{$0.title == categoryName}.first
-    }
-  }
-  if currentCategory != nil && components.count == 0 {
-    item = currentCategory?.items.filter{$0.name == itemName}.first
-  }
-  return item
-}
-
 protocol BankItemSelectionDelegate {
-  func bankController(bankController: BankController, didSelectItem item: BankDisplayItemModel)
+  func bankController(bankController: BankController, didSelectItem item: BankItemModel)
 }
 
 /** Protocol for types that want to display Bank toolbars, or other assets */
@@ -122,15 +36,15 @@ class Bank {
   struct RootCategory {
     let label: String
     let icon: UIImage
-    let subcategories: [BankDisplayItemCategory]
-    let items: [BankDisplayItemModel]
+    let subcategories: [BankItemCategory]
+    let items: [BankItemModel]
     let previewableItems:   Bool
     let editableItems:      Bool
 
     init(label: String,
          icon: UIImage,
-         subcategories: [BankDisplayItemCategory] = [],
-         items: [BankDisplayItemModel] = [],
+         subcategories: [BankItemCategory] = [],
+         items: [BankItemModel] = [],
          previewableItems: Bool = false,
          editableItems: Bool = false)
     {
@@ -143,68 +57,34 @@ class Bank {
     }
   }
 
-  /// A private structure to encapsulate the bank's constant properties
-  ////////////////////////////////////////////////////////////////////////////////
-  private struct BankProperties {
-
-    // Fonts
-    static let labelFont                  = UIFont(name: "Elysio-Medium", size: 15.0)!
-    static let boldLabelFont              = UIFont(name: "Elysio-Bold",   size: 17.0)!
-    static let largeBoldLabelFont         = UIFont(name: "Elysio-Bold",   size: 18.0)!
-    static let infoFont                   = UIFont(name: "Elysio-Light",  size: 15.0)!
-
-    // Colors
-    static let labelColor                 = UIColor(r: 59, g: 60, b: 64, a:255)!
-    static let infoColor                  = UIColor(r:159, g:160, b:164, a:255)!
-    static let backgroundColor            = UIColor.whiteColor()
-
-    // Images
-    static let exportBarItemImage         = UIImage(named:"702-share-toolbar")!
-    static let exportBarItemImageSelected = UIImage(named:"702-share-toolbar-selected")!
-    static let importBarItemImage         = UIImage(named:"703-download-toolbar")!
-    static let importBarItemImageSelected = UIImage(named:"703-download-toolbar-selected")!
-    static let searchBarItemImage         = UIImage(named:"708-search-toolbar")!
-    static let searchBarItemImageSelected = UIImage(named:"708-search-toolbar-selected")!
-
-    static let defaultRowHeight: CGFloat = 38.0
-    static let separatorStyle: UITableViewCellSeparatorStyle = .None
-    static let keyboardAppearance: UIKeyboardAppearance = .Dark
-
-    static let titleTextAttributes = [ NSFontAttributeName:            BankProperties.boldLabelFont,
-                                       NSForegroundColorAttributeName: BankProperties.labelColor ]
-  }
-  /// Font accessors
+  /// The bank's constant class properties
   ////////////////////////////////////////////////////////////////////////////////
 
-	class var labelFont                  : UIFont  { return BankProperties.labelFont     }
-	class var boldLabelFont              : UIFont  { return BankProperties.boldLabelFont }
-  class var largeBoldLabelFont         : UIFont  { return BankProperties.largeBoldLabelFont }
-	class var infoFont                   : UIFont  { return BankProperties.infoFont      }
+  // Fonts
+  static let labelFont                  = UIFont(name: "Elysio-Medium", size: 15.0)!
+  static let boldLabelFont              = UIFont(name: "Elysio-Bold",   size: 17.0)!
+  static let largeBoldLabelFont         = UIFont(name: "Elysio-Bold",   size: 18.0)!
+  static let infoFont                   = UIFont(name: "Elysio-Light",  size: 15.0)!
 
-  /// Color accessors
-  ////////////////////////////////////////////////////////////////////////////////
+  // Colors
+  static let labelColor                 = UIColor(r: 59, g: 60, b: 64, a:255)!
+  static let infoColor                  = UIColor(r:159, g:160, b:164, a:255)!
+  static let backgroundColor            = UIColor.whiteColor()
 
-  class var labelColor                 : UIColor { return BankProperties.labelColor      }
-	class var infoColor                  : UIColor { return BankProperties.infoColor       }
-  class var backgroundColor            : UIColor { return BankProperties.backgroundColor }
+  // Images
+  static let exportBarItemImage         = UIImage(named:"702-share-toolbar")!
+  static let exportBarItemImageSelected = UIImage(named:"702-share-toolbar-selected")!
+  static let importBarItemImage         = UIImage(named:"703-download-toolbar")!
+  static let importBarItemImageSelected = UIImage(named:"703-download-toolbar-selected")!
+  static let searchBarItemImage         = UIImage(named:"708-search-toolbar")!
+  static let searchBarItemImageSelected = UIImage(named:"708-search-toolbar-selected")!
 
-  /// Keyboard
-  ////////////////////////////////////////////////////////////////////////////////
+  static let defaultRowHeight: CGFloat = 38.0
+  static let separatorStyle: UITableViewCellSeparatorStyle = .None
+  static let keyboardAppearance: UIKeyboardAppearance = .Dark
 
-  class var keyboardAppearance: UIKeyboardAppearance { return BankProperties.keyboardAppearance }
-
-  /// Metrics
-  ////////////////////////////////////////////////////////////////////////////////
-
-  class var defaultRowHeight: CGFloat { return BankProperties.defaultRowHeight }
-
-  /// Styles
-  ////////////////////////////////////////////////////////////////////////////////
-
-  class var separatorStyle: UITableViewCellSeparatorStyle { return BankProperties.separatorStyle }
-
-  class var titleTextAttributes: [NSString : NSObject] { return BankProperties.titleTextAttributes }
-
+  static let titleTextAttributes = [ NSFontAttributeName:            Bank.boldLabelFont,
+                                     NSForegroundColorAttributeName: Bank.labelColor ]
 
   /**
   toolbarItemsForController:
@@ -216,8 +96,8 @@ class Bank {
   class func toolbarItemsForController(controller: BankController, addingItems items: [UIBarItem]? = nil) -> [UIBarItem] {
 
     let exportBarItem = ToggleImageBarButtonItem(
-      image: BankProperties.exportBarItemImage,
-      toggledImage: BankProperties.exportBarItemImageSelected) {
+      image: Bank.exportBarItemImage,
+      toggledImage: Bank.exportBarItemImageSelected) {
         (item: ToggleBarButtonItem) -> Void in
           controller.exportSelectionMode = item.isToggled
     }
@@ -225,8 +105,8 @@ class Bank {
     let spacer = UIBarButtonItem.fixedSpace(-10.0)
 
     let importBarItem = ToggleImageBarButtonItem(
-      image: BankProperties.importBarItemImage,
-      toggledImage: BankProperties.importBarItemImageSelected) {
+      image: Bank.importBarItemImage,
+      toggledImage: Bank.importBarItemImageSelected) {
         (item: ToggleBarButtonItem) -> Void in
 
           struct ImportToggleActionProperties { static var fileController: DocumentSelectionController? }
@@ -266,7 +146,7 @@ class Bank {
               } else {
                 rootViewController.view.addSubview(fileController!.view)
               }
-              rootViewController.view.stretchSubview(fileController!.view) //.constrain("|[child]| :: V:|[child]|", views: ["child": fileController!.view])
+              rootViewController.view.stretchSubview(fileController!.view)
             }
 
           }
@@ -304,8 +184,8 @@ class Bank {
   {
     var toolbarItems = toolbarItemsForController(controller as BankController, addingItems: items)
     let spacer = UIBarButtonItem.fixedSpace(-10.0)
-    let searchBarItem = ToggleImageBarButtonItem(image: BankProperties.searchBarItemImage,
-      toggledImage: BankProperties.searchBarItemImageSelected) {
+    let searchBarItem = ToggleImageBarButtonItem(image: Bank.searchBarItemImage,
+      toggledImage: Bank.searchBarItemImageSelected) {
         _ in controller.searchBankObjects()
     }
     toolbarItems += [searchBarItem, spacer]

@@ -17,20 +17,20 @@ class NetworkDevice: BankableModelObject {
   @NSManaged var componentDevices: NSSet?
 
   class func deviceExistsWithIdentifier(identifier: String) -> Bool {
-    return countOfObjectsWithPredicate(NSPredicate(format: "uniqueIdentifier == %@", identifier)) > 0
+    return countOfObjectsMatchingPredicate(∀"uniqueIdentifier == \"\(identifier)\"", context: DataManager.rootContext) > 0
   }
 
-  override func updateWithData(data: [NSObject : AnyObject]!) {
+  override func updateWithData(data: [NSObject:AnyObject]!) {
     super.updateWithData(data)
     uniqueIdentifier = data["unique-identifier"] as? String ?? uniqueIdentifier
   }
 
-  override class func importObjectFromData(data: [NSObject : AnyObject]!, context: NSManagedObjectContext) -> NetworkDevice? {
+  override class func importObjectFromData(data: [NSObject:AnyObject], context: NSManagedObjectContext) -> NetworkDevice? {
 
     var device: NetworkDevice?
 
     // Try getting the type of device to import
-    if let type = data?["type"] as? NSString {
+    if let type = data["type"] as? NSString {
 
       var entityName: String?
       var deviceType: NetworkDevice.Type = NetworkDevice.self
@@ -55,7 +55,7 @@ class NetworkDevice: BankableModelObject {
     return device
   }
   class var rootCategory: Bank.RootCategory {
-    let networkDevices = findAllSortedBy("name", ascending: true) as? [NetworkDevice]
+    let networkDevices = findAllSortedBy("name", ascending: true, context: DataManager.rootContext) as? [NetworkDevice]
     return Bank.RootCategory(label: "Network Devices",
                              icon: UIImage(named: "937-wifi-signal")!,
                              items: networkDevices ?? [],
@@ -66,7 +66,7 @@ class NetworkDevice: BankableModelObject {
 
 extension NetworkDevice: MSJSONExport {
 
-  override func JSONDictionary() -> MSDictionary! {
+  override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
       safeSetValue(uniqueIdentifier, forKey: "unique-identifier", inDictionary: dictionary)
       dictionary.compact()

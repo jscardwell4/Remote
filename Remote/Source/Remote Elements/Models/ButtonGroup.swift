@@ -240,13 +240,13 @@ class ButtonGroup: RemoteElement {
     var commandSet: CommandSet?
     if commandContainer != nil && commandContainer! is CommandSet { commandSet = commandContainer! as? CommandSet }
     else if let collection = commandContainer as? CommandSetCollection {
-      commandSet = collection.commandSetAtIndex(UInt(commandSetIndex))
+      commandSet = collection.commandSetAtIndex(commandSetIndex)
     }
     commandSet = commandSet?.faultedObject()
     if commandSet != nil {
       for button in childElements.array as! [Button] {
          if button.role == RemoteElement.Role.Tuck { continue }
-         button.command = commandSet![button.role.rawValue]
+         button.command = commandSet![button.role]
          button.enabled = button.command != nil
       }
     }
@@ -263,7 +263,7 @@ class ButtonGroup: RemoteElement {
     var commandSetLabel: NSAttributedString?
     if let collection = commandContainer as? CommandSetCollection {
       if contains(0 ..< Int(collection.count), idx) {
-        if let text = collection.labelAtIndex(UInt(idx)) {
+        if let text = collection.labelAtIndex(idx) {
           if let storage = labelAttributes.dictionary as? [String:AnyObject] {
             var titleAttributes = TitleAttributes(storage: storage)
             titleAttributes.text = text
@@ -278,7 +278,7 @@ class ButtonGroup: RemoteElement {
   /**
   updateWithData:
 
-  :param: data [NSObject AnyObject]
+  :param: data [NSObject:AnyObject]
   */
   override func updateWithData(data: [NSObject:AnyObject]) {
     super.updateWithData(data)

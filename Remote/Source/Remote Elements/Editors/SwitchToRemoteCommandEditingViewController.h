@@ -11,6 +11,7 @@
 @import CocoaLumberjack;
 @import MoonKit;
 #import "MSRemoteMacros.h"
+#import "Remote-Swift.h"
 
 @import UIKit;
 #import "CommandDetailViewController.h"

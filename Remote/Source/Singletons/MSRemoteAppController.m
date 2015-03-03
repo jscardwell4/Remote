@@ -11,13 +11,10 @@
 @import MoonKit;
 #import "MSRemoteMacros.h"
 
-#import "RemoteViewController.h"
-#import "MainMenuViewController.h"
 #import "SettingsManager.h"
 #import "ConnectionManager.h"
 #import "MSRemoteAppController.h"
 #import "StoryboardProxy.h"
-#import "RemoteController.h"
 #import "SettingsViewController.h"
 #import "Remote-Swift.h"
 @import CoreImage;
@@ -230,23 +227,25 @@ static const int msLogContext = 0;
 /// @param viewController
 - (void)showViewController:(UIViewController *)viewController {
   if (!viewController) ThrowInvalidNilArgument(viewController);
-  if ([self.window.rootViewController isKindOfClass:[MainMenuViewController class]])
+  if ([self.window.rootViewController isKindOfClass:[MainMenuController class]])
     self.window.rootViewController = viewController;
   else [self.window.rootViewController presentViewController:viewController animated:YES completion:nil];
 }
 
 /// showRemote
 - (void)showRemote {
-  [self showViewController:[RemoteController remoteController:[DataManager mainContext]].viewController];
+  ActivityController * controller = [[ActivityController alloc] initWithContext:[DataManager mainContext]];
+  ActivityViewController * viewController = [[ActivityViewController alloc] initWithController:controller];
+  [self showViewController:viewController];
 }
 
 /// showEditor
 - (void)showEditor {
   Remote * remote = nil;
-  if ([self.window.rootViewController isKindOfClass:[RemoteViewController class]]) {
-    remote = [self.window valueForKeyPath:@"rootViewController.remoteController.currentRemote"];
+  if ([self.window.rootViewController isKindOfClass:[ActivityViewController class]]) {
+    remote = [self.window valueForKeyPath:@"rootViewController.controller.currentRemote"];
   } else {
-    RemoteController * controller = [RemoteController remoteController:[DataManager mainContext]];
+    ActivityController * controller = [[ActivityController alloc] initWithContext:[DataManager mainContext]];
     remote = controller.homeRemote ?: [Remote createInContext:[DataManager mainContext]];
   }
   RemoteEditingController * editorVC = [[RemoteEditingController alloc] initWithElement:remote];
@@ -270,7 +269,7 @@ static const int msLogContext = 0;
 
 /// showMainMenu
 - (void)showMainMenu {
-  if (![self.window.rootViewController isKindOfClass:[MainMenuViewController class]])
+  if (![self.window.rootViewController isKindOfClass:[MainMenuController class]])
     self.window.rootViewController = [StoryboardProxy mainMenuViewController];
 }
 

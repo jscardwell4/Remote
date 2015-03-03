@@ -8,6 +8,7 @@
 
 #import "CommandDetailViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "Remote-Swift.h"
 
 @implementation CommandDetailViewController
 @synthesize

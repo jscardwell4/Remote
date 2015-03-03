@@ -76,14 +76,14 @@ class ButtonView: RemoteElementView {
 	override var subelementViews: OrderedSet<RemoteElementView> { return [] }
 
 	/**
-	executeActionWithOptions:
+	executeActionWithOption:
 
-	:param: options CommandOptions
+	:param: option CommandOption
 	*/
-	func executeActionWithOptions(options: CommandOptions) {
+	func executeActionWithOption(option: Command.Option) {
 		if !isEditing {
 			if button.command != nil && button.command!.indicator { activityIndicator.startAnimating() }
-			button.executeCommandWithOptions(options) {
+			button.executeCommandWithOption(option) {
 				(success: Bool, error: NSError?) -> Void in
 					if self.activityIndicator.isAnimating() {
 						NSOperationQueue.mainQueue().addOperationWithBlock {
@@ -120,7 +120,7 @@ class ButtonView: RemoteElementView {
 		if gestureRecognizer.state == .Ended {
 			button.highlighted = true
 			MSDelayedRunOnMain(1, {self.button.highlighted = false})
-			tapAction?() ?? executeActionWithOptions(.Default)
+			tapAction?() ?? executeActionWithOption(.Default)
 		}
 	}
 
@@ -131,7 +131,7 @@ class ButtonView: RemoteElementView {
 	*/
 	func handleLongPress(gestureRecognizer: UILongPressGestureRecognizer) {
 		if gestureRecognizer.state == .Ended {
-			pressAction?() ?? executeActionWithOptions(.LongPress)
+			pressAction?() ?? executeActionWithOption(.LongPress)
 
 		} else if gestureRecognizer.state == .Possible {
 			button.highlighted = true

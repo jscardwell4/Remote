@@ -17,7 +17,7 @@ class BankCollectionController: UICollectionViewController, BankController {
 	private let itemCellIdentifier = "ItemCell"
 	private let categoryCellIdentifier = "CategoryCell"
 
-  var category: BankDisplayItemCategory!
+  var category: BankItemCategory!
 
   enum Mode { case Default, Selection }
 
@@ -93,9 +93,9 @@ class BankCollectionController: UICollectionViewController, BankController {
   /**
   initWithCategory:
 
-  :param: category BankDisplayItemCategory
+  :param: category BankItemCategory
   */
-  init?(category: BankDisplayItemCategory, mode: Mode = .Default) {
+  init?(category: BankItemCategory, mode: Mode = .Default) {
   	self.mode = mode
     super.init(collectionViewLayout: BankCollectionLayout())
     self.category = category
@@ -213,12 +213,12 @@ class BankCollectionController: UICollectionViewController, BankController {
   	if mode == .Default {
 	    switch indexPath.section {
 	      case 0:
-	        let subcategory = category.subcategories[indexPath.row] as BankDisplayItemCategory
+	        let subcategory = category.subcategories[indexPath.row] as BankItemCategory
 	        category.subcategories.removeAtIndex(indexPath.row)
 	        subcategory.delete()
 
 	      default:
-	        let item = category.items[indexPath.row] as BankDisplayItemModel
+	        let item = category.items[indexPath.row] as BankItemModel
 	        category.items.removeAtIndex(indexPath.row)
 	        item.delete()
 
@@ -254,7 +254,9 @@ class BankCollectionController: UICollectionViewController, BankController {
         }
       default:
         if mode == .Default {
-          navigationController?.pushViewController(category.items[indexPath.row].detailController(), animated: true)
+          let item = category.items[indexPath.row]
+          let controller = item.detailController()
+          navigationController?.pushViewController(controller, animated: true)
         }
     }
   }

@@ -35,7 +35,7 @@
 
 + (BOOL)isNameAvailable:(NSString *)name;
 
-
+@property (nonatomic) BOOL active;
 @property (nonatomic, strong) MacroCommand * launchMacro; /// macro executed to commence activity
 @property (nonatomic, strong) MacroCommand * haltMacro;   /// macro executed to cease activity
 

@@ -1,6 +1,6 @@
 //
-//  helpers.swift
-//  Gyre-Swift
+//  MoonFunctions.swift
+//  MoonKit
 //
 //  Created by Jason Cardwell on 6/30/14.
 //  Copyright (c) 2014 Moondeer Studios. All rights reserved.
@@ -102,3 +102,20 @@ private let fileManager = NSFileManager.defaultManager()
 public func MSRaiseException(name:String, reason:String, userinfo:[NSObject:AnyObject]? = nil) {
   NSException(name: name, reason: reason, userInfo: userinfo).raise()
 }
+
+public func MSRaiseInvalidArgumentException(name:String, reason:String, userinfo:[NSObject:AnyObject]? = nil) {
+  MSRaiseException(NSInvalidArgumentException, reason, userinfo: userinfo)
+}
+
+public func MSRaiseInvalidNilArgumentException(name:String, arg:String, userinfo:[NSObject:AnyObject]? = nil) {
+  MSRaiseException(NSInvalidArgumentException, "\(arg) must not be nil", userinfo: userinfo)
+}
+
+public func MSRaiseInvalidIndexException(name:String, arg:String, userinfo:[NSObject:AnyObject]? = nil) {
+  MSRaiseException(NSRangeException, "\(arg) out of range", userinfo: userinfo)
+}
+
+public func MSRaiseInternalInconsistencyException(name:String, reason:String, userinfo:[NSObject:AnyObject]? = nil) {
+  MSRaiseException(NSInternalInconsistencyException, reason, userinfo: userinfo)
+}
+

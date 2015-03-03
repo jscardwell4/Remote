@@ -11,15 +11,15 @@ import UIKit
 import CoreData
 import MoonKit
 
-class BankableModelCategory: NamedModelObject, BankDisplayItemCategory {
+class BankableModelCategory: NamedModelObject, BankItemCategory {
 
   override class func requiresUniqueNaming() -> Bool { return true }
 
   class func itemType() -> BankableModelObject.Type { return BankableModelObject.self }
   var title: String { return name ?? "" }
-  var items: [BankDisplayItemModel] { get { return [] } set {} }
-  var subcategories: [BankDisplayItemCategory] { get { return [] } set {} }
-  var parentCategory: BankDisplayItemCategory?
+  var items: [BankItemModel] { get { return [] } set {} }
+  var subcategories: [BankItemCategory] { get { return [] } set {} }
+  var parentCategory: BankItemCategory?
 
   var totalItemCount: Int { return recursiveItemCountForCategory(self) }
 
@@ -34,6 +34,6 @@ class BankableModelCategory: NamedModelObject, BankDisplayItemCategory {
 
   :returns: MSDictionary!
   */
-  override func JSONDictionary() -> MSDictionary! { return super.JSONDictionary() }
+  override func JSONDictionary() -> MSDictionary { return super.JSONDictionary() }
 
 }

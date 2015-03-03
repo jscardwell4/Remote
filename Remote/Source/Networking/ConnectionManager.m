@@ -9,7 +9,6 @@
 #import "SettingsManager.h"
 #import "ITachConnectionManager.h"
 #import "ISYConnectionManager.h"
-#import "Command.h"
 #import "Remote-Swift.h"
 
 #define SUPPRESS_DETECT_DEVICES

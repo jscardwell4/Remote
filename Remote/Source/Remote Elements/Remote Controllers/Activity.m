@@ -7,7 +7,6 @@
 //
 #import "Activity.h"
 #import "Command.h"
-#import "RemoteController.h"
 //#import "RemoteElement.h"
 //#import "Remote.h"
 #import "RemoteElementImportSupportFunctions.h"
@@ -22,7 +21,7 @@
 
 @implementation Activity
 
-@dynamic launchMacro, haltMacro, remote;
+@dynamic launchMacro, haltMacro, remote, active;
 
 + (instancetype)activityWithName:(NSString *)name {
   return [self activityWithName:name inContext:[DataManager mainContext]];
@@ -55,7 +54,7 @@
 
 - (void)launchActivity:(void (^)(BOOL, NSError *))completion {
 
-  RemoteController * controller = [RemoteController remoteController:self.managedObjectContext];
+  ActivityController * controller = [[ActivityController alloc] initWithContext:self.managedObjectContext];
 
   if (self.launchMacro) {
 
@@ -87,7 +86,7 @@
 
 - (void)haltActivity:(void (^)(BOOL, NSError *))completion {
 
-  RemoteController * controller = [RemoteController remoteController:self.managedObjectContext];
+  ActivityController * controller = [[ActivityController alloc] initWithContext:self.managedObjectContext];
 
   if (self.haltMacro && controller.currentActivity == self) {
 
@@ -120,7 +119,7 @@
 
 - (void)launchOrHault:(void (^)(BOOL success, NSError * error))completion {
 
-  RemoteController * controller = [RemoteController remoteController:self.managedObjectContext];
+  ActivityController * controller = [[ActivityController alloc] initWithContext:self.managedObjectContext];
 
   if (controller.currentActivity == self) [self haltActivity:completion];
   else {

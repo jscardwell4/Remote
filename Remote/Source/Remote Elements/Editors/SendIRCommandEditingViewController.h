@@ -15,6 +15,8 @@
 @import UIKit;
 #import "CommandDetailViewController.h"
 
+#import "Remote-Swift.h"
+
 @interface SendIRCommandEditingViewController : CommandDetailViewController
     <MSPickerInputButtonDelegate>
 @property (nonatomic, strong) SendIRCommand * command;

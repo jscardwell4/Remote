@@ -11,41 +11,6 @@ import UIKit
 import CoreData
 import MoonKit
 
-extension UIControlState: JSONValueConvertible {
-  public var JSONValue: String {
-    var flags: [String] = []
-    if self & UIControlState.Highlighted != nil { flags.append("highlighted") }
-    if self & UIControlState.Selected    != nil { flags.append("selected")    }
-    if self & UIControlState.Disabled    != nil { flags.append("disabled")    }
-    if flags.count == 0 { flags.append("normal") }
-    return " ".join(flags)
-  }
-  public init?(JSONValue: String) {
-    let flags = split(JSONValue){$0 == " "}
-    if !contains(1...3, flags.count) { return nil }
-    var state = UIControlState.Normal
-    for flag in flags {
-      switch flag {
-        case "highlighted": state |= UIControlState.Highlighted
-        case "selected":    state |= UIControlState.Selected
-        case "disabled":    state |= UIControlState.Disabled
-        case "normal":      if state != UIControlState.Normal { return nil }
-        default:            return nil
-      }
-    }
-    self = state
-  }
-}
-
-extension UIControlState: EnumerableType {
-  public static var all: [UIControlState] {
-    return [.Normal, .Highlighted, .Selected, .Disabled,
-      .Highlighted | .Selected, .Highlighted | .Disabled,
-      .Highlighted | .Selected | .Disabled]
-  }
-  public static func enumerate(block: (UIControlState) -> Void) { apply(all, block) }
-}
-
 @objc(ControlStateTitleSet)
 class ControlStateTitleSet: ControlStateSet {
 
@@ -88,7 +53,7 @@ class ControlStateTitleSet: ControlStateSet {
           setValue(storage, forKey: property!)
         }
         assert(storage != nil, "what happened? we should have created storage if it didn't exist")
-        storage?.dictionary = attributes!.dictionaryValue as [NSObject : AnyObject]
+        storage?.dictionary = attributes!.dictionaryValue as [NSObject:AnyObject]
       }
     }
 
@@ -137,7 +102,7 @@ class ControlStateTitleSet: ControlStateSet {
   /**
   updateWithData:
 
-  :param: data [NSObject AnyObject]
+  :param: data [NSObject:AnyObject]
   */
   override func updateWithData(data: [NSObject:AnyObject]) {
     super.updateWithData(data)
@@ -160,8 +125,12 @@ class ControlStateTitleSet: ControlStateSet {
     let dictionary = super.JSONDictionary()
     UIControlState.enumerate {
       if let attributes = self.titleAttributesForState($0) { dictionary[$0.JSONValue] = attributes.JSONValue }
-      else { dictionary.removeObjectForKey($0.JSONValue) }
     }
+
+
+    dictionary.compact()
+    dictionary.compress()
+
     return dictionary
   }
 

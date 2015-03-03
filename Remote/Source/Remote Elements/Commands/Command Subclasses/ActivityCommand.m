@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Moondeer Studios. All rights reserved.
 //
 #import "Command_Private.h"
-#import "Activity.h"
 #import "Remote-Swift.h"
 
 static int       ddLogLevel   = LOG_LEVEL_DEBUG;
@@ -16,7 +15,7 @@ static const int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CO
 @interface ActivityCommandOperation : CommandOperation @end
 
 
-@implementation ActivityCommand
+/*@implementation ActivityCommand
 
 @dynamic activity;
 
@@ -44,12 +43,6 @@ static const int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CO
 }
 
 - (void)updateWithData:(NSDictionary *)data {
-  /*
-     {
-     "class": "activity",
-     "activity.uuid": "8C1918C0-300F-4DBF-AC09-B8DB9CF55290" // Sonos Activity
-     }
-   */
 
   [super updateWithData:data];
 
@@ -67,13 +60,14 @@ static const int msLogContext = (LOG_CONTEXT_COMMAND | LOG_CONTEXT_FILE | LOG_CO
 }
 
 @end
+*/
 
 @implementation ActivityCommandOperation
 
 - (void)main {
   @try {
     Activity * activity = ((ActivityCommand *)_command).activity;
-    [activity launchOrHault:^(BOOL success, NSError * error)
+    [activity launchOrHaltActivity:^(BOOL success, NSError * error)
     {
       _success = success;
       _finished = YES;

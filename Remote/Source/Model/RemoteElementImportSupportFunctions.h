@@ -45,9 +45,9 @@ RERole remoteElementRoleFromImportKey(NSString * importKey);
 #pragma mark - Commands
 ////////////////////////////////////////////////////////////////////////////////
 
-SystemCommandType systemCommandTypeFromImportKey(NSString * importKey);
-SwitchCommandType switchCommandTypeFromImportKey(NSString * importKey);
-CommandSetType commandSetTypeFromImportKey(NSString * importKey);
+//SystemCommandType systemCommandTypeFromImportKey(NSString * importKey);
+//SwitchCommandType switchCommandTypeFromImportKey(NSString * importKey);
+//CommandSetType commandSetTypeFromImportKey(NSString * importKey);
 Class commandClassForImportKey(NSString * importKey);
 
 ////////////////////////////////////////////////////////////////////////////////

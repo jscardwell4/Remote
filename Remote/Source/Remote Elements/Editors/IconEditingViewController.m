@@ -8,10 +8,6 @@
 #import "AttributeEditingViewController_Private.h"
 #import "IconEditingViewController.h"
 #import "RemoteElementEditingViewController.h"
-#import "ControlStateSet.h"
-#import "ControlStateImageSet.h"
-//#import "ControlStateTitleSet.h"
-#import "ControlStateColorSet.h"
 #import <QuartzCore/QuartzCore.h>
 //#import "RemoteElementView.h"
 //#import "Button.h"
@@ -194,7 +190,7 @@ delegate             = _delegate;
 
     if (_currentColor) {
         _iconColorButton.backgroundColor = _currentColor;
-        _button.icons[_controlState].color = _currentColor;
+        ((ImageView *)_button.icons[_controlState]).color = _currentColor;
     }
 }
 

@@ -13,7 +13,7 @@ import MoonKit
 class BankItemDetailController: NamedItemDetailController {
 
 
-  var model: BankDisplayItemModel! { return item as? BankDisplayItemModel }
+  var model: BankItemModel! { return item as? BankItemModel }
   let context: NSManagedObjectContext!
 
   /**
@@ -43,17 +43,36 @@ class BankItemDetailController: NamedItemDetailController {
   /**
   initWithModel:
 
+  :param: model BankItemModel
+  */
+  init(var model: BankItemModel) {
+    if let dataModel = model as? BankableModelObject {
+      context = DataManager.mainContext()
+      let objectID = dataModel.objectID
+      var error: NSError?
+      if let m = context.existingObjectWithID(objectID, error: &error) as? BankItemModel {
+        model = m
+      }
+    } else {
+      context = nil
+    }
+    super.init(namedItem: model)
+  }
+
+  /**
+  initWithModel:
+
   :param: model BankableModelObject
   */
-  init(model: BankableModelObject) {
-    assert(model.managedObjectContext != nil, "initializing controller with deleted model")
-    context = DataManager.childContextForContext(model.managedObjectContext!)
-    context.nametag = "bank item detail controller"
-    let objectID = model.objectID
-    var error: NSError?
-    let existingObject = context.existingObjectWithID(objectID, error: &error)
-    if MSHandleError(error, message: "failed to retrieve existing object by ID") { fatalError("aborting…") }
-    super.init(namedItem: existingObject as! BankableModelObject)
-  }
+//  init(model: BankableModelObject) {
+//    assert(model.managedObjectContext != nil, "initializing controller with deleted model")
+//    context = DataManager.childContextForContext(model.managedObjectContext!)
+//    context.nametag = "bank item detail controller"
+//    let objectID = model.objectID
+//    var error: NSError?
+//    let existingObject = context.existingObjectWithID(objectID, error: &error)
+//    if MSHandleError(error, message: "failed to retrieve existing object by ID") { fatalError("aborting…") }
+//    super.init(namedItem: existingObject as! BankableModelObject)
+//  }
 
 }

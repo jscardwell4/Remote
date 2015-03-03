@@ -15,7 +15,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 #pragma unused(ddLogLevel,msLogContext)
 
-MSSTRING_CONST ModelObjectInitializingContextName = @"ModelObjectInitializingContextName";
+//MSSTRING_CONST ModelObjectInitializingContextName = @"ModelObjectInitializingContextName";
 
 @interface ModelObject (CoreDataGeneratedAccessors)
 @property (nonatomic, copy) NSString * primitiveUuid;
@@ -37,9 +37,9 @@ MSSTRING_CONST ModelObjectInitializingContextName = @"ModelObjectInitializingCon
 /// objectWithUUID:
 /// @param uuid
 /// @return instancetype
-+ (instancetype)objectWithUUID:(NSString *)uuid {
-  return [self objectWithUUID:uuid context:[DataManager mainContext]];
-}
+//+ (instancetype)objectWithUUID:(NSString *)uuid {
+//  return [self objectWithUUID:uuid context:[DataManager mainContext]];
+//}
 
 /// This method will create a new model object with the specified uuid. if `uuid` is nil or invalid
 /// an automatically generated uuid is used. Throws an exception if the context is nil or if an object
@@ -90,40 +90,40 @@ MSSTRING_CONST ModelObjectInitializingContextName = @"ModelObjectInitializingCon
 
 /// keyedCollection
 /// @return id
-- (id)keyedCollection { return nil; }
+//- (id)keyedCollection { return nil; }
 
 /// indexedCollection
 /// @return id
-- (id)indexedCollection { return nil; }
+//- (id)indexedCollection { return nil; }
 
 /// objectForKeyedSubscript:
 /// @param uuid
 /// @return id
-- (id)objectForKeyedSubscript:(NSString *)uuid { return memberOfCollectionWithUUID([self keyedCollection], uuid); }
+//- (id)objectForKeyedSubscript:(NSString *)uuid { return memberOfCollectionWithUUID([self keyedCollection], uuid); }
 
 /// objectAtIndexedSubscript:
 /// @param idx
 /// @return id
 //- (id)objectAtIndexedSubscript:(NSUInteger)idx { return memberOfCollectionAtIndex([self indexedCollection], idx); }
 
-ModelObject *memberOfCollectionWithUUID(id collection, NSString * uuid) {
+//ModelObject *memberOfCollectionWithUUID(id collection, NSString * uuid) {
+//
+//  if (![ModelObject isValidUUID:uuid]) ThrowInvalidArgument(uuid, "uuid provided is not valid");
+//
+//  NSSet * set = nil;
+//
+//  if ([collection isKindOfClass:[NSSet class]])             set = (NSSet *)collection;
+//  else if ([collection isKindOfClass:[NSOrderedSet class]]) set = [(NSOrderedSet *)collection set];
+//
+//  return [set objectPassingTest:^BOOL(id obj) {
+//    return ([obj isKindOfClass:[ModelObject class]] && [((ModelObject *)obj).uuid isEqualToString : uuid]);
+//  }];
+//
+//}
 
-  if (![ModelObject isValidUUID:uuid]) ThrowInvalidArgument(uuid, "uuid provided is not valid");
-
-  NSSet * set = nil;
-
-  if ([collection isKindOfClass:[NSSet class]])             set = (NSSet *)collection;
-  else if ([collection isKindOfClass:[NSOrderedSet class]]) set = [(NSOrderedSet *)collection set];
-
-  return [set objectPassingTest:^BOOL(id obj) {
-    return ([obj isKindOfClass:[ModelObject class]] && [((ModelObject *)obj).uuid isEqualToString : uuid]);
-  }];
-
-}
-
-ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
-  return ([collection respondsToSelector:@selector(objectAtIndexedSubscript:)] ? collection[idx] : nil);
-}
+//ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
+//  return ([collection respondsToSelector:@selector(objectAtIndexedSubscript:)] ? collection[idx] : nil);
+//}
 
 
 @end
@@ -215,29 +215,29 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 /// @param objectID
 /// @param error
 /// @return instancetype
-+ (instancetype)existingObjectWithID:(NSManagedObjectID *)objectID  error:(NSError **)error{
-  return [self existingObjectWithID:objectID context:[DataManager mainContext] error:error];
-}
+//+ (instancetype)existingObjectWithID:(NSManagedObjectID *)objectID  error:(NSError **)error{
+//  return [self existingObjectWithID:objectID context:[DataManager mainContext] error:error];
+//}
 
 /// existingObjectWithID:context:error:
 /// @param objectID
 /// @param moc
 /// @param error
 /// @return instancetype
-+ (instancetype)existingObjectWithID:(NSManagedObjectID *)objectID
-                             context:(NSManagedObjectContext *)moc
-                               error:(NSError **)error
-{
-  NSManagedObject * object = [moc existingObjectWithID:objectID error:error];
-  return [object isKindOfClass:self] ? (ModelObject *)object : nil;
-}
+//+ (instancetype)existingObjectWithID:(NSManagedObjectID *)objectID
+//                             context:(NSManagedObjectContext *)moc
+//                               error:(NSError **)error
+//{
+//  NSManagedObject * object = [moc existingObjectWithID:objectID error:error];
+//  return [object isKindOfClass:self] ? (ModelObject *)object : nil;
+//}
 
 /// existingObjectWithUUID:
 /// @param uuid
 /// @return instancetype
-+ (instancetype)existingObjectWithUUID:(NSString *)uuid {
-  return [self existingObjectWithUUID:uuid context:[DataManager mainContext]];
-}
+//+ (instancetype)existingObjectWithUUID:(NSString *)uuid {
+//  return [self existingObjectWithUUID:uuid context:[DataManager mainContext]];
+//}
 
 /// existingObjectWithUUID:context:
 /// @param uuid
@@ -276,16 +276,16 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 /// @param attribute
 /// @param value
 /// @return instancetype
-+ (instancetype)findFirstByAttribute:(NSString *)attribute withValue:(id)value {
-  return [self findFirstByAttribute:attribute withValue:value context:[DataManager mainContext]];
-}
+//+ (instancetype)findFirstByAttribute:(NSString *)attribute withValue:(id)value {
+//  return [self findFirstByAttribute:attribute withValue:value context:[DataManager mainContext]];
+//}
 
 /// allValuesForAttribute:
 /// @param attribute
 /// @return NSArray *
-+ (NSArray *)allValuesForAttribute:(NSString *)attribute {
-  return [self allValuesForAttribute:attribute context:[DataManager mainContext]];
-}
+//+ (NSArray *)allValuesForAttribute:(NSString *)attribute {
+//  return [self allValuesForAttribute:attribute context:[DataManager mainContext]];
+//}
 
 /// allValuesForAttribute:context:
 /// @param attribute
@@ -306,9 +306,9 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 
 }
 
-+ (instancetype)findFirstMatchingPredicate:(NSPredicate *)predicate {
-  return [self findAllMatchingPredicate:predicate].firstObject;
-}
+//+ (instancetype)findFirstMatchingPredicate:(NSPredicate *)predicate {
+//  return [self findAllMatchingPredicate:predicate].firstObject;
+//}
 
 + (instancetype)findFirstMatchingPredicate:(NSPredicate *)predicate context:(NSManagedObjectContext *)moc {
   return [self findAllMatchingPredicate:predicate context:moc].firstObject;
@@ -317,9 +317,9 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 /// findAllMatchingPredicate:
 /// @param predicate
 /// @return NSArray *
-+ (NSArray *)findAllMatchingPredicate:(NSPredicate *)predicate {
-  return [self findAllMatchingPredicate:predicate context:[DataManager mainContext]];
-}
+//+ (NSArray *)findAllMatchingPredicate:(NSPredicate *)predicate {
+//  return [self findAllMatchingPredicate:predicate context:[DataManager mainContext]];
+//}
 
 /// findAllMatchingPredicate:context:
 /// @param predicate
@@ -336,7 +336,7 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 
 /// findAll
 /// @return NSArray *
-+ (NSArray *)findAll { return [self findAllInContext:[DataManager mainContext]]; }
+//+ (NSArray *)findAll { return [self findAllInContext:[DataManager mainContext]]; }
 
 /// findAllInContext:
 /// @param moc
@@ -355,9 +355,9 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 /// @param sortBy
 /// @param ascending
 /// @return NSArray *
-+ (NSArray *)findAllSortedBy:(NSString *)sortBy ascending:(BOOL)ascending {
-  return [self findAllSortedBy:sortBy ascending:ascending context:[DataManager mainContext]];
-}
+//+ (NSArray *)findAllSortedBy:(NSString *)sortBy ascending:(BOOL)ascending {
+//  return [self findAllSortedBy:sortBy ascending:ascending context:[DataManager mainContext]];
+//}
 
 /// findAllSortedBy:ascending:context:
 /// @param sortBy
@@ -386,7 +386,7 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 ////////////////////////////////////////////////////////////////////////////////
 @implementation ModelObject (Counting)
 
-+ (NSUInteger)countOfObjects { return [self countOfObjectsInContext:[DataManager mainContext]]; }
+//+ (NSUInteger)countOfObjects { return [self countOfObjectsInContext:[DataManager mainContext]]; }
 
 + (NSUInteger)countOfObjectsInContext:(NSManagedObjectContext *)moc {
   NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:ClassString(self)];
@@ -418,9 +418,9 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 /// countOfObjectsWithPredicate:
 /// @param predicate
 /// @return NSUInteger
-+ (NSUInteger)countOfObjectsWithPredicate:(NSPredicate *)predicate {
-  return [self countOfObjectsWithPredicate:predicate context:[DataManager mainContext]];
-}
+//+ (NSUInteger)countOfObjectsWithPredicate:(NSPredicate *)predicate {
+//  return [self countOfObjectsWithPredicate:predicate context:[DataManager mainContext]];
+//}
 
 @end
 
@@ -440,9 +440,9 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 
 /// deleteAllMatchingPredicate:
 /// @param predicate
-+ (void)deleteAllMatchingPredicate:(NSPredicate *)predicate {
-  [self deleteAllMatchingPredicate:predicate context:[DataManager mainContext]];
-}
+//+ (void)deleteAllMatchingPredicate:(NSPredicate *)predicate {
+//  [self deleteAllMatchingPredicate:predicate context:[DataManager mainContext]];
+//}
 
 @end
 
@@ -496,9 +496,9 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 /// @param groupBy
 /// @param sortBy
 /// @return NSFetchedResultsController *
-+ (NSFetchedResultsController *)fetchAllGroupedBy:(NSString *)groupBy sortedBy:(NSString *)sortBy {
-  return [self fetchAllGroupedBy:groupBy withPredicate:nil sortedBy:sortBy ascending:YES];
-}
+//+ (NSFetchedResultsController *)fetchAllGroupedBy:(NSString *)groupBy sortedBy:(NSString *)sortBy {
+//  return [self fetchAllGroupedBy:groupBy withPredicate:nil sortedBy:sortBy ascending:YES];
+//}
 
 /// fetchAllGroupedBy:withPredicate:sortedBy:ascending:
 /// @param groupBy
@@ -506,16 +506,16 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 /// @param sortBy
 /// @param ascending
 /// @return NSFetchedResultsController *
-+ (NSFetchedResultsController *)fetchAllGroupedBy:(NSString *)groupBy
-                                    withPredicate:(NSPredicate *)predicate
-                                         sortedBy:(NSString *)sortBy
-                                        ascending:(BOOL)ascending {
-  return [self fetchAllGroupedBy:groupBy
-                   withPredicate:predicate
-                        sortedBy:sortBy
-                       ascending:ascending
-                       context:[DataManager mainContext]];
-}
+//+ (NSFetchedResultsController *)fetchAllGroupedBy:(NSString *)groupBy
+//                                    withPredicate:(NSPredicate *)predicate
+//                                         sortedBy:(NSString *)sortBy
+//                                        ascending:(BOOL)ascending {
+//  return [self fetchAllGroupedBy:groupBy
+//                   withPredicate:predicate
+//                        sortedBy:sortBy
+//                       ascending:ascending
+//                       context:[DataManager mainContext]];
+//}
 
 @end
 
@@ -526,53 +526,53 @@ ModelObject *memberOfCollectionAtIndex(id collection, NSUInteger idx) {
 
 /// deepDescriptionDictionary
 /// @return MSDictionary *
-- (MSDictionary *)deepDescriptionDictionary {
-  MSDictionary * dd = [MSDictionary dictionary];
-
-  dd[@"class"]   = ClassString([self class]);
-  dd[@"address"] = $(@"%p", self);
-  dd[@"uuid"]    = self.uuid;
-  dd[@"context"] = $(@"%p%@",
-                     self.managedObjectContext,
-                     (self.managedObjectContext.nametag
-                      ? $(@":'%@'", self.managedObjectContext.nametag)
-                      : @""));
-
-  return (MSDictionary *)dd;
-}
+//- (MSDictionary *)deepDescriptionDictionary {
+//  MSDictionary * dd = [MSDictionary dictionary];
+//
+//  dd[@"class"]   = ClassString([self class]);
+//  dd[@"address"] = $(@"%p", self);
+//  dd[@"uuid"]    = self.uuid;
+//  dd[@"context"] = $(@"%p%@",
+//                     self.managedObjectContext,
+//                     (self.managedObjectContext.nametag
+//                      ? $(@":'%@'", self.managedObjectContext.nametag)
+//                      : @""));
+//
+//  return (MSDictionary *)dd;
+//}
 
 /// deepDescription
 /// @return NSString *
-- (NSString *)deepDescription { return [self deepDescriptionWithOptions:0 indentLevel:1]; }
+//- (NSString *)deepDescription { return [self deepDescriptionWithOptions:0 indentLevel:1]; }
 
 /// deepDescriptionWithOptions:indentLevel:
 /// @param options
 /// @param level
 /// @return NSString *
-- (NSString *)deepDescriptionWithOptions:(NSUInteger)options indentLevel:(NSUInteger)level {
-  MSDictionary * dd = [self deepDescriptionDictionary];
-
-  return [dd formattedDescriptionWithOptions:options levelIndent:level];
-}
+//- (NSString *)deepDescriptionWithOptions:(NSUInteger)options indentLevel:(NSUInteger)level {
+//  MSDictionary * dd = [self deepDescriptionDictionary];
+//
+//  return [dd formattedDescriptionWithOptions:options levelIndent:level];
+//}
 
 /// modelObjectDescription
 /// @return NSString *
-- (NSString *)modelObjectDescription {
-  return (([self conformsToProtocol:@protocol(NamedModel)])
-          ? namedModelObjectDescription((ModelObject<NamedModel> *)self)
-          : unnamedModelObjectDescription(self)
-  );
-}
+//- (NSString *)modelObjectDescription {
+//  return (([self conformsToProtocol:@protocol(NamedModel)])
+//          ? namedModelObjectDescription((ModelObject<NamedModel> *)self)
+//          : unnamedModelObjectDescription(self)
+//  );
+//}
 
-NSString *namedModelObjectDescription(ModelObject<NamedModel> * modelObject) {
-  return (modelObject
-          ? $(@"%@(%p):'%@'", modelObject.uuid, modelObject, (modelObject.name ?: @""))
-          : @"nil");
-}
+//NSString *namedModelObjectDescription(ModelObject<NamedModel> * modelObject) {
+//  return (modelObject
+//          ? $(@"%@(%p):'%@'", modelObject.uuid, modelObject, (modelObject.name ?: @""))
+//          : @"nil");
+//}
 
-NSString *unnamedModelObjectDescription(ModelObject * modelObject) {
-  return (modelObject ? $(@"%@(%p)", modelObject.uuid, modelObject) : @"nil");
-}
+//NSString *unnamedModelObjectDescription(ModelObject * modelObject) {
+//  return (modelObject ? $(@"%@(%p)", modelObject.uuid, modelObject) : @"nil");
+//}
 
 @end
 
@@ -597,10 +597,10 @@ NSString *unnamedModelObjectDescription(ModelObject * modelObject) {
 /// writeJSONToFile:
 /// @param file
 /// @return BOOL
-- (BOOL)writeJSONToFile:(NSString *)file {
-  NSString * json = self.JSONString;
-  return StringIsEmpty(json) ? NO : [json writeToFile:file];
-}
+//- (BOOL)writeJSONToFile:(NSString *)file {
+//  NSString * json = self.JSONString;
+//  return StringIsEmpty(json) ? NO : [json writeToFile:file];
+//}
 
 /// attributeValueIsDefault:
 /// @param attributeName

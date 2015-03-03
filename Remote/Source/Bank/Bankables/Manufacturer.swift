@@ -29,35 +29,33 @@ class Manufacturer: BankableModelObject {
     return manufacturer
   }
 
-  override func updateWithData(data: [NSObject : AnyObject]!) {
+  override func updateWithData(data: [NSObject:AnyObject]!) {
     super.updateWithData(data)
 
-    if let codeSetsData = data["codesets"] as? NSArray {
+    if let codeSetsData = data["codesets"] as? NSArray, let moc = managedObjectContext {
       if codeSets == nil { codeSets = NSSet() }
       let mutableCodeSets = mutableSetValueForKey("codeSets")
-      if let importedCodeSets = IRCodeSet.importObjectsFromData(codeSetsData, context: managedObjectContext) {
-        mutableCodeSets.addObjectsFromArray(importedCodeSets)
-        if codes == nil { codes = NSSet() }
-        let mutableCodes = mutableSetValueForKey("codes")
+      let importedCodeSets = IRCodeSet.importObjectsFromData(codeSetsData, context: moc)
+      mutableCodeSets.addObjectsFromArray(importedCodeSets)
+      if codes == nil { codes = NSSet() }
+      let mutableCodes = mutableSetValueForKey("codes")
 
-        if let c = importedCodeSets as? [IRCodeSet] {
-          let importedCodes = flattened(c.map({$0.codes?.allObjects ?? []}))
-          mutableCodes.addObjectsFromArray(importedCodes)
-        }
+      if let c = importedCodeSets as? [IRCodeSet] {
+        let importedCodes = flattened(c.map({$0.codes?.allObjects ?? []}))
+        mutableCodes.addObjectsFromArray(importedCodes)
       }
     }
 
-    if let devicesData = data["devices"] as? NSArray {
+    if let devicesData = data["devices"] as? NSArray, let moc = managedObjectContext {
       if devices == nil { devices = NSSet() }
       let mutableDevices = mutableSetValueForKey("devices")
-      if let importedDevices = ComponentDevice.importObjectsFromData(devicesData, context: managedObjectContext) {
-        mutableDevices.addObjectsFromArray(importedDevices)
-      }
+      let importedDevices = ComponentDevice.importObjectsFromData(devicesData, context: moc)
+      mutableDevices.addObjectsFromArray(importedDevices)
     }
   }
 
   class var rootCategory: Bank.RootCategory {
-    let manufacturers = findAllSortedBy("name", ascending: true) as? [Manufacturer]
+    let manufacturers = findAllSortedBy("name", ascending: true, context: DataManager.rootContext) as? [Manufacturer]
     return Bank.RootCategory(label: "Manufacturers",
                              icon: UIImage(named: "1022-factory")!,
                              items: manufacturers ?? [],
@@ -75,7 +73,7 @@ class Manufacturer: BankableModelObject {
 
 extension Manufacturer: MSJSONExport {
 
-  override func JSONDictionary() -> MSDictionary! {
+  override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     safeSetValueForKeyPath("codeSets.JSONDictionary", forKey: "codesets", inDictionary: dictionary)

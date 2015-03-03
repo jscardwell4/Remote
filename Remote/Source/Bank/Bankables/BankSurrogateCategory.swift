@@ -12,12 +12,12 @@ import UIKit
 import MoonKit
 
 @objc(BankSurrogateCategory)
-class BankSurrogateCategory: NSObject, BankDisplayItemCategory {
+class BankSurrogateCategory: NSObject, BankItemCategory {
 
-  var subcategories: [BankDisplayItemCategory] = []
-  var parentCategory: BankDisplayItemCategory?
+  var subcategories: [BankItemCategory] = []
+  var parentCategory: BankItemCategory?
 
-	var items: [BankDisplayItemModel] = []
+	var items: [BankItemModel] = []
   let title: String
 
   let previewableItems:   Bool
@@ -29,9 +29,18 @@ class BankSurrogateCategory: NSObject, BankDisplayItemCategory {
 
   var editable: Bool { return false }
 
+  /**
+  initWithTitle:subcategories:items:previewableItems:editableItems:
+
+  :param: title String
+  :param: subcategories [BankItemCategory] = []
+  :param: items [BankItemModel] = []
+  :param: previewableItems Bool = false
+  :param: editableItems Bool = false
+  */
   init(title: String,
-       subcategories: [BankDisplayItemCategory] = [],
-       items: [BankDisplayItemModel] = [],
+       subcategories: [BankItemCategory] = [],
+       items: [BankItemModel] = [],
        previewableItems: Bool = false,
        editableItems: Bool = false)
   {

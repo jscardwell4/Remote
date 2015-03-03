@@ -268,58 +268,58 @@ RERole remoteElementRoleFromImportKey(NSString * importKey) {
 #pragma mark - Commands
 ////////////////////////////////////////////////////////////////////////////////
 
-SystemCommandType systemCommandTypeFromImportKey(NSString * importKey) {
-  static NSDictionary const * index = nil;
-  static dispatch_once_t      onceToken;
+//SystemCommandType systemCommandTypeFromImportKey(NSString * importKey) {
+//  static NSDictionary const * index = nil;
+//  static dispatch_once_t      onceToken;
+//
+//  dispatch_once(&onceToken,
+//                ^{
+//    index =
+//      @{ SystemCommandTypeUndefinedJSONKey   : @(SystemCommandTypeUndefined),
+//         SystemCommandProximitySensorJSONKey : @(SystemCommandProximitySensor),
+//         SystemCommandURLRequestJSONKey      : @(SystemCommandURLRequest),
+//         SystemCommandLaunchScreenJSONKey    : @(SystemCommandLaunchScreen),
+//         SystemCommandOpenSettingsJSONKey    : @(SystemCommandOpenSettings),
+//         SystemCommandOpenEditorJSONKey      : @(SystemCommandOpenEditor) };
+//  });
+//
+//  NSNumber * typeValue = (importKey ? index[importKey] : nil);
+//
+//  return (typeValue ? [typeValue unsignedShortValue] : SystemCommandTypeUndefined);
+//}
+//
+//SwitchCommandType switchCommandTypeFromImportKey(NSString * importKey) {
+//  static NSDictionary const * index;
+//  static dispatch_once_t      onceToken;
+//
+//  dispatch_once(&onceToken,
+//                ^{
+//    index = @{ SwitchRemoteCommandJSONKey : @(SwitchRemoteCommand),
+//               SwitchModeCommandJSONKey   : @(SwitchModeCommand) };
+//  });
+//
+//  NSNumber * result = (importKey ? index[importKey] : nil);
+//
+//  return (result ? result.unsignedShortValue : SwitchUndefinedCommand);
+//}
 
-  dispatch_once(&onceToken,
-                ^{
-    index =
-      @{ SystemCommandTypeUndefinedJSONKey   : @(SystemCommandTypeUndefined),
-         SystemCommandProximitySensorJSONKey : @(SystemCommandProximitySensor),
-         SystemCommandURLRequestJSONKey      : @(SystemCommandURLRequest),
-         SystemCommandLaunchScreenJSONKey    : @(SystemCommandLaunchScreen),
-         SystemCommandOpenSettingsJSONKey    : @(SystemCommandOpenSettings),
-         SystemCommandOpenEditorJSONKey      : @(SystemCommandOpenEditor) };
-  });
-
-  NSNumber * typeValue = (importKey ? index[importKey] : nil);
-
-  return (typeValue ? [typeValue unsignedShortValue] : SystemCommandTypeUndefined);
-}
-
-SwitchCommandType switchCommandTypeFromImportKey(NSString * importKey) {
-  static NSDictionary const * index;
-  static dispatch_once_t      onceToken;
-
-  dispatch_once(&onceToken,
-                ^{
-    index = @{ SwitchRemoteCommandJSONKey : @(SwitchRemoteCommand),
-               SwitchModeCommandJSONKey   : @(SwitchModeCommand) };
-  });
-
-  NSNumber * result = (importKey ? index[importKey] : nil);
-
-  return (result ? result.unsignedShortValue : SwitchUndefinedCommand);
-}
-
-CommandSetType commandSetTypeFromImportKey(NSString * importKey) {
-  static NSDictionary const * index = nil;
-  static dispatch_once_t      onceToken;
-
-  dispatch_once(&onceToken,
-                ^{
-    index = @{ CommandSetTypeUnspecifiedJSONKey : @(CommandSetTypeUnspecified),
-               CommandSetTypeDPadJSONKey        : @(CommandSetTypeDPad),
-               CommandSetTypeTransportJSONKey   : @(CommandSetTypeTransport),
-               CommandSetTypeNumberpadJSONKey   : @(CommandSetTypeNumberpad),
-               CommandSetTypeRockerJSONKey      : @(CommandSetTypeRocker) };
-  });
-
-  NSNumber * typeValue = (importKey ? index[importKey] : nil);
-
-  return (typeValue ? [typeValue unsignedShortValue] : CommandSetTypeUnspecified);
-}
+//CommandSetType commandSetTypeFromImportKey(NSString * importKey) {
+//  static NSDictionary const * index = nil;
+//  static dispatch_once_t      onceToken;
+//
+//  dispatch_once(&onceToken,
+//                ^{
+//    index = @{ CommandSetTypeUnspecifiedJSONKey : @(CommandSetTypeUnspecified),
+//               CommandSetTypeDPadJSONKey        : @(CommandSetTypeDPad),
+//               CommandSetTypeTransportJSONKey   : @(CommandSetTypeTransport),
+//               CommandSetTypeNumberpadJSONKey   : @(CommandSetTypeNumberpad),
+//               CommandSetTypeRockerJSONKey      : @(CommandSetTypeRocker) };
+//  });
+//
+//  NSNumber * typeValue = (importKey ? index[importKey] : nil);
+//
+//  return (typeValue ? [typeValue unsignedShortValue] : CommandSetTypeUnspecified);
+//}
 
 Class commandClassForImportKey(NSString * importKey) {
   static NSDictionary const * index;

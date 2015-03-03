@@ -39,7 +39,7 @@ class RemoteElement: NamedModelObject {
   :param: preset Preset
   */
   init(preset: Preset) {
-    super.init(context: preset.managedObjectContext)
+    super.init(context: preset.managedObjectContext!)
     role = preset.role
     shape = preset.shape
     style = preset.style
@@ -209,7 +209,7 @@ class RemoteElement: NamedModelObject {
   /**
   updateWithData:
 
-  :param: data [NSObject AnyObject]
+  :param: data [NSObject:AnyObject]
   */
   override func updateWithData(data: [NSObject:AnyObject]) {
     super.updateWithData(data)
@@ -238,9 +238,9 @@ class RemoteElement: NamedModelObject {
 
       if let subelementsJSON = data["subelements"] as? [[NSObject:AnyObject]] {
         if elementType == .Remote {
-          childElements = OrderedSet(subelementsJSON.map{ButtonGroup.importObjectFromData($0, context: moc)})
+          childElements = OrderedSet(compressed(subelementsJSON.map{ButtonGroup.importObjectFromData($0, context: moc)}))
         } else if elementType == .ButtonGroup {
-          childElements = OrderedSet(subelementsJSON.map{Button.importObjectFromData($0,  context: moc)})
+          childElements = OrderedSet(compressed(subelementsJSON.map{Button.importObjectFromData($0,  context: moc)}))
         }
       }
 
@@ -466,7 +466,7 @@ class RemoteElement: NamedModelObject {
 
   :returns: RemoteElement?
   */
-  override subscript(key: String) -> AnyObject? {
+  subscript(key: String) -> AnyObject? {
     get {
       let keypath = split(key){$0 == "."}
       if keypath.count == 2 {
@@ -629,6 +629,7 @@ class RemoteElement: NamedModelObject {
     // button group roles
     static var SelectionPanel:       Role = Role(rawValue: 0b0000_0011)
     static var Toolbar:              Role = Role(rawValue: 0b0000_0010)
+    static var TopToolbar:           Role = Role(rawValue: 0b0000_0011)
     static var DPad:                 Role = Role(rawValue: 0b0000_0100)
     static var Numberpad:            Role = Role(rawValue: 0b0000_0110)
     static var Transport:            Role = Role(rawValue: 0b0000_1000)
@@ -691,7 +692,7 @@ class RemoteElement: NamedModelObject {
     static var TransportButtonMask:  Role = Role(rawValue: 0b0000_1000)
 
     static var buttonGroupRoles: [Role] {
-      return [.Undefined, .SelectionPanel, .Toolbar, .DPad, .Numberpad, .Transport, .Rocker]
+      return [.Undefined, .SelectionPanel, .Toolbar, .TopToolbar, .DPad, .Numberpad, .Transport, .Rocker]
     }
     static var buttonRoles: [Role] {
       return [.Undefined,
@@ -788,12 +789,17 @@ extension RemoteElement.Style: JSONValueConvertible {
 
 }
 
+extension RemoteElement.Role: Hashable {
+  var hashValue: Int { return rawValue }
+}
+
 extension RemoteElement.Role: JSONValueConvertible {
 
   var JSONValue: String {
     switch self {
       case RemoteElement.Role.SelectionPanel:       return "selection-panel"
       case RemoteElement.Role.Toolbar:              return "toolbar"
+      case RemoteElement.Role.TopToolbar:           return "top-toolbar"
       case RemoteElement.Role.DPad:                 return "dpad"
       case RemoteElement.Role.Numberpad:            return "numberpad"
       case RemoteElement.Role.Transport:            return "transport"
@@ -843,6 +849,7 @@ extension RemoteElement.Role: JSONValueConvertible {
     switch JSONValue {
       case RemoteElement.Role.SelectionPanel.JSONValue:       self = RemoteElement.Role.SelectionPanel
       case RemoteElement.Role.Toolbar.JSONValue:              self = RemoteElement.Role.Toolbar
+      case RemoteElement.Role.TopToolbar.JSONValue:           self = RemoteElement.Role.TopToolbar
       case RemoteElement.Role.DPad.JSONValue:                 self = RemoteElement.Role.DPad
       case RemoteElement.Role.Numberpad.JSONValue:            self = RemoteElement.Role.Numberpad
       case RemoteElement.Role.Transport.JSONValue:            self = RemoteElement.Role.Transport

@@ -19,7 +19,7 @@ class IRCodeSet: BankableModelCategory {
   @NSManaged var codes: NSSet?
   @NSManaged var manufacturer: Manufacturer?
 
-  override var items: [BankDisplayItemModel] {
+  override var items: [BankItemModel] {
     get { return sortedByName((codes?.allObjects as? [IRCode]) ?? []) }
     set { if let newCodes = newValue as? [IRCode] { codes = NSSet(array: newCodes) } }
   }
@@ -29,21 +29,20 @@ class IRCodeSet: BankableModelCategory {
   /**
   updateWithData:
 
-  :param: data [NSObject AnyObject]!
+  :param: data [NSObject:AnyObject]!
   */
-  override func updateWithData(data: [NSObject : AnyObject]!) {
+  override func updateWithData(data: [NSObject:AnyObject]!) {
     super.updateWithData(data)
 
-    if let codesData = data["codes"] as? NSArray {
+    if let codesData = data["codes"] as? NSArray, let moc = managedObjectContext {
       if codes == nil { codes = NSSet() }
       let mutableCodes = mutableSetValueForKey("codes")
-      if let importedCodes = IRCode.importObjectsFromData(codesData, context: managedObjectContext) {
-        mutableCodes.addObjectsFromArray(importedCodes)
-      }
+      mutableCodes.addObjectsFromArray(IRCode.importObjectsFromData(codesData, context: moc))
     }
 
-    if let manufacturerData = data["manufacturer"] as? NSDictionary {
-      manufacturer = Manufacturer.importObjectFromData(manufacturerData as [NSObject : AnyObject], context: managedObjectContext) ?? manufacturer
+    if let manufacturerData = data["manufacturer"] as? [NSObject:AnyObject], let moc = managedObjectContext,
+      let manufacturer = Manufacturer.importObjectFromData(manufacturerData, context: moc) {
+      self.manufacturer = manufacturer
     }
 
   }

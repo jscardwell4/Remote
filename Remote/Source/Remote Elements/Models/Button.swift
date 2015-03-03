@@ -37,32 +37,36 @@ class Button: RemoteElement {
   override init(preset: Preset) {
     super.init(preset: preset)
 
-    if let titlesData = preset.titles {
-      setTitles(ControlStateTitleSet.importObjectFromData(titlesData, context: managedObjectContext),
-        forMode: RemoteElement.DefaultMode)
-    }
+    if let moc = managedObjectContext {
 
-    if let iconsData = preset.icons {
-      setIcons(ControlStateImageSet.importObjectFromData(iconsData, context: managedObjectContext),
-       forMode: RemoteElement.DefaultMode)
-    }
+      if let titlesData = preset.titles {
+        setTitles(ControlStateTitleSet.importObjectFromData(titlesData, context: moc),
+          forMode: RemoteElement.DefaultMode)
+      }
 
-    if let imagesData = preset.images {
-      setImages(ControlStateImageSet.importObjectFromData(imagesData, context: managedObjectContext),
-        forMode: RemoteElement.DefaultMode)
-    }
+      if let iconsData = preset.icons {
+        setIcons(ControlStateImageSet.importObjectFromData(iconsData, context: moc),
+         forMode: RemoteElement.DefaultMode)
+      }
 
-    if let backgroundColorsData = preset.backgroundColors {
-      setBackgroundColors(ControlStateColorSet.importObjectFromData(backgroundColorsData, context: managedObjectContext),
-                  forMode: RemoteElement.DefaultMode)
-    }
+      if let imagesData = preset.images {
+        setImages(ControlStateImageSet.importObjectFromData(imagesData, context: moc),
+          forMode: RemoteElement.DefaultMode)
+      }
 
-    titleEdgeInsets = preset.titleEdgeInsets
-    contentEdgeInsets = preset.contentEdgeInsets
-    imageEdgeInsets = preset.imageEdgeInsets
+      if let backgroundColorsData = preset.backgroundColors {
+        setBackgroundColors(ControlStateColorSet.importObjectFromData(backgroundColorsData, context: moc),
+                    forMode: RemoteElement.DefaultMode)
+      }
 
-    if let commandData = preset.command {
-      setCommand(Command.importObjectFromData(commandData, context: managedObjectContext), forMode: RemoteElement.DefaultMode)
+      titleEdgeInsets = preset.titleEdgeInsets
+      contentEdgeInsets = preset.contentEdgeInsets
+      imageEdgeInsets = preset.imageEdgeInsets
+
+      if let commandData = preset.command {
+        setCommand(Command.importObjectFromData(commandData, context: moc), forMode: RemoteElement.DefaultMode)
+      }
+
     }
 
   }
@@ -199,20 +203,20 @@ class Button: RemoteElement {
   }
 
   /**
-   executeCommandWithOptions:
+   executeCommandWithOption:
 
    :param: options CommandOptions
    :param: completion ((Bool, NSError?) -> Void)?
    */
-   func executeCommandWithOptions(options: CommandOptions, completion: ((Bool, NSError?) -> Void)?) {
+   func executeCommandWithOption(option: Command.Option, completion: ((Bool, NSError?) -> Void)?) {
      var c: Command?
 
-     switch options {
+     switch option {
        case .Default:   c = command
        case .LongPress: c = longPressCommand
      }
 
-     if c != nil { c!.execute(completion) } else { completion?(true, nil) }
+     if c != nil { c!.execute(completion: completion) } else { completion?(true, nil) }
    }
 
   /**
@@ -370,7 +374,7 @@ class Button: RemoteElement {
   /**
   updateWithData:
 
-  :param: data [NSObject AnyObject]
+  :param: data [NSObject:AnyObject]
   */
   override func updateWithData(data: [NSObject:AnyObject]) {
     super.updateWithData(data)
@@ -488,6 +492,7 @@ class Button: RemoteElement {
 
   :returns: MSDictionary
   */
+/*
   override func deepDescriptionDictionary() -> MSDictionary {
 
     let element = faultedObject()
@@ -511,6 +516,7 @@ class Button: RemoteElement {
 
     return dd
   }
+*/
 
 }
 

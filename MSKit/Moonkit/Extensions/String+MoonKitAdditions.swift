@@ -88,6 +88,15 @@ public extension String {
   public func join(strings: String...) -> String { return join(strings) }
 
   /**
+  split:
+
+  :param: string String
+
+  :returns: [String]
+  */
+  public func split(string: String) -> [String] { return string.componentsSeparatedByString(self) }
+
+  /**
   initWithContentsOfFile:error:
 
   :param: contentsOfFile String
@@ -189,6 +198,15 @@ public extension String {
   public func matchesRegEx(regex: NSRegularExpression) -> Bool {
     return regex.numberOfMatchesInString(self, options: nil, range: NSRange(location: 0,  length: count(self))) > 0
   }
+
+  /**
+  matchesRegEx:
+
+  :param: regex String
+
+  :returns: Bool
+  */
+  public func matchesRegEx(regex: String) -> Bool { return matchesRegEx(~/regex) }
 
   /**
   substringFromFirstMatchForRegEx:

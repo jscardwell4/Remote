@@ -120,26 +120,39 @@ class ComponentDevice: BankableModelObject {
   /**
   updateWithData:
 
-  :param: data [NSObject AnyObject]!
+  :param: data [NSObject:AnyObject]!
   */
-  override func updateWithData(data: [NSObject : AnyObject]!) {
+  override func updateWithData(data: [NSObject:AnyObject]!) {
     super.updateWithData(data)
 
-    port = (data["port"] as? NSNumber)?.shortValue ?? port
-    onCommand = SendIRCommand.importObjectFromData(data["on-command"] as? NSDictionary as! [NSObject : AnyObject],
-                                           context: managedObjectContext!) ?? onCommand
-    offCommand = SendIRCommand.importObjectFromData(data["off-command"] as? NSDictionary as! [NSObject : AnyObject],
-                                            context: managedObjectContext!) ?? offCommand
-    manufacturer = Manufacturer.importObjectFromData(data["manufacturer"] as? NSDictionary as! [NSObject : AnyObject],
-                                             context: managedObjectContext!) ?? manufacturer
-    networkDevice = NetworkDevice.importObjectFromData(data["network-device"] as? NSDictionary as! [NSObject : AnyObject],
-                                               context: managedObjectContext!) ?? networkDevice
-    codeSet = IRCodeSet.importObjectFromData(data["code-set"] as? NSDictionary as! [NSObject : AnyObject],
-                                     context: managedObjectContext) ?? codeSet
+    if let moc = managedObjectContext {
+
+      port = (data["port"] as? NSNumber)?.shortValue ?? port
+      if let onCommandData = data["on-command"] as? [NSObject:AnyObject],
+        let onCommand = SendIRCommand.importObjectFromData(onCommandData, context: moc) as? SendIRCommand {
+          self.onCommand = onCommand
+      }
+      if let offCommandData = data["off-command"] as? [NSObject:AnyObject],
+        let offCommand = SendIRCommand.importObjectFromData(offCommandData, context: moc) as? SendIRCommand {
+          self.offCommand = offCommand
+      }
+      if let manufacturerData = data["manufacturer"] as? [NSObject:AnyObject],
+        let manufacturer = Manufacturer.importObjectFromData(manufacturerData, context: moc) {
+          self.manufacturer = manufacturer
+      }
+      if let networkDeviceData = data["network-device"] as? [NSObject:AnyObject],
+        let networkDevice = NetworkDevice.importObjectFromData(networkDeviceData, context: moc) {
+          self.networkDevice = networkDevice
+      }
+      if let codeSetData = data["code-set"] as? [NSObject:AnyObject],
+        let codeSet = IRCodeSet.importObjectFromData(codeSetData, context: moc) {
+          self.codeSet = codeSet
+      }
+    }
   }
 
   class var rootCategory: Bank.RootCategory {
-    let devices = findAllSortedBy("name", ascending: true) as? [ComponentDevice]
+    let devices = findAllSortedBy("name", ascending: true, context: DataManager.rootContext) as? [ComponentDevice]
     return Bank.RootCategory(label: "Component Devices",
                              icon: UIImage(named: "969-television")!,
                              items: devices ?? [],
@@ -162,7 +175,7 @@ extension ComponentDevice: MSJSONExport {
 
   :returns: MSDictionary!
   */
-  override func JSONDictionary() -> MSDictionary! {
+  override func JSONDictionary() -> MSDictionary {
 
     let dictionary = super.JSONDictionary()
 

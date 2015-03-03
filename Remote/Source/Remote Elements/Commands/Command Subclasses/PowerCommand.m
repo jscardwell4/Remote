@@ -5,7 +5,7 @@
 // Created by Jason Cardwell on 3/16/12.
 // Copyright (c) 2012 Moondeer Studios. All rights reserved.
 //
-#import "Command_Private.h"
+#import "Command.h"
 #import "RemoteElementImportSupportFunctions.h"
 #import "RemoteElementExportSupportFunctions.h"
 #import "Remote-Swift.h"

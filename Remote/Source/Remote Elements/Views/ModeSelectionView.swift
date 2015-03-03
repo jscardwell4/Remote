@@ -37,7 +37,7 @@ class ModeSelectionView: ButtonGroupView {
       (selectedButton?.model as! Button).selected = false
       (newSelection.model as! Button).selected = true
       selectedButton = newSelection
-      RemoteController(model.managedObjectContext).currentRemote?.currentMode = newSelection.model.key!
+      ActivityController(context: model.managedObjectContext!).currentRemote.currentMode = newSelection.model.key!
     }
   }
 

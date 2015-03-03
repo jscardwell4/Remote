@@ -263,7 +263,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
                 if let command = componentDevice.onCommand {
                   command.code = code
                 } else {
-                  let command = SendIRCommand(inContext: moc)
+                  let command = SendIRCommand(context: moc)
                   command.code = code
                   componentDevice.onCommand = command
                 }
@@ -299,7 +299,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
                 if let command = componentDevice.offCommand {
                   command.code = code
                 } else {
-                  let command = SendIRCommand(inContext: moc)
+                  let command = SendIRCommand(context: moc)
                   command.code = code
                   componentDevice.offCommand = command
                 }

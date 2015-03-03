@@ -7,7 +7,6 @@
 //
 
 #import "SwitchToRemoteCommandEditingViewController.h"
-#import "RemoteController.h"
 //#import "RemoteElement.h"
 #import "ViewDecorator.h"
 //#import "Remote.h"

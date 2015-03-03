@@ -8,7 +8,6 @@
 
 #import "ISYConnectionManager.h"
 #import "NetworkDeviceMulticastConnection.h"
-#import "Command.h"
 #import "ISYDeviceConnection.h"
 #import "ConnectionManager.h"
 #import "Remote-Swift.h"
