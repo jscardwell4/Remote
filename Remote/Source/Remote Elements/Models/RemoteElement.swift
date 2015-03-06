@@ -66,18 +66,18 @@ class RemoteElement: NamedModelObject {
   :param: entity NSEntityDescription
   :param: context NSManagedObjectContext?
   */
-  override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-    super.init(entity: entity, insertIntoManagedObjectContext: context)
-  }
+//  override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+//    super.init(entity: entity, insertIntoManagedObjectContext: context)
+//  }
 
   /**
   initWithContext:
 
   :param: context NSManagedObjectContext
   */
-  override init(context: NSManagedObjectContext) {
-    super.init(context: context)
-  }
+//  override init(context: NSManagedObjectContext) {
+//    super.init(context: context)
+//  }
 
   @NSManaged var tag: NSNumber
   @NSManaged var key: String?
@@ -209,9 +209,9 @@ class RemoteElement: NamedModelObject {
   /**
   updateWithData:
 
-  :param: data [NSObject:AnyObject]
+  :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [NSObject:AnyObject]) {
+  override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     if let moc = managedObjectContext {
@@ -236,7 +236,7 @@ class RemoteElement: NamedModelObject {
         }
       }
 
-      if let subelementsJSON = data["subelements"] as? [[NSObject:AnyObject]] {
+      if let subelementsJSON = data["subelements"] as? [[String:AnyObject]] {
         if elementType == .Remote {
           childElements = OrderedSet(compressed(subelementsJSON.map{ButtonGroup.importObjectFromData($0, context: moc)}))
         } else if elementType == .ButtonGroup {

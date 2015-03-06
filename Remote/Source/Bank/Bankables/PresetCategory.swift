@@ -45,9 +45,9 @@ class PresetCategory: BankableModelCategory {
   /**
   updateWithData:
 
-  :param: data [NSObject:AnyObject]!
+  :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [NSObject:AnyObject]!) {
+  override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data) // sets uuid, name
 
     // Try importing images

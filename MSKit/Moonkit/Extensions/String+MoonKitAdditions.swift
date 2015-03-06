@@ -416,6 +416,7 @@ public prefix func ∀(predicate: (String, [AnyObject]?)) -> NSPredicate! {
 /** pattern matching operator */
 public func ~=(lhs: String, rhs: NSRegularExpression) -> Bool { return rhs ~= lhs }
 public func ~=(lhs: NSRegularExpression, rhs: String) -> Bool { return rhs.matchesRegEx(lhs) }
+public func ~=(lhs: String, rhs: String) -> Bool { return lhs.matchesRegEx(rhs) }
 
 infix operator /~ { associativity left precedence 140 }
 infix operator /≈ { associativity left precedence 140 }

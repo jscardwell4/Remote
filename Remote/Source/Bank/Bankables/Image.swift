@@ -53,9 +53,9 @@ class Image: BankableModelObject, PreviewableItem {
   @NSManaged var remoteElements: NSSet
   @NSManaged var views: NSSet
 
-  override func updateWithData(data: [NSObject:AnyObject]!) {
+  override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    if let imageCategoryData = data["category"] as? [NSObject:AnyObject], let moc = managedObjectContext,
+    if let imageCategoryData = data["category"] as? [String:AnyObject], let moc = managedObjectContext,
       let imageCategory = ImageCategory.importObjectFromData(imageCategoryData, context: moc) {
         self.imageCategory = imageCategory
     }

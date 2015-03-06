@@ -58,19 +58,19 @@ class CommandSet: CommandContainer {
   /**
   updateWithData:
 
-  :param: data [NSObject:AnyObject]!
+  :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [NSObject:AnyObject]!) {
+  override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
-    if let commandSetData = data as? [String: AnyObject], let moc = managedObjectContext,
+    if let moc = managedObjectContext,
       let typeJSON = data["type"] as? String {
       let type = CommandSetType(JSONValue: typeJSON)
       if type != .Unspecified {
         self.type = type
-        let commands = commandSetData - "type"
+        let commands = data - "type"
         for (roleJSON, roleData) in commands {
-          if let commandData = roleData as? [NSObject:AnyObject],
+          if let commandData = roleData as? [String:AnyObject],
             let command = Command.importObjectFromData(commandData, context: moc) {
               self[RemoteElement.Role(JSONValue: roleJSON)] = command
           }

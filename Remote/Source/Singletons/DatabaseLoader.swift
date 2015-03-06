@@ -74,7 +74,7 @@ import MoonKit
     if let filePath = NSBundle.mainBundle().pathForResource("ActivityController", ofType: "json") {
       let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSDictionary
       assert(MSHandleError(error) == false)
-      let importedObject = ActivityController.importObjectFromData(importData as! [NSObject:AnyObject], context: context)
+      let importedObject = ActivityController.importObjectFromData(importData as! [String:AnyObject], context: context)
       MSLogDebug("activity controller imported? \(importedObject != nil)")
     }
   }

@@ -86,20 +86,20 @@ class Activity: NamedModelObject {
   /**
   updateWithData:
 
-  :param: data [NSObject:AnyObject]!
+  :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [NSObject:AnyObject]!) {
+  override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     if let moc = managedObjectContext {
-      if let remoteData = data["remote"] as? [NSObject:AnyObject],
+      if let remoteData = data["remote"] as? [String:AnyObject],
         let remote = Remote.importObjectFromData(remoteData, context: moc) {
           self.remote = remote
       }
-      if let launchMacroData = data["launch-macro"] as? [NSObject:AnyObject],
+      if let launchMacroData = data["launch-macro"] as? [String:AnyObject],
         let launchMacro = MacroCommand.importObjectFromData(launchMacroData, context: moc) as? MacroCommand {
           self.launchMacro = launchMacro
       }
-      if let haltMacroData = data["halt-macro"] as? [NSObject:AnyObject],
+      if let haltMacroData = data["halt-macro"] as? [String:AnyObject],
         let haltMacro = MacroCommand.importObjectFromData(haltMacroData, context: moc)  as? MacroCommand {
           self.haltMacro = haltMacro
       }

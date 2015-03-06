@@ -29,9 +29,9 @@ class IRCodeSet: BankableModelCategory {
   /**
   updateWithData:
 
-  :param: data [NSObject:AnyObject]!
+  :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [NSObject:AnyObject]!) {
+  override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     if let codesData = data["codes"] as? NSArray, let moc = managedObjectContext {
@@ -40,7 +40,7 @@ class IRCodeSet: BankableModelCategory {
       mutableCodes.addObjectsFromArray(IRCode.importObjectsFromData(codesData, context: moc))
     }
 
-    if let manufacturerData = data["manufacturer"] as? [NSObject:AnyObject], let moc = managedObjectContext,
+    if let manufacturerData = data["manufacturer"] as? [String:AnyObject], let moc = managedObjectContext,
       let manufacturer = Manufacturer.importObjectFromData(manufacturerData, context: moc) {
       self.manufacturer = manufacturer
     }

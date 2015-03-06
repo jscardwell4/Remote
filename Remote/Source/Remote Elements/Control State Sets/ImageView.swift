@@ -42,12 +42,12 @@ class ImageView: ModelObject {
   /**
   updateWithData:
 
-  :param: data [NSObject:AnyObject]!
+  :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [NSObject:AnyObject]!) {
+  override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
-    if let imageData = data["image"] as? [NSObject:AnyObject], let moc = managedObjectContext,
+    if let imageData = data["image"] as? [String:AnyObject], let moc = managedObjectContext,
       let image = Image.importObjectFromData(imageData, context: moc) {
         self.image = image
     }

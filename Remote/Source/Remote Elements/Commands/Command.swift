@@ -52,12 +52,12 @@ class Command: NamedModelObject {
   /**
   importObjectFromData:context:
 
-  :param: data [NSObject:AnyObject]?
+  :param: data [String:AnyObject]
   :param: context NSManagedObjectContext!
 
   :returns: Command?
   */
-  override class func importObjectFromData(data: [NSObject:AnyObject], context: NSManagedObjectContext) -> Command? {
+  override class func importObjectFromData(data: [String:AnyObject], context: NSManagedObjectContext) -> Command? {
     if self === Command.self, let classJSONValue = data["class"] as? String {
       switch classJSONValue {
         case "power":  return PowerCommand.importObjectFromData(data, context: context)

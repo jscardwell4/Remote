@@ -43,18 +43,18 @@ class Remote: RemoteElement {
   :param: entity NSEntityDescription
   :param: context NSManagedObjectContext?
   */
-  override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-    super.init(entity: entity, insertIntoManagedObjectContext: context)
-  }
+//  override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+//    super.init(entity: entity, insertIntoManagedObjectContext: context)
+//  }
 
   /**
   initWithContext:
 
   :param: context NSManagedObjectContext
   */
-  override init(context: NSManagedObjectContext) {
-    super.init(context: context)
-  }
+//  override init(context: NSManagedObjectContext) {
+//    super.init(context: context)
+//  }
 
   /**
   setButtonGroup:forPanelAssignment:
@@ -89,9 +89,9 @@ class Remote: RemoteElement {
   /**
   updateWithData:
 
-  :param: data [NSObject:AnyObject]
+  :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [NSObject:AnyObject]) {
+  override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     if let moc = managedObjectContext {

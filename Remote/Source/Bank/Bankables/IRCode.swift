@@ -62,9 +62,9 @@ class IRCode: BankableModelObject {
     return scanner.atEnd ? compressed : nil
   }
 
-  override func updateWithData(data: [NSObject:AnyObject]!) {
+  override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    if let codeSetData = data["codeset"] as? [NSObject:AnyObject], let moc = managedObjectContext,
+    if let codeSetData = data["codeset"] as? [String:AnyObject], let moc = managedObjectContext,
       let codeSet = IRCodeSet.importObjectFromData(codeSetData, context: moc) {
         self.codeSet = codeSet
     }

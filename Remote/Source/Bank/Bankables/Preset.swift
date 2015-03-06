@@ -62,11 +62,12 @@ class Preset: BankableModelObject, PreviewableItem {
   /**
   updateWithData:
 
-  :param: data [NSObject:AnyObject]!
+  :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [NSObject:AnyObject]) {
+  override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    if var jsonData = data as? [String:AnyObject], let moc = managedObjectContext {
+    var jsonData = data
+    if let moc = managedObjectContext {
       if let subelementsJSONData = jsonData.removeValueForKey("subelements") as? [[String:AnyObject]] {
         childPresets = NSOrderedSet(array: Preset.importObjectsFromData(subelementsJSONData, context: moc))
       }

@@ -35,13 +35,24 @@ class ModelObject: NSManagedObject {
   }
 
   /**
+  entityName:
+
+  :param: context NSManagedObjectContext = DataManager.rootContext
+
+  :returns: String
+  */
+  class func entityName(context: NSManagedObjectContext = DataManager.rootContext) -> String {
+    return entityDescription(context)?.name ?? className()
+  }
+
+  /**
   isValidUUID:
 
   :param: uuid String
 
   :returns: Bool
   */
-  class func isValidUUID(uuid: String) -> Bool { return uuid.matchesRegEx("[A-F0-9]{8}-(?:[A-F0-9]{4}-){3}[A-Z0-9]{12}") }
+  class func isValidUUID(uuid: String) -> Bool { return uuid ~= "[A-F0-9]{8}-(?:[A-F0-9]{4}-){3}[A-Z0-9]{12}" }
 
   /**
   objectWithUUID:context:
@@ -52,8 +63,11 @@ class ModelObject: NSManagedObject {
   :returns: Self?
   */
   class func objectWithUUID(uuid: String, context: NSManagedObjectContext) -> Self? {
-    //TODO: Fill out stub
-    return nil
+    if isValidUUID(uuid) && existingObjectWithUUID(uuid, context: context) == nil {
+      let modelObject = self.init(context: context)
+      modelObject.primitiveUUID = uuid
+      return modelObject
+    } else { return nil }
   }
 
   /**
@@ -65,21 +79,33 @@ class ModelObject: NSManagedObject {
   :returns: Self?
   */
   class func existingObjectWithUUID(uuid: String, context: NSManagedObjectContext) -> Self? {
-    //TODO: Fill out stub
-    if isValidUUID(uuid) { return nil } else { return nil }
+    if isValidUUID(uuid) { return findFirstByAttribute("uuid", withValue: uuid, context: context) } else { return nil }
   }
 
   /**
   importObjectFromData:context:
 
-  :param: data [NSObject AnyObject]
+  :param: data [String:AnyObject]
   :param: context NSManagedObjectContext
 
   :returns: Self?
   */
-  class func importObjectFromData(data: [NSObject:AnyObject], context: NSManagedObjectContext) -> Self? {
-    //TODO: Fill out stub
-    return nil
+  class func importObjectFromData(data: [String:AnyObject], context: NSManagedObjectContext) -> Self? {
+    if let uuid = data["uuid"] as? String {
+      if let object = existingObjectWithUUID(uuid, context: context) {
+        object.updateWithData(data)
+        return object
+      } else if let object = objectWithUUID(uuid, context: context) {
+        object.updateWithData(data)
+        return object
+      } else {
+        return nil
+      }
+    } else {
+      let object = self.init(context: context)
+      object.updateWithData(data)
+      return object
+    }
   }
 
   /**
@@ -91,8 +117,9 @@ class ModelObject: NSManagedObject {
   :returns: [ModelObject]
   */
   class func importObjectsFromData(data: AnyObject, context: NSManagedObjectContext) -> [ModelObject] {
-    //TODO: Fill out stub
-     return []
+    if let dataArray = data as? [[String:AnyObject]] {
+      return compressed(dataArray.map{self.importObjectFromData($0, context: context)})
+    } else { return [] }
   }
 
   /**
@@ -104,8 +131,19 @@ class ModelObject: NSManagedObject {
 
   :returns: Self?
   */
-  class func findFirstByAttribute(attribute: String, withValue value: AnyObject, context: NSManagedObjectContext) -> Self? {
-    //TODO: Fill out stub
+  class func findFirstByAttribute(attribute: String,
+                        withValue value: AnyObject,
+                          context: NSManagedObjectContext) -> Self?
+  {
+    let predicate = NSPredicate(format: "%K == %@", argumentArray: [attribute, value])
+    let request = NSFetchRequest(entityName: entityName(), predicate: predicate)
+    request.fetchLimit = 1
+
+    var error: NSError?
+    if let results = context.executeFetchRequest(request, error: &error), let object = results.first as? ModelObject {
+      return unsafeBitCast(object, self)
+    }
+
     return nil
   }
 
@@ -118,8 +156,18 @@ class ModelObject: NSManagedObject {
   :returns: [AnyObject]
   */
   class func allValuesForAttribute(attribute: String, context: NSManagedObjectContext) -> [AnyObject] {
-    //TODO: Fill out stub
-    return []
+    let request = NSFetchRequest(entityName: entityName())
+    request.resultType = .DictionaryResultType
+    request.returnsDistinctResults = true
+    request.propertiesToFetch = [attribute]
+
+    var error: NSError?
+    if let results = context.executeFetchRequest(request, error: &error) {
+      return results
+    } else {
+      MSHandleError(error)
+      return []
+    }
   }
 
   /**
@@ -131,8 +179,9 @@ class ModelObject: NSManagedObject {
   :returns: Self?
   */
   class func findFirstMatchingPredicate(predicate: NSPredicate, context: NSManagedObjectContext) -> Self? {
-    //TODO: Fill out stub
-    return nil
+    if let object = findAllMatchingPredicate(predicate, context: context).first {
+      return unsafeBitCast(object, self)
+    } else { return nil }
   }
 
   /**
@@ -144,8 +193,14 @@ class ModelObject: NSManagedObject {
   :returns: [Self]
   */
   class func findAllMatchingPredicate(predicate: NSPredicate, context: NSManagedObjectContext) -> [ModelObject] {
-    //TODO: Fill out stub
-    return []
+    let request = NSFetchRequest(entityName: entityName(), predicate: predicate)
+    var error: NSError?
+    if let results = context.executeFetchRequest(request, error: &error) as? [ModelObject] {
+      return results
+    } else {
+      MSHandleError(error)
+      return []
+    }
   }
 
   /**
@@ -156,8 +211,14 @@ class ModelObject: NSManagedObject {
   :returns: [ModelObject]
   */
   class func findAllInContext(context: NSManagedObjectContext) -> [ModelObject] {
-    //TODO: Fill out stub
-    return []
+    let request = NSFetchRequest(entityName: entityName())
+    var error: NSError?
+    if let results = context.executeFetchRequest(request, error: &error) as? [ModelObject] {
+      return results
+    } else {
+      MSHandleError(error)
+      return []
+    }
   }
 
   /**
@@ -170,8 +231,15 @@ class ModelObject: NSManagedObject {
   :returns: [ModelObject]
   */
   class func findAllSortedBy(sortBy: String, ascending: Bool, context: NSManagedObjectContext) -> [ModelObject] {
-    //TODO: Fill out stub
-    return []
+    let request = NSFetchRequest(entityName: entityName())
+    request.sortDescriptors = ",".split(sortBy).map{NSSortDescriptor(key: $0, ascending: ascending)}
+    var error: NSError?
+    if let results = context.executeFetchRequest(request, error: &error) as? [ModelObject] {
+      return results
+    } else {
+      MSHandleError(error)
+      return []
+    }
   }
 
   /**
@@ -182,8 +250,11 @@ class ModelObject: NSManagedObject {
   :returns: Int
   */
   class func countOfObjectsInContext(context: NSManagedObjectContext) -> Int {
-    //TODO: Fill out stub
-    return 0
+    let request = NSFetchRequest(entityName: entityName())
+    var error: NSError?
+    let result = context.countForFetchRequest(request, error: &error)
+    MSHandleError(error)
+    return result
   }
 
   /**
@@ -195,8 +266,11 @@ class ModelObject: NSManagedObject {
   :returns: Int
   */
   class func countOfObjectsMatchingPredicate(predicate: NSPredicate, context: NSManagedObjectContext) -> Int {
-    //TODO: Fill out stub
-    return 0
+    let request = NSFetchRequest(entityName: entityName(), predicate: predicate)
+    var error: NSError?
+    let result = context.countForFetchRequest(request, error: &error)
+    MSHandleError(error)
+    return result
   }
 
   /**
@@ -206,7 +280,7 @@ class ModelObject: NSManagedObject {
   :param: context NSManagedObjectContext
   */
   class func deleteAllMatchingPredicate(predicate: NSPredicate, context: NSManagedObjectContext) {
-    //TODO: Fill out stub
+    context.deleteObjects(Set(findAllMatchingPredicate(predicate, context: context)))
   }
 
   /**
@@ -226,16 +300,35 @@ class ModelObject: NSManagedObject {
                      ascending: Bool,
                        context: NSManagedObjectContext) -> NSFetchedResultsController
   {
-    //TODO: Fill out stub
-    return NSFetchedResultsController()
+    let request = NSFetchRequest(entityName: entityName(), predicate: predicate)
+    request.propertiesToGroupBy = ",".split(groupBy)
+    request.sortDescriptors = ",".split(sortBy).map{NSSortDescriptor(key: $0, ascending: ascending)}
+    return NSFetchedResultsController(fetchRequest: request,
+                                      managedObjectContext: context,
+                                      sectionNameKeyPath: nil,
+                                      cacheName: nil)
   }
 
+  /**
+  fetchAllGroupedBy:sortedBy:context:
+
+  :param: groupBy String
+  :param: sortBy String
+  :param: context NSManagedObjectContext
+
+  :returns: NSFetchedResultsController
+  */
   class func fetchAllGroupedBy(groupBy: String,
                       sortedBy sortBy: String,
                        context: NSManagedObjectContext) -> NSFetchedResultsController
   {
-    //TODO: Fill out stub
-    return NSFetchedResultsController()
+    let request = NSFetchRequest(entityName: entityName())
+    request.propertiesToGroupBy = ",".split(groupBy)
+    request.sortDescriptors = ",".split(sortBy).map{NSSortDescriptor(key: $0, ascending: true)}
+    return NSFetchedResultsController(fetchRequest: request,
+                                      managedObjectContext: context,
+                                      sectionNameKeyPath: nil,
+                                      cacheName: nil)
   }
 
   /**
@@ -243,13 +336,13 @@ class ModelObject: NSManagedObject {
 
   :param: entityName String
   :param: uuid String
-  :param: context NSManagedObjectContext = DataManager.mainContext()
+  :param: context NSManagedObjectContext
 
   :returns: ModelObject?
   */
   class func existingObjectForEntity(entityName: String,
                             withUUID uuid: String,
-                            context: NSManagedObjectContext = DataManager.mainContext()) -> ModelObject?
+                             context: NSManagedObjectContext) -> ModelObject?
   {
     var model: ModelObject?
     if isValidUUID(uuid) {
@@ -268,14 +361,14 @@ class ModelObject: NSManagedObject {
   :param: entityName String
   :param: uuid String
   :param: type ModelObject.Type
-  :param: context NSManagedObjectContext = DataManager.mainContext()
+  :param: context NSManagedObjectContext
 
   :returns: ModelObject?
   */
   class func objectForEntity(entityName: String,
                     withUUID uuid: String,
                       ofType type: ModelObject.Type,
-                     context: NSManagedObjectContext = DataManager.mainContext()) -> ModelObject?
+                     context: NSManagedObjectContext) -> ModelObject?
   {
     var model: ModelObject?
     if isValidUUID(uuid) {
@@ -283,7 +376,7 @@ class ModelObject: NSManagedObject {
         MSRaiseException(NSInvalidArgumentException, "object already exists with specified uuid")
       } else {
         if let entity = NSEntityDescription.entityForName(entityName, inManagedObjectContext: context) {
-          model = type(entity: entity, insertIntoManagedObjectContext: context)
+          model = type(context: context)
           model?.setPrimitiveValue(uuid, forKey: "uuid")
         }
       }
@@ -294,32 +387,46 @@ class ModelObject: NSManagedObject {
   /**
   updateWithData:
 
-  :param: data [NSObject:AnyObject]!
+  :param: data [String:AnyObject]
   */
-  func updateWithData(data: [NSObject:AnyObject]!) {
-    //TODO: Fill out stub
-  }
+  func updateWithData(data: [String:AnyObject]) {}
 
   /**
   initWithContext:
 
   :param: context NSManagedObjectContext
   */
-  init(context: NSManagedObjectContext) {
-    //TODO: Fill out stub
-    let className = NSStringFromClass(self.dynamicType)
-    super.init(entity: NSEntityDescription.entityForName(className, inManagedObjectContext: context)!,
-               insertIntoManagedObjectContext: context)
+  required init(context: NSManagedObjectContext, insert: Bool = true) {
+    super.init(entity: self.dynamicType.entityDescription(context)!, insertIntoManagedObjectContext: insert ? context : nil)
   }
 
   /**
-  initWithEntity:insertIntoManagedObjectContext:
+  initWithUuid:context:
 
-  :param: entity NSEntityDescription
-  :param: context NSManagedObjectContext?
+  :param: uuid String
+  :param: context NSManagedObjectContext
   */
-  override required init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-    super.init(entity: entity, insertIntoManagedObjectContext: context)
+  convenience init?(uuid: String, context: NSManagedObjectContext) {
+    self.init(context: context, insert: false)
+    if self.dynamicType.existingObjectWithUUID(uuid, context: context) == nil && self.dynamicType.isValidUUID(uuid) {
+      context.insertObject(self)
+      primitiveUUID = uuid
+    } else { return nil }
+  }
+
+  /**
+  initWithData:context:
+
+  :param: data [String AnyObject]
+  :param: context NSManagedObjectContext
+  */
+  convenience init?(data: [String:AnyObject], context: NSManagedObjectContext) {
+    if let uuid = data["uuid"] as? String {
+      self.init(uuid: uuid, context: context)
+    } else {
+      self.init(context: context)
+    }
+    updateWithData(data)
   }
 
   /** awakeFromInsert */
@@ -333,23 +440,21 @@ class ModelObject: NSManagedObject {
 
   :param: entityName String
   :param: type ModelObject.Type
-  :param: data [NSObject
-  :param: context NSManagedObjectContext = DataManager.mainContext()
+  :param: data [String:AnyObject]
+  :param: context NSManagedObjectContext
 
   :returns: ModelObject?
   */
   class func importObjectForEntity(entityName: String,
                            forType type: ModelObject.Type,
-                          fromData data: [NSObject:AnyObject]?,
-                           context: NSManagedObjectContext = DataManager.mainContext()) -> ModelObject?
+                          fromData data: [String:AnyObject],
+                           context: NSManagedObjectContext) -> ModelObject?
   {
     var model: ModelObject?
-    if data != nil {
-      if let uuid = data?["uuid"] as? NSString {
-        model = existingObjectForEntity(entityName, withUUID: uuid as String, context: context)
-        if model == nil { model = objectForEntity(entityName, withUUID: uuid as String, ofType: type, context: context) }
-        model?.updateWithData(data)
-      }
+    if let uuid = data["uuid"] as? String {
+      model = existingObjectForEntity(entityName, withUUID: uuid, context: context)
+      if model == nil { model = objectForEntity(entityName, withUUID: uuid, ofType: type, context: context) }
+      model?.updateWithData(data)
     }
     return model
   }
@@ -362,8 +467,11 @@ class ModelObject: NSManagedObject {
   :returns: Bool
   */
   func attributeValueIsDefault(attribute: String) -> Bool {
-    //TODO: Fill out stub
-    return true
+    if let value: AnyObject = valueForKey(attribute),
+      let defaultValue: AnyObject = defaultValueForAttribute(attribute) where value.isEqual(defaultValue) { return true }
+    else {
+      return valueForKey(attribute) == nil && defaultValueForAttribute(attribute) == nil
+    }
   }
 
   /**
@@ -415,17 +523,17 @@ class ModelObject: NSManagedObject {
 
 extension ModelObject: MSJSONExport {
   var JSONString: String {
-    //TODO: Fill out stub
-    return ""
+    return JSONDictionary().JSONString.stringByReplacingOccurrencesOfString("\\/", withString: "\\")
   }
 
-  func JSONDictionary() -> MSDictionary {
-    //TODO: Fill out stub
-    return MSDictionary()
-  }
+  /**
+  JSONDictionary
+
+  :returns: MSDictionary
+  */
+  func JSONDictionary() -> MSDictionary { return MSDictionary(object: uuid, forKey: "uuid") }
 
   var JSONObject: AnyObject { return JSONDictionary().JSONObject }
-
 
 }
 

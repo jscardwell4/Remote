@@ -18,7 +18,7 @@ class ISYDeviceGroup: NamedModelObject {
   @NSManaged var device: ISYDevice
   @NSManaged var members: NSSet
 
-  override func updateWithData(data: [NSObject:AnyObject]!) {
+  override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     flag =    data["flag"]    as? NSNumber ?? flag
     address = data["address"] as?   String ?? address

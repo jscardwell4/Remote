@@ -80,12 +80,12 @@ class MacroCommand: Command {
   /**
   updateWithData:
 
-  :param: data [NSObject:AnyObject]!
+  :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [NSObject:AnyObject]!) {
+  override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
-    if let commandsData = data["commands"] as? [[NSObject:AnyObject]] {
+    if let commandsData = data["commands"] as? [[String:AnyObject]] {
       var commands: [Command] = []
       for commandData in commandsData {
         if let commandClassNameJSON = commandData["class"] as? String, let moc = managedObjectContext {

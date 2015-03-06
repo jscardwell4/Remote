@@ -38,12 +38,12 @@ class PowerCommand: Command {
   /**
   updateWithData:
 
-  :param: data [NSObject:AnyObject]!
+  :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [NSObject:AnyObject]!) {
+  override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     if let stateJSON = data["state"] as? String { state = State(JSONValue: stateJSON) }
-    if let deviceData = data["device"] as? [NSObject:AnyObject], let moc = managedObjectContext,
+    if let deviceData = data["device"] as? [String:AnyObject], let moc = managedObjectContext,
       let device = ComponentDevice.importObjectFromData(deviceData, context: moc) {
         self.device = device
     }

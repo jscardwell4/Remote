@@ -82,16 +82,16 @@ class ActivityController: ModelObject {
   /**
   updateWithData:
 
-  :param: data [NSObject:AnyObject]
+  :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [NSObject:AnyObject]) {
+  override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     if let moc = managedObjectContext {
-      if let homeRemote = Remote.importObjectFromData(data["home-remote"] as! [NSObject:AnyObject], context: moc) {
+      if let homeRemote = Remote.importObjectFromData(data["home-remote"] as! [String:AnyObject], context: moc) {
         self.homeRemote = homeRemote
       }
-      if let topToolbar = ButtonGroup.importObjectFromData(data["top-toolbar"] as! [NSObject:AnyObject], context: moc) {
+      if let topToolbar = ButtonGroup.importObjectFromData(data["top-toolbar"] as! [String:AnyObject], context: moc) {
         self.topToolbar = topToolbar
       }
     }

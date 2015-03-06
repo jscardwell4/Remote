@@ -120,31 +120,31 @@ class ComponentDevice: BankableModelObject {
   /**
   updateWithData:
 
-  :param: data [NSObject:AnyObject]!
+  :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [NSObject:AnyObject]!) {
+  override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     if let moc = managedObjectContext {
 
       port = (data["port"] as? NSNumber)?.shortValue ?? port
-      if let onCommandData = data["on-command"] as? [NSObject:AnyObject],
+      if let onCommandData = data["on-command"] as? [String:AnyObject],
         let onCommand = SendIRCommand.importObjectFromData(onCommandData, context: moc) as? SendIRCommand {
           self.onCommand = onCommand
       }
-      if let offCommandData = data["off-command"] as? [NSObject:AnyObject],
+      if let offCommandData = data["off-command"] as? [String:AnyObject],
         let offCommand = SendIRCommand.importObjectFromData(offCommandData, context: moc) as? SendIRCommand {
           self.offCommand = offCommand
       }
-      if let manufacturerData = data["manufacturer"] as? [NSObject:AnyObject],
+      if let manufacturerData = data["manufacturer"] as? [String:AnyObject],
         let manufacturer = Manufacturer.importObjectFromData(manufacturerData, context: moc) {
           self.manufacturer = manufacturer
       }
-      if let networkDeviceData = data["network-device"] as? [NSObject:AnyObject],
+      if let networkDeviceData = data["network-device"] as? [String:AnyObject],
         let networkDevice = NetworkDevice.importObjectFromData(networkDeviceData, context: moc) {
           self.networkDevice = networkDevice
       }
-      if let codeSetData = data["code-set"] as? [NSObject:AnyObject],
+      if let codeSetData = data["code-set"] as? [String:AnyObject],
         let codeSet = IRCodeSet.importObjectFromData(codeSetData, context: moc) {
           self.codeSet = codeSet
       }

@@ -105,9 +105,9 @@ class ISYDevice: NetworkDevice {
   /**
   updateWithData:
 
-  :param: data [NSObject:AnyObject]!
+  :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [NSObject:AnyObject]!) {
+  override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     modelNumber       = data["model-number"]      as? String ?? modelNumber
     modelName         = data["model-name"]        as? String ?? modelName

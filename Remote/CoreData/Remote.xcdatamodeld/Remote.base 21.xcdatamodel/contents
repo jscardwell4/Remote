@@ -357,6 +357,7 @@
     <elements>
         <element name="Activity" positionX="0" positionY="0" width="128" height="180"/>
         <element name="ActivityCommand" positionX="0" positionY="0" width="128" height="60"/>
+        <element name="ActivityController" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Button" positionX="0" positionY="0" width="128" height="240"/>
         <element name="ButtonGroup" positionX="0" positionY="0" width="128" height="133"/>
         <element name="Command" positionX="0" positionY="0" width="128" height="165"/>
@@ -387,7 +388,6 @@
         <element name="Preset" positionX="0" positionY="0" width="128" height="165"/>
         <element name="PresetCategory" positionX="63" positionY="189" width="128" height="133"/>
         <element name="Remote" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="ActivityController" positionX="0" positionY="0" width="128" height="120"/>
         <element name="RemoteElement" positionX="0" positionY="0" width="128" height="300"/>
         <element name="SendIRCommand" positionX="0" positionY="0" width="128" height="118"/>
         <element name="SwitchCommand" positionX="0" positionY="0" width="128" height="75"/>

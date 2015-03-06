@@ -20,17 +20,25 @@ class NetworkDevice: BankableModelObject {
     return countOfObjectsMatchingPredicate(∀"uniqueIdentifier == \"\(identifier)\"", context: DataManager.rootContext) > 0
   }
 
-  override func updateWithData(data: [NSObject:AnyObject]!) {
+  override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     uniqueIdentifier = data["unique-identifier"] as? String ?? uniqueIdentifier
   }
 
-  override class func importObjectFromData(data: [NSObject:AnyObject], context: NSManagedObjectContext) -> NetworkDevice? {
+  /**
+  importObjectFromData:context:
+
+  :param: data [String:AnyObject]
+  :param: context NSManagedObjectContext
+
+  :returns: NetworkDevice?
+  */
+  override class func importObjectFromData(data: [String:AnyObject], context: NSManagedObjectContext) -> NetworkDevice? {
 
     var device: NetworkDevice?
 
     // Try getting the type of device to import
-    if let type = data["type"] as? NSString {
+    if let type = data["type"] as? String {
 
       var entityName: String?
       var deviceType: NetworkDevice.Type = NetworkDevice.self
@@ -38,15 +46,9 @@ class NetworkDevice: BankableModelObject {
       // Import with parameters derived from specified type
       switch type {
         case "itach":
-          device = importObjectForEntity("ITachDevice",
-                                 forType: ITachDevice.self,
-                                fromData: data,
-                                context: context) as? NetworkDevice
+          device = importObjectForEntity("ITachDevice", forType: ITachDevice.self, fromData: data, context: context) as? NetworkDevice
         case "isy":
-          device = importObjectForEntity("ISYDevice",
-                                 forType: ISYDevice.self,
-                                fromData: data,
-                                 context: context) as? NetworkDevice
+          device = importObjectForEntity("ISYDevice", forType: ISYDevice.self, fromData: data, context: context) as? NetworkDevice
         default:
           break
       }

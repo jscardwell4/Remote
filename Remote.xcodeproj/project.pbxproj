@@ -1286,8 +1286,6 @@
 		C2F01E241A02FCF7007F6966 /* Lumberjack.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lumberjack.xcodeproj; path = MSKit/../../../../GitHub/CocoaLumberjack/Framework/Desktop/Lumberjack.xcodeproj; sourceTree = "<group>"; };
 		C2F01E2E1A030BD6007F6966 /* ColorSelectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSelectionController.swift; sourceTree = "<group>"; };
 		C2F01E301A03D9E3007F6966 /* BackgroundEditingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundEditingController.swift; sourceTree = "<group>"; };
-		C2F2254B1715E39600D22B5F /* ModelObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelObject.h; sourceTree = "<group>"; };
-		C2F2254C1715E39600D22B5F /* ModelObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelObject.m; sourceTree = "<group>"; };
 		C2F436FC19BAB8E600B60FC3 /* ISYDeviceConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISYDeviceConnection.h; sourceTree = "<group>"; };
 		C2F436FD19BAB8E600B60FC3 /* ISYDeviceConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISYDeviceConnection.m; sourceTree = "<group>"; };
 		C2F4370719BBAB3500B60FC3 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
@@ -1363,8 +1361,6 @@
 				C2DCAA301A211A8D00F1B51A /* TitleAttributes.swift */,
 				C2DCAA2E1A20F6BB00F1B51A /* Font.swift */,
 				C2DCAA2A1A20E87400F1B51A /* DictionaryStorage.swift */,
-				C2F2254B1715E39600D22B5F /* ModelObject.h */,
-				C2F2254C1715E39600D22B5F /* ModelObject.m */,
 				C28FAF7B173014B4002902D9 /* RemoteElementImportSupportFunctions.m */,
 				C28FAF7E173014D8002902D9 /* RemoteElementImportSupportFunctions.h */,
 				C25B2718180A1BF20078C8D8 /* RemoteElementExportSupportFunctions.h */,

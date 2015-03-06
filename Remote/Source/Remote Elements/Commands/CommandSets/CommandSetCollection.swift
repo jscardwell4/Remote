@@ -75,12 +75,12 @@ class CommandSetCollection: CommandContainer {
   /**
   updateWithData:
 
-  :param: data [NSObject:AnyObject]!
+  :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [NSObject:AnyObject]!) {
+  override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
-    if let commandSetsData = data as? [String:[NSObject:AnyObject]], let moc = managedObjectContext {
+    if let commandSetsData = data as? [String:[String:AnyObject]], let moc = managedObjectContext {
       for (label, commandSetData) in commandSetsData {
         if let commandSet = CommandSet.importObjectFromData(commandSetData, context: moc) {
           self[label] = commandSet

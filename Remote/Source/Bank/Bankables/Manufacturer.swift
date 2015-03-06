@@ -29,7 +29,7 @@ class Manufacturer: BankableModelObject {
     return manufacturer
   }
 
-  override func updateWithData(data: [NSObject:AnyObject]!) {
+  override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     if let codeSetsData = data["codesets"] as? NSArray, let moc = managedObjectContext {

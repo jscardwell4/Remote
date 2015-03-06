@@ -40,9 +40,9 @@ class SystemCommand: Command {
   /**
   updateWithData:
 
-  :param: data [NSObject:AnyObject]!
+  :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [NSObject:AnyObject]!) {
+  override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     if let typeJSON = data["type"] as? String { type = SystemCommandType(JSONValue: typeJSON) }
