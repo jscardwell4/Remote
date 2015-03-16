@@ -42,7 +42,7 @@
       ]
     },
     "background-color.default": "black",
-    "background-image.default.uuid": "089D4A98-E7C1-472A-A0A3-30258BE42388",
+    "background-image.default.path": "Backgrounds/Pro Dots",
     "subelements": [
       {
         "uuid": "B9A5F86F-ED62-49E9-B6D4-AE1093D02202",
@@ -220,15 +220,15 @@
             "role": "top",
             "icons.default": {
               "normal": {
-                "image.uuid": "B331401F-1A58-4C99-A08E-B94F8DCCA02D",
+                "path": "Icons/Glyphish 4/Plus",
                 "color": "white"
               },
               "highlighted": {
-                "image.uuid": "B331401F-1A58-4C99-A08E-B94F8DCCA02D",
+                "path": "Icons/Glyphish 4/Plus",
                 "color": "#00AFFFFF"
               },
               "disabled": {
-                "image.uuid": "B331401F-1A58-4C99-A08E-B94F8DCCA02D",
+                "path": "Icons/Glyphish 4/Plus",
                 "color": "#7F7F7FFF"
               }
             }
@@ -239,15 +239,15 @@
             "role": "bottom",
             "icons.default": {
               "normal": {
-                "image.uuid": "9D55C4DF-E6F6-4AFB-8DE8-695B23FBF836",
+                "path": "Icons/Glyphish 4/Minus",
                 "color": "white"
               },
               "highlighted": {
-                "image.uuid": "9D55C4DF-E6F6-4AFB-8DE8-695B23FBF836",
+                "path": "Icons/Glyphish 4/Minus",
                 "color": "#00AFFFFF"
               },
               "disabled": {
-                "image.uuid": "9D55C4DF-E6F6-4AFB-8DE8-695B23FBF836",
+                "path": "Icons/Glyphish 4/Minus",
                 "color": "#7F7F7FFF"
               }
             }
@@ -364,15 +364,15 @@
             "role": "up",
             "icons.default": {
               "normal": {
-                "image.uuid": "9B9D8A62-A483-4E60-A063-EB71140BC677",
+                "path": "Icons/Glyphish 6/Large/Normal/Arrow Up",
                 "color": "white"
               },
               "highlighted": {
-                "image.uuid": "9B9D8A62-A483-4E60-A063-EB71140BC677",
+                "path": "Icons/Glyphish 6/Large/Normal/Arrow Up",
                 "color": "#00AFFFFF"
               },
               "disabled": {
-                "image.uuid": "9B9D8A62-A483-4E60-A063-EB71140BC677",
+                "path": "Icons/Glyphish 6/Large/Normal/Arrow Up",
                 "color": "#7F7F7FFF"
               }
             }
@@ -383,15 +383,15 @@
             "role": "down",
             "icons.default": {
               "normal": {
-                "image.uuid": "D2F18C26-53C2-4CB1-8108-4D22DC702A00",
+                "path": "Icons/Glyphish 6/Large/Normal/Arrow Down",
                 "color": "white"
               },
               "highlighted": {
-                "image.uuid": "D2F18C26-53C2-4CB1-8108-4D22DC702A00",
+                "path": "Icons/Glyphish 6/Large/Normal/Arrow Down",
                 "color": "#00AFFFFF"
               },
               "disabled": {
-                "image.uuid": "D2F18C26-53C2-4CB1-8108-4D22DC702A00",
+                "path": "Icons/Glyphish 6/Large/Normal/Arrow Down",
                 "color": "#7F7F7FFF"
               }
             }
@@ -402,15 +402,15 @@
             "role": "left",
             "icons.default": {
               "normal": {
-                "image.uuid": "9EA9B831-7A8D-4428-A2F2-59A3032AE869",
+                "path": "Icons/Glyphish 6/Large/Normal/Arrow Left",
                 "color": "white"
               },
               "highlighted": {
-                "image.uuid": "9EA9B831-7A8D-4428-A2F2-59A3032AE869",
+                "path": "Icons/Glyphish 6/Large/Normal/Arrow Left",
                 "color": "#00AFFFFF"
               },
               "disabled": {
-                "image.uuid": "9EA9B831-7A8D-4428-A2F2-59A3032AE869",
+                "path": "Icons/Glyphish 6/Large/Normal/Arrow Left",
                 "color": "#7F7F7FFF"
               }
             }
@@ -421,15 +421,15 @@
             "role": "right",
             "icons.default": {
               "normal": {
-                "image.uuid": "FEED12D1-B41F-494A-81C3-67068D4E4226",
+                "path": "Icons/Glyphish 6/Large/Normal/Arrow Right",
                 "color": "white"
               },
               "highlighted": {
-                "image.uuid": "FEED12D1-B41F-494A-81C3-67068D4E4226",
+                "path": "Icons/Glyphish 6/Large/Normal/Arrow Right",
                 "color": "#00AFFFFF"
               },
               "disabled": {
-                "image.uuid": "FEED12D1-B41F-494A-81C3-67068D4E4226",
+                "path": "Icons/Glyphish 6/Large/Normal/Arrow Right",
                 "color": "#7F7F7FFF"
               }
             }
@@ -497,15 +497,15 @@
             },
             "icons.default": {
               "normal": {
-                "image.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147",
+                "path": "Icons/Glyphish 6/Large/Normal/Home",
                 "color": "white"
               },
               "highlighted": {
-                "image.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147",
+                "path": "Icons/Glyphish 6/Large/Normal/Home",
                 "color": "#00AFFFFF"
               },
               "disabled": {
-                "image.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147",
+                "path": "Icons/Glyphish 6/Large/Normal/Home",
                 "color": "#7F7F7FFF"
               }
             },
@@ -526,15 +526,15 @@
             },
             "icons.default": {
               "normal": {
-                "image.uuid": "FA95F274-1F45-464F-A096-4F7DCBF1B71F",
+                "path": "Icons/Glyphish 3/Outlet",
                 "color": "white"
               },
               "highlighted": {
-                "image.uuid": "FA95F274-1F45-464F-A096-4F7DCBF1B71F",
+                "path": "Icons/Glyphish 3/Outlet",
                 "color": "#00AFFFFF"
               },
               "disabled": {
-                "image.uuid": "FA95F274-1F45-464F-A096-4F7DCBF1B71F",
+                "path": "Icons/Glyphish 3/Outlet",
                 "color": "#7F7F7FFF"
               }
             },
@@ -1554,7 +1554,7 @@
       ]
     },
     "background-color.default": "black",
-    "background-image.default.uuid": "089D4A98-E7C1-472A-A0A3-30258BE42388",
+    "background-image.default.path": "Backgrounds/Pro Dots",
     "subelements": [
       {
         "uuid": "F358CB82-496C-446D-8833-D4373777D23E",
@@ -1722,11 +1722,11 @@
             },
             "icons.default": {
               "normal": {
-                "image.uuid": "ACB19263-DA48-415C-BBAF-33EB21E7CC7A",
+                "path": "Icons/Glyphish 4/Light Switch",
                 "color": "white"
               },
               "highlighted": {
-                "image.uuid": "ACB19263-DA48-415C-BBAF-33EB21E7CC7A",
+                "path": "Icons/Glyphish 4/Light Switch",
                 "color": "#00AFFFFF"
               }
             }
@@ -1741,11 +1741,11 @@
             },
             "icons.default": {
               "normal": {
-                "image.uuid": "ACB19263-DA48-415C-BBAF-33EB21E7CC7A",
+                "path": "Icons/Glyphish 4/Light Switch",
                 "color": "#7F7F7FFF"
               },
               "highlighted": {
-                "image.uuid": "ACB19263-DA48-415C-BBAF-33EB21E7CC7A",
+                "path": "Icons/Glyphish 4/Light Switch",
                 "color": "#00AFFFFF"
               }
             }

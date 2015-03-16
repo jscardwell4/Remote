@@ -1,7 +1,7 @@
 {
   "name": "Dish",
   "uuid": "34D0583C-BA66-4C1C-9FD0-F59612B38E18",
-  "codesets": [
+  "code-sets": [
     {
       "uuid": "43B85EE9-9D46-4513-8CA8-33AF46754650",
       "name": "Dish",

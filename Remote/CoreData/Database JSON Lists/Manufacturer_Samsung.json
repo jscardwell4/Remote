@@ -1,7 +1,7 @@
 {
   "name": "Samsung",
   "uuid": "CDA611FD-95C1-4981-ABE6-B07B8CB79A7E",
-  "codesets": [
+  "code-sets": [
     {
       "uuid": "919CA443-DA0C-4064-A6D2-2868DE28F2C9",
       "name": "Samsung TV",

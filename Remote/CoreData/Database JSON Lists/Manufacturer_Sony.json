@@ -1,7 +1,7 @@
 {
   "name": "Sony",
   "uuid": "C4149194-D03B-43A7-84CB-DA80EE20FC70",
-  "codesets": [
+  "code-sets": [
 	  {
 	  	"name": "0560",
 	  	"codes": [

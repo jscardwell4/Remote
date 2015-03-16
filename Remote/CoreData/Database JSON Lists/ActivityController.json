@@ -48,15 +48,15 @@
         },
         "icons.default": {
           "normal": {
-            "image.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147", // 750-gray-home.png
+            "path": "Icons/Glyphish 6/Large/Normal/Home",
             "color": "white"
           },
           "highlighted": {
-            "image.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147", // 750-gray-home.png
+            "path": "Icons/Glyphish 6/Large/Normal/Home",
             "color":  "#00AFFFFF"
           },
           "disabled": {
-            "image.uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147", // 750-gray-home.png
+            "path": "Icons/Glyphish 6/Large/Normal/Home",
             "color": "#7F7F7FFF"
           }
         }
@@ -71,15 +71,15 @@
         },
         "icons.default": {
           "normal": {
-            "image.uuid": "CAA4F651-1AA2-4F91-8556-52FA9CBD3A73", // 740-gray-gear.png
+            "path": "Icons/Glyphish 6/Large/Normal/Gear",
             "color": "white"
           },
           "highlighted": {
-            "image.uuid": "CAA4F651-1AA2-4F91-8556-52FA9CBD3A73", // 740-gray-gear.png
+            "path": "Icons/Glyphish 6/Large/Normal/Gear",
             "color":  "#00AFFFFF"
           },
           "disabled": {
-            "image.uuid": "CAA4F651-1AA2-4F91-8556-52FA9CBD3A73", // 740-gray-gear.png
+            "path": "Icons/Glyphish 6/Large/Normal/Gear",
             "color": "#7F7F7FFF"
           }
         }
@@ -94,15 +94,15 @@
         },
         "icons.default": {
           "normal": {
-            "image.uuid": "5DB7F915-E25F-48F2-92EB-2903FE50F1F4", // 830-gray-pencil.png
+            "path": "Icons/Glyphish 6/Large/Normal/Pencil",
             "color": "white"
           },
           "highlighted": {
-            "image.uuid": "5DB7F915-E25F-48F2-92EB-2903FE50F1F4", // 830-gray-pencil.png
+            "path": "Icons/Glyphish 6/Large/Normal/Pencil",
             "color":  "#00AFFFFF"
           },
           "disabled": {
-            "image.uuid": "5DB7F915-E25F-48F2-92EB-2903FE50F1F4", // 830-gray-pencil.png
+            "path": "Icons/Glyphish 6/Large/Normal/Pencil",
             "color": "#7F7F7FFF"
           }
         }
@@ -113,19 +113,19 @@
         "role": "battery-status",
         "icons.default": {
           "normal": {
-            "image.uuid": "F09EA57A-4A6D-4654-8C5E-6D23754B2D93", // 933-gray-battery.png
+            "path": "Icons/Glyphish 7/Large/Normal/Battery",
             "color": "white"
           },
           "highlighted": {
-            "image.uuid": "F09EA57A-4A6D-4654-8C5E-6D23754B2D93", // 933-gray-battery.png
+            "path": "Icons/Glyphish 7/Large/Normal/Battery",
             "color":  "#00AFFFFF"
           },
           "disabled": {
-            "image.uuid": "8029BB34-5FA0-46BB-BDDC-7AB882844384", // 856-gray-lightning-bolt.png
+            "path": "Icons/Glyphish 6/Large/Normal/Lighting Bolt",
             "color": "#7F7F7FFF"
           },
           "selected": {
-            "image.uuid": "A6925BF4-84F9-464F-A0C8-06109E5DCEEC", // 396-gray-power-plug.png
+            "path": "Icons/Glyphish 4/Power Plug",
             "color": "white"
           }
         }
@@ -136,15 +136,15 @@
         "role": "connection-status",
         "icons.default": {
           "normal": {
-            "image.uuid": "2CBE6763-64AC-4438-A169-1A759620381B", // 937-gray-wifi-signal.png
+            "path": "Icons/Glyphish 7/Large/Normal/Wifi Signal",
             "color": "white"
           },
           "highlighted": {
-            "image.uuid": "2CBE6763-64AC-4438-A169-1A759620381B", // 937-gray-wifi-signal.png
+            "path": "Icons/Glyphish 7/Large/Normal/Wifi Signal",
             "color":  "#00AFFFFF"
           },
           "disabled": {
-            "image.uuid": "2CBE6763-64AC-4438-A169-1A759620381B", // 937-gray-wifi-signal.png
+            "path": "Icons/Glyphish 7/Large/Normal/Wifi Signal",
             "color": "#7F7F7FFF"
           }
         }
