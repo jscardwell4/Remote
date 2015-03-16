@@ -67,9 +67,9 @@ Combine two character sets
 */
 public func +(lhs: NSCharacterSet, rhs: NSCharacterSet) -> NSCharacterSet {
   var lbytes = [UInt8](count: 8192, repeatedValue: 0)
-  lhs.bitmapRepresentation.getBytes(&lbytes)
+  lhs.bitmapRepresentation.getBytes(&lbytes, length: lbytes.capacity)
   var rbytes = [UInt8](count: 8192, repeatedValue: 0)
-  rhs.bitmapRepresentation.getBytes(&rbytes)
+  rhs.bitmapRepresentation.getBytes(&rbytes, length: rbytes.capacity)
 
   let bytes = [(UInt8, UInt8)](Zip2<[UInt8], [UInt8]>(lbytes, rbytes)).map {$0 | $1}
   return NSCharacterSet(bitmapRepresentation: NSData(bytes:bytes, length:bytes.count))
@@ -88,9 +88,9 @@ Subtract rhs character set members from lhs character set
 */
 public func -(lhs: NSCharacterSet, rhs: NSCharacterSet) -> NSCharacterSet {
   var lbytes = [UInt8](count: 8192, repeatedValue: 0)
-  lhs.bitmapRepresentation.getBytes(&lbytes)
+  lhs.bitmapRepresentation.getBytes(&lbytes, length: lbytes.capacity)
   var rbytes = [UInt8](count: 8192, repeatedValue: 0)
-  rhs.bitmapRepresentation.getBytes(&rbytes)
+  rhs.bitmapRepresentation.getBytes(&rbytes, length: rbytes.capacity)
 
   let bytes = [(UInt8, UInt8)](Zip2<[UInt8], [UInt8]>(lbytes, rbytes)).map {$0 & ~$1}
   return NSCharacterSet(bitmapRepresentation: NSData(bytes:bytes, length:bytes.count))
@@ -109,9 +109,9 @@ Intersection of two character sets
 */
 public func ∩(lhs: NSCharacterSet, rhs: NSCharacterSet) -> NSCharacterSet {
   var lbytes = [UInt8](count: 8192, repeatedValue: 0)
-  lhs.bitmapRepresentation.getBytes(&lbytes)
+  lhs.bitmapRepresentation.getBytes(&lbytes, length: lbytes.capacity)
   var rbytes = [UInt8](count: 8192, repeatedValue: 0)
-  rhs.bitmapRepresentation.getBytes(&rbytes)
+  rhs.bitmapRepresentation.getBytes(&rbytes, length: rbytes.capacity)
 
   let bytes = [(UInt8, UInt8)](Zip2<[UInt8], [UInt8]>(lbytes, rbytes)).map {$0 & $1}
   return NSCharacterSet(bitmapRepresentation: NSData(bytes:bytes, length:bytes.count))

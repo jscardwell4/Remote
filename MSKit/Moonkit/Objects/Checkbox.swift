@@ -22,7 +22,7 @@ public class Checkbox: UIControl {
   public func toggleChecked() { checked = !checked }
 
   /** init */
-  public override init() { super.init(); addTarget(self, action: "toggleChecked", forControlEvents: .TouchUpInside) }
+  public init() { super.init(frame: CGRect.zeroRect); addTarget(self, action: "toggleChecked", forControlEvents: .TouchUpInside) }
 
   /**
   initWithFrame:

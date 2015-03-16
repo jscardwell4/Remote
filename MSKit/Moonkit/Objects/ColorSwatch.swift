@@ -175,7 +175,7 @@ public class ColorSwatch: UIControl {
   }
 
   /** init */
-  public override init() { super.init() }
+//  public override init() { super.init() }
 
   /**
   initWithAutolayout:

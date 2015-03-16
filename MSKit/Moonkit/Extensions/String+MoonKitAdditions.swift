@@ -96,6 +96,8 @@ public extension String {
   */
   public func split(string: String) -> [String] { return string.componentsSeparatedByString(self) }
 
+  public var pathStack: Stack<String> { return Stack(objects: pathComponents.reverse()) }
+
   /**
   initWithContentsOfFile:error:
 
@@ -359,7 +361,7 @@ public extension String {
   */
   public func toRegEx() -> NSRegularExpression? {
     var error: NSError? = nil
-    let regex = NSRegularExpression(pattern: self, options: nil, error: &error)
+    let regex = NSRegularExpression(pattern: count(self) > 0 ? self : "(?:)", options: nil, error: &error)
     MSHandleError(error, message: "failed to create regular expression object")
     return regex
   }

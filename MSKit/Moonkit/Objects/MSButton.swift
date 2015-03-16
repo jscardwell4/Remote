@@ -13,7 +13,7 @@ public class MSButton: UIButton {
 
   private var backgroundColors: [UInt:UIColor?] = [0:nil, 1:nil, 2:nil, 3:nil, 4:nil, 5:nil, 6:nil, 7:nil]
 
-  public override init() { super.init() }
+//  public override init() { super.init() }
   public override init(frame: CGRect) { super.init(frame: frame) }
   public required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 

@@ -27,7 +27,7 @@ public class KeyInputButton: UIControl {
   public override init(frame: CGRect) { super.init(frame: frame) }
 
   /** init */
-  public override init() { super.init() }
+//  public override init() { super.init() }
 
   /**
   initWithAutolayout:

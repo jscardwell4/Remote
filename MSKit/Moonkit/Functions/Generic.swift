@@ -119,6 +119,19 @@ public func find<C: CollectionType where C.Generator.Element: Equatable>(domain:
 }
 
 /**
+findFirst:predicate:
+
+:param: domain C
+:param: predicate (C.Generator.Element) -> Bool
+
+:returns: (C.Generator.Element)?
+*/
+public func findFirst<C: CollectionType>(domain: C, predicate: (C.Generator.Element) -> Bool) -> (C.Generator.Element)? {
+  for element in domain { if predicate(element) { return element } }
+  return nil
+}
+
+/**
 length:
 
 :param: interval ClosedInterval<T>

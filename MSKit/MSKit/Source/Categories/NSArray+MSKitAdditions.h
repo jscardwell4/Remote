@@ -25,6 +25,7 @@
 + (NSArray *)arrayWithObject:(id)obj count:(NSUInteger)count;
 
 @property (nonatomic, readonly) id JSONObject;
+@property (nonatomic, readonly) NSString * JSONString;
 
 - (NSSet *)set;
 - (NSUInteger)lastIndex;

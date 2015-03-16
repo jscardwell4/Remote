@@ -55,14 +55,49 @@ public protocol Unpackable4 {
   func unpack() -> (Element, Element, Element, Element)
 }
 
+/** Protocol for an object guaranteed to have a name */
 @objc public protocol Named {
   var name: String { get }
 }
 
+/** Protocol for an object that may have a name */
 @objc public protocol Nameable {
   var name: String? { get }
 }
 
+/** Protocol for an object that may have a name and for which a name may be set */
 @objc public protocol Renameable: Nameable {
   var name: String? { get set }
 }
+
+/**
+sortedByName:
+
+:param: array [T]
+
+:returns: [T]
+*/
+public func sortedByName<T: Nameable>(array: [T]) -> [T] { return array.sorted{$0.0.name < $0.1.name} }
+
+/**
+sortedByName:
+
+:param: array [T]?
+
+:returns: [T]?
+*/
+public func sortedByName<T: Nameable>(array: [T]?) -> [T]? { return array?.sorted{$0.0.name < $0.1.name} }
+
+/**
+sortByName:
+
+:param: array [T]
+*/
+public func sortByName<T: Nameable>(inout array: [T]) { array.sort{$0.0.name < $0.1.name} }
+
+/**
+sortByName:
+
+:param: array [T]?
+*/
+public func sortByName<T: Nameable>(inout array: [T]?) { array?.sort{$0.0.name < $0.1.name} }

@@ -8,18 +8,17 @@
 
 import Foundation
 
-public
-struct Stack<T> {
+public struct Stack<T> {
 
   private var storage: [T]
 
-  var count: Int { return storage.count }
-  var peek: T? { return storage.last }
-  var isEmpty: Bool { return count == 0 }
+  public var count: Int { return storage.count }
+  public var peek: T? { return storage.last }
+  public var isEmpty: Bool { return count == 0 }
 
-  init() { storage = [T]() }
-  init(objects:[T]) { storage = objects }
-  init(object:T) { storage = [object] }
+  public init() { storage = [T]() }
+  public init(objects:[T]) { storage = objects }
+  public init(object:T) { storage = [object] }
 
   /**
   map<U>:
@@ -28,14 +27,14 @@ struct Stack<T> {
 
   :returns: [U]
   */
-  func map<U>(transform: (T) -> U) -> [U] { return storage.map(transform) }
+  public func map<U>(transform: (T) -> U) -> [U] { return storage.map(transform) }
 
   /**
   pop
 
   :returns: T?
   */
-  mutating func pop() -> T? { var obj: T? = nil; if count > 0 { obj = storage.removeLast() }; return obj }
+  public mutating func pop() -> T? { var obj: T? = nil; if count > 0 { obj = storage.removeLast() }; return obj }
 
   /**
   push:
@@ -43,13 +42,20 @@ struct Stack<T> {
   :param: obj T
   :param: count Int = 1
   */
-  mutating func push(obj:T, count:Int = 1) { storage += [T](count: count, repeatedValue: obj) }
+  public mutating func push(obj:T, count:Int = 1) { storage += [T](count: count, repeatedValue: obj) }
 
   /** empty */
-  mutating func empty() { storage.removeAll(keepCapacity: false) }
+  public mutating func empty() { storage.removeAll(keepCapacity: false) }
 
   /** reverse */
-  mutating func reverse() { storage.reverse() }
+  public mutating func reverse() { storage = storage.reverse() }
+
+  /**
+  reversed
+
+  :returns: Stack<T>
+  */
+  public func reversed() -> Stack<T> { return Stack<T>(objects: storage.reverse()) }
 
 }
 

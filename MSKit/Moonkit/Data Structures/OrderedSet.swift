@@ -42,7 +42,7 @@ public struct OrderedSet<T:Equatable> : MutableCollectionType, Sliceable {
   */
   public func generate() -> IndexingGenerator<[T]> { return storage.generate() }
 
-  public typealias SubSlice = Slice<T>
+  public typealias SubSlice = ArraySlice<T>
 
   /**
   subscript:
@@ -51,7 +51,7 @@ public struct OrderedSet<T:Equatable> : MutableCollectionType, Sliceable {
 
   :returns: Slice<T>
   */
-  public subscript (subRange: Range<Int>) -> Slice<T> { return storage[subRange] }
+  public subscript (subRange: Range<Int>) -> ArraySlice<T> { return storage[subRange] }
 
   /**
   init:

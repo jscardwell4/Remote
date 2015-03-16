@@ -14,7 +14,6 @@ public class CoreDataStack {
   public let managedObjectModel: NSManagedObjectModel
   public let persistentStore: NSPersistentStore
   public let persistentStoreCoordinator: NSPersistentStoreCoordinator
-//  public let mainContext: NSManagedObjectContext
   public let rootContext: NSManagedObjectContext
 
   /**
@@ -30,9 +29,6 @@ public class CoreDataStack {
     rootContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
     rootContext.persistentStoreCoordinator = persistentStoreCoordinator
     rootContext.nametag = "root"
-//    mainContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-//    mainContext.parentContext = rootContext
-//    mainContext.nametag = "main"
 
     var error: NSError?
     if let store = persistentStoreCoordinator.addPersistentStoreWithType(NSSQLiteStoreType,
@@ -137,39 +133,6 @@ public class CoreDataStack {
     }
 
     completion?(success, error)
-    
-//    block?(currentContext!)
-//
-//    let work: () -> () = {
-//      currentContext?.processPendingChanges()
-//      if currentContext?.hasChanges == true { success = currentContext?.save(&error) == true }
-//    }
-//
-//    let propagatingWork: () -> () = {
-//      currentContext = currentContext?.parentContext
-//      do {
-//        if nonBlocking {
-//          currentContext?.performBlock {}
-//        }
-//        work()
-//      } while currentContext != nil && success && !MSHandleError(error)
-//    }
-//
-//    if nonBlocking {
-//      currentContext!.performBlock {
-//        work()
-//        if propagate {
-//          if moc.parentContext?.performBlock({ propagatingWork(); completion?(success, error) }) == nil {
-//            completion?(success, error)
-//          }
-//        }
-//      }
-//    } else {
-//      moc.performBlockAndWait(work)
-//      if propagate { moc.parentContext?.performBlockAndWait(propagatingWork) }
-//      completion?(success, error)
-//    }
-//
   }
 
 }

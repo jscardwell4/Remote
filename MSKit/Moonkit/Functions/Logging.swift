@@ -194,8 +194,24 @@ detailedDescriptionForError:depth:
 */
 public func detailedDescriptionForError(error: NSError, depth: Int = 0) -> String {
 
-  var depthIndent = "  " * depth
+  let depthIndent = "  " * depth
+
   var message = "\(depthIndent)domain: \(error.domain)\n\(depthIndent)code: \(error.code)\n"
+  if let coreDataErrorDescription = coreDataErrorCodeDescriptions[error.code] {
+    message += "\(depthIndent)description: \(coreDataErrorDescription)\n"
+    if let key: AnyObject = error.userInfo?[NSValidationKeyErrorKey] {
+      message += "\(depthIndent)key: \(key)\n"
+    }
+    if let value: AnyObject = error.userInfo?[NSValidationValueErrorKey] {
+      message += "\(depthIndent)value: \(value)\n"
+    }
+    if let predicate: AnyObject = error.userInfo?[NSValidationPredicateErrorKey] {
+      message += "\(depthIndent)predicate: \(predicate)\n"
+    }
+    if let object: AnyObject = error.userInfo?[NSValidationObjectErrorKey] {
+      message += "\(depthIndent)object: \(object)\n"
+    }
+  }
 
   if let reason = error.localizedFailureReason { message += "\(depthIndent)reason: \(reason)\n" }
 
@@ -206,20 +222,18 @@ public func detailedDescriptionForError(error: NSError, depth: Int = 0) -> Strin
 
   if let suggestion = error.localizedRecoverySuggestion { message += "\(depthIndent)suggestion: \(suggestion)\n" }
 
-  if let underlying: AnyObject = error.userInfo?[NSUnderlyingErrorKey] {
-
-    if let underlyingError = underlying as? NSError {
-      // Add information gathered from the underlying error
-      message += "\(depthIndent)underlyingError:\n\(detailedDescriptionForError(underlyingError, depth: depth + 1))\n"
-    }
-
-    else if let underlyingErrors = underlying as? [NSError] {
+  // Check for any undelrying errors
+  if let underlyingError = error.userInfo?[NSUnderlyingErrorKey] as? NSError {
+    // Add information gathered from the underlying error
+    message += "\(depthIndent)underlyingError:\n\(detailedDescriptionForError(underlyingError, depth: depth + 1))\n"
+  } else if let underlyingErrors = error.userInfo?[NSUnderlyingErrorKey] as? [NSError] {
       // Add information gathered from each underlying error
-      let joinString = ",\n"
       message += "\(depthIndent)underlyingErrors:\n"
-      message += joinString.join(underlyingErrors.map{detailedDescriptionForError($0, depth: depth + 1)}) + "\n"
-    }
-
+      message += ",\n".join(underlyingErrors.map{detailedDescriptionForError($0, depth: depth + 1)}) + "\n"
+  } else if let detailedErrors = error.userInfo?[NSDetailedErrorsKey] as? [NSError] {
+    // Add information gathered from each underlying error
+    message += "\(depthIndent)detailedErrors:\n"
+    message += ",\n".join(detailedErrors.map{detailedDescriptionForError($0, depth: depth + 1)})// + "\n"
   }
 
   return message
@@ -265,3 +279,47 @@ public func recursiveDescription<T>(base: [T], level: Int = 0, description: (T) 
   }
   return result
 }
+
+let coreDataErrorCodeDescriptions = [
+  NSManagedObjectValidationError: "generic validation error",
+  NSValidationMultipleErrorsError: "generic message for error containing multiple validation errors",
+  NSValidationMissingMandatoryPropertyError: "non-optional property with a nil value",
+  NSValidationRelationshipLacksMinimumCountError: "to-many relationship with too few destination objects",
+  NSValidationRelationshipExceedsMaximumCountError: "bounded, to-many relationship with too many destination objects",
+  NSValidationRelationshipDeniedDeleteError: "some relationship with NSDeleteRuleDeny is non-empty",
+  NSValidationNumberTooLargeError: "some numerical value is too large",
+  NSValidationNumberTooSmallError: "some numerical value is too small",
+  NSValidationDateTooLateError: "some date value is too late",
+  NSValidationDateTooSoonError: "some date value is too soon",
+  NSValidationInvalidDateError: "some date value fails to match date pattern",
+  NSValidationStringTooLongError: "some string value is too long",
+  NSValidationStringTooShortError: "some string value is too short",
+  NSValidationStringPatternMatchingError  : "some string value fails to match some pattern",
+  NSManagedObjectContextLockingError: "can't acquire a lock in a managed object context",
+  NSPersistentStoreCoordinatorLockingError: "can't acquire a lock in a persistent store coordinator",
+  NSManagedObjectReferentialIntegrityError: "attempt to fire a fault pointing to an object that does not exist (we can see the store, we can't see the object)",
+  NSManagedObjectExternalRelationshipError: "an object being saved has a relationship containing an object from another store",
+  NSManagedObjectMergeError: "merge policy failed - unable to complete merging",
+  NSPersistentStoreInvalidTypeError: "unknown persistent store type/format/version",
+  NSPersistentStoreTypeMismatchError: "returned by persistent store coordinator if a store is accessed that does not match the specified type",
+  NSPersistentStoreIncompatibleSchemaError: "store returned an error for save operation (database level errors ie missing table, no permissions)",
+  NSPersistentStoreSaveError: "unclassified save error - something we depend on returned an error",
+  NSPersistentStoreIncompleteSaveError: "one or more of the stores returned an error during save (stores/objects that failed will be in userInfo)",
+  NSPersistentStoreSaveConflictsError: "an unresolved merge conflict was encountered during a save.  userInfo has NSPersistentStoreSaveConflictsErrorKey",
+  NSCoreDataError: "general Core Data error",
+  NSPersistentStoreOperationError: "the persistent store operation failed ",
+  NSPersistentStoreOpenError: "an error occurred while attempting to open the persistent store",
+  NSPersistentStoreTimeoutError: "failed to connect to the persistent store within the specified timeout (see NSPersistentStoreTimeoutOption)",
+  NSPersistentStoreUnsupportedRequestTypeError: "an NSPersistentStore subclass was passed an NSPersistentStoreRequest that it did not understand",
+  NSPersistentStoreIncompatibleVersionHashError: "entity version hashes incompatible with data model",
+  NSMigrationError: "general migration error",
+  NSMigrationCancelledError: "migration failed due to manual cancellation",
+  NSMigrationMissingSourceModelError: "migration failed due to missing source data model",
+  NSMigrationMissingMappingModelError: "migration failed due to missing mapping model",
+  NSMigrationManagerSourceStoreError: "migration failed due to a problem with the source data store",
+  NSMigrationManagerDestinationStoreError: "migration failed due to a problem with the destination data store",
+  NSEntityMigrationPolicyError: "migration failed during processing of the entity migration policy ",
+  NSSQLiteError: "general SQLite error ",
+  NSInferredMappingModelError: "inferred mapping model creation error",
+  NSExternalRecordImportError: "general error encountered while importing external records"
+]
