@@ -41,7 +41,7 @@ class RemoteElementPreview: UIView {
   }
 
   /** init */
-  override init() { super.init() }
+//  override init() { super.init() }
 
   /**
   initWithFrame:
@@ -56,7 +56,7 @@ class RemoteElementPreview: UIView {
   :param: preset Preset
   */
   required init(preset: Preset) {
-    super.init()
+    super.init(frame: CGRect.zeroRect)
     setTranslatesAutoresizingMaskIntoConstraints(false)
     self.preset = preset
     initializeIVARs()
@@ -164,9 +164,9 @@ class RemoteElementPreview: UIView {
         default:                break
       }
     }
-    if let image = preset.backgroundImage?.image {
-      if rect.size <= image.size { image.drawInRect(rect) } else { image.drawAsPatternInRect(rect) }
-    }
+//    if let image = preset.backgroundImage?.image {
+//      if rect.size <= image.size { image.drawInRect(rect) } else { image.drawAsPatternInRect(rect) }
+//    }
   }
 
  /**
@@ -203,7 +203,7 @@ extension RemoteElementPreview {
 
 
     /** init */
-    override init() { super.init() }
+//    override init() { super.init() }
 
     /**
     initWithFrame:

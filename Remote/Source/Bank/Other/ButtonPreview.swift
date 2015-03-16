@@ -25,7 +25,7 @@ class ButtonPreview: RemoteElementPreview {
   override var bounds: CGRect { didSet { textContainer.size = bounds.size } }
 
   /** init */
-  override init() { super.init() }
+//  override init() { super.init() }
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -101,7 +101,10 @@ class ButtonPreview: RemoteElementPreview {
   override func drawContentInContext(ctx: CGContextRef, inRect rect: CGRect) {
     var image: UIImage?
     if let iconData = preset.icons?["normal"] {
-      if let imageObject = ImageCategory.imageForPath(iconData["image"] as? String, context: preset.managedObjectContext) {
+      if let imagePath = iconData["image"] as? String,
+        moc = preset.managedObjectContext,
+        imageObject = ImageCategory.itemForPath(imagePath, context: moc) as? Image
+      {
         if let color = UIColor(JSONValue: iconData["color"] as? String ?? "") {
           image = UIImage(fromAlphaOfImage: imageObject.image, color: color)
         } else {

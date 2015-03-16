@@ -9,7 +9,9 @@
 #import "MSRemoteAppController.h"
 #import "SettingsManager.h"
 
-static int ddLogLevel = DefaultDDLogLevel;
+static int ddLogLevel   = LOG_LEVEL_DEBUG;
+static int msLogContext = LOG_CONTEXT_CONSOLE;
+#pragma unused(ddLogLevel,msLogContext)
 
 @interface SettingsViewController ()
 

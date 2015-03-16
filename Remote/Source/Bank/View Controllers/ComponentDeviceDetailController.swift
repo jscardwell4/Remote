@@ -61,18 +61,20 @@ class ComponentDeviceDetailController: BankItemDetailController {
       var row = DetailButtonRow(pushableItem: componentDevice.manufacturer)
       row.name = "Manufacturer"
       row.info = componentDevice.manufacturer
-      row.editActions = [UITableViewRowAction(style: .Default, title: "Clear", handler: {
-        (action: UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
-          componentDevice.manufacturer = nil
-          self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0), NSIndexPath(forRow: 1, inSection: 0)])
-      })]
+//      row.editActions = [UITableViewRowAction(style: .Default, title: "Clear", handler: {
+//        (action: UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
+//          componentDevice.manufacturer = nil
+//          self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0), NSIndexPath(forRow: 1, inSection: 0)])
+//      })]
 
       var pickerRow = DetailPickerRow()
       pickerRow.nilItemTitle = "No Manufacturer"
       pickerRow.createItemTitle = "⨁ New Manufacturer"
       pickerRow.didSelectItem = {
         if !self.didCancel {
-          componentDevice.manufacturer = $0 as? Manufacturer
+          if let manufacturer = $0 as? Manufacturer {
+            componentDevice.manufacturer = manufacturer
+          }
           self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 0)])
           self.cellDisplayingPicker?.info = $0
           pickerRow.info = $0
@@ -164,7 +166,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
 
         self.presentViewController(alert, animated: true, completion: nil)
       }
-      let data = sortedByName(componentDevice.manufacturer?.codeSets?.allObjects as? [IRCodeSet] ?? [])
+      let data = sortedByName(componentDevice.manufacturer.codeSets)
       pickerRow.data = data
       pickerRow.info = componentDevice.codeSet
 

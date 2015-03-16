@@ -537,12 +537,4 @@ extension ModelObject: MSJSONExport {
 
 }
 
-/// MARK: - Convenience functions
-////////////////////////////////////////////////////////////////////////////////
-
-func sortedByName<T: Nameable>(array: [T]) -> [T] { return array.sorted{$0.0.name < $0.1.name} }
-func sortedByName<T: Nameable>(array: [T]?) -> [T]? { return array?.sorted{$0.0.name < $0.1.name} }
-func sortByName<T: Nameable>(inout array: [T]) { array.sort{$0.0.name < $0.1.name} }
-func sortByName<T: Nameable>(inout array: [T]?) { array?.sort{$0.0.name < $0.1.name} }
-
 

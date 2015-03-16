@@ -120,6 +120,10 @@ class ButtonGroup: RemoteElement {
     // if let panelAssignment = preset.panelAssignment { self.panelAssignment = panelAssignment }
   }
 
+  required init(context: NSManagedObjectContext, insert: Bool) {
+      fatalError("init(context:insert:) has not been implemented")
+  }
+
   /**
   initWithEntity:insertIntoManagedObjectContext:
 

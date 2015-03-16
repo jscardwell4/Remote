@@ -45,7 +45,7 @@ command        = _command;
 
     [ViewDecorator decorateButton:_codeButton];
 
-    self.selectedDevice = _command.device;
+    self.selectedDevice = _command.componentDevice;
     _selectedCode       = _command.code;
 }
 
@@ -103,7 +103,7 @@ command        = _command;
 }
 
 - (void)pickerInputDidCancel:(MSPickerInputView *)pickerInput {
-    self.selectedDevice = _command.device;
+    self.selectedDevice = _command.componentDevice;
     self.selectedCode   = _command.code;
     [_deviceButton resignFirstResponder];
 }

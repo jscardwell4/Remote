@@ -25,7 +25,7 @@ class ButtonGroupView: RemoteElementView {
   var buttonGroup: ButtonGroup! { return model as! ButtonGroup }
 
   /** init */
-  override init() { super.init() }
+//  override init() { super.init() }
 
   /**
   initWithFrame:

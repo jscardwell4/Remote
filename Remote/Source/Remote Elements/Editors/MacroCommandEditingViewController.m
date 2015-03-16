@@ -8,11 +8,11 @@
 
 #import "MacroCommandEditingViewController.h"
 #import "CommandEditingViewController.h"
-#
 
 
 
 #import "ViewDecorator.h"
+#import "Remote-Swift.h"
 
 static int ddLogLevel = LOG_LEVEL_WARN;
 static const int msLogContext = 0;
@@ -101,10 +101,10 @@ command            = _command;
 
          ] anyObject];
     Class     commandClass = NSClassFromString(classString);
-    Command * newCommand   = (Command *)[commandClass commandInContext:_command.managedObjectContext];
+    Command * newCommand   = (Command *)[commandClass createInContext:_command.managedObjectContext];
 
     if (newCommand) {
-        [_command addCommandsObject:newCommand];
+        [(MacroCommand *)_command addCommand:newCommand];
         MSLogDebug(@"%@\n\tadd new command:%@", ClassTagSelectorString, newCommand);
         [_tableView reloadData];
     }
@@ -134,14 +134,14 @@ command            = _command;
 #pragma mark - UITableViewDataSource methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSInteger   rowCount = self.command.count;
+    NSInteger   rowCount = ((MacroCommand *)self.command).count;
 
     return rowCount;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    Command         * command = self.command[indexPath.row];
+    Command         * command = ((MacroCommand *)self.command)[indexPath.row];
     UITableViewCell * cell    = [tableView dequeueReusableCellWithIdentifier:ClassString([command class])];
 
     cell.imageView.image =
@@ -294,13 +294,13 @@ command            = _command;
 
 - (void)                           tableView:(UITableView *)tableView
     accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-    Command * command = self.command[indexPath.row];
+    Command * command = ((MacroCommand *)self.command)[indexPath.row];
 
     [self.delegate pushChildControllerForCommand:command];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    Command * command = self.command[indexPath.row];
+    Command * command = ((MacroCommand *)self.command)[indexPath.row];
 
     [self.delegate pushChildControllerForCommand:command];
 }

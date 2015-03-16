@@ -10,64 +10,55 @@ import Foundation
 import CoreData
 import MoonKit
 
-////////////////////////////////////////////////////////////////////////////////
-/// MARK: - Private globals
-////////////////////////////////////////////////////////////////////////////////
-
-/** URL for the user's persistent store */
-private let databaseStoreURL: NSURL = {
-  let fileManager = NSFileManager.defaultManager()
-  var error: NSError?
-  var url = fileManager.URLForDirectory(.ApplicationSupportDirectory,
-                               inDomain: .UserDomainMask,
-                      appropriateForURL: nil,
-                                 create: true,
-                                  error: &error)
-
-  if MSHandleError(error, message: "failed to retrieve application support directory") { fatalError("aborting…") }
-
-  url = url!.URLByAppendingPathComponent("com.moondeerstudios.Remote")
-
-  fileManager.createDirectoryAtURL(url!, withIntermediateDirectories: true, attributes: nil, error: &error)
-
-  if MSHandleError(error, message: "failed to create app directory under application support") { fatalError("aborting") }
-
-  return url!.URLByAppendingPathComponent("Remote.sqlite")
-
-}()
-
-/** URL for the preloaded persistent store located in the bundle */
-private let databaseBundleURL: NSURL! = NSBundle.mainBundle().URLForResource("Remote", withExtension: "sqlite")
-
-
-/** The core data stack, if this is nil we may as well shutdown */
-private let coreDataStack: CoreDataStack = {
-
-  let modelURL = NSBundle.mainBundle().URLForResource("Remote", withExtension: "momd")
-  if modelURL == nil { fatalError("failed to retrieve model url, aborting…") }
-
-  let mom = NSManagedObjectModel(contentsOfURL: modelURL!)
-  if mom == nil { fatalError("failed to instantiate model from model url, aborting…") }
-
-
-  let stack = CoreDataStack(managedObjectModel: DataManager.augmentModel(mom!),
-                            persistentStoreURL: databaseStoreURL,
-                            options: [NSMigratePersistentStoresAutomaticallyOption: true,
-                                      NSInferMappingModelAutomaticallyOption: true])
-  if stack == nil { fatalError("failed to instantiate core data stack, aborting…") }
-
-  return stack!
-
-}()
-
-private var databasePrepared = false
-
-////////////////////////////////////////////////////////////////////////////////
-/// MARK: - Data manager declaration
-////////////////////////////////////////////////////////////////////////////////
-
-
 @objc class DataManager {
+
+  /** URL for the user's persistent store */
+  static let databaseStoreURL: NSURL = {
+    let fileManager = NSFileManager.defaultManager()
+    var error: NSError?
+    var url = fileManager.URLForDirectory(.ApplicationSupportDirectory,
+                                 inDomain: .UserDomainMask,
+                        appropriateForURL: nil,
+                                   create: true,
+                                    error: &error)
+
+    if MSHandleError(error, message: "failed to retrieve application support directory") { fatalError("aborting…") }
+
+    url = url!.URLByAppendingPathComponent("com.moondeerstudios.Remote")
+
+    fileManager.createDirectoryAtURL(url!, withIntermediateDirectories: true, attributes: nil, error: &error)
+
+    if MSHandleError(error, message: "failed to create app directory under application support") { fatalError("aborting") }
+
+    return url!.URLByAppendingPathComponent("Remote.sqlite")
+
+  }()
+
+  /** URL for the preloaded persistent store located in the bundle */
+  static let databaseBundleURL: NSURL = NSBundle.mainBundle().URLForResource("Remote", withExtension: "sqlite")!
+
+
+  /** The core data stack, if this is nil we may as well shutdown */
+  static let coreDataStack: CoreDataStack = {
+
+    let modelURL = NSBundle.mainBundle().URLForResource("Remote", withExtension: "momd")
+    if modelURL == nil { fatalError("failed to retrieve model url, aborting…") }
+
+    let mom = NSManagedObjectModel(contentsOfURL: modelURL!)
+    if mom == nil { fatalError("failed to instantiate model from model url, aborting…") }
+
+
+    let stack = CoreDataStack(managedObjectModel: DataManager.augmentModel(mom!),
+                              persistentStoreURL: databaseStoreURL,
+                              options: [NSMigratePersistentStoresAutomaticallyOption: true,
+                                        NSInferMappingModelAutomaticallyOption: true])
+    if stack == nil { fatalError("failed to instantiate core data stack, aborting…") }
+
+    return stack!
+
+  }()
+
+  static private var databasePrepared = false
 
   class func mainContext() -> NSManagedObjectContext { return coreDataStack.mainContext() }
 
@@ -83,26 +74,12 @@ private var databasePrepared = false
 
     if databasePrepared { completion?(); return }
 
-    let userDefaults = NSUserDefaults.standardUserDefaults()
-    let loadData = userDefaults.boolForKey("loadData")
-    let replaceDatabase = userDefaults.boolForKey("replace")
-    let fileManager = NSFileManager.defaultManager()
-
-    let storeURL = databaseStoreURL
-
-    let databaseStoreExists = databaseStoreURL.checkResourceIsReachableAndReturnError(nil)
-
-    if databaseStoreExists && (loadData || replaceDatabase) {
+    if databaseStoreURL.checkResourceIsReachableAndReturnError(nil)
+      && NSUserDefaults.standardUserDefaults().boolForKey("removeExistingDatabase")
+    {
       var error: NSError?
-      fileManager.removeItemAtURL(storeURL, error: &error)
+      NSFileManager.defaultManager().removeItemAtURL(databaseStoreURL, error: &error)
       if !MSHandleError(error) { MSLogDebug("previous database store has been removed") }
-    }
-
-    // Copy bundle resource to store destination if needed
-    if !databaseStoreExists && replaceDatabase {
-      var error: NSError?
-      fileManager.copyItemAtURL(databaseBundleURL, toURL: storeURL, error: &error)
-      if !MSHandleError(error) { MSLogDebug("bundle database store copied to destination successfully") }
     }
 
     databasePrepared = true
@@ -110,22 +87,6 @@ private var databasePrepared = false
     completion?()
 
   }
-
-  /**
-  childContextOfType:
-
-  :param: type NSManagedObjectConcurrencyType
-
-  :returns: NSManagedObjectContext
-  */
-//  class func childContextOfType(type: NSManagedObjectContextConcurrencyType) -> NSManagedObjectContext {
-//    let childContext = NSManagedObjectContext(concurrencyType: type)
-//    switch type {
-//      case .MainQueueConcurrencyType: childContext.parentContext = coreDataStack.mainContext
-//      default: childContext.parentContext = coreDataStack.rootContext
-//    }
-//    return childContext
-//  }
 
   /**
   childContextForContext:
@@ -269,6 +230,23 @@ private var databasePrepared = false
 
     // indicator attribute on activity commands
     overrideDefaultValueOfAttribute("indicator", forSubentity: entities["ActivityCommand"]!, withValue: true)
+
+    // create some default sets
+    modifyAttributes(["codeSets", "devices"],
+           forEntity: entities["Manufacturer"]!,
+        defaultValue: NSSet())
+
+    modifyAttribute("subcategories",
+           forEntities: [entities["ImageCategory"]!, entities["PresetCategory"]!, entities["Manufacturer"]!],
+        defaultValue: NSSet())
+
+    modifyAttribute("items",
+      forEntities: [entities["ImageCategory"]!, entities["PresetCategory"]!, entities["IRCodeSet"]!],
+      defaultValue: NSSet())
+
+//    modifyAttribute("subcategoriesSet",
+//        forEntities: [entities["ImageCategory"]!, entities["PresetCategory"]!],
+//       defaultValue: NSSet())
 
     // size attributes on images
     modifyAttribute("size",

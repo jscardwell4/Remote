@@ -78,9 +78,9 @@
     {
         __block NSArray * fetchedObjects = nil;
         [_context performBlockAndWait:^{
-          fetchedObjects = [[[ImageCategory findFirstByAttribute:@"name"
+          fetchedObjects = [[ImageCategory findFirstByAttribute:@"name"
                                                        withValue:@"Backgrounds"
-                                                         context: _context] images] allObjects];
+                                                         context: _context] images];
          }];
         _backgrounds = fetchedObjects;
     }

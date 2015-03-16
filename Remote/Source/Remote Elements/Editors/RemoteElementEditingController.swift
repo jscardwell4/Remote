@@ -225,7 +225,7 @@ class RemoteElementEditingController: UIViewController {
   :param: size CGSize? = nil
   */
   required init(element: RemoteElement, size: CGSize? = nil) {
-    super.init()
+    super.init(nibName: nil, bundle: nil)
     sourceViewSize = size
     assert(element.managedObjectContext != nil)
     context = DataManager.childContextForContext(element.managedObjectContext!)
@@ -238,7 +238,7 @@ class RemoteElementEditingController: UIViewController {
   }
 
   /** init */
-  override init() { super.init() }
+//  override init() { super.init() }
 
   /**
   init:bundle:

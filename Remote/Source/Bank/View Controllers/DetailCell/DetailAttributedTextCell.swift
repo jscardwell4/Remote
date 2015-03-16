@@ -43,7 +43,7 @@ final class DetailAttributedTextCell: DetailCell {
     }
 
     /** init */
-    override init() { super.init() }
+//    override init() { super.init() }
 
     /**
     initWithFrame:

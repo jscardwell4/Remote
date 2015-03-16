@@ -71,6 +71,10 @@ class Button: RemoteElement {
 
   }
 
+  required init(context: NSManagedObjectContext, insert: Bool) {
+      fatalError("init(context:insert:) has not been implemented")
+  }
+
   /**
   initWithEntity:insertIntoManagedObjectContext:
 

@@ -11,11 +11,9 @@
 @import CocoaLumberjack;
 @import MoonKit;
 #import "MSRemoteMacros.h"
-
 #import "CommandDetailViewController.h"
 
 @interface MacroCommandEditingViewController : CommandDetailViewController <UITableViewDataSource,
                                                                             MSPickerInputButtonDelegate,
                                                                             UITableViewDelegate>
-@property (nonatomic, strong) MacroCommand * command;
 @end

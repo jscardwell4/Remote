@@ -58,7 +58,7 @@ class IRCodeDetailController: BankItemDetailController {
     let manufacturers = Manufacturer.findAllSortedBy("name",
                                            ascending: true,
                                              context: irCode.managedObjectContext!) as? [Manufacturer] ?? []
-    let codeSets = sortedByName(irCode.manufacturer.codeSets?.allObjects as? [IRCodeSet] ?? [])
+    let codeSets = sortedByName(irCode.manufacturer.codeSets)
 
     var section = DetailSection(section: 0)
 
@@ -69,23 +69,23 @@ class IRCodeDetailController: BankItemDetailController {
       var row = DetailButtonRow()
       row.name = "Manufacturer"
       row.info = irCode.manufacturer
-      row.valueDidChange = {
-        (item: AnyObject?) -> Void in
-        let moc = irCode.managedObjectContext!
-        moc.performBlock {
-          var manufacturer = item as? Manufacturer
-          if irCode.manufacturer != manufacturer { irCode.manufacturer = manufacturer }
-        }
-      }
+//      row.valueDidChange = {
+//        (item: AnyObject?) -> Void in
+//        let moc = irCode.managedObjectContext!
+//        moc.performBlock {
+//          var manufacturer = item as? Manufacturer
+//          if irCode.manufacturer != manufacturer { irCode.manufacturer = manufacturer }
+//        }
+//      }
 
       var pickerRow = DetailPickerRow()
       pickerRow.nilItemTitle = "No Manufacturer"
-      pickerRow.didSelectItem = {
-        if !self.didCancel {
-          irCode.manufacturer = $0 as? Manufacturer
-          self.updateDisplay()
-        }
-      }
+//      pickerRow.didSelectItem = {
+//        if !self.didCancel {
+//          irCode.manufacturer = $0 as? Manufacturer
+//          self.updateDisplay()
+//        }
+//      }
 
       pickerRow.data = manufacturers
       pickerRow.info = irCode.manufacturer
@@ -111,7 +111,7 @@ class IRCodeDetailController: BankItemDetailController {
       }
 
       var pickerRow = DetailPickerRow()
-      pickerRow.didSelectItem = { if !self.didCancel { irCode.codeSet = $0 as? IRCodeSet } }
+      pickerRow.didSelectItem = { if !self.didCancel { if let codeSet = $0 as? IRCodeSet { irCode.codeSet = codeSet } } }
       pickerRow.data = codeSets
       pickerRow.info = irCode.codeSet
 

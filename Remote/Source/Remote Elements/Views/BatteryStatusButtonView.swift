@@ -77,7 +77,7 @@ class BatteryStatusButtonView: ButtonView {
 
 	:returns: CGSize
 	*/
-  override func intrinsicContentSize() -> CGSize { return button.icon?.image.size ?? RemoteElementView.MinimumSize }
+  override func intrinsicContentSize() -> CGSize { return button.icon?.image?.size ?? RemoteElementView.MinimumSize }
 
 	/**
 	drawContentInContext:inRect:
@@ -94,7 +94,7 @@ class BatteryStatusButtonView: ButtonView {
 	  }
 
 	  let insetRect = rect.rectByInsetting(dx: 2.0, dy: 2.0)
-	  let frameIconSize = batteryFrame?.image.size ?? CGSize.zeroSize
+	  let frameIconSize = batteryFrame?.image?.size ?? CGSize.zeroSize
 	  let frameSize = insetRect.size.contains(frameIconSize) ? frameIconSize : frameIconSize.aspectMappedToSize(insetRect.size, binding: true)
 	  let frameRect = CGRect(x: insetRect.midX - frameSize.width / 2.0,
                            y: insetRect.midY - frameSize.height / 2.0,
@@ -118,7 +118,7 @@ class BatteryStatusButtonView: ButtonView {
 	  if batteryState == .Full {
 	    batteryPlug.colorImage?.drawInRect(frameRect.rectByInsetting(dx: padding, dy: padding))
 	  } else if batteryState == .Charging {
-	    let lightningIconSize = batteryLightning.image.size ?? CGSize.zeroSize
+	    let lightningIconSize = batteryLightning.image?.size ?? CGSize.zeroSize
       let lightningSize = paintSize.contains(lightningIconSize) ? lightningIconSize : lightningIconSize.aspectMappedToSize(paintSize, binding: true)
 	    let lightningRect = CGRect(origin: CGPoint(x: frameRect.midX - lightningSize.width / 2.0, y: frameRect.midY - lightningSize.height / 2.0), size: lightningSize)
 	    batteryLightning.colorImage?.drawInRect(lightningRect)

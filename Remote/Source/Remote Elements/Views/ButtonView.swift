@@ -22,7 +22,7 @@ class ButtonView: RemoteElementView {
   var button: Button { return model as! Button }
 
   /** init */
-  override init() { super.init() }
+//  override init() { super.init() }
 
   /**
   initWithFrame:

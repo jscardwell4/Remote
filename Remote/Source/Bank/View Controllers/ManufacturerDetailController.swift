@@ -42,7 +42,7 @@ class ManufacturerDetailController: BankItemDetailController {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let devicesSection = DetailSection(section: 0, title: "Devices")
-    for (idx, device) in enumerate(sortedByName(manufacturer.devices?.allObjects as? [ComponentDevice] ?? [])) {
+    for (idx, device) in enumerate(sortedByName(manufacturer.devices.allObjects as! [ComponentDevice])) {
       devicesSection.addRow({ DetailListRow(pushableItem: device) }, forKey: "\(RowKey.Devices)\(idx)")
     }
 
@@ -59,7 +59,7 @@ class ManufacturerDetailController: BankItemDetailController {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let codeSetsSection = DetailSection(section: 1, title: "Code Sets")
-    for (idx, codeSet) in enumerate(sortedByName(manufacturer.codeSets?.allObjects as? [IRCodeSet] ?? [])) {
+    for (idx, codeSet) in enumerate(sortedByName(manufacturer.codeSets)) {
       codeSetsSection.addRow({ DetailListRow(pushableCategory: codeSet) }, forKey: "\(RowKey.CodeSets)\(idx)")
     }
 

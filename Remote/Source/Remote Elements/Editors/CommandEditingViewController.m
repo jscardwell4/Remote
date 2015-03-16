@@ -208,7 +208,7 @@ static NSArray      const * createableCommands;
 /// @param pickerInput
 /// @param component
 /// @return NSInteger
-- (NSInteger) pickerInput:(MSPickerInputView *)pickerInput numberOfRowsInComponent:(NSInteger)component {
+- (NSInteger)pickerInput:(MSPickerInputView *)pickerInput numberOfRowsInComponent:(NSInteger)component {
   return [createableCommands count];
 }
 
@@ -232,13 +232,13 @@ static NSArray      const * createableCommands;
 
   [_commandTypeButton resignFirstResponder];
 
-  NSString * selection   = createableCommands[[rows[0] integerValue]];
-  NSString * classString = [[commandTypes keysOfEntriesPassingTest:^BOOL (id key, id obj, BOOL * stop) {
-                             if ([selection isEqualToString:(NSString *)obj]) { *stop = YES; return YES; }
-                             else return NO;
-                           }] anyObject];
+//  NSString * selection   = createableCommands[[rows[0] integerValue]];
+//  NSString * classString = [[commandTypes keysOfEntriesPassingTest:^BOOL (id key, id obj, BOOL * stop) {
+//                             if ([selection isEqualToString:(NSString *)obj]) { *stop = YES; return YES; }
+//                             else return NO;
+//                           }] anyObject];
 
-  Class     commandClass = NSClassFromString(classString);
+//  Class     commandClass = NSClassFromString(classString);
 //  Command * newCommand   = (Command *)[commandClass commandInContext:self.button.managedObjectContext];
 
 //  if (newCommand) { self.currentCommand = newCommand; [self restoreCurrentValues]; }

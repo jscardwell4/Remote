@@ -50,7 +50,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
   // Get the address info
 
   struct sockaddr * socketAddress = NULL;
-  socklen_t         socketAddressLength;
+  socklen_t         socketAddressLength = 0;
   int               error;
   struct addrinfo   socketHints, * resolve;
 

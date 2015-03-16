@@ -191,7 +191,7 @@ static NSArray const * kITachErrorCodes;
 
     if (uniqueIdentifier && [model hasSubstring:@"IR"]) {
 
-      device = [ITachDevice findFirstByAttribute:@"uniqueIdentifier" withValue:uniqueIdentifier];
+      device = [ITachDevice findFirstByAttribute:@"uniqueIdentifier" withValue:uniqueIdentifier context:moc];
       if (!device) device = [ITachDevice createInContext:moc];
 
       NSSet * validKeys = [[index allValues] set];

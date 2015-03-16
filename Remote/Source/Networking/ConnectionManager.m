@@ -247,7 +247,7 @@ MSSTRING_CONST ConnectionManagerErrorDomain = @"ConnectionManagerErrorDomain";
 
     // Get the actual command model object
     NSError * error   = nil;
-    SendCommand * command = [SendCommand existingObjectWithID:commandID error:&error];
+    SendCommand * command = (SendCommand *)[[DataManager rootContext] existingObjectWithID:commandID error:&error];
 
     if (MSHandleErrors(error)) {
 

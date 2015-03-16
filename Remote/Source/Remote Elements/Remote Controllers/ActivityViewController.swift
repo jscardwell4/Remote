@@ -27,7 +27,7 @@ class ActivityViewController: UIViewController {
   */
   init(controller: ActivityController) {
     self.controller = controller
-    super.init()
+    super.init(nibName: nil, bundle: nil)
 
     remoteReceptionist = MSKVOReceptionist(observer: self,
       forObject: controller,

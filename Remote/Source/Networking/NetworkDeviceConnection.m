@@ -98,7 +98,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
   dispatch_queue_t writeQueue          = [self writeSourceQueue];
 
-  __weak NetworkDeviceConnection * weakself = self;
+//  __weak NetworkDeviceConnection * weakself = self;
 
   if (sourceFileDescriptor >= 0 && readQueue != NULL) {
 

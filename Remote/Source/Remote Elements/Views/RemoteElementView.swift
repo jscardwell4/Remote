@@ -55,7 +55,7 @@ class RemoteElementView: UIView {
   }
 
   /** init */
-  override init() { super.init() }
+//  override init() { super.init() }
 
   /**
   initWithFrame:
@@ -70,7 +70,7 @@ class RemoteElementView: UIView {
   :param: model RemoteElement
   */
   required init(model: RemoteElement) {
-    super.init()
+    super.init(frame: CGRect.zeroRect)
     setTranslatesAutoresizingMaskIntoConstraints(false)
     self.model = model
    self.model.refresh()
@@ -581,14 +581,9 @@ class RemoteElementView: UIView {
       borderPath!.fill()
       UIGraphicsPopContext()
     }
-    if model.backgroundImage != nil {
-      if let image = model.backgroundImage!.image {
-        if rect.size <= image.size {
-          image.drawInRect(rect)
-        } else {
-          image.drawAsPatternInRect(rect)
-        }
-      }
+    if let image = model.backgroundImage?.colorImage {
+      if rect.size <= image.size { image.drawInRect(rect) }
+      else { image.drawAsPatternInRect(rect) }
     }
   }
 
@@ -737,7 +732,7 @@ extension RemoteElementView {
 
 
     /** init */
-    override init() { super.init() }
+//    override init() { super.init() }
 
     /**
     initWithFrame:
@@ -858,7 +853,7 @@ extension RemoteElementView {
     var lineWidth: CGFloat = 2.0 { didSet { boundaryOverlay.lineWidth = lineWidth } }
 
     /** init */
-    override init() { super.init() }
+//    override init() { super.init() }
 
     /**
     initWithFrame:

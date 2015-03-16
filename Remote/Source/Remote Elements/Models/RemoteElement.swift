@@ -60,6 +60,10 @@ class RemoteElement: NamedModelObject {
     }
   }
 
+  required init(context: NSManagedObjectContext, insert: Bool) {
+      fatalError("init(context:insert:) has not been implemented")
+  }
+
   /**
   initWithEntity:insertIntoManagedObjectContext:
 

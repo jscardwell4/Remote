@@ -186,7 +186,7 @@ MSNOTIFICATION_DEFINITION(CommandCaptured);
     ITachDeviceConnection * connection = [self sharedManager].connections[identifier];
 
     if (!connection) {
-      connection = [ITachDeviceConnection connectionForDevice:command.networkDevice];
+      connection = [ITachDeviceConnection connectionForDevice:(ITachDevice *)command.networkDevice];
       [self sharedManager].connections[identifier] = connection;
     }
 

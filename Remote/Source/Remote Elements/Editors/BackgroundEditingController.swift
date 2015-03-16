@@ -13,13 +13,15 @@ import MoonKit
 
 @objc protocol EditableBackground {
   var backgroundColor: UIColor! { get set }
-  var backgroundImage: Image! { get set }
+  var backgroundImage: ImageView! { get set }
   var managedObjectContext: NSManagedObjectContext? { get }
 }
 
 class BackgroundEditingController: UIViewController {
 
-  var subject: EditableBackground? { didSet { initialImage = subject?.backgroundImage; resetToInitialState() } }
+  var subject: EditableBackground? {
+    didSet { initialImage = subject?.backgroundImage?.image; resetToInitialState() }
+  }
 
   @IBOutlet weak var colorBox: UIButton!
   @IBOutlet weak var bottomToolbar: UIToolbar!
@@ -119,7 +121,7 @@ extension BackgroundEditingController: ColorSelectionControllerDelegate {
 extension BackgroundEditingController: BankItemSelectionDelegate {
   func bankController(bankController: BankController, didSelectItem item: BankItemModel) {
     if let image = item as? Image {
-      subject?.backgroundImage = image
+      subject?.backgroundImage?.image = image
     }
   }
 }

@@ -12,169 +12,119 @@ import MoonKit
 
 @objc class DatabaseLoader {
 
+  private enum LoadFlag: String, EnumerableType {
+    case Presets           = "loadPresets"
+    case Images            = "loadImages"
+    case Manufacturers     = "loadManufacturers"
+    case ComponentDevices  = "loadComponentDevices"
+    case NetworkDevices    = "loadNetworkDevices"
+    case Controller        = "loadController"
+    case Activities        = "loadActivities"
+    case Remotes           = "loadRemotes"
+
+    var isSet: Bool { return fileName != nil }
+    var fileName: String? { return NSUserDefaults.standardUserDefaults().stringForKey(rawValue) }
+    var modelType: ModelObject.Type {
+      switch self {
+        case .Presets:          return PresetCategory.self
+        case .Images:           return ImageCategory.self
+        case .Manufacturers:    return Manufacturer.self
+        case .ComponentDevices: return ComponentDevice.self
+        case .NetworkDevices:   return NetworkDevice.self
+        case .Controller:       return ActivityController.self
+        case .Activities:       return Activity.self
+        case .Remotes:          return Remote.self
+      }
+    }
+
+    static var all: [LoadFlag] {
+      return [.Presets, .Images, .Manufacturers, .ComponentDevices, .NetworkDevices, .Controller, .Activities, .Remotes]
+    }
+
+    static var allSet: [LoadFlag] { return all.filter{$0.isSet} }
+
+    static func enumerate(block: (LoadFlag) -> Void) { apply(all, block) }
+    static func enumerateSet(block: (LoadFlag) -> Void) { apply(allSet, block) }
+
+  }
+
+//  static let importFiles: [(file: String, type: ModelObject.Type, include: Bool, log: Bool)] = [
+//    ("Preset",             PresetCategory.self,     true, false),
+//    ("Glyphish",           ImageCategory.self,      true, false),
+//    ("Manufacturer_Test",  Manufacturer.self,       true, false),
+//    ("ComponentDevice",    ComponentDevice.self,    true, false),
+//    ("NetworkDevice",      NetworkDevice.self,      true, false),
+//    ("ActivityController", ActivityController.self, false, false),
+//    ("Activity",           Activity.self,           false, false),
+//    ("Remote_Demo",        Remote.self,             false, false)
+//  ]
+
   /** loadData */
   class func loadData(completion: ((Bool, NSError?) -> Void)? = nil) {
 
     let moc = DataManager.rootContext
 
     moc.performBlock {
-      self.loadPresets(moc)
-      self.loadImages(moc)
-      self.loadManufacturers(moc)
-      self.loadComponentDevices(moc)
-      self.loadActivityController(moc)
-      self.loadActivities(moc)
-      self.loadRemotes(moc)
+
+      LoadFlag.enumerateSet {
+        (flag: LoadFlag) -> Void in
+
+        moc.deleteObjects(Set(flag.modelType.findAllInContext(moc)))
+        if let fileName = flag.fileName {
+          self.loadDataFromFile(fileName, type: flag.modelType, context: moc, log: true)
+        }
+      }
+
+//      apply(self.importFiles.filter {_, _, i, _ in i}) {f, t, _, l in self.loadDataFromFile(f, type: t, context: moc, log: l)}
+
       var error: NSError?
       MSLogDebug("saving context…")
-      let success = moc.save(&error)
-      if success { MSLogDebug("context saved successfully") }
-      else { MSLogDebug("context failed to save") }
-      completion?(success, error)
-    }
-
-/*    DataManager.saveContext(DataManager.rootContext, withBlock: {
-        self.loadPresets($0)
-        self.loadImages($0)
-        self.loadManufacturers($0)
-        self.loadComponentDevices($0)
-//        self.loadNetworkDevices($0)
-        self.loadActivityController($0)
-        self.loadActivities($0)
-        self.loadRemotes($0)
-      },
-      nonBlocking: true,
-      completion: completion)	*/
-  }
-
-  /**
-  loadRemotes:
-
-  :param: context NSManagedObjectContext
-  */
-  private class func loadRemotes(context: NSManagedObjectContext) {
-    MSLogDebug("loading remotes...")
-    var error: NSError?
-    if let filePath = NSBundle.mainBundle().pathForResource("Remote_Demo", ofType: "json"),
-      let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSArray {
-      assert(MSHandleError(error) == false)
-      let importedObjects = Remote.importObjectsFromData(importData, context: context)
-      MSLogDebug("\(importedObjects.count ?? 0) remotes imported")
+      if moc.save(&error) && !MSHandleError(error, message: "error occurred while saving context") {
+        MSLogDebug("context saved successfully")
+        completion?(true, nil)
+      } else {
+        MSHandleError(error, message: "failed to save context")
+        completion?(false, error)
+      }
     }
   }
 
   /**
-  loadActivityController:
+  loadDataFromFile:type:context:
 
+  :param: file String
+  :param: type T.Type
   :param: context NSManagedObjectContext
   */
-  private class func loadActivityController(context: NSManagedObjectContext) {
-    MSLogDebug("loading activity controller...")
+  private class func loadDataFromFile<T:ModelObject>(file: String, type: T.Type, context: NSManagedObjectContext, log: Bool) {
+    MSLogDebug("parsing file '\(file).json'")
+
     var error: NSError?
-    if let filePath = NSBundle.mainBundle().pathForResource("ActivityController", ofType: "json") {
-      let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSDictionary
-      assert(MSHandleError(error) == false)
-      let importedObject = ActivityController.importObjectFromData(importData as! [String:AnyObject], context: context)
-      MSLogDebug("activity controller imported? \(importedObject != nil)")
-    }
+    if let filePath = NSBundle.mainBundle().pathForResource(file, ofType: "json"),
+      data: AnyObject = JSONSerialization.objectByParsingFile(filePath, options: 1, error: &error)
+      where MSHandleError(error) == false
+    {
+
+      if log { MSLogDebug("json objects from parsed file:\n\(data)") }
+
+      if let dataDictionary = data as? [String:AnyObject],
+        importedObject = type(data: dataDictionary, context: context) {
+
+        MSLogDebug("imported \(type.className()) from file '\(file).json'")
+
+        if log { MSLogDebug("json output for imported object:\n\(importedObject.JSONString)") }
+
+      } else if let dataArray = data as? [[String:AnyObject]] {
+
+        let importedObjects = type.importObjectsFromData(dataArray, context: context)
+
+        MSLogDebug("\(importedObjects.count) \(type.className()) objects imported from file '\(file).json'")
+
+        if log { MSLogDebug("json output for imported object:\n\((importedObjects as NSArray).JSONString)") }
+
+      } else { MSLogError("file content must resolve into [String:AnyObject] or [[String:AnyObject]]") }
+
+    } else { MSLogError("failed to parse file '\(file).json'") }
   }
-
-
-  /**
-  loadPresets:
-
-  :param: context NSManagedObjectContext
-  */
-  private class func loadPresets(context: NSManagedObjectContext) {
-    MSLogDebug("loading presets...")
-    var error: NSError?
-    if let filePath = NSBundle.mainBundle().pathForResource("Preset", ofType: "json"),
-      let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSArray {
-      assert(MSHandleError(error) == false)
-      let importedObjects = PresetCategory.importObjectsFromData(importData, context: context) as? [PresetCategory]
-      MSLogDebug("\(reduce(importedObjects?.map({$0.totalItemCount}) ?? [], 0, {$0 + $1})) presets imported")
-    }
-  }
-
-  /**
-  loadActivities:
-
-  :param: context NSManagedObjectContext
-  */
-  private class func loadActivities(context: NSManagedObjectContext) {
-    MSLogDebug("loading activities...")
-    var error: NSError?
-    if let filePath = NSBundle.mainBundle().pathForResource("Activity", ofType: "json"),
-      let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSArray {
-      assert(MSHandleError(error) == false)
-      let importedObjects = Activity.importObjectsFromData(importData, context: context)
-      MSLogDebug("\(importedObjects.count ?? 0) activities imported")
-    }
-  }
-
-  /**
-  loadManufacturers:
-
-  :param: context NSManagedObjectContext
-  */
-  private class func loadManufacturers(context: NSManagedObjectContext) {
-    MSLogDebug("loading manufacturers...")
-    var error: NSError?
-    if let filePath = NSBundle.mainBundle().pathForResource("Manufacturer_Test", ofType: "json"),
-      let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSArray {
-      assert(MSHandleError(error) == false)
-      let importedObjects = Manufacturer.importObjectsFromData(importData, context: context)
-      MSLogDebug("\(importedObjects.count ?? 0) manufacturers imported")
-    }
-  }
-
-  /**
-  loadComponentDevices:
-
-  :param: context NSManagedObjectContext
-  */
-  private class func loadComponentDevices(context: NSManagedObjectContext) {
-    MSLogDebug("loading component devices...")
-    var error: NSError?
-    if let filePath = NSBundle.mainBundle().pathForResource("ComponentDevice", ofType: "json"),
-      let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSArray {
-      assert(MSHandleError(error) == false)
-      let importedObjects = ComponentDevice.importObjectsFromData(importData, context: context)
-      MSLogDebug("\(importedObjects.count ?? 0) component devices imported")
-    }
-  }
-
-  /**
-  loadNetworkDevices:
-
-  :param: context NSManagedObjectContext
-  */
-  private class func loadNetworkDevices(context: NSManagedObjectContext) {
-    MSLogDebug("loading network devices...")
-    var error: NSError?
-    if let filePath = NSBundle.mainBundle().pathForResource("NetworkDevice", ofType: "json"),
-      let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSArray {
-      assert(MSHandleError(error) == false)
-      let importedObjects = NetworkDevice.importObjectsFromData(importData, context: context)
-      MSLogDebug("\(importedObjects.count ?? 0) network devices imported")
-    }
-  }
-
-  /**
-  loadImages:
-
-  :param: context NSManagedObjectContext
-  */
-  private class func loadImages(context: NSManagedObjectContext) {
-    MSLogDebug("loading images...")
-    var error: NSError?
-    if let filePath = NSBundle.mainBundle().pathForResource("Glyphish", ofType: "json"),
-      let importData = JSONSerialization.objectByParsingFile(filePath, options:1, error:&error) as? NSArray {
-      assert(MSHandleError(error) == false)
-      let importedObjects = ImageCategory.importObjectsFromData(importData, context: context) as! [ImageCategory]
-      MSLogDebug("\(reduce(importedObjects.map({$0.totalItemCount}) ?? [], 0, {$0 + $1})) images imported")
-    }
-  }
-
 
 }

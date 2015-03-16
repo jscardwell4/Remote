@@ -66,7 +66,7 @@ class PresetDetailController: BankItemDetailController {
 
     let commonAttributesSection = DetailSection(section: 1, title: "Common Attributes")
 
-    commonAttributesSection.addRow({ DetailLabelRow(pushableCategory: preset.presetCategory!, label: "Category") },
+    commonAttributesSection.addRow({ DetailLabelRow(pushableCategory: preset.category, label: "Category") },
                             forKey: RowKey.Category)
 
     let baseType = preset.baseType
@@ -139,11 +139,11 @@ class PresetDetailController: BankItemDetailController {
         }, forKey: RowKey.Style)
     }
 
-    commonAttributesSection.addRow({
-      let row = DetailLabeledImageRow(label: "Background Image", previewableItem: preset.backgroundImage)
-      row.placeholderImage = DrawingKit.imageOfNoImage(frame: CGRect(size: CGSize(square: 32.0)))
-      return row
-    }, forKey: RowKey.BackgroundImage)
+//    commonAttributesSection.addRow({
+//      let row = DetailLabeledImageRow(label: "Background Image", previewableItem: preset.backgroundImage)
+//      row.placeholderImage = DrawingKit.imageOfNoImage(frame: CGRect(size: CGSize(square: 32.0)))
+//      return row
+//    }, forKey: RowKey.BackgroundImage)
 
     commonAttributesSection.addRow({
       let row = DetailSliderRow()
