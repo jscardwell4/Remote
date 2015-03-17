@@ -29,6 +29,8 @@ class BankSurrogateCategory: NSObject, BankItemCategory {
 
   var editable: Bool { return false }
 
+  var categoryPath: String { return "" }
+
   /**
   initWithTitle:subcategories:items:previewableItems:editableItems:
 

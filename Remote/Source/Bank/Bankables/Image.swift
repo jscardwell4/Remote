@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(Image)
-class Image: BankableModelObject, PreviewableItem {
+class Image: BankCategoryItem, PreviewableItem {
 
   var assetName: String {
     get {

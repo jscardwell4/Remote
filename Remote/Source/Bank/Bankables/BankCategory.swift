@@ -20,9 +20,6 @@ class BankCategory: NamedModelObject, BankItemCategory {
   required init(context: NSManagedObjectContext?) { super.init(context: context) }
   required init?(data: [String : AnyObject], context: NSManagedObjectContext) { super.init(data: data, context: context) }
 
-  required init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-    super.init(entity: entity, insertIntoManagedObjectContext: context)
-  }
   override class func requiresUniqueNaming() -> Bool { return true }
   var parentCategory: BankItemCategory? {
     get {

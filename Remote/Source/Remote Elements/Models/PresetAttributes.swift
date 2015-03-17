@@ -51,7 +51,10 @@ class PresetAttributes {
   }
 
   var backgroundImage: Image? {
-    get { return ImageCategory.imageForPath(storage["backgroundImage"] as? String, context: context) }
+    get {
+      if let moc = context, path = storage["backgroundImage"] as? String { return ImageCategory.itemForPath(path, context: moc) as? Image }
+      else { return nil }
+    }
     set { storage["background-image"] = newValue }
   }
 

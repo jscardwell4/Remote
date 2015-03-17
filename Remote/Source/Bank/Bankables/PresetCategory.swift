@@ -11,36 +11,9 @@ import CoreData
 import MoonKit
 
 @objc(PresetCategory)
-class PresetCategory: BankableModelCategory {
+class PresetCategory: BankCategory {
 
-  override class func itemType() -> BankableModelObject.Type { return Preset.self }
-
-  @NSManaged var subcategoriesSet: NSSet?
-  @NSManaged var primitiveParentCategory: PresetCategory?
-  override var parentCategory: BankItemCategory? {
-    get {
-      willAccessValueForKey("parentCategory")
-      let category = primitiveParentCategory
-      didAccessValueForKey("parentCategory")
-      return category
-    }
-    set {
-        willChangeValueForKey("parentCategory")
-        primitiveParentCategory = newValue as? PresetCategory
-        didChangeValueForKey("parentCategory")
-    }
-  }
-  @NSManaged var presets: NSSet?
-
-  override var subcategories: [BankItemCategory] {
-    get { return ((subcategoriesSet?.allObjects ?? []) as! [PresetCategory]).sorted{$0.0.title < $0.1.title} }
-    set { if let newSubcategories = newValue as? [PresetCategory] { subcategoriesSet = NSSet(array: newSubcategories) } }
-  }
-
-  override var items: [BankItemModel] {
-    get { return sortedByName((presets?.allObjects ?? []) as! [Preset]) }
-    set { if let newItems = newValue as? [Preset] { presets = NSSet(array: newItems) } }
-  }
+  var presets: [Preset] { get { return items as! [Preset] } set { items = newValue } }
 
   /**
   updateWithData:
@@ -51,18 +24,18 @@ class PresetCategory: BankableModelCategory {
     super.updateWithData(data) // sets uuid, name
 
     // Try importing images
-    if let presetData = data["presets"] as? NSArray, let moc = managedObjectContext {
-      if presets == nil { presets = NSSet() }
-      let mutablePresets = mutableSetValueForKey("presets")
-      mutablePresets.addObjectsFromArray(Preset.importObjectsFromData(presetData, context: moc))
-    }
+//    if let presetData = data["presets"] as? NSArray, let moc = managedObjectContext {
+//      if presets == nil { presets = NSSet() }
+//      let mutablePresets = mutableSetValueForKey("presets")
+//      mutablePresets.addObjectsFromArray(Preset.importObjectsFromData(presetData, context: moc))
+//    }
 
     // Try importing subcategories
-    if let subCategoryData = data["subcategories"] as? NSArray, let moc = managedObjectContext {
-      if subcategoriesSet == nil { subcategoriesSet = NSSet() }
-      let mutableSubcategories = mutableSetValueForKey("subcategoriesSet")
-      mutableSubcategories.addObjectsFromArray(PresetCategory.importObjectsFromData(subCategoryData, context: moc))
-    }
+//    if let subCategoryData = data["subcategories"] as? NSArray, let moc = managedObjectContext {
+//      if subcategoriesSet == nil { subcategoriesSet = NSSet() }
+//      let mutableSubcategories = mutableSetValueForKey("subcategoriesSet")
+//      mutableSubcategories.addObjectsFromArray(PresetCategory.importObjectsFromData(subCategoryData, context: moc))
+//    }
 
   }
 
@@ -75,18 +48,18 @@ class PresetCategory: BankableModelCategory {
   override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
-    if let presetDictionaries = sortedByName(presets?.allObjects as? [Preset])?.map({$0.JSONDictionary()}) {
-      if presetDictionaries.count > 0 {
-        apply(presetDictionaries){$0.removeObjectForKey("category")}
-        dictionary["presets"] = presetDictionaries
-      }
-    }
+//    if let presetDictionaries = sortedByName(presets?.allObjects as? [Preset])?.map({$0.JSONDictionary()}) {
+//      if presetDictionaries.count > 0 {
+//        apply(presetDictionaries){$0.removeObjectForKey("category")}
+//        dictionary["presets"] = presetDictionaries
+//      }
+//    }
 
-    if let subcategoryDictionaries = sortedByName(subcategoriesSet?.allObjects as? [ImageCategory])?.map({$0.JSONDictionary()}) {
-      if subcategoryDictionaries.count > 0 {
-        dictionary["subcategories"] = subcategoryDictionaries
-      }
-    }
+//    if let subcategoryDictionaries = sortedByName(subcategoriesSet?.allObjects as? [ImageCategory])?.map({$0.JSONDictionary()}) {
+//      if subcategoryDictionaries.count > 0 {
+//        dictionary["subcategories"] = subcategoryDictionaries
+//      }
+//    }
 
     return dictionary
   }

@@ -104,7 +104,8 @@ command            = _command;
     Command * newCommand   = (Command *)[commandClass createInContext:_command.managedObjectContext];
 
     if (newCommand) {
-        [(MacroCommand *)_command addCommand:newCommand];
+      //FIXME: disabled while working on swift files
+//        [(MacroCommand *)_command addCommand:newCommand];
         MSLogDebug(@"%@\n\tadd new command:%@", ClassTagSelectorString, newCommand);
         [_tableView reloadData];
     }

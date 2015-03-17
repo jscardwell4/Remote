@@ -11,9 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(Preset)
-class Preset: BankableModelObject, PreviewableItem {
-
-  @NSManaged var category: PresetCategory
+class Preset: BankCategoryItem, PreviewableItem {
 
   var preview: UIImage { return UIImage() }
   var thumbnail: UIImage { return preview }
@@ -108,7 +106,11 @@ class Preset: BankableModelObject, PreviewableItem {
   }
 
   var backgroundImage: Image? {
-    get { return ImageCategory.imageForPath(storage["backgroundImage"] as? String, context: managedObjectContext) }
+    get {
+      if let moc = managedObjectContext, path = storage["backgroundImage"] as? String {
+        return ImageCategory.itemForPath(path, context: moc) as? Image
+      } else { return nil }
+    }
     set { storage["background-image"] = newValue }
   }
 

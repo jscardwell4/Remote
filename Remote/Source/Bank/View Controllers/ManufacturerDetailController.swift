@@ -42,7 +42,7 @@ class ManufacturerDetailController: BankItemDetailController {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let devicesSection = DetailSection(section: 0, title: "Devices")
-    for (idx, device) in enumerate(sortedByName(manufacturer.devices.allObjects as! [ComponentDevice])) {
+    for (idx, device) in enumerate(sortedByName(manufacturer.devices)) {
       devicesSection.addRow({ DetailListRow(pushableItem: device) }, forKey: "\(RowKey.Devices)\(idx)")
     }
 

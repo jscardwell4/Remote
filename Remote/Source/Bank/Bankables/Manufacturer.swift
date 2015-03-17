@@ -11,49 +11,12 @@ import CoreData
 import MoonKit
 
 @objc(Manufacturer)
-class Manufacturer: BankableModelObject {
+class Manufacturer: BankCategory, BankItemModel {
 
-  var codes: Set<IRCode> {
-    get {
-      willAccessValueForKey("codes")
-      let codes = primitiveValueForKey("codes") as! Set<IRCode>
-      didAccessValueForKey("codes")
-      return codes
-    }
-    set {
-      willChangeValueForKey("codes")
-      setPrimitiveValue(newValue, forKey: "codes")
-      didChangeValueForKey("codes")
-    }
-  }
 
-  var codeSets: Set<IRCodeSet> {
-    get {
-      willAccessValueForKey("codeSets")
-      let codeSets = primitiveValueForKey("codeSets") as! Set<IRCodeSet>
-      didAccessValueForKey("codeSets")
-      return codeSets
-    }
-    set {
-      willChangeValueForKey("codeSets")
-      setPrimitiveValue(newValue, forKey: "codeSets")
-      didChangeValueForKey("codeSets")
-    }
-  }
+  var codeSets: [IRCodeSet] { get { return subcategories as! [IRCodeSet] } set { subcategories = newValue } }
 
-  var devices: Set<ComponentDevice> {
-    get {
-      willAccessValueForKey("devices")
-      let devices = primitiveValueForKey("devices") as! Set<ComponentDevice>
-      didAccessValueForKey("devices")
-      return devices
-    }
-    set {
-      willChangeValueForKey("devices")
-      setPrimitiveValue(newValue, forKey: "devices")
-      didChangeValueForKey("devices")
-    }
-  }
+  @NSManaged var devices: Set<ComponentDevice>
 
   class func manufacturerWithName(name: String, context: NSManagedObjectContext) -> Manufacturer {
     var manufacturer: Manufacturer!
@@ -105,7 +68,7 @@ class Manufacturer: BankableModelObject {
 
   :returns: UIViewController
   */
-  override func detailController() -> UIViewController { return ManufacturerDetailController(model: self) }
+  func detailController() -> UIViewController { return ManufacturerDetailController(model: self) }
 
 }
 

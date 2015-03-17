@@ -220,7 +220,6 @@
 		C240DD5F170485F2005CC390 /* IRLearner.m in Sources */ = {isa = PBXBuildFile; fileRef = C240DD5E170485F2005CC390 /* IRLearner.m */; };
 		C249174819BFBA870049638F /* NetworkDevice.json in Resources */ = {isa = PBXBuildFile; fileRef = C249174719BFBA870049638F /* NetworkDevice.json */; };
 		C24ECC9219DE126D00C1870E /* BankableModelObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24ECC9119DE126D00C1870E /* BankableModelObject.swift */; };
-		C24ECC9519DE327600C1870E /* BankableModelCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24ECC9419DE327600C1870E /* BankableModelCategory.swift */; };
 		C250CED81A16DC36006D36CF /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C250CED71A16DC36006D36CF /* Constraint.swift */; };
 		C250CEDA1A17047C006D36CF /* RemoteElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = C250CED91A17047C006D36CF /* RemoteElement.swift */; };
 		C252E4FB19E2191E00DBBBB2 /* DetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8127D19D6454300FD80C4 /* DetailCell.swift */; };
@@ -257,7 +256,6 @@
 		C25E63E31A01B4E500F54626 /* RemoteEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63E21A01B4E500F54626 /* RemoteEditingController.swift */; };
 		C25FB0DD1AB795170010E40B /* BankCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25FB0DA1AB795170010E40B /* BankCategory.swift */; };
 		C25FB0DE1AB795170010E40B /* BankCategoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25FB0DB1AB795170010E40B /* BankCategoryItem.swift */; };
-		C25FB0DF1AB795170010E40B /* CategorizableBankableModelObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25FB0DC1AB795170010E40B /* CategorizableBankableModelObject.swift */; };
 		C269842319DF8513007E268B /* BankCollectionItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22E1BD919C12FB900A93D61 /* BankCollectionItemCell.swift */; };
 		C269842419DF8526007E268B /* BankCollectionCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C277AB8119D7791C008DEE39 /* BankCollectionCategoryCell.swift */; };
 		C269842519DF8549007E268B /* BankCollectionAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C1756B19D1F58A008B8E16 /* BankCollectionAttributes.swift */; };
@@ -2989,7 +2987,6 @@
 				C2B84B101A27E56D000D699C /* RemotePresetDetailController.swift in Sources */,
 				C215C9CF19F739E5000CC6CC /* DetailLabelCell.swift in Sources */,
 				C25E63E31A01B4E500F54626 /* RemoteEditingController.swift in Sources */,
-				C25FB0DF1AB795170010E40B /* CategorizableBankableModelObject.swift in Sources */,
 				C21F07E71AA5108400F1F8DD /* CommandSetCollection.swift in Sources */,
 				C20D11AA1A40A88600C33499 /* RemotePreview.swift in Sources */,
 				C269842619DF8562007E268B /* BankCollectionLayout.swift in Sources */,
@@ -3053,7 +3050,6 @@
 				C25FB0DE1AB795170010E40B /* BankCategoryItem.swift in Sources */,
 				C20D11A81A40A88600C33499 /* ModeSelectionPreview.swift in Sources */,
 				C252E4FB19E2191E00DBBBB2 /* DetailCell.swift in Sources */,
-				C24ECC9519DE327600C1870E /* BankableModelCategory.swift in Sources */,
 				C235A2FA1A0E96B10067E226 /* ButtonGroupView.swift in Sources */,
 				C27DE08419E5E67F00CCB725 /* ComponentDeviceDetailController.swift in Sources */,
 				C235A2EB1A095FC40067E226 /* ConstraintManager.swift in Sources */,

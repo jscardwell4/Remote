@@ -33,29 +33,29 @@ class NetworkDevice: BankableModelObject {
 
   :returns: NetworkDevice?
   */
-  override class func fetchOrImportObjectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> NetworkDevice? {
-
-    var device: NetworkDevice?
-
-    // Try getting the type of device to import
-    if let type = data["type"] as? String {
-
-      var entityName: String?
-      var deviceType: NetworkDevice.Type = NetworkDevice.self
-
-      // Import with parameters derived from specified type
-      switch type {
-        case "itach":
-          device = importObjectForEntity("ITachDevice", forType: ITachDevice.self, fromData: data, context: context) as? NetworkDevice
-        case "isy":
-          device = importObjectForEntity("ISYDevice", forType: ISYDevice.self, fromData: data, context: context) as? NetworkDevice
-        default:
-          break
-      }
-    }
-
-    return device
-  }
+//  override class func fetchOrImportObjectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> NetworkDevice? {
+//
+//    var device: NetworkDevice?
+//
+//    // Try getting the type of device to import
+//    if let type = data["type"] as? String {
+//
+//      var entityName: String?
+//      var deviceType: NetworkDevice.Type = NetworkDevice.self
+//
+//      // Import with parameters derived from specified type
+//      switch type {
+//        case "itach":
+//          device = importObjectForEntity("ITachDevice", forType: ITachDevice.self, fromData: data, context: context) as? NetworkDevice
+//        case "isy":
+//          device = importObjectForEntity("ISYDevice", forType: ISYDevice.self, fromData: data, context: context) as? NetworkDevice
+//        default:
+//          break
+//      }
+//    }
+//
+//    return device
+//  }
   class var rootCategory: Bank.RootCategory {
     let networkDevices = findAllSortedBy("name", ascending: true, context: DataManager.rootContext) as? [NetworkDevice]
     return Bank.RootCategory(label: "Network Devices",

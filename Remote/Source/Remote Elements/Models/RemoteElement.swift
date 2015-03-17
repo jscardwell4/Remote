@@ -60,10 +60,6 @@ class RemoteElement: NamedModelObject {
     }
   }
 
-  required init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-      fatalError("init(entity:insertIntoManagedObjectContext:) has not been implemented")
-  }
-
   required init(context: NSManagedObjectContext?) {
       fatalError("init(context:) has not been implemented")
   }
@@ -115,7 +111,7 @@ class RemoteElement: NamedModelObject {
 
   @NSManaged var backgroundImageAlpha: NSNumber
   @NSManaged var backgroundColor: UIColor?
-  @NSManaged var backgroundImage: Image?
+  @NSManaged var backgroundImage: ImageView?
 
   @NSManaged var subelements: NSOrderedSet
 
@@ -294,7 +290,7 @@ class RemoteElement: NamedModelObject {
 
     for mode in modes {
       if let color = backgroundColorForMode(mode)?.string { backgroundColors[mode] = color }
-      if let image = backgroundImageForMode(mode)?.commentedUUID { backgroundImages[mode] = image }
+      if let image = backgroundImageForMode(mode)?.imagePath { backgroundImages[mode] = image }
       if let alpha = backgroundImageAlphaForMode(mode) { backgroundImageAlphas[mode] = alpha }
     }
 
@@ -386,10 +382,10 @@ class RemoteElement: NamedModelObject {
 
   :param: mode String
 
-  :returns: Image?
+  :returns: ImageView?
   */
-  func backgroundImageForMode(mode: String) -> Image? {
-    return faultedObjectForKey("backgroundImage", forMode: mode) as? Image
+  func backgroundImageForMode(mode: String) -> ImageView? {
+    return faultedObjectForKey("backgroundImage", forMode: mode) as? ImageView
   }
 
   /**

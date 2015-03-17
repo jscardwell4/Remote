@@ -15,6 +15,7 @@ class ImageView: ModelObject {
 
   @NSManaged var color: UIColor?
   @NSManaged var image: Image
+  @NSManaged var imagePath: String
 
   @NSManaged var buttonIcon: Button?
   @NSManaged var buttonImage: Button?

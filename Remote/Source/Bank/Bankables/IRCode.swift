@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(IRCode)
-class IRCode: BankableModelObject {
+class IRCode: BankCategoryItem {
 
   @NSManaged var frequency: Int64
   @NSManaged var offset: Int16
@@ -19,10 +19,11 @@ class IRCode: BankableModelObject {
   @NSManaged var prontoHex: String?
   @NSManaged var repeatCount: Int16
   @NSManaged var setsDeviceInput: Bool
-  @NSManaged var codeSet: IRCodeSet!
   @NSManaged var device: ComponentDevice!
-  @NSManaged var manufacturer: Manufacturer!
   @NSManaged var sendCommands: NSSet
+
+  var manufacturer: Manufacturer { return codeSet.manufacturer }
+  var codeSet: IRCodeSet { get { return category as! IRCodeSet } set { category = newValue } }
 
   class func isValidOnOffPattern(pattern: String) -> Bool { return compressedOnOffPatternFromPattern(pattern) != nil }
 

@@ -22,11 +22,11 @@ class SendIRCommand: SendCommand {
 
   @NSManaged var code: IRCode
 
-  var device: ComponentDevice { return code.device }
-  var networkDevice: NetworkDevice? { return device.networkDevice }
+  var componentDevice: ComponentDevice { return code.device }
+  var networkDevice: NetworkDevice? { return componentDevice.networkDevice }
 
   var commandString: String {
-    return "sendir,1:\(device.port),<tag>,\(code.frequency),\(code.repeatCount),\(code.offset),\(code.onOffPattern)"
+    return "sendir,1:\(componentDevice.port),<tag>,\(code.frequency),\(code.repeatCount),\(code.offset),\(code.onOffPattern)"
   }
 
   /**

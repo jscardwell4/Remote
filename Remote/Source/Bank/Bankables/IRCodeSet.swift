@@ -11,20 +11,15 @@ import CoreData
 import MoonKit
 
 @objc(IRCodeSet)
-class IRCodeSet: BankableModelCategory {
+class IRCodeSet: BankCategory {
 
-  override class func itemType() -> BankableModelObject.Type { return IRCode.self }
 
-  @NSManaged var devices: NSSet?
-  @NSManaged var codes: NSSet?
-  @NSManaged var manufacturer: Manufacturer?
+  @NSManaged var devices: Set<ComponentDevice>?
 
-  override var items: [BankItemModel] {
-    get { return sortedByName((codes?.allObjects as? [IRCode]) ?? []) }
-    set { if let newCodes = newValue as? [IRCode] { codes = NSSet(array: newCodes) } }
-  }
-  override var previewableItems:   Bool { return false }
-  override var editableItems:      Bool { return true }
+  var codes: [IRCode] { get { return items as! [IRCode] } set { items = newValue } }
+  var manufacturer: Manufacturer { get { return parentCategory as! Manufacturer } set { parentCategory = newValue } }
+
+  override var editableItems: Bool { return true }
 
   /**
   updateWithData:
@@ -34,16 +29,16 @@ class IRCodeSet: BankableModelCategory {
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
-    if let codesData = data["codes"] as? NSArray, let moc = managedObjectContext {
-      if codes == nil { codes = NSSet() }
-      let mutableCodes = mutableSetValueForKey("codes")
-      mutableCodes.addObjectsFromArray(IRCode.importObjectsFromData(codesData, context: moc))
-    }
+//    if let codesData = data["codes"] as? NSArray, let moc = managedObjectContext {
+//      if codes == nil { codes = NSSet() }
+//      let mutableCodes = mutableSetValueForKey("codes")
+//      mutableCodes.addObjectsFromArray(IRCode.importObjectsFromData(codesData, context: moc))
+//    }
 
-    if let manufacturerData = data["manufacturer"] as? [String:AnyObject], let moc = managedObjectContext,
-      let manufacturer = Manufacturer.fetchOrImportObjectWithData(manufacturerData, context: moc) {
-      self.manufacturer = manufacturer
-    }
+//    if let manufacturerData = data["manufacturer"] as? [String:AnyObject], let moc = managedObjectContext,
+//      let manufacturer = Manufacturer.fetchOrImportObjectWithData(manufacturerData, context: moc) {
+//      self.manufacturer = manufacturer
+//    }
 
   }
 

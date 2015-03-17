@@ -13,6 +13,11 @@ import MoonKit
 /** Protocol for items displayed by the bank */
 @objc protocol BankItemModel: class, NSObjectProtocol, Renameable, Model, MSJSONExport, EditableItem {}
 
+@objc protocol CategorizableBankItemModel: BankItemModel {
+  var category: BankItemCategory { get set }
+  var itemPath: String { get }
+}
+
 /** Protocol for types that serve as a category for `BankItemModel` objects */
 @objc protocol BankItemCategory: class, NSObjectProtocol, MSJSONExport {
 
@@ -43,9 +48,9 @@ recursiveItemCountForCategory:
 
 :returns: Int
 */
-func recursiveItemCountForCategory(category: BankItemCategory) -> Int {
-  return recursiveReduce(0, {$0.subcategories}, {$0.0 + $0.1.items.count}, category)
-}
+//func recursiveItemCountForCategory(category: BankItemCategory) -> Int {
+//  return recursiveReduce(0, {$0.subcategories}, {$0.0 + $0.1.items.count}, category)
+//}
 
 /**
 categoryPath:
@@ -54,16 +59,16 @@ categoryPath:
 
 :returns: String?
 */
-func categoryPath(category: BankItemCategory?) -> String? {
-  if category == nil { return nil }
-  var path: [String] = [category!.title]
-  var tempCategory = category!.parentCategory
-  while tempCategory != nil {
-    path.append(tempCategory!.title)
-    tempCategory = tempCategory!.parentCategory
-  }
-  return "/".join(path.reverse())
-}
+//func categoryPath(category: BankItemCategory?) -> String? {
+//  if category == nil { return nil }
+//  var path: [String] = [category!.title]
+//  var tempCategory = category!.parentCategory
+//  while tempCategory != nil {
+//    path.append(tempCategory!.title)
+//    tempCategory = tempCategory!.parentCategory
+//  }
+//  return "/".join(path.reverse())
+//}
 
 /**
 itemForCategory:atPath:
@@ -73,22 +78,22 @@ itemForCategory:atPath:
 
 :returns: BankItemModel?
 */
-func itemForCategory(category: BankItemCategory, atPath path: String) -> BankItemModel? {
-  var item: BankItemModel?
-  var components = split(path){$0 == "/"}
-  let itemName = components.removeLast()
-  var currentCategory: BankItemCategory? = category
-  if components.count > 0 {
-    components = components.reverse()
-    var categoryName: String
-    while currentCategory != nil && components.count > 0 {
-      categoryName = components.removeLast()
-      currentCategory = currentCategory?.subcategories.filter{$0.title == categoryName}.first
-    }
-  }
-  if currentCategory != nil && components.count == 0 {
-    item = currentCategory?.items.filter{$0.name == itemName}.first
-  }
-  return item
-}
+//func itemForCategory(category: BankItemCategory, atPath path: String) -> BankItemModel? {
+//  var item: BankItemModel?
+//  var components = split(path){$0 == "/"}
+//  let itemName = components.removeLast()
+//  var currentCategory: BankItemCategory? = category
+//  if components.count > 0 {
+//    components = components.reverse()
+//    var categoryName: String
+//    while currentCategory != nil && components.count > 0 {
+//      categoryName = components.removeLast()
+//      currentCategory = currentCategory?.subcategories.filter{$0.title == categoryName}.first
+//    }
+//  }
+//  if currentCategory != nil && components.count == 0 {
+//    item = currentCategory?.items.filter{$0.name == itemName}.first
+//  }
+//  return item
+//}
 

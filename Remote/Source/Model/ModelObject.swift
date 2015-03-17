@@ -23,7 +23,7 @@ class ModelObject: NSManagedObject {
   :param: entity NSEntityDescription
   :param: context NSManagedObjectContext?
   */
-  required override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+  override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
     super.init(entity: entity, insertIntoManagedObjectContext: context)
   }
 
