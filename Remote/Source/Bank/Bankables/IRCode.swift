@@ -65,7 +65,7 @@ class IRCode: BankableModelObject {
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     if let codeSetData = data["codeset"] as? [String:AnyObject], let moc = managedObjectContext,
-      let codeSet = IRCodeSet.importObjectFromData(codeSetData, context: moc) {
+      let codeSet = IRCodeSet.fetchOrImportObjectWithData(codeSetData, context: moc) {
         self.codeSet = codeSet
     }
     frequency    = (data["frequency"]      as? NSNumber)?.longLongValue ?? frequency

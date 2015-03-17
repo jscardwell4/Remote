@@ -26,14 +26,14 @@ class NetworkDevice: BankableModelObject {
   }
 
   /**
-  importObjectFromData:context:
+  fetchOrImportObjectWithData:context:
 
   :param: data [String:AnyObject]
   :param: context NSManagedObjectContext
 
   :returns: NetworkDevice?
   */
-  override class func importObjectFromData(data: [String:AnyObject], context: NSManagedObjectContext) -> NetworkDevice? {
+  override class func fetchOrImportObjectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> NetworkDevice? {
 
     var device: NetworkDevice?
 

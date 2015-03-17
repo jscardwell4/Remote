@@ -124,6 +124,18 @@ class ButtonGroup: RemoteElement {
       fatalError("init(context:insert:) has not been implemented")
   }
 
+  required init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+      fatalError("init(entity:insertIntoManagedObjectContext:) has not been implemented")
+  }
+
+  required init(context: NSManagedObjectContext?) {
+      fatalError("init(context:) has not been implemented")
+  }
+
+  required init?(data: [String : AnyObject], context: NSManagedObjectContext) {
+      fatalError("init(data:context:) has not been implemented")
+  }
+
   /**
   initWithEntity:insertIntoManagedObjectContext:
 
@@ -293,13 +305,13 @@ class ButtonGroup: RemoteElement {
 
       if let commandSetData = data["command-set"] as? [String:[String:AnyObject]] {
         for (mode, values) in commandSetData {
-          setCommandContainer(CommandSet.importObjectFromData(values, context: moc), forMode: mode)
+          setCommandContainer(CommandSet.fetchOrImportObjectWithData(values, context: moc), forMode: mode)
         }
       }
 
       else if let collectionData = data["command-set-collection"] as? [String:[String:AnyObject]] {
         for (mode, values) in collectionData {
-          setCommandContainer(CommandSetCollection.importObjectFromData(values, context: moc), forMode: mode)
+          setCommandContainer(CommandSetCollection.fetchOrImportObjectWithData(values, context: moc), forMode: mode)
         }
       }
 

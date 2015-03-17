@@ -12,10 +12,13 @@ import ObjectiveC
 import MoonKit
 
 @objc(CategorizableBankableModelObject)
-class CategorizableBankableModelObject: BankableModelObject, CategorizableBankItemModel {
+class CategorizableBankableModelObject: BankableModelObject {
   required init(context: NSManagedObjectContext?) { super.init(context: context) }
-  required init?(JSONValue: MSDictionary) { super.init(JSONValue: JSONValue) }
   required init?(data: [String : AnyObject], context: NSManagedObjectContext) { super.init(data: data, context: context) }
+
+  required init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+      fatalError("init(entity:insertIntoManagedObjectContext:) has not been implemented")
+  }
 
   class var categoryRelationshipName: String { return "category" }
 

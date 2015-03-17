@@ -44,7 +44,7 @@ class PowerCommand: Command {
     super.updateWithData(data)
     if let stateJSON = data["state"] as? String { state = State(JSONValue: stateJSON) }
     if let deviceData = data["device"] as? [String:AnyObject], let moc = managedObjectContext,
-      let device = ComponentDevice.importObjectFromData(deviceData, context: moc) {
+      let device = ComponentDevice.fetchOrImportObjectWithData(deviceData, context: moc) {
         self.device = device
     }
   }

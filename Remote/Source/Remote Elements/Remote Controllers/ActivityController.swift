@@ -88,10 +88,10 @@ class ActivityController: ModelObject {
     super.updateWithData(data)
 
     if let moc = managedObjectContext {
-      if let homeRemote = Remote.importObjectFromData(data["home-remote"] as! [String:AnyObject], context: moc) {
+      if let homeRemote = Remote.fetchOrImportObjectWithData(data["home-remote"] as! [String:AnyObject], context: moc) {
         self.homeRemote = homeRemote
       }
-      if let topToolbar = ButtonGroup.importObjectFromData(data["top-toolbar"] as! [String:AnyObject], context: moc) {
+      if let topToolbar = ButtonGroup.fetchOrImportObjectWithData(data["top-toolbar"] as! [String:AnyObject], context: moc) {
         self.topToolbar = topToolbar
       }
     }

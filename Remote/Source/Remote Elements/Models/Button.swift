@@ -40,22 +40,22 @@ class Button: RemoteElement {
     if let moc = managedObjectContext {
 
       if let titlesData = preset.titles {
-        setTitles(ControlStateTitleSet.importObjectFromData(titlesData, context: moc),
+        setTitles(ControlStateTitleSet.fetchOrImportObjectWithData(titlesData, context: moc),
           forMode: RemoteElement.DefaultMode)
       }
 
       if let iconsData = preset.icons {
-        setIcons(ControlStateImageSet.importObjectFromData(iconsData, context: moc),
+        setIcons(ControlStateImageSet.fetchOrImportObjectWithData(iconsData, context: moc),
          forMode: RemoteElement.DefaultMode)
       }
 
       if let imagesData = preset.images {
-        setImages(ControlStateImageSet.importObjectFromData(imagesData, context: moc),
+        setImages(ControlStateImageSet.fetchOrImportObjectWithData(imagesData, context: moc),
           forMode: RemoteElement.DefaultMode)
       }
 
       if let backgroundColorsData = preset.backgroundColors {
-        setBackgroundColors(ControlStateColorSet.importObjectFromData(backgroundColorsData, context: moc),
+        setBackgroundColors(ControlStateColorSet.fetchOrImportObjectWithData(backgroundColorsData, context: moc),
                     forMode: RemoteElement.DefaultMode)
       }
 
@@ -64,7 +64,7 @@ class Button: RemoteElement {
       imageEdgeInsets = preset.imageEdgeInsets
 
       if let commandData = preset.command {
-        setCommand(Command.importObjectFromData(commandData, context: moc), forMode: RemoteElement.DefaultMode)
+        setCommand(Command.fetchOrImportObjectWithData(commandData, context: moc), forMode: RemoteElement.DefaultMode)
       }
 
     }
@@ -73,6 +73,18 @@ class Button: RemoteElement {
 
   required init(context: NSManagedObjectContext, insert: Bool) {
       fatalError("init(context:insert:) has not been implemented")
+  }
+
+  required init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+      fatalError("init(entity:insertIntoManagedObjectContext:) has not been implemented")
+  }
+
+  required init?(data: [String : AnyObject], context: NSManagedObjectContext) {
+      fatalError("init(data:context:) has not been implemented")
+  }
+
+  required init(context: NSManagedObjectContext?) {
+      fatalError("init(context:) has not been implemented")
   }
 
   /**
@@ -387,38 +399,38 @@ class Button: RemoteElement {
 
       if let titles = data["titles"] as? [String:[String:AnyObject]] {
         for (mode, values) in titles {
-          let titleSet = ControlStateTitleSet.importObjectFromData(values, context: moc)
+          let titleSet = ControlStateTitleSet.fetchOrImportObjectWithData(values, context: moc)
           if titleSet != nil { setTitles(titleSet, forMode: mode) }
         }
       }
 
       if let icons = data["icons"] as? [String:[String:AnyObject]] {
         for (mode, values) in icons {
-          setIcons(ControlStateImageSet.importObjectFromData(values, context: moc), forMode: mode)
+          setIcons(ControlStateImageSet.fetchOrImportObjectWithData(values, context: moc), forMode: mode)
         }
       }
 
       if let images = data["images"] as? [String:[String:AnyObject]] {
         for (mode, values) in images {
-          setImages(ControlStateImageSet.importObjectFromData(values, context: moc), forMode: mode)
+          setImages(ControlStateImageSet.fetchOrImportObjectWithData(values, context: moc), forMode: mode)
         }
       }
 
       if let backgroundColors = data["background-colors"] as? [String:[String:AnyObject]] {
         for (mode, values) in backgroundColors {
-          setBackgroundColors(ControlStateColorSet.importObjectFromData(values, context: moc), forMode: mode)
+          setBackgroundColors(ControlStateColorSet.fetchOrImportObjectWithData(values, context: moc), forMode: mode)
         }
       }
 
       if let commands = data["commands"] as? [String:[String:AnyObject]] {
         for (mode, values) in commands {
-          setCommand(Command.importObjectFromData(values, context: moc), forMode: mode)
+          setCommand(Command.fetchOrImportObjectWithData(values, context: moc), forMode: mode)
         }
       }
 
       if let longPressCommands = data["long-press-commands"] as? [String:[String:AnyObject]] {
         for (mode, values) in longPressCommands {
-          setCommand(Command.importObjectFromData(values, context: moc), forMode: mode)
+          setCommand(Command.fetchOrImportObjectWithData(values, context: moc), forMode: mode)
         }
       }
 

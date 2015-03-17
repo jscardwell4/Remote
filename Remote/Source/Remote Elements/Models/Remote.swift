@@ -37,8 +37,16 @@ class Remote: RemoteElement {
     topBarHidden = preset.topBarHidden ?? false
   }
 
-  required init(context: NSManagedObjectContext, insert: Bool) {
-      fatalError("init(context:insert:) has not been implemented")
+  required init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+      fatalError("init(entity:insertIntoManagedObjectContext:) has not been implemented")
+  }
+
+  required init(context: NSManagedObjectContext?) {
+      fatalError("init(context:) has not been implemented")
+  }
+
+  required init?(data: [String : AnyObject], context: NSManagedObjectContext) {
+      fatalError("init(data:context:) has not been implemented")
   }
 
   /**

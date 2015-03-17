@@ -13,7 +13,7 @@ import MoonKit
 @objc(Preset)
 class Preset: BankableModelObject, PreviewableItem {
 
-  @NSManaged var category: PresetCategory?
+  @NSManaged var category: PresetCategory
 
   var preview: UIImage { return UIImage() }
   var thumbnail: UIImage { return preview }

@@ -129,23 +129,23 @@ class ComponentDevice: BankableModelObject {
 
       port = (data["port"] as? NSNumber)?.shortValue ?? port
       if let onCommandData = data["on-command"] as? [String:AnyObject],
-        let onCommand = SendIRCommand.importObjectFromData(onCommandData, context: moc) as? SendIRCommand {
+        let onCommand = SendIRCommand.fetchOrImportObjectWithData(onCommandData, context: moc) as? SendIRCommand {
           self.onCommand = onCommand
       }
       if let offCommandData = data["off-command"] as? [String:AnyObject],
-        let offCommand = SendIRCommand.importObjectFromData(offCommandData, context: moc) as? SendIRCommand {
+        let offCommand = SendIRCommand.fetchOrImportObjectWithData(offCommandData, context: moc) as? SendIRCommand {
           self.offCommand = offCommand
       }
       if let manufacturerData = data["manufacturer"] as? [String:AnyObject],
-        let manufacturer = Manufacturer.importObjectFromData(manufacturerData, context: moc) {
+        let manufacturer = Manufacturer.fetchOrImportObjectWithData(manufacturerData, context: moc) {
           self.manufacturer = manufacturer
       }
       if let networkDeviceData = data["network-device"] as? [String:AnyObject],
-        let networkDevice = NetworkDevice.importObjectFromData(networkDeviceData, context: moc) {
+        let networkDevice = NetworkDevice.fetchOrImportObjectWithData(networkDeviceData, context: moc) {
           self.networkDevice = networkDevice
       }
       if let codeSetData = data["code-set"] as? [String:AnyObject],
-        let codeSet = IRCodeSet.importObjectFromData(codeSetData, context: moc) {
+        let codeSet = IRCodeSet.fetchOrImportObjectWithData(codeSetData, context: moc) {
           self.codeSet = codeSet
       }
     }

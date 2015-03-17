@@ -50,26 +50,26 @@ class Command: NamedModelObject {
   }
 
   /**
-  importObjectFromData:context:
+  fetchOrImportObjectWithData:context:
 
   :param: data [String:AnyObject]
   :param: context NSManagedObjectContext!
 
   :returns: Command?
   */
-  override class func importObjectFromData(data: [String:AnyObject], context: NSManagedObjectContext) -> Command? {
+  override class func fetchOrImportObjectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Command? {
     if self === Command.self, let classJSONValue = data["class"] as? String {
       switch classJSONValue {
-        case "power":  return PowerCommand.importObjectFromData(data, context: context)
-        case "delay":  return DelayCommand.importObjectFromData(data, context: context)
-        case "sendir": return SendIRCommand.importObjectFromData(data, context: context)
-        case "http":   return HTTPCommand.importObjectFromData(data, context: context)
-        case "system": return SystemCommand.importObjectFromData(data, context: context)
-        case "macro":  return MacroCommand.importObjectFromData(data, context: context)
+        case "power":  return PowerCommand(data: data, context: context)
+        case "delay":  return DelayCommand(data: data, context: context)
+        case "sendir": return SendIRCommand(data: data, context: context)
+        case "http":   return HTTPCommand(data: data, context: context)
+        case "system": return SystemCommand(data: data, context: context)
+        case "macro":  return MacroCommand(data: data, context: context)
         default:       return nil
       }
     } else {
-      return super.importObjectFromData(data, context: context) as? Command
+      return super.fetchOrImportObjectWithData(data, context: context) as? Command
     }
   }
 

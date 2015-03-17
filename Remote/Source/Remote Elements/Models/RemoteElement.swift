@@ -60,8 +60,16 @@ class RemoteElement: NamedModelObject {
     }
   }
 
-  required init(context: NSManagedObjectContext, insert: Bool) {
-      fatalError("init(context:insert:) has not been implemented")
+  required init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+      fatalError("init(entity:insertIntoManagedObjectContext:) has not been implemented")
+  }
+
+  required init(context: NSManagedObjectContext?) {
+      fatalError("init(context:) has not been implemented")
+  }
+
+  required init?(data: [String : AnyObject], context: NSManagedObjectContext) {
+      fatalError("init(data:context:) has not been implemented")
   }
 
   /**
@@ -236,15 +244,15 @@ class RemoteElement: NamedModelObject {
 
       if let backgroundImageJSON = data["background-image"] as? [String:[String:AnyObject]] {
         for (mode, value) in backgroundImageJSON {
-          setURIForObject(Image.importObjectFromData(value, context: moc), forKey: "backgroundImage", forMode: mode)
+          setURIForObject(Image.fetchOrImportObjectWithData(value, context: moc), forKey: "backgroundImage", forMode: mode)
         }
       }
 
       if let subelementsJSON = data["subelements"] as? [[String:AnyObject]] {
         if elementType == .Remote {
-          childElements = OrderedSet(compressed(subelementsJSON.map{ButtonGroup.importObjectFromData($0, context: moc)}))
+          childElements = OrderedSet(compressed(subelementsJSON.map{ButtonGroup.fetchOrImportObjectWithData($0, context: moc)}))
         } else if elementType == .ButtonGroup {
-          childElements = OrderedSet(compressed(subelementsJSON.map{Button.importObjectFromData($0,  context: moc)}))
+          childElements = OrderedSet(compressed(subelementsJSON.map{Button.fetchOrImportObjectWithData($0,  context: moc)}))
         }
       }
 

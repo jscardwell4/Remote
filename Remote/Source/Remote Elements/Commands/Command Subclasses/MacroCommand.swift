@@ -91,14 +91,14 @@ class MacroCommand: Command {
         if let commandClassNameJSON = commandData["class"] as? String, let moc = managedObjectContext {
           let command: Command?
           switch commandClassNameJSON {
-            case "power":    command = PowerCommand.importObjectFromData(commandData, context: moc)
-            case "sendir":   command = SendIRCommand.importObjectFromData(commandData, context: moc)
-            case "http":     command = HTTPCommand.importObjectFromData(commandData, context: moc)
-            case "delay":    command = DelayCommand.importObjectFromData(commandData, context: moc)
-            case "macro":    command = MacroCommand.importObjectFromData(commandData, context: moc)
-            case "system":   command = SystemCommand.importObjectFromData(commandData, context: moc)
-            case "switch":   command = SwitchCommand.importObjectFromData(commandData, context: moc)
-            case "activity": command = ActivityCommand.importObjectFromData(commandData, context: moc)
+            case "power":    command = PowerCommand.fetchOrImportObjectWithData(commandData, context: moc)
+            case "sendir":   command = SendIRCommand.fetchOrImportObjectWithData(commandData, context: moc)
+            case "http":     command = HTTPCommand.fetchOrImportObjectWithData(commandData, context: moc)
+            case "delay":    command = DelayCommand.fetchOrImportObjectWithData(commandData, context: moc)
+            case "macro":    command = MacroCommand.fetchOrImportObjectWithData(commandData, context: moc)
+            case "system":   command = SystemCommand.fetchOrImportObjectWithData(commandData, context: moc)
+            case "switch":   command = SwitchCommand.fetchOrImportObjectWithData(commandData, context: moc)
+            case "activity": command = ActivityCommand.fetchOrImportObjectWithData(commandData, context: moc)
             default:         command = nil
           }
           if command != nil { commands.append(command!) }

@@ -92,15 +92,15 @@ class Activity: NamedModelObject {
     super.updateWithData(data)
     if let moc = managedObjectContext {
       if let remoteData = data["remote"] as? [String:AnyObject],
-        let remote = Remote.importObjectFromData(remoteData, context: moc) {
+        let remote = Remote.fetchOrImportObjectWithData(remoteData, context: moc) {
           self.remote = remote
       }
       if let launchMacroData = data["launch-macro"] as? [String:AnyObject],
-        let launchMacro = MacroCommand.importObjectFromData(launchMacroData, context: moc) as? MacroCommand {
+        let launchMacro = MacroCommand.fetchOrImportObjectWithData(launchMacroData, context: moc) as? MacroCommand {
           self.launchMacro = launchMacro
       }
       if let haltMacroData = data["halt-macro"] as? [String:AnyObject],
-        let haltMacro = MacroCommand.importObjectFromData(haltMacroData, context: moc)  as? MacroCommand {
+        let haltMacro = MacroCommand.fetchOrImportObjectWithData(haltMacroData, context: moc)  as? MacroCommand {
           self.haltMacro = haltMacro
       }
     }

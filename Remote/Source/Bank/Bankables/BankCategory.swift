@@ -18,10 +18,9 @@ func typeCast<T,U>(subject: T, target: U.Type) -> U? {
 class BankCategory: NamedModelObject, BankItemCategory {
 
   required init(context: NSManagedObjectContext?) { super.init(context: context) }
-  required init?(JSONValue: MSDictionary) { super.init(JSONValue: JSONValue) }
   required init?(data: [String : AnyObject], context: NSManagedObjectContext) { super.init(data: data, context: context) }
 
-  override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+  required init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
     super.init(entity: entity, insertIntoManagedObjectContext: context)
   }
   override class func requiresUniqueNaming() -> Bool { return true }

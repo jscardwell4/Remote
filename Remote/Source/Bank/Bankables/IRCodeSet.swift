@@ -41,7 +41,7 @@ class IRCodeSet: BankableModelCategory {
     }
 
     if let manufacturerData = data["manufacturer"] as? [String:AnyObject], let moc = managedObjectContext,
-      let manufacturer = Manufacturer.importObjectFromData(manufacturerData, context: moc) {
+      let manufacturer = Manufacturer.fetchOrImportObjectWithData(manufacturerData, context: moc) {
       self.manufacturer = manufacturer
     }
 

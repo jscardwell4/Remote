@@ -37,7 +37,7 @@ class SendIRCommand: SendCommand {
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     if let codeData = data["code"] as? [String:AnyObject], let moc = managedObjectContext,
-      let code = IRCode.importObjectFromData(codeData, context: moc) {
+      let code = IRCode.fetchOrImportObjectWithData(codeData, context: moc) {
         self.code = code
     }
   }

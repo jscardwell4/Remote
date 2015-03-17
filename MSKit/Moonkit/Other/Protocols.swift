@@ -73,20 +73,22 @@ public protocol Unpackable4 {
 /**
 sortedByName:
 
-:param: array [T]
+:param: seq S
 
-:returns: [T]
+:returns: [S.Generator.Element]
 */
-public func sortedByName<T: Nameable>(array: [T]) -> [T] { return array.sorted{$0.0.name < $0.1.name} }
+public func sortedByName<S:SequenceType where S.Generator.Element:Nameable>(seq: S) -> [S.Generator.Element] { return Array(seq).sorted{$0.0.name < $0.1.name} }
 
 /**
 sortedByName:
 
-:param: array [T]?
+:param: seq S?
 
-:returns: [T]?
+:returns: [S.Generator.Element]?
 */
-public func sortedByName<T: Nameable>(array: [T]?) -> [T]? { return array?.sorted{$0.0.name < $0.1.name} }
+public func sortedByName<S:SequenceType where S.Generator.Element:Nameable>(seq: S?) -> [S.Generator.Element]? {
+  if seq != nil {  return Array(seq!).sorted{$0.0.name < $0.1.name} } else { return nil }
+}
 
 /**
 sortByName:

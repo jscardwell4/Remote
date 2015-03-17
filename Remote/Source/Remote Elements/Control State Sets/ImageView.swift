@@ -48,7 +48,7 @@ class ImageView: ModelObject {
     super.updateWithData(data)
 
     if let imageData = data["image"] as? [String:AnyObject], let moc = managedObjectContext,
-      let image = Image.importObjectFromData(imageData, context: moc) {
+      let image = Image.fetchOrImportObjectWithData(imageData, context: moc) {
         self.image = image
     }
 

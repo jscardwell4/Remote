@@ -46,7 +46,7 @@ class ActivityCommand: Command {
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     if let activityData = data["activity"] as? [String:AnyObject], let moc = managedObjectContext,
-      let activity = Activity.importObjectFromData(activityData, context: moc) {
+      let activity = Activity.fetchOrImportObjectWithData(activityData, context: moc) {
         self.activity = activity
     }
   }

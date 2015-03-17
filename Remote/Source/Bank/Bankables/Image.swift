@@ -56,7 +56,7 @@ class Image: BankableModelObject, PreviewableItem {
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     if let imageCategoryData = data["category"] as? [String:AnyObject], let moc = managedObjectContext,
-      let imageCategory = ImageCategory.importObjectFromData(imageCategoryData, context: moc) {
+      let imageCategory = ImageCategory.fetchOrImportObjectWithData(imageCategoryData, context: moc) {
         self.imageCategory = imageCategory
     }
     assetName = data["asset-name"] as? String ?? assetName

@@ -13,9 +13,47 @@ import MoonKit
 @objc(Manufacturer)
 class Manufacturer: BankableModelObject {
 
-  @NSManaged var codes: NSSet?
-  @NSManaged var codeSets: NSSet?
-  @NSManaged var devices: NSSet?
+  var codes: Set<IRCode> {
+    get {
+      willAccessValueForKey("codes")
+      let codes = primitiveValueForKey("codes") as! Set<IRCode>
+      didAccessValueForKey("codes")
+      return codes
+    }
+    set {
+      willChangeValueForKey("codes")
+      setPrimitiveValue(newValue, forKey: "codes")
+      didChangeValueForKey("codes")
+    }
+  }
+
+  var codeSets: Set<IRCodeSet> {
+    get {
+      willAccessValueForKey("codeSets")
+      let codeSets = primitiveValueForKey("codeSets") as! Set<IRCodeSet>
+      didAccessValueForKey("codeSets")
+      return codeSets
+    }
+    set {
+      willChangeValueForKey("codeSets")
+      setPrimitiveValue(newValue, forKey: "codeSets")
+      didChangeValueForKey("codeSets")
+    }
+  }
+
+  var devices: Set<ComponentDevice> {
+    get {
+      willAccessValueForKey("devices")
+      let devices = primitiveValueForKey("devices") as! Set<ComponentDevice>
+      didAccessValueForKey("devices")
+      return devices
+    }
+    set {
+      willChangeValueForKey("devices")
+      setPrimitiveValue(newValue, forKey: "devices")
+      didChangeValueForKey("devices")
+    }
+  }
 
   class func manufacturerWithName(name: String, context: NSManagedObjectContext) -> Manufacturer {
     var manufacturer: Manufacturer!
@@ -32,26 +70,26 @@ class Manufacturer: BankableModelObject {
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
-    if let codeSetsData = data["codesets"] as? NSArray, let moc = managedObjectContext {
-      if codeSets == nil { codeSets = NSSet() }
-      let mutableCodeSets = mutableSetValueForKey("codeSets")
-      let importedCodeSets = IRCodeSet.importObjectsFromData(codeSetsData, context: moc)
-      mutableCodeSets.addObjectsFromArray(importedCodeSets)
-      if codes == nil { codes = NSSet() }
-      let mutableCodes = mutableSetValueForKey("codes")
-
-      if let c = importedCodeSets as? [IRCodeSet] {
-        let importedCodes = flattened(c.map({$0.codes?.allObjects ?? []}))
-        mutableCodes.addObjectsFromArray(importedCodes)
-      }
-    }
-
-    if let devicesData = data["devices"] as? NSArray, let moc = managedObjectContext {
-      if devices == nil { devices = NSSet() }
-      let mutableDevices = mutableSetValueForKey("devices")
-      let importedDevices = ComponentDevice.importObjectsFromData(devicesData, context: moc)
-      mutableDevices.addObjectsFromArray(importedDevices)
-    }
+//    if let codeSetsData = data["codesets"] as? NSArray, let moc = managedObjectContext {
+//      if codeSets == nil { codeSets = NSSet() }
+//      let mutableCodeSets = mutableSetValueForKey("codeSets")
+//      let importedCodeSets = IRCodeSet.importObjectsFromData(codeSetsData, context: moc)
+//      mutableCodeSets.addObjectsFromArray(importedCodeSets)
+//      if codes == nil { codes = NSSet() }
+//      let mutableCodes = mutableSetValueForKey("codes")
+//
+//      if let c = importedCodeSets as? [IRCodeSet] {
+//        let importedCodes = flattened(c.map({$0.codes?.allObjects ?? []}))
+//        mutableCodes.addObjectsFromArray(importedCodes)
+//      }
+//    }
+//
+//    if let devicesData = data["devices"] as? NSArray, let moc = managedObjectContext {
+//      if devices == nil { devices = NSSet() }
+//      let mutableDevices = mutableSetValueForKey("devices")
+//      let importedDevices = ComponentDevice.importObjectsFromData(devicesData, context: moc)
+//      mutableDevices.addObjectsFromArray(importedDevices)
+//    }
   }
 
   class var rootCategory: Bank.RootCategory {

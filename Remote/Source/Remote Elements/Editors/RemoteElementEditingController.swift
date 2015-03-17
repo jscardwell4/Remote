@@ -29,7 +29,7 @@ extension UIGestureRecognizerState: Printable {
   }
 }
 
-extension RemoteElement: EditableBackground {}
+//extension RemoteElement: EditableBackground {}
 
 class RemoteElementEditingController: UIViewController {
 
@@ -1237,7 +1237,7 @@ extension RemoteElementEditingController {
   /** editBackground */
   func editBackground() {
      let bgEditor = StoryboardProxy.backgroundEditingController()
-     bgEditor.subject = remoteElement
+//     bgEditor.subject = remoteElement
      presentViewController(bgEditor, animated: true, completion: nil)
   }
 

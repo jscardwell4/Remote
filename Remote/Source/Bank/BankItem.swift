@@ -25,6 +25,8 @@ import MoonKit
 
   var editable: Bool { get }
 
+  var categoryPath: String { get }
+
   func save()
   func delete()
   func rollback()
