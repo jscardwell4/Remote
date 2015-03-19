@@ -11,27 +11,26 @@ import CoreData
 import MoonKit
 
 @objc(PresetCategory)
-class PresetCategory: NamedModelObject, BankCategory {
+class PresetCategory: BankCategoryObject, PreviewableCategory {
 
   @NSManaged var presets: Set<Preset>
   @NSManaged var childCategories: Set<PresetCategory>
   @NSManaged var parentCategory: PresetCategory?
-  @NSManaged var user: Bool
 
-  var subcategories: [BankCategory] {
+  override var subcategories: [BankCategory] {
     get { return Array(childCategories) }
     set { if let subcategories = newValue as? [PresetCategory] { childCategories = Set(subcategories) } }
   }
-  var items: [BankCategoryItem] {
+  override var items: [BankCategoryItem] {
     get { return Array(presets) }
     set { if let items = newValue as? [Preset] { presets = Set(items) } }
   }
-  var category: BankCategory? {
+  override var category: BankCategory? {
     get { return parentCategory }
     set { parentCategory = newValue as? PresetCategory }
   }
 
-  var path: String { return category == nil ? name : "\(category!.path)/\(name)" }
+  override var path: String { return category == nil ? name : "\(category!.path)/\(name)" }
 
 
 }

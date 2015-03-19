@@ -147,7 +147,8 @@ class BankCollectionController: UICollectionViewController, BankController {
 	        displayOptions.selectedSegmentIndex = self.viewingMode.rawValue
 	        displayOptions.toggleAction = {[unowned self] control in
 	          self.viewingMode = BankCollectionAttributes.ViewingMode(rawValue: control.selectedSegmentIndex)!
-	          SettingsManager.setValue(self.viewingMode.rawValue, forSetting: .BankViewingMode)
+            //FIXME: Circular dependency
+//	          SettingsManager.setValue(self.viewingMode.rawValue, forSetting: .BankViewingMode)
 	        }
 	        let displayOptionsItem = UIBarButtonItem(customView: displayOptions)
 	        self.displayOptionsControl = displayOptions
@@ -174,10 +175,11 @@ class BankCollectionController: UICollectionViewController, BankController {
     exportSelectionMode = false
     navigationItem.rightBarButtonItem = Bank.dismissBarButtonItem
 
-    if !(category is PreviewableCategory) { viewingMode = .List }
-    else if let modeSettingValue = SettingsManager.valueForSetting(.BankViewingMode) as? NSNumber {
-      viewingMode = BankCollectionAttributes.ViewingMode(rawValue: modeSettingValue.integerValue) ?? .List
-    }
+    //FIXME: Circular dependency
+//    if !(category is PreviewableCategory) { viewingMode = .List }
+//    else if let modeSettingValue = SettingsManager.valueForSetting(.BankViewingMode) as? NSNumber {
+//      viewingMode = BankCollectionAttributes.ViewingMode(rawValue: modeSettingValue.integerValue) ?? .List
+//    }
   }
 
 

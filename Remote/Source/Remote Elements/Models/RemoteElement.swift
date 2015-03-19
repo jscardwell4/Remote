@@ -307,7 +307,7 @@ class RemoteElement: NamedModelObject {
       let firstItemUUIDs = OrderedSet<String>(constraints.map{$0.firstItem.uuid})
       let secondItemUUIDs = OrderedSet<String>(constraints.filter{$0.secondItem != nil}.map{$0.secondItem!.uuid})
       let uuids = firstItemUUIDs + secondItemUUIDs
-      var uuidIndex: [String:String] = [name!.camelCase(): uuid]
+      var uuidIndex: [String:String] = [name.camelCase(): uuid]
       for uuid in uuids {
         if uuid == self.uuid { continue }
         if let element = childElements.filter({$0.uuid == uuid}).first {

@@ -45,6 +45,6 @@ class DelayCommand: Command {
     return dictionary
   }
 
-  override var operation: CommandOperation { return DelayCommandOperation(forCommand: self) }
+  override var operation: CommandOperation { return DelayCommandOperation(command: self) }
   
 }

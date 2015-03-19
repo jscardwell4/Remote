@@ -57,7 +57,7 @@ class NetworkDevice: NamedModelObject, BankModel {
 //
 //    return device
 //  }
-  class var rootCategory: BankRootCategory<BankCategory,NetworkDevice> {
+  class var rootCategory: BankRootCategory<BankCategory,BankModel> {
     let networkDevices = findAllSortedBy("name", ascending: true, context: DataManager.rootContext) as? [NetworkDevice]
     return BankRootCategory(label: "Network Devices",
                              icon: UIImage(named: "937-wifi-signal")!,

@@ -44,7 +44,7 @@ final class DetailButtonRow: DetailRow {
     select = {
       if let category = pushableCategory {
         if let controller = BankCollectionController(category: category) {
-          if let nav = MSRemoteAppController.sharedAppController().window?.rootViewController as? UINavigationController {
+          if let nav = UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController {
             nav.pushViewController(controller, animated: true)
           }
         }
@@ -62,7 +62,7 @@ final class DetailButtonRow: DetailRow {
     info = pushableItem
     select = {
       if let item = pushableItem {
-        if let nav =  MSRemoteAppController.sharedAppController().window?.rootViewController as? UINavigationController {
+        if let nav =  UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController {
           nav.pushViewController(item.detailController(), animated: true)
         }
       }

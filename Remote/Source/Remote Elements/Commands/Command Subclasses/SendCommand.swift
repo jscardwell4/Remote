@@ -13,6 +13,6 @@ import MoonKit
 @objc(SendCommand)
 class SendCommand: Command {
   override var operation: CommandOperation {
-    return SendCommandOperation(forCommand: self)
+    return SendCommandOperation(command: self)
   }
 }

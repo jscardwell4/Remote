@@ -21,7 +21,7 @@ class MacroCommand: Command {
   var count: Int { return commands?.count ?? 0 }
   let queue = NSOperationQueue(name: "com.moondeerstudios.macro")
 
-  override var operation: CommandOperation { return MacroCommandOperation(forCommand: self) }
+  override var operation: CommandOperation { return MacroCommandOperation(command: self) }
 
   /** awakeFromInsert */
   override func awakeFromInsert() {

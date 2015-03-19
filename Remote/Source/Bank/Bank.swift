@@ -69,7 +69,7 @@ protocol SearchableBankController: BankController {
 
 }
 
-struct BankRootCategory<SubcategoryType, ItemType> {
+struct BankRootCategory<SubcategoryType:BankCategory, ItemType:BankModel> {
   let label: String
   let icon: UIImage
   let subcategories: [SubcategoryType]
@@ -176,7 +176,7 @@ class Bank {
                 item.toggle(nil)
                 ImportToggleActionProperties.fileController = nil
             }
-            if let rootViewController =  MSRemoteAppController.sharedAppController().window.rootViewController {
+            if let rootViewController =  UIApplication.sharedApplication().keyWindow?.rootViewController {
               let rootView = rootViewController.view
               rootViewController.addChildViewController(fileController!)
               fileController!.view.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -269,7 +269,8 @@ class Bank {
   class var dismissBarButtonItem: BlockBarButtonItem {
     return BlockBarButtonItem(barButtonSystemItem: .Done, action: {
       () -> Void in
-        MSRemoteAppController.sharedAppController().showMainMenu()
+      //FIXME: Circular Dependency
+//        MSRemoteAppController.sharedAppController().showMainMenu()
     })
   }
 

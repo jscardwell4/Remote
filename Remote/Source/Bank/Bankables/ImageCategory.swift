@@ -11,30 +11,29 @@ import CoreData
 import MoonKit
 
 @objc(ImageCategory)
-class ImageCategory: NamedModelObject, PreviewableCategory {
+class ImageCategory: BankCategoryObject, PreviewableCategory {
 
   @NSManaged var images: Set<Image>
   @NSManaged var childCategories: Set<ImageCategory>
   @NSManaged var parentCategory: ImageCategory?
-  @NSManaged var user: Bool
 
   let previewableItems = true
   let editableItems = true
 
-  var items: [BankCategoryItem] {
+  override var items: [BankCategoryItem] {
     get { return Array(images) }
     set { if let items = newValue as? [Image] { images = Set(items) } }
   }
-  var subcategories: [BankCategory] {
+  override var subcategories: [BankCategory] {
     get { return Array(childCategories) }
     set { if let subcategories = newValue as? [ImageCategory] { childCategories = Set(subcategories) } }
   }
 
-  var category: BankCategory? {
+  override var category: BankCategory? {
     get { return parentCategory }
     set { parentCategory = newValue as? ImageCategory }
   }
 
-  var path: String { return category == nil ? name : "\(category!.name)/\(name)" }
+  override var path: String { return category == nil ? name : "\(category!.name)/\(name)" }
 
 }

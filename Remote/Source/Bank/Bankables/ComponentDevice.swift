@@ -81,7 +81,7 @@ class ComponentDevice: NamedModelObject, BankModel, Detailable {
     updateRelationshipFromData(data, forKey: "codeSet")
   }
 
-  class var rootCategory: BankRootCategory<BankCategory,ComponentDevice> {
+  class var rootCategory: BankRootCategory<BankCategory,BankModel> {
     let devices = findAllSortedBy("name", ascending: true, context: DataManager.rootContext) as? [ComponentDevice]
     return BankRootCategory(label: "Component Devices",
                              icon: UIImage(named: "969-television")!,

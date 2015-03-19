@@ -65,7 +65,7 @@ class SystemCommand: Command {
     return dictionary
   }
 
-  override var operation: CommandOperation { return SystemCommandOperation(forCommand: self) }
+  override var operation: CommandOperation { return SystemCommandOperation(command: self) }
 }
 
 extension SystemCommand.SystemCommandType: JSONValueConvertible {

@@ -71,7 +71,7 @@ class SwitchCommand: Command {
   }
 
   override var operation: CommandOperation {
-    return SwitchCommandOperation(forCommand: self)
+    return SwitchCommandOperation(command: self)
   }
 }
 

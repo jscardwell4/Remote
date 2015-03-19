@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import MoonKit
 
 @objc(ITachDevice)
 class ITachDevice: NetworkDevice, Detailable {

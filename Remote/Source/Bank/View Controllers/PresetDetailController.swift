@@ -52,7 +52,8 @@ class PresetDetailController: BankItemDetailController {
 
    previewSection.addRow({
      let row = DetailCustomRow()
-     row.generateCustomView = { RemoteElementView.viewWithPreset(self.model as! Preset) ?? UIView() }
+    //FIXME: Circular dependency
+//     row.generateCustomView = { RemoteElementView.viewWithPreset(self.model as! Preset) ?? UIView() }
      return row
    }, forKey: RowKey.Preview)
 

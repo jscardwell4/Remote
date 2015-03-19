@@ -11,21 +11,20 @@ import CoreData
 import MoonKit
 
 @objc(IRCodeSet)
-class IRCodeSet: NamedModelObject, BankCategory {
+class IRCodeSet: BankCategoryObject, BankCategory {
 
 
   @NSManaged var devices: Set<ComponentDevice>
   @NSManaged var codes: Set<IRCode>
   @NSManaged var manufacturer: Manufacturer
-  @NSManaged var user: Bool
 
-  var path: String { return "\(manufacturer.name)/\(name)" }
-  var category: BankCategory? {
+  override var path: String { return "\(manufacturer.name)/\(name)" }
+  override var category: BankCategory? {
     get { return manufacturer }
     set { if let m = newValue as? Manufacturer { manufacturer = m } }
   }
-  var subcategories: [BankCategory] { get { return [] } set {} }
-  var items: [BankCategoryItem] {
+  override var subcategories: [BankCategory] { get { return [] } set {} }
+  override var items: [BankCategoryItem] {
     get { return sortedByName(codes) }
     set { if let c = newValue as? [IRCode] { codes = Set(c) } }
   }

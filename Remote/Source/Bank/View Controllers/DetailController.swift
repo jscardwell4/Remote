@@ -581,7 +581,7 @@ extension DetailController {
   :param: controller UIViewController
   */
   func pushController(controller: UIViewController) {
-    (MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController)?
+    (UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController)?
       .pushViewController(controller, animated: true)
   }
 

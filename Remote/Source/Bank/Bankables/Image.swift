@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(Image)
-class Image: NamedModelObject, PreviewableCategoryItem, Detailable {
+class Image: BankCategoryItemObject, PreviewableCategoryItem, Detailable {
 
   var assetName: String {
     get {
@@ -52,14 +52,13 @@ class Image: NamedModelObject, PreviewableCategoryItem, Detailable {
   @NSManaged var remoteElements: NSSet
   @NSManaged var views: NSSet
   @NSManaged var imageCategory: ImageCategory
-  @NSManaged var user: Bool
 
-  var category: BankCategory {
+  override var category: BankCategory {
     get { return imageCategory }
     set { if let category = newValue as? ImageCategory { imageCategory = category } }
   }
 
-  var path: String { return "\(category.path)/\(name)" }
+  override var path: String { return "\(category.path)/\(name)" }
 
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
@@ -93,7 +92,7 @@ class Image: NamedModelObject, PreviewableCategoryItem, Detailable {
   var stretchableImage: UIImage? { return image?.stretchableImageWithLeftCapWidth(Int(leftCap), topCapHeight: Int(topCap)) }
 
 
-  class var rootCategory: BankRootCategory<ImageCategory,BankModel> {
+  class var rootCategory: BankRootCategory<BankCategory,BankModel> {
     var categories = ImageCategory.findAllMatchingPredicate(∀"parentCategory == nil", context: DataManager.rootContext) as! [ImageCategory]
     categories.sort{$0.0.name < $0.1.name}
     return BankRootCategory(label: "Images",

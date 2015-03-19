@@ -32,7 +32,7 @@ final class DetailListRow: DetailRow {
     self.init()
     select = {
       let controller = pushableItem.detailController()
-      if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
+      if let nav = UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController {
         nav.pushViewController(controller, animated: true)
       }
     }
@@ -49,7 +49,7 @@ final class DetailListRow: DetailRow {
     self.init()
     select = {
       if let controller = BankCollectionController(category: pushableCategory) {
-        if let nav = MSRemoteAppController.sharedAppController().window.rootViewController as? UINavigationController {
+        if let nav = UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController {
           nav.pushViewController(controller, animated: true)
         }
       }

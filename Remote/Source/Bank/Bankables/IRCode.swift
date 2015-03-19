@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(IRCode)
-class IRCode: NamedModelObject, BankCategoryItem, Detailable {
+class IRCode: BankCategoryItemObject, BankCategoryItem, Detailable {
 
   @NSManaged var frequency: Int64
   @NSManaged var offset: Int16
@@ -22,11 +22,10 @@ class IRCode: NamedModelObject, BankCategoryItem, Detailable {
   @NSManaged var device: ComponentDevice!
   @NSManaged var sendCommands: NSSet
   @NSManaged var codeSet: IRCodeSet
-  @NSManaged var user: Bool
 
-  var path: String { return "\(codeSet.path)/\(name)" }
+  override var path: String { return "\(codeSet.path)/\(name)" }
   var manufacturer: Manufacturer { return codeSet.manufacturer }
-  var category: BankCategory { get { return codeSet } set { if let c = newValue as? IRCodeSet { codeSet = c } } }
+  override var category: BankCategory { get { return codeSet } set { if let c = newValue as? IRCodeSet { codeSet = c } } }
 
   class func isValidOnOffPattern(pattern: String) -> Bool { return compressedOnOffPatternFromPattern(pattern) != nil }
 
@@ -77,7 +76,7 @@ class IRCode: NamedModelObject, BankCategoryItem, Detailable {
 
 //  override class func categoryType() -> BankItemCategory.Protocol { return IRCodeSet.self }
 
-  class var rootCategory: BankRootCategory<IRCodeSet,BankModel> {
+  class var rootCategory: BankRootCategory<BankCategory,BankModel> {
     let categories = IRCodeSet.findAllSortedBy("name", ascending: true, context: DataManager.rootContext) as? [IRCodeSet]
     return BankRootCategory(label: "IR Codes",
                              icon: UIImage(named: "tv-remote")!,

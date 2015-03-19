@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(Preset)
-class Preset: NamedModelObject, PreviewableCategoryItem, Detailable {
+class Preset: BankCategoryItemObject, PreviewableCategoryItem, Detailable {
 
   var preview: UIImage { return UIImage() }
   var thumbnail: UIImage { return preview }
@@ -20,7 +20,6 @@ class Preset: NamedModelObject, PreviewableCategoryItem, Detailable {
   @NSManaged var presetCategory: PresetCategory
   @NSManaged var subelements: NSOrderedSet?
   @NSManaged var parentPreset: Preset?
-  @NSManaged var user: Bool
 
   /** awakeFromInsert */
   override func awakeFromInsert() {
@@ -28,12 +27,12 @@ class Preset: NamedModelObject, PreviewableCategoryItem, Detailable {
     storage = DictionaryStorage(context: managedObjectContext!)
   }
 
-  var category: BankCategory {
+  override var category: BankCategory {
     get { return presetCategory }
     set { if let category = newValue as? PresetCategory { presetCategory = category } }
   }
 
-  var path: String { return "\(category.path)/\(name)" }
+  override var path: String { return "\(category.path)/\(name)" }
 
   /**
   detailController
@@ -49,7 +48,7 @@ class Preset: NamedModelObject, PreviewableCategoryItem, Detailable {
     }
   }
 
-  class var rootCategory: BankRootCategory<PresetCategory,BankModel>{
+  class var rootCategory: BankRootCategory<BankCategory,BankModel>{
     var categories = PresetCategory.findAllMatchingPredicate(∀"parentCategory == nil",
                                                      context: DataManager.rootContext) as! [PresetCategory]
     categories.sort{$0.0.name < $0.1.name}

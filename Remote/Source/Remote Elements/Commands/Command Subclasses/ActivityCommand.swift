@@ -49,6 +49,6 @@ class ActivityCommand: Command {
   }
 
   override var operation: CommandOperation {
-    return ActivityCommandOperation(forCommand: self)
+    return ActivityCommandOperation(command: self)
   }
 }
