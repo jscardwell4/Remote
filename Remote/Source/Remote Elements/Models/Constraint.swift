@@ -249,8 +249,8 @@ class Constraint: ModelObject, Printable, DebugPrintable {
 
   override var description: String {
     var pseudo = pseudoConstraint
-    pseudo.firstItem = firstItem.name!.camelCase()
-    pseudo.secondItem = secondItem?.name!.camelCase()
+    pseudo.firstItem = firstItem.name.camelCase()
+    pseudo.secondItem = secondItem?.name.camelCase()
     return pseudo.description
   }
 

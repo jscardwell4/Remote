@@ -26,6 +26,13 @@
 		C215C9D519F73A21000CC6CC /* DetailImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C215C9D419F73A21000CC6CC /* DetailImageCell.swift */; };
 		C215C9D719F73A38000CC6CC /* DetailSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C215C9D619F73A38000CC6CC /* DetailSwitchCell.swift */; };
 		C215C9D919F73A4A000CC6CC /* DetailStepperCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C215C9D819F73A4A000CC6CC /* DetailStepperCell.swift */; };
+		C215CBF81ABA6FFB00E8077E /* BankCategoryObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25FB0DA1AB795170010E40B /* BankCategoryObject.swift */; };
+		C215CBF91ABA70CC00E8077E /* BankCategoryItemObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25FB0DB1AB795170010E40B /* BankCategoryItemObject.swift */; };
+		C215CC041ABB102F00E8077E /* RemoteData.h in Headers */ = {isa = PBXBuildFile; fileRef = C215CC031ABB102F00E8077E /* RemoteData.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C215CC0A1ABB102F00E8077E /* RemoteData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* RemoteData.framework */; };
+		C215CC131ABB102F00E8077E /* RemoteDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C215CC121ABB102F00E8077E /* RemoteDataTests.swift */; };
+		C215CC161ABB102F00E8077E /* RemoteData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* RemoteData.framework */; };
+		C215CC171ABB102F00E8077E /* RemoteData.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* RemoteData.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C21AB7D219DC39FA002EEC8C /* Preset.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2879F5919DB788E0052DDB7 /* Preset.swift */; };
 		C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */; };
 		C21C43041A80015E004F8DA8 /* MainMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21C43031A80015E004F8DA8 /* MainMenuController.swift */; };
@@ -219,7 +226,6 @@
 		C2400F9519D4B87000D9BB13 /* Remote.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2400F9419D4B87000D9BB13 /* Remote.xcassets */; };
 		C240DD5F170485F2005CC390 /* IRLearner.m in Sources */ = {isa = PBXBuildFile; fileRef = C240DD5E170485F2005CC390 /* IRLearner.m */; };
 		C249174819BFBA870049638F /* NetworkDevice.json in Resources */ = {isa = PBXBuildFile; fileRef = C249174719BFBA870049638F /* NetworkDevice.json */; };
-		C24ECC9219DE126D00C1870E /* BankableModelObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24ECC9119DE126D00C1870E /* BankableModelObject.swift */; };
 		C250CED81A16DC36006D36CF /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C250CED71A16DC36006D36CF /* Constraint.swift */; };
 		C250CEDA1A17047C006D36CF /* RemoteElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = C250CED91A17047C006D36CF /* RemoteElement.swift */; };
 		C252E4FB19E2191E00DBBBB2 /* DetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8127D19D6454300FD80C4 /* DetailCell.swift */; };
@@ -254,8 +260,6 @@
 		C25C44DC19ABB3E2005594ED /* Activity.json in Resources */ = {isa = PBXBuildFile; fileRef = C25C44DB19ABB3E2005594ED /* Activity.json */; };
 		C25E63D619FD4B1400F54626 /* RemoteElementEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63D519FD4B1400F54626 /* RemoteElementEditingController.swift */; };
 		C25E63E31A01B4E500F54626 /* RemoteEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63E21A01B4E500F54626 /* RemoteEditingController.swift */; };
-		C25FB0DD1AB795170010E40B /* BankCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25FB0DA1AB795170010E40B /* BankCategory.swift */; };
-		C25FB0DE1AB795170010E40B /* BankCategoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25FB0DB1AB795170010E40B /* BankCategoryItem.swift */; };
 		C269842319DF8513007E268B /* BankCollectionItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22E1BD919C12FB900A93D61 /* BankCollectionItemCell.swift */; };
 		C269842419DF8526007E268B /* BankCollectionCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C277AB8119D7791C008DEE39 /* BankCollectionCategoryCell.swift */; };
 		C269842519DF8549007E268B /* BankCollectionAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C1756B19D1F58A008B8E16 /* BankCollectionAttributes.swift */; };
@@ -610,6 +614,27 @@
 			remoteGlobalIDString = C2358F1519C78D6D00920F8D;
 			remoteInfo = MoonKit;
 		};
+		C215CC0B1ABB102F00E8077E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C215CBFE1ABB102F00E8077E;
+			remoteInfo = RemoteData;
+		};
+		C215CC0D1ABB102F00E8077E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C26BAEA716DC10FE0093D5B4;
+			remoteInfo = Remote;
+		};
+		C215CC141ABB102F00E8077E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C215CBFE1ABB102F00E8077E;
+			remoteInfo = RemoteData;
+		};
 		C235911B19C7ACB900920F8D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
@@ -655,6 +680,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				C2F01E2D1A02FD09007F6966 /* CocoaLumberjack.framework in Embed Frameworks */,
+				C215CC171ABB102F00E8077E /* RemoteData.framework in Embed Frameworks */,
 				C2F01E1F1A02FBC6007F6966 /* MoonKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -689,6 +715,12 @@
 		C215C9D419F73A21000CC6CC /* DetailImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailImageCell.swift; sourceTree = "<group>"; };
 		C215C9D619F73A38000CC6CC /* DetailSwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailSwitchCell.swift; sourceTree = "<group>"; };
 		C215C9D819F73A4A000CC6CC /* DetailStepperCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailStepperCell.swift; sourceTree = "<group>"; };
+		C215CBFF1ABB102F00E8077E /* RemoteData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RemoteData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C215CC021ABB102F00E8077E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C215CC031ABB102F00E8077E /* RemoteData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteData.h; sourceTree = "<group>"; };
+		C215CC091ABB102F00E8077E /* RemoteDataTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RemoteDataTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C215CC111ABB102F00E8077E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C215CC121ABB102F00E8077E /* RemoteDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDataTests.swift; sourceTree = "<group>"; };
 		C21B4239170B31E700FAE00E /* REEditingCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REEditingCollectionViewLayout.h; sourceTree = "<group>"; };
 		C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REEditingCollectionViewLayout.m; sourceTree = "<group>"; };
 		C21C43031A80015E004F8DA8 /* MainMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuController.swift; sourceTree = "<group>"; };
@@ -919,8 +951,8 @@
 		C25E63D519FD4B1400F54626 /* RemoteElementEditingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteElementEditingController.swift; sourceTree = "<group>"; };
 		C25E63E21A01B4E500F54626 /* RemoteEditingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteEditingController.swift; sourceTree = "<group>"; };
 		C25EC02019C3849C00E5A437 /* QuickLookup.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = QuickLookup.playground; sourceTree = "<group>"; };
-		C25FB0DA1AB795170010E40B /* BankCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCategory.swift; sourceTree = "<group>"; };
-		C25FB0DB1AB795170010E40B /* BankCategoryItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCategoryItem.swift; sourceTree = "<group>"; };
+		C25FB0DA1AB795170010E40B /* BankCategoryObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCategoryObject.swift; sourceTree = "<group>"; };
+		C25FB0DB1AB795170010E40B /* BankCategoryItemObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCategoryItemObject.swift; sourceTree = "<group>"; };
 		C25FB0DC1AB795170010E40B /* CategorizableBankableModelObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategorizableBankableModelObject.swift; sourceTree = "<group>"; };
 		C26296811811F9AE00760056 /* Remote.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Remote.json; sourceTree = "<group>"; };
 		C26BAEA816DC10FE0093D5B4 /* Remote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Remote.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1319,10 +1351,26 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		C215CBFB1ABB102F00E8077E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C215CC061ABB102F00E8077E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C215CC0A1ABB102F00E8077E /* RemoteData.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C26BAEA516DC10FE0093D5B4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C215CC161ABB102F00E8077E /* RemoteData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1378,6 +1426,40 @@
 				C27267421A21555800EA0C7A /* StateMap.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		C215CC001ABB102F00E8077E /* RemoteData */ = {
+			isa = PBXGroup;
+			children = (
+				C215CC031ABB102F00E8077E /* RemoteData.h */,
+				C215CC011ABB102F00E8077E /* Supporting Files */,
+			);
+			path = RemoteData;
+			sourceTree = "<group>";
+		};
+		C215CC011ABB102F00E8077E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C215CC021ABB102F00E8077E /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C215CC0F1ABB102F00E8077E /* RemoteDataTests */ = {
+			isa = PBXGroup;
+			children = (
+				C215CC121ABB102F00E8077E /* RemoteDataTests.swift */,
+				C215CC101ABB102F00E8077E /* Supporting Files */,
+			);
+			path = RemoteDataTests;
+			sourceTree = "<group>";
+		};
+		C215CC101ABB102F00E8077E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C215CC111ABB102F00E8077E /* Info.plist */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		C22033C31A2970F200372BCE /* Auxiliary Editors */ = {
@@ -1621,8 +1703,8 @@
 		C25B46D016FF69110042B59E /* Bankables */ = {
 			isa = PBXGroup;
 			children = (
-				C25FB0DA1AB795170010E40B /* BankCategory.swift */,
-				C25FB0DB1AB795170010E40B /* BankCategoryItem.swift */,
+				C25FB0DA1AB795170010E40B /* BankCategoryObject.swift */,
+				C25FB0DB1AB795170010E40B /* BankCategoryItemObject.swift */,
 				C25FB0DC1AB795170010E40B /* CategorizableBankableModelObject.swift */,
 				C277AB7B19D74011008DEE39 /* IRCodeSet.swift */,
 				C277AB7F19D74AD6008DEE39 /* ImageCategory.swift */,
@@ -1679,6 +1761,8 @@
 				C2CA769519BA1E1800ACCD76 /* ISYClient */,
 				C2F940FB19BE5E90007B5CC1 /* iTachClient */,
 				C2C482C419C9F968002E84A9 /* Remote Tests */,
+				C215CC001ABB102F00E8077E /* RemoteData */,
+				C215CC0F1ABB102F00E8077E /* RemoteDataTests */,
 				C26BAEAA16DC10FE0093D5B4 /* Frameworks */,
 				C26BAEA916DC10FE0093D5B4 /* Products */,
 			);
@@ -1691,6 +1775,8 @@
 				C2CA768F19BA1E1800ACCD76 /* ISYClient.app */,
 				C2F940F719BE5E90007B5CC1 /* iTachClient.app */,
 				C2C482C319C9F968002E84A9 /* Remote Tests.xctest */,
+				C215CBFF1ABB102F00E8077E /* RemoteData.framework */,
+				C215CC091ABB102F00E8077E /* RemoteDataTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2383,7 +2469,55 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		C215CBFC1ABB102F00E8077E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C215CC041ABB102F00E8077E /* RemoteData.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
+		C215CBFE1ABB102F00E8077E /* RemoteData */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C215CC181ABB103000E8077E /* Build configuration list for PBXNativeTarget "RemoteData" */;
+			buildPhases = (
+				C215CBFA1ABB102F00E8077E /* Sources */,
+				C215CBFB1ABB102F00E8077E /* Frameworks */,
+				C215CBFC1ABB102F00E8077E /* Headers */,
+				C215CBFD1ABB102F00E8077E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RemoteData;
+			productName = RemoteData;
+			productReference = C215CBFF1ABB102F00E8077E /* RemoteData.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		C215CC081ABB102F00E8077E /* RemoteDataTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C215CC1D1ABB103000E8077E /* Build configuration list for PBXNativeTarget "RemoteDataTests" */;
+			buildPhases = (
+				C215CC051ABB102F00E8077E /* Sources */,
+				C215CC061ABB102F00E8077E /* Frameworks */,
+				C215CC071ABB102F00E8077E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C215CC0C1ABB102F00E8077E /* PBXTargetDependency */,
+				C215CC0E1ABB102F00E8077E /* PBXTargetDependency */,
+			);
+			name = RemoteDataTests;
+			productName = RemoteDataTests;
+			productReference = C215CC091ABB102F00E8077E /* RemoteDataTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		C26BAEA716DC10FE0093D5B4 /* Remote */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C26BAEE016DC10FE0093D5B4 /* Build configuration list for PBXNativeTarget "Remote" */;
@@ -2398,6 +2532,7 @@
 			dependencies = (
 				C204457119FBDD25005355A9 /* PBXTargetDependency */,
 				C2F01E211A02FBC6007F6966 /* PBXTargetDependency */,
+				C215CC151ABB102F00E8077E /* PBXTargetDependency */,
 			);
 			name = Remote;
 			productName = Remote;
@@ -2467,6 +2602,14 @@
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Moondeer Studios";
 				TargetAttributes = {
+					C215CBFE1ABB102F00E8077E = {
+						CreatedOnToolsVersion = 6.3;
+						DevelopmentTeam = JT6STF4SHA;
+					};
+					C215CC081ABB102F00E8077E = {
+						CreatedOnToolsVersion = 6.3;
+						TestTargetID = C26BAEA716DC10FE0093D5B4;
+					};
 					C26BAEA716DC10FE0093D5B4 = {
 						DevelopmentTeam = JT6STF4SHA;
 						SystemCapabilities = {
@@ -2508,6 +2651,8 @@
 				C2CA768E19BA1E1800ACCD76 /* ISYClient */,
 				C2F940F619BE5E90007B5CC1 /* iTachClient */,
 				C2C482C219C9F968002E84A9 /* Remote Tests */,
+				C215CBFE1ABB102F00E8077E /* RemoteData */,
+				C215CC081ABB102F00E8077E /* RemoteDataTests */,
 			);
 		};
 /* End PBXProject section */
@@ -2537,6 +2682,20 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		C215CBFD1ABB102F00E8077E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C215CC071ABB102F00E8077E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C26BAEA616DC10FE0093D5B4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2957,6 +3116,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		C215CBFA1ABB102F00E8077E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C215CC051ABB102F00E8077E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C215CC131ABB102F00E8077E /* RemoteDataTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C26BAEA416DC10FE0093D5B4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2967,6 +3141,7 @@
 				C20D11AB1A40A88600C33499 /* RockerPreview.swift in Sources */,
 				C21F07DB1AA5101E00F1F8DD /* SystemCommand.swift in Sources */,
 				C289BB5919F85B64008E92C1 /* DetailStepperRow.swift in Sources */,
+				C215CBF81ABA6FFB00E8077E /* BankCategoryObject.swift in Sources */,
 				C269842419DF8526007E268B /* BankCollectionCategoryCell.swift in Sources */,
 				C21F07DD1AA5102900F1F8DD /* SwitchCommand.swift in Sources */,
 				C230DF3A19DC70BA008C2337 /* NetworkDevice.swift in Sources */,
@@ -2992,6 +3167,7 @@
 				C269842619DF8562007E268B /* BankCollectionLayout.swift in Sources */,
 				C233465C19DC3BBD00CCD7F3 /* Manufacturer.swift in Sources */,
 				C21F07D31AA50FF000F1F8DD /* HTTPCommand.swift in Sources */,
+				C215CBF91ABA70CC00E8077E /* BankCategoryItemObject.swift in Sources */,
 				C23D58921A190FCA009DE593 /* Button.swift in Sources */,
 				C21F07D11AA50FE400F1F8DD /* DelayCommand.swift in Sources */,
 				C27DE08919E5E67F00CCB725 /* ISYDeviceDetailController.swift in Sources */,
@@ -3047,7 +3223,6 @@
 				C269842319DF8513007E268B /* BankCollectionItemCell.swift in Sources */,
 				C289BB5D19F85B64008E92C1 /* DetailTextViewRow.swift in Sources */,
 				C2F9414D19BE7EB7007B5CC1 /* MessageQueueEntry.m in Sources */,
-				C25FB0DE1AB795170010E40B /* BankCategoryItem.swift in Sources */,
 				C20D11A81A40A88600C33499 /* ModeSelectionPreview.swift in Sources */,
 				C252E4FB19E2191E00DBBBB2 /* DetailCell.swift in Sources */,
 				C235A2FA1A0E96B10067E226 /* ButtonGroupView.swift in Sources */,
@@ -3073,13 +3248,11 @@
 				C21AB7D219DC39FA002EEC8C /* Preset.swift in Sources */,
 				C2D361DE182BE49600775239 /* RemoteElementKeys.m in Sources */,
 				C2F8C3111A361769004229FE /* DetailTwoToneSliderCell.swift in Sources */,
-				C25FB0DD1AB795170010E40B /* BankCategory.swift in Sources */,
 				C22033B81A28D36A00372BCE /* DetailSliderCell.swift in Sources */,
 				C289BB5819F85B64008E92C1 /* DetailListRow.swift in Sources */,
 				C2328CD219DF447800D292E2 /* BankRootController.swift in Sources */,
 				C2F436FE19BAB8E600B60FC3 /* ISYDeviceConnection.m in Sources */,
 				C21F07CA1AA3737B00F1F8DD /* ActivityController.swift in Sources */,
-				C24ECC9219DE126D00C1870E /* BankableModelObject.swift in Sources */,
 				C20D11AF1A40E28700C33499 /* RemoteDrawingKit.swift in Sources */,
 				C20D11A61A40A88600C33499 /* ButtonPreview.swift in Sources */,
 				C25B479A16FF8D5E0042B59E /* ConnectionManager.m in Sources */,
@@ -3187,6 +3360,21 @@
 			name = MoonKit;
 			targetProxy = C204457019FBDD25005355A9 /* PBXContainerItemProxy */;
 		};
+		C215CC0C1ABB102F00E8077E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C215CBFE1ABB102F00E8077E /* RemoteData */;
+			targetProxy = C215CC0B1ABB102F00E8077E /* PBXContainerItemProxy */;
+		};
+		C215CC0E1ABB102F00E8077E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C26BAEA716DC10FE0093D5B4 /* Remote */;
+			targetProxy = C215CC0D1ABB102F00E8077E /* PBXContainerItemProxy */;
+		};
+		C215CC151ABB102F00E8077E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C215CBFE1ABB102F00E8077E /* RemoteData */;
+			targetProxy = C215CC141ABB102F00E8077E /* PBXContainerItemProxy */;
+		};
 		C2C482CA19C9F968002E84A9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C26BAEA716DC10FE0093D5B4 /* Remote */;
@@ -3243,6 +3431,385 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		C215CC191ABB103000E8077E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = RemoteData/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		C215CC1A1ABB103000E8077E /* Info */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = RemoteData/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Info;
+		};
+		C215CC1B1ABB103000E8077E /* Verbose */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = RemoteData/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Verbose;
+		};
+		C215CC1C1ABB103000E8077E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = RemoteData/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		C215CC1E1ABB103000E8077E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = RemoteDataTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Remote.app/Remote";
+			};
+			name = Debug;
+		};
+		C215CC1F1ABB103000E8077E /* Info */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = RemoteDataTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Remote.app/Remote";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Info;
+		};
+		C215CC201ABB103000E8077E /* Verbose */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = RemoteDataTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Remote.app/Remote";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Verbose;
+		};
+		C215CC211ABB103000E8077E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = RemoteDataTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Remote.app/Remote";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		C26BAEDE16DC10FE0093D5B4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3977,6 +4544,26 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		C215CC181ABB103000E8077E /* Build configuration list for PBXNativeTarget "RemoteData" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C215CC191ABB103000E8077E /* Debug */,
+				C215CC1A1ABB103000E8077E /* Info */,
+				C215CC1B1ABB103000E8077E /* Verbose */,
+				C215CC1C1ABB103000E8077E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C215CC1D1ABB103000E8077E /* Build configuration list for PBXNativeTarget "RemoteDataTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C215CC1E1ABB103000E8077E /* Debug */,
+				C215CC1F1ABB103000E8077E /* Info */,
+				C215CC201ABB103000E8077E /* Verbose */,
+				C215CC211ABB103000E8077E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		C26BAEA316DC10FE0093D5B4 /* Build configuration list for PBXProject "Remote" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

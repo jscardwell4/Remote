@@ -10,15 +10,11 @@ import Foundation
 import UIKit
 import MoonKit
 
-@objc(NamedDetailableItem) protocol NamedDetailableItem: DetailableItem {
-  var name: String? { get }
-}
-
 
 @objc(NamedItemDetailController)
 class NamedItemDetailController: DetailController {
 
-  var namedItem: NamedDetailableItem! { return item as? NamedDetailableItem }
+  var namedItem: protocol<Named, Detailable>! { return item as? protocol<Named, Detailable> }
 
   /**
   init:bundle:
@@ -49,7 +45,7 @@ class NamedItemDetailController: DetailController {
 
   :param: model BankableModelObject
   */
-  init(namedItem: NamedDetailableItem) {
+  init(namedItem: protocol<Named, Detailable>) {
     super.init(item: namedItem)
   }
 
@@ -119,7 +115,7 @@ extension NamedItemDetailController: UITextFieldDelegate {
   */
   func textFieldDidEndEditing(textField: UITextField) {
     precondition(textField === nameTextField, "what other text fields are we delegating besides name label?")
-    if textField.text?.length > 0 { (item as? EditableItem)?.name = textField.text }
+    if textField.text?.length > 0 { (item as? protocol<DynamicallyNamed,Editable>)?.name = textField.text }
     else { textField.text = namedItem.name }
   }
 

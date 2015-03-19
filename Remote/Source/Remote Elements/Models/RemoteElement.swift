@@ -47,7 +47,7 @@ class RemoteElement: NamedModelObject {
     setBackgroundImage(preset.backgroundImage, forMode: RemoteElement.DefaultMode)
     setBackgroundImageAlpha(preset.backgroundImageAlpha, forMode: RemoteElement.DefaultMode)
     var elements: OrderedSet<RemoteElement> = []
-    if let subelementPresets = preset.childPresets {
+    if let subelementPresets = preset.subelements {
       for subelementPreset in subelementPresets.array as! [Preset] {
         if let element = RemoteElement.remoteElementFromPreset(subelementPreset) {
           elements.append(element)
@@ -276,7 +276,7 @@ class RemoteElement: NamedModelObject {
       }
     }
 
-    if name != nil { dictionary["name"] = name! }
+    dictionary["name"] = name
     if key != nil  { dictionary["key"] = key!   }
 
     ifNotDefaultSetValue(tag,             forKey: "tag"  )
@@ -311,7 +311,7 @@ class RemoteElement: NamedModelObject {
       for uuid in uuids {
         if uuid == self.uuid { continue }
         if let element = childElements.filter({$0.uuid == uuid}).first {
-          uuidIndex[element.name!.camelCase()] = uuid
+          uuidIndex[element.name.camelCase()] = uuid
         }
       }
       var constraintsDictionary: [String:AnyObject] = [:]

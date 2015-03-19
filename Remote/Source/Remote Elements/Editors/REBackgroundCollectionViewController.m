@@ -77,11 +77,12 @@
     if (!_backgrounds && _context)
     {
         __block NSArray * fetchedObjects = nil;
-        [_context performBlockAndWait:^{
-          fetchedObjects = [[ImageCategory findFirstByAttribute:@"name"
-                                                       withValue:@"Backgrounds"
-                                                         context: _context] images];
-         }];
+      //FIXME: disabled while getting models sorted
+//        [_context performBlockAndWait:^{
+//          fetchedObjects = [[ImageCategory findFirstByAttribute:@"name"
+//                                                       withValue:@"Backgrounds"
+//                                                         context: _context] images];
+//         }];
         _backgrounds = fetchedObjects;
     }
     return _backgrounds;

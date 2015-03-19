@@ -10,26 +10,6 @@ import Foundation
 import UIKit
 import MoonKit
 
-@objc(DetailableItem) protocol DetailableItem {
-  func detailController() -> UIViewController
-}
-
-@objc(PreviewableItem) protocol PreviewableItem: DetailableItem {
-  var preview: UIImage { get }
-  var thumbnail: UIImage { get }
-}
-
-@objc(EditableItem) protocol EditableItem: NamedDetailableItem {
-
-  var editable: Bool { get }
-  func save()
-  func delete()
-  func rollback()
-
-  var name: String? { get set }
-
-}
-
 class DetailController: UITableViewController {
 
   /// A private structure to encapsulate constant class properties
@@ -91,7 +71,7 @@ class DetailController: UITableViewController {
 
   var sections: OrderedDictionary<String, DetailSection> = [:] { didSet { apply(sections.values){$0.controller = self} } }
 
-  let item: DetailableItem!
+  let item: Detailable!
 
   private(set) var didCancel: Bool = false
 
@@ -125,9 +105,9 @@ class DetailController: UITableViewController {
   /**
   initWithItem:
 
-  :param: item DetailableItem
+  :param: item Detailable
   */
-  init(item: DetailableItem) {
+  init(item: Detailable) {
     self.item = item
     super.init(style: .Grouped)
     hidesBottomBarWhenPushed = true
@@ -155,7 +135,7 @@ class DetailController: UITableViewController {
 
   /** updateDisplay */
   func updateDisplay() {
-    if let editableItem = item as? EditableItem {
+    if let editableItem = item as? Editable {
       navigationItem.rightBarButtonItem?.enabled = editableItem.editable
     } else {
       navigationItem.rightBarButtonItem?.enabled = false
@@ -192,7 +172,7 @@ class DetailController: UITableViewController {
 
   /** cancel */
   func cancel() {
-    (item as? EditableItem)?.rollback()
+    (item as? Editable)?.rollback()
     didCancel = true
     setEditing(false, animated: true)
     updateDisplay()
@@ -202,7 +182,7 @@ class DetailController: UITableViewController {
   func edit() { if !editing { setEditing(true, animated: true) } }
 
   /** save */
-  func save() { (item as? EditableItem)?.save(); setEditing(false, animated: true) }
+  func save() { (item as? Editable)?.save(); setEditing(false, animated: true) }
 
   /**
   subscript:

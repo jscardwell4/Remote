@@ -10,35 +10,36 @@ import Foundation
 import UIKit
 import MoonKit
 
+
 /** Protocol for items displayed by the bank */
-@objc protocol BankItemModel: class, NSObjectProtocol, Renameable, Model, MSJSONExport, EditableItem {}
+//@objc protocol BankItemModel: Renameable, Model, MSJSONExport, Editable {}
 
-@objc protocol CategorizableBankItemModel: BankItemModel {
-  var category: BankItemCategory { get set }
-  var itemPath: String { get }
-}
+//@objc protocol CategorizableBankModel: BankItemModel {
+//  var category: BankItemCategory { get set }
+//  var itemPath: String { get }
+//}
 
-/** Protocol for types that serve as a category for `BankItemModel` objects */
-@objc protocol BankItemCategory: class, NSObjectProtocol, MSJSONExport {
-
-  var title: String { get }
-
-  var items: [BankItemModel] { get set }
-
-  var previewableItems:   Bool { get }
-  var editableItems:      Bool { get }
-
-  var editable: Bool { get }
-
-  var categoryPath: String { get }
-
-  func save()
-  func delete()
-  func rollback()
-
-  var subcategories:  [BankItemCategory] { get set }
-  var parentCategory: BankItemCategory?   { get set }
-}
+/** Protocol for types that serve as a category for `BankModel` objects */
+//@objc protocol BankItemCategory: class, NSObjectProtocol, MSJSONExport {
+//
+//  var title: String { get }
+//
+//  var items: [BankItemModel] { get }
+//
+//  var previewableItems:   Bool { get }
+//  var editableItems:      Bool { get }
+//
+//  var editable: Bool { get }
+//
+//  var categoryPath: String { get }
+//
+//  func save()
+//  func delete()
+//  func rollback()
+//
+//  var subcategories:  [BankItemCategory] { get }
+//  var parentCategory: BankItemCategory?   { get }
+//}
 
 
 /**
@@ -76,10 +77,10 @@ itemForCategory:atPath:
 :param: category BankItemCategory
 :param: path String
 
-:returns: BankItemModel?
+:returns: BankModel?
 */
-//func itemForCategory(category: BankItemCategory, atPath path: String) -> BankItemModel? {
-//  var item: BankItemModel?
+//func itemForCategory(category: BankItemCategory, atPath path: String) -> BankModel? {
+//  var item: BankModel?
 //  var components = split(path){$0 == "/"}
 //  let itemName = components.removeLast()
 //  var currentCategory: BankItemCategory? = category

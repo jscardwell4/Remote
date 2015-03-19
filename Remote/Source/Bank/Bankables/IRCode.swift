@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(IRCode)
-class IRCode: BankCategoryItem {
+class IRCode: NamedModelObject, BankCategoryItem, Detailable {
 
   @NSManaged var frequency: Int64
   @NSManaged var offset: Int16
@@ -21,9 +21,12 @@ class IRCode: BankCategoryItem {
   @NSManaged var setsDeviceInput: Bool
   @NSManaged var device: ComponentDevice!
   @NSManaged var sendCommands: NSSet
+  @NSManaged var codeSet: IRCodeSet
+  @NSManaged var user: Bool
 
+  var path: String { return "\(codeSet.path)/\(name)" }
   var manufacturer: Manufacturer { return codeSet.manufacturer }
-  var codeSet: IRCodeSet { get { return category as! IRCodeSet } set { category = newValue } }
+  var category: BankCategory { get { return codeSet } set { if let c = newValue as? IRCodeSet { codeSet = c } } }
 
   class func isValidOnOffPattern(pattern: String) -> Bool { return compressedOnOffPatternFromPattern(pattern) != nil }
 
@@ -65,27 +68,24 @@ class IRCode: BankCategoryItem {
 
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    if let codeSetData = data["codeset"] as? [String:AnyObject], let moc = managedObjectContext,
-      let codeSet = IRCodeSet.fetchOrImportObjectWithData(codeSetData, context: moc) {
-        self.codeSet = codeSet
-    }
-    frequency    = (data["frequency"]      as? NSNumber)?.longLongValue ?? frequency
-    offset       = (data["offset"]         as? NSNumber)?.shortValue    ?? offset
-    repeatCount  = (data["repeat-count"]   as? NSNumber)?.shortValue    ?? repeatCount
-    onOffPattern = data["on-off-pattern"]  as? String                   ?? onOffPattern
+    updateRelationshipFromData(data, forKey: "category")
+    if let frequency = data["frequencey"] as? NSNumber { self.frequency = frequency.longLongValue }
+    if let offset = data["offset"] as? NSNumber { self.offset = offset.shortValue }
+    if let repeatCount = data["repeatCount"] as? NSNumber { self.repeatCount = repeatCount.shortValue }
+    if let onOffPattern = data["on-off-pattern"] as? String { self.onOffPattern = onOffPattern }
   }
 
 //  override class func categoryType() -> BankItemCategory.Protocol { return IRCodeSet.self }
 
-  class var rootCategory: Bank.RootCategory {
+  class var rootCategory: BankRootCategory<IRCodeSet,BankModel> {
     let categories = IRCodeSet.findAllSortedBy("name", ascending: true, context: DataManager.rootContext) as? [IRCodeSet]
-    return Bank.RootCategory(label: "IR Codes",
+    return BankRootCategory(label: "IR Codes",
                              icon: UIImage(named: "tv-remote")!,
                              subcategories: categories ?? [],
                              editableItems: true)
   }
 
-  override func detailController() -> UIViewController { return IRCodeDetailController(model: self) }
+  func detailController() -> UIViewController { return IRCodeDetailController(model: self) }
 
 }
 

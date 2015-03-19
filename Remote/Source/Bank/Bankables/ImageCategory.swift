@@ -11,65 +11,30 @@ import CoreData
 import MoonKit
 
 @objc(ImageCategory)
-class ImageCategory: BankCategory {
+class ImageCategory: NamedModelObject, PreviewableCategory {
 
-  var images: [Image] {
-    get { return items as! [Image] }
-    set { items = newValue }
+  @NSManaged var images: Set<Image>
+  @NSManaged var childCategories: Set<ImageCategory>
+  @NSManaged var parentCategory: ImageCategory?
+  @NSManaged var user: Bool
+
+  let previewableItems = true
+  let editableItems = true
+
+  var items: [BankCategoryItem] {
+    get { return Array(images) }
+    set { if let items = newValue as? [Image] { images = Set(items) } }
+  }
+  var subcategories: [BankCategory] {
+    get { return Array(childCategories) }
+    set { if let subcategories = newValue as? [ImageCategory] { childCategories = Set(subcategories) } }
   }
 
-  override var previewableItems:   Bool { return true }
-  override var editableItems:      Bool { return true }
-
-  /**
-  updateWithData:
-
-  :param: data [String:AnyObject]
-  */
-  override func updateWithData(data: [String:AnyObject]) {
-    super.updateWithData(data) // sets uuid, name
-
-    // Try importing images
-//    if let imageData = data["images"] as? NSArray, let moc = managedObjectContext {
-//      if images == nil { images = NSSet() }
-//      let mutableImages = mutableSetValueForKey("images")
-//      mutableImages.addObjectsFromArray(Image.importObjectsFromData(imageData, context: moc))
-//    }
-
-    // Try importing subcategories
-//    if let subCategoryData = data["subcategories"] as? NSArray, let moc = managedObjectContext {
-//      if subcategoriesSet == nil { subcategoriesSet = NSSet() }
-//      let mutableSubcategories = mutableSetValueForKey("subcategoriesSet")
-//      mutableSubcategories.addObjectsFromArray(ImageCategory.importObjectsFromData(subCategoryData, context: moc))
-//    }
-
+  var category: BankCategory? {
+    get { return parentCategory }
+    set { parentCategory = newValue as? ImageCategory }
   }
 
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary!
-  */
-  override func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-//    if let imageDictionaries = sortedByName(images?.allObjects as? [Image])?.map({$0.JSONDictionary()}) {
-//      if imageDictionaries.count > 0 {
-//        apply(imageDictionaries){$0.removeObjectForKey("category")}
-//        dictionary["images"] = imageDictionaries
-//      }
-//    }
-
-//    if let subcategoryDictionaries = sortedByName(subcategoriesSet?.allObjects as? [ImageCategory])?.map({$0.JSONDictionary()}) {
-//      if subcategoryDictionaries.count > 0 {
-//        dictionary["subcategories"] = subcategoryDictionaries
-//      }
-//    }
-
-    return dictionary
-  }
-
-
-
+  var path: String { return category == nil ? name : "\(category!.name)/\(name)" }
 
 }

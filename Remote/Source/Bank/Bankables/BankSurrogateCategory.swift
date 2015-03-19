@@ -11,42 +11,49 @@ import CoreData
 import UIKit
 import MoonKit
 
+//class BankSurrogateCategoryItem: NSObject, BankCategoryItem {
+//  let item: BankModel
+//  let category: BankCategory
+//  var path: String { return "" }
+//}
+
 @objc(BankSurrogateCategory)
-class BankSurrogateCategory: NSObject, BankItemCategory {
+class BankSurrogateCategory: NSObject, BankCategory {
 
-  var subcategories: [BankItemCategory] = []
-  var parentCategory: BankItemCategory?
+  var subcategories: [BankCategory] = []
+  var category: BankCategory?
 
-	var items: [BankItemModel] = []
-  let title: String
+  var items: [BankCategoryItem] = []
+  var name: String
+  let user = false
+  let uuid: String = MSNonce()
 
   let previewableItems:   Bool
   let editableItems:      Bool
 
+  var path: String { return "" }
+
   func save() {}
-  func delete() {}
   func rollback() {}
-
-  var editable: Bool { return false }
-
-  var categoryPath: String { return "" }
+  func delete() {}
+  let editable = false
 
   /**
   initWithTitle:subcategories:items:previewableItems:editableItems:
 
   :param: title String
   :param: subcategories [BankItemCategory] = []
-  :param: items [BankItemModel] = []
+  :param: items [BankModel] = []
   :param: previewableItems Bool = false
   :param: editableItems Bool = false
   */
   init(title: String,
-       subcategories: [BankItemCategory] = [],
-       items: [BankItemModel] = [],
+       subcategories: [BankCategory] = [],
+       items: [BankCategoryItem] = [],
        previewableItems: Bool = false,
        editableItems: Bool = false)
   {
-    self.title = title
+    self.name = title
     self.subcategories = subcategories
     self.items = items
     self.previewableItems = previewableItems

@@ -140,8 +140,6 @@ length:
 */
 public func length<T:Strideable>(interval: ClosedInterval<T>) -> T.Stride { return interval.start.distanceTo(interval.end) }
 
-public postfix func ‽<T>(lhs: [Optional<T>]) -> [T] { return lhs.filter{$0 != nil}.map{$0!} }
-
 /**
 spliced:newElements:atIndex:
 

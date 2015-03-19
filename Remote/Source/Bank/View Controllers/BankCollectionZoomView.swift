@@ -22,11 +22,11 @@ class BankCollectionZoomView: UIView {
   class var LabelHeight: CGFloat { return 21.0 }
   class var ButtonSize: CGSize { return CGSize(width: 44.0, height: 44.0) }
 
-  var item: PreviewableItem? {
+  var item: Previewable? {
     didSet {
-      if let namedItem = item as? NamedDetailableItem { nameLabel.text = namedItem.name }
+      if let namedItem = item as? Named { nameLabel.text = namedItem.name }
       image = item?.preview
-      if let editableItem = item as? EditableItem { editButton.enabled = editableItem.editable }
+      if let editableItem = item as? Editable { editButton.enabled = editableItem.editable }
       else { editButton.enabled = false }
       detailButton.enabled = item != nil
     }

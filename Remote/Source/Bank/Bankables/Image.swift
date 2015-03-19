@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(Image)
-class Image: BankCategoryItem, PreviewableItem {
+class Image: NamedModelObject, PreviewableCategoryItem, Detailable {
 
   var assetName: String {
     get {
@@ -49,19 +49,25 @@ class Image: BankCategoryItem, PreviewableItem {
   }
 
   @NSManaged var topCap: Int32
-  @NSManaged var imageCategory: ImageCategory!
   @NSManaged var remoteElements: NSSet
   @NSManaged var views: NSSet
+  @NSManaged var imageCategory: ImageCategory
+  @NSManaged var user: Bool
+
+  var category: BankCategory {
+    get { return imageCategory }
+    set { if let category = newValue as? ImageCategory { imageCategory = category } }
+  }
+
+  var path: String { return "\(category.path)/\(name)" }
 
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    if let imageCategoryData = data["category"] as? [String:AnyObject], let moc = managedObjectContext,
-      let imageCategory = ImageCategory.fetchOrImportObjectWithData(imageCategoryData, context: moc) {
-        self.imageCategory = imageCategory
-    }
-    assetName = data["asset-name"] as? String ?? assetName
-    leftCap = (data["left-cap"] as? NSNumber)?.intValue ?? leftCap
-    topCap = (data["top-cap"] as? NSNumber)?.intValue ?? topCap
+    updateRelationshipFromData(data, forKey: "category")
+
+    if let assetName = data["asset-name"] as? String { self.assetName = assetName }
+    if let leftCap = data["left-cap"] as? NSNumber { self.leftCap = leftCap.intValue }
+    if let topCap = data["top-cap"] as? NSNumber { self.topCap = topCap.intValue }
   }
 
   var image: UIImage? { return UIImage(named: assetName) }
@@ -75,7 +81,7 @@ class Image: BankCategoryItem, PreviewableItem {
   */
   override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
-    safeSetValueForKeyPath("imageCategory.commentedUUID", forKey: "category", inDictionary: dictionary)
+    safeSetValueForKeyPath("category.categoryPath", forKey: "category.path", inDictionary: dictionary)
     safeSetValue(assetName, forKey: "asset-name", inDictionary: dictionary)
     setIfNotDefault("leftCap", inDictionary: dictionary)
     setIfNotDefault("topCap", inDictionary: dictionary)
@@ -87,17 +93,17 @@ class Image: BankCategoryItem, PreviewableItem {
   var stretchableImage: UIImage? { return image?.stretchableImageWithLeftCapWidth(Int(leftCap), topCapHeight: Int(topCap)) }
 
 
-  class var rootCategory: Bank.RootCategory {
+  class var rootCategory: BankRootCategory<ImageCategory,BankModel> {
     var categories = ImageCategory.findAllMatchingPredicate(∀"parentCategory == nil", context: DataManager.rootContext) as! [ImageCategory]
-    categories.sort{$0.0.title < $0.1.title}
-    return Bank.RootCategory(label: "Images",
+    categories.sort{$0.0.name < $0.1.name}
+    return BankRootCategory(label: "Images",
                              icon: UIImage(named: "926-photos")!,
                              subcategories: categories,
                              editableItems: true,
                              previewableItems: true)
   }
 
-  override func detailController() -> UIViewController { return ImageDetailController(model: self) }
+  func detailController() -> UIViewController { return ImageDetailController(model: self) }
   var preview: UIImage { return image ?? UIImage() }
   var thumbnail: UIImage { return preview }
 

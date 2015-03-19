@@ -2,6 +2,18 @@
 
 import Foundation
 
-let string = "Samsung/Samsung TV/Power"
-string.pathComponents
-string.pathComponents.reverse()
+func afunc(type: NSArray.Type) {
+  println(NSStringFromClass(type))
+}
+
+afunc(NSArray.self)
+afunc(NSMutableArray.self)
+
+func bfunc(typeName: String) {
+  if let type = NSClassFromString(typeName) as? NSArray.Type {
+    afunc(type)
+  }
+}
+
+bfunc("NSArray")
+bfunc("NSMutableArray")

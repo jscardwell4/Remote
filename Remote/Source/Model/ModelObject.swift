@@ -156,7 +156,10 @@ class ModelObject: NSManagedObject {
 
   :returns: Bool
   */
-  func updateRelationshipFromData(data: [String:AnyObject], forKey key: String, ofType type: ModelObject.Type) -> Bool {
+  private func updateRelationshipFromData(data: [String:AnyObject],
+                                   forKey key: String,
+                                   ofType type: ModelObject.Type) -> Bool
+  {
     if let moc = managedObjectContext,
       objectData = data[key.dashcaseString] as? [String:AnyObject],
       object = type.fetchOrImportObjectWithData(objectData, context: moc)
@@ -166,8 +169,48 @@ class ModelObject: NSManagedObject {
     } else { return false }
   }
 
-  // func updateRelationshipFromData<M.BankableModelObject, C.BankableModelCategory
-  //                                 where M
+  /**
+  updateToManyRelationshipFromData:forKey:ofType:
+
+  :param: data [String AnyObject]
+  :param: key String
+  :param: type ModelObject.Type
+
+  :returns: Bool
+  */
+  private func updateToManyRelationshipFromData(data: [String:AnyObject],
+                                         forKey key: String,
+                                         ofType type: ModelObject.Type,
+                                        ordered: Bool = false) -> Bool
+  {
+    if let moc = managedObjectContext, objectData = data[key.dashcaseString] as? [[String:AnyObject]] {
+      let objects = type.importObjectsFromData(objectData, context: moc)
+      setPrimitiveValue(ordered ? NSOrderedSet(array: objects) : NSSet(array: objects), forKey: key)
+      return true
+    } else { return false }
+  }
+
+  /**
+  updateRelationshipFromData:forKey:
+
+  :param: data [String AnyObject]
+  :param: key String
+
+  :returns: Bool
+  */
+  func updateRelationshipFromData(data: [String:AnyObject], forKey key: String) -> Bool {
+    if let relationshipDescription = entity.relationshipsByName[key] as? NSRelationshipDescription,
+      relatedTypeName = relationshipDescription.destinationEntity?.managedObjectClassName,
+      relatedType = NSClassFromString(relatedTypeName) as? ModelObject.Type
+    {
+      return relationshipDescription.toMany
+        ? updateToManyRelationshipFromData(data,
+                                    forKey: key,
+                                    ofType: relatedType,
+                                   ordered: relationshipDescription.ordered)
+        : updateRelationshipFromData(data, forKey: key, ofType: relatedType)
+    } else { return false }
+  }
 
   /**
   importObjectsFromData:context:
@@ -484,4 +527,7 @@ extension ModelObject: MSJSONExport {
 
 }
 
+extension ModelObject: Equatable {}
+func ==(lhs: ModelObject, rhs: ModelObject) -> Bool { return lhs.isEqual(rhs) }
 
+extension ModelObject: Hashable {}

@@ -122,7 +122,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
 
     manufacturerSection.addRow({
 
-      var row = DetailButtonRow(pushableCategory: componentDevice.codeSet)
+      var row = DetailButtonRow(pushableCategory: componentDevice.codeSet as? BankCategory)
       row.name = "Code Set"
       row.info = componentDevice.codeSet
 
@@ -197,7 +197,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
       row.info = componentDevice.networkDevice ?? "No Network Device"
       row.name = "Network Device"
       row.select = {
-          if let networkDevice = componentDevice.networkDevice {
+          if let networkDevice = componentDevice.networkDevice as? Detailable {
             self.navigationController?.pushViewController(networkDevice.detailController(), animated: true)
           }
         }

@@ -90,20 +90,10 @@ class Activity: NamedModelObject {
   */
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    if let moc = managedObjectContext {
-      if let remoteData = data["remote"] as? [String:AnyObject],
-        let remote = Remote.fetchOrImportObjectWithData(remoteData, context: moc) {
-          self.remote = remote
-      }
-      if let launchMacroData = data["launch-macro"] as? [String:AnyObject],
-        let launchMacro = MacroCommand.fetchOrImportObjectWithData(launchMacroData, context: moc) as? MacroCommand {
-          self.launchMacro = launchMacro
-      }
-      if let haltMacroData = data["halt-macro"] as? [String:AnyObject],
-        let haltMacro = MacroCommand.fetchOrImportObjectWithData(haltMacroData, context: moc)  as? MacroCommand {
-          self.haltMacro = haltMacro
-      }
-    }
+
+    updateRelationshipFromData(data, forKey: "remote")
+    updateRelationshipFromData(data, forKey: "launchMacro")
+    updateRelationshipFromData(data, forKey: "haltMacro")
   }
 
 

@@ -11,9 +11,9 @@ import MoonKit
 
 class BankCollectionCategoryCell: BankCollectionCell {
 
-  var category: BankItemCategory? { didSet { label.text = category?.title } }
+  var category: BankCategory? { didSet { label.text = category?.name } }
 
-  override var exportItem: MSJSONExport? { return category }
+  override var exportItem: MSJSONExport? { return category as? MSJSONExport }
 
   private let label: UILabel = {
     let view = UILabel()

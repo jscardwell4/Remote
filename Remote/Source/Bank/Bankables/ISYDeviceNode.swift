@@ -27,19 +27,16 @@ class ISYDeviceNode: NamedModelObject {
 
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    flag              = data["flag"]               as? NSNumber ?? flag
-    address           = data["address"]            as? String   ?? address
-    type              = data["type"]               as? String   ?? type
-    enabled           = data["enabled"]            as? NSNumber ?? enabled
-    pnode             = data["pnode"]              as? String   ?? pnode
-    propertyFormatted = data["property-formatted"] as? String   ?? propertyFormatted
-    propertyID        = data["property-id"]        as? String   ?? propertyID
-    propertyUOM       = data["property-uom"]       as? String   ?? propertyUOM
-    propertyValue     = data["property-value"]     as? NSNumber ?? propertyValue
-    if let groupsData: AnyObject = data["groups"], let moc = managedObjectContext {
-      let groups = ISYDeviceGroup.importObjectsFromData(groupsData, context: moc)
-      mutableSetValueForKey("groups").addObjectsFromArray(groups)
-    }
+    if let flag              = data["flag"]               as? NSNumber { self.flag = flag }
+    if let address           = data["address"]            as? String   { self.address = address }
+    if let type              = data["type"]               as? String   { self.type = type }
+    if let enabled           = data["enabled"]            as? NSNumber { self.enabled = enabled }
+    if let pnode             = data["pnode"]              as? String   { self.pnode = pnode }
+    if let propertyFormatted = data["property-formatted"] as? String   { self.propertyFormatted = propertyFormatted }
+    if let propertyID        = data["property-id"]        as? String   { self.propertyID = propertyID }
+    if let propertyUOM       = data["property-uom"]       as? String   { self.propertyUOM = propertyUOM }
+    if let propertyValue     = data["property-value"]     as? NSNumber { self.propertyValue = propertyValue }
+    updateRelationshipFromData(data, forKey: "groups")
   }
 
 }

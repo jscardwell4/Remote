@@ -11,24 +11,12 @@ import CoreData
 import MoonKit
 
 @objc(ComponentDevice)
-class ComponentDevice: BankableModelObject {
+class ComponentDevice: NamedModelObject, BankModel, Detailable {
 
   @NSManaged var alwaysOn: Bool
   @NSManaged var inputPowersOn: Bool
-  @NSManaged var primitiveInputs: NSSet
-  var inputs: [IRCode] {
-    get {
-      willAccessValueForKey("inputs")
-      let inputs = primitiveInputs.allObjects as? [IRCode]
-      didAccessValueForKey("inputs")
-      return inputs ?? []
-    }
-    set {
-      willChangeValueForKey("inputs")
-      primitiveInputs = NSSet(array: newValue)
-      didChangeValueForKey("inputs")
-    }
-  }
+  @NSManaged var user: Bool
+  @NSManaged var inputs: Set<IRCode>
   @NSManaged var port: Int16
   @NSManaged var power: Bool
   @NSManaged var codeSet: IRCodeSet?
@@ -36,7 +24,7 @@ class ComponentDevice: BankableModelObject {
   @NSManaged var networkDevice: NetworkDevice?
   @NSManaged var offCommand: SendIRCommand?
   @NSManaged var onCommand: SendIRCommand?
-  @NSManaged var powerCommands: NSSet
+  @NSManaged var powerCommands: Set<PowerCommand>
 
   private var ignoreNextPowerCommand = false
 
@@ -84,35 +72,18 @@ class ComponentDevice: BankableModelObject {
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
-    if let moc = managedObjectContext {
+    if let port = data["port"] as? NSNumber { self.port = port.shortValue }
 
-      port = (data["port"] as? NSNumber)?.shortValue ?? port
-      if let onCommandData = data["on-command"] as? [String:AnyObject],
-        let onCommand = SendIRCommand.fetchOrImportObjectWithData(onCommandData, context: moc) as? SendIRCommand {
-          self.onCommand = onCommand
-      }
-      if let offCommandData = data["off-command"] as? [String:AnyObject],
-        let offCommand = SendIRCommand.fetchOrImportObjectWithData(offCommandData, context: moc) as? SendIRCommand {
-          self.offCommand = offCommand
-      }
-      if let manufacturerData = data["manufacturer"] as? [String:AnyObject],
-        let manufacturer = Manufacturer.fetchOrImportObjectWithData(manufacturerData, context: moc) {
-          self.manufacturer = manufacturer
-      }
-      if let networkDeviceData = data["network-device"] as? [String:AnyObject],
-        let networkDevice = NetworkDevice.fetchOrImportObjectWithData(networkDeviceData, context: moc) {
-          self.networkDevice = networkDevice
-      }
-      if let codeSetData = data["code-set"] as? [String:AnyObject],
-        let codeSet = IRCodeSet.fetchOrImportObjectWithData(codeSetData, context: moc) {
-          self.codeSet = codeSet
-      }
-    }
+    updateRelationshipFromData(data, forKey: "onCommand")
+    updateRelationshipFromData(data, forKey: "offCommand")
+    updateRelationshipFromData(data, forKey: "manufacturer")
+    updateRelationshipFromData(data, forKey: "networkDevice")
+    updateRelationshipFromData(data, forKey: "codeSet")
   }
 
-  class var rootCategory: Bank.RootCategory {
+  class var rootCategory: BankRootCategory<BankCategory,ComponentDevice> {
     let devices = findAllSortedBy("name", ascending: true, context: DataManager.rootContext) as? [ComponentDevice]
-    return Bank.RootCategory(label: "Component Devices",
+    return BankRootCategory(label: "Component Devices",
                              icon: UIImage(named: "969-television")!,
                              items: devices ?? [],
                              editableItems: true)
@@ -123,7 +94,7 @@ class ComponentDevice: BankableModelObject {
 
   :returns: UIViewController
   */
-  override func detailController() -> UIViewController { return ComponentDeviceDetailController(model: self) }
+  func detailController() -> UIViewController { return ComponentDeviceDetailController(model: self) }
 
 }
 

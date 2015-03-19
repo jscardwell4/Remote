@@ -11,7 +11,7 @@ import MoonKit
 
 class BankRootCell: UITableViewCell {
 
-  var rootCategory: Bank.RootCategory? {
+  var rootCategory: BankRootCategory<BankCategory,BankModel>? {
     didSet {
       if let category = rootCategory {
         icon.image = category.icon

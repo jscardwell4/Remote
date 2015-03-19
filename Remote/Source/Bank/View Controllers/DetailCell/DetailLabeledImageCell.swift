@@ -63,7 +63,7 @@ final class DetailLabeledImageCell: DetailCell {
   }
 
   override var info: AnyObject? {
-    didSet { setPreviewImage((info as? PreviewableItem)?.preview ?? info as? UIImage ?? placeholderImage) }
+    didSet { setPreviewImage((info as? Previewable)?.preview ?? info as? UIImage ?? placeholderImage) }
   }
 
   private let preview: UIImageView = {

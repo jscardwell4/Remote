@@ -87,14 +87,8 @@ class ActivityController: ModelObject {
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
-    if let moc = managedObjectContext {
-      if let homeRemote = Remote.fetchOrImportObjectWithData(data["home-remote"] as! [String:AnyObject], context: moc) {
-        self.homeRemote = homeRemote
-      }
-      if let topToolbar = ButtonGroup.fetchOrImportObjectWithData(data["top-toolbar"] as! [String:AnyObject], context: moc) {
-        self.topToolbar = topToolbar
-      }
-    }
+    updateRelationshipFromData(data, forKey: "homeRemote")
+    updateRelationshipFromData(data, forKey: "topToolbar")
   }
 
 }

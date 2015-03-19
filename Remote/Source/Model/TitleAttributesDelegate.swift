@@ -17,7 +17,7 @@ import MoonKit
 }
 
 @objc(TitleAttributesDelegate)
-class TitleAttributesDelegate: EditableItem {
+class TitleAttributesDelegate: Detailable, Editable {
 
   var titleAttributes: TitleAttributes
 

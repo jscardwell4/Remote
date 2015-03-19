@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 @objc(ITachDevice)
-class ITachDevice: NetworkDevice {
+class ITachDevice: NetworkDevice, Detailable {
 
   @NSManaged var primitiveConfigURL: String!
   var configURL: String! {
@@ -82,14 +82,14 @@ class ITachDevice: NetworkDevice {
   */
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    pcbPN     = data["pcb-pn"]     as? String ?? pcbPN
-    pkgLevel  = data["pkg-level"]  as? String ?? pkgLevel
-    sdkClass  = data["sdk-class"]  as? String ?? sdkClass
-    make      = data["make"]       as? String ?? make
-    model     = data["model"]      as? String ?? model
-    status    = data["status"]     as? String ?? status
-    configURL = data["config-url"] as? String ?? configURL
-    revision  = data["revision"]   as? String ?? revision
+    if let pcbPN     = data["pcb-pn"]     as? String { self.pcbPN = pcbPN }
+    if let pkgLevel  = data["pkg-level"]  as? String { self.pkgLevel = pkgLevel }
+    if let sdkClass  = data["sdk-class"]  as? String { self.sdkClass = sdkClass }
+    if let make      = data["make"]       as? String { self.make = make }
+    if let model     = data["model"]      as? String { self.model = model }
+    if let status    = data["status"]     as? String { self.status = status }
+    if let configURL = data["config-url"] as? String { self.configURL = configURL }
+    if let revision  = data["revision"]   as? String { self.revision = revision }
   }
 
   /**
@@ -97,7 +97,7 @@ class ITachDevice: NetworkDevice {
 
   :returns: UIViewController
   */
-  override func detailController() -> UIViewController { return ITachDeviceDetailController(model: self) }
+  func detailController() -> UIViewController { return ITachDeviceDetailController(model: self) }
 
 }
 

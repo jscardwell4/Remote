@@ -63,7 +63,7 @@ http://192.168.1.9/rest/nodes/1B%206E%20B2%201/cmd/DON
 
 */
 @objc(ISYDevice)
-class ISYDevice: NetworkDevice {
+class ISYDevice: NetworkDevice, Detailable {
 
     @NSManaged var baseURL: String
     @NSManaged var deviceType: String
@@ -109,26 +109,17 @@ class ISYDevice: NetworkDevice {
   */
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    modelNumber       = data["model-number"]      as? String ?? modelNumber
-    modelName         = data["model-name"]        as? String ?? modelName
-    modelDescription  = data["model-description"] as? String ?? modelDescription
-    manufacturerURL   = data["manufacturer-url"]  as? String ?? manufacturerURL
-    manufacturer      = data["manufacturer"]      as? String ?? manufacturer
-    friendlyName      = data["friendly-name"]     as? String ?? friendlyName
-    deviceType        = data["device-type"]       as? String ?? deviceType
-    baseURL           = data["base-url"]          as? String ?? baseURL
+    if let modelNumber       = data["model-number"]      as? String { self.modelNumber = modelNumber }
+    if let modelName         = data["model-name"]        as? String { self.modelName = modelName }
+    if let modelDescription  = data["model-description"] as? String { self.modelDescription = modelDescription }
+    if let manufacturerURL   = data["manufacturer-url"]  as? String { self.manufacturerURL = manufacturerURL }
+    if let manufacturer      = data["manufacturer"]      as? String { self.manufacturer = manufacturer }
+    if let friendlyName      = data["friendly-name"]     as? String { self.friendlyName = friendlyName }
+    if let deviceType        = data["device-type"]       as? String { self.deviceType = deviceType }
+    if let baseURL           = data["base-url"]          as? String { self.baseURL = baseURL }
 
-    if let nodesData: AnyObject = data["nodes"], let moc = managedObjectContext {
-      let nodes = ISYDeviceNode.importObjectsFromData(nodesData, context: moc)
-      if primitiveNodes == nil { primitiveNodes = NSMutableSet() }
-      primitiveNodes?.addObjectsFromArray(nodes)
-    }
-
-    if let groupsData: AnyObject = data["groups"], let moc = managedObjectContext {
-      let groups = ISYDeviceGroup.importObjectsFromData(groupsData, context: moc)
-      if primitiveGroups == nil { primitiveGroups = NSMutableSet() }
-      primitiveGroups?.addObjectsFromArray(groups)
-    }
+    updateRelationshipFromData(data, forKey: "nodes")
+    updateRelationshipFromData(data, forKey: "groups")
   }
 
   /**
@@ -136,7 +127,7 @@ class ISYDevice: NetworkDevice {
 
   :returns: UIViewController
   */
-  override func detailController() -> UIViewController { return ISYDeviceDetailController(model: self) }
+  func detailController() -> UIViewController { return ISYDeviceDetailController(model: self) }
 
 }
 

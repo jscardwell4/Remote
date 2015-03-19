@@ -48,12 +48,9 @@ class ImageView: ModelObject {
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
-    if let imageData = data["image"] as? [String:AnyObject], let moc = managedObjectContext,
-      let image = Image.fetchOrImportObjectWithData(imageData, context: moc) {
-        self.image = image
-    }
+    updateRelationshipFromData(data, forKey: "image")
 
-    if let colorJSON = data["color"] as? String, let color = UIColor(JSONValue: colorJSON) {
+    if let colorJSON = data["color"] as? String, color = UIColor(JSONValue: colorJSON) {
       self.color = color
     }
 

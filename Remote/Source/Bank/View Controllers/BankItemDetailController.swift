@@ -13,7 +13,7 @@ import MoonKit
 class BankItemDetailController: NamedItemDetailController {
 
 
-  var model: BankItemModel! { return item as? BankItemModel }
+  var model: BankModel! { return item as? BankModel }
   let context: NSManagedObjectContext!
 
   /**
@@ -43,14 +43,14 @@ class BankItemDetailController: NamedItemDetailController {
   /**
   initWithModel:
 
-  :param: model BankItemModel
+  :param: model BankModel
   */
-  init(var model: BankItemModel) {
-    if let dataModel = model as? BankableModelObject {
+  init(var model: protocol<BankModel, Detailable>) {
+    if let dataModel = model as? NamedModelObject {
       context = DataManager.mainContext()
       let objectID = dataModel.objectID
       var error: NSError?
-      if let m = context.existingObjectWithID(objectID, error: &error) as? BankItemModel {
+      if let m = context.existingObjectWithID(objectID, error: &error) as? protocol<BankModel, Detailable> {
         model = m
       }
     } else {

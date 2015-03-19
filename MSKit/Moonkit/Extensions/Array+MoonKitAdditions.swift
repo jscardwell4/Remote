@@ -29,6 +29,7 @@ compressed:
 */
 public func compressed<T>(array: [Optional<T>]) -> [T] { return array.filter{$0 != nil}.map{$0!} }
 public prefix func ‽<T>(array: [Optional<T>]) -> [T] { return compressed(array) }
+public postfix func ‽<T>(array: [Optional<T>]) -> [T] { return compressed(array) }
 
 /** unpacking an array into a tuple */
 public func disperse2<T>(v: [T]) -> (T,T) { return (v[0], v[1]) }

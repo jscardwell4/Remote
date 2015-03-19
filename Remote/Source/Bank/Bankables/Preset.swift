@@ -11,15 +11,16 @@ import CoreData
 import MoonKit
 
 @objc(Preset)
-class Preset: BankCategoryItem, PreviewableItem {
+class Preset: NamedModelObject, PreviewableCategoryItem, Detailable {
 
   var preview: UIImage { return UIImage() }
   var thumbnail: UIImage { return preview }
 
   @NSManaged var storage: DictionaryStorage
-
-  @NSManaged var childPresets: NSOrderedSet?
+  @NSManaged var presetCategory: PresetCategory
+  @NSManaged var subelements: NSOrderedSet?
   @NSManaged var parentPreset: Preset?
+  @NSManaged var user: Bool
 
   /** awakeFromInsert */
   override func awakeFromInsert() {
@@ -27,12 +28,19 @@ class Preset: BankCategoryItem, PreviewableItem {
     storage = DictionaryStorage(context: managedObjectContext!)
   }
 
+  var category: BankCategory {
+    get { return presetCategory }
+    set { if let category = newValue as? PresetCategory { presetCategory = category } }
+  }
+
+  var path: String { return "\(category.path)/\(name)" }
+
   /**
   detailController
 
   :returns: UIViewController
   */
-  override func detailController() -> UIViewController {
+  func detailController() -> UIViewController {
     switch baseType {
       case .Remote:      return RemotePresetDetailController(model: self)
       case .ButtonGroup: return ButtonGroupPresetDetailController(model: self)
@@ -41,11 +49,11 @@ class Preset: BankCategoryItem, PreviewableItem {
     }
   }
 
-  class var rootCategory: Bank.RootCategory {
+  class var rootCategory: BankRootCategory<PresetCategory,BankModel>{
     var categories = PresetCategory.findAllMatchingPredicate(∀"parentCategory == nil",
                                                      context: DataManager.rootContext) as! [PresetCategory]
-    categories.sort{$0.0.title < $0.1.title}
-    return Bank.RootCategory(label: "Presets",
+    categories.sort{$0.0.name < $0.1.name}
+    return BankRootCategory(label: "Presets",
                              icon: UIImage(named: "1059-sliders")!,
                              subcategories: categories,
                              editableItems: true,
@@ -64,13 +72,8 @@ class Preset: BankCategoryItem, PreviewableItem {
   */
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    var jsonData = data
-    if let moc = managedObjectContext {
-      if let subelementsJSONData = jsonData.removeValueForKey("subelements") as? [[String:AnyObject]] {
-        childPresets = NSOrderedSet(array: Preset.importObjectsFromData(subelementsJSONData, context: moc))
-      }
-      storage.dictionary = jsonData
-    }
+    updateRelationshipFromData(data, forKey: "subelements")
+    storage.dictionary = data - "subelements"
   }
 
   /**

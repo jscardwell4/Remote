@@ -24,12 +24,17 @@
 			<key>orderHint</key>
 			<integer>7</integer>
 		</dict>
+		<key>DataModel.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>7</integer>
+		</dict>
 		<key>ISYClient.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>1</integer>
 		</dict>
 		<key>Remote.xcscheme</key>
 		<dict>
@@ -38,12 +43,17 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>RemoteData.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>8</integer>
+		</dict>
 		<key>iTachClient.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>3</integer>
+			<integer>2</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -59,6 +69,16 @@
 			<true/>
 		</dict>
 		<key>C203BBBE1726EBD6002FD3EA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C215CBFE1ABB102F00E8077E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C215CC081ABB102F00E8077E</key>
 		<dict>
 			<key>primary</key>
 			<true/>

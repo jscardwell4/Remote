@@ -46,7 +46,7 @@ class BankRootController: UITableViewController, BankController {
   */
   func importFromFile(fileURL: NSURL) {}
 
-  var rootCategories: [Bank.RootCategory] = []
+  var rootCategories: [BankRootCategory<BankCategory,BankModel>] = []
 
   /**
   viewWillAppear:
@@ -84,13 +84,14 @@ extension BankRootController: UITableViewDelegate {
   */
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     let rootCategory = rootCategories[indexPath.row]
-    let category = BankSurrogateCategory(title: rootCategory.label,
-                                         subcategories: rootCategory.subcategories,
-                                         items: rootCategory.items,
-                                         previewableItems: rootCategory.previewableItems,
-                                         editableItems: rootCategory.editableItems)
-    let collectionController = BankCollectionController(category: category)!
-    navigationController?.pushViewController(collectionController, animated: true)
+    //FIXME: surrogate category is broken
+//    let category = BankSurrogateCategory(title: rootCategory.label,
+//                                         subcategories: rootCategory.subcategories,
+//                                         items: rootCategory.items,
+//                                         previewableItems: rootCategory.previewableItems,
+//                                         editableItems: rootCategory.editableItems)
+//    let collectionController = BankCollectionController(category: category)!
+//    navigationController?.pushViewController(collectionController, animated: true)
   }
 
 }

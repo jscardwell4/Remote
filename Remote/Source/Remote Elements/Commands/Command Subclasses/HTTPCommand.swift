@@ -45,10 +45,7 @@ class HTTPCommand: SendCommand {
   */
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    if let urlString = data["url"] as? String,
-      let url = NSURL(string: urlString) {
-        self.url = url
-    }
+    if let urlString = data["url"] as? String, url = NSURL(string: urlString) { self.url = url }
   }
 
 }

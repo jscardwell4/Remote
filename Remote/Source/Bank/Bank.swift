@@ -10,8 +10,46 @@ import Foundation
 import UIKit
 import MoonKit
 
+@objc protocol Detailable {
+  func detailController() -> UIViewController
+}
+
+@objc protocol Previewable {
+  var preview: UIImage { get }
+  var thumbnail: UIImage { get }
+}
+
+@objc protocol Editable {
+  var editable: Bool { get }
+  func save()
+  func delete()
+  func rollback()
+}
+
+@objc protocol BankModel: Model, DynamicallyNamed, Editable {
+  var user: Bool { get }
+}
+
+@objc protocol IndexedBankModel: BankModel {
+  var path: String { get }
+}
+
+@objc protocol BankCategory: IndexedBankModel {
+  var items: [BankCategoryItem] { get set }
+  var category: BankCategory? { get set }
+  var subcategories: [BankCategory] { get set }
+}
+
+@objc protocol BankCategoryItem: IndexedBankModel {
+  var category: BankCategory { get }
+}
+
+@objc protocol PreviewableCategoryItem: BankCategoryItem, Previewable {}
+
+@objc protocol PreviewableCategory: BankCategory {}
+
 protocol BankItemSelectionDelegate {
-  func bankController(bankController: BankController, didSelectItem item: BankItemModel)
+  func bankController(bankController: BankController, didSelectItem item: BankModel)
 }
 
 /** Protocol for types that want to display Bank toolbars, or other assets */
@@ -31,31 +69,32 @@ protocol SearchableBankController: BankController {
 
 }
 
+struct BankRootCategory<SubcategoryType, ItemType> {
+  let label: String
+  let icon: UIImage
+  let subcategories: [SubcategoryType]
+  let items: [ItemType]
+  let previewableItems:   Bool
+  let editableItems:      Bool
+
+  init(label: String,
+    icon: UIImage,
+    subcategories: [SubcategoryType] = [],
+    items: [ItemType] = [],
+    previewableItems: Bool = false,
+    editableItems: Bool = false)
+  {
+    self.label = label
+    self.icon = icon
+    self.subcategories = subcategories
+    self.items = items
+    self.previewableItems = previewableItems
+    self.editableItems = editableItems
+  }
+}
+
 class Bank {
 
-  struct RootCategory {
-    let label: String
-    let icon: UIImage
-    let subcategories: [BankItemCategory]
-    let items: [BankItemModel]
-    let previewableItems:   Bool
-    let editableItems:      Bool
-
-    init(label: String,
-         icon: UIImage,
-         subcategories: [BankItemCategory] = [],
-         items: [BankItemModel] = [],
-         previewableItems: Bool = false,
-         editableItems: Bool = false)
-    {
-      self.label = label
-      self.icon = icon
-      self.subcategories = subcategories
-      self.items = items
-      self.previewableItems = previewableItems
-      self.editableItems = editableItems
-    }
-  }
 
   /// The bank's constant class properties
   ////////////////////////////////////////////////////////////////////////////////
@@ -234,7 +273,7 @@ class Bank {
     })
   }
 
-  class var rootCategories: [RootCategory] {
+  class var rootCategories: [BankRootCategory<BankCategory,BankModel>] {
     return [ ComponentDevice.rootCategory,
              IRCode.rootCategory,
              Image.rootCategory,

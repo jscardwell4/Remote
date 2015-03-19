@@ -17,7 +17,7 @@ class BankCollectionController: UICollectionViewController, BankController {
 	private let itemCellIdentifier = "ItemCell"
 	private let categoryCellIdentifier = "CategoryCell"
 
-  var category: BankItemCategory!
+  var category: BankCategory!
 
   enum Mode { case Default, Selection }
 
@@ -95,7 +95,7 @@ class BankCollectionController: UICollectionViewController, BankController {
 
   :param: category BankItemCategory
   */
-  init?(category: BankItemCategory, mode: Mode = .Default) {
+  init?(category: BankCategory, mode: Mode = .Default) {
   	self.mode = mode
     super.init(collectionViewLayout: BankCollectionLayout())
     self.category = category
@@ -117,7 +117,7 @@ class BankCollectionController: UICollectionViewController, BankController {
   /** loadView */
   override func loadView() {
 
-    title = category.title
+    title = category.name
 
     collectionView = {
 
@@ -137,7 +137,7 @@ class BankCollectionController: UICollectionViewController, BankController {
 	    toolbarItems = {
 
 	      // Check if we should include viewing mode control
-	      if self.category.previewableItems {
+	      if self.category is PreviewableCategory {
 
 	        // Create the segmented control
 	        let displayOptions = ToggleImageSegmentedControl(items: [UIImage(named: "1073-grid-1-toolbar")!,
@@ -174,7 +174,7 @@ class BankCollectionController: UICollectionViewController, BankController {
     exportSelectionMode = false
     navigationItem.rightBarButtonItem = Bank.dismissBarButtonItem
 
-    if !category.previewableItems { viewingMode = .List }
+    if !(category is PreviewableCategory) { viewingMode = .List }
     else if let modeSettingValue = SettingsManager.valueForSetting(.BankViewingMode) as? NSNumber {
       viewingMode = BankCollectionAttributes.ViewingMode(rawValue: modeSettingValue.integerValue) ?? .List
     }
@@ -213,13 +213,15 @@ class BankCollectionController: UICollectionViewController, BankController {
   	if mode == .Default {
 	    switch indexPath.section {
 	      case 0:
-	        let subcategory = category.subcategories[indexPath.row] as BankItemCategory
-	        category.subcategories.removeAtIndex(indexPath.row)
+	        let subcategory = category.subcategories[indexPath.row] as BankCategory
+          //FIXME: Disabled while getting models sorted
+//	        category.subcategories.removeAtIndex(indexPath.row)
 	        subcategory.delete()
 
 	      default:
-	        let item = category.items[indexPath.row] as BankItemModel
-	        category.items.removeAtIndex(indexPath.row)
+	        let item = category.items[indexPath.row] as BankModel
+          //FIXME: Disabled while getting models sorted
+//	        category.items.removeAtIndex(indexPath.row)
 	        item.delete()
 
 	    }
@@ -230,9 +232,9 @@ class BankCollectionController: UICollectionViewController, BankController {
   /**
   editItem:
 
-  :param: item EditableItem
+  :param: item Editable
   */
-  func editItem(item: EditableItem) {
+  func editItem(item: protocol<Detailable, Editable>) {
   	if mode == .Default {
 	    let detailController = item.detailController()
 	    detailController.editing = true
@@ -254,9 +256,10 @@ class BankCollectionController: UICollectionViewController, BankController {
         }
       default:
         if mode == .Default {
-          let item = category.items[indexPath.row]
-          let controller = item.detailController()
-          navigationController?.pushViewController(controller, animated: true)
+          if let item = category.items[indexPath.row] as? Detailable {
+            let controller = item.detailController()
+            navigationController?.pushViewController(controller, animated: true)
+          }
         }
     }
   }
@@ -286,7 +289,7 @@ class BankCollectionController: UICollectionViewController, BankController {
     precondition(indexPath.section == 1, "we should only be zooming actual items")
     zoomedItemIndexPath = indexPath
     let zoomView = BankCollectionZoomView(frame: view.bounds, delegate: self)
-    if let previewableItem = category.items[indexPath.row] as? PreviewableItem {
+    if let previewableItem = category.items[indexPath.row] as? Previewable {
       zoomView.item = previewableItem
     }
     zoomView.backgroundImage = view.blurredSnapshot()
@@ -332,7 +335,7 @@ extension BankCollectionController: BankCollectionZoomViewDelegate {
   func didDismissForEditingZoomView(zoomView: BankCollectionZoomView) {
     zoomView.removeFromSuperview()
     if mode == .Default {
-      if let editableItem = zoomView.item as? EditableItem { editItem(editableItem) }
+      if let editableItem = zoomView.item as? protocol<Detailable, Editable> { editItem(editableItem) }
     }
     zoomedItemIndexPath = nil
   }
@@ -354,16 +357,20 @@ extension BankCollectionController {
       exportSelection.reserveCapacity(category.subcategories.count + category.items.count)
 
       for (i, subcategory) in enumerate(category.subcategories) {
-        exportSelection.append(subcategory)
-        if let cell = collectionView?.cellForItemAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as? BankCollectionCell {
-        	cell.showIndicator(true, selected: true)
+        if let exportCategory = subcategory as? MSJSONExport {
+          exportSelection.append(exportCategory)
+          if let cell = collectionView?.cellForItemAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as? BankCollectionCell {
+            cell.showIndicator(true, selected: true)
+          }
         }
       }
 
       for (i, item) in enumerate(category.items) {
-        exportSelection.append(item)
-        if let cell = collectionView?.cellForItemAtIndexPath(NSIndexPath(forRow: i, inSection: 1)) as? BankCollectionCell {
-        	cell.showIndicator(true, selected: true)
+        if let exportItem = item as? MSJSONExport {
+          exportSelection.append(exportItem)
+          if let cell = collectionView?.cellForItemAtIndexPath(NSIndexPath(forRow: i, inSection: 1)) as? BankCollectionCell {
+            cell.showIndicator(true, selected: true)
+          }
         }
       }
 

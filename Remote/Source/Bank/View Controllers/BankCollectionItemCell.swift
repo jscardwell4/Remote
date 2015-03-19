@@ -13,14 +13,14 @@ import MoonKit
 
 class BankCollectionItemCell: BankCollectionCell {
 
-  weak var item: BankItemModel? {
+  weak var item: BankModel? {
     didSet {
       nameLabel.text = item?.name
-      previewable = item != nil && item! is PreviewableItem
+      previewable = item != nil && item! is Previewable
     }
   }
 
-  override var exportItem: MSJSONExport? { return item }
+  override var exportItem: MSJSONExport? { return item as? MSJSONExport }
 
   private let thumbnailImageView: UIImageView = {
     let view = UIImageView()
@@ -44,7 +44,7 @@ class BankCollectionItemCell: BankCollectionCell {
   private var previewable: Bool = false {
     didSet {
       if previewable {
-        if let previewImage = (item as? PreviewableItem)?.thumbnail {
+        if let previewImage = (item as? Previewable)?.thumbnail {
           thumbnailImageView.image = previewImage
           thumbnailImageView.contentMode = contentSize.contains(previewImage.size) ? .Center : .ScaleAspectFit
         } else {

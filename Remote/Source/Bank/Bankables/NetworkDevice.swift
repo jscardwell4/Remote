@@ -11,10 +11,11 @@ import CoreData
 import MoonKit
 
 @objc(NetworkDevice)
-class NetworkDevice: BankableModelObject {
+class NetworkDevice: NamedModelObject, BankModel {
 
   @NSManaged var uniqueIdentifier: String!
   @NSManaged var componentDevices: NSSet?
+  @NSManaged var user: Bool
 
   class func deviceExistsWithIdentifier(identifier: String) -> Bool {
     return countOfObjectsMatchingPredicate(∀"uniqueIdentifier == \"\(identifier)\"", context: DataManager.rootContext) > 0
@@ -22,7 +23,7 @@ class NetworkDevice: BankableModelObject {
 
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    uniqueIdentifier = data["unique-identifier"] as? String ?? uniqueIdentifier
+    if let uniqueIdentifier = data["unique-identifier"] as? String { self.uniqueIdentifier = uniqueIdentifier }
   }
 
   /**
@@ -56,9 +57,9 @@ class NetworkDevice: BankableModelObject {
 //
 //    return device
 //  }
-  class var rootCategory: Bank.RootCategory {
+  class var rootCategory: BankRootCategory<BankCategory,NetworkDevice> {
     let networkDevices = findAllSortedBy("name", ascending: true, context: DataManager.rootContext) as? [NetworkDevice]
-    return Bank.RootCategory(label: "Network Devices",
+    return BankRootCategory(label: "Network Devices",
                              icon: UIImage(named: "937-wifi-signal")!,
                              items: networkDevices ?? [],
                              editableItems: true)

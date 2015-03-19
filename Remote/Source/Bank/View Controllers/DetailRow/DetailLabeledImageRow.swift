@@ -30,9 +30,9 @@ final class DetailLabeledImageRow: DetailRow {
   initWithLabel:previewableItem:
 
   :param: label String
-  :param: previewableItem PreviewableItem?
+  :param: previewableItem Previewable?
   */
-  convenience init(label: String, previewableItem: PreviewableItem?) {
+  convenience init(label: String, previewableItem: Previewable?) {
     self.init()
     name = label
     info = previewableItem?.preview

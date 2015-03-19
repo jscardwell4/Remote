@@ -129,7 +129,7 @@ class RemoteElementPreview: UIView {
   /** initializeViewFromPreset */
   func initializeViewFromPreset() {
     elementBackgroundColor = preset.backgroundColor
-    if let childPresets = preset.childPresets {
+    if let childPresets = preset.subelements {
       for childPreset in childPresets.array as! [Preset] {
         if let childView = RemoteElementPreview.viewWithPreset(childPreset) {
           subelementsView.addSubview(childView)

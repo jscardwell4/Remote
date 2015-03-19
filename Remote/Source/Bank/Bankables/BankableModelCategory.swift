@@ -17,13 +17,13 @@ class BankableModelCategory: NamedModelObject, BankItemCategory {
 
   class func itemType() -> BankableModelObject.Type { return BankableModelObject.self }
   var title: String { return name ?? "" }
-  var items: [BankItemModel] { get { return [] } set {} }
+  var items: [BankModel] { get { return [] } set {} }
   var subcategories: [BankItemCategory] { get { return [] } set {} }
   var parentCategory: BankItemCategory?
 
   var totalItemCount: Int { return recursiveItemCountForCategory(self) }
 
-  var previewableItems:   Bool { return self.dynamicType.itemType().conformsToProtocol(PreviewableItem)   }
+  var previewableItems:   Bool { return self.dynamicType.itemType().conformsToProtocol(Previewable)   }
   var editableItems:      Bool { return true }
 
   var editable: Bool { return true }

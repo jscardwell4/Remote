@@ -27,11 +27,11 @@ final class DetailImageRow: DetailRow {
   }
 
   /**
-  initWithPreviewableItem:
+  initWithPreviewable:
 
-  :param: previewableItem BankItemModel
+  :param: previewableItem BankModel
   */
-  convenience init(previewableItem: PreviewableItem?) { self.init(); info = previewableItem?.preview }
+  convenience init(previewableItem: Previewable?) { self.init(); info = previewableItem?.preview }
 
   /** init */
   override init() { super.init() }

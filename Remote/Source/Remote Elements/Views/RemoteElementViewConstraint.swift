@@ -118,10 +118,10 @@ final class RemoteElementViewConstraint: NSLayoutConstraint {
   }
 
   override var description: String {
-    let item1 = firstElement.model.name!.camelCase()
+    let item1 = firstElement.model.name.camelCase()
     let attr1 = NSLayoutConstraint.pseudoNameForAttribute(firstAttribute)
     let relatedBy = NSLayoutConstraint.pseudoNameForRelation(relation)
-    let item2 = secondElement?.model.name!.camelCase()
+    let item2 = secondElement?.model.name.camelCase()
     let attr2 = secondAttribute == .NotAnAttribute
                                 ? nil
                                 : NSLayoutConstraint.pseudoNameForAttribute(secondAttribute)

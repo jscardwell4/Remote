@@ -11,59 +11,27 @@ import CoreData
 import MoonKit
 
 @objc(PresetCategory)
-class PresetCategory: BankCategory {
+class PresetCategory: NamedModelObject, BankCategory {
 
-  var presets: [Preset] { get { return items as! [Preset] } set { items = newValue } }
+  @NSManaged var presets: Set<Preset>
+  @NSManaged var childCategories: Set<PresetCategory>
+  @NSManaged var parentCategory: PresetCategory?
+  @NSManaged var user: Bool
 
-  /**
-  updateWithData:
-
-  :param: data [String:AnyObject]
-  */
-  override func updateWithData(data: [String:AnyObject]) {
-    super.updateWithData(data) // sets uuid, name
-
-    // Try importing images
-//    if let presetData = data["presets"] as? NSArray, let moc = managedObjectContext {
-//      if presets == nil { presets = NSSet() }
-//      let mutablePresets = mutableSetValueForKey("presets")
-//      mutablePresets.addObjectsFromArray(Preset.importObjectsFromData(presetData, context: moc))
-//    }
-
-    // Try importing subcategories
-//    if let subCategoryData = data["subcategories"] as? NSArray, let moc = managedObjectContext {
-//      if subcategoriesSet == nil { subcategoriesSet = NSSet() }
-//      let mutableSubcategories = mutableSetValueForKey("subcategoriesSet")
-//      mutableSubcategories.addObjectsFromArray(PresetCategory.importObjectsFromData(subCategoryData, context: moc))
-//    }
-
+  var subcategories: [BankCategory] {
+    get { return Array(childCategories) }
+    set { if let subcategories = newValue as? [PresetCategory] { childCategories = Set(subcategories) } }
+  }
+  var items: [BankCategoryItem] {
+    get { return Array(presets) }
+    set { if let items = newValue as? [Preset] { presets = Set(items) } }
+  }
+  var category: BankCategory? {
+    get { return parentCategory }
+    set { parentCategory = newValue as? PresetCategory }
   }
 
+  var path: String { return category == nil ? name : "\(category!.path)/\(name)" }
 
-  /**
-  JSONDictionary
 
-  :returns: MSDictionary!
-  */
-  override func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-//    if let presetDictionaries = sortedByName(presets?.allObjects as? [Preset])?.map({$0.JSONDictionary()}) {
-//      if presetDictionaries.count > 0 {
-//        apply(presetDictionaries){$0.removeObjectForKey("category")}
-//        dictionary["presets"] = presetDictionaries
-//      }
-//    }
-
-//    if let subcategoryDictionaries = sortedByName(subcategoriesSet?.allObjects as? [ImageCategory])?.map({$0.JSONDictionary()}) {
-//      if subcategoryDictionaries.count > 0 {
-//        dictionary["subcategories"] = subcategoryDictionaries
-//      }
-//    }
-
-    return dictionary
-  }
-  
-
-  
 }

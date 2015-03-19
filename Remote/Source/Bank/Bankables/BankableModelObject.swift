@@ -10,7 +10,8 @@ import Foundation
 import CoreData
 import MoonKit
 
-class BankableModelObject: NamedModelObject, BankItemModel {
+@objc(BankableModelObject)
+class BankableModelObject: NamedModelObject, BankModel {
 
 	@NSManaged var user: Bool
 
@@ -28,7 +29,7 @@ class BankableModelObject: NamedModelObject, BankItemModel {
 	*/
 	override func updateWithData(data: [String:AnyObject]) {
 		super.updateWithData(data)
-		user = (data["user"] as? NSNumber)?.boolValue ?? user
+    if let user = data["user"] as? NSNumber { self.user = user.boolValue }
 	}
 
 	/**

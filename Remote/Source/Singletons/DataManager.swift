@@ -135,6 +135,9 @@ import MoonKit
   */
   class func augmentModel(model: NSManagedObjectModel) -> NSManagedObjectModel {
 
+    let augmentedModel = model.mutableCopy() as! NSManagedObjectModel
+    let entities = augmentedModel.entitiesByName as! [String:NSEntityDescription]
+
     /**
     Helper for modifiying the class and default value for the same attribute on multiple entities
 
@@ -177,16 +180,10 @@ import MoonKit
             defaultValue: AnyObject? = nil,
                 userInfo: [NSObject:AnyObject]? = nil)
     {
-      for attribute in attributes {
-        if let attributeDescription = entity.attributesByName[attribute] as? NSAttributeDescription {
-          if valueClassName != nil { attributeDescription.attributeValueClassName = valueClassName }
-          if defaultValue != nil { attributeDescription.defaultValue = defaultValue }
-          if userInfo != nil {
-            var info = attributeDescription.userInfo ?? [:]
-            extend(&info, userInfo!)
-            attributeDescription.userInfo = info
-          }
-        }
+      for attribute in attributes.map({entity.attributesByName[$0] as? NSAttributeDescription})‽ {
+        if valueClassName != nil { attribute.attributeValueClassName = valueClassName }
+        if defaultValue != nil { attribute.defaultValue = defaultValue }
+        if userInfo != nil { var info = attribute.userInfo ?? [:]; extend(&info, userInfo!); attribute.userInfo = info }
       }
     }
 
@@ -220,94 +217,87 @@ import MoonKit
 
     }
 
-
-    let augmentedModel = model.mutableCopy() as! NSManagedObjectModel
-    let entities = augmentedModel.entitiesByName as! [String:NSEntityDescription]
-
+    let componentDevice      = entities["ComponentDevice"]!
+    let manufacturer         = entities["Manufacturer"]!
+    let imageCategory        = entities["ImageCategory"]!
+    let presetCategory       = entities["PresetCategory"]!
+    let iRCodeSet            = entities["IRCodeSet"]!
+    let image                = entities["Image"]!
+    let remoteElement        = entities["RemoteElement"]!
+    let remote               = entities["Remote"]!
+    let buttonGroup          = entities["ButtonGroup"]!
+    let button               = entities["Button"]!
+    let preset               = entities["Preset"]!
+    let dictionaryStorage    = entities["DictionaryStorage"]!
+    let commandContainer     = entities["CommandContainer"]!
+    let commandSet           = entities["CommandSet"]!
+    let commandSetCollection = entities["CommandSetCollection"]!
+    let hTTPCommand          = entities["HTTPCommand"]!
+    let controlStateColorSet = entities["ControlStateColorSet"]!
+    let imageView            = entities["ImageView"]!
+    let activityCommand      = entities["ActivityCommand"]!
 
     // set `user` default value
-    modifyAttribute("user", forEntities: [entities["ComponentDevice"]!], defaultValue: true)
+    modifyAttribute("user", forEntities: [componentDevice], defaultValue: true)
 
     // indicator attribute on activity commands
-    overrideDefaultValueOfAttribute("indicator", forSubentity: entities["ActivityCommand"]!, withValue: true)
+    overrideDefaultValueOfAttribute("indicator", forSubentity: activityCommand, withValue: true)
 
     // create some default sets
-    modifyAttributes(["codeSets", "devices"],
-           forEntity: entities["Manufacturer"]!,
-        defaultValue: NSSet())
-
-    modifyAttribute("subcategories",
-           forEntities: [entities["ImageCategory"]!, entities["PresetCategory"]!, entities["Manufacturer"]!],
-        defaultValue: NSSet())
-
-    modifyAttribute("items",
-      forEntities: [entities["ImageCategory"]!, entities["PresetCategory"]!, entities["IRCodeSet"]!],
-      defaultValue: NSSet())
-
-//    modifyAttribute("subcategoriesSet",
-//        forEntities: [entities["ImageCategory"]!, entities["PresetCategory"]!],
-//       defaultValue: NSSet())
+    modifyAttribute("devices", forEntities: [manufacturer, iRCodeSet], defaultValue: NSSet())
+    modifyAttribute("subcategories", forEntities: [imageCategory, presetCategory, manufacturer], defaultValue: NSSet())
+    modifyAttribute("items", forEntities: [imageCategory, presetCategory, iRCodeSet], defaultValue: NSSet())
 
     // size attributes on images
     modifyAttribute("size",
-        forEntities: [entities["Image"]!],
+        forEntities: [image],
      valueClassName: "NSValue",
        defaultValue: NSValue(CGSize: CGSize.zeroSize))
 
 
     // background color attributes on remote elements
     modifyAttribute("backgroundColor",
-        forEntities: ["RemoteElement", "Remote", "ButtonGroup", "Button"].map{entities[$0]!},
+        forEntities: [remoteElement, remote, buttonGroup, button],
      valueClassName: "UIColor",
        defaultValue: UIColor.clearColor())
 
     // edge insets attributes on buttons
     modifyAttributes(["titleEdgeInsets", "contentEdgeInsets", "imageEdgeInsets"],
-           forEntity: entities["Button"]!,
+           forEntity: button,
       valueClassName: "NSValue",
         defaultValue: NSValue(UIEdgeInsets: UIEdgeInsets.zeroInsets))
 
     // configurations attribute on remote elements
     modifyAttribute("configurations",
-        forEntities: ["RemoteElement", "Remote", "ButtonGroup", "Button"].map{entities[$0]!},
+        forEntities: [remoteElement, remote, buttonGroup, button],
      valueClassName: "NSDictionary",
        defaultValue: NSDictionary())
 
     // panels for RERemote
-    modifyAttribute("panels",
-        forEntities: [entities["Remote"]!],
-     valueClassName: "NSDictionary",
-       defaultValue: NSDictionary())
+    modifyAttribute("panels", forEntities: [remote], valueClassName: "NSDictionary", defaultValue: NSDictionary())
 
     // label attribute on button groups
-    modifyAttribute("label",
-        forEntities: [entities["ButtonGroup"]!],
-     valueClassName: "NSAttributedString")
+    modifyAttribute("label", forEntities: [buttonGroup], valueClassName: "NSAttributedString")
 
-     modifyAttribute("title",
-        forEntities: [entities["Button"]!],
-     valueClassName: "NSAttributedString")
+     modifyAttribute("title", forEntities: [button], valueClassName: "NSAttributedString")
 
     // settings attribute on Preset
-    modifyAttribute("attributes",
-        forEntities: [entities["Preset"]!],
-     valueClassName: "NSDictionary",
-       defaultValue: NSDictionary())
+    modifyAttribute("attributes", forEntities: [preset], valueClassName: "NSDictionary", defaultValue: NSDictionary())
 
     modifyAttribute("dictionary",
-      forEntities: [entities["DictionaryStorage"]!],
+      forEntities: [dictionaryStorage],
    valueClassName: "NSDictionary",
      defaultValue: NSDictionary())
 
     // index attribute on command containers
     modifyAttribute("index",
-        forEntities: ["CommandContainer", "CommandSet", "CommandSetCollection"].map{entities[$0]!},
+        forEntities: [commandContainer, commandSet, commandSetCollection],
      valueClassName: "MSDictionary",
        defaultValue: MSDictionary())
 
     // url attribute on http command
     modifyAttribute("url",
-        forEntities: [entities["HTTPCommand"]!],
+        forEntities: [hTTPCommand],
      valueClassName: "NSURL",
        defaultValue: NSURL(string: "http://about:blank"))
 
@@ -320,13 +310,11 @@ import MoonKit
                       "normal",
                       "selected",
                       "highlightedSelectedDisabled"],
-           forEntity: entities["ControlStateColorSet"]!,
+           forEntity: controlStateColorSet,
       valueClassName: "UIColor")
 
     // color attribute on image view
-    modifyAttribute("color",
-        forEntities: [entities["ImageView"]!],
-     valueClassName: "UIColor")
+    modifyAttribute("color", forEntities: [imageView], valueClassName: "UIColor")
 
     return augmentedModel
   }
@@ -338,22 +326,22 @@ import MoonKit
 /// MARK: - Removing objects from the database at startup
 ////////////////////////////////////////////////////////////////////////////////
 
-extension DataManager {
-
-  struct StartupObjectRemovalOptions: RawOptionSetType {
-    private(set) var rawValue: Int
-
-    init(rawValue: Int) { self.rawValue = rawValue }
-
-    init(nilLiteral: ()) { rawValue = 0 }
-
-    static var allZeros: StartupObjectRemovalOptions { return StartupObjectRemovalOptions.None }
-
-    static var None       = StartupObjectRemovalOptions(rawValue: 0b0000)
-    static var Presets    = StartupObjectRemovalOptions(rawValue: 0b0001)
-    static var Remotes    = StartupObjectRemovalOptions(rawValue: 0b0010)
-    static var Controller = StartupObjectRemovalOptions(rawValue: 0b0100)
-    static var All        = StartupObjectRemovalOptions(rawValue: 0b1000)
-  }
-
-}
+//extension DataManager {
+//
+//  struct StartupObjectRemovalOptions: RawOptionSetType {
+//    private(set) var rawValue: Int
+//
+//    init(rawValue: Int) { self.rawValue = rawValue }
+//
+//    init(nilLiteral: ()) { rawValue = 0 }
+//
+//    static var allZeros: StartupObjectRemovalOptions { return StartupObjectRemovalOptions.None }
+//
+//    static var None       = StartupObjectRemovalOptions(rawValue: 0b0000)
+//    static var Presets    = StartupObjectRemovalOptions(rawValue: 0b0001)
+//    static var Remotes    = StartupObjectRemovalOptions(rawValue: 0b0010)
+//    static var Controller = StartupObjectRemovalOptions(rawValue: 0b0100)
+//    static var All        = StartupObjectRemovalOptions(rawValue: 0b1000)
+//  }
+//
+//}

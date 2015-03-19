@@ -11,13 +11,30 @@ import CoreData
 import MoonKit
 
 @objc(Manufacturer)
-class Manufacturer: BankCategory, BankItemModel {
+class Manufacturer: NamedModelObject, BankCategory, Detailable, BankModel {
 
 
-  var codeSets: [IRCodeSet] { get { return subcategories as! [IRCodeSet] } set { subcategories = newValue } }
-
+  @NSManaged var codeSets: Set<IRCodeSet>
   @NSManaged var devices: Set<ComponentDevice>
+  @NSManaged var user: Bool
 
+  var category: BankCategory? { get { return nil } set {} }
+  var subcategories: [BankCategory] {
+    get { return Array(codeSets) }
+    set { if let subcategories = newValue as? [IRCodeSet] { codeSets = Set(subcategories) } }
+  }
+
+  var items: [BankCategoryItem] { get { return [] } set {} }
+  var path: String { return name }
+
+  /**
+  manufacturerWithName:context:
+
+  :param: name String
+  :param: context NSManagedObjectContext
+
+  :returns: Manufacturer
+  */
   class func manufacturerWithName(name: String, context: NSManagedObjectContext) -> Manufacturer {
     var manufacturer: Manufacturer!
     context.performBlockAndWait { () -> Void in
@@ -32,32 +49,13 @@ class Manufacturer: BankCategory, BankItemModel {
 
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-
-//    if let codeSetsData = data["codesets"] as? NSArray, let moc = managedObjectContext {
-//      if codeSets == nil { codeSets = NSSet() }
-//      let mutableCodeSets = mutableSetValueForKey("codeSets")
-//      let importedCodeSets = IRCodeSet.importObjectsFromData(codeSetsData, context: moc)
-//      mutableCodeSets.addObjectsFromArray(importedCodeSets)
-//      if codes == nil { codes = NSSet() }
-//      let mutableCodes = mutableSetValueForKey("codes")
-//
-//      if let c = importedCodeSets as? [IRCodeSet] {
-//        let importedCodes = flattened(c.map({$0.codes?.allObjects ?? []}))
-//        mutableCodes.addObjectsFromArray(importedCodes)
-//      }
-//    }
-//
-//    if let devicesData = data["devices"] as? NSArray, let moc = managedObjectContext {
-//      if devices == nil { devices = NSSet() }
-//      let mutableDevices = mutableSetValueForKey("devices")
-//      let importedDevices = ComponentDevice.importObjectsFromData(devicesData, context: moc)
-//      mutableDevices.addObjectsFromArray(importedDevices)
-//    }
+    updateRelationshipFromData(data, forKey: "codeSets")
+    updateRelationshipFromData(data, forKey: "devices")
   }
 
-  class var rootCategory: Bank.RootCategory {
+  class var rootCategory: BankRootCategory<BankCategory,Manufacturer> {
     let manufacturers = findAllSortedBy("name", ascending: true, context: DataManager.rootContext) as? [Manufacturer]
-    return Bank.RootCategory(label: "Manufacturers",
+    return BankRootCategory(label: "Manufacturers",
                              icon: UIImage(named: "1022-factory")!,
                              items: manufacturers ?? [],
                              editableItems: true)
@@ -77,7 +75,6 @@ extension Manufacturer: MSJSONExport {
   override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
-    safeSetValueForKeyPath("codeSets.JSONDictionary", forKey: "codesets", inDictionary: dictionary)
     safeSetValueForKeyPath("devices.commentedUUID",   forKey: "devices",  inDictionary: dictionary)
 
     dictionary.compact()
