@@ -48,6 +48,16 @@
 			<key>orderHint</key>
 			<integer>8</integer>
 		</dict>
+		<key>RemoteDataUITest.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>10</integer>
+		</dict>
+		<key>RemoteSettings.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>9</integer>
+		</dict>
 		<key>iTachClient.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -129,6 +139,16 @@
 			<true/>
 		</dict>
 		<key>C2D87CD4171A3AFB00E61287</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C2E9F3E61ABC9797007581F2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C2E9F3FA1ABC9797007581F2</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -16,7 +16,7 @@ extension NSManagedObjectModel {
     apply(entities as! [NSEntityDescription]) {
       entity in
 
-      description += "\(entity.name) {\n"
+      description += (entity.name ?? "") + " {\n"
       if let userInfo = entity.userInfo { description += "\tuserInfo: {\n\(formattedDescription(userInfo, indent: 2))\n\t}" }
 
       for property in (entity.properties as! [NSPropertyDescription]) {
