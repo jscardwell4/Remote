@@ -143,8 +143,6 @@
 		C22645F619F6EB20001F5A5E /* AuxiliaryStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59216DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard */; };
 		C22E5C881A489C0C0017CEB6 /* DatabaseLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22E5C871A489C0C0017CEB6 /* DatabaseLoader.swift */; };
 		C231C6421A197C74003D2587 /* SwitchToRemoteCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B465716FF679B0042B59E /* SwitchToRemoteCommandEditingViewController.m */; };
-		C2328CD219DF447800D292E2 /* BankRootController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2400F9719D4B9B600D9BB13 /* BankRootController.swift */; };
-		C2328CD319DF449900D292E2 /* BankRootCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2400F9919D4BB5400D9BB13 /* BankRootCell.swift */; };
 		C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2355951170A736300160896 /* REBackgroundCollectionViewController.m */; };
 		C235930519C9C26200920F8D /* Glyphish_Test.json in Resources */ = {isa = PBXBuildFile; fileRef = C20FF1ED19AE687F00D11F33 /* Glyphish_Test.json */; };
 		C235930619C9C26600920F8D /* Manufacturer_Test.json in Resources */ = {isa = PBXBuildFile; fileRef = C20FF1EF19AE6DED00D11F33 /* Manufacturer_Test.json */; };
@@ -572,6 +570,8 @@
 		C2E8D9F519BCD5C400E6098E /* wsdl-viewer.xsl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9BA19BCD5C400E6098E /* wsdl-viewer.xsl */; };
 		C2E8D9F619BCD5C400E6098E /* zigbee.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9BB19BCD5C400E6098E /* zigbee.xsd */; };
 		C2E8D9F719BCD5C400E6098E /* zigbee.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9BB19BCD5C400E6098E /* zigbee.xsd */; };
+		C2E9F3DE1ABC63B1007581F2 /* BankRootCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2400F9919D4BB5400D9BB13 /* BankRootCell.swift */; };
+		C2E9F3DF1ABC63BC007581F2 /* BankRootController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2400F9719D4B9B600D9BB13 /* BankRootController.swift */; };
 		C2EF968417F79E06005AA639 /* TableCellDetailArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2EF968317F79E06005AA639 /* TableCellDetailArrow@2x.png */; };
 		C2F01E1F1A02FBC6007F6966 /* MoonKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C235911C19C7ACB900920F8D /* MoonKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C2F01E2D1A02FD09007F6966 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2F01E2A1A02FCF7007F6966 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -3126,6 +3126,7 @@
 				C215CC671ABB1B9E00E8077E /* DetailColorCell.swift in Sources */,
 				C215CC3E1ABB11D000E8077E /* HTTPCommand.swift in Sources */,
 				C215CC351ABB11A300E8077E /* ImageView.swift in Sources */,
+				C2E9F3DF1ABC63BC007581F2 /* BankRootController.swift in Sources */,
 				C215CC521ABB1AC300E8077E /* ConstraintManager.swift in Sources */,
 				C215CC751ABB1BA600E8077E /* DetailAttributedTextRow.swift in Sources */,
 				C215CC7A1ABB1BA600E8077E /* DetailImageRow.swift in Sources */,
@@ -3200,6 +3201,7 @@
 				C215CC271ABB119300E8077E /* BankCategoryItemObject.swift in Sources */,
 				C215CC541ABB1B0E00E8077E /* Font.swift in Sources */,
 				C215CC461ABB11D000E8077E /* CommandSet.swift in Sources */,
+				C2E9F3DE1ABC63B1007581F2 /* BankRootCell.swift in Sources */,
 				C215CC691ABB1B9E00E8077E /* DetailSliderCell.swift in Sources */,
 				C215CC8C1ABB1C2C00E8077E /* BankCollectionLayout.swift in Sources */,
 				C215CC451ABB11D000E8077E /* Command.swift in Sources */,
@@ -3292,7 +3294,6 @@
 				C231C6421A197C74003D2587 /* SwitchToRemoteCommandEditingViewController.m in Sources */,
 				C235A2FB1A0E96B10067E226 /* ButtonView.swift in Sources */,
 				C2D361DE182BE49600775239 /* RemoteElementKeys.m in Sources */,
-				C2328CD219DF447800D292E2 /* BankRootController.swift in Sources */,
 				C2F436FE19BAB8E600B60FC3 /* ISYDeviceConnection.m in Sources */,
 				C20D11AF1A40E28700C33499 /* RemoteDrawingKit.swift in Sources */,
 				C20D11A61A40A88600C33499 /* ButtonPreview.swift in Sources */,
@@ -3315,7 +3316,6 @@
 				C2A4102619B4BFB90089AACA /* ITachDeviceConnection.m in Sources */,
 				C25B47AC16FF8D5E0042B59E /* SettingsViewController.m in Sources */,
 				C25B47AD16FF8D5E0042B59E /* StoryboardProxy.m in Sources */,
-				C2328CD319DF449900D292E2 /* BankRootCell.swift in Sources */,
 				C25B47AE16FF8D5E0042B59E /* ViewDecorator.m in Sources */,
 				C21F07C41AA36E9C00F1F8DD /* BankItem.swift in Sources */,
 				C240DD5F170485F2005CC390 /* IRLearner.m in Sources */,
@@ -4557,6 +4557,7 @@
 				C215CC1C1ABB103000E8077E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C215CC1D1ABB103000E8077E /* Build configuration list for PBXNativeTarget "RemoteDataTests" */ = {
 			isa = XCConfigurationList;
@@ -4567,6 +4568,7 @@
 				C215CC211ABB103000E8077E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C26BAEA316DC10FE0093D5B4 /* Build configuration list for PBXProject "Remote" */ = {
 			isa = XCConfigurationList;

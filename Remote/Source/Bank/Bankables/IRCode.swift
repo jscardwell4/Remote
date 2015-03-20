@@ -23,7 +23,7 @@ class IRCode: BankCategoryItemObject, BankCategoryItem, Detailable {
   @NSManaged var sendCommands: NSSet
   @NSManaged var codeSet: IRCodeSet
 
-  override var path: String { return "\(codeSet.path)/\(name)" }
+  override var index: String { return "\(codeSet.index)/\(name)" }
   var manufacturer: Manufacturer { return codeSet.manufacturer }
   override var category: BankCategory { get { return codeSet } set { if let c = newValue as? IRCodeSet { codeSet = c } } }
 

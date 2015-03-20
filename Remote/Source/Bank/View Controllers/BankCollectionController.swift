@@ -215,16 +215,18 @@ class BankCollectionController: UICollectionViewController, BankController {
   	if mode == .Default {
 	    switch indexPath.section {
 	      case 0:
-	        let subcategory = category.subcategories[indexPath.row] as BankCategory
-          //FIXME: Disabled while getting models sorted
-//	        category.subcategories.removeAtIndex(indexPath.row)
-	        subcategory.delete()
+          if var subcategories = category.subcategories where subcategories.count > indexPath.row {
+            let subcategory = subcategories.removeAtIndex(indexPath.row)
+            subcategory.delete()
+            category.setSubcategories?(subcategories)
+          }
 
 	      default:
-	        let item = category.items[indexPath.row] as BankModel
-          //FIXME: Disabled while getting models sorted
-//	        category.items.removeAtIndex(indexPath.row)
-	        item.delete()
+          if var items = category.items where items.count > indexPath.row {
+            let item = items.removeAtIndex(indexPath.row)
+            item.delete()
+            category.setItems?(items)
+          }
 
 	    }
 	    collectionView?.deleteItemsAtIndexPaths([indexPath])
@@ -252,15 +254,15 @@ class BankCollectionController: UICollectionViewController, BankController {
   func detailItemAtIndexPath(indexPath: NSIndexPath) {
     switch indexPath.section {
       case 0:
-        if let controller = BankCollectionController(category: category.subcategories[indexPath.row], mode: mode) {
+        if let subcategories = category.subcategories where subcategories.count > indexPath.row,
+          let controller = BankCollectionController(category: subcategories[indexPath.row], mode: mode) {
           controller.selectionDelegate = selectionDelegate
           navigationController?.pushViewController(controller, animated: true)
         }
       default:
         if mode == .Default {
-          if let item = category.items[indexPath.row] as? Detailable {
-            let controller = item.detailController()
-            navigationController?.pushViewController(controller, animated: true)
+          if let items = category.items where items.count > indexPath.row, let item = items[indexPath.row] as? Detailable {
+            navigationController?.pushViewController(item.detailController(), animated: true)
           }
         }
     }
@@ -291,8 +293,8 @@ class BankCollectionController: UICollectionViewController, BankController {
     precondition(indexPath.section == 1, "we should only be zooming actual items")
     zoomedItemIndexPath = indexPath
     let zoomView = BankCollectionZoomView(frame: view.bounds, delegate: self)
-    if let previewableItem = category.items[indexPath.row] as? Previewable {
-      zoomView.item = previewableItem
+    if let items = category.items where items.count > indexPath.row, let item = items[indexPath.row] as? Previewable {
+      zoomView.item = item
     }
     zoomView.backgroundImage = view.blurredSnapshot()
     zoomView.showEditButton = mode == .Default
@@ -356,22 +358,26 @@ extension BankCollectionController {
     if exportSelectionMode && mode == .Default{
 
       exportSelection.removeAll(keepCapacity: true)
-      exportSelection.reserveCapacity(category.subcategories.count + category.items.count)
+      exportSelection.reserveCapacity((category.subcategories?.count ?? 0) + (category.items?.count ?? 0))
 
-      for (i, subcategory) in enumerate(category.subcategories) {
-        if let exportCategory = subcategory as? MSJSONExport {
-          exportSelection.append(exportCategory)
-          if let cell = collectionView?.cellForItemAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as? BankCollectionCell {
-            cell.showIndicator(true, selected: true)
+      if let subcategories = category.subcategories {
+        for (i, subcategory) in enumerate(subcategories) {
+          if let exportCategory = subcategory as? MSJSONExport {
+            exportSelection.append(exportCategory)
+            if let cell = collectionView?.cellForItemAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as? BankCollectionCell {
+              cell.showIndicator(true, selected: true)
+            }
           }
         }
       }
 
-      for (i, item) in enumerate(category.items) {
-        if let exportItem = item as? MSJSONExport {
-          exportSelection.append(exportItem)
-          if let cell = collectionView?.cellForItemAtIndexPath(NSIndexPath(forRow: i, inSection: 1)) as? BankCollectionCell {
-            cell.showIndicator(true, selected: true)
+      if let items = category.items {
+        for (i, item) in enumerate(items) {
+          if let exportItem = item as? MSJSONExport {
+            exportSelection.append(exportItem)
+            if let cell = collectionView?.cellForItemAtIndexPath(NSIndexPath(forRow: i, inSection: 1)) as? BankCollectionCell {
+              cell.showIndicator(true, selected: true)
+            }
           }
         }
       }
@@ -426,7 +432,7 @@ extension BankCollectionController: UICollectionViewDataSource {
   :returns: Int
   */
   override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return section == 0 ? category.subcategories.count  : category.items.count
+    return (section == 0 ? category.subcategories?.count  : category.items?.count) ?? 0
   }
 
   /**
@@ -444,29 +450,33 @@ extension BankCollectionController: UICollectionViewDataSource {
       case 0:
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(categoryCellIdentifier,
                                                             forIndexPath: indexPath) as! BankCollectionCategoryCell
-        let subcategory = category.subcategories[indexPath.row]
-        cell.category = subcategory
-        if mode == .Default {
-          if subcategory.editable { cell.deleteAction = {self.deleteItemAtIndexPath(indexPath)} }
-          cell.showingDeleteDidChange = showingDeleteDidChange
-        } else {
-          cell.swipeToDelete = false
+        if let subcategories = category.subcategories where subcategories.count > indexPath.row {
+          let subcategory = subcategories[indexPath.row]
+          cell.category = subcategory
+          if mode == .Default {
+            if subcategory.editable { cell.deleteAction = {self.deleteItemAtIndexPath(indexPath)} }
+            cell.showingDeleteDidChange = showingDeleteDidChange
+          } else {
+            cell.swipeToDelete = false
+          }
         }
         return cell
 
       default:
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(itemCellIdentifier,
                                                             forIndexPath: indexPath) as! BankCollectionItemCell
-        let item = category.items[indexPath.row]
-        cell.item = item
-        if mode == .Default {
-	        if item.editable { cell.deleteAction = {self.deleteItemAtIndexPath(indexPath)} }
-	        cell.showingDeleteDidChange = showingDeleteDidChange
-        } else {
-          cell.showChevron = false
-          cell.swipeToDelete = false
+        if let items = category.items where items.count > indexPath.row {
+          let item = items[indexPath.row]
+          cell.item = item
+          if mode == .Default {
+            if item.editable { cell.deleteAction = {self.deleteItemAtIndexPath(indexPath)} }
+            cell.showingDeleteDidChange = showingDeleteDidChange
+          } else {
+            cell.showChevron = false
+            cell.swipeToDelete = false
+          }
+          cell.previewActionHandler = {self.zoomItemAtIndexPath(indexPath)}
         }
-        cell.previewActionHandler = {self.zoomItemAtIndexPath(indexPath)}
         return cell
     }
   }

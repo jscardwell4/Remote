@@ -22,45 +22,9 @@ class BankCategoryObject: NamedModelObject, BankCategory {
 
   override class func requiresUniqueNaming() -> Bool { return true }
 
-  class var parentCategoryKey: String? { return nil }
-  class var subcategoriesKey: String? { return nil }
-  class var itemsKey: String? { return nil }
-
   @NSManaged var user: Bool
 
-  var category: BankCategory? {
-    get {
-      if let key = self.dynamicType.parentCategoryKey {
-        return valueForKey(key) as? BankCategory
-      } else { return nil }
-    }
-    set {}
-  }
-
-  var path: String {
-    if let parentPath = category?.path { return "\(parentPath)/\(name)" }
-    else { return name }
-  }
-
-  var subcategories: [BankCategory] {
-    get {
-      if let key = self.dynamicType.subcategoriesKey, subcategories = valueForKey(key) as? Set<BankCategoryObject> {
-        return Array(subcategories)
-      } else { return [] }
-    }
-    set {}
-  }
-
-  var items: [BankCategoryItem] {
-    get {
-      if let key = self.dynamicType.itemsKey {
-        return Array(valueForKey(key) as? Set<BankCategoryItemObject> ?? Set<BankCategoryItemObject>())
-      } else { return [] }
-    }
-    set {
-
-    }
-  }
+  var index: String { return name }
 
   /**
   rootCategoryForPath:
@@ -81,7 +45,7 @@ class BankCategoryObject: NamedModelObject, BankCategory {
   :returns: BankCategory?
   */
   subscript(name: String) -> BankCategoryObject? {
-    if let subcategories = self.subcategories as? [BankCategoryObject] {
+    if let subcategories = valueForKey("subcategories") as? [BankCategoryObject] {
       return findFirst(subcategories, {$0.name == name})
     } else { return nil }
   }
@@ -99,7 +63,7 @@ class BankCategoryObject: NamedModelObject, BankCategory {
     if let rootName = components.pop(), rootCategory = rootCategoryNamed(rootName, context: context) {
       MSLogDebug("found root category named '\(rootCategory.name)' of type '\(rootCategory.className)'")
       var category = rootCategory
-      while let title = components.pop(), subcategory = category[title] {
+      while let name = components.pop(), subcategory = category[name] {
         MSLogDebug("found subcategory named '\(subcategory.name)' of type '\(subcategory.className)'")
         category = subcategory
       }
@@ -144,8 +108,8 @@ class BankCategoryObject: NamedModelObject, BankCategory {
     var components = path.pathStack.reversed()
     if let itemName = components.pop(), category = categoryForCategoryPath("/".join(components), context: context) {
       MSLogDebug("found category named '\(category.name)' of type '\(category.className)'")
-      if let item = findFirst(category.items as! [BankCategoryItemObject], {$0.name == itemName}) {
-        MSLogDebug("found target item named '\(item.name)' of type '\(item.className)'")
+      if let items = (category as BankCategory).items, item = findFirst(items, {$0.name == itemName}) {
+        MSLogDebug("found target item named '\(item.name)' of type '\((item as! NSObject).className)'")
         return item
       } else {
         MSLogDebug("failed to locate item within category for path '\(path)'")
@@ -172,22 +136,22 @@ class BankCategoryObject: NamedModelObject, BankCategory {
 
   :returns: MSDictionary
   */
-  override func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    if let parentCategory = self.category as? BankCategoryObject {
-      dictionary[self.dynamicType.parentCategoryKey!.dashcaseString] = parentCategory.path
-    }
-
-    if let items = self.items as? [BankCategoryItemObject] where items.count > 0 {
-      dictionary[self.dynamicType.itemsKey!.dashcaseString] = items.map{$0.JSONDictionary()}
-    }
-
-    if let subcategories = self.subcategories as? [BankCategoryObject] where items.count > 0 {
-      dictionary[self.dynamicType.subcategoriesKey!.dashcaseString] = subcategories.map{$0.JSONDictionary()}
-    }
-
-    return dictionary
-  }
+//  override func JSONDictionary() -> MSDictionary {
+//    let dictionary = super.JSONDictionary()
+//
+//    if respondsToSelector("category"), let parentCategory = valueForKey("category") as? BankCategoryObject {
+//      dictionary[self.dynamicType.parentCategoryKey!.dashcaseString] = parentCategory.index
+//    }
+//
+//    if let items = self.items as? [BankCategoryItemObject] where items.count > 0 {
+//      dictionary[self.dynamicType.itemsKey!.dashcaseString] = items.map{$0.JSONDictionary()}
+//    }
+//
+//    if let subcategories = self.subcategories as? [BankCategoryObject] where items.count > 0 {
+//      dictionary[self.dynamicType.subcategoriesKey!.dashcaseString] = subcategories.map{$0.JSONDictionary()}
+//    }
+//
+//    return dictionary
+//  }
 
 }

@@ -17,14 +17,10 @@ class Manufacturer: BankCategoryObject, BankCategory, Detailable, BankModel {
   @NSManaged var codeSets: Set<IRCodeSet>
   @NSManaged var devices: Set<ComponentDevice>
 
-  override var category: BankCategory? { get { return nil } set {} }
-  override var subcategories: [BankCategory] {
-    get { return Array(codeSets) }
-    set { if let subcategories = newValue as? [IRCodeSet] { codeSets = Set(subcategories) } }
+  var subcategories: [BankCategory] { return Array(codeSets) }
+  func setSubcategories(subcategories: [BankCategory]) {
+    if let codeSets = subcategories as? [IRCodeSet] { self.codeSets = Set(codeSets) }
   }
-
-  override var items: [BankCategoryItem] { get { return [] } set {} }
-  override var path: String { return name }
 
   /**
   manufacturerWithName:context:

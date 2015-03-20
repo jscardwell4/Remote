@@ -218,6 +218,22 @@ static const int msLogContext = 0;
 //    [CoreDataManager saveMainContext];
 // }
 
+/// application:openURL:sourceApplication:annotation:
+/// @param application
+/// @param url
+/// @param sourceApplication
+/// @param annotation
+/// @return BOOL
+- (BOOL)application:(UIApplication *)application
+           openURL:(NSURL *)url
+ sourceApplication:(NSString *)sourceApplication
+        annotation:(id)annotation
+{
+  if ([[NSBundle mainBundle].bundleIdentifier isEqualToString:sourceApplication]) {
+    MSLogDebug(@"url: '%@'", url.absoluteString);
+    return YES;
+  } else { return NO; }
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Setting Root View Controller

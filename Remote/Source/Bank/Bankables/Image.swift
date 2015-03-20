@@ -58,7 +58,7 @@ class Image: BankCategoryItemObject, PreviewableCategoryItem, Detailable {
     set { if let category = newValue as? ImageCategory { imageCategory = category } }
   }
 
-  override var path: String { return "\(category.path)/\(name)" }
+  override var index: String { return "\(category.index)/\(name)" }
 
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)

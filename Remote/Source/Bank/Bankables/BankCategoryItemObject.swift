@@ -28,7 +28,7 @@ class BankCategoryItemObject: NamedModelObject, BankCategoryItem {
     set { setValue(newValue, forKey: self.dynamicType.categoryKey) }
   }
 
-  var path: String { return "\(category.path)/\(name)" }
+  var index: String { return "\(category.index)/\(name)" }
 
 //  class var categoryClassName: String {
 //    let relationships = entityDescription.relationshipsByName as! [String:NSRelationshipDescription]

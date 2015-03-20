@@ -17,20 +17,23 @@ class PresetCategory: BankCategoryObject, PreviewableCategory {
   @NSManaged var childCategories: Set<PresetCategory>
   @NSManaged var parentCategory: PresetCategory?
 
-  override var subcategories: [BankCategory] {
-    get { return Array(childCategories) }
-    set { if let subcategories = newValue as? [PresetCategory] { childCategories = Set(subcategories) } }
-  }
-  override var items: [BankCategoryItem] {
-    get { return Array(presets) }
-    set { if let items = newValue as? [Preset] { presets = Set(items) } }
-  }
-  override var category: BankCategory? {
-    get { return parentCategory }
-    set { parentCategory = newValue as? PresetCategory }
+  var items: [BankCategoryItem] { return Array(presets) }
+  func setItems(items: [BankCategoryItem]) {
+    if let presets = items as? [Preset] { self.presets = Set(presets) }
   }
 
-  override var path: String { return category == nil ? name : "\(category!.path)/\(name)" }
+  var subcategories: [BankCategory] { return Array(childCategories) }
+  func setSubcategories(subcategories: [BankCategory]) {
+    if let childCategories = subcategories as? [PresetCategory] { self.childCategories = Set(childCategories) }
+  }
+
+  var category: BankCategory? { return parentCategory }
+  func setCategory(category: BankCategory?) {
+    if let parentCategory = category as? PresetCategory { self.parentCategory = parentCategory }
+    else if category == nil { parentCategory = nil }
+  }
+
+  override var index: String { return category == nil ? name : "\(category!.index)/\(name)" }
 
 
 }

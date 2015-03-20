@@ -31,13 +31,16 @@ import MoonKit
 }
 
 @objc protocol IndexedBankModel: BankModel {
-  var path: String { get }
+  var index: String { get }
 }
 
 @objc protocol BankCategory: IndexedBankModel {
-  var items: [BankCategoryItem] { get set }
-  var category: BankCategory? { get set }
-  var subcategories: [BankCategory] { get set }
+  optional var items: [BankCategoryItem] { get }
+  optional func setItems(items: [BankCategoryItem])
+  optional var category: BankCategory? { get }
+  optional func setCategory(category: BankCategory?)
+  optional var subcategories: [BankCategory] { get }
+  optional func setSubcategories(subcategories: [BankCategory])
 }
 
 @objc protocol BankCategoryItem: IndexedBankModel {
@@ -269,8 +272,9 @@ class Bank {
   class var dismissBarButtonItem: BlockBarButtonItem {
     return BlockBarButtonItem(barButtonSystemItem: .Done, action: {
       () -> Void in
-      //FIXME: Circular Dependency
-//        MSRemoteAppController.sharedAppController().showMainMenu()
+      if let url = NSURL(string: "mainmenu") {
+        UIApplication.sharedApplication().openURL(url)
+      }
     })
   }
 

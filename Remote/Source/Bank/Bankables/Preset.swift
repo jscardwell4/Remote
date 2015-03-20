@@ -32,7 +32,7 @@ class Preset: BankCategoryItemObject, PreviewableCategoryItem, Detailable {
     set { if let category = newValue as? PresetCategory { presetCategory = category } }
   }
 
-  override var path: String { return "\(category.path)/\(name)" }
+  override var index: String { return "\(category.index)/\(name)" }
 
   /**
   detailController

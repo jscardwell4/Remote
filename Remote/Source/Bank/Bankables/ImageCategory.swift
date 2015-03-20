@@ -20,20 +20,22 @@ class ImageCategory: BankCategoryObject, PreviewableCategory {
   let previewableItems = true
   let editableItems = true
 
-  override var items: [BankCategoryItem] {
-    get { return Array(images) }
-    set { if let items = newValue as? [Image] { images = Set(items) } }
-  }
-  override var subcategories: [BankCategory] {
-    get { return Array(childCategories) }
-    set { if let subcategories = newValue as? [ImageCategory] { childCategories = Set(subcategories) } }
+  var items: [BankCategoryItem] { return Array(images) }
+  func setItems(items: [BankCategoryItem]) {
+    if let images = items as? [Image] { self.images = Set(images) }
   }
 
-  override var category: BankCategory? {
-    get { return parentCategory }
-    set { parentCategory = newValue as? ImageCategory }
+  var subcategories: [BankCategory] { return Array(childCategories) }
+  func setSubcategories(subcategories: [BankCategory]) {
+    if let childCategories = subcategories as? [ImageCategory] { self.childCategories = Set(childCategories) }
   }
 
-  override var path: String { return category == nil ? name : "\(category!.name)/\(name)" }
+  var category: BankCategory? { return parentCategory }
+  func setCategory(category: BankCategory?) {
+    if let parentCategory = category as? ImageCategory { self.parentCategory = parentCategory }
+    else if category == nil { parentCategory = nil }
+  }
+
+  override var index: String { return category == nil ? name : "\(category!.index)/\(name)" }
 
 }

@@ -18,15 +18,14 @@ class IRCodeSet: BankCategoryObject, BankCategory {
   @NSManaged var codes: Set<IRCode>
   @NSManaged var manufacturer: Manufacturer
 
-  override var path: String { return "\(manufacturer.name)/\(name)" }
-  override var category: BankCategory? {
-    get { return manufacturer }
-    set { if let m = newValue as? Manufacturer { manufacturer = m } }
+  override var index: String { return "\(manufacturer.name)/\(name)" }
+  var category: BankCategory? { return manufacturer }
+  func setCategory(category: BankCategory?) {
+    if let manufacturer = category as? Manufacturer { self.manufacturer = manufacturer }
   }
-  override var subcategories: [BankCategory] { get { return [] } set {} }
-  override var items: [BankCategoryItem] {
-    get { return sortedByName(codes) }
-    set { if let c = newValue as? [IRCode] { codes = Set(c) } }
+  var items: [BankCategoryItem] { return sortedByName(codes) }
+  func setItems(items: [BankCategoryItem]) {
+    if let codes = items as? [IRCode] { self.codes = Set(codes) }
   }
 
   /**
