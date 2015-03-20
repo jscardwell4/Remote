@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(Image)
-class Image: BankCategoryItemObject, PreviewableCategoryItem, Detailable {
+class Image: IndexedBankCategoryItemObject, PreviewableCategoryItem, Detailable {
 
   var assetName: String {
     get {
@@ -53,12 +53,10 @@ class Image: BankCategoryItemObject, PreviewableCategoryItem, Detailable {
   @NSManaged var views: NSSet
   @NSManaged var imageCategory: ImageCategory
 
-  override var category: BankCategory {
+  override var indexedCategory: IndexedBankCategory {
     get { return imageCategory }
     set { if let category = newValue as? ImageCategory { imageCategory = category } }
   }
-
-  override var index: String { return "\(category.index)/\(name)" }
 
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)

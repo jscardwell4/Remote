@@ -11,29 +11,29 @@ import CoreData
 import MoonKit
 
 @objc(PresetCategory)
-class PresetCategory: BankCategoryObject, PreviewableCategory {
+class PresetCategory: IndexedBankCategoryObject, PreviewableCategory {
 
   @NSManaged var presets: Set<Preset>
   @NSManaged var childCategories: Set<PresetCategory>
   @NSManaged var parentCategory: PresetCategory?
 
-  var items: [BankCategoryItem] { return Array(presets) }
-  func setItems(items: [BankCategoryItem]) {
+  var indexedItems: [IndexedBankCategoryItem] { return Array(presets) }
+  func setIndexedItems(items: [IndexedBankCategoryItem]) {
     if let presets = items as? [Preset] { self.presets = Set(presets) }
   }
 
-  var subcategories: [BankCategory] { return Array(childCategories) }
-  func setSubcategories(subcategories: [BankCategory]) {
+  var indexedSubcategories: [IndexedBankCategory] { return Array(childCategories) }
+  func setIndexedSubcategories(subcategories: [IndexedBankCategory]) {
     if let childCategories = subcategories as? [PresetCategory] { self.childCategories = Set(childCategories) }
   }
 
-  var category: BankCategory? { return parentCategory }
-  func setCategory(category: BankCategory?) {
+  var indexedCategory: IndexedBankCategory? { return parentCategory }
+  func setIndexedCategory(category: IndexedBankCategory?) {
     if let parentCategory = category as? PresetCategory { self.parentCategory = parentCategory }
     else if category == nil { parentCategory = nil }
   }
 
-  override var index: String { return category == nil ? name : "\(category!.index)/\(name)" }
+  override var index: String { return indexedCategory == nil ? name : "\(indexedCategory!.index)/\(name)" }
 
 
 }

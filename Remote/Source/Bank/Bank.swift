@@ -34,7 +34,7 @@ import MoonKit
   var index: String { get }
 }
 
-@objc protocol BankCategory: IndexedBankModel {
+@objc protocol BankCategory: BankModel {
   optional var items: [BankCategoryItem] { get }
   optional func setItems(items: [BankCategoryItem])
   optional var category: BankCategory? { get }
@@ -43,8 +43,20 @@ import MoonKit
   optional func setSubcategories(subcategories: [BankCategory])
 }
 
-@objc protocol BankCategoryItem: IndexedBankModel {
+@objc protocol IndexedBankCategory: BankCategory, IndexedBankModel {
+  optional var indexedItems: [IndexedBankCategoryItem] { get }
+  optional func setIndexedItems(items: [IndexedBankCategoryItem])
+  optional var indexedCategory: IndexedBankCategory? { get }
+  optional func setIndexedCategory(category: IndexedBankCategory?)
+  optional var indexedSubcategories: [IndexedBankCategory] { get }
+  optional func setIndexedSubcategories(subcategories: [IndexedBankCategory])
+}
+
+@objc protocol BankCategoryItem: BankModel {
   var category: BankCategory { get }
+}
+@objc protocol IndexedBankCategoryItem: BankCategoryItem, IndexedBankModel {
+  var indexedCategory: IndexedBankCategory { get }
 }
 
 @objc protocol PreviewableCategoryItem: BankCategoryItem, Previewable {}

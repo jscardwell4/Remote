@@ -11,14 +11,14 @@ import CoreData
 import MoonKit
 
 @objc(Manufacturer)
-class Manufacturer: BankCategoryObject, BankCategory, Detailable, BankModel {
+class Manufacturer: IndexedBankCategoryObject, Detailable {
 
 
   @NSManaged var codeSets: Set<IRCodeSet>
   @NSManaged var devices: Set<ComponentDevice>
 
-  var subcategories: [BankCategory] { return Array(codeSets) }
-  func setSubcategories(subcategories: [BankCategory]) {
+  var indexedSubcategories: [IndexedBankCategory] { return Array(codeSets) }
+  func setIndexedSubcategories(subcategories: [IndexedBankCategory]) {
     if let codeSets = subcategories as? [IRCodeSet] { self.codeSets = Set(codeSets) }
   }
 

@@ -11,11 +11,10 @@ import CoreData
 import MoonKit
 
 @objc(NetworkDevice)
-class NetworkDevice: NamedModelObject, BankModel {
+class NetworkDevice: BankModelObject {
 
   @NSManaged var uniqueIdentifier: String!
   @NSManaged var componentDevices: NSSet?
-  @NSManaged var user: Bool
 
   class func deviceExistsWithIdentifier(identifier: String) -> Bool {
     return countOfObjectsMatchingPredicate(∀"uniqueIdentifier == \"\(identifier)\"", context: DataManager.rootContext) > 0

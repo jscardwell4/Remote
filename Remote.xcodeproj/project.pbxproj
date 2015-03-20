@@ -141,7 +141,6 @@
 		C21F07F11AA5527B00F1F8DD /* CommandOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C21F07F01AA5527B00F1F8DD /* CommandOperation.m */; };
 		C222480519B76E270093B07C /* ISYConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C222480419B76E270093B07C /* ISYConnectionManager.m */; };
 		C22645F619F6EB20001F5A5E /* AuxiliaryStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59216DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard */; };
-		C22E5C881A489C0C0017CEB6 /* DatabaseLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22E5C871A489C0C0017CEB6 /* DatabaseLoader.swift */; };
 		C231C6421A197C74003D2587 /* SwitchToRemoteCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B465716FF679B0042B59E /* SwitchToRemoteCommandEditingViewController.m */; };
 		C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2355951170A736300160896 /* REBackgroundCollectionViewController.m */; };
 		C235930519C9C26200920F8D /* Glyphish_Test.json in Resources */ = {isa = PBXBuildFile; fileRef = C20FF1ED19AE687F00D11F33 /* Glyphish_Test.json */; };
@@ -572,6 +571,8 @@
 		C2E8D9F719BCD5C400E6098E /* zigbee.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9BB19BCD5C400E6098E /* zigbee.xsd */; };
 		C2E9F3DE1ABC63B1007581F2 /* BankRootCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2400F9919D4BB5400D9BB13 /* BankRootCell.swift */; };
 		C2E9F3DF1ABC63BC007581F2 /* BankRootController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2400F9719D4B9B600D9BB13 /* BankRootController.swift */; };
+		C2E9F3E11ABC724C007581F2 /* BankModelObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F3E01ABC724C007581F2 /* BankModelObject.swift */; };
+		C2E9F3E21ABC7D78007581F2 /* DatabaseLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22E5C871A489C0C0017CEB6 /* DatabaseLoader.swift */; };
 		C2EF968417F79E06005AA639 /* TableCellDetailArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2EF968317F79E06005AA639 /* TableCellDetailArrow@2x.png */; };
 		C2F01E1F1A02FBC6007F6966 /* MoonKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C235911C19C7ACB900920F8D /* MoonKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C2F01E2D1A02FD09007F6966 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2F01E2A1A02FCF7007F6966 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1320,6 +1321,7 @@
 		C2E8DA0319BCE03C00E6098E /* config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = config.json; sourceTree = "<group>"; };
 		C2E8DA0419BCE03C00E6098E /* desc.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = desc.json; sourceTree = "<group>"; };
 		C2E8DA0519BCE03C00E6098E /* nodes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = nodes.json; sourceTree = "<group>"; };
+		C2E9F3E01ABC724C007581F2 /* BankModelObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BankModelObject.swift; path = Bank/BankModelObject.swift; sourceTree = "<group>"; };
 		C2EF968317F79E06005AA639 /* TableCellDetailArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TableCellDetailArrow@2x.png"; sourceTree = "<group>"; };
 		C2F01E241A02FCF7007F6966 /* Lumberjack.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lumberjack.xcodeproj; path = MSKit/../../../../GitHub/CocoaLumberjack/Framework/Desktop/Lumberjack.xcodeproj; sourceTree = "<group>"; };
 		C2F01E2E1A030BD6007F6966 /* ColorSelectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSelectionController.swift; sourceTree = "<group>"; };
@@ -2367,6 +2369,7 @@
 				C2F2A46F17EF560900DE2F41 /* View Controllers */,
 				C25B46D016FF69110042B59E /* Bankables */,
 				C2F2A46E17EF55E300DE2F41 /* Other */,
+				C2E9F3E01ABC724C007581F2 /* BankModelObject.swift */,
 			);
 			name = Bank;
 			sourceTree = "<group>";
@@ -3167,6 +3170,7 @@
 				C215CC4E1ABB11F000E8077E /* DataManager.swift in Sources */,
 				C215CC5F1ABB1B7800E8077E /* ISYDeviceDetailController.swift in Sources */,
 				C215CC6C1ABB1B9E00E8077E /* DetailLabelCell.swift in Sources */,
+				C2E9F3E11ABC724C007581F2 /* BankModelObject.swift in Sources */,
 				C215CC881ABB1C2C00E8077E /* BankCollectionController.swift in Sources */,
 				C215CC4F1ABB121700E8077E /* DictionaryStorage.swift in Sources */,
 				C215CC8B1ABB1C2C00E8077E /* BankCollectionCell.swift in Sources */,
@@ -3226,6 +3230,7 @@
 				C215CC5E1ABB1B7800E8077E /* PresetDetailController.swift in Sources */,
 				C215CC871ABB1C0600E8077E /* DocumentSelectionController.swift in Sources */,
 				C215CC391ABB11A300E8077E /* ControlStateSet.swift in Sources */,
+				C2E9F3E21ABC7D78007581F2 /* DatabaseLoader.swift in Sources */,
 				C215CC731ABB1BA600E8077E /* DetailTwoToneSliderRow.swift in Sources */,
 				C215CC431ABB11D000E8077E /* SwitchCommand.swift in Sources */,
 				C215CC681ABB1B9E00E8077E /* DetailLabeledImageCell.swift in Sources */,
@@ -3278,7 +3283,6 @@
 				C25B475716FF8D5E0042B59E /* IconEditingViewController.m in Sources */,
 				C25B475816FF8D5E0042B59E /* LabelEditingViewController.m in Sources */,
 				C25B475916FF8D5E0042B59E /* MacroCommandEditingViewController.m in Sources */,
-				C22E5C881A489C0C0017CEB6 /* DatabaseLoader.swift in Sources */,
 				C21F07CC1AA378E700F1F8DD /* ActivityViewController.swift in Sources */,
 				C21F07F11AA5527B00F1F8DD /* CommandOperation.m in Sources */,
 				C25B475A16FF8D5E0042B59E /* PowerCommandEditingViewController.m in Sources */,

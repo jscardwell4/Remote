@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(IRCodeSet)
-class IRCodeSet: BankCategoryObject, BankCategory {
+class IRCodeSet: IndexedBankCategoryObject, BankCategory {
 
 
   @NSManaged var devices: Set<ComponentDevice>
@@ -19,12 +19,12 @@ class IRCodeSet: BankCategoryObject, BankCategory {
   @NSManaged var manufacturer: Manufacturer
 
   override var index: String { return "\(manufacturer.name)/\(name)" }
-  var category: BankCategory? { return manufacturer }
-  func setCategory(category: BankCategory?) {
+  var indexedCategory: IndexedBankCategory? { return manufacturer }
+  func setIndexedCategory(category: IndexedBankCategory?) {
     if let manufacturer = category as? Manufacturer { self.manufacturer = manufacturer }
   }
-  var items: [BankCategoryItem] { return sortedByName(codes) }
-  func setItems(items: [BankCategoryItem]) {
+  var indexedItems: [IndexedBankCategoryItem] { return sortedByName(codes) }
+  func setIndexedItems(items: [IndexedBankCategoryItem]) {
     if let codes = items as? [IRCode] { self.codes = Set(codes) }
   }
 

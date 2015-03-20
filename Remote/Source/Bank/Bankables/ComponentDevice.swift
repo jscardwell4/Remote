@@ -11,11 +11,10 @@ import CoreData
 import MoonKit
 
 @objc(ComponentDevice)
-class ComponentDevice: NamedModelObject, BankModel, Detailable {
+class ComponentDevice: BankModelObject, Detailable {
 
   @NSManaged var alwaysOn: Bool
   @NSManaged var inputPowersOn: Bool
-  @NSManaged var user: Bool
   @NSManaged var inputs: Set<IRCode>
   @NSManaged var port: Int16
   @NSManaged var power: Bool

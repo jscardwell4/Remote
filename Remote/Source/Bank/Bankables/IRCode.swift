@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(IRCode)
-class IRCode: BankCategoryItemObject, BankCategoryItem, Detailable {
+class IRCode: IndexedBankCategoryItemObject, BankCategoryItem, Detailable {
 
   @NSManaged var frequency: Int64
   @NSManaged var offset: Int16

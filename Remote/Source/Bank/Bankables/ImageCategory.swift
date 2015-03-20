@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(ImageCategory)
-class ImageCategory: BankCategoryObject, PreviewableCategory {
+class ImageCategory: IndexedBankCategoryObject, PreviewableCategory {
 
   @NSManaged var images: Set<Image>
   @NSManaged var childCategories: Set<ImageCategory>
@@ -20,22 +20,22 @@ class ImageCategory: BankCategoryObject, PreviewableCategory {
   let previewableItems = true
   let editableItems = true
 
-  var items: [BankCategoryItem] { return Array(images) }
-  func setItems(items: [BankCategoryItem]) {
+  var indexedItems: [IndexedBankCategoryItem] { return Array(images) }
+  func setIndexedItems(items: [IndexedBankCategoryItem]) {
     if let images = items as? [Image] { self.images = Set(images) }
   }
 
-  var subcategories: [BankCategory] { return Array(childCategories) }
-  func setSubcategories(subcategories: [BankCategory]) {
+  var indexedSubcategories: [IndexedBankCategory] { return Array(childCategories) }
+  func setIndexedSubcategories(subcategories: [IndexedBankCategory]) {
     if let childCategories = subcategories as? [ImageCategory] { self.childCategories = Set(childCategories) }
   }
 
-  var category: BankCategory? { return parentCategory }
-  func setCategory(category: BankCategory?) {
+  var indexedCategory: IndexedBankCategory? { return parentCategory }
+  func setIndexedCategory(category: IndexedBankCategory?) {
     if let parentCategory = category as? ImageCategory { self.parentCategory = parentCategory }
     else if category == nil { parentCategory = nil }
   }
 
-  override var index: String { return category == nil ? name : "\(category!.index)/\(name)" }
+  override var index: String { return indexedCategory == nil ? name : "\(indexedCategory!.index)/\(name)" }
 
 }

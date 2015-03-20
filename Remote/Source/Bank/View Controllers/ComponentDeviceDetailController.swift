@@ -277,7 +277,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
             pickerRow.info = selection
           }
       }
-      let data = sortedByName(componentDevice.codeSet?.items as? [IRCode] ?? [])
+      let data = sortedByName(componentDevice.codeSet?.codes)
       pickerRow.data = data
       pickerRow.info = componentDevice.onCommand?.code
 
@@ -313,7 +313,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
             pickerRow.info = selection
           }
       }
-      let data = sortedByName(componentDevice.codeSet?.items as? [IRCode] ?? [])
+      let data = sortedByName(componentDevice.codeSet?.codes)
       pickerRow.data = data
       pickerRow.info = componentDevice.offCommand?.code
 

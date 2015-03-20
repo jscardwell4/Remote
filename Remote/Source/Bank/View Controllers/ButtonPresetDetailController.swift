@@ -336,7 +336,7 @@ class ButtonPresetDetailController: PresetDetailController {
     let json = preset.icons?[state.JSONValue]
     var image: Image?
     if let path = json?["image"] as? String, moc = preset.managedObjectContext {
-      image = ImageCategory.itemForPath(path, context: moc) as? Image
+      image = ImageCategory.itemForIndex(path, context: moc) as? Image
     }
 
     let row = DetailImageRow()
@@ -472,7 +472,7 @@ class ButtonPresetDetailController: PresetDetailController {
     let json = preset.images?[state.JSONValue]
     var image: Image?
     if let path = json?["image"] as? String, moc = preset.managedObjectContext {
-      image = ImageCategory.itemForPath(path, context: moc) as? Image
+      image = ImageCategory.itemForIndex(path, context: moc) as? Image
     }
 
     let row = DetailImageRow()

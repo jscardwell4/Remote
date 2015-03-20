@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(Preset)
-class Preset: BankCategoryItemObject, PreviewableCategoryItem, Detailable {
+class Preset: IndexedBankCategoryItemObject, PreviewableCategoryItem, Detailable {
 
   var preview: UIImage { return UIImage() }
   var thumbnail: UIImage { return preview }
@@ -27,12 +27,10 @@ class Preset: BankCategoryItemObject, PreviewableCategoryItem, Detailable {
     storage = DictionaryStorage(context: managedObjectContext!)
   }
 
-  override var category: BankCategory {
+  override var indexedCategory: IndexedBankCategory {
     get { return presetCategory }
     set { if let category = newValue as? PresetCategory { presetCategory = category } }
   }
-
-  override var index: String { return "\(category.index)/\(name)" }
 
   /**
   detailController
@@ -109,8 +107,8 @@ class Preset: BankCategoryItemObject, PreviewableCategoryItem, Detailable {
 
   var backgroundImage: Image? {
     get {
-      if let moc = managedObjectContext, path = storage["backgroundImage"] as? String {
-        return ImageCategory.itemForPath(path, context: moc) as? Image
+      if let moc = managedObjectContext, index = storage["backgroundImage"] as? String {
+        return ImageCategory.itemForIndex(index, context: moc) as? Image
       } else { return nil }
     }
     set { storage["background-image"] = newValue }

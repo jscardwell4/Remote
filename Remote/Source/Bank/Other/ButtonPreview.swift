@@ -103,7 +103,7 @@ class ButtonPreview: RemoteElementPreview {
     if let iconData = preset.icons?["normal"] {
       if let imagePath = iconData["image"] as? String,
         moc = preset.managedObjectContext,
-        imageObject = ImageCategory.itemForPath(imagePath, context: moc) as? Image
+        imageObject = ImageCategory.itemForIndex(imagePath, context: moc) as? Image
       {
         if let color = UIColor(JSONValue: iconData["color"] as? String ?? "") {
           image = UIImage(fromAlphaOfImage: imageObject.image, color: color)
