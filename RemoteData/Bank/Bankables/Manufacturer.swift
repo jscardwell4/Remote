@@ -44,8 +44,6 @@ class Manufacturer: IndexedBankCategoryObject, Detailable {
 
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    let codeSetsData = data["code-sets"] as? [[String:AnyObject]]
-    MSLogDebug("\(codeSetsData?.count ?? 0) code sets to import")
     updateRelationshipFromData(data, forKey: "codeSets", lookupKey: "code-sets")
     updateRelationshipFromData(data, forKey: "devices")
   }

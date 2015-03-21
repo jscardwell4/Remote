@@ -94,7 +94,15 @@ import MoonKit
     databasePrepared = true
 
     if NSUserDefaults.standardUserDefaults().boolForKey("loadData") {
-      DatabaseLoader.loadData(completion: completion)
+      DatabaseLoader.loadData(completion: {
+        success, error in
+
+        if NSUserDefaults.standardUserDefaults().boolForKey("dumpData") {
+          DatabaseLoader.dumpData(completion: completion)
+        } else { completion?(success, error) }
+      })
+    } else if NSUserDefaults.standardUserDefaults().boolForKey("dumpData") {
+      DatabaseLoader.dumpData(completion: completion)
     } else { completion?(true, nil) }
 
   }

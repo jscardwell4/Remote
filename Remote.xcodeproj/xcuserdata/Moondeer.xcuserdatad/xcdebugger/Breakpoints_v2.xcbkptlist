@@ -3618,11 +3618,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RemoteData/Bank/Bankables/Manufacturer.swift"
-            timestampString = "448581406.543741"
+            timestampString = "448598361.868974"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "49"
-            endingLineNumber = "49"
+            startingLineNumber = "47"
+            endingLineNumber = "47"
             landmarkName = "updateWithData(_:)"
             landmarkType = "5">
          </BreakpointContent>

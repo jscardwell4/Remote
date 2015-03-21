@@ -12,52 +12,76 @@ import MoonKit
 
 @objc class DatabaseLoader {
 
-  private enum LoadFlag: String, EnumerableType {
-    case Presets           = "loadPresets"
-    case Images            = "loadImages"
-    case Manufacturers     = "loadManufacturers"
-    case ComponentDevices  = "loadComponentDevices"
-    case NetworkDevices    = "loadNetworkDevices"
-    case Controller        = "loadController"
-    case Activities        = "loadActivities"
-    case Remotes           = "loadRemotes"
+  private enum FlagBase: String, EnumerableType {
+    case Presets           = "Presets"
+    case Images            = "Images"
+    case Manufacturers     = "Manufacturers"
+    case ComponentDevices  = "ComponentDevices"
+    case NetworkDevices    = "NetworkDevices"
+    case Controller        = "Controller"
+    case Activities        = "Activities"
+    case Remotes           = "Remotes"
 
-    var isSet: Bool { return fileName != nil }
-    var fileName: String? { return NSUserDefaults.standardUserDefaults().stringForKey(rawValue) }
     var modelType: ModelObject.Type {
       switch self {
-        case .Presets:          return PresetCategory.self
-        case .Images:           return ImageCategory.self
-        case .Manufacturers:    return Manufacturer.self
-        case .ComponentDevices: return ComponentDevice.self
-        case .NetworkDevices:   return NetworkDevice.self
-        case .Controller:       return ActivityController.self
-        case .Activities:       return Activity.self
-        case .Remotes:          return Remote.self
+      case .Presets:          return PresetCategory.self
+      case .Images:           return ImageCategory.self
+      case .Manufacturers:    return Manufacturer.self
+      case .ComponentDevices: return ComponentDevice.self
+      case .NetworkDevices:   return NetworkDevice.self
+      case .Controller:       return ActivityController.self
+      case .Activities:       return Activity.self
+      case .Remotes:          return Remote.self
       }
     }
 
-    static var all: [LoadFlag] {
+    static var all: [FlagBase] {
       return [.Presets, .Images, .Manufacturers, .ComponentDevices, .NetworkDevices, .Controller, .Activities, .Remotes]
     }
 
-    static var allSet: [LoadFlag] { return all.filter{$0.isSet} }
-
-    static func enumerate(block: (LoadFlag) -> Void) { apply(all, block) }
-    static func enumerateSet(block: (LoadFlag) -> Void) { apply(allSet, block) }
-
+    static func enumerate(block: (FlagBase) -> Void) { apply(all, block) }
   }
 
-//  static let importFiles: [(file: String, type: ModelObject.Type, include: Bool, log: Bool)] = [
-//    ("Preset",             PresetCategory.self,     true, false),
-//    ("Glyphish",           ImageCategory.self,      true, false),
-//    ("Manufacturer_Test",  Manufacturer.self,       true, false),
-//    ("ComponentDevice",    ComponentDevice.self,    true, false),
-//    ("NetworkDevice",      NetworkDevice.self,      true, false),
-//    ("ActivityController", ActivityController.self, false, false),
-//    ("Activity",           Activity.self,           false, false),
-//    ("Remote_Demo",        Remote.self,             false, false)
-//  ]
+  private enum Flag {
+    case Load (FlagBase)
+    case Dump (FlagBase)
+
+    var value: Any? {
+      switch self {
+      case .Load(let base): return NSUserDefaults.standardUserDefaults().stringForKey("load\(base.rawValue)")
+      case .Dump(let base): return NSUserDefaults.standardUserDefaults().boolForKey("dump\(base.rawValue)")
+      }
+    }
+    var isSet: Bool {
+      switch self {
+        case .Load: if let file = value as? String { return true } else { false }
+        case .Dump: if let value = self.value as? Bool where value == true { return true } else { return false }
+      }
+      return false
+    }
+
+    var modelType: ModelObject.Type {
+      switch self {
+      case .Load(let base): return base.modelType
+      case .Dump(let base): return base.modelType
+      }
+    }
+
+    static func enumerateLoadFlags(block: (ModelObject.Type, String) -> Void) {
+      FlagBase.enumerate {
+        let flag = Flag.Load($0)
+        if let fileName = flag.value as? String { block(flag.modelType, fileName) }
+      }
+    }
+
+    static func enumerateDumpFlags(block: (ModelObject.Type) -> Void) {
+      FlagBase.enumerate {
+        let flag = Flag.Dump($0)
+        if flag.isSet { block(flag.modelType) }
+      }
+    }
+  }
+
 
   /** loadData */
   class func loadData(completion: ((Bool, NSError?) -> Void)? = nil) {
@@ -67,16 +91,12 @@ import MoonKit
 
     moc.performBlock {
 
-      LoadFlag.enumerateSet {
-        (flag: LoadFlag) -> Void in
+      Flag.enumerateLoadFlags {
+        (type: ModelObject.Type, file: String) -> Void in
 
-        moc.deleteObjects(Set(flag.modelType.findAllInContext(moc)))
-        if let fileName = flag.fileName {
-          self.loadDataFromFile(fileName, type: flag.modelType, context: moc, log: log)
-        }
+        moc.deleteObjects(Set(type.findAllInContext(moc)))
+        self.loadDataFromFile(file, type: type, context: moc, log: log)
       }
-
-//      apply(self.importFiles.filter {_, _, i, _ in i}) {f, t, _, l in self.loadDataFromFile(f, type: t, context: moc, log: l)}
 
       var error: NSError?
       MSLogDebug("saving context…")
@@ -87,6 +107,13 @@ import MoonKit
         MSHandleError(error, message: "failed to save context")
         completion?(false, error)
       }
+    }
+  }
+
+  /** dumpData */
+  class func dumpData(completion: ((Bool, NSError?) -> Void)? = nil ) {
+    Flag.enumerateDumpFlags {
+      println("\(($0.self as AnyObject).className) objects:\n\(($0.findAllInContext(DataManager.rootContext) as NSArray).JSONString)\n")
     }
   }
 
