@@ -55,7 +55,9 @@ public class BankRootController: UITableViewController, BankController {
   */
   override public func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
-    navigationItem.rightBarButtonItem = Bank.dismissBarButtonItem
+    if "RemoteDataUITest" != (NSProcessInfo.processInfo().arguments[0] as! String).lastPathComponent {
+      navigationItem.rightBarButtonItem = Bank.dismissBarButtonItem
+    }
     navigationController?.toolbarHidden = false
     rootCategories = Bank.rootCategories
   }

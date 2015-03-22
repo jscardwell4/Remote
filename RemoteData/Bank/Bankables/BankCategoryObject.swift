@@ -26,6 +26,30 @@ class IndexedBankCategoryObject: BankModelObject, IndexedBankCategory {
 
   var index: String { return name }
 
+  override var name: String {
+    get {
+      let name = super.name
+      return name
+    }
+    set {
+      var shouldSetName = true
+      let selfCategory = self as IndexedBankCategory
+      if let siblingCategories = (self as IndexedBankCategory).indexedCategory??.indexedSubcategories
+        where siblingCategories.map({$0.name}) ∋ newValue
+      {
+        shouldSetName = false
+      } else if let moc = managedObjectContext,
+        existing = self.dynamicType.rootCategoryNamed(newValue, context: moc)
+      {
+        shouldSetName = false
+      }
+      if shouldSetName {
+        willChangeValueForKey("name")
+        setPrimitiveValue(newValue, forKey: "name")
+        didChangeValueForKey("name")
+      }
+    }
+  }
 
   /**
   rootCategoryForPath:

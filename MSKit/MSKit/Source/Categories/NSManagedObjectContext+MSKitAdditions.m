@@ -117,6 +117,13 @@ static const char * kNSMOCChildContextsKey = "kNSMMOCChildContextsKey";
   if (object) [self deleteObject:object];
 }
 
++ (NSManagedObjectContext *)childContextForContext:(NSManagedObjectContext *)context {
+  if (!context) { return nil; }
+  NSManagedObjectContext * childContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:context.concurrencyType];
+  childContext.parentContext = context;
+  return childContext;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Wrappers for MagicalRecord Save Actions
 ////////////////////////////////////////////////////////////////////////////////

@@ -86,7 +86,7 @@ class ModelObject: NSManagedObject {
   }
 
   class var entityDescription: NSEntityDescription {
-    let entities = DataManager.coreDataStack.managedObjectModel.entities as! [NSEntityDescription]
+    let entities = DataManager.stack.managedObjectModel.entities as! [NSEntityDescription]
     if let entity = findFirst(entities, {$0.managedObjectClassName == self.className()}) { return  entity }
     else { assertionFailure("unable to locate entity for class '\(className())'") }
   }

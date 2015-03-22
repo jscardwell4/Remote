@@ -65,15 +65,15 @@ public func formattedDescription<C: KeyValueCollectionType where C.Generator: Ke
   let keyDescriptions = keys(dictionary).map { "\($0)" }
   let maxKeyLength = keyDescriptions.reduce(0) { max($0, count($1)) }
   let indentation = " " * (indent * 4)
-  for (key, value) in Zip2(keyDescriptions, values(dictionary)) {
+  for (key, value) in zip(keyDescriptions, values(dictionary)) {
     let keyLength = key.characterCount
-    var spacer = ""
-    if keyLength != maxKeyLength {
-      let offset = maxKeyLength - keyLength + 1
-      let numberOfTabs = Int(floor(Double(offset) / 4.0)) - 1
-      spacer = "\t" * numberOfTabs
-    }
-    let keyString = "\(indentation)\(key): \(spacer)"
+//    var spacer = ""
+//    if keyLength != maxKeyLength {
+//      let offset = maxKeyLength - keyLength + 1
+//      let numberOfTabs = Int(floor(Double(offset) / 4.0)) - 1
+//      spacer = "\t" * numberOfTabs
+//    }
+    let keyString = "\(indentation)\(key): "//\(spacer)"
     var valueString: String
     var valueComponents = split("\(value)") { $0 == "\n" }
     if valueComponents.count > 0 {

@@ -60,7 +60,7 @@ class Image: IndexedBankCategoryItemObject, PreviewableCategoryItem, Detailable 
 
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    updateRelationshipFromData(data, forKey: "category")
+    updateRelationshipFromData(data, forKey: "imageCategory", lookupKey: "category")
 
     if let assetName = data["asset-name"] as? String { self.assetName = assetName }
     if let leftCap = data["left-cap"] as? NSNumber { self.leftCap = leftCap.intValue }
@@ -78,7 +78,7 @@ class Image: IndexedBankCategoryItemObject, PreviewableCategoryItem, Detailable 
   */
   override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
-    safeSetValueForKeyPath("imageDategory.index", forKey: "imageCategory.index", inDictionary: dictionary)
+    safeSetValueForKeyPath("imageCategory.index", forKey: "category.index", inDictionary: dictionary)
     safeSetValue(assetName, forKey: "asset-name", inDictionary: dictionary)
     setIfNotDefault("leftCap", inDictionary: dictionary)
     setIfNotDefault("topCap", inDictionary: dictionary)

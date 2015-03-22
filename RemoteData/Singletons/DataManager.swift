@@ -14,112 +14,84 @@ import MoonKit
 
   /** initialize */
   class func initialize() {
-    MSLogDebug("preparing database…")
-    prepareDatabase()
-  }
-
-  /** URL for the user's persistent store */
-  public static let databaseStoreURL: NSURL = {
-    let fileManager = NSFileManager.defaultManager()
-    var error: NSError?
-    var url = fileManager.URLForDirectory(.ApplicationSupportDirectory,
-                                 inDomain: .UserDomainMask,
-                        appropriateForURL: nil,
-                                   create: true,
-                                    error: &error)
-
-    if MSHandleError(error, message: "failed to retrieve application support directory") { fatalError("aborting…") }
-
-    url = url!.URLByAppendingPathComponent("com.moondeerstudios.Remote")
-
-    fileManager.createDirectoryAtURL(url!, withIntermediateDirectories: true, attributes: nil, error: &error)
-
-    if MSHandleError(error, message: "failed to create app directory under application support") { fatalError("aborting") }
-
-    return url!.URLByAppendingPathComponent("Remote.sqlite")
-
-  }()
-
-  /** URL for the preloaded persistent store located in the bundle */
-  public static let databaseBundleURL: NSURL = NSBundle.mainBundle().URLForResource("Remote", withExtension: "sqlite")!
-
-
-  /** The core data stack, if this is nil we may as well shutdown */
-  public static let coreDataStack: CoreDataStack = {
-
-    let modelURL = NSBundle(forClass:DataManager.self).URLForResource("Remote", withExtension: "momd")
-    if modelURL == nil { fatalError("failed to retrieve model url from bundle, aborting…") }
-
-    let mom = NSManagedObjectModel(contentsOfURL: modelURL!)
-    if mom == nil { fatalError("failed to instantiate model from model url, aborting…") }
-
-
-    let stack = CoreDataStack(managedObjectModel: DataManager.augmentModel(mom!),
-                              persistentStoreURL: databaseStoreURL,
-                              options: [NSMigratePersistentStoresAutomaticallyOption: true,
-                                        NSInferMappingModelAutomaticallyOption: true])
-    if stack == nil { fatalError("failed to instantiate core data stack, aborting…") }
-    else if databaseOperationsFlag?.logModel == true {
-      MSLogDebug("managed object model:\n\(stack!.managedObjectModel.description)")
-    }
-    return stack!
-
-  }()
-
-  static private var databasePrepared = false
-  static private var databaseOperationsFlag: DataFlag? = DataFlag.allPassed.filter({$0 == .DatabaseOperations}).first
-  static private var modelFlags: [ModelFlag] = ModelFlag.allPassed
-
-  public class func mainContext() -> NSManagedObjectContext { return coreDataStack.mainContext() }
-
-  /** The primary, private-queue managed object context.  */
-  public class var rootContext: NSManagedObjectContext { return coreDataStack.rootContext }
-
-  /**
-  prepareDatabase:
-
-  :param: completion (Void) -> Void
-  */
-  public class func prepareDatabase(completion: ((Bool, NSError?) -> Void)? = nil) {
-
-    if databasePrepared { completion?(true, nil); return }
+    MSLogDebug("performing database operations…")
 
     if databaseStoreURL.checkResourceIsReachableAndReturnError(nil)
-      && databaseOperationsFlag?.removeExisting == true
+      && dataFlag?.remove ?? false
     {
       var error: NSError?
       NSFileManager.defaultManager().removeItemAtURL(databaseStoreURL, error: &error)
       if !MSHandleError(error) { MSLogDebug("previous database store has been removed") }
     }
 
-    databasePrepared = true
-
-    if databaseOperationsFlag?.loadData == true {
-      loadData(completion: {
-        success, error in
-
-        if self.databaseOperationsFlag?.dumpData == true {
-          self.dumpData(completion: {completion?(success, error)})
-        } else { completion?(success, error) }
-      })
-    } else if databaseOperationsFlag?.dumpData == true {
-      dumpData(completion: {completion?(true, nil)})
-    } else { completion?(true, nil) }
-
+    if dataFlag?.load ?? false {
+      loadData { if !MSHandleError($1, message: "data load failed") && self.dataFlag?.dump ?? false { self.dumpData() } }
+    } else if dataFlag?.dump ?? false { dumpData() }
   }
 
-  /**
-  childContextForContext:
+  /** URL for the user's persistent store */
+  public static let databaseStoreURL: NSURL = {
+    let fileManager = NSFileManager.defaultManager()
+    var error: NSError?
+    if let supportDirectoryURL = fileManager.URLForDirectory(.ApplicationSupportDirectory,
+                                                    inDomain: .UserDomainMask,
+                                           appropriateForURL: nil,
+                                                      create: true,
+                                                       error: &error)
+      where !MSHandleError(error, message: "failed to retrieve application support directory"),
+      let identifier = NSBundle(forClass: DataManager.self).bundleIdentifier
+    {
+      let bundleSupportDirectoryURL = supportDirectoryURL.URLByAppendingPathComponent(identifier)
 
-  :param: context NSManagedObjectContext
+      if fileManager.createDirectoryAtURL(bundleSupportDirectoryURL,
+              withIntermediateDirectories: true,
+                               attributes: nil,
+                                    error: &error)
+        && !MSHandleError(error, message: "failed to create app directory under application support")
+      {
+        return bundleSupportDirectoryURL.URLByAppendingPathComponent("\(DataManager.resourceBaseName).sqlite")
+      }
+    }
+    fatalError("aborting")
+  }()
+
+  /** URL for the preloaded persistent store located in the bundle */
+  public static let databaseBundleURL: NSURL = {
+    if let url = NSBundle(forClass: DataManager.self).URLForResource(DataManager.resourceBaseName, withExtension: "sqlite") {
+      return url
+    } else { fatalError("Unable to locate database bundle resource") }
+  }()
+
+
+  /** The core data stack, if this is nil we may as well shutdown */
+  public static let stack: CoreDataStack = {
+    if let modelURL = NSBundle(forClass:DataManager.self).URLForResource(DataManager.resourceBaseName, withExtension: "momd"),
+      mom = NSManagedObjectModel(contentsOfURL: modelURL),
+      stack = CoreDataStack(managedObjectModel: DataManager.augmentModel(mom),
+                            persistentStoreURL: databaseStoreURL,
+                            options: [NSMigratePersistentStoresAutomaticallyOption: true,
+                                      NSInferMappingModelAutomaticallyOption: true])
+    {
+      if dataFlag?.logModel ?? false { MSLogDebug("managed object model:\n\(stack.managedObjectModel.description)") }
+      return stack
+    } else { fatalError("failed to instantiate core data stack, aborting…") }
+
+  }()
+
+  static private let resourceBaseName = "Remote"
+  static private var dataFlag: DataFlag? = DataFlag()
+  static private var modelFlags: [ModelFlag] = ModelFlag.all
+
+
+  /**
+  Creates a new main queue context as a child of the `rootContext` (via `stack`)
 
   :returns: NSManagedObjectContext
   */
-  public class func childContextForContext(context: NSManagedObjectContext) -> NSManagedObjectContext {
-    let childContext = NSManagedObjectContext(concurrencyType: context.concurrencyType)
-    childContext.parentContext = context
-    return childContext
-  }
+  public class func mainContext() -> NSManagedObjectContext { return stack.mainContext() }
+
+  /** The primary, private-queue managed object context maintained by `stack`.  */
+  public class var rootContext: NSManagedObjectContext { return stack.rootContext }
 
   /**
   saveContext:withBlock::propagate:nonBlocking:completion:
@@ -137,7 +109,7 @@ import MoonKit
      backgroundExecution: Bool = false,
               completion: ((Bool, NSError?) -> Void)? = nil)
   {
-    coreDataStack.saveContext(moc,
+    stack.saveContext(moc,
                     withBlock: block,
                     propagate: propagate,
                   nonBlocking: nonBlocking,
@@ -350,7 +322,7 @@ import MoonKit
 
   /** The type of action marked by a flag */
   private enum Marker: Printable, Equatable {
-
+    case Copy
     case Load
     case Remove
     case LoadFile (String)
@@ -367,6 +339,7 @@ import MoonKit
     /** 'Raw' string value for the marker */
     var key: String {
       switch self {
+        case .Copy:            return "copy"
         case .Remove:          return "remove"
         case .Load, .LoadFile: return "load"
         case .Dump:            return "dump"
@@ -389,6 +362,7 @@ import MoonKit
     */
     init?(argValue: String) {
       switch argValue {
+        case "copy": self = .Copy
         case "load":
           self = Marker.Load
         case "remove":
@@ -406,63 +380,42 @@ import MoonKit
 
     var description: String {
       switch self {
-        case .Load: return "load"
-        case .Dump: return "dump"
-        case .Remove: return "remove"
-        case .Log(let values): return "log: " + ", ".join(values.map({$0.rawValue}))
-        case .LoadFile(let file): return "load: \(file)"
+        case .Copy, .Load, .Dump, .Remove: return key
+        case .Log(let values): return "\(key): " + ", ".join(values.map({$0.rawValue}))
+        case .LoadFile(let file): return "\(key): \(file)"
       }
     }
   }
 
-  private enum DataFlag: String, EnumerableType, Printable {
-    case DatabaseOperations = "databaseOperations"
+  /** 
+  Type for parsing database operations command line arguments
+  */
+  private struct DataFlag: Printable {
+    let load: Bool
+    let dump: Bool
+    let remove: Bool
+    let copy: Bool
+    let logModel: Bool
 
-    /** Dictionary of parsed command line arguments where ∀ k in [k:v], Flag(rawValue: k) != nil */
-    static let arguments = filter(NSUserDefaults.standardUserDefaults().volatileDomainForName(NSArgumentDomain), {
-      (k, v) -> Bool in
-      return DataFlag(rawValue: k as? String ?? "") != nil
-    })
+    static let key = "databaseOperations"
 
-    /** Array of markers created by parsing associated command line argument */
-    var markers: [Marker]? {
-      if let argValue = DataFlag.arguments[rawValue] as? String {
-        return compressed(",".split(argValue).map({Marker(argValue: $0)}))
+    /** Initializes a new flag if argument is present, returns nil otherwise */
+    init?() {
+      if let arg = NSUserDefaults.standardUserDefaults().volatileDomainForName(NSArgumentDomain)[DataFlag.key] as? String {
+        let markers = compressed(",".split(arg).map({Marker(argValue: $0)}))
+        load =  markers ∋ .Load
+        dump =  markers ∋ .Dump
+        logModel =  markers ∋ .Log([.Model])
+        copy = markers ∋ .Copy
+        remove =  markers ∋ .Remove
       } else { return nil }
     }
-    
-    /** An array of all possible flag keys */
-    static var all: [DataFlag] = [.DatabaseOperations]
-
-    var loadData: Bool { if let markers = self.markers { return markers ∋ Marker.Load } else { return false } }
-    var dumpData: Bool { if let markers = self.markers { return markers ∋ Marker.Dump } else { return false } }
-    var logModel: Bool { if let markers = self.markers { return markers ∋ Marker.Log([.Model]) } else { return false } }
-    var removeExisting: Bool { if let markers = self.markers { return markers ∋ Marker.Remove } else { return false } }
-
-    /** An array of all flag keys for which an argument has been passed */
-    static var allPassed: [DataFlag] { return all.filter{self.arguments[$0.rawValue] != nil} }
-
-    /**
-    Specialized enumerate function which adds the option to enumerate only flag keys passed
-
-    :param: #passedOnly Bool
-    :param: block (Flag) -> Void
-    */
-    static func enumerate(#passedOnly: Bool, block: (DataFlag) -> Void) { apply((passedOnly ? allPassed : all), block) }
-
-    /**
-    `EnumerableType` support, calles `enumeratePassedOnly:block` with `passedOnly = true`
-
-    :param: block (Flag) -> Void
-    */
-    static func enumerate(block: (DataFlag) -> Void) { enumerate(passedOnly: true, block: block) }
 
     var description: String {
-      var description = rawValue
-      if let markers = self.markers { description += ":\n\t" + "\n\t".join(markers.map({$0.description})) }
-      return description
+      return "database operations:\n\tload: \(load)\n\tdump: \(dump)\n\tremove: \(remove)\n\tlog model: \(logModel)"
     }
   }
+
 
   /** Flags used as the base of a supported command line argument whose value should resolve into a valid `Marker` */
   private enum ModelFlag: String, EnumerableType {
@@ -482,10 +435,10 @@ import MoonKit
     })
 
     /** Array of markers created by parsing associated command line argument */
-    var markers: [Marker]? {
+    var markers: [Marker] {
       if let argValue = ModelFlag.arguments[rawValue] as? String {
         return compressed(",".split(argValue).map({Marker(argValue: $0)}))
-      } else { return nil }
+      } else { return [] }
     }
 
     /** The model object subclass demarcated by the flag */
@@ -502,33 +455,21 @@ import MoonKit
       }
     }
 
-    /** An array of all possible flag keys */
+    /** An array of all possible flag keys for which an argument has been passed */
     static var all: [ModelFlag] = [.Manufacturers, .ComponentDevices, .Images, .Activities,
-      .NetworkDevices, .Controller, .Presets, .Remotes]
-
-    /** An array of all flag keys for which an argument has been passed */
-    static var allPassed: [ModelFlag] { return all.filter{self.arguments[$0.rawValue] != nil} }
-
-    /**
-    Specialized enumerate function which adds the option to enumerate only flag keys passed
-
-    :param: #passedOnly Bool
-    :param: block (Flag) -> Void
-    */
-    static func enumerate(#passedOnly: Bool, block: (ModelFlag) -> Void) { apply((passedOnly ? allPassed : all), block) }
+                                   .NetworkDevices, .Controller, .Presets, .Remotes].filter {
+                                    ModelFlag.arguments[$0.rawValue] != nil
+                                  }
 
     /**
-    `EnumerableType` support, calles `enumeratePassedOnly:block` with `passedOnly = true`
+    `EnumerableType` support, applies `block` to `all`
 
-    :param: block (Flag) -> Void
+    :param: block (ModelFlag) -> Void
     */
-    static func enumerate(block: (ModelFlag) -> Void) { enumerate(passedOnly: true, block: block) }
+    static func enumerate(block: (ModelFlag) -> Void) { all ➤ block }
 
-    var description: String {
-      var description = rawValue
-      if let markers = self.markers { description += ":\n\t" + "\n\t".join(markers.map({$0.description})) }
-      return description
-    }
+
+    var description: String { return "\(rawValue):\n\t" + "\n\t".join(markers.map({$0.description})) }
   }
 
   /** loadData */
@@ -537,24 +478,25 @@ import MoonKit
     rootContext.performBlock {[rootContext = self.rootContext] in
 
       self.modelFlags ➤ {
-        if let markers = $0.markers {
-          var fileName: String?
-          var logParsed = false
-          var logImported = false
-          for marker in markers {
-            switch marker {
+        var fileName: String?
+        var logParsed = false
+        var logImported = false
+        var removeExisting = false
+        for marker in $0.markers {
+          switch marker {
+            case .Remove: removeExisting = true
             case .LoadFile(let f): fileName = f
             case .Log(let values): logParsed = values ∋ .Parsed; logImported = values ∋ .Imported
-            default: break
-            }
+          default: break
           }
-          if fileName != nil {
-            self.loadDataFromFile(fileName!,
-                             type: $0.modelType,
-                          context: rootContext,
-                        logParsed: logParsed,
-                      logImported: logImported)
-          }
+        }
+        if removeExisting { rootContext.deleteObjects(Set($0.modelType.findAllInContext(rootContext))) }
+        if fileName != nil {
+          self.loadDataFromFile(fileName!,
+                           type: $0.modelType,
+                        context: rootContext,
+                      logParsed: logParsed,
+                    logImported: logImported)
         }
       }
 
@@ -575,14 +517,12 @@ import MoonKit
     rootContext.performBlock {[rootContext = self.rootContext] in
 
       self.modelFlags ➤ {
-        if let markers = $0.markers {
-          for marker in markers {
-            switch marker {
-            case .Dump:
-              MSLogDebug("\(($0.modelType.self as AnyObject).className) objects: \n" +
-                         "\(($0.modelType.findAllInContext(rootContext) as NSArray).JSONString)\n")
-            default: break
-            }
+        for marker in $0.markers {
+          switch marker {
+          case .Dump:
+            MSLogDebug("\(($0.modelType.self as AnyObject).className) objects: \n" +
+                       "\(($0.modelType.findAllInContext(rootContext) as NSArray).JSONString)\n")
+          default: break
           }
         }
       }

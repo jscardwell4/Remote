@@ -39,14 +39,27 @@ class ImageCategory: IndexedBankCategoryObject, PreviewableCategory {
   override var index: String { return indexedCategory == nil ? name : "\(indexedCategory!.index)/\(name)" }
 
   /**
+  rootCategoryNamed:context:
+
+  :param: name String
+  :param: context NSManagedObjectContext
+
+  :returns: IndexedBankCategory?
+  */
+  override class func rootCategoryNamed(name: String, context: NSManagedObjectContext) -> IndexedBankCategory? {
+    return findFirstMatchingPredicate(∀"parentCategory = NULL AND name = '\(name)'", context: context)
+  }
+
+  /**
   updateWithData:
 
   :param: data [String:AnyObject]
   */
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-
-    //TODO: Fill in stub
+    updateRelationshipFromData(data, forKey: "parentCategory", lookupKey: "category")
+    updateRelationshipFromData(data, forKey: "images")
+    updateRelationshipFromData(data, forKey: "childCategories", lookupKey: "subcategories")
   }
 
   /**
@@ -57,7 +70,9 @@ class ImageCategory: IndexedBankCategoryObject, PreviewableCategory {
   override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
-    //TODO: Fill in stub
+    safeSetValueForKeyPath("parentCategory.index", forKey: "category.index", inDictionary: dictionary)
+    safeSetValueForKeyPath("images.JSONDictionary", forKey: "images", inDictionary: dictionary)
+    safeSetValueForKeyPath("childCategories.JSONDictionary", forKey: "subcategories", inDictionary: dictionary)
     
     dictionary.compact()
     dictionary.compress()

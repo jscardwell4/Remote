@@ -16,37 +16,63 @@ extension NSManagedObjectModel {
     apply(entities as! [NSEntityDescription]) {
       entity in
 
-      description += (entity.name ?? "") + " {\n"
-      if let userInfo = entity.userInfo { description += "\tuserInfo: {\n\(formattedDescription(userInfo, indent: 2))\n\t}" }
-
-      for property in (entity.properties as! [NSPropertyDescription]) {
-
-        var propertyDescription: OrderedDictionary<String, String> = [:]
-        propertyDescription["optional"]                  = "\(property.optional)"
-        propertyDescription["transient"]                 = "\(property.transient)"
-        propertyDescription["validation predicates"]     = "'" + ", ".join(property.validationPredicates) + "'"
-        propertyDescription["stored in external record"] = "\(property.storedInExternalRecord)"
-        if let userInfo = property.userInfo { propertyDescription["userInfo"] = formattedDescription(userInfo, indent: 2) }
-
-        if let attributeDescription = property as? NSAttributeDescription {
-          propertyDescription["attribute value class name"]        = NSStringFromNSAttributeType(attributeDescription.attributeType)
-          propertyDescription["default value"]                     = "\(attributeDescription.defaultValue ?? nil)"
-          propertyDescription["allows extern binary data storage"] = "\(attributeDescription.allowsExternalBinaryDataStorage)"
-        } else if let relationshipDescription = property as? NSRelationshipDescription {
-          propertyDescription["destination"] = relationshipDescription.destinationEntity?.name
-          propertyDescription["inverse"]     = relationshipDescription.inverseRelationship?.name
-          propertyDescription["delete rule"] = NSStringFromNSDeleteRule(relationshipDescription.deleteRule)
-          propertyDescription["max count"]   = "\(relationshipDescription.maxCount)"
-          propertyDescription["min count"]   = "\(relationshipDescription.minCount)"
-          propertyDescription["one-to-many"] = "\(relationshipDescription.toMany)"
-          propertyDescription["ordered"]     = "\(relationshipDescription.ordered)"
+      if let entityName = entity.name {
+        description += entityName
+        if let superentity = entity.superentity, superentityName = superentity.name  {
+          description += " (\(superentityName))"
+        }
+        description += " {\n"
+        if let userInfo = entity.userInfo where !userInfo.isEmpty {
+          description += "\tuserInfo: {\n\(formattedDescription(userInfo, indent: 2))\n\t}"
         }
 
-        description += "\t\(property.name) {\n\(formattedDescription(propertyDescription.dictionary, indent: 2))\n\t}\n)"
+        var properties = entity.properties as! [NSPropertyDescription]
+        if let superEntityProperties = (entity.superentity?.properties as? [NSPropertyDescription])?.map({$0.name}) {
+          properties = properties.filter({superEntityProperties ∌ $0.name})
+        }
+
+        for property in properties {
+
+          var propertyNametagAttributes: [String] = []
+
+          var propertyDescription: OrderedDictionary<String, String> = [:]
+          if property.optional { propertyNametagAttributes.append("optional") }
+          if property.transient { propertyNametagAttributes.append("transient") }
+          if !property.validationPredicates.isEmpty {
+            propertyDescription["validation"] = "'" + ", ".join(property.validationPredicates) + "'"
+          }
+          if property.storedInExternalRecord { propertyNametagAttributes.append("external") }
+
+          if let userInfo = property.userInfo where !userInfo.isEmpty {
+            propertyDescription["userInfo"] = formattedDescription(userInfo, indent: 2)
+          }
+
+          if let attributeDescription = property as? NSAttributeDescription {
+            let attributeTypeString = NSStringFromNSAttributeType(attributeDescription.attributeType)
+            var typeDescription = attributeTypeString[2..<attributeTypeString.length - 13].lowercaseString
+            if let defaultValue: AnyObject = attributeDescription.defaultValue { typeDescription += " (\(defaultValue))" }
+            propertyNametagAttributes.append(typeDescription)
+            if attributeDescription.allowsExternalBinaryDataStorage { propertyNametagAttributes.append("externalBinary") }
+          } else if let relationshipDescription = property as? NSRelationshipDescription {
+            propertyDescription["destination"] = relationshipDescription.destinationEntity?.name
+            propertyDescription["inverse"]     = relationshipDescription.inverseRelationship?.name
+            let deleteRuleString = NSStringFromNSDeleteRule(relationshipDescription.deleteRule)
+            propertyDescription["delete rule"] = deleteRuleString[2..<deleteRuleString.length - 10].lowercaseString
+            propertyDescription["min/max"]   = "\(relationshipDescription.minCount)/\(relationshipDescription.maxCount)"
+            if relationshipDescription.toMany { propertyNametagAttributes.append("toMany") }
+            if relationshipDescription.ordered { propertyNametagAttributes.append("ordered") }
+          }
+
+          description += "\t\(property.name)"
+          if !propertyNametagAttributes.isEmpty { description += " (" + ",".join(propertyNametagAttributes) + ")" }
+          if !propertyDescription.isEmpty {
+            description += " {\n\(formattedDescription(propertyDescription.dictionary, indent: 2))\n\t}"
+          }
+          description += "\n"
+        }
+
+        description += "}\n\n"
       }
-
-      description += "}\n\n"
-
     }
 
     return description
