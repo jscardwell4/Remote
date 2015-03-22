@@ -547,7 +547,6 @@
 		C2E9F6141ABCA395007581F2 /* RemoteElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F53C1ABCA395007581F2 /* RemoteElement.swift */; };
 		C2E9F61A1ABCA395007581F2 /* TitleAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F5421ABCA395007581F2 /* TitleAttributes.swift */; };
 		C2E9F61B1ABCA395007581F2 /* TitleAttributesDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F5431ABCA395007581F2 /* TitleAttributesDelegate.swift */; };
-		C2E9F61D1ABCA395007581F2 /* DatabaseLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F5461ABCA395007581F2 /* DatabaseLoader.swift */; };
 		C2E9F61E1ABCA395007581F2 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F5471ABCA395007581F2 /* DataManager.swift */; };
 		C2E9F6391ABCA7A3007581F2 /* Apple Symbols.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6211ABCA7A3007581F2 /* Apple Symbols.ttf */; };
 		C2E9F63A1ABCA7A3007581F2 /* Fico.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6221ABCA7A3007581F2 /* Fico.otf */; };
@@ -635,6 +634,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = C215CBFE1ABB102F00E8077E;
 			remoteInfo = RemoteData;
+		};
+		C22437131ABE438100434998 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C256F07E1ABDFFE5005B7CB3;
+			remoteInfo = MoonKitOSX;
+		};
+		C22437151ABE438100434998 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C256F0881ABDFFE5005B7CB3;
+			remoteInfo = MoonKitOSXTests;
 		};
 		C235911B19C7ACB900920F8D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -2104,6 +2117,8 @@
 			children = (
 				C235911C19C7ACB900920F8D /* MoonKit.framework */,
 				C2AA245819CB15500062CF4C /* Moonkit Tests.xctest */,
+				C22437141ABE438100434998 /* MoonKitOSX.framework */,
+				C22437161ABE438100434998 /* MoonKitOSXTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2805,6 +2820,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		C22437141ABE438100434998 /* MoonKitOSX.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MoonKitOSX.framework;
+			remoteRef = C22437131ABE438100434998 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C22437161ABE438100434998 /* MoonKitOSXTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = MoonKitOSXTests.xctest;
+			remoteRef = C22437151ABE438100434998 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		C235911C19C7ACB900920F8D /* MoonKit.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -3382,7 +3411,6 @@
 				C2E9F5F61ABCA395007581F2 /* CommandOperation.swift in Sources */,
 				C2E9F5851ABCA395007581F2 /* DetailStepperCell.swift in Sources */,
 				C2E9F5611ABCA395007581F2 /* ImportExportFileManager.swift in Sources */,
-				C2E9F61D1ABCA395007581F2 /* DatabaseLoader.swift in Sources */,
 				C2E9F5971ABCA395007581F2 /* DetailSliderRow.swift in Sources */,
 				C2E9F6101ABCA395007581F2 /* Constraint.swift in Sources */,
 				C2E9F5771ABCA395007581F2 /* ButtonGroupPresetDetailController.swift in Sources */,
@@ -5156,6 +5184,7 @@
 				C2E9F4071ABC9797007581F2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C2E9F4081ABC9797007581F2 /* Build configuration list for PBXNativeTarget "RemoteDataUITestTests" */ = {
 			isa = XCConfigurationList;
@@ -5166,6 +5195,7 @@
 				C2E9F40C1ABC9797007581F2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C2F9412119BE5E90007B5CC1 /* Build configuration list for PBXNativeTarget "iTachClient" */ = {
 			isa = XCConfigurationList;

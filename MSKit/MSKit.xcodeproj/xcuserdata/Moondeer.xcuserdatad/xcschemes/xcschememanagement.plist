@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
+		<key>MoonKitOSX.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>11</integer>
+		</dict>
 		<key>Moonkit Tests.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -58,6 +63,16 @@
 			<true/>
 		</dict>
 		<key>C23A0D5F19A7A459002BF2B6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C256F07D1ABDFFE5005B7CB3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C256F0871ABDFFE5005B7CB3</key>
 		<dict>
 			<key>primary</key>
 			<true/>

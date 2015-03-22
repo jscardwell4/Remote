@@ -83,7 +83,10 @@ infix operator ∅|| {
 associativity right
 precedence 130
 }
-
+infix operator ➤ {
+associativity none
+precedence 130
+}
 prefix operator ‽∪ {}
 prefix operator ‽ {}
 prefix operator !? {}

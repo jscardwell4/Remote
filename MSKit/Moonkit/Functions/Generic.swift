@@ -172,6 +172,9 @@ The function is a simple wrapper around `reduce` that ignores the actual reducti
 */
 public func apply<S:SequenceType>(sequence: S, block: (S.Generator.Element) -> Void) { reduce(sequence, Void()){block($0.1)} }
 
+/** Operator function for the apply function */
+public func ➤<S:SequenceType>(lhs: S, rhs: (S.Generator.Element) -> Void) { apply(lhs, rhs) }
+
 /**
 unique<T:Equatable>:
 

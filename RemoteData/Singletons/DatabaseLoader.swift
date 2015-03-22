@@ -12,16 +12,90 @@ import MoonKit
 
 @objc class DatabaseLoader {
 
-  private enum FlagBase: String, EnumerableType {
-    case Presets           = "Presets"
-    case Images            = "Images"
-    case Manufacturers     = "Manufacturers"
-    case ComponentDevices  = "ComponentDevices"
-    case NetworkDevices    = "NetworkDevices"
-    case Controller        = "Controller"
-    case Activities        = "Activities"
-    case Remotes           = "Remotes"
+  /**
+  Type for parsing database-related arguments passed to application
 
+  :example: -manufacturers load=Manufacturer_Test,dump,log=parsed-imported
+  */
+
+  /** The type of action marked by a flag */
+  private enum Marker: Printable {
+
+    case Load (String)
+    case Dump
+    case Log ([LogValue])
+
+    /** Type of value marked for logging */
+    enum LogValue: String {
+      case Parsed   = "parsed"
+      case Imported = "imported"
+    }
+
+    /** 'Raw' string value for the marker */
+    var key: String {
+      switch self {
+      case .Load: return "load"
+      case .Dump: return "dump"
+      case .Log:  return "log"
+      }
+    }
+
+    var value: AnyObject? {
+      switch self {
+      case .Load(let fileName): return fileName
+      case .Log(let logValues): return logValues.map{$0.rawValue}
+      default: return nil
+      }
+    }
+
+    /**
+    initWithArgValue:
+
+    :param: argValue String
+    */
+    init?(argValue: String) {
+      switch argValue {
+      case "dump": self = Marker.Dump
+      case ~/"load=.+": self = Marker.Load(argValue[5..<argValue.length])
+      case ~/"log=.+": self = Marker.Log(compressed("-".split(argValue[4..<argValue.length]).map({LogValue(rawValue: $0)})))
+      default: return nil
+      }
+    }
+
+    var description: String {
+      switch self {
+      case .Dump: return "dump"
+      case .Log(let values): return "log: " + ", ".join(values.map({$0.rawValue}))
+      case .Load(let file): return "load: \(file)"
+      }
+    }
+  }
+
+  /** Flags used as the base of a supported command line argument whose value should resolve into a valid `Marker` */
+  private enum Flag: String, EnumerableType {
+    case Manufacturers    = "manufacturers"
+    case ComponentDevices = "componentDevices"
+    case Images           = "images"
+    case NetworkDevices   = "networkDevices"
+    case Controller       = "controller"
+    case Presets          = "presets"
+    case Remotes          = "remotes"
+    case Activities       = "activities"
+
+    /** Dictionary of parsed command line arguments where ∀ k in [k:v], Flag(rawValue: k) != nil */
+    static let arguments = filter(NSUserDefaults.standardUserDefaults().volatileDomainForName(NSArgumentDomain), {
+      (k, v) -> Bool in
+      return Flag(rawValue: k as? String ?? "") != nil
+    })
+
+    /** Array of markers created by parsing associated command line argument */
+    var markers: [Marker]? {
+      if let argValue = Flag.arguments[rawValue] as? String {
+        return compressed(",".split(argValue).map({Marker(argValue: $0)}))
+      } else { return nil }
+    }
+
+    /** The model object subclass demarcated by the flag */
     var modelType: ModelObject.Type {
       switch self {
       case .Presets:          return PresetCategory.self
@@ -35,53 +109,34 @@ import MoonKit
       }
     }
 
-    static var all: [FlagBase] {
-      return [.Presets, .Images, .Manufacturers, .ComponentDevices, .NetworkDevices, .Controller, .Activities, .Remotes]
-    }
+    /** An array of all possible flag keys */
+    static var all: [Flag] = [.Manufacturers, .ComponentDevices, .Images, .Activities,
+      .NetworkDevices, .Controller, .Presets, .Remotes]
 
-    static func enumerate(block: (FlagBase) -> Void) { apply(all, block) }
-  }
+    /** An array of all flag keys for which an argument has been passed */
+    static var allPassed: [Flag] { return all.filter{self.arguments[$0.rawValue] != nil} }
 
-  private enum Flag {
-    case Load (FlagBase)
-    case Dump (FlagBase)
+    /**
+    Specialized enumerate function which adds the option to enumerate only flag keys passed
 
-    var value: Any? {
-      switch self {
-      case .Load(let base): return NSUserDefaults.standardUserDefaults().stringForKey("load\(base.rawValue)")
-      case .Dump(let base): return NSUserDefaults.standardUserDefaults().boolForKey("dump\(base.rawValue)")
-      }
-    }
-    var isSet: Bool {
-      switch self {
-        case .Load: if let file = value as? String { return true } else { false }
-        case .Dump: if let value = self.value as? Bool where value == true { return true } else { return false }
-      }
-      return false
-    }
+    :param: #passedOnly Bool
+    :param: block (Flag) -> Void
+    */
+    static func enumerate(#passedOnly: Bool, block: (Flag) -> Void) { apply((passedOnly ? allPassed : all), block) }
 
-    var modelType: ModelObject.Type {
-      switch self {
-      case .Load(let base): return base.modelType
-      case .Dump(let base): return base.modelType
-      }
-    }
+    /**
+    `EnumerableType` support, calles `enumeratePassedOnly:block` with `passedOnly = true`
 
-    static func enumerateLoadFlags(block: (ModelObject.Type, String) -> Void) {
-      FlagBase.enumerate {
-        let flag = Flag.Load($0)
-        if let fileName = flag.value as? String { block(flag.modelType, fileName) }
-      }
-    }
+    :param: block (Flag) -> Void
+    */
+    static func enumerate(block: (Flag) -> Void) { enumerate(passedOnly: true, block: block) }
 
-    static func enumerateDumpFlags(block: (ModelObject.Type) -> Void) {
-      FlagBase.enumerate {
-        let flag = Flag.Dump($0)
-        if flag.isSet { block(flag.modelType) }
-      }
+    var description: String {
+      var description = rawValue
+      if let markers = self.markers { description += ":\n\t" + "\n\t".join(markers.map({$0.description})) }
+      return description
     }
   }
-
 
   /** loadData */
   class func loadData(completion: ((Bool, NSError?) -> Void)? = nil) {
@@ -91,11 +146,29 @@ import MoonKit
 
     moc.performBlock {
 
-      Flag.enumerateLoadFlags {
-        (type: ModelObject.Type, file: String) -> Void in
+      let flags = Flag.allPassed
+      MSLogDebug("parsed flags…\n" + "\n".join(flags.map({$0.description})))
 
-        moc.deleteObjects(Set(type.findAllInContext(moc)))
-        self.loadDataFromFile(file, type: type, context: moc, log: log)
+      flags ➤ {
+        if let markers = $0.markers {
+          var fileName: String?
+          var logParsed = false
+          var logImported = false
+          for marker in markers {
+            switch marker {
+            case .Load(let f): fileName = f
+            case .Log(let values): logParsed = values ∋ .Parsed; logImported = values ∋ .Imported
+            default: break
+            }
+          }
+          if fileName != nil {
+            self.loadDataFromFile(fileName!,
+                             type: $0.modelType,
+                          context: moc,
+                        logParsed: logParsed,
+                      logImported: logImported)
+          }
+        }
       }
 
       var error: NSError?
@@ -112,10 +185,12 @@ import MoonKit
 
   /** dumpData */
   class func dumpData(completion: ((Bool, NSError?) -> Void)? = nil ) {
+/*
     Flag.enumerateDumpFlags {
       println("\(($0.self as AnyObject).className) objects:\n\(($0.findAllInContext(DataManager.rootContext) as NSArray).JSONString)\n")
     }
-  }
+
+*/  }
 
   /**
   loadDataFromFile:type:context:
@@ -124,7 +199,12 @@ import MoonKit
   :param: type T.Type
   :param: context NSManagedObjectContext
   */
-  private class func loadDataFromFile<T:ModelObject>(file: String, type: T.Type, context: NSManagedObjectContext, log: Bool) {
+  private class func loadDataFromFile<T:ModelObject>(file: String,
+                                                type: T.Type,
+                                             context: NSManagedObjectContext,
+                                           logParsed: Bool,
+                                         logImported: Bool)
+  {
     MSLogDebug("parsing file '\(file).json'")
 
     var error: NSError?
@@ -133,14 +213,14 @@ import MoonKit
       where MSHandleError(error) == false
     {
 
-      if log { MSLogDebug("json objects from parsed file:\n\(data)") }
+      if logParsed { MSLogDebug("json objects from parsed file:\n\(data)") }
 
       if let dataDictionary = data as? [String:AnyObject],
         importedObject = type(data: dataDictionary, context: context) {
 
         MSLogDebug("imported \(type.className()) from file '\(file).json'")
 
-        if log { MSLogDebug("json output for imported object:\n\(importedObject.JSONString)") }
+        if logImported { MSLogDebug("json output for imported object:\n\(importedObject.JSONString)") }
 
       } else if let dataArray = data as? [[String:AnyObject]] {
 
@@ -148,7 +228,7 @@ import MoonKit
 
         MSLogDebug("\(importedObjects.count) \(type.className()) objects imported from file '\(file).json'")
 
-        if log { MSLogDebug("json output for imported object:\n\((importedObjects as NSArray).JSONString)") }
+        if logImported { MSLogDebug("json output for imported object:\n\((importedObjects as NSArray).JSONString)") }
 
       } else { MSLogError("file content must resolve into [String:AnyObject] or [[String:AnyObject]]") }
 

@@ -47,7 +47,6 @@ import MoonKit
   /** The core data stack, if this is nil we may as well shutdown */
   public static let coreDataStack: CoreDataStack = {
 
-//    let modelURL = NSBundle.mainBundle().URLForResource("Remote", withExtension: "momd")
     let modelURL = NSBundle(forClass:DataManager.self).URLForResource("Remote", withExtension: "momd")
     if modelURL == nil { fatalError("failed to retrieve model url from bundle, aborting…") }
 
@@ -60,7 +59,7 @@ import MoonKit
                               options: [NSMigratePersistentStoresAutomaticallyOption: true,
                                         NSInferMappingModelAutomaticallyOption: true])
     if stack == nil { fatalError("failed to instantiate core data stack, aborting…") }
-    else if NSUserDefaults.standardUserDefaults().boolForKey("logManagedObjectModel") {
+    else if databaseOperationsFlag?.logModel == true {
       MSLogDebug("managed object model:\n\(stack!.managedObjectModel.description)")
     }
     return stack!
@@ -68,6 +67,8 @@ import MoonKit
   }()
 
   static private var databasePrepared = false
+  static private var databaseOperationsFlag: DataFlag? = DataFlag.allPassed.filter({$0 == .DatabaseOperations}).first
+  static private var modelFlags: [ModelFlag] = ModelFlag.allPassed
 
   public class func mainContext() -> NSManagedObjectContext { return coreDataStack.mainContext() }
 
@@ -84,7 +85,7 @@ import MoonKit
     if databasePrepared { completion?(true, nil); return }
 
     if databaseStoreURL.checkResourceIsReachableAndReturnError(nil)
-      && NSUserDefaults.standardUserDefaults().boolForKey("removeExistingDatabase")
+      && databaseOperationsFlag?.removeExisting == true
     {
       var error: NSError?
       NSFileManager.defaultManager().removeItemAtURL(databaseStoreURL, error: &error)
@@ -93,16 +94,16 @@ import MoonKit
 
     databasePrepared = true
 
-    if NSUserDefaults.standardUserDefaults().boolForKey("loadData") {
-      DatabaseLoader.loadData(completion: {
+    if databaseOperationsFlag?.loadData == true {
+      loadData(completion: {
         success, error in
 
-        if NSUserDefaults.standardUserDefaults().boolForKey("dumpData") {
-          DatabaseLoader.dumpData(completion: completion)
+        if self.databaseOperationsFlag?.dumpData == true {
+          self.dumpData(completion: {completion?(success, error)})
         } else { completion?(success, error) }
       })
-    } else if NSUserDefaults.standardUserDefaults().boolForKey("dumpData") {
-      DatabaseLoader.dumpData(completion: completion)
+    } else if databaseOperationsFlag?.dumpData == true {
+      dumpData(completion: {completion?(true, nil)})
     } else { completion?(true, nil) }
 
   }
@@ -341,29 +342,314 @@ import MoonKit
     return augmentedModel
   }
 
+  /**
+  Type for parsing database-related arguments passed to application
+
+  :example: -manufacturers load=Manufacturer_Test,dump,log=parsed-imported
+  */
+
+  /** The type of action marked by a flag */
+  private enum Marker: Printable, Equatable {
+
+    case Load
+    case Remove
+    case LoadFile (String)
+    case Dump
+    case Log ([LogValue])
+
+    /** Type of value marked for logging */
+    enum LogValue: String {
+      case Model    = "model"
+      case Parsed   = "parsed"
+      case Imported = "imported"
+    }
+
+    /** 'Raw' string value for the marker */
+    var key: String {
+      switch self {
+        case .Remove:          return "remove"
+        case .Load, .LoadFile: return "load"
+        case .Dump:            return "dump"
+        case .Log:             return "log"
+      }
+    }
+
+    var value: AnyObject? {
+      switch self {
+      case .LoadFile(let fileName): return fileName
+      case .Log(let logValues): return logValues.map{$0.rawValue}
+      default: return nil
+      }
+    }
+
+    /**
+    initWithArgValue:
+
+    :param: argValue String
+    */
+    init?(argValue: String) {
+      switch argValue {
+        case "load":
+          self = Marker.Load
+        case "remove":
+          self = Marker.Remove
+        case "dump":
+          self = Marker.Dump
+        case ~/"load=.+":
+          self = Marker.LoadFile(argValue[5..<argValue.length])
+        case ~/"log=.+":
+          self = Marker.Log(compressed("-".split(argValue[4..<argValue.length]).map({LogValue(rawValue: $0)})))
+        default:
+          return nil
+      }
+    }
+
+    var description: String {
+      switch self {
+        case .Load: return "load"
+        case .Dump: return "dump"
+        case .Remove: return "remove"
+        case .Log(let values): return "log: " + ", ".join(values.map({$0.rawValue}))
+        case .LoadFile(let file): return "load: \(file)"
+      }
+    }
+  }
+
+  private enum DataFlag: String, EnumerableType, Printable {
+    case DatabaseOperations = "databaseOperations"
+
+    /** Dictionary of parsed command line arguments where ∀ k in [k:v], Flag(rawValue: k) != nil */
+    static let arguments = filter(NSUserDefaults.standardUserDefaults().volatileDomainForName(NSArgumentDomain), {
+      (k, v) -> Bool in
+      return DataFlag(rawValue: k as? String ?? "") != nil
+    })
+
+    /** Array of markers created by parsing associated command line argument */
+    var markers: [Marker]? {
+      if let argValue = DataFlag.arguments[rawValue] as? String {
+        return compressed(",".split(argValue).map({Marker(argValue: $0)}))
+      } else { return nil }
+    }
+    
+    /** An array of all possible flag keys */
+    static var all: [DataFlag] = [.DatabaseOperations]
+
+    var loadData: Bool { if let markers = self.markers { return markers ∋ Marker.Load } else { return false } }
+    var dumpData: Bool { if let markers = self.markers { return markers ∋ Marker.Dump } else { return false } }
+    var logModel: Bool { if let markers = self.markers { return markers ∋ Marker.Log([.Model]) } else { return false } }
+    var removeExisting: Bool { if let markers = self.markers { return markers ∋ Marker.Remove } else { return false } }
+
+    /** An array of all flag keys for which an argument has been passed */
+    static var allPassed: [DataFlag] { return all.filter{self.arguments[$0.rawValue] != nil} }
+
+    /**
+    Specialized enumerate function which adds the option to enumerate only flag keys passed
+
+    :param: #passedOnly Bool
+    :param: block (Flag) -> Void
+    */
+    static func enumerate(#passedOnly: Bool, block: (DataFlag) -> Void) { apply((passedOnly ? allPassed : all), block) }
+
+    /**
+    `EnumerableType` support, calles `enumeratePassedOnly:block` with `passedOnly = true`
+
+    :param: block (Flag) -> Void
+    */
+    static func enumerate(block: (DataFlag) -> Void) { enumerate(passedOnly: true, block: block) }
+
+    var description: String {
+      var description = rawValue
+      if let markers = self.markers { description += ":\n\t" + "\n\t".join(markers.map({$0.description})) }
+      return description
+    }
+  }
+
+  /** Flags used as the base of a supported command line argument whose value should resolve into a valid `Marker` */
+  private enum ModelFlag: String, EnumerableType {
+    case Manufacturers    = "manufacturers"
+    case ComponentDevices = "componentDevices"
+    case Images           = "images"
+    case NetworkDevices   = "networkDevices"
+    case Controller       = "controller"
+    case Presets          = "presets"
+    case Remotes          = "remotes"
+    case Activities       = "activities"
+
+    /** Dictionary of parsed command line arguments where ∀ k in [k:v], Flag(rawValue: k) != nil */
+    static let arguments = filter(NSUserDefaults.standardUserDefaults().volatileDomainForName(NSArgumentDomain), {
+      (k, v) -> Bool in
+      return ModelFlag(rawValue: k as? String ?? "") != nil
+    })
+
+    /** Array of markers created by parsing associated command line argument */
+    var markers: [Marker]? {
+      if let argValue = ModelFlag.arguments[rawValue] as? String {
+        return compressed(",".split(argValue).map({Marker(argValue: $0)}))
+      } else { return nil }
+    }
+
+    /** The model object subclass demarcated by the flag */
+    var modelType: ModelObject.Type {
+      switch self {
+      case .Presets:          return PresetCategory.self
+      case .Images:           return ImageCategory.self
+      case .Manufacturers:    return Manufacturer.self
+      case .ComponentDevices: return ComponentDevice.self
+      case .NetworkDevices:   return NetworkDevice.self
+      case .Controller:       return ActivityController.self
+      case .Activities:       return Activity.self
+      case .Remotes:          return Remote.self
+      }
+    }
+
+    /** An array of all possible flag keys */
+    static var all: [ModelFlag] = [.Manufacturers, .ComponentDevices, .Images, .Activities,
+      .NetworkDevices, .Controller, .Presets, .Remotes]
+
+    /** An array of all flag keys for which an argument has been passed */
+    static var allPassed: [ModelFlag] { return all.filter{self.arguments[$0.rawValue] != nil} }
+
+    /**
+    Specialized enumerate function which adds the option to enumerate only flag keys passed
+
+    :param: #passedOnly Bool
+    :param: block (Flag) -> Void
+    */
+    static func enumerate(#passedOnly: Bool, block: (ModelFlag) -> Void) { apply((passedOnly ? allPassed : all), block) }
+
+    /**
+    `EnumerableType` support, calles `enumeratePassedOnly:block` with `passedOnly = true`
+
+    :param: block (Flag) -> Void
+    */
+    static func enumerate(block: (ModelFlag) -> Void) { enumerate(passedOnly: true, block: block) }
+
+    var description: String {
+      var description = rawValue
+      if let markers = self.markers { description += ":\n\t" + "\n\t".join(markers.map({$0.description})) }
+      return description
+    }
+  }
+
+  /** loadData */
+  class func loadData(completion: ((Bool, NSError?) -> Void)? = nil) {
+
+    rootContext.performBlock {[rootContext = self.rootContext] in
+
+      self.modelFlags ➤ {
+        if let markers = $0.markers {
+          var fileName: String?
+          var logParsed = false
+          var logImported = false
+          for marker in markers {
+            switch marker {
+            case .LoadFile(let f): fileName = f
+            case .Log(let values): logParsed = values ∋ .Parsed; logImported = values ∋ .Imported
+            default: break
+            }
+          }
+          if fileName != nil {
+            self.loadDataFromFile(fileName!,
+                             type: $0.modelType,
+                          context: rootContext,
+                        logParsed: logParsed,
+                      logImported: logImported)
+          }
+        }
+      }
+
+      var error: NSError?
+      MSLogDebug("saving context…")
+      if rootContext.save(&error) && !MSHandleError(error, message: "error occurred while saving context") {
+        MSLogDebug("context saved successfully")
+        completion?(true, nil)
+      } else {
+        MSHandleError(error, message: "failed to save context")
+        completion?(false, error)
+      }
+    }
+  }
+
+  /** dumpData */
+  class func dumpData(completion: ((Void) -> Void)? = nil ) {
+    rootContext.performBlock {[rootContext = self.rootContext] in
+
+      self.modelFlags ➤ {
+        if let markers = $0.markers {
+          for marker in markers {
+            switch marker {
+            case .Dump:
+              MSLogDebug("\(($0.modelType.self as AnyObject).className) objects: \n" +
+                         "\(($0.modelType.findAllInContext(rootContext) as NSArray).JSONString)\n")
+            default: break
+            }
+          }
+        }
+      }
+    }
+
+    completion?()
+
+  }
+
+  /**
+  loadDataFromFile:type:context:
+
+  :param: file String
+  :param: type T.Type
+  :param: context NSManagedObjectContext
+  */
+  private class func loadDataFromFile<T:ModelObject>(file: String,
+                                                type: T.Type,
+                                             context: NSManagedObjectContext,
+                                           logParsed: Bool,
+                                         logImported: Bool)
+  {
+    MSLogDebug("parsing file '\(file).json'")
+
+    var error: NSError?
+    if let filePath = NSBundle(forClass: self).pathForResource(file, ofType: "json"),
+      data: AnyObject = JSONSerialization.objectByParsingFile(filePath, options: 1, error: &error)
+      where MSHandleError(error) == false
+    {
+
+      if logParsed { MSLogDebug("json objects from parsed file:\n\(data)") }
+
+      if let dataDictionary = data as? [String:AnyObject],
+        importedObject = type(data: dataDictionary, context: context) {
+
+        MSLogDebug("imported \(type.className()) from file '\(file).json'")
+
+        if logImported { MSLogDebug("json output for imported object:\n\(importedObject.JSONString)") }
+
+      } else if let dataArray = data as? [[String:AnyObject]] {
+
+        let importedObjects = type.importObjectsFromData(dataArray, context: context)
+
+        MSLogDebug("\(importedObjects.count) \(type.className()) objects imported from file '\(file).json'")
+
+        if logImported { MSLogDebug("json output for imported object:\n\((importedObjects as NSArray).JSONString)") }
+
+      } else { MSLogError("file content must resolve into [String:AnyObject] or [[String:AnyObject]]") }
+
+    } else { MSLogError("failed to parse file '\(file).json'") }
+  }
+
 }
 
+/**
+Equatable operator for `DataManager.Marker`
 
-////////////////////////////////////////////////////////////////////////////////
-/// MARK: - Removing objects from the database at startup
-////////////////////////////////////////////////////////////////////////////////
+:param: lhs DataManager.Marker
+:param: rhs DataManager.Marker
 
-//extension DataManager {
-//
-//  struct StartupObjectRemovalOptions: RawOptionSetType {
-//    private(set) var rawValue: Int
-//
-//    init(rawValue: Int) { self.rawValue = rawValue }
-//
-//    init(nilLiteral: ()) { rawValue = 0 }
-//
-//    static var allZeros: StartupObjectRemovalOptions { return StartupObjectRemovalOptions.None }
-//
-//    static var None       = StartupObjectRemovalOptions(rawValue: 0b0000)
-//    static var Presets    = StartupObjectRemovalOptions(rawValue: 0b0001)
-//    static var Remotes    = StartupObjectRemovalOptions(rawValue: 0b0010)
-//    static var Controller = StartupObjectRemovalOptions(rawValue: 0b0100)
-//    static var All        = StartupObjectRemovalOptions(rawValue: 0b1000)
-//  }
-//
-//}
+:returns: Bool
+*/
+private func ==(lhs: DataManager.Marker, rhs: DataManager.Marker) -> Bool {
+  switch (lhs, rhs) {
+    case (.Load, .Load), (.Dump, .Dump), (.Remove, .Remove): return true
+    case (.LoadFile(let f1), .LoadFile(let f2)) where f1 == f2: return true
+    case (.Log(let v1), .Log(let v2)) where v1 == v2: return true
+    default: return false
+  }
+}

@@ -362,7 +362,9 @@ public extension String {
   public func toRegEx() -> NSRegularExpression? {
     var error: NSError? = nil
     let regex = NSRegularExpression(pattern: count(self) > 0 ? self : "(?:)", options: nil, error: &error)
-    MSHandleError(error, message: "failed to create regular expression object")
+    #if os(iOS)
+      MSHandleError(error, message: "failed to create regular expression object")
+    #endif
     return regex
   }
 

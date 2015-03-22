@@ -122,3 +122,16 @@ public func -<K,V>(var lhs: [K:V], rhs: K) -> [K:V] {
   lhs.removeValueForKey(rhs)
   return lhs
 }
+
+/**
+filter:
+
+:param: dict [K V]
+
+:returns: [K:V]
+*/
+public func filter<K:Hashable,V>(dict: [K:V], include: (K, V) -> Bool) -> [K:V] {
+  var filteredDict: [K:V] = [:]
+  for (key, value) in dict { if include(key, value) { filteredDict[key] = value } }
+  return filteredDict
+}
