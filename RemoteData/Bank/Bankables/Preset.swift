@@ -47,7 +47,7 @@ class Preset: IndexedBankCategoryItemObject, PreviewableCategoryItem, Detailable
   }
 
   class var rootCategory: BankRootCategory<BankCategory,BankModel>{
-    var categories = PresetCategory.findAllMatchingPredicate(∀"parentCategory == nil",
+    var categories = PresetCategory.objectsMatchingPredicate(∀"parentCategory == nil",
                                                      context: DataManager.rootContext) as! [PresetCategory]
     categories.sort{$0.0.name < $0.1.name}
     return BankRootCategory(label: "Presets",
@@ -80,7 +80,7 @@ class Preset: IndexedBankCategoryItemObject, PreviewableCategoryItem, Detailable
   */
   override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
-    safeSetValueForKeyPath("presetCategory.index", forKey: "preset-category.index", inDictionary: dictionary)
+    appendValueForKeyPath("presetCategory.index", forKey: "preset-category.index", toDictionary: dictionary)
     dictionary.setValuesForKeysWithDictionary(storage.dictionary)
     return dictionary
   }

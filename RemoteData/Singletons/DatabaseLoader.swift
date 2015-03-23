@@ -187,7 +187,7 @@ import MoonKit
   class func dumpData(completion: ((Bool, NSError?) -> Void)? = nil ) {
 /*
     Flag.enumerateDumpFlags {
-      println("\(($0.self as AnyObject).className) objects:\n\(($0.findAllInContext(DataManager.rootContext) as NSArray).JSONString)\n")
+      println("\(($0.self as AnyObject).className) objects:\n\(($0.objectsInContext(DataManager.rootContext) as NSArray).JSONString)\n")
     }
 
 */  }

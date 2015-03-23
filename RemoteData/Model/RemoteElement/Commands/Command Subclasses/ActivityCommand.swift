@@ -24,7 +24,7 @@ class ActivityCommand: Command {
     let dictionary = super.JSONDictionary()
 
     dictionary["class"] = "activity"
-    safeSetValue(activity?.commentedUUID, forKey: "activity.uuid", inDictionary: dictionary)
+    appendValue(activity?.commentedUUID, forKey: "activity.uuid", toDictionary: dictionary)
 
     dictionary.compact()
     dictionary.compress()

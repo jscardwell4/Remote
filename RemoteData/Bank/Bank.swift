@@ -10,9 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-@objc protocol Detailable {
-  func detailController() -> UIViewController
-}
+@objc protocol Detailable { func detailController() -> UIViewController }
 
 @objc protocol Previewable {
   var preview: UIImage { get }
@@ -26,19 +24,13 @@ import MoonKit
   func rollback()
 }
 
-@objc protocol BankModel: Model, DynamicallyNamed, Editable {
-  var user: Bool { get }
-}
-
-@objc protocol IndexedBankModel: BankModel {
-  var index: String { get }
-}
+@objc protocol Indexed { var index: String { get } }
 
 @objc protocol BankCategory: BankModel {
   optional var items: [BankCategoryItem] { get }
   optional func setItems(items: [BankCategoryItem])
-  optional var category: BankCategory? { get }
-  optional func setCategory(category: BankCategory?)
+//  optional var category: BankCategory? { get }
+//  optional func setCategory(category: BankCategory?)
   optional var subcategories: [BankCategory] { get }
   optional func setSubcategories(subcategories: [BankCategory])
 }
@@ -46,8 +38,8 @@ import MoonKit
 @objc protocol IndexedBankCategory: BankCategory, IndexedBankModel {
   optional var indexedItems: [IndexedBankCategoryItem] { get }
   optional func setIndexedItems(items: [IndexedBankCategoryItem])
-  optional var indexedCategory: IndexedBankCategory? { get }
-  optional func setIndexedCategory(category: IndexedBankCategory?)
+//  optional var indexedCategory: IndexedBankCategory? { get }
+//  optional func setIndexedCategory(category: IndexedBankCategory?)
   optional var indexedSubcategories: [IndexedBankCategory] { get }
   optional func setIndexedSubcategories(subcategories: [IndexedBankCategory])
 }

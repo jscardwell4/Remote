@@ -33,7 +33,7 @@ class Manufacturer: IndexedBankCategoryObject, Detailable {
   class func manufacturerWithName(name: String, context: NSManagedObjectContext) -> Manufacturer {
     var manufacturer: Manufacturer!
     context.performBlockAndWait { () -> Void in
-      manufacturer = self.findFirstByAttribute("name", withValue: name, context: context)
+      manufacturer = self.objectWithValue(name, forAttribute: "name", context: context)
       if manufacturer == nil {
         manufacturer = self.createInContext(context)
         manufacturer.name = name
@@ -42,14 +42,31 @@ class Manufacturer: IndexedBankCategoryObject, Detailable {
     return manufacturer
   }
 
+  /**
+  updateWithData:
+
+  :param: data [String AnyObject]
+  */
   override func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     updateRelationshipFromData(data, forKey: "codeSets", lookupKey: "code-sets")
     updateRelationshipFromData(data, forKey: "devices")
   }
 
+  /**
+  rootCategoryNamed:context:
+
+  :param: name String
+  :param: context NSManagedObjectContext
+
+  :returns: IndexedBankCategory?
+  */
+  override class func rootCategoryNamed(name: String, context: NSManagedObjectContext) -> IndexedBankCategory? {
+    return objectWithValue(name, forAttribute: "name", context: context)
+  }
+
   class var rootCategory: BankRootCategory<BankCategory,BankModel> {
-    let manufacturers = findAllSortedBy("name", ascending: true, context: DataManager.rootContext) as? [Manufacturer]
+    let manufacturers = objectsInContext(DataManager.rootContext, sortBy: "name") as? [Manufacturer]
     return BankRootCategory(label: "Manufacturers",
                              icon: UIImage(named: "1022-factory")!,
                              items: manufacturers ?? [],
@@ -70,8 +87,8 @@ extension Manufacturer: MSJSONExport {
   override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
-    safeSetValueForKeyPath("devices.commentedUUID",   forKey: "devices",  inDictionary: dictionary)
-    safeSetValueForKeyPath("codeSets.JSONDictionary", forKey: "code-sets", inDictionary: dictionary)
+    appendValueForKeyPath("devices.commentedUUID",   forKey: "devices", toDictionary: dictionary)
+    appendValueForKeyPath("codeSets.JSONDictionary", forKey: "code-sets", toDictionary: dictionary)
 
     dictionary.compact()
     dictionary.compress()

@@ -29,6 +29,18 @@ class IRCodeSet: IndexedBankCategoryObject, BankCategory {
   }
 
   /**
+  rootCategoryNamed:context:
+
+  :param: name String
+  :param: context NSManagedObjectContext
+
+  :returns: IndexedBankCategory?
+  */
+  override class func rootCategoryNamed(name: String, context: NSManagedObjectContext) -> IndexedBankCategory? {
+    return Manufacturer.rootCategoryNamed(name, context: context)
+  }
+
+  /**
   updateWithData:
 
   :param: data [String:AnyObject]
@@ -49,9 +61,9 @@ class IRCodeSet: IndexedBankCategoryObject, BankCategory {
   override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
-    safeSetValueForKeyPath("manufacturer.index", forKey: "manufacturer.index", inDictionary: dictionary)
-    safeSetValueForKeyPath("codes.JSONDictionary", forKey: "codes", inDictionary: dictionary)
-    safeSetValueForKeyPath("devices.commentedUUID", forKey: "devices", inDictionary: dictionary)
+    appendValueForKeyPath("manufacturer.index", forKey: "manufacturer.index", toDictionary: dictionary)
+    appendValueForKeyPath("codes.JSONDictionary", forKey: "codes", toDictionary: dictionary)
+    appendValueForKeyPath("devices.commentedUUID", forKey: "devices", toDictionary: dictionary)
 
     dictionary.compact()
     dictionary.compress()

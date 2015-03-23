@@ -17,6 +17,9 @@ public func sequence<T>(v: (T,T)) -> [T] { return [v.0, v.1] }
 public func sequence<T>(v: (T,T,T)) -> [T] { return [v.0, v.1, v.2] }
 public func sequence<T>(v: (T,T,T,T)) -> [T] { return [v.0, v.1, v.2, v.3] }
 
+public func typeCast<T,U>(t: T, u: U.Type) -> U? { return t as? U }
+public func typeCast<T,U>(t: T?, u: U.Type) -> U? { return t != nil ? typeCast(t!, u) : nil }
+
 /**
 createIdentifier:suffix:
 

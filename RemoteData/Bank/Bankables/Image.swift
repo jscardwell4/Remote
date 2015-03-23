@@ -78,10 +78,10 @@ class Image: IndexedBankCategoryItemObject, PreviewableCategoryItem, Detailable 
   */
   override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
-    safeSetValueForKeyPath("imageCategory.index", forKey: "category.index", inDictionary: dictionary)
-    safeSetValue(assetName, forKey: "asset-name", inDictionary: dictionary)
-    setIfNotDefault("leftCap", inDictionary: dictionary)
-    setIfNotDefault("topCap", inDictionary: dictionary)
+    appendValueForKeyPath("imageCategory.index", forKey: "category.index", toDictionary: dictionary)
+    appendValue(assetName, forKey: "asset-name", toDictionary: dictionary)
+    appendValueForKey("leftCap", toDictionary: dictionary)
+    appendValueForKey("topCap", toDictionary: dictionary)
     dictionary.compact()
     dictionary.compress()
     return dictionary
@@ -91,7 +91,7 @@ class Image: IndexedBankCategoryItemObject, PreviewableCategoryItem, Detailable 
 
 
   class var rootCategory: BankRootCategory<BankCategory,BankModel> {
-    var categories = ImageCategory.findAllMatchingPredicate(∀"parentCategory == nil", context: DataManager.rootContext) as! [ImageCategory]
+    var categories = ImageCategory.objectsMatchingPredicate(∀"parentCategory == nil", context: DataManager.rootContext) as! [ImageCategory]
     categories.sort{$0.0.name < $0.1.name}
     return BankRootCategory(label: "Images",
                              icon: UIImage(named: "926-photos")!,

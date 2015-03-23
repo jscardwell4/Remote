@@ -91,7 +91,7 @@ class Remote: RemoteElement {
     var buttonGroup: ButtonGroup?
     if managedObjectContext != nil {
       if let uuid = panelAssignments[assignment.rawValue] {
-        buttonGroup = ButtonGroup.existingObjectWithUUID(uuid, context: managedObjectContext!)
+        buttonGroup = ButtonGroup.objectWithUUID(uuid, context: managedObjectContext!)
       }
     }
     return buttonGroup

@@ -541,8 +541,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "122"
             endingLineNumber = "122"
-            landmarkName = "BackgroundEditingController"
-            landmarkType = "3">
+            landmarkName = "bankController(_:didSelectItem:)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -3618,11 +3618,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RemoteData/Bank/Bankables/Manufacturer.swift"
-            timestampString = "448598361.868974"
+            timestampString = "448760342.915769"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
             landmarkName = "updateWithData(_:)"
             landmarkType = "5">
          </BreakpointContent>

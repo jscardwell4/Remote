@@ -42,10 +42,10 @@ class SwitchCommand: Command {
     let dictionary = super.JSONDictionary()
 
     dictionary["class"] = "switch"
-    setIfNotDefault("type", inDictionary: dictionary)
+    appendValueForKey("type", toDictionary: dictionary)
     switch type {
       case .Remote:
-        if let targetRemote = Remote.existingObjectWithUUID(target, context: managedObjectContext!) {
+        if let targetRemote = Remote.objectWithUUID(target, context: managedObjectContext!) {
           dictionary["target"] = target
         }
       case .Mode:

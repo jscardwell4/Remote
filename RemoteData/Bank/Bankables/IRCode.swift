@@ -77,7 +77,7 @@ class IRCode: IndexedBankCategoryItemObject, BankCategoryItem, Detailable {
 //  override class func categoryType() -> BankItemCategory.Protocol { return IRCodeSet.self }
 
   class var rootCategory: BankRootCategory<BankCategory,BankModel> {
-    let categories = IRCodeSet.findAllSortedBy("name", ascending: true, context: DataManager.rootContext) as? [IRCodeSet]
+    let categories = IRCodeSet.objectsInContext(DataManager.rootContext, sortBy: "name") as? [IRCodeSet]
     return BankRootCategory(label: "IR Codes",
                             icon: UIImage(named: "tv-remote", inBundle: NSBundle(forClass: self), compatibleWithTraitCollection: nil)!,
                              subcategories: categories ?? [],
@@ -94,17 +94,17 @@ extension IRCode: MSJSONExport {
 
     let dictionary = super.JSONDictionary()
 
-    safeSetValueForKeyPath("device.commentedUUID",  forKey: "device",  inDictionary: dictionary)
-    safeSetValueForKeyPath("codeSet.index", forKey: "codeset.index", inDictionary: dictionary)
+    appendValueForKeyPath("device.commentedUUID", forKey: "device", toDictionary: dictionary)
+    appendValueForKeyPath("codeSet.index", forKey: "codeset.index", toDictionary: dictionary)
 
-    setIfNotDefault("setsDeviceInput", forKey: "sets-device-input", inDictionary: dictionary)
-    setIfNotDefault("repeatCount",     forKey: "repeat-count",      inDictionary: dictionary)
+    appendValueForKey("setsDeviceInput", toDictionary: dictionary)
+    appendValueForKey("repeatCount", toDictionary: dictionary)
 
-    setIfNotDefault("offset",      inDictionary: dictionary)
-    setIfNotDefault("frequency",   inDictionary: dictionary)
+    appendValueForKey("offset", toDictionary: dictionary)
+    appendValueForKey("frequency", toDictionary: dictionary)
 
-    safeSetValue(onOffPattern, forKey: "on-off-pattern", inDictionary: dictionary)
-    safeSetValue(prontoHex,    forKey: "pronto-hex",     inDictionary: dictionary)
+    appendValue(onOffPattern, forKey: "on-off-pattern", toDictionary: dictionary)
+    appendValue(prontoHex,    forKey: "pronto-hex", toDictionary: dictionary)
 
     dictionary.compact()
     dictionary.compress()

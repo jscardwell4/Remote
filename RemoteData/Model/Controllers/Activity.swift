@@ -105,9 +105,9 @@ class Activity: NamedModelObject {
   override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
-    safeSetValue(remote?.commentedUUID, forKey: "remote.uuid", inDictionary: dictionary)
-    safeSetValue(launchMacro?.JSONDictionary(), forKey: "launch-macro", inDictionary: dictionary)
-    safeSetValue(haltMacro?.JSONDictionary(), forKey: "halt-macro", inDictionary: dictionary)
+    appendValue(remote?.commentedUUID, forKey: "remote.uuid", toDictionary: dictionary)
+    appendValue(launchMacro?.JSONDictionary(), forKey: "launch-macro", toDictionary: dictionary)
+    appendValue(haltMacro?.JSONDictionary(), forKey: "halt-macro", toDictionary: dictionary)
 
     dictionary.compact()
     dictionary.compress()

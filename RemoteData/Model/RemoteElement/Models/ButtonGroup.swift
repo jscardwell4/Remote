@@ -305,13 +305,13 @@ class ButtonGroup: RemoteElement {
 
       if let commandSetData = data["command-set"] as? [String:[String:AnyObject]] {
         for (mode, values) in commandSetData {
-          setCommandContainer(CommandSet.fetchOrImportObjectWithData(values, context: moc), forMode: mode)
+          setCommandContainer(CommandSet.importObjectWithData(values, context: moc), forMode: mode)
         }
       }
 
       else if let collectionData = data["command-set-collection"] as? [String:[String:AnyObject]] {
         for (mode, values) in collectionData {
-          setCommandContainer(CommandSetCollection.fetchOrImportObjectWithData(values, context: moc), forMode: mode)
+          setCommandContainer(CommandSetCollection.importObjectWithData(values, context: moc), forMode: mode)
         }
       }
 

@@ -15,7 +15,11 @@ import MoonKit
 }
 
 @objc(ModelObject)
-class ModelObject: NSManagedObject {
+class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
+
+
+  /// MARK: - Initializers
+  ////////////////////////////////////////////////////////////////////////////////
 
   /**
   initWithEntity:insertIntoManagedObjectContext:
@@ -25,16 +29,18 @@ class ModelObject: NSManagedObject {
   */
   override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
     super.init(entity: entity, insertIntoManagedObjectContext: context)
-  }
+    setPrimitiveValue(uuid, forKey: "uuid")
+ }
 
   /**
   initWithContext:
 
   :param: context NSManagedObjectContext
   */
-  required init(context: NSManagedObjectContext?) {
+  init(context: NSManagedObjectContext?) {
     super.init(entity: self.dynamicType.entityDescription, insertIntoManagedObjectContext: context)
-  }
+    setPrimitiveValue(uuid, forKey: "uuid")
+ }
 
   /**
   initWithUuid:context:
@@ -44,7 +50,7 @@ class ModelObject: NSManagedObject {
   */
   init?(uuid: String, context: NSManagedObjectContext) {
     super.init(entity: self.dynamicType.entityDescription, insertIntoManagedObjectContext: nil)
-    if self.dynamicType.existingObjectWithUUID(uuid, context: context) == nil && self.dynamicType.isValidUUID(uuid) {
+    if self.dynamicType.objectWithUUID(uuid, context: context) == nil && self.dynamicType.isValidUUID(uuid) {
       context.insertObject(self)
       setPrimitiveValue(uuid, forKey: "uuid")
     } else { return nil }
@@ -59,7 +65,7 @@ class ModelObject: NSManagedObject {
   required init?(data: [String:AnyObject], context: NSManagedObjectContext) {
     if let uuid = data["uuid"] as? String {
       super.init(entity: self.dynamicType.entityDescription, insertIntoManagedObjectContext: nil)
-      if self.dynamicType.existingObjectWithUUID(uuid, context: context) == nil && self.dynamicType.isValidUUID(uuid) {
+      if self.dynamicType.objectWithUUID(uuid, context: context) == nil && self.dynamicType.isValidUUID(uuid) {
         context.insertObject(self)
         setPrimitiveValue(uuid, forKey: "uuid")
       } else { return nil }
@@ -68,7 +74,15 @@ class ModelObject: NSManagedObject {
     }
     updateWithData(data)
   }
+  
 
+  // MARK: - Properties
+
+
+  /** 
+  The one property all core data entities need to have in the model to be representable as a `ModelObject`. The value
+  of an object's `uuid` attribute serves as a unique identifier for the lifetime of the object.
+  */
   private(set) var uuid: String {
     get {
       willAccessValueForKey("uuid")
@@ -100,6 +114,11 @@ class ModelObject: NSManagedObject {
   */
   class var entityName: String { return entityDescription.name! }
 
+
+  /// MARK: - Validation
+  ////////////////////////////////////////////////////////////////////////////////
+
+
   /**
   isValidUUID:
 
@@ -109,43 +128,198 @@ class ModelObject: NSManagedObject {
   */
   class func isValidUUID(uuid: String) -> Bool { return uuid ~= "[A-F0-9]{8}-(?:[A-F0-9]{4}-){3}[A-Z0-9]{12}" }
 
+
+  /// MARK: - Fetching existing objects
+  ////////////////////////////////////////////////////////////////////////////////
+
+
   /**
-  existingObjectWithUUID:context:
+  objectWithUUID:context:
 
   :param: uuid String
   :param: context NSManagedObjectContext
 
   :returns: Self?
   */
-  class func existingObjectWithUUID(uuid: String, context: NSManagedObjectContext) -> Self? {
-    if isValidUUID(uuid) { return findFirstByAttribute("uuid", withValue: uuid, context: context) } else { return nil }
+  class func objectWithUUID(uuid: String, context: NSManagedObjectContext) -> Self? {
+    if isValidUUID(uuid) { return objectWithValue(uuid, forAttribute: "uuid", context: context) } else { return nil }
   }
 
   /**
-  fetchOrImportObjectWithData:context:
-
-  :param: data [String:AnyObject]
-  :param: context NSManagedObjectContext
-
-  :returns: Self?
-  */
-  class func fetchOrImportObjectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Self? {
-    if let object = fetchObjectWithData(data, context: context) { return object }
-    else { return self(data: data, context: context) }
-  }
-
-  /**
-  fetchObjectWithData:context:
+  Returns the existing object matched by `data` or nil if no match exists
 
   :param: data [String AnyObject]
   :param: context NSManagedObjectContext
 
   :returns: Self?
   */
-  class func fetchObjectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Self? {
-    if let uuid = data["uuid"] as? String, object = existingObjectWithUUID(uuid, context: context) { return object }
+  class func objectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Self? {
+    if let uuid = data["uuid"] as? String, object = objectWithUUID(uuid, context: context) { return object }
     else { return nil }
   }
+
+  /**
+  Returns the first object found with a matching `value` for `attribute` or nil if none exists
+
+  :param: value AnyObject
+  :param: attribute String
+  :param: context NSManagedObjectContext
+
+  :returns: Self?
+  */
+  class func objectWithValue(value: AnyObject, forAttribute attribute: String, context: NSManagedObjectContext) -> Self? {
+    return objectMatchingPredicate(NSPredicate(format: "%K == %@", argumentArray: [attribute, value]), context: context)
+  }
+
+  /**
+  objectMatchingPredicate:context:
+
+  :param: predicate NSPredicate
+  :param: context NSManagedObjectContext
+
+  :returns: Self?
+  */
+  class func objectMatchingPredicate(predicate: NSPredicate, context: NSManagedObjectContext) -> Self? {
+    return typeCast(objectsMatchingPredicate(predicate, fetchLimit: 1, context: context).first, self)
+  }
+
+  /**
+  objectsMatchingPredicate:fetchLimit:sortBy:ascending:context:
+
+  :param: predicate NSPredicate
+  :param: fetchLimit Int = 0
+  :param: sortBy String? = nil
+  :param: ascending Bool = true
+  :param: context NSManagedObjectContext
+
+  :returns: [ModelObject]
+  */
+  class func objectsMatchingPredicate(predicate: NSPredicate,
+                           fetchLimit: Int = 0,
+                             sortBy: String? = nil,
+                            ascending: Bool = true,
+                              context: NSManagedObjectContext) -> [ModelObject]
+  {
+    let request = NSFetchRequest(entityName: entityName, predicate: predicate)
+    request.fetchLimit = fetchLimit
+    if sortBy != nil {
+      request.sortDescriptors = ",".split(sortBy!).map{NSSortDescriptor(key: $0, ascending: ascending)}
+    }
+    var error: NSError?
+    let results = context.executeFetchRequest(request, error: &error) as? [ModelObject]
+    MSHandleError(error)
+    return results ?? []
+  }
+
+  /**
+  objectsInContext:sortBy:ascending:
+
+  :param: context NSManagedObjectContext
+  :param: sortBy String? = nil
+  :param: ascending Bool = true
+
+  :returns: [ModelObject]
+  */
+  class func objectsInContext(context: NSManagedObjectContext,
+                       sortBy: String? = nil,
+                    ascending: Bool = true) -> [ModelObject]
+  {
+    return objectsMatchingPredicate(∀"TRUEPREDICATE", sortBy: sortBy, ascending: ascending, context: context)
+  }
+
+  /**
+  objectsInContext:groupedBy:withPredicate:sortedBy:ascending:
+
+  :param: context NSManagedObjectContext
+  :param: groupBy String
+  :param: predicate NSPredicate = (default)
+  :param: sortBy String
+  :param: ascending Bool = true
+
+  :returns: NSFetchedResultsController
+  */
+  class func objectsInContext(context: NSManagedObjectContext,
+                    groupedBy groupBy: String,
+                withPredicate predicate: NSPredicate = ∀"TRUEPREDICATE",
+                     sortedBy sortBy: String,
+                    ascending: Bool = true) -> NSFetchedResultsController
+  {
+    let request = NSFetchRequest(entityName: entityName, predicate: predicate)
+    request.propertiesToGroupBy = ",".split(groupBy)
+    request.sortDescriptors = ",".split(sortBy).map{NSSortDescriptor(key: $0, ascending: ascending)}
+    return NSFetchedResultsController(fetchRequest: request,
+      managedObjectContext: context,
+      sectionNameKeyPath: nil,
+      cacheName: nil)
+  }
+
+  /// MARK: - Fetching attribute values for existing objects
+  ////////////////////////////////////////////////////////////////////////////////
+
+
+  /**
+  allValuesForAttribute:context:
+
+  :param: attribute String
+  :param: context NSManagedObjectContext
+
+  :returns: [AnyObject]
+  */
+  class func allValuesForAttribute(attribute: String, context: NSManagedObjectContext) -> [AnyObject] {
+    let request = NSFetchRequest(entityName: entityName)
+    request.resultType = .DictionaryResultType
+    request.returnsDistinctResults = true
+    request.propertiesToFetch = [attribute]
+
+    var error: NSError?
+    let results = context.executeFetchRequest(request, error: &error)
+    MSHandleError(error)
+    return results ?? []
+  }
+  
+
+  /// MARK: - Importing
+  ////////////////////////////////////////////////////////////////////////////////
+
+
+  /**
+  Attempts to fetch an existing object using `data` and if that fails a new object is created
+
+  :param: data [String:AnyObject]
+  :param: context NSManagedObjectContext
+
+  :returns: Self?
+  */
+  class func importObjectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Self? {
+    if let object = objectWithData(data, context: context) { return object }
+    else { return self(data: data, context: context) }
+  }
+
+  /**
+  importObjectsFromData:context:
+
+  :param: data AnyObject
+  :param: context NSManagedObjectContext
+
+  :returns: [ModelObject]
+  */
+  class func importObjectsFromData(data: AnyObject, context: NSManagedObjectContext) -> [ModelObject] {
+    if let dataArray = data as? [[String:AnyObject]] {
+      return compressed(dataArray.map{self.importObjectWithData($0, context: context)})
+    } else { return [] }
+  }
+
+
+  /// MARK: - Updating
+  ////////////////////////////////////////////////////////////////////////////////
+
+
+  /**
+  updateWithData:
+
+  :param: data [String:AnyObject]
+  */
+  func updateWithData(data: [String:AnyObject]) {}
 
   /**
   updateRelationshipFromData:forKey:ofType:
@@ -163,7 +337,7 @@ class ModelObject: NSManagedObject {
   {
     if let moc = managedObjectContext,
       objectData = data[lookupKey ?? key.dashcaseString] as? [String:AnyObject],
-      object = type.fetchOrImportObjectWithData(objectData, context: moc)
+      object = type.importObjectWithData(objectData, context: moc)
     {
       setValue(object, forKey: key)
       return true
@@ -215,164 +389,20 @@ class ModelObject: NSManagedObject {
     } else { return false }
   }
 
-  /**
-  importObjectsFromData:context:
 
-  :param: data AnyObject
+  /// MARK: - Counting
+  ////////////////////////////////////////////////////////////////////////////////
+
+
+  /**
+  countInContext:predicate:
+
   :param: context NSManagedObjectContext
-
-  :returns: [ModelObject]
-  */
-  class func importObjectsFromData(data: AnyObject, context: NSManagedObjectContext) -> [ModelObject] {
-    if let dataArray = data as? [[String:AnyObject]] {
-      return compressed(dataArray.map{self.fetchOrImportObjectWithData($0, context: context)})
-    } else { return [] }
-  }
-
-  /**
-  findFirstByAttribute:withValue:context:
-
-  :param: attribute String
-  :param: value AnyObject
-  :param: context NSManagedObjectContext
-
-  :returns: Self?
-  */
-  class func findFirstByAttribute(attribute: String,
-                        withValue value: AnyObject,
-                          context: NSManagedObjectContext) -> Self?
-  {
-    let predicate = NSPredicate(format: "%K == %@", argumentArray: [attribute, value])
-    let request = NSFetchRequest(entityName: entityName, predicate: predicate)
-    request.fetchLimit = 1
-
-    var error: NSError?
-    if let results = context.executeFetchRequest(request, error: &error), let object = results.first as? ModelObject {
-      return unsafeBitCast(object, self)
-    }
-
-    return nil
-  }
-
-  /**
-  allValuesForAttribute:context:
-
-  :param: attribute String
-  :param: context NSManagedObjectContext
-
-  :returns: [AnyObject]
-  */
-  class func allValuesForAttribute(attribute: String, context: NSManagedObjectContext) -> [AnyObject] {
-    let request = NSFetchRequest(entityName: entityName)
-    request.resultType = .DictionaryResultType
-    request.returnsDistinctResults = true
-    request.propertiesToFetch = [attribute]
-
-    var error: NSError?
-    if let results = context.executeFetchRequest(request, error: &error) {
-      return results
-    } else {
-      MSHandleError(error)
-      return []
-    }
-  }
-
-  /**
-  findFirstMatchingPredicate:context:
-
   :param: predicate NSPredicate
-  :param: context NSManagedObjectContext
-
-  :returns: Self?
-  */
-  class func findFirstMatchingPredicate(predicate: NSPredicate, context: NSManagedObjectContext) -> Self? {
-    if let object = findAllMatchingPredicate(predicate, context: context).first {
-      return unsafeBitCast(object, self)
-    } else { return nil }
-  }
-
-  /**
-  findAllMatchingPredicate:context:
-
-  :param: predicate NSPredicate
-  :param: context NSManagedObjectContext
-
-  :returns: [Self]
-  */
-  class func findAllMatchingPredicate(predicate: NSPredicate, context: NSManagedObjectContext) -> [ModelObject] {
-    let request = NSFetchRequest(entityName: entityName, predicate: predicate)
-    var error: NSError?
-    if let results = context.executeFetchRequest(request, error: &error) as? [ModelObject] {
-      return results
-    } else {
-      MSHandleError(error)
-      return []
-    }
-  }
-
-  /**
-  findAllInContext:
-
-  :param: context NSManagedObjectContext
-
-  :returns: [ModelObject]
-  */
-  class func findAllInContext(context: NSManagedObjectContext) -> [ModelObject] {
-    let request = NSFetchRequest(entityName: entityName)
-    var error: NSError?
-    if let results = context.executeFetchRequest(request, error: &error) as? [ModelObject] {
-      return results
-    } else {
-      MSHandleError(error)
-      return []
-    }
-  }
-
-  /**
-  findAllSortedBy:ascending:context:
-
-  :param: sortBy String
-  :param: ascending Bool
-  :param: context NSManagedObjectContext
-
-  :returns: [ModelObject]
-  */
-  class func findAllSortedBy(sortBy: String, ascending: Bool, context: NSManagedObjectContext) -> [ModelObject] {
-    let request = NSFetchRequest(entityName: entityName)
-    request.sortDescriptors = ",".split(sortBy).map{NSSortDescriptor(key: $0, ascending: ascending)}
-    var error: NSError?
-    if let results = context.executeFetchRequest(request, error: &error) as? [ModelObject] {
-      return results
-    } else {
-      MSHandleError(error)
-      return []
-    }
-  }
-
-  /**
-  countOfObjectsInContext:
-
-  :param: context NSManagedObjectContext
 
   :returns: Int
   */
-  class func countOfObjectsInContext(context: NSManagedObjectContext) -> Int {
-    let request = NSFetchRequest(entityName: entityName)
-    var error: NSError?
-    let result = context.countForFetchRequest(request, error: &error)
-    MSHandleError(error)
-    return result
-  }
-
-  /**
-  countOfObjectsMatchingPredicate:context:
-
-  :param: predicate NSPredicate
-  :param: context NSManagedObjectContext
-
-  :returns: Int
-  */
-  class func countOfObjectsMatchingPredicate(predicate: NSPredicate, context: NSManagedObjectContext) -> Int {
+  class func countInContext(context: NSManagedObjectContext, predicate: NSPredicate = ∀"TRUEPREDICATE") -> Int {
     let request = NSFetchRequest(entityName: entityName, predicate: predicate)
     var error: NSError?
     let result = context.countForFetchRequest(request, error: &error)
@@ -380,77 +410,34 @@ class ModelObject: NSManagedObject {
     return result
   }
 
+
+  /// MARK: - Deleting
+  ////////////////////////////////////////////////////////////////////////////////
+
+
   /**
-  deleteAllMatchingPredicate:context:
+  deleteObjectsInContext:
+
+  :param: context NSManagedObjectContext
+  */
+  class func deleteObjectsInContext(context: NSManagedObjectContext) {
+    deleteObjectsMatchingPredicate(∀"TRUEPREDICATE", context: context)
+  }
+
+  /**
+  deleteObjectsMatchingPredicate:context:
 
   :param: predicate NSPredicate
   :param: context NSManagedObjectContext
   */
-  class func deleteAllMatchingPredicate(predicate: NSPredicate, context: NSManagedObjectContext) {
-    context.deleteObjects(Set(findAllMatchingPredicate(predicate, context: context)))
+  class func deleteObjectsMatchingPredicate(predicate: NSPredicate, context: NSManagedObjectContext) {
+    context.deleteObjects(Set(objectsMatchingPredicate(predicate, context: context)))
   }
 
-  /**
-  fetchAllGroupedBy:withPredicate:sortedBy:ascending:context:
 
-  :param: groupBy String
-  :param: predicate NSPredicate
-  :param: sortBy String
-  :param: ascending Bool
-  :param: context NSManagedObjectContext
+  /// MARK: - Exporting
+  ////////////////////////////////////////////////////////////////////////////////
 
-  :returns: NSFetchedResultsController
-  */
-  class func fetchAllGroupedBy(groupBy: String,
-                 withPredicate predicate: NSPredicate,
-                      sortedBy sortBy: String,
-                     ascending: Bool,
-                       context: NSManagedObjectContext) -> NSFetchedResultsController
-  {
-    let request = NSFetchRequest(entityName: entityName, predicate: predicate)
-    request.propertiesToGroupBy = ",".split(groupBy)
-    request.sortDescriptors = ",".split(sortBy).map{NSSortDescriptor(key: $0, ascending: ascending)}
-    return NSFetchedResultsController(fetchRequest: request,
-                                      managedObjectContext: context,
-                                      sectionNameKeyPath: nil,
-                                      cacheName: nil)
-  }
-
-  /**
-  fetchAllGroupedBy:sortedBy:context:
-
-  :param: groupBy String
-  :param: sortBy String
-  :param: context NSManagedObjectContext
-
-  :returns: NSFetchedResultsController
-  */
-  class func fetchAllGroupedBy(groupBy: String,
-                      sortedBy sortBy: String,
-                       context: NSManagedObjectContext) -> NSFetchedResultsController
-  {
-    let request = NSFetchRequest(entityName: entityName)
-    request.propertiesToGroupBy = ",".split(groupBy)
-    request.sortDescriptors = ",".split(sortBy).map{NSSortDescriptor(key: $0, ascending: true)}
-    return NSFetchedResultsController(fetchRequest: request,
-                                      managedObjectContext: context,
-                                      sectionNameKeyPath: nil,
-                                      cacheName: nil)
-  }
-
-  /**
-  updateWithData:
-
-  :param: data [String:AnyObject]
-  */
-  func updateWithData(data: [String:AnyObject]) {}
-
-
-  /** awakeFromInsert */
-  override func awakeFromInsert() {
-    super.awakeFromInsert()
-    uuid = MSNonce()
-  }
 
   /**
   attributeValueIsDefault:
@@ -462,59 +449,53 @@ class ModelObject: NSManagedObject {
   func attributeValueIsDefault(attribute: String) -> Bool {
     if let value: AnyObject = valueForKey(attribute),
       let defaultValue: AnyObject = defaultValueForAttribute(attribute) where value.isEqual(defaultValue) { return true }
-    else {
-      return valueForKey(attribute) == nil && defaultValueForAttribute(attribute) == nil
+    else { return valueForKey(attribute) == nil && defaultValueForAttribute(attribute) == nil }
+  }
+
+  /**
+  appendValueForKey:forKey:ifNotDefault:inDictionary:
+
+  :param: key String
+  :param: forKey String? = nil
+  :param: nonDefault Bool = true
+  :param: dictionary MSDictionary
+  */
+  func appendValueForKey(key: String,
+                  forKey: String? = nil,
+            ifNotDefault nonDefault: Bool = true,
+            toDictionary dictionary: MSDictionary)
+  {
+    if !(nonDefault && attributeValueIsDefault(key)), let value: AnyObject = valueForKey(key) {
+      dictionary[(forKey ?? key).dashcaseString] = value
     }
   }
 
   /**
-  setIfNotDefault:forKey:inDictionary:
-
-  :param: value AnyObject?
-  :param: key String
-  :param: dictionary MSDictionary
-  */
-  func setIfNotDefault(key: String, inDictionary dictionary: MSDictionary) {
-    if !attributeValueIsDefault(key) { if let value: AnyObject = valueForKey(key) { dictionary[key] = value } }
-  }
-
-  /**
-  setIfNotDefault:forKey:inDictionary:
-
-  :param: value AnyObject?
-  :param: key String
-  :param: forKey String
-  :param: dictionary MSDictionary
-  */
-  func setIfNotDefault(key: String, forKey: String, inDictionary dictionary: MSDictionary) {
-    if !attributeValueIsDefault(key) { if let value: AnyObject = valueForKey(key) { dictionary[forKey] = value } }
-  }
-
-  /**
-  safeSetValueForKeyPath:forKey:inDictionary:
+  appendValueForKeyPath:forKey:inDictionary:
 
   :param: keypath String
   :param: key String
   :param: dictionary MSDictionary
   */
-  func safeSetValueForKeyPath(keypath: String, forKey key: String, inDictionary dictionary: MSDictionary) {
-    dictionary[key] = NSNull.collectionSafeValue(valueForKeyPath(keypath))
+  func appendValueForKeyPath(keypath: String, forKey key: String? = nil, toDictionary dictionary: MSDictionary) {
+    dictionary[(key ?? keypath).dashcaseString] = NSNull.collectionSafeValue(valueForKeyPath(keypath))
   }
 
   /**
-  safeSetValueForKeyPath:forKey:inDictionary:
+  appendValueForKeyPath:forKey:inDictionary:
 
   :param: keypath String
   :param: key String
   :param: dictionary MSDictionary
   */
-  func safeSetValue(value: AnyObject?, forKey key: String, inDictionary dictionary: MSDictionary) {
-    dictionary[key] = NSNull.collectionSafeValue(value)
+  func appendValue(value: AnyObject?,
+            forKey key: String,
+      ifNotDefault nonDefault: Bool = true,
+ toDictionary dictionary: MSDictionary)
+  {
+    if !(attributeValueIsDefault(key) && nonDefault) && value != nil { dictionary[key.dashcaseString] = value! }
   }
 
-}
-
-extension ModelObject: MSJSONExport {
   var JSONString: String {
     return JSONDictionary().JSONString.stringByReplacingOccurrencesOfString("\\/", withString: "\\")
   }
@@ -530,7 +511,13 @@ extension ModelObject: MSJSONExport {
 
 }
 
-extension ModelObject: Equatable {}
-func ==(lhs: ModelObject, rhs: ModelObject) -> Bool { return lhs.isEqual(rhs) }
 
-extension ModelObject: Hashable {}
+/**
+`Equatable` support for `ModelObject`
+
+:param: lhs ModelObject
+:param: rhs ModelObject
+
+:returns: Bool
+*/
+func ==(lhs: ModelObject, rhs: ModelObject) -> Bool { return lhs.isEqual(rhs) }

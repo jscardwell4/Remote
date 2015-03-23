@@ -37,7 +37,7 @@ class DelayCommand: Command {
     let dictionary = super.JSONDictionary()
 
     dictionary["class"] = "delay"
-    setIfNotDefault("duration", inDictionary: dictionary)
+    appendValueForKey("duration", toDictionary: dictionary)
 
     dictionary.compact()
     dictionary.compress()

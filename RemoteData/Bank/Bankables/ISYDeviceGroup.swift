@@ -33,11 +33,11 @@ extension ISYDeviceGroup: MSJSONExport {
 
   override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
-    safeSetValue(flag,    forKey: "flag",    inDictionary: dictionary)
-    safeSetValue(address, forKey: "address", inDictionary: dictionary)
-    safeSetValue(family,  forKey: "family",  inDictionary: dictionary)
-    safeSetValueForKeyPath("members.uuid", forKey: "members.uuid", inDictionary: dictionary)
-    safeSetValueForKeyPath("device.uuid",  forKey: "device.uuid",  inDictionary: dictionary)
+    appendValueForKey("flag", toDictionary: dictionary)
+    appendValueForKey("address", toDictionary: dictionary)
+    appendValueForKey("family", toDictionary: dictionary)
+    appendValueForKeyPath("members.uuid", forKey: "members.uuid", toDictionary: dictionary)
+    appendValueForKeyPath("device.uuid",  forKey: "device.uuid", toDictionary: dictionary)
     dictionary.compact()
     dictionary.compress()
     return dictionary

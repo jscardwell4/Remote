@@ -26,14 +26,14 @@ class CommandSetCollection: CommandContainer {
     get {
       if let commandSetUUID = index[label] as? String,
         let moc = managedObjectContext,
-        let commandSet = CommandSet.existingObjectWithUUID(commandSetUUID, context: moc) {
+        let commandSet = CommandSet.objectWithUUID(commandSetUUID, context: moc) {
       return commandSet }
       else { return nil }
     }
     set {
       if let existingUUID = index[label] as? String where newValue == nil,
         let moc = managedObjectContext,
-        let existingCommandSet = CommandSet.existingObjectWithUUID(existingUUID, context: moc) {
+        let existingCommandSet = CommandSet.objectWithUUID(existingUUID, context: moc) {
           let mutableCommandSets = mutableOrderedSetValueForKey("commandSets")
           mutableCommandSets.removeObject(existingCommandSet)
       }
@@ -82,7 +82,7 @@ class CommandSetCollection: CommandContainer {
 
     if let commandSetsData = data as? [String:[String:AnyObject]], let moc = managedObjectContext {
       for (label, commandSetData) in commandSetsData {
-        if let commandSet = CommandSet.fetchOrImportObjectWithData(commandSetData, context: moc) {
+        if let commandSet = CommandSet.importObjectWithData(commandSetData, context: moc) {
           self[label] = commandSet
         }
       }

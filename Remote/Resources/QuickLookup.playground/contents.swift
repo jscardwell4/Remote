@@ -1,19 +1,30 @@
 // Playground - noun: a place where people can play
 
 import Foundation
+import CoreData
 
-func afunc(type: NSArray.Type) {
-  println(NSStringFromClass(type))
+@objc protocol Model { var uuid: String { get } }
+@objc protocol Named { var name: String { get } }
+@objc protocol DynamicallyNamed: Named { var name: String { get set } }
+typealias NamedModel = protocol<Model, DynamicallyNamed>
+@objc protocol BankModel: NamedModel { var user: Bool { get } }
+
+protocol Container {
+  typealias ItemType
+//  var items: [ItemType] { get set }
+  func items<C:Containable where C == ItemType>() -> C
 }
 
-afunc(NSArray.self)
-afunc(NSMutableArray.self)
-
-func bfunc(typeName: String) {
-  if let type = NSClassFromString(typeName) as? NSArray.Type {
-    afunc(type)
-  }
+protocol Containable {
+  typealias ContainerType: Container
+  var container: ContainerType? { get set }
 }
 
-bfunc("NSArray")
-bfunc("NSMutableArray")
+protocol NestingContainer: Container {
+  typealias NestedType: Container, Containable
+  var subcontainers: [NestedType] { get set }
+}
+
+typealias BankCategory = protocol<BankModel, NestingContainer>
+
+"wtf"

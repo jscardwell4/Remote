@@ -91,14 +91,14 @@ class MacroCommand: Command {
         if let commandClassNameJSON = commandData["class"] as? String, let moc = managedObjectContext {
           let command: Command?
           switch commandClassNameJSON {
-            case "power":    command = PowerCommand.fetchOrImportObjectWithData(commandData, context: moc)
-            case "sendir":   command = SendIRCommand.fetchOrImportObjectWithData(commandData, context: moc)
-            case "http":     command = HTTPCommand.fetchOrImportObjectWithData(commandData, context: moc)
-            case "delay":    command = DelayCommand.fetchOrImportObjectWithData(commandData, context: moc)
-            case "macro":    command = MacroCommand.fetchOrImportObjectWithData(commandData, context: moc)
-            case "system":   command = SystemCommand.fetchOrImportObjectWithData(commandData, context: moc)
-            case "switch":   command = SwitchCommand.fetchOrImportObjectWithData(commandData, context: moc)
-            case "activity": command = ActivityCommand.fetchOrImportObjectWithData(commandData, context: moc)
+            case "power":    command = PowerCommand.importObjectWithData(commandData, context: moc)
+            case "sendir":   command = SendIRCommand.importObjectWithData(commandData, context: moc)
+            case "http":     command = HTTPCommand.importObjectWithData(commandData, context: moc)
+            case "delay":    command = DelayCommand.importObjectWithData(commandData, context: moc)
+            case "macro":    command = MacroCommand.importObjectWithData(commandData, context: moc)
+            case "system":   command = SystemCommand.importObjectWithData(commandData, context: moc)
+            case "switch":   command = SwitchCommand.importObjectWithData(commandData, context: moc)
+            case "activity": command = ActivityCommand.importObjectWithData(commandData, context: moc)
             default:         command = nil
           }
           if command != nil { commands.append(command!) }
@@ -118,7 +118,7 @@ class MacroCommand: Command {
     let dictionary = super.JSONDictionary()
 
     dictionary["class"] = "macro"
-    safeSetValueForKeyPath("commands.JSONDictionary", forKey: "commands", inDictionary: dictionary)
+    appendValueForKeyPath("commands.JSONDictionary", forKey: "commands", toDictionary: dictionary)
 
     dictionary.compact()
     dictionary.compress()

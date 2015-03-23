@@ -59,7 +59,7 @@ MSSTATIC_STRING_CONST kISYMulticastGroupPort    = @"1900";
     manager.requestLog           = [@{} mutableCopy];
     manager.deviceConnections    = [@[] mutableCopy];
     manager.connectionCallbacks  = [@{} mutableCopy];
-    manager.networkDevices       = [[ISYDevice findAllInContext:[DataManager rootContext]] mutableCopy] ?: [@[] mutableCopy];
+    manager.networkDevices       = [[ISYDevice objectsInContext:[DataManager rootContext]] mutableCopy] ?: [@[] mutableCopy];
     manager.beaconsReceived      = [NSMutableSet setWithCapacity:5];
     manager.suspendedConnections = [NSHashTable weakObjectsHashTable];
 

@@ -10,11 +10,7 @@ import Foundation
 import CoreData
 import MoonKit
 
-func typeCast<T,U>(subject: T, target: U.Type) -> U? {
-  return subject is U ? unsafeBitCast(subject, target) : nil
-}
 
-@objc(BankCategoryObject)
 class BankCategoryObject: BankModelObject, BankCategory {
 
 }
@@ -33,8 +29,11 @@ class IndexedBankCategoryObject: BankModelObject, IndexedBankCategory {
     }
     set {
       var shouldSetName = true
+      let path = "/".join(dropLast(index.pathComponents))
       let selfCategory = self as IndexedBankCategory
-      if let siblingCategories = (self as IndexedBankCategory).indexedCategory??.indexedSubcategories
+      if let moc = managedObjectContext,
+        parentCategory = self.dynamicType.categoryForIndex("/".join(dropLast(index.pathComponents)), context: moc),
+        siblingCategories = (parentCategory as IndexedBankCategory).indexedSubcategories
         where siblingCategories.map({$0.name}) ∋ newValue
       {
         shouldSetName = false
@@ -109,16 +108,16 @@ class IndexedBankCategoryObject: BankModelObject, IndexedBankCategory {
   }
 
   /**
-  fetchObjectWithData:context:
+  objectWithData:context:
 
   :param: data [String AnyObject]
   :param: context NSManagedObjectContext
 
   :returns: Self?
   */
-  override class func fetchObjectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Self? {
+  override class func objectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Self? {
     if let path = data["path"] as? String { return categoryForIndex(path, context: context) }
-    else if let object = super.fetchObjectWithData(data, context: context) where object.dynamicType === self {
+    else if let object = super.objectWithData(data, context: context) where object.dynamicType === self {
       return unsafeBitCast(object, self)
     } else { return nil }
   }
@@ -145,41 +144,5 @@ class IndexedBankCategoryObject: BankModelObject, IndexedBankCategory {
     }
     return nil
   }
-
-  /**
-  updateWithData:
-
-  :param: data [String:AnyObject]
-  */
-//  override func updateWithData(data: [String:AnyObject]) {
-//    super.updateWithData(data) // sets uuid, name
-//
-//    if let key = self.dynamicType.parentCategoryKey { updateRelationshipFromData(data, forKey: key) }
-//    if let key = self.dynamicType.itemsKey { updateRelationshipFromData(data, forKey: key) }
-//    if let key = self.dynamicType.subcategoriesKey { updateRelationshipFromData(data, forKey: key) }
-//  }
-
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary
-  */
-//  override func JSONDictionary() -> MSDictionary {
-//    let dictionary = super.JSONDictionary()
-//
-//    if respondsToSelector("category"), let parentCategory = valueForKey("category") as? BankCategoryObject {
-//      dictionary[self.dynamicType.parentCategoryKey!.dashcaseString] = parentCategory.index
-//    }
-//
-//    if let items = self.items as? [BankCategoryItemObject] where items.count > 0 {
-//      dictionary[self.dynamicType.itemsKey!.dashcaseString] = items.map{$0.JSONDictionary()}
-//    }
-//
-//    if let subcategories = self.subcategories as? [BankCategoryObject] where items.count > 0 {
-//      dictionary[self.dynamicType.subcategoriesKey!.dashcaseString] = subcategories.map{$0.JSONDictionary()}
-//    }
-//
-//    return dictionary
-//  }
 
 }

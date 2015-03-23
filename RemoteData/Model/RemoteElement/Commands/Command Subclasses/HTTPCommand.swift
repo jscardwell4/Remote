@@ -30,7 +30,7 @@ class HTTPCommand: SendCommand {
     let dictionary = super.JSONDictionary()
 
     dictionary["class"] = "http"
-    safeSetValue(url.absoluteString, forKey: "url", inDictionary: dictionary)
+    appendValue(url.absoluteString, forKey: "url", toDictionary: dictionary)
 
     dictionary.compact()
     dictionary.compress()

@@ -46,7 +46,7 @@ class ActivityController: ModelObject {
   @NSManaged var homeRemote: Remote
   @NSManaged var topToolbar: ButtonGroup
 
-  var activities: [Activity] { return sortedByName(Activity.findAllInContext(managedObjectContext!) as? [Activity] ?? []) }
+  var activities: [Activity] { return sortedByName(Activity.objectsInContext(managedObjectContext!) as? [Activity] ?? []) }
 
   /**
   sharedController:
@@ -67,11 +67,11 @@ class ActivityController: ModelObject {
   override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
-    safeSetValue(homeRemote.commentedUUID, forKey: "homeRemote.uuid", inDictionary: dictionary)
-    safeSetValue(currentRemote.commentedUUID, forKey: "currentRemote.uuid", inDictionary: dictionary)
-    safeSetValue(currentActivity?.commentedUUID, forKey: "currentActivity.uuid", inDictionary: dictionary)
-    safeSetValue(topToolbar.JSONDictionary(), forKey: "top-toolbar", inDictionary: dictionary)
-    safeSetValue(activities, forKey: "activities", inDictionary: dictionary)
+    appendValue(homeRemote.commentedUUID, forKey: "homeRemote.uuid", toDictionary: dictionary)
+    appendValue(currentRemote.commentedUUID, forKey: "currentRemote.uuid", toDictionary: dictionary)
+    appendValue(currentActivity?.commentedUUID, forKey: "currentActivity.uuid", toDictionary: dictionary)
+    appendValue(topToolbar.JSONDictionary(), forKey: "top-toolbar", toDictionary: dictionary)
+    appendValue(activities, forKey: "activities", toDictionary: dictionary)
 
     dictionary.compact()
     dictionary.compress()

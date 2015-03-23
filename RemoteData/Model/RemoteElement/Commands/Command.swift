@@ -50,14 +50,14 @@ class Command: NamedModelObject {
   }
 
   /**
-  fetchOrImportObjectWithData:context:
+  importObjectWithData:context:
 
   :param: data [String:AnyObject]
   :param: context NSManagedObjectContext!
 
   :returns: Command?
   */
-  override class func fetchOrImportObjectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Command? {
+  override class func importObjectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Command? {
     if self === Command.self, let classJSONValue = data["class"] as? String {
       switch classJSONValue {
         case "power":  return PowerCommand(data: data, context: context)
@@ -69,7 +69,7 @@ class Command: NamedModelObject {
         default:       return nil
       }
     } else {
-      return super.fetchOrImportObjectWithData(data, context: context) as? Command
+      return super.importObjectWithData(data, context: context) as? Command
     }
   }
 

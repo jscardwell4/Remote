@@ -57,7 +57,7 @@ class SystemCommand: Command {
     let dictionary = super.JSONDictionary()
 
     dictionary["class"] = "system"
-    setIfNotDefault("type", inDictionary: dictionary)
+    appendValueForKey("type", toDictionary: dictionary)
 
     dictionary.compact()
     dictionary.compress()

@@ -14,19 +14,19 @@ import MoonKit
 
   /** initialize */
   class func initialize() {
-    MSLogDebug("performing database operations…")
+    MSLogDebug("performing \(dataFlag)\nmodel flags…\n" + "\n".join(modelFlags.map({$0.description})))
 
     if databaseStoreURL.checkResourceIsReachableAndReturnError(nil)
-      && dataFlag?.remove ?? false
+      && dataFlag.remove
     {
       var error: NSError?
       NSFileManager.defaultManager().removeItemAtURL(databaseStoreURL, error: &error)
       if !MSHandleError(error) { MSLogDebug("previous database store has been removed") }
     }
 
-    if dataFlag?.load ?? false {
-      loadData { if !MSHandleError($1, message: "data load failed") && self.dataFlag?.dump ?? false { self.dumpData() } }
-    } else if dataFlag?.dump ?? false { dumpData() }
+    if dataFlag.load {
+      loadData { if !MSHandleError($1, message: "data load failed") && self.dataFlag.dump { self.dumpData() } }
+    } else if dataFlag.dump { dumpData() }
   }
 
   /** URL for the user's persistent store */
@@ -72,15 +72,15 @@ import MoonKit
                             options: [NSMigratePersistentStoresAutomaticallyOption: true,
                                       NSInferMappingModelAutomaticallyOption: true])
     {
-      if dataFlag?.logModel ?? false { MSLogDebug("managed object model:\n\(stack.managedObjectModel.description)") }
+      if dataFlag.logModel { MSLogDebug("managed object model:\n\(stack.managedObjectModel.description)") }
       return stack
     } else { fatalError("failed to instantiate core data stack, aborting…") }
 
   }()
 
   static private let resourceBaseName = "Remote"
-  static private var dataFlag: DataFlag? = DataFlag()
-  static private var modelFlags: [ModelFlag] = ModelFlag.all
+  static private let dataFlag: DataFlag = DataFlag()
+  static private let modelFlags: [ModelFlag] = ModelFlag.all
 
 
   /**
@@ -399,8 +399,8 @@ import MoonKit
 
     static let key = "databaseOperations"
 
-    /** Initializes a new flag if argument is present, returns nil otherwise */
-    init?() {
+    /** Initializes a new flag using command line argument if present */
+    init() {
       if let arg = NSUserDefaults.standardUserDefaults().volatileDomainForName(NSArgumentDomain)[DataFlag.key] as? String {
         let markers = compressed(",".split(arg).map({Marker(argValue: $0)}))
         load =  markers ∋ .Load
@@ -408,7 +408,13 @@ import MoonKit
         logModel =  markers ∋ .Log([.Model])
         copy = markers ∋ .Copy
         remove =  markers ∋ .Remove
-      } else { return nil }
+      } else {
+        load = false
+        dump = false
+        logModel = false
+        copy = false
+        remove = false
+      }
     }
 
     var description: String {
@@ -490,7 +496,7 @@ import MoonKit
           default: break
           }
         }
-        if removeExisting { rootContext.deleteObjects(Set($0.modelType.findAllInContext(rootContext))) }
+        if removeExisting { rootContext.deleteObjects(Set($0.modelType.objectsInContext(rootContext))) }
         if fileName != nil {
           self.loadDataFromFile(fileName!,
                            type: $0.modelType,
@@ -514,14 +520,12 @@ import MoonKit
 
   /** dumpData */
   class func dumpData(completion: ((Void) -> Void)? = nil ) {
-    rootContext.performBlock {[rootContext = self.rootContext] in
+    rootContext.performBlock {
 
       self.modelFlags ➤ {
         for marker in $0.markers {
           switch marker {
-          case .Dump:
-            MSLogDebug("\(($0.modelType.self as AnyObject).className) objects: \n" +
-                       "\(($0.modelType.findAllInContext(rootContext) as NSArray).JSONString)\n")
+          case .Dump: self.dumpJSONForModelType($0.modelType)
           default: break
           }
         }
@@ -530,6 +534,24 @@ import MoonKit
 
     completion?()
 
+  }
+
+  /**
+  dumpJSONForModelType:
+
+  :param: modelType ModelObject.Type
+  */
+  private class func dumpJSONForModelType(modelType: ModelObject.Type) {
+    let className = (modelType.self as AnyObject).className
+    let objects: [ModelObject]
+    switch className {
+    case "ImageCategory", "PresetCategory":
+      objects = modelType.objectsMatchingPredicate(∀"parentCategory = NULL", context: rootContext)
+    default:
+      objects = modelType.objectsInContext(rootContext)
+    }
+    let json = (objects as NSArray).JSONString
+    MSLogDebug("\(className) objects: \n\(json)\n")
   }
 
   /**

@@ -111,7 +111,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
 
         self.presentViewController(alert, animated: true, completion: nil)
       }
-      let data = sortedByName((Manufacturer.findAllInContext(moc) as? [Manufacturer] ?? []))
+      let data = sortedByName((Manufacturer.objectsInContext(moc) as? [Manufacturer] ?? []))
       pickerRow.data = data
       pickerRow.info = componentDevice.manufacturer
 
@@ -211,7 +211,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
           pickerRow.info = $0
         }
       }
-      let data = sortedByName(NetworkDevice.findAllInContext(moc) as? [NetworkDevice] ?? [])
+      let data = sortedByName(NetworkDevice.objectsInContext(moc) as? [NetworkDevice] ?? [])
       pickerRow.data = data
       pickerRow.info = componentDevice.networkDevice
 

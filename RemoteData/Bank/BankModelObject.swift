@@ -10,7 +10,10 @@ import Foundation
 import CoreData
 import MoonKit
 
-@objc(BankModelObject)
+@objc protocol BankModel: NamedModel, Editable {
+  var user: Bool { get }
+}
+
 class BankModelObject: NamedModelObject, BankModel {
   @NSManaged var user: Bool
 
@@ -32,7 +35,7 @@ class BankModelObject: NamedModelObject, BankModel {
   override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
-    setIfNotDefault("user", inDictionary: dictionary)
+    appendValueForKey("user", toDictionary: dictionary)
 
     dictionary.compact()
     dictionary.compress()
@@ -40,9 +43,10 @@ class BankModelObject: NamedModelObject, BankModel {
     return dictionary
   }
 
-
 }
 
-//class IndexedBankModelObject: BankModelObject, IndexedBankModel {
-//  var index: String { return name }
-//}
+typealias IndexedBankModel = protocol<BankModel, Indexed>
+
+class IndexedBankModelObject: BankModelObject, IndexedBankModel {
+  var index: String { return name }
+}

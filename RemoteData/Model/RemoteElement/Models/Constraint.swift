@@ -325,22 +325,20 @@ class Constraint: ModelObject, Printable, DebugPrintable {
     var constraint: Constraint?
     if let pseudo = NSLayoutPseudoConstraint(format: format) {
       let firstItemIndex = pseudo.firstItem
-      if let firstItemUUID = index[firstItemIndex] {
-        if let firstItem = RemoteElement.findFirstByAttribute("uuid", withValue: firstItemUUID, context: context) {
-          var secondItem: RemoteElement?
-          if let secondItemIndex = pseudo.secondItem {
-            if let secondItemUUID = index[secondItemIndex] {
-              secondItem = RemoteElement.findFirstByAttribute("uuid", withValue: secondItemUUID, context: context)
-            }
-          }
-
-          var directory: OrderedDictionary<String,RemoteElement> = [firstItem.identifier: firstItem]
-          if secondItem != nil { directory.setValue(secondItem!, forKey: secondItem!.identifier) }
-          var updatedPseudo = pseudo
-          updatedPseudo.firstItem = firstItem.identifier
-          updatedPseudo.secondItem = secondItem?.identifier
-          constraint = Constraint.constraintFromPseudoConstraint(updatedPseudo, usingDirectory: directory)
+      if let firstItemUUID = index[firstItemIndex],
+        firstItem = RemoteElement.objectWithValue(firstItemUUID, forAttribute: "uuid", context: context)
+      {
+        var secondItem: RemoteElement?
+        if let secondItemIndex = pseudo.secondItem, secondItemUUID = index[secondItemIndex] {
+          secondItem = RemoteElement.objectWithValue(secondItemUUID, forAttribute: "uuid", context: context)
         }
+
+        var directory: OrderedDictionary<String,RemoteElement> = [firstItem.identifier: firstItem]
+        if secondItem != nil { directory.setValue(secondItem!, forKey: secondItem!.identifier) }
+        var updatedPseudo = pseudo
+        updatedPseudo.firstItem = firstItem.identifier
+        updatedPseudo.secondItem = secondItem?.identifier
+        constraint = Constraint.constraintFromPseudoConstraint(updatedPseudo, usingDirectory: directory)
       }
     }
     return constraint

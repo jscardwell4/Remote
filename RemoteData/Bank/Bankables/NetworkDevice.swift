@@ -16,8 +16,15 @@ class NetworkDevice: BankModelObject {
   @NSManaged var uniqueIdentifier: String!
   @NSManaged var componentDevices: NSSet?
 
+  /**
+  deviceExistsWithIdentifier:
+
+  :param: identifier String
+
+  :returns: Bool
+  */
   class func deviceExistsWithIdentifier(identifier: String) -> Bool {
-    return countOfObjectsMatchingPredicate(∀"uniqueIdentifier == \"\(identifier)\"", context: DataManager.rootContext) > 0
+    return objectWithValue(identifier, forAttribute: "uniqueIdentifier", context: DataManager.rootContext) != nil
   }
 
   override func updateWithData(data: [String:AnyObject]) {
@@ -26,14 +33,14 @@ class NetworkDevice: BankModelObject {
   }
 
   /**
-  fetchOrImportObjectWithData:context:
+  importObjectWithData:context:
 
   :param: data [String:AnyObject]
   :param: context NSManagedObjectContext
 
   :returns: NetworkDevice?
   */
-//  override class func fetchOrImportObjectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> NetworkDevice? {
+//  override class func importObjectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> NetworkDevice? {
 //
 //    var device: NetworkDevice?
 //
@@ -57,7 +64,7 @@ class NetworkDevice: BankModelObject {
 //    return device
 //  }
   class var rootCategory: BankRootCategory<BankCategory,BankModel> {
-    let networkDevices = findAllSortedBy("name", ascending: true, context: DataManager.rootContext) as? [NetworkDevice]
+    let networkDevices = objectsInContext(DataManager.rootContext, sortBy: "name") as? [NetworkDevice]
     return BankRootCategory(label: "Network Devices",
                              icon: UIImage(named: "937-wifi-signal")!,
                              items: networkDevices ?? [],
@@ -70,7 +77,7 @@ extension NetworkDevice: MSJSONExport {
 
   override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
-      safeSetValue(uniqueIdentifier, forKey: "unique-identifier", inDictionary: dictionary)
+      appendValue(uniqueIdentifier, forKey: "unique-identifier", toDictionary: dictionary)
       dictionary.compact()
       dictionary.compress()
       return dictionary

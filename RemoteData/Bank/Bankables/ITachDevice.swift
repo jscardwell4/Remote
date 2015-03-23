@@ -106,14 +106,14 @@ extension ITachDevice: MSJSONExport {
 
   override func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
-    safeSetValue(pcbPN,     forKey: "pcb-pn",     inDictionary: dictionary)
-    safeSetValue(pkgLevel,  forKey: "pkg-level",  inDictionary: dictionary)
-    safeSetValue(sdkClass,  forKey: "sdk-class",  inDictionary: dictionary)
-    safeSetValue(make,      forKey: "make",       inDictionary: dictionary)
-    safeSetValue(model,     forKey: "model",      inDictionary: dictionary)
-    safeSetValue(status,    forKey: "status",     inDictionary: dictionary)
-    safeSetValue(configURL, forKey: "config-url", inDictionary: dictionary)
-    safeSetValue(revision,  forKey: "revision",   inDictionary: dictionary)
+    appendValueForKey("pcbPN", toDictionary: dictionary)
+    appendValueForKey("pkgLevel", toDictionary: dictionary)
+    appendValueForKey("sdkClass", toDictionary: dictionary)
+    appendValueForKey("make", toDictionary: dictionary)
+    appendValueForKey("model", toDictionary: dictionary)
+    appendValueForKey("status", toDictionary: dictionary)
+    appendValueForKey("configURL", toDictionary: dictionary)
+    appendValueForKey("revision", toDictionary: dictionary)
     dictionary.compact()
     dictionary.compress()
     return dictionary

@@ -49,7 +49,7 @@ class SendIRCommand: SendCommand {
 
     dictionary["class"] = "sendir"
     dictionary["code.uuid"] = code.uuid
-    setIfNotDefault("portOverride", forKey: "port-override", inDictionary: dictionary)
+    appendValueForKey("portOverride", toDictionary: dictionary)
 
     dictionary.compact()
     dictionary.compress()

@@ -81,7 +81,7 @@ class ComponentDevice: BankModelObject, Detailable {
   }
 
   class var rootCategory: BankRootCategory<BankCategory,BankModel> {
-    let devices = findAllSortedBy("name", ascending: true, context: DataManager.rootContext) as? [ComponentDevice]
+    let devices = objectsInContext(DataManager.rootContext, sortBy: "name") as? [ComponentDevice]
     return BankRootCategory(label: "Component Devices",
                              icon: UIImage(named: "969-television")!,
                              items: devices ?? [],
@@ -108,15 +108,15 @@ extension ComponentDevice: MSJSONExport {
 
     let dictionary = super.JSONDictionary()
 
-    setIfNotDefault("port",          inDictionary: dictionary)
-    setIfNotDefault("alwaysOn",      inDictionary: dictionary)
-    setIfNotDefault("inputPowersOn", inDictionary: dictionary)
+    appendValueForKey("port", toDictionary: dictionary)
+    appendValueForKey("alwaysOn", toDictionary: dictionary)
+    appendValueForKey("inputPowersOn", toDictionary: dictionary)
 
-    safeSetValueForKeyPath("onCommand.JSONDictionary",    forKey: "on-command",          inDictionary: dictionary)
-    safeSetValueForKeyPath("offCommand.JSONDictionary",   forKey: "off-command",         inDictionary: dictionary)
-    safeSetValueForKeyPath("manufacturer.commentedUUID",  forKey: "manufacturer.uuid",   inDictionary: dictionary)
-    safeSetValueForKeyPath("networkDevice.commentedUUID", forKey: "network-device.uuid", inDictionary: dictionary)
-    safeSetValueForKeyPath("codeSet.commentedUUID",       forKey: "code-set",            inDictionary: dictionary)
+    appendValueForKeyPath("onCommand.JSONDictionary", forKey: "on-command", toDictionary: dictionary)
+    appendValueForKeyPath("offCommand.JSONDictionary", forKey: "off-command", toDictionary: dictionary)
+    appendValueForKeyPath("manufacturer.commentedUUID", forKey: "manufacturer.uuid", toDictionary: dictionary)
+    appendValueForKeyPath("networkDevice.commentedUUID", forKey: "network-device.uuid", toDictionary: dictionary)
+    appendValueForKeyPath("codeSet.commentedUUID", forKey: "code-set", toDictionary: dictionary)
 
     dictionary.compact()
     dictionary.compress()

@@ -60,32 +60,9 @@ class RemoteElement: NamedModelObject {
     }
   }
 
-  required init(context: NSManagedObjectContext?) {
-      fatalError("init(context:) has not been implemented")
-  }
-
   required init?(data: [String : AnyObject], context: NSManagedObjectContext) {
-      fatalError("init(data:context:) has not been implemented")
+    super.init(data: data, context: context)
   }
-
-  /**
-  initWithEntity:insertIntoManagedObjectContext:
-
-  :param: entity NSEntityDescription
-  :param: context NSManagedObjectContext?
-  */
-//  override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-//    super.init(entity: entity, insertIntoManagedObjectContext: context)
-//  }
-
-  /**
-  initWithContext:
-
-  :param: context NSManagedObjectContext
-  */
-//  override init(context: NSManagedObjectContext) {
-//    super.init(context: context)
-//  }
 
   @NSManaged var tag: NSNumber
   @NSManaged var key: String?
@@ -240,15 +217,15 @@ class RemoteElement: NamedModelObject {
 
       if let backgroundImageJSON = data["background-image"] as? [String:[String:AnyObject]] {
         for (mode, value) in backgroundImageJSON {
-          setURIForObject(Image.fetchOrImportObjectWithData(value, context: moc), forKey: "backgroundImage", forMode: mode)
+          setURIForObject(Image.importObjectWithData(value, context: moc), forKey: "backgroundImage", forMode: mode)
         }
       }
 
       if let subelementsJSON = data["subelements"] as? [[String:AnyObject]] {
         if elementType == .Remote {
-          childElements = OrderedSet(compressed(subelementsJSON.map{ButtonGroup.fetchOrImportObjectWithData($0, context: moc)}))
+          childElements = OrderedSet(compressed(subelementsJSON.map{ButtonGroup.importObjectWithData($0, context: moc)}))
         } else if elementType == .ButtonGroup {
-          childElements = OrderedSet(compressed(subelementsJSON.map{Button.fetchOrImportObjectWithData($0,  context: moc)}))
+          childElements = OrderedSet(compressed(subelementsJSON.map{Button.importObjectWithData($0,  context: moc)}))
         }
       }
 
@@ -279,7 +256,7 @@ class RemoteElement: NamedModelObject {
     dictionary["name"] = name
     if key != nil  { dictionary["key"] = key!   }
 
-    ifNotDefaultSetValue(tag,             forKey: "tag"  )
+    appendValueForKey("tag", toDictionary: dictionary)
     ifNotDefaultSetValue(role.JSONValue,  forKey: "role" )
     ifNotDefaultSetValue(shape.JSONValue, forKey: "shape")
     ifNotDefaultSetValue(style.JSONValue, forKey: "style")

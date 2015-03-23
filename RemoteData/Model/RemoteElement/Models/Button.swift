@@ -40,22 +40,22 @@ class Button: RemoteElement {
     if let moc = managedObjectContext {
 
       if let titlesData = preset.titles {
-        setTitles(ControlStateTitleSet.fetchOrImportObjectWithData(titlesData, context: moc),
+        setTitles(ControlStateTitleSet.importObjectWithData(titlesData, context: moc),
           forMode: RemoteElement.DefaultMode)
       }
 
       if let iconsData = preset.icons {
-        setIcons(ControlStateImageSet.fetchOrImportObjectWithData(iconsData, context: moc),
+        setIcons(ControlStateImageSet.importObjectWithData(iconsData, context: moc),
          forMode: RemoteElement.DefaultMode)
       }
 
       if let imagesData = preset.images {
-        setImages(ControlStateImageSet.fetchOrImportObjectWithData(imagesData, context: moc),
+        setImages(ControlStateImageSet.importObjectWithData(imagesData, context: moc),
           forMode: RemoteElement.DefaultMode)
       }
 
       if let backgroundColorsData = preset.backgroundColors {
-        setBackgroundColors(ControlStateColorSet.fetchOrImportObjectWithData(backgroundColorsData, context: moc),
+        setBackgroundColors(ControlStateColorSet.importObjectWithData(backgroundColorsData, context: moc),
                     forMode: RemoteElement.DefaultMode)
       }
 
@@ -64,7 +64,7 @@ class Button: RemoteElement {
       imageEdgeInsets = preset.imageEdgeInsets
 
       if let commandData = preset.command {
-        setCommand(Command.fetchOrImportObjectWithData(commandData, context: moc), forMode: RemoteElement.DefaultMode)
+        setCommand(Command.importObjectWithData(commandData, context: moc), forMode: RemoteElement.DefaultMode)
       }
 
     }
@@ -399,38 +399,38 @@ class Button: RemoteElement {
 
       if let titles = data["titles"] as? [String:[String:AnyObject]] {
         for (mode, values) in titles {
-          let titleSet = ControlStateTitleSet.fetchOrImportObjectWithData(values, context: moc)
+          let titleSet = ControlStateTitleSet.importObjectWithData(values, context: moc)
           if titleSet != nil { setTitles(titleSet, forMode: mode) }
         }
       }
 
       if let icons = data["icons"] as? [String:[String:AnyObject]] {
         for (mode, values) in icons {
-          setIcons(ControlStateImageSet.fetchOrImportObjectWithData(values, context: moc), forMode: mode)
+          setIcons(ControlStateImageSet.importObjectWithData(values, context: moc), forMode: mode)
         }
       }
 
       if let images = data["images"] as? [String:[String:AnyObject]] {
         for (mode, values) in images {
-          setImages(ControlStateImageSet.fetchOrImportObjectWithData(values, context: moc), forMode: mode)
+          setImages(ControlStateImageSet.importObjectWithData(values, context: moc), forMode: mode)
         }
       }
 
       if let backgroundColors = data["background-colors"] as? [String:[String:AnyObject]] {
         for (mode, values) in backgroundColors {
-          setBackgroundColors(ControlStateColorSet.fetchOrImportObjectWithData(values, context: moc), forMode: mode)
+          setBackgroundColors(ControlStateColorSet.importObjectWithData(values, context: moc), forMode: mode)
         }
       }
 
       if let commands = data["commands"] as? [String:[String:AnyObject]] {
         for (mode, values) in commands {
-          setCommand(Command.fetchOrImportObjectWithData(values, context: moc), forMode: mode)
+          setCommand(Command.importObjectWithData(values, context: moc), forMode: mode)
         }
       }
 
       if let longPressCommands = data["long-press-commands"] as? [String:[String:AnyObject]] {
         for (mode, values) in longPressCommands {
-          setCommand(Command.fetchOrImportObjectWithData(values, context: moc), forMode: mode)
+          setCommand(Command.importObjectWithData(values, context: moc), forMode: mode)
         }
       }
 
@@ -459,14 +459,6 @@ class Button: RemoteElement {
     let dictionary = super.JSONDictionary()
     dictionary["background-color"] = NSNull()
 
-    func ifNotDefaultSetValue(@autoclosure value: () -> NSObject?, forKey key: String) {
-      if let v = value() {
-        if !self.attributeValueIsDefault(key) {
-          dictionary[key.camelCaseToDashCase()] = v
-        }
-      }
-    }
-
     let titles            = MSDictionary()
     let backgroundColors  = MSDictionary()
     let icons             = MSDictionary()
@@ -493,9 +485,9 @@ class Button: RemoteElement {
     dictionary["background-colors"]  = backgroundColors
     dictionary["images"]             = images
 
-    ifNotDefaultSetValue(NSStringFromUIEdgeInsets(titleEdgeInsets),   forKey: "titleEdgeInsets")
-    ifNotDefaultSetValue(NSStringFromUIEdgeInsets(imageEdgeInsets),   forKey: "imageEdgeInsets")
-    ifNotDefaultSetValue(NSStringFromUIEdgeInsets(contentEdgeInsets), forKey: "contentEdgeInsets")
+    appendValueForKey("titleEdgeInsets", toDictionary: dictionary)
+    appendValueForKey("imageEdgeInsets", toDictionary: dictionary)
+    appendValueForKey("contentEdgeInsets", toDictionary: dictionary)
 
     dictionary.compact()
     dictionary.compress()

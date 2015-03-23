@@ -36,6 +36,18 @@ class PresetCategory: IndexedBankCategoryObject, PreviewableCategory {
   override var index: String { return indexedCategory == nil ? name : "\(indexedCategory!.index)/\(name)" }
 
   /**
+  rootCategoryNamed:context:
+
+  :param: name String
+  :param: context NSManagedObjectContext
+
+  :returns: IndexedBankCategory?
+  */
+  override class func rootCategoryNamed(name: String, context: NSManagedObjectContext) -> IndexedBankCategory? {
+    return objectMatchingPredicate(∀"parentCategory = NULL AND name = '\(name)'", context: context)
+  }
+
+  /**
   updateWithData:
 
   :param: data [String:AnyObject]
