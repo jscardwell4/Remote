@@ -34,6 +34,20 @@
                ReferencedContainer = "container:Remote.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C293C74D1AC3164700408D35"
+               BuildableName = "BankTests.xctest"
+               BlueprintName = "BankTests"
+               ReferencedContainer = "container:Remote.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -49,6 +63,16 @@
                BlueprintIdentifier = "C215CC081ABB102F00E8077E"
                BuildableName = "RemoteDataTests.xctest"
                BlueprintName = "RemoteDataTests"
+               ReferencedContainer = "container:Remote.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C293C74D1AC3164700408D35"
+               BuildableName = "BankTests.xctest"
+               BlueprintName = "BankTests"
                ReferencedContainer = "container:Remote.xcodeproj">
             </BuildableReference>
          </TestableReference>

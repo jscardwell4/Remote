@@ -4,6 +4,16 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Bank.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>13</integer>
+		</dict>
+		<key>BankApp.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>10</integer>
+		</dict>
 		<key>CoreDataLogicTests-Magical/In-memory.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -27,7 +37,7 @@
 		<key>DataModel.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>7</integer>
+			<integer>8</integer>
 		</dict>
 		<key>ISYClient.xcscheme</key>
 		<dict>
@@ -42,16 +52,6 @@
 			<true/>
 			<key>orderHint</key>
 			<integer>0</integer>
-		</dict>
-		<key>RemoteData.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>8</integer>
-		</dict>
-		<key>RemoteDataUITest.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>10</integer>
 		</dict>
 		<key>RemoteSettings.xcscheme</key>
 		<dict>
@@ -109,6 +109,16 @@
 			<true/>
 		</dict>
 		<key>C28FD57B171C65BB008560E3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C293C7431AC3164700408D35</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C293C74D1AC3164700408D35</key>
 		<dict>
 			<key>primary</key>
 			<true/>

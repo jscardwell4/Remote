@@ -119,7 +119,7 @@ extension BackgroundEditingController: ColorSelectionControllerDelegate {
 }
 
 extension BackgroundEditingController: BankItemSelectionDelegate {
-  func bankController(bankController: BankController, didSelectItem item: BankModel) {
+  func bankController(bankController: BankController, didSelectItem item: EditableModel) {
     if let image = item as? Image {
       subject?.backgroundImage?.image = image
     }
