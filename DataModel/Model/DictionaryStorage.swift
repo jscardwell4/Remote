@@ -11,10 +11,10 @@ import CoreData
 import MoonKit
 
 @objc(DictionaryStorage)
-class DictionaryStorage: NSManagedObject {
+public final class DictionaryStorage: NSManagedObject {
 
   @NSManaged var primitiveDictionary: NSDictionary
-  var dictionary: [NSObject:AnyObject] {
+  public var dictionary: [NSObject:AnyObject] {
     get {
       willAccessValueForKey("dictionary")
       let dictionary = primitiveDictionary
@@ -28,7 +28,7 @@ class DictionaryStorage: NSManagedObject {
     }
   }
 
-  subscript(key: NSObject) -> AnyObject? {
+  public subscript(key: NSObject) -> AnyObject? {
     get { return dictionary[key] }
     set { var d = dictionary; d[key] = newValue; dictionary = d }
   }

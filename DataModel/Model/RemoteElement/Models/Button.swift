@@ -11,9 +11,9 @@ import CoreData
 import MoonKit
 
 @objc(Button)
-class Button: RemoteElement {
+public final class Button: RemoteElement {
 
-//  struct State: RawOptionSetType {
+//  public struct State: RawOptionSetType {
 //
 //    private(set) var rawValue: Int
 //    init(rawValue: Int) { self.rawValue = rawValue & 0b0111 }
@@ -27,14 +27,14 @@ class Button: RemoteElement {
 //
 //  }
 
-  override var elementType: BaseType { return .Button }
+  override public var elementType: BaseType { return .Button }
 
   /**
   initWithPreset:
 
   :param: preset Preset
   */
-  override init(preset: Preset) {
+  override public init(preset: Preset) {
     super.init(preset: preset)
 
     if let moc = managedObjectContext {
@@ -71,19 +71,19 @@ class Button: RemoteElement {
 
   }
 
-  required init(context: NSManagedObjectContext, insert: Bool) {
+  required public init(context: NSManagedObjectContext, insert: Bool) {
       fatalError("init(context:insert:) has not been implemented")
   }
 
-  required init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+  required public init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
       fatalError("init(entity:insertIntoManagedObjectContext:) has not been implemented")
   }
 
-  required init?(data: [String : AnyObject], context: NSManagedObjectContext) {
+  required public init?(data: [String : AnyObject], context: NSManagedObjectContext) {
       fatalError("init(data:context:) has not been implemented")
   }
 
-  required init(context: NSManagedObjectContext?) {
+  required public init(context: NSManagedObjectContext?) {
       fatalError("init(context:) has not been implemented")
   }
 
@@ -106,18 +106,18 @@ class Button: RemoteElement {
 //    super.init(context: context)
 //  }
 
-  @NSManaged var title:            NSAttributedString?
-  @NSManaged var icon:             ImageView?
-  @NSManaged var image:            ImageView?
-  @NSManaged var titles:           ControlStateTitleSet?
-  @NSManaged var icons:            ControlStateImageSet?
-  @NSManaged var backgroundColors: ControlStateColorSet?
-  @NSManaged var images:           ControlStateImageSet?
-  @NSManaged var command:          Command?
-  @NSManaged var longPressCommand: Command?
+  @NSManaged public var title:            NSAttributedString?
+  @NSManaged public var icon:             ImageView?
+  @NSManaged public var image:            ImageView?
+  @NSManaged public var titles:           ControlStateTitleSet?
+  @NSManaged public var icons:            ControlStateImageSet?
+  @NSManaged public var backgroundColors: ControlStateColorSet?
+  @NSManaged public var images:           ControlStateImageSet?
+  @NSManaged public var command:          Command?
+  @NSManaged public var longPressCommand: Command?
 
   @NSManaged var primitiveState: NSNumber
-  var state: UIControlState {
+  public var state: UIControlState {
     get {
       willAccessValueForKey("state")
       let state = primitiveState
@@ -131,7 +131,7 @@ class Button: RemoteElement {
     }
   }
 
-  var selected: Bool {
+  public var selected: Bool {
     get {
       willAccessValueForKey("selected")
       let selected = state & UIControlState.Selected != nil
@@ -145,7 +145,7 @@ class Button: RemoteElement {
     }
   }
 
-  var highlighted: Bool {
+  public var highlighted: Bool {
     get {
       willAccessValueForKey("highlighted")
       let highlighted = state & UIControlState.Highlighted != nil
@@ -159,7 +159,7 @@ class Button: RemoteElement {
     }
   }
 
-  var enabled: Bool {
+  public var enabled: Bool {
     get {
       willAccessValueForKey("enabled")
       let enabled = state & UIControlState.Disabled == nil
@@ -174,7 +174,7 @@ class Button: RemoteElement {
   }
 
   @NSManaged var primitiveTitleEdgeInsets: NSValue
-  var titleEdgeInsets: UIEdgeInsets {
+  public var titleEdgeInsets: UIEdgeInsets {
     get {
       willAccessValueForKey("titleEdgeInsets")
       let insets = primitiveTitleEdgeInsets
@@ -189,7 +189,7 @@ class Button: RemoteElement {
   }
 
   @NSManaged var primitiveImageEdgeInsets: NSValue
-  var imageEdgeInsets: UIEdgeInsets {
+  public var imageEdgeInsets: UIEdgeInsets {
     get {
       willAccessValueForKey("imageEdgeInsets")
       let insets = primitiveImageEdgeInsets
@@ -204,7 +204,7 @@ class Button: RemoteElement {
   }
 
   @NSManaged var primitiveContentEdgeInsets: NSValue
-  var contentEdgeInsets: UIEdgeInsets {
+  public var contentEdgeInsets: UIEdgeInsets {
     get {
       willAccessValueForKey("contentEdgeInsets")
       let insets = primitiveContentEdgeInsets
@@ -224,7 +224,7 @@ class Button: RemoteElement {
    :param: options CommandOptions
    :param: completion ((Bool, NSError?) -> Void)?
    */
-   func executeCommandWithOption(option: Command.Option, completion: ((Bool, NSError?) -> Void)?) {
+   public func executeCommandWithOption(option: Command.Option, completion: ((Bool, NSError?) -> Void)?) {
      var c: Command?
 
      switch option {
@@ -241,7 +241,7 @@ class Button: RemoteElement {
   :param: command Command?
   :param: mode String
   */
-  func setCommand(command: Command?, forMode mode: String) {
+  public func setCommand(command: Command?, forMode mode: String) {
     setURIForObject(command, forKey: "command", forMode: mode)
   }
 
@@ -251,7 +251,7 @@ class Button: RemoteElement {
   :param: command Command?
   :param: mode String
   */
-  func setLongPressCommand(command: Command?, forMode mode: String) {
+  public func setLongPressCommand(command: Command?, forMode mode: String) {
     setURIForObject(command, forKey: "longPressCommand", forMode: mode)
   }
 
@@ -261,7 +261,7 @@ class Button: RemoteElement {
   :param: titleSet ControlStateTitleSet?
   :param: mode String
   */
-  func setTitles(titleSet: ControlStateTitleSet?, forMode mode: String) {
+  public func setTitles(titleSet: ControlStateTitleSet?, forMode mode: String) {
     setURIForObject(titleSet, forKey: "titles", forMode: mode)
   }
 
@@ -271,7 +271,7 @@ class Button: RemoteElement {
   :param: colorSet ControlStateColorSet?
   :param: mode String
   */
-  func setBackgroundColors(colorSet: ControlStateColorSet?, forMode mode: String) {
+  public func setBackgroundColors(colorSet: ControlStateColorSet?, forMode mode: String) {
     setURIForObject(colorSet, forKey: "backgroundColors", forMode: mode)
   }
 
@@ -281,7 +281,7 @@ class Button: RemoteElement {
   :param: imageSet ControlStateImageSet?
   :param: mode String
   */
-  func setIcons(imageSet: ControlStateImageSet?, forMode mode: String) {
+  public func setIcons(imageSet: ControlStateImageSet?, forMode mode: String) {
     setURIForObject(imageSet, forKey: "icons", forMode: mode)
   }
 
@@ -291,7 +291,7 @@ class Button: RemoteElement {
   :param: imageSet ControlStateImageSet?
   :param: mode String
   */
-  func setImages(imageSet: ControlStateImageSet?, forMode mode: String) {
+  public func setImages(imageSet: ControlStateImageSet?, forMode mode: String) {
     setURIForObject(imageSet, forKey: "images", forMode: mode)
   }
 
@@ -302,7 +302,7 @@ class Button: RemoteElement {
 
   :returns: Command?
   */
-  func commandForMode(mode: String) -> Command? {
+  public func commandForMode(mode: String) -> Command? {
     return faultedObjectForKey("command", forMode: mode) as? Command
   }
 
@@ -313,7 +313,7 @@ class Button: RemoteElement {
 
   :returns: Command?
   */
-  func longPressCommandForMode(mode: String) -> Command? {
+  public func longPressCommandForMode(mode: String) -> Command? {
     return faultedObjectForKey("longPressCommand", forMode: mode) as? Command
   }
 
@@ -324,7 +324,7 @@ class Button: RemoteElement {
 
   :returns: ControlStateTitleSet?
   */
-  func titlesForMode(mode: String) -> ControlStateTitleSet? {
+  public func titlesForMode(mode: String) -> ControlStateTitleSet? {
     return faultedObjectForKey("titles", forMode: mode) as? ControlStateTitleSet
   }
 
@@ -335,7 +335,7 @@ class Button: RemoteElement {
 
   :returns: ControlStateColorSet?
   */
-  func backgroundColorsForMode(mode: String) -> ControlStateColorSet? {
+  public func backgroundColorsForMode(mode: String) -> ControlStateColorSet? {
     return faultedObjectForKey("backgroundColors", forMode: mode) as? ControlStateColorSet
   }
 
@@ -346,7 +346,7 @@ class Button: RemoteElement {
 
   :returns: ControlStateImageSet?
   */
-  func iconsForMode(mode: String) -> ControlStateImageSet? {
+  public func iconsForMode(mode: String) -> ControlStateImageSet? {
     return faultedObjectForKey("icons", forMode: mode) as? ControlStateImageSet
   }
 
@@ -357,12 +357,12 @@ class Button: RemoteElement {
 
   :returns: ControlStateImageSet?
   */
-  func imagesForMode(mode: String) -> ControlStateImageSet? {
+  public func imagesForMode(mode: String) -> ControlStateImageSet? {
     return faultedObjectForKey("images", forMode: mode) as? ControlStateImageSet
   }
 
   /** updateButtonForState */
-  func updateButtonForState() {
+  public func updateButtonForState() {
     let idx = state.rawValue
     title = titles?.attributedStringForState(state)
     icon = icons?[idx] as? ImageView
@@ -375,7 +375,7 @@ class Button: RemoteElement {
 
   :param: mode String
   */
-  override func updateForMode(mode: String) {
+  override public func updateForMode(mode: String) {
     super.updateForMode(mode)
     command          = commandForMode(mode)          ?? commandForMode(RemoteElement.DefaultMode)
     longPressCommand = longPressCommandForMode(mode) ?? longPressCommandForMode(RemoteElement.DefaultMode)
@@ -392,7 +392,7 @@ class Button: RemoteElement {
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     if let moc = managedObjectContext {
@@ -455,7 +455,7 @@ class Button: RemoteElement {
 
   :returns: MSDictionary
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
     dictionary["background-color"] = NSNull()
 
@@ -532,7 +532,7 @@ class Button: RemoteElement {
 ////////////////////////////////////////////////////////////////////////////////
 // extension Button {
 
-//   protocol ButtonPreset: Preset {
+//   public protocol ButtonPreset: Preset {
 //     var titles:            ControlStateTitleSet? { get set }
 //     var icons:             ControlStateImageSet? { get set }
 //     var backgroundColors:  ControlStateColorSet? { get set }
@@ -542,7 +542,7 @@ class Button: RemoteElement {
 //     var contentEdgeInsets: UIEdgeInsets?         { get set }
 //   }
 
-//   enum PresetType {
+//   public enum PresetType {
 //     case None
 //     case ConnectionStatus, BatteryStatus                                         // Toolbar
 //     case Top, Bottom                                                             // Rocker

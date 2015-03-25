@@ -14,16 +14,16 @@ import MoonKit
   `DelayCommand` subclasses `Command` to provide a delay, usually in a chain of other commands.
 */
 @objc(DelayCommand)
-class DelayCommand: Command {
+public final class DelayCommand: Command {
 
-  @NSManaged var duration: NSNumber
+  @NSManaged public var duration: NSNumber
 
   /**
   updateWithData:
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     if let duration = data["duration"] as? NSNumber { self.duration = duration }
   }
@@ -33,7 +33,7 @@ class DelayCommand: Command {
 
   :returns: MSDictionary!
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     dictionary["class"] = "delay"

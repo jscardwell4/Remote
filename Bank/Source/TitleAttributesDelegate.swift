@@ -10,14 +10,14 @@ import Foundation
 import UIKit
 import MoonKit
 
-@objc protocol TitleAttributesDelegateObserver {
+@objc public protocol TitleAttributesDelegateObserver {
   optional func saveInvokedForTitleAttributesDelegate(titleAttributesDelegate: TitleAttributesDelegate)
   optional func deleteInvokedForTitleAttributesDelegate(titleAttributesDelegate: TitleAttributesDelegate)
   optional func rollbackInvokedForTitleAttributesDelegate(titleAttributesDelegate: TitleAttributesDelegate)
 }
 
 @objc(TitleAttributesDelegate)
-class TitleAttributesDelegate: Detailable, Editable {
+public class TitleAttributesDelegate: Detailable, Editable {
 
   var titleAttributes: TitleAttributes
 

@@ -11,9 +11,9 @@ import CoreData
 import MoonKit
 
 @objc(CommandSet)
-class CommandSet: CommandContainer {
+public final class CommandSet: CommandContainer {
 
-  @NSManaged var commands: NSSet?
+  @NSManaged public var commands: NSSet?
 
   static let sharedKeysByType: [CommandSetType:Set<RemoteElement.Role>] = [
     .Dpad: Set<RemoteElement.Role>([.Up, .Down, .Left, .Right, .Center]),
@@ -22,9 +22,9 @@ class CommandSet: CommandContainer {
     .Rocker: Set<RemoteElement.Role>([.Top, .Bottom])
   ]
 
-  @objc enum CommandSetType: Int { case Unspecified, Dpad, Transport, Numberpad, Rocker }
+  @objc public enum CommandSetType: Int { case Unspecified, Dpad, Transport, Numberpad, Rocker }
   @NSManaged var primitiveType: NSNumber
-  var type: CommandSetType {
+  public var type: CommandSetType {
     get {
       willAccessValueForKey("type")
       let type = primitiveType
@@ -50,7 +50,7 @@ class CommandSet: CommandContainer {
 
   :returns: Command?
   */
-  subscript(key: RemoteElement.Role) -> Command? {
+  public subscript(key: RemoteElement.Role) -> Command? {
     get { return index[key.rawValue] as? Command }
     set { index[key.rawValue] = newValue }
   }
@@ -60,7 +60,7 @@ class CommandSet: CommandContainer {
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     if let moc = managedObjectContext,
@@ -84,7 +84,7 @@ class CommandSet: CommandContainer {
 
   :returns: MSDictionary!
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     dictionary["type"] = type.JSONValue
@@ -104,7 +104,7 @@ class CommandSet: CommandContainer {
 }
 
 extension CommandSet.CommandSetType: JSONValueConvertible {
-  var JSONValue: String {
+  public var JSONValue: String {
     switch self {
       case .Dpad:      return "dpad"
       case .Transport: return "transport"
@@ -114,7 +114,7 @@ extension CommandSet.CommandSetType: JSONValueConvertible {
     }
   }
 
-  init(JSONValue: String) {
+  public init(JSONValue: String) {
     switch JSONValue {
       case "dpad":      self = .Dpad
       case "transport": self = .Transport

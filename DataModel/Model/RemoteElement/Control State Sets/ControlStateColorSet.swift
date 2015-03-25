@@ -11,23 +11,23 @@ import CoreData
 import MoonKit
 
 @objc(ControlStateColorSet)
-class ControlStateColorSet: ControlStateSet {
+public final class ControlStateColorSet: ControlStateSet {
 
-  @NSManaged var normal: UIColor?
-  @NSManaged var disabled: UIColor?
-  @NSManaged var selected: UIColor?
-  @NSManaged var highlighted: UIColor?
-  @NSManaged var highlightedDisabled: UIColor?
-  @NSManaged var highlightedSelected: UIColor?
-  @NSManaged var highlightedSelectedDisabled: UIColor?
-  @NSManaged var selectedDisabled: UIColor?
+  @NSManaged public var normal: UIColor?
+  @NSManaged public var disabled: UIColor?
+  @NSManaged public var selected: UIColor?
+  @NSManaged public var highlighted: UIColor?
+  @NSManaged public var highlightedDisabled: UIColor?
+  @NSManaged public var highlightedSelected: UIColor?
+  @NSManaged public var highlightedSelectedDisabled: UIColor?
+  @NSManaged public var selectedDisabled: UIColor?
 
   /**
   updateWithData:
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     if let jsonData = data as? [String: String] {
@@ -44,7 +44,7 @@ class ControlStateColorSet: ControlStateSet {
 
   :returns: MSDictionary!
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     UIControlState.enumerate {

@@ -11,10 +11,10 @@ import CoreData
 import MoonKit
 
 @objc(ITachDevice)
-class ITachDevice: NetworkDevice {
+public class ITachDevice: NetworkDevice {
 
   @NSManaged var primitiveConfigURL: String!
-  var configURL: String! {
+  public var configURL: String! {
     get {
       willAccessValueForKey("configURL")
       let url = primitiveConfigURL
@@ -39,7 +39,7 @@ class ITachDevice: NetworkDevice {
   }
 
   @NSManaged var primitiveMake: String!
-  var make: String! {
+  public var make: String! {
     get {
       willAccessValueForKey("make")
       let m = primitiveMake
@@ -55,7 +55,7 @@ class ITachDevice: NetworkDevice {
   }
 
   @NSManaged var primitiveModel: String!
-  var model: String! {
+  public var model: String! {
     get {
       willAccessValueForKey("model")
       let m = primitiveModel
@@ -70,18 +70,18 @@ class ITachDevice: NetworkDevice {
     }
   }
 
-  @NSManaged var pcbPN: String
-  @NSManaged var pkgLevel: String
-  @NSManaged var revision: String
-  @NSManaged var sdkClass: String
-  @NSManaged var status: String
+  @NSManaged public var pcbPN: String
+  @NSManaged public var pkgLevel: String
+  @NSManaged public var revision: String
+  @NSManaged public var sdkClass: String
+  @NSManaged public var status: String
 
   /**
   updateWithData:
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     if let pcbPN     = data["pcb-pn"]     as? String { self.pcbPN = pcbPN }
     if let pkgLevel  = data["pkg-level"]  as? String { self.pkgLevel = pkgLevel }
@@ -104,7 +104,7 @@ class ITachDevice: NetworkDevice {
 
 extension ITachDevice: MSJSONExport {
 
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
     appendValueForKey("pcbPN", toDictionary: dictionary)
     appendValueForKey("pkgLevel", toDictionary: dictionary)

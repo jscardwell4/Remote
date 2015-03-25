@@ -11,10 +11,11 @@ import UIKit
 import CoreData
 import MoonKit
 
-class ActivityController: ModelObject {
+@objc(ActivityController)
+public final class ActivityController: ModelObject {
 
   @NSManaged var primitiveCurrentActivity: Activity?
-  var currentActivity: Activity? {
+  public var currentActivity: Activity? {
     get {
       willAccessValueForKey("currentActivity")
       let activity = primitiveCurrentActivity
@@ -30,7 +31,7 @@ class ActivityController: ModelObject {
   }
 
   @NSManaged var primitiveCurrentRemote: Remote?
-  var currentRemote: Remote {
+  public var currentRemote: Remote {
     get {
       willAccessValueForKey("currentRemote")
       let remote = primitiveCurrentRemote
@@ -43,10 +44,10 @@ class ActivityController: ModelObject {
       didChangeValueForKey("currentRemote")
     }
   }
-  @NSManaged var homeRemote: Remote
-  @NSManaged var topToolbar: ButtonGroup
+  @NSManaged public var homeRemote: Remote
+  @NSManaged public var topToolbar: ButtonGroup
 
-  var activities: [Activity] { return sortedByName(Activity.objectsInContext(managedObjectContext!) as? [Activity] ?? []) }
+  public var activities: [Activity] { return sortedByName(Activity.objectsInContext(managedObjectContext!) as? [Activity] ?? []) }
 
   /**
   sharedController:
@@ -55,7 +56,7 @@ class ActivityController: ModelObject {
 
   :returns: ActivityController
   */
-  class func sharedController(context: NSManagedObjectContext) -> ActivityController {
+  public class func sharedController(context: NSManagedObjectContext) -> ActivityController {
     return findFirstInContext(context) ?? ActivityController(context: context)
   }
 
@@ -64,7 +65,7 @@ class ActivityController: ModelObject {
 
   :returns: MSDictionary
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     appendValue(homeRemote.commentedUUID, forKey: "homeRemote.uuid", toDictionary: dictionary)
@@ -84,7 +85,7 @@ class ActivityController: ModelObject {
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     updateRelationshipFromData(data, forKey: "homeRemote")

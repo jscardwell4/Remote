@@ -80,7 +80,7 @@ import MoonKit
 
   static private let resourceBaseName = "Remote"
   static public let dataFlag: DataFlag = DataFlag()
-  static let modelFlags: [ModelFlag] = ModelFlag.all
+  static public let modelFlags: [ModelFlag] = ModelFlag.all
 
 
   /**
@@ -424,7 +424,7 @@ import MoonKit
 
 
   /** Flags used as the base of a supported command line argument whose value should resolve into a valid `Marker` */
-  public enum ModelFlag: String, EnumerableType {
+  public enum ModelFlag: String, EnumerableType, Printable {
     case Manufacturers    = "manufacturers"
     case ComponentDevices = "componentDevices"
     case Images           = "images"
@@ -475,7 +475,7 @@ import MoonKit
     static public func enumerate(block: (ModelFlag) -> Void) { all ➤ block }
 
 
-    var description: String { return "\(rawValue):\n\t" + "\n\t".join(markers.map({$0.description})) }
+    public var description: String { return "\(rawValue):\n\t" + "\n\t".join(markers.map({$0.description})) }
   }
 
   /** loadData */

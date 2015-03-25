@@ -11,41 +11,61 @@ import CoreData
 import MoonKit
 
 @objc(Remote)
-class Remote: RemoteElement {
+public final class Remote: RemoteElement {
 
-  override var elementType: BaseType { return .Remote }
+  override public var elementType: BaseType { return .Remote }
 
-  @NSManaged var topBarHidden: Bool
-  @NSManaged var activity: Activity?
+  public var topBarHidden: Bool {
+    get {
+      willAccessValueForKey("topBarHidden")
+      let topBarHidden = (primitiveValueForKey("topBarHidden") as? NSNumber)?.boolValue ?? false
+      didAccessValueForKey("topBarHidden")
+      return topBarHidden
+    }
+    set {
+      willChangeValueForKey("topBarHidden")
+      setPrimitiveValue(newValue, forKey: "topBarHidden")
+      didChangeValueForKey("topBarHidden")
+    }
+  }
+  @NSManaged public var activity: Activity?
 
-  @NSManaged var panels: NSDictionary
-  var panelAssignments: [NSNumber:String] {
-    get { return panels as? [NSNumber:String] ?? [:] }
-    set { panels = newValue }
+  public var panels: [NSNumber:String] {
+    get {
+      willAccessValueForKey("panels")
+      let panels = primitiveValueForKey("panels") as? [NSNumber:String]
+      didAccessValueForKey("panels")
+      return panels ?? [:]
+    }
+    set {
+      willChangeValueForKey("panels")
+      setPrimitiveValue(newValue, forKey: "panels")
+      didChangeValueForKey("panels")
+    }
   }
 
-  override var parentElement: RemoteElement? { get { return nil } set {} }
+  override public var parentElement: RemoteElement? { get { return nil } set {} }
 
   /**
   initWithPreset:
 
   :param: preset Preset
   */
-  override init(preset: Preset) {
+  override public init(preset: Preset) {
     super.init(preset: preset)
 
     topBarHidden = preset.topBarHidden ?? false
   }
 
-  required init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+  required public init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
       fatalError("init(entity:insertIntoManagedObjectContext:) has not been implemented")
   }
 
-  required init(context: NSManagedObjectContext?) {
+  required public init(context: NSManagedObjectContext?) {
       fatalError("init(context:) has not been implemented")
   }
 
-  required init?(data: [String : AnyObject], context: NSManagedObjectContext) {
+  required public init?(data: [String : AnyObject], context: NSManagedObjectContext) {
       fatalError("init(data:context:) has not been implemented")
   }
 
@@ -74,10 +94,10 @@ class Remote: RemoteElement {
   :param: buttonGroup ButtonGroup?
   :param: assignment ButtonGroup.PanelAssignment
   */
-  func setButtonGroup(buttonGroup: ButtonGroup?, forPanelAssignment assignment: ButtonGroup.PanelAssignment) {
-    var assignments = panelAssignments
+  public func setButtonGroup(buttonGroup: ButtonGroup?, forPanelAssignment assignment: ButtonGroup.PanelAssignment) {
+    var assignments = panels
     if assignment != ButtonGroup.PanelAssignment.Unassigned { assignments[assignment.rawValue] = buttonGroup?.uuid }
-    panelAssignments = assignments
+    panels = assignments
   }
 
   /**
@@ -87,10 +107,10 @@ class Remote: RemoteElement {
 
   :returns: ButtonGroup?
   */
-  func buttonGroupForPanelAssignment(assignment: ButtonGroup.PanelAssignment) -> ButtonGroup? {
+  public func buttonGroupForPanelAssignment(assignment: ButtonGroup.PanelAssignment) -> ButtonGroup? {
     var buttonGroup: ButtonGroup?
     if managedObjectContext != nil {
-      if let uuid = panelAssignments[assignment.rawValue] {
+      if let uuid = panels[assignment.rawValue] {
         buttonGroup = ButtonGroup.objectWithUUID(uuid, context: managedObjectContext!)
       }
     }
@@ -103,7 +123,7 @@ class Remote: RemoteElement {
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     if let moc = managedObjectContext {
@@ -130,12 +150,12 @@ class Remote: RemoteElement {
 
   :returns: MSDictionary
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     let panels = MSDictionary()
 
-    for (number, uuid) in panelAssignments {
+    for (number, uuid) in panels {
       let assignment = ButtonGroup.PanelAssignment(rawValue: number.integerValue)
       if let commentedUUID = buttonGroupForPanelAssignment(assignment)?.commentedUUID {
         panels[assignment.JSONValue] = commentedUUID

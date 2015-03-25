@@ -11,24 +11,24 @@ import CoreData
 import MoonKit
 
 @objc(IRCode)
-final class IRCode: IndexedEditableModelObject, ModelCategoryItem {
+final public class IRCode: IndexedEditableModelObject, ModelCategoryItem {
   
-  @NSManaged var frequency: Int64
-  @NSManaged var offset: Int16
-  @NSManaged var onOffPattern: String?
-  @NSManaged var prontoHex: String?
-  @NSManaged var repeatCount: Int16
-  @NSManaged var setsDeviceInput: Bool
-  @NSManaged var device: ComponentDevice!
-  @NSManaged var sendCommands: NSSet
-  @NSManaged var codeSet: IRCodeSet
+  @NSManaged public var frequency: Int64
+  @NSManaged public var offset: Int16
+  @NSManaged public var onOffPattern: String?
+  @NSManaged public var prontoHex: String?
+  @NSManaged public var repeatCount: Int16
+  @NSManaged public var setsDeviceInput: Bool
+  @NSManaged public var device: ComponentDevice!
+  @NSManaged public var sendCommands: NSSet
+  @NSManaged public var codeSet: IRCodeSet
 
-  var manufacturer: Manufacturer { return codeSet.manufacturer }
+  public var manufacturer: Manufacturer { return codeSet.manufacturer }
 
-  typealias CategoryType = IRCodeSet
-  var category: CategoryType? { get { return codeSet } set { if newValue != nil { codeSet = newValue! } } }
+  public typealias CategoryType = IRCodeSet
+  public var category: CategoryType? { get { return codeSet } set { if newValue != nil { codeSet = newValue! } } }
 
-  override var index: ModelIndex { return codeSet.index + "\(name)" }
+  override public var index: ModelIndex { return codeSet.index + "\(name)" }
 
   /**
   modelWithIndex:context:
@@ -38,7 +38,7 @@ final class IRCode: IndexedEditableModelObject, ModelCategoryItem {
 
   :returns: IRCode?
   */
-  override class func modelWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> IRCode? {
+  override public class func modelWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> IRCode? {
     return Manufacturer.itemWithIndex(index, context: context)
   }
 
@@ -49,7 +49,7 @@ final class IRCode: IndexedEditableModelObject, ModelCategoryItem {
 
   :returns: Bool
   */
-  class func isValidOnOffPattern(pattern: String) -> Bool { return compressedOnOffPatternFromPattern(pattern) != nil }
+  public class func isValidOnOffPattern(pattern: String) -> Bool { return compressedOnOffPatternFromPattern(pattern) != nil }
 
   /**
   compressedOnOffPatternFromPattern:
@@ -58,7 +58,7 @@ final class IRCode: IndexedEditableModelObject, ModelCategoryItem {
 
   :returns: String?
   */
-  class func compressedOnOffPatternFromPattern(pattern: String) -> String? {
+  public class func compressedOnOffPatternFromPattern(pattern: String) -> String? {
 
     let max: Int32 = 65635
 
@@ -99,7 +99,7 @@ final class IRCode: IndexedEditableModelObject, ModelCategoryItem {
 
   :param: data [String AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     updateRelationshipFromData(data, forKey: "category")
     if let frequency = data["frequencey"] as? NSNumber { self.frequency = frequency.longLongValue }
@@ -112,7 +112,7 @@ final class IRCode: IndexedEditableModelObject, ModelCategoryItem {
 
 extension IRCode: MSJSONExport {
 
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
 
     let dictionary = super.JSONDictionary()
 

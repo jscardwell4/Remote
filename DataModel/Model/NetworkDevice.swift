@@ -11,10 +11,10 @@ import CoreData
 import MoonKit
 
 @objc(NetworkDevice)
-class NetworkDevice: EditableModelObject {
+public class NetworkDevice: EditableModelObject {
 
-  @NSManaged var uniqueIdentifier: String!
-  @NSManaged var componentDevices: NSSet?
+  @NSManaged public var uniqueIdentifier: String!
+  @NSManaged public var componentDevices: NSSet?
 
   /**
   deviceExistsWithIdentifier:
@@ -23,11 +23,11 @@ class NetworkDevice: EditableModelObject {
 
   :returns: Bool
   */
-  class func deviceExistsWithIdentifier(identifier: String) -> Bool {
+  public class func deviceExistsWithIdentifier(identifier: String) -> Bool {
     return objectWithValue(identifier, forAttribute: "uniqueIdentifier", context: DataManager.rootContext) != nil
   }
 
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     if let uniqueIdentifier = data["unique-identifier"] as? String { self.uniqueIdentifier = uniqueIdentifier }
   }
@@ -68,7 +68,7 @@ class NetworkDevice: EditableModelObject {
 
 extension NetworkDevice: MSJSONExport {
 
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
       appendValue(uniqueIdentifier, forKey: "unique-identifier", toDictionary: dictionary)
       dictionary.compact()

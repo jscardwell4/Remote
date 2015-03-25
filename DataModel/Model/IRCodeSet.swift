@@ -11,21 +11,21 @@ import CoreData
 import MoonKit
 
 @objc(IRCodeSet)
-final class IRCodeSet: IndexedEditableModelObject, ModelCategory, ModelCategoryItem {
+final public class IRCodeSet: IndexedEditableModelObject, ModelCategory, ModelCategoryItem {
 
 
-  @NSManaged var devices: Set<ComponentDevice>
-  @NSManaged var codes: Set<IRCode>
-  @NSManaged var manufacturer: Manufacturer
+  @NSManaged public var devices: Set<ComponentDevice>
+  @NSManaged public var codes: Set<IRCode>
+  @NSManaged public var manufacturer: Manufacturer
 
-  typealias ItemType = IRCode
-  var items: [ItemType] { get { return Array(codes) } set { codes = Set(newValue) } }
-  func itemWithIndex(index: ModelIndex) -> ItemType? { return findByIndex(codes, index) }
+  public typealias ItemType = IRCode
+  public var items: [ItemType] { get { return Array(codes) } set { codes = Set(newValue) } }
+  public func itemWithIndex(index: ModelIndex) -> ItemType? { return findByIndex(codes, index) }
 
-  typealias CategoryType = Manufacturer
-  var category: CategoryType? { get { return manufacturer } set { if newValue != nil { manufacturer = newValue! } } }
+  public typealias CategoryType = Manufacturer
+  public var category: CategoryType? { get { return manufacturer } set { if newValue != nil { manufacturer = newValue! } } }
 
-  override var index: ModelIndex { return manufacturer.index + "\(name)" }
+  override public var index: ModelIndex { return manufacturer.index + "\(name)" }
 
   /**
   modelWithIndex:context:
@@ -35,7 +35,7 @@ final class IRCodeSet: IndexedEditableModelObject, ModelCategory, ModelCategoryI
 
   :returns: IRCodeSet?
   */
-  override class func modelWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> IRCodeSet? {
+  override public class func modelWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> IRCodeSet? {
     return Manufacturer.itemWithIndex(index, context: context)
   }
 
@@ -45,7 +45,7 @@ final class IRCodeSet: IndexedEditableModelObject, ModelCategory, ModelCategoryI
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     updateRelationshipFromData(data, forKey: "codes")
@@ -58,7 +58,7 @@ final class IRCodeSet: IndexedEditableModelObject, ModelCategory, ModelCategoryI
 
   :returns: MSDictionary
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     appendValue(manufacturer.index.description, forKey: "manufacturer.index", ifNotDefault: false, toDictionary: dictionary)

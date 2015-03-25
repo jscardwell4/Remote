@@ -11,9 +11,9 @@ import CoreData
 import MoonKit
 
 @objc(CommandSetCollection)
-class CommandSetCollection: CommandContainer {
+public final class CommandSetCollection: CommandContainer {
 
-  @NSManaged var commandSets: NSOrderedSet?
+  @NSManaged public var commandSets: NSOrderedSet?
 
   /**
   subscript:
@@ -22,7 +22,7 @@ class CommandSetCollection: CommandContainer {
 
   :returns: CommandSet?
   */
-  subscript(label: String) -> CommandSet? {
+  public subscript(label: String) -> CommandSet? {
     get {
       if let commandSetUUID = index[label] as? String,
         let moc = managedObjectContext,
@@ -48,7 +48,7 @@ class CommandSetCollection: CommandContainer {
 
   :returns: String?
   */
-  func labelForCommandSet(commandSet: CommandSet) -> String? { return index.keyForObject(commandSet.uuid) as? String }
+  public func labelForCommandSet(commandSet: CommandSet) -> String? { return index.keyForObject(commandSet.uuid) as? String }
 
   /**
   commandSetAtIndex:
@@ -57,7 +57,7 @@ class CommandSetCollection: CommandContainer {
 
   :returns: CommandSet?
   */
-  func commandSetAtIndex(idx: Int) -> CommandSet? {
+  public func commandSetAtIndex(idx: Int) -> CommandSet? {
     if let commandSetCount = commandSets?.count where idx < commandSetCount {
       return commandSets![idx] as? CommandSet
     } else { return nil }
@@ -70,14 +70,14 @@ class CommandSetCollection: CommandContainer {
 
   :returns: String?
   */
-  func labelAtIndex(idx: Int) -> String? { return idx < Int(count) ? index.keyAtIndex(UInt(idx)) as? String : nil }
+  public func labelAtIndex(idx: Int) -> String? { return idx < Int(count) ? index.keyAtIndex(UInt(idx)) as? String : nil }
 
   /**
   updateWithData:
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     if let commandSetsData = data as? [String:[String:AnyObject]], let moc = managedObjectContext {
@@ -95,7 +95,7 @@ class CommandSetCollection: CommandContainer {
 
   :returns: MSDictionary!
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
 

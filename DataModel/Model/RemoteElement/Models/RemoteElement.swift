@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(RemoteElement)
-class RemoteElement: NamedModelObject {
+public class RemoteElement: NamedModelObject {
 
   /**
   remoteElementFromPreset:
@@ -20,7 +20,7 @@ class RemoteElement: NamedModelObject {
 
   :returns: RemoteElement?
   */
-  class func remoteElementFromPreset(preset: Preset) -> RemoteElement? {
+  public class func remoteElementFromPreset(preset: Preset) -> RemoteElement? {
     var element: RemoteElement?
 
     switch preset.baseType {
@@ -38,7 +38,7 @@ class RemoteElement: NamedModelObject {
 
   :param: preset Preset
   */
-  init(preset: Preset) {
+  public init(preset: Preset) {
     super.init(context: preset.managedObjectContext!)
     role = preset.role
     shape = preset.shape
@@ -60,52 +60,52 @@ class RemoteElement: NamedModelObject {
     }
   }
 
-  required init?(data: [String : AnyObject], context: NSManagedObjectContext) {
+  required public init?(data: [String : AnyObject], context: NSManagedObjectContext) {
     super.init(data: data, context: context)
   }
 
-  @NSManaged var tag: NSNumber
-  @NSManaged var key: String?
-  var identifier: String { return "_" + filter(uuid){$0 != "-"} }
+  @NSManaged public var tag: NSNumber
+  @NSManaged public var key: String?
+  public var identifier: String { return "_" + filter(uuid){$0 != "-"} }
 
-  @NSManaged var constraints: NSSet
-  var ownedConstraints: [Constraint] {
+  @NSManaged public var constraints: NSSet
+  public var ownedConstraints: [Constraint] {
     get { return constraints.allObjects as? [Constraint] ?? [] }
     set { constraints = NSSet(array: newValue) }
   }
 
-  @NSManaged var firstItemConstraints: NSSet
-  var firstOrderConstraints: [Constraint] {
+  @NSManaged public var firstItemConstraints: NSSet
+  public var firstOrderConstraints: [Constraint] {
     get { return firstItemConstraints.allObjects as? [Constraint] ?? [] }
     set { firstItemConstraints = NSSet(array: newValue) }
   }
 
-  @NSManaged var secondItemConstraints: NSSet
-  var secondOrderConstraints: [Constraint] {
+  @NSManaged public var secondItemConstraints: NSSet
+  public var secondOrderConstraints: [Constraint] {
     get { return secondItemConstraints.allObjects as? [Constraint] ?? [] }
     set { secondItemConstraints = NSSet(array: newValue) }
   }
 
-  @NSManaged var backgroundImageAlpha: NSNumber
-  @NSManaged var backgroundColor: UIColor?
-  @NSManaged var backgroundImage: ImageView?
+  @NSManaged public var backgroundImageAlpha: NSNumber
+  @NSManaged public var backgroundColor: UIColor?
+  @NSManaged public var backgroundImage: ImageView?
 
-  @NSManaged var subelements: NSOrderedSet
+  @NSManaged public var subelements: NSOrderedSet
 
-  var childElements: OrderedSet<RemoteElement> {
+  public var childElements: OrderedSet<RemoteElement> {
     get { return OrderedSet(subelements.array as? [RemoteElement] ?? []) }
     set { subelements = NSOrderedSet(array: newValue.array) }
   }
 
-  lazy var constraintManager: ConstraintManager = ConstraintManager(element: self)
+  public lazy var constraintManager: ConstraintManager = ConstraintManager(element: self)
 
-  var modes: [String] {
+  public var modes: [String] {
     var modes = Array(configurations.keys) as [String]
     if modes ∌ RemoteElement.DefaultMode { modes.append(RemoteElement.DefaultMode) }
     return modes
   }
 
-  dynamic var currentMode: String = RemoteElement.DefaultMode {
+  public var currentMode: String = RemoteElement.DefaultMode {
     didSet {
       if !hasMode(currentMode) { addMode(currentMode) }
       updateForMode(currentMode)
@@ -113,10 +113,22 @@ class RemoteElement: NamedModelObject {
     }
   }
 
-  @NSManaged var parentElement: RemoteElement?
+  public var parentElement: RemoteElement? {
+    get {
+      willAccessValueForKey("parentElement")
+      let parentElement = primitiveValueForKey("parentElement") as? RemoteElement
+      didAccessValueForKey("parentElement")
+      return parentElement
+    }
+    set {
+      willChangeValueForKey("parentElement")
+      setPrimitiveValue(newValue, forKey: "parentElement")
+      didChangeValueForKey("parentElement")
+    }
+  }
 
   @NSManaged var primitiveRole: NSNumber
-  var role: Role {
+  public var role: Role {
     get {
       willAccessValueForKey("role")
       let role = Role(rawValue: primitiveRole.integerValue)
@@ -131,7 +143,7 @@ class RemoteElement: NamedModelObject {
   }
 
   @NSManaged var primitiveShape: NSNumber
-  var shape: Shape {
+  public var shape: Shape {
     get {
       willAccessValueForKey("shape")
       let shape = Shape(rawValue: primitiveShape.integerValue)
@@ -146,7 +158,7 @@ class RemoteElement: NamedModelObject {
   }
 
   @NSManaged var primitiveStyle: NSNumber
-  var style: Style {
+  public var style: Style {
     get {
       willAccessValueForKey("style")
       let style = Style(rawValue: primitiveStyle.integerValue)
@@ -161,7 +173,7 @@ class RemoteElement: NamedModelObject {
   }
 
   @NSManaged var primitiveConfigurations: NSMutableDictionary
-  var configurations: [String:[String:AnyObject]] {
+  public var configurations: [String:[String:AnyObject]] {
     get {
       willAccessValueForKey("configurations")
       let configurations = (primitiveConfigurations as NSDictionary) as? [String:[String:AnyObject]]
@@ -175,16 +187,16 @@ class RemoteElement: NamedModelObject {
     }
   }
 
-  class var DefaultMode: String { return "default" }
+  public class var DefaultMode: String { return "default" }
 
   /** awakeFromFetch */
-  override func awakeFromFetch() {
+  override public func awakeFromFetch() {
     super.awakeFromFetch()
     refresh()
   }
 
   /** prepareForDeletion */
-  override func prepareForDeletion() {
+  override public func prepareForDeletion() {
     if let moc = managedObjectContext {
       apply(flattened(Array(configurations.values).map{Array($0.values).filter{$0 is NSURL}})){moc.deleteObject($0 as! NSManagedObject)}
       moc.processPendingChanges()
@@ -196,7 +208,7 @@ class RemoteElement: NamedModelObject {
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     if let moc = managedObjectContext {
@@ -242,7 +254,7 @@ class RemoteElement: NamedModelObject {
 
   :returns: MSDictionary
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     func ifNotDefaultSetValue(@autoclosure value: () -> NSObject?, forKey key: String) {
@@ -319,7 +331,7 @@ class RemoteElement: NamedModelObject {
 
   :returns: UIColor?
   */
-  func backgroundColorForMode(mode: String) -> UIColor? {
+  public func backgroundColorForMode(mode: String) -> UIColor? {
     return objectForKey("backgroundColor", forMode: mode) as? UIColor
   }
 
@@ -329,7 +341,7 @@ class RemoteElement: NamedModelObject {
   :param: color UIColor?
   :param: mode String
   */
-  func setBackgroundColor(color: UIColor?, forMode mode: String) {
+  public func setBackgroundColor(color: UIColor?, forMode mode: String) {
     setObject(color, forKey: "backgroundColor", forMode: mode)
   }
 
@@ -340,7 +352,7 @@ class RemoteElement: NamedModelObject {
 
   :returns: NSNumber?
   */
-  func backgroundImageAlphaForMode(mode: String) -> NSNumber? {
+  public func backgroundImageAlphaForMode(mode: String) -> NSNumber? {
     return objectForKey("backgroundImageAlpha", forMode: mode) as? NSNumber
   }
 
@@ -350,7 +362,7 @@ class RemoteElement: NamedModelObject {
   :param: alpha NSNumber?
   :param: mode String
   */
-  func setBackgroundImageAlpha(alpha: NSNumber?, forMode mode: String) {
+  public func setBackgroundImageAlpha(alpha: NSNumber?, forMode mode: String) {
     setObject(alpha, forKey: "backgroundImageAlpha", forMode: mode)
   }
 
@@ -361,7 +373,7 @@ class RemoteElement: NamedModelObject {
 
   :returns: ImageView?
   */
-  func backgroundImageForMode(mode: String) -> ImageView? {
+  public func backgroundImageForMode(mode: String) -> ImageView? {
     return faultedObjectForKey("backgroundImage", forMode: mode) as? ImageView
   }
 
@@ -371,7 +383,7 @@ class RemoteElement: NamedModelObject {
   :param: image Image?
   :param: mode String
   */
-  func setBackgroundImage(image: Image?, forMode mode: String) {
+  public func setBackgroundImage(image: Image?, forMode mode: String) {
     setURIForObject(image, forKey: "backgroundImage", forMode: mode)
   }
 
@@ -380,7 +392,7 @@ class RemoteElement: NamedModelObject {
 
   :param: mode String
   */
-  func updateForMode(mode: String) {
+  public func updateForMode(mode: String) {
     backgroundColor = backgroundColorForMode(mode) ?? backgroundColorForMode(RemoteElement.DefaultMode)
     backgroundImage = backgroundImageForMode(mode) ?? backgroundImageForMode(RemoteElement.DefaultMode)
     backgroundImageAlpha = (backgroundImageAlphaForMode(mode) ?? backgroundImageAlphaForMode(RemoteElement.DefaultMode)) ?? 1.0
@@ -391,7 +403,7 @@ class RemoteElement: NamedModelObject {
 
   :returns: BaseType
   */
-  var elementType: BaseType { return .Undefined }
+  public var elementType: BaseType { return .Undefined }
 
   /** autoGenerateName */
   override func autoGenerateName() -> String {
@@ -410,7 +422,7 @@ class RemoteElement: NamedModelObject {
 
   :returns: Bool
   */
-  func isIdentifiedByString(string: String) -> Bool {
+  public func isIdentifiedByString(string: String) -> Bool {
     return uuid == string  || identifier == string || (key != nil && key! == string)
   }
 
@@ -421,7 +433,7 @@ class RemoteElement: NamedModelObject {
 
   :returns: RemoteElement?
   */
-  subscript(idx: Int) -> RemoteElement? {
+  public subscript(idx: Int) -> RemoteElement? {
     get {
       let elements = childElements
       return contains(0 ..< elements.count, idx) ? elements[idx] : nil
@@ -451,7 +463,7 @@ class RemoteElement: NamedModelObject {
 
   :returns: RemoteElement?
   */
-  subscript(key: String) -> AnyObject? {
+  public subscript(key: String) -> AnyObject? {
     get {
       let keypath = split(key){$0 == "."}
       if keypath.count == 2 {
@@ -482,7 +494,7 @@ class RemoteElement: NamedModelObject {
 
   :param: mode String
   */
-  func addMode(mode: String) {
+  public func addMode(mode: String) {
     if !hasMode(mode) {
       var configs = configurations
       configs[mode] = [:]
@@ -497,10 +509,10 @@ class RemoteElement: NamedModelObject {
 
   :returns: Bool
   */
-  func hasMode(mode: String) -> Bool { return Array(configurations.keys) ∋ mode }
+  public func hasMode(mode: String) -> Bool { return Array(configurations.keys) ∋ mode }
 
   /** refresh */
-  func refresh() { updateForMode(currentMode) }
+  public func refresh() { updateForMode(currentMode) }
 
   /**
   faultedObjectForKey:mode:
@@ -510,7 +522,7 @@ class RemoteElement: NamedModelObject {
 
   :returns: NSManagedObject?
   */
-  func faultedObjectForKey(key: String, forMode mode: String) -> NSManagedObject? {
+  public func faultedObjectForKey(key: String, forMode mode: String) -> NSManagedObject? {
     var object: NSManagedObject?
     if let uri = objectForKey(key, forMode: mode) as? NSURL {
       if let obj = managedObjectContext?.objectForURI(uri) as? NSManagedObject {
@@ -528,7 +540,7 @@ class RemoteElement: NamedModelObject {
 
   :returns: NSObject?
   */
-  func objectForKey(key: String, forMode mode: String) -> NSObject? {
+  public func objectForKey(key: String, forMode mode: String) -> NSObject? {
     return self["\(mode).\(key)"] as? NSObject
   }
 
@@ -539,7 +551,7 @@ class RemoteElement: NamedModelObject {
   :param: key String
   :param: mode String
   */
-  func setURIForObject(object: NSManagedObject?, forKey key: String, forMode mode: String) {
+  public func setURIForObject(object: NSManagedObject?, forKey key: String, forMode mode: String) {
     setObject(object?.permanentURI(), forKey: key, forMode: mode)
   }
 
@@ -550,13 +562,13 @@ class RemoteElement: NamedModelObject {
   :param: key String
   :param: mode String
   */
-  func setObject(object: NSObject?, forKey key: String, forMode mode: String) {
+  public func setObject(object: NSObject?, forKey key: String, forMode mode: String) {
     self["\(mode).\(key)"] = object
   }
 
-  enum BaseType: Int  {
+  public enum BaseType: Int  {
     case Undefined, Remote, ButtonGroup, Button
-    init(rawValue: Int) {
+    public init(rawValue: Int) {
       switch rawValue {
         case 1:  self = .Remote
         case 2:  self = .ButtonGroup
@@ -567,9 +579,9 @@ class RemoteElement: NamedModelObject {
   }
 
 
-  enum Shape: Int {
+  public enum Shape: Int {
     case Undefined, RoundedRectangle, Oval, Rectangle, Triangle, Diamond
-    init(rawValue: Int) {
+    public init(rawValue: Int) {
       switch rawValue {
         case 1: self = .RoundedRectangle
         case 2: self = .Oval
@@ -579,107 +591,107 @@ class RemoteElement: NamedModelObject {
         default: self = .Undefined
       }
     }
-    static var allShapes: [Shape] { return [.Undefined, .RoundedRectangle, .Oval, .Rectangle, .Triangle, .Diamond] }
+    public static var allShapes: [Shape] { return [.Undefined, .RoundedRectangle, .Oval, .Rectangle, .Triangle, .Diamond] }
 
   }
 
 
-  struct Style: RawOptionSetType {
+  public struct Style: RawOptionSetType {
 
-    private(set) var rawValue: Int
-    init(rawValue: Int) { self.rawValue = rawValue & 0b0011_1111 }
-    init(nilLiteral:()) { rawValue = 0 }
-    static var allZeros:       Style { return Style.Undefined }
-    static var Undefined:      Style = Style(rawValue: 0b0000_0000)
-    static var ApplyGloss:     Style = Style(rawValue: 0b0000_0001)
-    static var DrawBorder:     Style = Style(rawValue: 0b0000_0010)
-    static var Stretchable:    Style = Style(rawValue: 0b0000_0100)
-    static var GlossStyle1:    Style = Style.ApplyGloss
-    static var GlossStyle2:    Style = Style(rawValue: 0b0000_1001)
-    static var GlossStyle3:    Style = Style(rawValue: 0b0001_0001)
-    static var GlossStyle4:    Style = Style(rawValue: 0b0010_0001)
-    static var GlossStyleMask: Style = Style(rawValue: 0b0011_1001)
+    private(set) public var rawValue: Int
+    public init(rawValue: Int) { self.rawValue = rawValue & 0b0011_1111 }
+    public init(nilLiteral:()) { rawValue = 0 }
+    public static var allZeros:       Style { return Style.Undefined }
+    public static var Undefined:      Style = Style(rawValue: 0b0000_0000)
+    public static var ApplyGloss:     Style = Style(rawValue: 0b0000_0001)
+    public static var DrawBorder:     Style = Style(rawValue: 0b0000_0010)
+    public static var Stretchable:    Style = Style(rawValue: 0b0000_0100)
+    public static var GlossStyle1:    Style = Style.ApplyGloss
+    public static var GlossStyle2:    Style = Style(rawValue: 0b0000_1001)
+    public static var GlossStyle3:    Style = Style(rawValue: 0b0001_0001)
+    public static var GlossStyle4:    Style = Style(rawValue: 0b0010_0001)
+    public static var GlossStyleMask: Style = Style(rawValue: 0b0011_1001)
 
   }
 
-  struct Role: RawOptionSetType {
+  public struct Role: RawOptionSetType {
 
-    private(set) var rawValue: Int
-    init(rawValue: Int) { self.rawValue = rawValue & 0b1111_1111 }
-    init(nilLiteral:()) { rawValue = 0 }
-    static var allZeros: Role { return Role.Undefined }
+    private(set) public var rawValue: Int
+    public init(rawValue: Int) { self.rawValue = rawValue & 0b1111_1111 }
+    public init(nilLiteral:()) { rawValue = 0 }
+    public static var allZeros: Role { return Role.Undefined }
 
-    static var Undefined:            Role = Role(rawValue: 0b0000_0000)
+    public static var Undefined:            Role = Role(rawValue: 0b0000_0000)
 
     // button group roles
-    static var SelectionPanel:       Role = Role(rawValue: 0b0000_0011)
-    static var Toolbar:              Role = Role(rawValue: 0b0000_0010)
-    static var TopToolbar:           Role = Role(rawValue: 0b0000_0011)
-    static var DPad:                 Role = Role(rawValue: 0b0000_0100)
-    static var Numberpad:            Role = Role(rawValue: 0b0000_0110)
-    static var Transport:            Role = Role(rawValue: 0b0000_1000)
-    static var Rocker:               Role = Role(rawValue: 0b0000_1010)
+    public static var SelectionPanel:       Role = Role(rawValue: 0b0000_0011)
+    public static var Toolbar:              Role = Role(rawValue: 0b0000_0010)
+    public static var TopToolbar:           Role = Role(rawValue: 0b0000_0011)
+    public static var DPad:                 Role = Role(rawValue: 0b0000_0100)
+    public static var Numberpad:            Role = Role(rawValue: 0b0000_0110)
+    public static var Transport:            Role = Role(rawValue: 0b0000_1000)
+    public static var Rocker:               Role = Role(rawValue: 0b0000_1010)
 
     // toolbar buttons
-    static var ToolbarButton:        Role = Role(rawValue: 0b0000_0010)
-    static var ConnectionStatus:     Role = Role(rawValue: 0b0001_0010)
-    static var BatteryStatus:        Role = Role(rawValue: 0b0010_0010)
-    static var ToolbarButtonMask:    Role = Role(rawValue: 0b0000_0010)
+    public static var ToolbarButton:        Role = Role(rawValue: 0b0000_0010)
+    public static var ConnectionStatus:     Role = Role(rawValue: 0b0001_0010)
+    public static var BatteryStatus:        Role = Role(rawValue: 0b0010_0010)
+    public static var ToolbarButtonMask:    Role = Role(rawValue: 0b0000_0010)
 
     // picker label buttons
-    static var RockerButton:         Role = Role(rawValue: 0b0000_1010)
-    static var Top:                  Role = Role(rawValue: 0b0001_1010)
-    static var Bottom:               Role = Role(rawValue: 0b0010_1010)
-    static var RockerButtonMask:     Role = Role(rawValue: 0b0000_1010)
+    public static var RockerButton:         Role = Role(rawValue: 0b0000_1010)
+    public static var Top:                  Role = Role(rawValue: 0b0001_1010)
+    public static var Bottom:               Role = Role(rawValue: 0b0010_1010)
+    public static var RockerButtonMask:     Role = Role(rawValue: 0b0000_1010)
 
     // panel buttons
-    static var PanelButton:          Role = Role(rawValue: 0b0000_0001)
-    static var Tuck:                 Role = Role(rawValue: 0b0001_0001)
-    static var SelectionPanelButton: Role = Role(rawValue: 0b0000_0011)
-    static var PanelButtonMask:      Role = Role(rawValue: 0b0000_0001)
+    public static var PanelButton:          Role = Role(rawValue: 0b0000_0001)
+    public static var Tuck:                 Role = Role(rawValue: 0b0001_0001)
+    public static var SelectionPanelButton: Role = Role(rawValue: 0b0000_0011)
+    public static var PanelButtonMask:      Role = Role(rawValue: 0b0000_0001)
 
     // dpad buttons
-    static var DPadButton:           Role = Role(rawValue: 0b0000_0100)
-    static var Up:                   Role = Role(rawValue: 0b0001_0100)
-    static var Down:                 Role = Role(rawValue: 0b0010_0100)
-    static var Left:                 Role = Role(rawValue: 0b0011_0100)
-    static var Right:                Role = Role(rawValue: 0b0100_0100)
-    static var Center:               Role = Role(rawValue: 0b0101_0100)
-    static var DPadButtonMask:       Role = Role(rawValue: 0b0000_0100)
+    public static var DPadButton:           Role = Role(rawValue: 0b0000_0100)
+    public static var Up:                   Role = Role(rawValue: 0b0001_0100)
+    public static var Down:                 Role = Role(rawValue: 0b0010_0100)
+    public static var Left:                 Role = Role(rawValue: 0b0011_0100)
+    public static var Right:                Role = Role(rawValue: 0b0100_0100)
+    public static var Center:               Role = Role(rawValue: 0b0101_0100)
+    public static var DPadButtonMask:       Role = Role(rawValue: 0b0000_0100)
 
 
     // numberpad buttons
-    static var NumberpadButton:      Role = Role(rawValue: 0b0000_0110)
-    static var One:                  Role = Role(rawValue: 0b0001_0110)
-    static var Two:                  Role = Role(rawValue: 0b0010_0110)
-    static var Three:                Role = Role(rawValue: 0b0011_0110)
-    static var Four:                 Role = Role(rawValue: 0b0100_0110)
-    static var Five:                 Role = Role(rawValue: 0b0101_0110)
-    static var Six:                  Role = Role(rawValue: 0b0111_0110)
-    static var Seven:                Role = Role(rawValue: 0b1000_0110)
-    static var Eight:                Role = Role(rawValue: 0b1001_0110)
-    static var Nine:                 Role = Role(rawValue: 0b1010_0110)
-    static var Zero:                 Role = Role(rawValue: 0b1011_0110)
-    static var Aux1:                 Role = Role(rawValue: 0b1100_0110)
-    static var Aux2:                 Role = Role(rawValue: 0b1100_1110)
-    static var NumberpadButtonMask:  Role = Role(rawValue: 0b0000_0110)
+    public static var NumberpadButton:      Role = Role(rawValue: 0b0000_0110)
+    public static var One:                  Role = Role(rawValue: 0b0001_0110)
+    public static var Two:                  Role = Role(rawValue: 0b0010_0110)
+    public static var Three:                Role = Role(rawValue: 0b0011_0110)
+    public static var Four:                 Role = Role(rawValue: 0b0100_0110)
+    public static var Five:                 Role = Role(rawValue: 0b0101_0110)
+    public static var Six:                  Role = Role(rawValue: 0b0111_0110)
+    public static var Seven:                Role = Role(rawValue: 0b1000_0110)
+    public static var Eight:                Role = Role(rawValue: 0b1001_0110)
+    public static var Nine:                 Role = Role(rawValue: 0b1010_0110)
+    public static var Zero:                 Role = Role(rawValue: 0b1011_0110)
+    public static var Aux1:                 Role = Role(rawValue: 0b1100_0110)
+    public static var Aux2:                 Role = Role(rawValue: 0b1100_1110)
+    public static var NumberpadButtonMask:  Role = Role(rawValue: 0b0000_0110)
 
     // transport buttons
-    static var TransportButton:      Role = Role(rawValue: 0b0000_1000)
-    static var Play:                 Role = Role(rawValue: 0b0001_1000)
-    static var Stop:                 Role = Role(rawValue: 0b0010_1000)
-    static var Pause:                Role = Role(rawValue: 0b0011_1000)
-    static var Skip:                 Role = Role(rawValue: 0b0100_1000)
-    static var Replay:               Role = Role(rawValue: 0b0101_1000)
-    static var FF:                   Role = Role(rawValue: 0b0111_1000)
-    static var Rewind:               Role = Role(rawValue: 0b1000_1000)
-    static var Record:               Role = Role(rawValue: 0b1001_1000)
-    static var TransportButtonMask:  Role = Role(rawValue: 0b0000_1000)
+    public static var TransportButton:      Role = Role(rawValue: 0b0000_1000)
+    public static var Play:                 Role = Role(rawValue: 0b0001_1000)
+    public static var Stop:                 Role = Role(rawValue: 0b0010_1000)
+    public static var Pause:                Role = Role(rawValue: 0b0011_1000)
+    public static var Skip:                 Role = Role(rawValue: 0b0100_1000)
+    public static var Replay:               Role = Role(rawValue: 0b0101_1000)
+    public static var FF:                   Role = Role(rawValue: 0b0111_1000)
+    public static var Rewind:               Role = Role(rawValue: 0b1000_1000)
+    public static var Record:               Role = Role(rawValue: 0b1001_1000)
+    public static var TransportButtonMask:  Role = Role(rawValue: 0b0000_1000)
 
-    static var buttonGroupRoles: [Role] {
+    public static var buttonGroupRoles: [Role] {
       return [.Undefined, .SelectionPanel, .Toolbar, .TopToolbar, .DPad, .Numberpad, .Transport, .Rocker]
     }
-    static var buttonRoles: [Role] {
+    public static var buttonRoles: [Role] {
       return [.Undefined,
               .ConnectionStatus, .BatteryStatus,
               .Top, .Bottom,
@@ -693,7 +705,7 @@ class RemoteElement: NamedModelObject {
 }
 
 extension RemoteElement.BaseType: JSONValueConvertible {
-  var JSONValue: String {
+  public var JSONValue: String {
     switch self {
       case .Undefined:   return "undefined"
       case .Remote:      return "remote"
@@ -703,7 +715,7 @@ extension RemoteElement.BaseType: JSONValueConvertible {
   }
 
 
-  init(JSONValue: String) {
+  public init(JSONValue: String) {
     switch JSONValue {
       case RemoteElement.BaseType.Remote.JSONValue:      self = .Remote
       case RemoteElement.BaseType.ButtonGroup.JSONValue: self = .ButtonGroup
@@ -715,7 +727,7 @@ extension RemoteElement.BaseType: JSONValueConvertible {
 
 
 extension RemoteElement.Shape: JSONValueConvertible {
-  var JSONValue: String {
+  public var JSONValue: String {
     switch self {
       case .Undefined:        return "undefined"
       case .RoundedRectangle: return "rounded-rectangle"
@@ -726,7 +738,7 @@ extension RemoteElement.Shape: JSONValueConvertible {
     }
   }
 
-  init(JSONValue: String) {
+  public init(JSONValue: String) {
     switch JSONValue {
       case RemoteElement.Shape.RoundedRectangle.JSONValue: self = .RoundedRectangle
       case RemoteElement.Shape.Oval.JSONValue:             self = .Oval
@@ -741,7 +753,7 @@ extension RemoteElement.Shape: JSONValueConvertible {
 
 extension RemoteElement.Style: JSONValueConvertible {
 
-  var JSONValue: String {
+  public var JSONValue: String {
     var segments: [String] = []
     if self & RemoteElement.Style.ApplyGloss != nil {
       var k = "gloss"
@@ -755,7 +767,7 @@ extension RemoteElement.Style: JSONValueConvertible {
     return " ".join(segments)
   }
 
-  init(JSONValue: String) {
+  public init(JSONValue: String) {
     let components = split(JSONValue){$0 == " "}
     var style = RemoteElement.Style.Undefined
     for component in components {
@@ -775,12 +787,12 @@ extension RemoteElement.Style: JSONValueConvertible {
 }
 
 extension RemoteElement.Role: Hashable {
-  var hashValue: Int { return rawValue }
+  public var hashValue: Int { return rawValue }
 }
 
 extension RemoteElement.Role: JSONValueConvertible {
 
-  var JSONValue: String {
+  public var JSONValue: String {
     switch self {
       case RemoteElement.Role.SelectionPanel:       return "selection-panel"
       case RemoteElement.Role.Toolbar:              return "toolbar"
@@ -830,7 +842,7 @@ extension RemoteElement.Role: JSONValueConvertible {
     }
   }
 
-  init(JSONValue: String) {
+  public init(JSONValue: String) {
     switch JSONValue {
       case RemoteElement.Role.SelectionPanel.JSONValue:       self = RemoteElement.Role.SelectionPanel
       case RemoteElement.Role.Toolbar.JSONValue:              self = RemoteElement.Role.Toolbar

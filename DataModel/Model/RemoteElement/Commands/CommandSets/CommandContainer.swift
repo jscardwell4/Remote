@@ -11,11 +11,11 @@ import CoreData
 import MoonKit
 
 @objc(CommandContainer)
-class CommandContainer: NamedModelObject {
+public class CommandContainer: NamedModelObject {
 
-  @NSManaged var index: MSDictionary
-  @NSManaged var buttonGroup: ButtonGroup?
+  @NSManaged public var index: MSDictionary
+  @NSManaged public var buttonGroup: ButtonGroup?
 
-  var count: Int { return index.count }
+  public var count: Int { return index.count }
 
 }

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 import MoonKit
-
+import DataModel
 
 @objc protocol Detailable { func detailController() -> UIViewController }
 @objc protocol Previewable { var preview: UIImage { get }; var thumbnail: UIImage { get } }

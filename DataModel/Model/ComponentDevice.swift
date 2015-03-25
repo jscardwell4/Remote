@@ -11,19 +11,19 @@ import CoreData
 import MoonKit
 
 @objc(ComponentDevice)
-class ComponentDevice: EditableModelObject {
+public final class ComponentDevice: EditableModelObject {
 
-  @NSManaged var alwaysOn: Bool
-  @NSManaged var inputPowersOn: Bool
-  @NSManaged var inputs: Set<IRCode>
-  @NSManaged var port: Int16
-  @NSManaged var power: Bool
-  @NSManaged var codeSet: IRCodeSet?
-  @NSManaged var manufacturer: Manufacturer
-  @NSManaged var networkDevice: NetworkDevice?
-  @NSManaged var offCommand: SendIRCommand?
-  @NSManaged var onCommand: SendIRCommand?
-  @NSManaged var powerCommands: Set<PowerCommand>
+  @NSManaged public var alwaysOn: Bool
+  @NSManaged public var inputPowersOn: Bool
+  @NSManaged public var inputs: Set<IRCode>
+  @NSManaged public var port: Int16
+  @NSManaged public var power: Bool
+  @NSManaged public var codeSet: IRCodeSet?
+  @NSManaged public var manufacturer: Manufacturer
+  @NSManaged public var networkDevice: NetworkDevice?
+  @NSManaged public var offCommand: SendIRCommand?
+  @NSManaged public var onCommand: SendIRCommand?
+  @NSManaged public var powerCommands: Set<PowerCommand>
 
   private var ignoreNextPowerCommand = false
 
@@ -36,7 +36,7 @@ class ComponentDevice: EditableModelObject {
   }
 
 
-  func powerOn(completion: ((Bool, NSError?) -> Void)?) {
+  public func powerOn(completion: ((Bool, NSError?) -> Void)?) {
     if !ignorePowerCommand(completion) {
       offCommand?.execute{[unowned self] (success: Bool, error: NSError?) in
         if success { self.power = true }
@@ -45,7 +45,7 @@ class ComponentDevice: EditableModelObject {
     }
   }
 
-  func powerOff(completion: ((Bool, NSError?) -> Void)?) {
+  public func powerOff(completion: ((Bool, NSError?) -> Void)?) {
     if !ignorePowerCommand(completion) {
       offCommand?.execute{[unowned self] (success: Bool, error: NSError?) in
         if success { self.power = false }
@@ -68,7 +68,7 @@ class ComponentDevice: EditableModelObject {
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     if let port = data["port"] as? NSNumber { self.port = port.shortValue }
@@ -89,7 +89,7 @@ extension ComponentDevice: MSJSONExport {
 
   :returns: MSDictionary!
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
 
     let dictionary = super.JSONDictionary()
 

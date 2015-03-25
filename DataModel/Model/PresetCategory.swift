@@ -11,24 +11,24 @@ import CoreData
 import MoonKit
 
 @objc(PresetCategory)
-final class PresetCategory: IndexedEditableModelObject, NestingModelCategory, ModelCategoryItem, RootedEditableModel {
+final public class PresetCategory: IndexedEditableModelObject, NestingModelCategory, ModelCategoryItem, RootedEditableModel {
 
-  @NSManaged var presets: Set<Preset>
-  @NSManaged var childCategories: Set<PresetCategory>
-  @NSManaged var parentCategory: PresetCategory?
+  @NSManaged public var presets: Set<Preset>
+  @NSManaged public var childCategories: Set<PresetCategory>
+  @NSManaged public var parentCategory: PresetCategory?
 
-  typealias ItemType = Preset
-  var items: [ItemType] { get { return Array(presets) } set { presets = Set(newValue) } }
-  func itemWithIndex(index: ModelIndex) -> ItemType? { return findByIndex(presets, index) }
+  public typealias ItemType = Preset
+  public var items: [ItemType] { get { return Array(presets) } set { presets = Set(newValue) } }
+  public func itemWithIndex(index: ModelIndex) -> ItemType? { return findByIndex(presets, index) }
 
-  typealias CategoryType = PresetCategory
-  var category: CategoryType? { get { return parentCategory } set { parentCategory = newValue } }
+  public typealias CategoryType = PresetCategory
+  public var category: CategoryType? { get { return parentCategory } set { parentCategory = newValue } }
 
-  typealias NestedType = PresetCategory
-  var subcategories: [NestedType] { get { return Array(childCategories) } set { childCategories = Set(newValue) } }
-  func subcategoryWithIndex(index: ModelIndex) -> NestedType? { return findByIndex(childCategories, index) }
+  public typealias NestedType = PresetCategory
+  public var subcategories: [NestedType] { get { return Array(childCategories) } set { childCategories = Set(newValue) } }
+  public func subcategoryWithIndex(index: ModelIndex) -> NestedType? { return findByIndex(childCategories, index) }
 
-  override var index: ModelIndex { return parentCategory != nil ? parentCategory!.index + "\(name)" : "\(name)" }
+  override public var index: ModelIndex { return parentCategory != nil ? parentCategory!.index + "\(name)" : "\(name)" }
 
   /**
   itemWithIndex:context:
@@ -38,7 +38,7 @@ final class PresetCategory: IndexedEditableModelObject, NestingModelCategory, Mo
 
   :returns: T?
   */
-  class func itemWithIndex<T:IndexedEditableModel>(index: ModelIndex, context: NSManagedObjectContext) -> T? {
+  public class func itemWithIndex<T:IndexedEditableModel>(index: ModelIndex, context: NSManagedObjectContext) -> T? {
     if index.isEmpty { return nil }
     var i = 1
     if let rootCategory = rootItemWithIndex(index[0..<i], context: context) {
@@ -54,7 +54,7 @@ final class PresetCategory: IndexedEditableModelObject, NestingModelCategory, Mo
 
   :returns: Self?
   */
-  class func rootItemWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Self? {
+  public class func rootItemWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Self? {
     if let name = index.first {
       return objectMatchingPredicate(∀"parentCategory = NULL AND name = '\(name)'", context: context)
     } else { return nil }
@@ -65,7 +65,7 @@ final class PresetCategory: IndexedEditableModelObject, NestingModelCategory, Mo
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     //TODO: Fill in stub
@@ -76,7 +76,7 @@ final class PresetCategory: IndexedEditableModelObject, NestingModelCategory, Mo
 
   :returns: MSDictionary
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     //TODO: Fill in stub

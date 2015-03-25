@@ -11,20 +11,21 @@ import UIKit
 import CoreData
 import MoonKit
 
-class Activity: NamedModelObject {
+@objc(Activity)
+public final class Activity: NamedModelObject {
 
-  @NSManaged var launchMacro: MacroCommand?
-  @NSManaged var haltMacro: MacroCommand?
-  @NSManaged var remote: Remote?
+  @NSManaged public var launchMacro: MacroCommand?
+  @NSManaged public var haltMacro: MacroCommand?
+  @NSManaged public var remote: Remote?
 
   /**
   requiresUniqueNaming
 
   :returns: Bool
   */
-  override class func requiresUniqueNaming() -> Bool { return true }
+  override public class func requiresUniqueNaming() -> Bool { return true }
 
-  var activityController: ActivityController? {
+  public var activityController: ActivityController? {
     return managedObjectContext == nil ? nil : ActivityController.sharedController(managedObjectContext!)
   }
 
@@ -33,7 +34,7 @@ class Activity: NamedModelObject {
 
   :param: completion Block to execute upon completing the task
   */
-  func launchActivity(completion: ((success: Bool, error: NSError?) -> Void)?) {
+  public func launchActivity(completion: ((success: Bool, error: NSError?) -> Void)?) {
     if let controller = activityController where controller.currentActivity != self, let macro = launchMacro {
       macro.execute {[unowned self] (success, error) -> Void in
         if error == nil && success {
@@ -51,7 +52,7 @@ class Activity: NamedModelObject {
 
   :param: completion Block to execute upon completing the task
   */
-  func haltActivity(completion: ((success: Bool, error: NSError?) -> Void)?) {
+  public func haltActivity(completion: ((success: Bool, error: NSError?) -> Void)?) {
     if let controller = activityController where controller.currentActivity == self, let macro = haltMacro {
       macro.execute {[unowned self] (success, error) -> Void in
         if error == nil && success {
@@ -69,7 +70,7 @@ class Activity: NamedModelObject {
 
   :param: completion The completion block to pass through to the halting or launching method
   */
-  func launchOrHaltActivity(completion: ((success: Bool, error: NSError?) -> Void)?) {
+  public func launchOrHaltActivity(completion: ((success: Bool, error: NSError?) -> Void)?) {
     if let controller = activityController {
       if let currentActivity = controller.currentActivity {
         if currentActivity == self {
@@ -88,7 +89,7 @@ class Activity: NamedModelObject {
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     updateRelationshipFromData(data, forKey: "remote")
@@ -102,7 +103,7 @@ class Activity: NamedModelObject {
 
   :returns: MSDictionary!
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     appendValue(remote?.commentedUUID, forKey: "remote.uuid", toDictionary: dictionary)

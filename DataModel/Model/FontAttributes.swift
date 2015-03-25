@@ -10,9 +10,9 @@ import Foundation
 import UIKit
 import MoonKit
 
-struct FontAttributes {
+public struct FontAttributes {
 
-  enum Trait: UInt32 {
+  public enum Trait: UInt32 {
     case Italic       = UIFontDescriptorSymbolicTraits.TraitItalic
     case Bold         = UIFontDescriptorSymbolicTraits.TraitBold
     case Expanded     = UIFontDescriptorSymbolicTraits.TraitExpanded
@@ -24,7 +24,7 @@ struct FontAttributes {
     case LooseLeading = UIFontDescriptorSymbolicTraits.TraitLooseLeading
   }
 
-  enum Class: UInt32 {
+  public enum Class: UInt32 {
     case Unknown            = UIFontDescriptorSymbolicTraits.ClassUnknown
     case OldStyleSerifs     = UIFontDescriptorSymbolicTraits.ClassOldStyleSerifs
     case TransitionalSerifs = UIFontDescriptorSymbolicTraits.ClassTransitionalSerifs
@@ -40,51 +40,51 @@ struct FontAttributes {
 
   private var symbolicTraits: UIFontDescriptorSymbolicTraits = UIFontDescriptorSymbolicTraits(0)
 
-  var family: String?
-  var name: String?
-  var face: String?
-  var size: CGFloat?
-  var italic: Bool {
+  public var family: String?
+  public var name: String?
+  public var face: String?
+  public var size: CGFloat?
+  public var italic: Bool {
     get { return isOptionSet(UIFontDescriptorSymbolicTraits.TraitItalic, symbolicTraits) }
     set { if newValue { setOption(UIFontDescriptorSymbolicTraits.TraitItalic, symbolicTraits) }
           else { unsetOption(UIFontDescriptorSymbolicTraits.TraitItalic, symbolicTraits) } }
   }
-  var bold: Bool {
+  public var bold: Bool {
     get { return isOptionSet(UIFontDescriptorSymbolicTraits.TraitBold, symbolicTraits) }
     set { if newValue { setOption(UIFontDescriptorSymbolicTraits.TraitBold, symbolicTraits) }
           else { unsetOption(UIFontDescriptorSymbolicTraits.TraitBold, symbolicTraits) } }
   }
-  var expanded: Bool {
+  public var expanded: Bool {
     get { return isOptionSet(UIFontDescriptorSymbolicTraits.TraitExpanded, symbolicTraits) }
     set { if newValue { setOption(UIFontDescriptorSymbolicTraits.TraitExpanded, symbolicTraits) }
           else { unsetOption(UIFontDescriptorSymbolicTraits.TraitExpanded, symbolicTraits) } }
   }
-  var condensed: Bool {
+  public var condensed: Bool {
     get { return isOptionSet(UIFontDescriptorSymbolicTraits.TraitCondensed, symbolicTraits) }
     set { if newValue { setOption(UIFontDescriptorSymbolicTraits.TraitCondensed, symbolicTraits) }
           else { unsetOption(UIFontDescriptorSymbolicTraits.TraitCondensed, symbolicTraits) } }
   }
-  var monoSpace: Bool {
+  public var monoSpace: Bool {
     get { return isOptionSet(UIFontDescriptorSymbolicTraits.TraitMonoSpace, symbolicTraits) }
     set { if newValue { setOption(UIFontDescriptorSymbolicTraits.TraitMonoSpace, symbolicTraits) }
           else { unsetOption(UIFontDescriptorSymbolicTraits.TraitMonoSpace, symbolicTraits) } }
   }
-  var vertical: Bool {
+  public var vertical: Bool {
     get { return isOptionSet(UIFontDescriptorSymbolicTraits.TraitVertical, symbolicTraits) }
     set { if newValue { setOption(UIFontDescriptorSymbolicTraits.TraitVertical, symbolicTraits) }
           else { unsetOption(UIFontDescriptorSymbolicTraits.TraitVertical, symbolicTraits) } }
   }
-  var uIOptimized: Bool {
+  public var uIOptimized: Bool {
     get { return isOptionSet(UIFontDescriptorSymbolicTraits.TraitUIOptimized, symbolicTraits) }
     set { if newValue { setOption(UIFontDescriptorSymbolicTraits.TraitUIOptimized, symbolicTraits) }
           else { unsetOption(UIFontDescriptorSymbolicTraits.TraitUIOptimized, symbolicTraits) } }
   }
-  var tightLeading: Bool {
+  public var tightLeading: Bool {
     get { return isOptionSet(UIFontDescriptorSymbolicTraits.TraitTightLeading, symbolicTraits) }
     set { if newValue { setOption(UIFontDescriptorSymbolicTraits.TraitTightLeading, symbolicTraits) }
           else { unsetOption(UIFontDescriptorSymbolicTraits.TraitTightLeading, symbolicTraits) } }
   }
-  var looseLeading: Bool {
+  public var looseLeading: Bool {
     get { return isOptionSet(UIFontDescriptorSymbolicTraits.TraitLooseLeading, symbolicTraits) }
     set { if newValue { setOption(UIFontDescriptorSymbolicTraits.TraitLooseLeading, symbolicTraits) }
           else { unsetOption(UIFontDescriptorSymbolicTraits.TraitLooseLeading, symbolicTraits) } }

@@ -12,7 +12,7 @@ import MoonKit
 
 // MARK: - Model related protocols
 // MARK: EditableModel
-@objc protocol EditableModel: NamedModel {
+@objc public protocol EditableModel: NamedModel {
   var user: Bool { get }
   func save()
   func delete()
@@ -20,54 +20,54 @@ import MoonKit
 }
 
 // MARK: ModelCategory
-protocol ModelCategory {
+public protocol ModelCategory {
   typealias ItemType: IndexedEditableModel
   var items: [ItemType] { get set }
   func itemWithIndex(index: ModelIndex) -> ItemType?
 }
 
 // MARK: NestingModelCategory
-protocol NestingModelCategory: ModelCategory {
-  typealias NestedType: IndexedEditableModel
+public protocol NestingModelCategory: ModelCategory {
+   typealias NestedType: IndexedEditableModel
   var subcategories: [NestedType] { get set }
   func subcategoryWithIndex(index: ModelIndex) -> NestedType?
 }
 
 // MARK: ModelCategoryItem
-protocol ModelCategoryItem: EditableModel { typealias CategoryType; var category: CategoryType? { get set } }
+public protocol ModelCategoryItem: EditableModel {  typealias CategoryType; var category: CategoryType? { get set } }
 
 // MARK: RootedEditableModel
-protocol RootedEditableModel: IndexedEditableModel {
+public protocol RootedEditableModel: IndexedEditableModel {
   static func itemWithIndex<T:IndexedEditableModel>(index: ModelIndex, context: NSManagedObjectContext) -> T?
   static func rootItemWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Self?
 }
 
 // MARK: - Base editable model classes
-class EditableModelObject: NamedModelObject, EditableModel {
-  @NSManaged var user: Bool
+public class EditableModelObject: NamedModelObject, EditableModel {
+  @NSManaged public var user: Bool
 
   /** save */
-  func save() { if let moc = managedObjectContext { DataManager.saveContext(moc, propagate: true) } }
+  public func save() { if let moc = managedObjectContext { DataManager.saveContext(moc, propagate: true) } }
 
   /** delete */
-  func delete() {
+  public func delete() {
     if let moc = self.managedObjectContext {
       moc.performBlockAndWait { moc.processPendingChanges(); moc.deleteObject(self) }
       DataManager.saveContext(moc, propagate: true)
     }
   }
 
-  var editable: Bool { return true }
+  public var editable: Bool { return true }
 
   /** rollback */
-  func rollback() { if let moc = self.managedObjectContext { moc.performBlockAndWait { moc.rollback() } } }
+  public func rollback() { if let moc = self.managedObjectContext { moc.performBlockAndWait { moc.rollback() } } }
   
   /**
   updateWithData:
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     if let user = data["user"] as? NSNumber { self.user = user.boolValue }
   }
@@ -77,7 +77,7 @@ class EditableModelObject: NamedModelObject, EditableModel {
 
   :returns: MSDictionary
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     appendValueForKey("user", toDictionary: dictionary)
@@ -90,14 +90,14 @@ class EditableModelObject: NamedModelObject, EditableModel {
 
 }
 
-protocol IndexedEditableModel: EditableModel {
+public protocol IndexedEditableModel: EditableModel {
   var index: ModelIndex { get }
   static func modelWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Self?
 }
 
-class IndexedEditableModelObject: EditableModelObject, IndexedEditableModel {
+public class IndexedEditableModelObject: EditableModelObject, IndexedEditableModel {
   
-  var index: ModelIndex { return ModelIndex(name) }
+  public var index: ModelIndex { return ModelIndex(name) }
 
   /**
   modelWithIndex:context:
@@ -107,7 +107,7 @@ class IndexedEditableModelObject: EditableModelObject, IndexedEditableModel {
 
   :returns: Self?
   */
-  class func modelWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Self? {
+  public class func modelWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Self? {
     return objectWithValue(index.rawValue, forAttribute: "name", context: context)
   }
 }
@@ -122,7 +122,7 @@ findByIndex:idx:
 
 :returns: C.Generator.Element?
 */
-func findByIndex<C:CollectionType where C.Generator.Element:IndexedEditableModel>(c: C, idx: ModelIndex) -> C.Generator.Element? {
+public func findByIndex<C:CollectionType where C.Generator.Element:IndexedEditableModel>(c: C, idx: ModelIndex) -> C.Generator.Element? {
   return findFirst(c, {$0.index == idx})
 }
 
@@ -136,7 +136,7 @@ itemWithIndex:withRoot:
 
 :returns: T?
 */
-func itemWithIndexFromRoot<T:IndexedEditableModel, U:RootedEditableModel
+public func itemWithIndexFromRoot<T:IndexedEditableModel, U:RootedEditableModel
   where U:NestingModelCategory, U.NestedType == U>(index: ModelIndex, root: U) -> T?
 {
   if root.index == index { return root as? T }

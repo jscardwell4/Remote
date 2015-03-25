@@ -16,14 +16,14 @@ import MoonKit
   this application as it stands does not use `SystemCommand` for anything.
 */
 @objc(SystemCommand)
-class SystemCommand: Command {
+public final class SystemCommand: Command {
 
-  @objc enum SystemCommandType: Int {
+  @objc public enum SystemCommandType: Int {
     case Undefined, ProximitySensor, URLRequest, LaunchScreen, OpenSettings, OpenEditor
   }
 
   @NSManaged var primitiveType: NSNumber
-  var type: SystemCommandType {
+  public var type: SystemCommandType {
     get {
       willAccessValueForKey("type")
       let type = primitiveType
@@ -42,7 +42,7 @@ class SystemCommand: Command {
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     if let typeJSON = data["type"] as? String { type = SystemCommandType(JSONValue: typeJSON) }
@@ -53,7 +53,7 @@ class SystemCommand: Command {
 
   :returns: MSDictionary!
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     dictionary["class"] = "system"
@@ -69,7 +69,7 @@ class SystemCommand: Command {
 }
 
 extension SystemCommand.SystemCommandType: JSONValueConvertible {
-  var JSONValue: String {
+  public var JSONValue: String {
     switch self {
       case .ProximitySensor: return "proximity-sensor"
       case .URLRequest:      return "url-request"
@@ -80,7 +80,7 @@ extension SystemCommand.SystemCommandType: JSONValueConvertible {
     }
   }
 
-  init(JSONValue: String) {
+  public init(JSONValue: String) {
     switch JSONValue {
       case "proximity-sensor": self = .ProximitySensor
       case "url-request":      self = .URLRequest

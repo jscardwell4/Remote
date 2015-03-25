@@ -11,15 +11,15 @@ import CoreData
 import MoonKit
 
 @objc(SwitchCommand)
-class SwitchCommand: Command {
+public final class SwitchCommand: Command {
 
   /** Holds the target's `uuid` when type is remote and the mode value when the type is mode */
-  @NSManaged var target: String
+  @NSManaged public var target: String
 
-  @objc enum SwitchType: Int { case Undefined = 0, Remote = 1, Mode = 2 }
+  @objc public enum SwitchType: Int { case Undefined = 0, Remote = 1, Mode = 2 }
 
   @NSManaged var primitiveType: NSNumber
-  var type: SwitchType {
+  public var type: SwitchType {
     get {
       willAccessValueForKey("type")
       let type = primitiveType
@@ -38,7 +38,7 @@ class SwitchCommand: Command {
 
   :returns: MSDictionary!
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     dictionary["class"] = "switch"
@@ -64,7 +64,7 @@ class SwitchCommand: Command {
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     if let typeJSON = data["type"] as? String { self.type = SwitchType(JSONValue: typeJSON) }
     if let target = data["target"] as? String { self.target = target }
@@ -76,7 +76,7 @@ class SwitchCommand: Command {
 }
 
 extension SwitchCommand.SwitchType: JSONValueConvertible {
-  var JSONValue: String {
+  public var JSONValue: String {
     switch self {
       case .Undefined: return "undefined"
       case .Remote:    return "remote"
@@ -84,7 +84,7 @@ extension SwitchCommand.SwitchType: JSONValueConvertible {
     }
   }
 
-  init(JSONValue: String) {
+  public init(JSONValue: String) {
     switch JSONValue {
       case SwitchCommand.SwitchType.Remote.JSONValue: self = .Remote
       case SwitchCommand.SwitchType.Mode.JSONValue:   self = .Mode

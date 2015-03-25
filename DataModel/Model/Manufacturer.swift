@@ -11,18 +11,18 @@ import CoreData
 import MoonKit
 
 @objc(Manufacturer)
-final class Manufacturer: IndexedEditableModelObject, NestingModelCategory, RootedEditableModel {
+final public class Manufacturer: IndexedEditableModelObject, NestingModelCategory, RootedEditableModel {
 
-  @NSManaged var codeSets: Set<IRCodeSet>
-  @NSManaged var devices: Set<ComponentDevice>
+  @NSManaged public var codeSets: Set<IRCodeSet>
+  @NSManaged public var devices: Set<ComponentDevice>
 
-  typealias NestedType = IRCodeSet
-  var subcategories: [NestedType] { get { return Array(codeSets) } set { codeSets = Set(newValue) } }
-  func subcategoryWithIndex(index: ModelIndex) -> IRCodeSet? { return findByIndex(codeSets, index) }
+  public typealias NestedType = IRCodeSet
+  public var subcategories: [NestedType] { get { return Array(codeSets) } set { codeSets = Set(newValue) } }
+  public func subcategoryWithIndex(index: ModelIndex) -> IRCodeSet? { return findByIndex(codeSets, index) }
 
-  typealias ItemType = IRCode
-  var items: [ItemType] { get { return [] } set {} }
-  func itemWithIndex(index: ModelIndex) -> ItemType? { return nil }
+  public typealias ItemType = IRCode
+  public var items: [ItemType] { get { return [] } set {} }
+  public func itemWithIndex(index: ModelIndex) -> ItemType? { return nil }
 
   /**
   itemWithIndex:context:
@@ -32,7 +32,7 @@ final class Manufacturer: IndexedEditableModelObject, NestingModelCategory, Root
 
   :returns: T?
   */
-  class func itemWithIndex<T:IndexedEditableModel>(var index: ModelIndex, context: NSManagedObjectContext) -> T? {
+  public class func itemWithIndex<T:IndexedEditableModel>(var index: ModelIndex, context: NSManagedObjectContext) -> T? {
     if index.isEmpty || index.count > 3 { return nil }
 
     let manufacturerIndex = index.removeAtIndex(0)
@@ -56,7 +56,7 @@ final class Manufacturer: IndexedEditableModelObject, NestingModelCategory, Root
 
   :returns: Self?
   */
-  class func rootItemWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Self? {
+  public class func rootItemWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Self? {
     return objectWithValue(index.rawValue, forAttribute: "name", context: context)
   }
 
@@ -65,7 +65,7 @@ final class Manufacturer: IndexedEditableModelObject, NestingModelCategory, Root
 
   :param: data [String AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     updateRelationshipFromData(data, forKey: "codeSets", lookupKey: "code-sets")
     updateRelationshipFromData(data, forKey: "devices")
@@ -79,11 +79,11 @@ final class Manufacturer: IndexedEditableModelObject, NestingModelCategory, Root
 
   :returns: IndexedModelCategory?
   */
-  class func rootCategoryNamed(name: String, context: NSManagedObjectContext) -> Manufacturer? {
+  public class func rootCategoryNamed(name: String, context: NSManagedObjectContext) -> Manufacturer? {
     return objectWithValue(name, forAttribute: "name", context: context)
   }
 
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     appendValueForKeyPath("devices.commentedUUID",   forKey: "devices", toDictionary: dictionary)

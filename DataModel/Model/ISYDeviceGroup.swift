@@ -11,15 +11,15 @@ import CoreData
 import MoonKit
 
 @objc(ISYDeviceGroup)
-class ISYDeviceGroup: NamedModelObject {
+public class ISYDeviceGroup: NamedModelObject {
 
-  @NSManaged var address: String
-  @NSManaged var family: NSNumber
-  @NSManaged var flag: NSNumber
-  @NSManaged var device: ISYDevice
-  @NSManaged var members: NSSet
+  @NSManaged public var address: String
+  @NSManaged public var family: NSNumber
+  @NSManaged public var flag: NSNumber
+  @NSManaged public var device: ISYDevice
+  @NSManaged public var members: NSSet
 
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     if let flag = data["flag"] as? NSNumber { self.flag = flag }
     if let address = data["address"] as? String { self.address = address }
@@ -31,7 +31,7 @@ class ISYDeviceGroup: NamedModelObject {
 
 extension ISYDeviceGroup: MSJSONExport {
 
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
     appendValueForKey("flag", toDictionary: dictionary)
     appendValueForKey("address", toDictionary: dictionary)

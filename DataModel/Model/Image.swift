@@ -11,9 +11,9 @@ import CoreData
 import MoonKit
 
 @objc(Image)
-final class Image: IndexedEditableModelObject, ModelCategoryItem {
+final public class Image: IndexedEditableModelObject, ModelCategoryItem {
 
-  var assetName: String {
+  public var assetName: String {
     get {
       var assetName: String!
       willAccessValueForKey("assetName")
@@ -32,8 +32,8 @@ final class Image: IndexedEditableModelObject, ModelCategoryItem {
     }
 
   }
-  @NSManaged var leftCap: Int32
-  var size: CGSize {
+  @NSManaged public var leftCap: Int32
+  public var size: CGSize {
     get {
       var sizeValue: NSValue?
       willAccessValueForKey("size")
@@ -48,15 +48,15 @@ final class Image: IndexedEditableModelObject, ModelCategoryItem {
     }
   }
 
-  @NSManaged var topCap: Int32
-  @NSManaged var remoteElements: NSSet
-  @NSManaged var views: NSSet
-  @NSManaged var imageCategory: ImageCategory
+  @NSManaged public var topCap: Int32
+  @NSManaged public var remoteElements: NSSet
+  @NSManaged public var views: NSSet
+  @NSManaged public var imageCategory: ImageCategory
 
-  typealias CategoryType = ImageCategory
-  var category: CategoryType? { get { return imageCategory } set { if newValue != nil { imageCategory = newValue! } } }
+  public typealias CategoryType = ImageCategory
+  public var category: CategoryType? { get { return imageCategory } set { if newValue != nil { imageCategory = newValue! } } }
 
-  override var index: ModelIndex { return imageCategory.index + "\(name)" }
+  override public var index: ModelIndex { return imageCategory.index + "\(name)" }
 
   /**
   modelWithIndex:context:
@@ -66,11 +66,11 @@ final class Image: IndexedEditableModelObject, ModelCategoryItem {
 
   :returns: Self?
   */
-  override class func modelWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Image? {
+  override public class func modelWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Image? {
     return ImageCategory.itemWithIndex(index, context: context)
   }
 
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     updateRelationshipFromData(data, forKey: "imageCategory", lookupKey: "category")
 
@@ -79,9 +79,9 @@ final class Image: IndexedEditableModelObject, ModelCategoryItem {
     if let topCap = data["top-cap"] as? NSNumber { self.topCap = topCap.intValue }
   }
 
-  var image: UIImage? { return UIImage(named: assetName) }
-  var templateImage: UIImage? { return image?.imageWithRenderingMode(.AlwaysTemplate) }
-  override var commentedUUID: String {
+  public var image: UIImage? { return UIImage(named: assetName) }
+  public var templateImage: UIImage? { return image?.imageWithRenderingMode(.AlwaysTemplate) }
+  override public var commentedUUID: String {
     var uuidCopy: NSString = uuid
     uuidCopy.comment = " // \(assetName)"
     return uuidCopy as String
@@ -92,7 +92,7 @@ final class Image: IndexedEditableModelObject, ModelCategoryItem {
 
   :returns: MSDictionary!
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
     appendValueForKeyPath("imageCategory.index", forKey: "category.index", toDictionary: dictionary)
     appendValue(assetName, forKey: "asset-name", toDictionary: dictionary)
@@ -103,9 +103,9 @@ final class Image: IndexedEditableModelObject, ModelCategoryItem {
     return dictionary
   }
 
-  var stretchableImage: UIImage? { return image?.stretchableImageWithLeftCapWidth(Int(leftCap), topCapHeight: Int(topCap)) }
+  public var stretchableImage: UIImage? { return image?.stretchableImageWithLeftCapWidth(Int(leftCap), topCapHeight: Int(topCap)) }
 
-  var preview: UIImage { return image ?? UIImage() }
-  var thumbnail: UIImage { return preview }
+  public var preview: UIImage { return image ?? UIImage() }
+  public var thumbnail: UIImage { return preview }
 
 }

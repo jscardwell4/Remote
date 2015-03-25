@@ -12,9 +12,9 @@ import CoreData
 import MoonKit
 
 @objc(Constraint)
-class Constraint: ModelObject, Printable, DebugPrintable {
+public final class Constraint: ModelObject, Printable, DebugPrintable {
 
-  var pseudoConstraint: NSLayoutPseudoConstraint {
+  public var pseudoConstraint: NSLayoutPseudoConstraint {
     var pseudo = NSLayoutPseudoConstraint()
     pseudo.firstItem = firstItem.identifier
     pseudo.firstAttribute = firstAttribute.pseudoName
@@ -28,16 +28,16 @@ class Constraint: ModelObject, Printable, DebugPrintable {
     return pseudo
   }
 
-  @NSManaged var identifier: String?
+  @NSManaged public var identifier: String?
 
   @NSManaged var primitiveTag: NSNumber
-  var tag: Int {
+  public var tag: Int {
     get { willAccessValueForKey("tag"); let tag = primitiveTag.integerValue; didAccessValueForKey("tag"); return tag }
     set { willChangeValueForKey("tag"); primitiveTag = newValue; didChangeValueForKey("tag") }
   }
 
   @NSManaged var primitiveFirstAttribute: NSNumber
-  var firstAttribute: NSLayoutAttribute {
+  public var firstAttribute: NSLayoutAttribute {
     get {
       willAccessValueForKey("firstAttribute")
       let attribute = NSLayoutAttribute(rawValue: primitiveFirstAttribute.integerValue)
@@ -52,7 +52,7 @@ class Constraint: ModelObject, Printable, DebugPrintable {
   }
 
   @NSManaged var primitiveSecondAttribute: NSNumber
-  var secondAttribute: NSLayoutAttribute {
+  public var secondAttribute: NSLayoutAttribute {
     get {
       willAccessValueForKey("secondAttribute")
       let attribute = NSLayoutAttribute(rawValue: primitiveSecondAttribute.integerValue)
@@ -67,7 +67,7 @@ class Constraint: ModelObject, Printable, DebugPrintable {
   }
 
   @NSManaged var primitiveRelation: NSNumber
-  var relation: NSLayoutRelation {
+  public var relation: NSLayoutRelation {
     get {
       willAccessValueForKey("relation")
       let relation = NSLayoutRelation(rawValue: primitiveRelation.integerValue)
@@ -82,7 +82,7 @@ class Constraint: ModelObject, Printable, DebugPrintable {
   }
 
   @NSManaged var primitiveMultiplier: NSNumber
-  var multiplier: CGFloat {
+  public var multiplier: CGFloat {
     get {
       willAccessValueForKey("multiplier")
       let multiplier = CGFloat(primitiveMultiplier.doubleValue)
@@ -97,7 +97,7 @@ class Constraint: ModelObject, Printable, DebugPrintable {
   }
 
   @NSManaged var primitiveConstant: NSNumber
-  var constant: CGFloat {
+  public var constant: CGFloat {
     get {
       willAccessValueForKey("constant")
       let constant = CGFloat(primitiveConstant.doubleValue)
@@ -111,12 +111,12 @@ class Constraint: ModelObject, Printable, DebugPrintable {
     }
   }
 
-  @NSManaged var firstItem: RemoteElement!
-  @NSManaged var secondItem: RemoteElement?
-  @NSManaged var owner: RemoteElement?
+  @NSManaged public var firstItem: RemoteElement!
+  @NSManaged public var secondItem: RemoteElement?
+  @NSManaged public var owner: RemoteElement?
 
   @NSManaged var primitivePriority: NSNumber!
-  var priority: UILayoutPriority {
+  public var priority: UILayoutPriority {
     get {
       willAccessValueForKey("priority")
       let priority = primitivePriority.floatValue
@@ -141,7 +141,7 @@ class Constraint: ModelObject, Printable, DebugPrintable {
   :param: multiplier CGFloat
   :param: constant CGFloat
   */
-  convenience init(item firstItem: RemoteElement,
+  public convenience init(item firstItem: RemoteElement,
                    attribute firstAttribute: NSLayoutAttribute,
                    relatedBy relation: NSLayoutRelation,
                    toItem seconditem: RemoteElement?,
@@ -165,7 +165,7 @@ class Constraint: ModelObject, Printable, DebugPrintable {
 
   :param: values [String AnyObject]
   */
-  class func constraintWithValues(values: [String:AnyObject]) -> Constraint? {
+  public class func constraintWithValues(values: [String:AnyObject]) -> Constraint? {
     let firstItem = values["firstItem"] as? RemoteElement
     let firstAttribute = values["firstAttribute"] as? NSNumber
     let relation = values["relation"] as? NSNumber
@@ -192,7 +192,7 @@ class Constraint: ModelObject, Printable, DebugPrintable {
 
   :returns: RemoteElement?
   */
-  class func elementFromDirectory(directory: OrderedDictionary<String, RemoteElement>,
+  public class func elementFromDirectory(directory: OrderedDictionary<String, RemoteElement>,
                         forString string: String) -> RemoteElement?
   {
     var element: RemoteElement?
@@ -211,7 +211,7 @@ class Constraint: ModelObject, Printable, DebugPrintable {
 
   :returns: Constraint?
   */
-  class func constraintFromPseudoConstraint(pseudo: NSLayoutPseudoConstraint,
+  public class func constraintFromPseudoConstraint(pseudo: NSLayoutPseudoConstraint,
                               usingDirectory directory: OrderedDictionary<String, RemoteElement>) -> Constraint?
   {
     var constraint: Constraint?
@@ -243,18 +243,18 @@ class Constraint: ModelObject, Printable, DebugPrintable {
     return constraint
   }
 
-  var manager: ConstraintManager { return firstItem.constraintManager }
+  public var manager: ConstraintManager { return firstItem.constraintManager }
 
-  var staticConstraint: Bool { return secondItem == nil }
+  public var staticConstraint: Bool { return secondItem == nil }
 
-  override var description: String {
+  override public var description: String {
     var pseudo = pseudoConstraint
     pseudo.firstItem = firstItem.name.camelCase()
     pseudo.secondItem = secondItem?.name.camelCase()
     return pseudo.description
   }
 
-  override var debugDescription: String {
+  override public var debugDescription: String {
     return "\n".join(description,
       "firstItem: \(firstItem)",
       "secondItem: \(secondItem)",
@@ -274,7 +274,7 @@ class Constraint: ModelObject, Printable, DebugPrintable {
 
   :returns: Bool
   */
-  func hasAttributeValues(values: [String:AnyObject]) -> Bool {
+  public func hasAttributeValues(values: [String:AnyObject]) -> Bool {
     if let item: AnyObject = values["firstItem"] {
       if item is RemoteElement && (item as! RemoteElement) != firstItem { return false }
       else if item is String && (item as! String) != firstItem.uuid { return false }
@@ -321,7 +321,7 @@ class Constraint: ModelObject, Printable, DebugPrintable {
 
   :returns: Constraint?
   */
-  class func constraintFromFormat(format: String, index: [String:String], context: NSManagedObjectContext) -> Constraint? {
+  public class func constraintFromFormat(format: String, index: [String:String], context: NSManagedObjectContext) -> Constraint? {
     var constraint: Constraint?
     if let pseudo = NSLayoutPseudoConstraint(format: format) {
       let firstItemIndex = pseudo.firstItem
@@ -352,7 +352,7 @@ class Constraint: ModelObject, Printable, DebugPrintable {
 
   :returns: [Constraint]
   */
-  override class func importObjectsFromData(data: AnyObject, context: NSManagedObjectContext) -> [ModelObject] {
+  override public class func importObjectsFromData(data: AnyObject, context: NSManagedObjectContext) -> [ModelObject] {
     var constraints: [Constraint] = []
     if let rootDictionary = data as? [String:AnyObject] {
       if let index = rootDictionary["index"] as? [String:String] {
@@ -374,7 +374,7 @@ class Constraint: ModelObject, Printable, DebugPrintable {
 
   :returns: MSDictionary
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     var dictionary = super.JSONDictionary()
     dictionary["tag"] = primitiveTag
     if identifier != nil { dictionary["identifier"] = identifier! }

@@ -259,6 +259,10 @@
 		C26BBB3316DC1B5C0093D5B4 /* Windows-White.png in Resources */ = {isa = PBXBuildFile; fileRef = C26BBAE616DC1B5C0093D5B4 /* Windows-White.png */; };
 		C26BBB3416DC1B5C0093D5B4 /* Windows-White@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C26BBAE716DC1B5C0093D5B4 /* Windows-White@2x.png */; };
 		C26C6E6819B8EC9600B346AE /* NetworkDeviceConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C26C6E6719B8EC9600B346AE /* NetworkDeviceConnection.m */; };
+		C26D84B61AC33738000230B9 /* DocumentSelectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4651ABCA395007581F2 /* DocumentSelectionController.swift */; };
+		C26D84B71AC33752000230B9 /* ImportExportFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4661ABCA395007581F2 /* ImportExportFileManager.swift */; };
+		C26D84B91AC34DF0000230B9 /* Bank.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F44C1ABCA395007581F2 /* Bank.swift */; };
+		C26D84BB1AC34E25000230B9 /* BankCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4751ABCA395007581F2 /* BankCollectionCell.swift */; };
 		C27BCC8C1801C16A0002464C /* IntegerKeyboard_0-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC681801C16A0002464C /* IntegerKeyboard_0-Highlighted@2x.png */; };
 		C27BCC8D1801C16A0002464C /* IntegerKeyboard_0.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC691801C16A0002464C /* IntegerKeyboard_0.png */; };
 		C27BCC8E1801C16A0002464C /* IntegerKeyboard_0@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC6A1801C16A0002464C /* IntegerKeyboard_0@2x.png */; };
@@ -409,7 +413,6 @@
 		C2E8D9F719BCD5C400E6098E /* zigbee.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9BB19BCD5C400E6098E /* zigbee.xsd */; };
 		C2E9F3EC1ABC9797007581F2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F3EB1ABC9797007581F2 /* AppDelegate.swift */; };
 		C2E9F3F31ABC9797007581F2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F3F21ABC9797007581F2 /* Images.xcassets */; };
-		C2E9F4021ABC9797007581F2 /* BankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4011ABC9797007581F2 /* BankTests.swift */; };
 		C2E9F40D1ABC9816007581F2 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C235911C19C7ACB900920F8D /* MoonKit.framework */; };
 		C2E9F40E1ABC9816007581F2 /* MoonKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C235911C19C7ACB900920F8D /* MoonKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C2E9F4121ABC982B007581F2 /* DataModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* DataModel.framework */; };
@@ -419,7 +422,6 @@
 		C2E9F41B1ABC9A63007581F2 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F41A1ABC9A62007581F2 /* Default-568h@2x.png */; };
 		C2E9F5511ABCA395007581F2 /* ComponentDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4561ABCA395007581F2 /* ComponentDevice.swift */; };
 		C2E9F55F1ABCA395007581F2 /* EditableModelObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4641ABCA395007581F2 /* EditableModelObject.swift */; };
-		C2E9F5611ABCA395007581F2 /* ImportExportFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4661ABCA395007581F2 /* ImportExportFileManager.swift */; };
 		C2E9F5AC1ABCA395007581F2 /* Activity.json in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F4B71ABCA395007581F2 /* Activity.json */; };
 		C2E9F5AD1ABCA395007581F2 /* ActivityController.json in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F4B81ABCA395007581F2 /* ActivityController.json */; };
 		C2E9F5AE1ABCA395007581F2 /* ComponentDevice.json in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F4B91ABCA395007581F2 /* ComponentDevice.json */; };
@@ -621,13 +623,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = C26BAEA716DC10FE0093D5B4;
 			remoteInfo = Remote;
-		};
-		C2E9F3FC1ABC9797007581F2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C2E9F3E61ABC9797007581F2;
-			remoteInfo = RemoteDataUITest;
 		};
 		C2E9F40F1ABC9816007581F2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1140,9 +1135,6 @@
 		C2E9F3EA1ABC9797007581F2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2E9F3EB1ABC9797007581F2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C2E9F3F21ABC9797007581F2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		C2E9F3FB1ABC9797007581F2 /* BankTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BankTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C2E9F4001ABC9797007581F2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C2E9F4011ABC9797007581F2 /* BankTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankTests.swift; sourceTree = "<group>"; };
 		C2E9F41A1ABC9A62007581F2 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		C2E9F44C1ABCA395007581F2 /* Bank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bank.swift; sourceTree = "<group>"; };
 		C2E9F4541ABCA395007581F2 /* BankSurrogateCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankSurrogateCategory.swift; sourceTree = "<group>"; };
@@ -1308,10 +1300,8 @@
 		C2E9F53A1ABCA395007581F2 /* PresetAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetAttributes.swift; sourceTree = "<group>"; };
 		C2E9F53B1ABCA395007581F2 /* Remote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Remote.swift; sourceTree = "<group>"; };
 		C2E9F53C1ABCA395007581F2 /* RemoteElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteElement.swift; sourceTree = "<group>"; };
-		C2E9F5411ABCA395007581F2 /* StateMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateMap.swift; sourceTree = "<group>"; };
 		C2E9F5421ABCA395007581F2 /* TitleAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleAttributes.swift; sourceTree = "<group>"; };
 		C2E9F5431ABCA395007581F2 /* TitleAttributesDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleAttributesDelegate.swift; sourceTree = "<group>"; };
-		C2E9F5441ABCA395007581F2 /* TitleSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleSet.swift; sourceTree = "<group>"; };
 		C2E9F5471ABCA395007581F2 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		C2E9F6211ABCA7A3007581F2 /* Apple Symbols.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Apple Symbols.ttf"; sourceTree = "<group>"; };
 		C2E9F6221ABCA7A3007581F2 /* Fico.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Fico.otf; sourceTree = "<group>"; };
@@ -1420,13 +1410,6 @@
 				C2E9F4121ABC982B007581F2 /* DataModel.framework in Frameworks */,
 				C2E9F4161ABC9848007581F2 /* CocoaLumberjack.framework in Frameworks */,
 				C2E9F40D1ABC9816007581F2 /* MoonKit.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C2E9F3F81ABC9797007581F2 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1561,7 +1544,6 @@
 				C2C482C419C9F968002E84A9 /* Remote Tests */,
 				C215CC001ABB102F00E8077E /* DataModel */,
 				C2E9F3E81ABC9797007581F2 /* BankApp */,
-				C2E9F3FE1ABC9797007581F2 /* BankTests */,
 				C293C7451AC3164700408D35 /* Bank */,
 				C293C7541AC3164700408D35 /* BankTests */,
 				C26BAEAA16DC10FE0093D5B4 /* Frameworks */,
@@ -1578,7 +1560,6 @@
 				C2C482C319C9F968002E84A9 /* Remote Tests.xctest */,
 				C215CBFF1ABB102F00E8077E /* DataModel.framework */,
 				C2E9F3E71ABC9797007581F2 /* BankApp.app */,
-				C2E9F3FB1ABC9797007581F2 /* BankTests.xctest */,
 				C293C7441AC3164700408D35 /* Bank.framework */,
 				C293C74E1AC3164700408D35 /* BankTests.xctest */,
 			);
@@ -2163,23 +2144,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		C2E9F3FE1ABC9797007581F2 /* BankTests */ = {
-			isa = PBXGroup;
-			children = (
-				C2E9F4011ABC9797007581F2 /* BankTests.swift */,
-				C2E9F3FF1ABC9797007581F2 /* Supporting Files */,
-			);
-			path = BankTests;
-			sourceTree = "<group>";
-		};
-		C2E9F3FF1ABC9797007581F2 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				C2E9F4001ABC9797007581F2 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		C2E9F44B1ABCA395007581F2 /* Source */ = {
 			isa = PBXGroup;
 			children = (
@@ -2187,6 +2151,7 @@
 				C2E9F44C1ABCA395007581F2 /* Bank.swift */,
 				C2E9F4651ABCA395007581F2 /* DocumentSelectionController.swift */,
 				C2E9F4661ABCA395007581F2 /* ImportExportFileManager.swift */,
+				C2E9F5431ABCA395007581F2 /* TitleAttributesDelegate.swift */,
 				C2E9F4671ABCA395007581F2 /* Other */,
 				C2E9F4721ABCA395007581F2 /* View Controllers */,
 			);
@@ -2369,10 +2334,7 @@
 				C2E9F4FE1ABCA395007581F2 /* ModelObject.swift */,
 				C2E9F4FF1ABCA395007581F2 /* NamedModelObject.swift */,
 				C2E9F5001ABCA395007581F2 /* RemoteElement */,
-				C2E9F5411ABCA395007581F2 /* StateMap.swift */,
 				C2E9F5421ABCA395007581F2 /* TitleAttributes.swift */,
-				C2E9F5431ABCA395007581F2 /* TitleAttributesDelegate.swift */,
-				C2E9F5441ABCA395007581F2 /* TitleSet.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2678,24 +2640,6 @@
 			productReference = C2E9F3E71ABC9797007581F2 /* BankApp.app */;
 			productType = "com.apple.product-type.application";
 		};
-		C2E9F3FA1ABC9797007581F2 /* BankTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C2E9F4081ABC9797007581F2 /* Build configuration list for PBXNativeTarget "BankTests" */;
-			buildPhases = (
-				C2E9F3F71ABC9797007581F2 /* Sources */,
-				C2E9F3F81ABC9797007581F2 /* Frameworks */,
-				C2E9F3F91ABC9797007581F2 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				C2E9F3FD1ABC9797007581F2 /* PBXTargetDependency */,
-			);
-			name = BankTests;
-			productName = RemoteDataUITestTests;
-			productReference = C2E9F3FB1ABC9797007581F2 /* BankTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		C2F940F619BE5E90007B5CC1 /* iTachClient */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C2F9412119BE5E90007B5CC1 /* Build configuration list for PBXNativeTarget "iTachClient" */;
@@ -2752,10 +2696,6 @@
 						CreatedOnToolsVersion = 6.3;
 						DevelopmentTeam = JT6STF4SHA;
 					};
-					C2E9F3FA1ABC9797007581F2 = {
-						CreatedOnToolsVersion = 6.3;
-						TestTargetID = C2E9F3E61ABC9797007581F2;
-					};
 				};
 			};
 			buildConfigurationList = C26BAEA316DC10FE0093D5B4 /* Build configuration list for PBXProject "Remote" */;
@@ -2787,7 +2727,6 @@
 				C2C482C219C9F968002E84A9 /* Remote Tests */,
 				C215CBFE1ABB102F00E8077E /* DataModel */,
 				C2E9F3E61ABC9797007581F2 /* BankApp */,
-				C2E9F3FA1ABC9797007581F2 /* BankTests */,
 				C293C7431AC3164700408D35 /* Bank */,
 				C293C74D1AC3164700408D35 /* BankTests */,
 			);
@@ -3258,13 +3197,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C2E9F3F91ABC9797007581F2 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C2F940F519BE5E90007B5CC1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3339,7 +3271,6 @@
 				C2E9F5D41ABCA395007581F2 /* Font.swift in Sources */,
 				C2E9F5D31ABCA395007581F2 /* DictionaryStorage.swift in Sources */,
 				C2E9F5F61ABCA395007581F2 /* CommandOperation.swift in Sources */,
-				C2E9F5611ABCA395007581F2 /* ImportExportFileManager.swift in Sources */,
 				C293C7801AC318EB00408D35 /* PresetCategory.swift in Sources */,
 				C2E9F6101ABCA395007581F2 /* Constraint.swift in Sources */,
 				C2E9F60D1ABCA395007581F2 /* ImageView.swift in Sources */,
@@ -3418,6 +3349,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C26D84B71AC33752000230B9 /* ImportExportFileManager.swift in Sources */,
+				C26D84B91AC34DF0000230B9 /* Bank.swift in Sources */,
+				C26D84B61AC33738000230B9 /* DocumentSelectionController.swift in Sources */,
+				C26D84BB1AC34E25000230B9 /* BankCollectionCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3452,14 +3387,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2E9F3EC1ABC9797007581F2 /* AppDelegate.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C2E9F3F71ABC9797007581F2 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C2E9F4021ABC9797007581F2 /* BankTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3510,11 +3437,6 @@
 			isa = PBXTargetDependency;
 			target = C26BAEA716DC10FE0093D5B4 /* Remote */;
 			targetProxy = C2C482C919C9F968002E84A9 /* PBXContainerItemProxy */;
-		};
-		C2E9F3FD1ABC9797007581F2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C2E9F3E61ABC9797007581F2 /* BankApp */;
-			targetProxy = C2E9F3FC1ABC9797007581F2 /* PBXContainerItemProxy */;
 		};
 		C2E9F4101ABC9816007581F2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -3666,6 +3588,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -3679,6 +3602,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -3715,6 +3639,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -3728,6 +3653,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -3764,6 +3690,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -3777,6 +3704,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -4974,183 +4902,6 @@
 			};
 			name = Release;
 		};
-		C2E9F4091ABC9797007581F2 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = Bank/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Bank.app/Bank";
-			};
-			name = Debug;
-		};
-		C2E9F40A1ABC9797007581F2 /* Info */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = Bank/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Bank.app/Bank";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Info;
-		};
-		C2E9F40B1ABC9797007581F2 /* Verbose */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = Bank/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Bank.app/Bank";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Verbose;
-		};
-		C2E9F40C1ABC9797007581F2 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = Bank/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Bank.app/Bank";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		C2F9412219BE5E90007B5CC1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5286,6 +5037,7 @@
 				C293C7611AC3164800408D35 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C293C7621AC3164800408D35 /* Build configuration list for PBXNativeTarget "BankTests" */ = {
 			isa = XCConfigurationList;
@@ -5296,6 +5048,7 @@
 				C293C7661AC3164800408D35 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C2C482CD19C9F968002E84A9 /* Build configuration list for PBXNativeTarget "Remote Tests" */ = {
 			isa = XCConfigurationList;
@@ -5326,17 +5079,6 @@
 				C2E9F4051ABC9797007581F2 /* Info */,
 				C2E9F4061ABC9797007581F2 /* Verbose */,
 				C2E9F4071ABC9797007581F2 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C2E9F4081ABC9797007581F2 /* Build configuration list for PBXNativeTarget "BankTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C2E9F4091ABC9797007581F2 /* Debug */,
-				C2E9F40A1ABC9797007581F2 /* Info */,
-				C2E9F40B1ABC9797007581F2 /* Verbose */,
-				C2E9F40C1ABC9797007581F2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -18,13 +18,14 @@ import MoonKit
   that customize behavior for particular tasks: <PowerCommand>, <MacroCommand>, <DelayCommand>,
   <SystemCommand>, <SendIRCommand>, <HTTPCommand>, <SwitchToRemoteCommand>.
 */
-class Command: NamedModelObject {
+@objc(Command)
+public class Command: NamedModelObject {
 
   /** Simple enumeration for specifying execution behavior. */
-  enum Option { case Default, LongPress }
+  public enum Option { case Default, LongPress }
 
   @NSManaged var primitiveIndicator: NSNumber
-  var indicator: Bool {
+  public var indicator: Bool {
     get {
       willAccessValueForKey("indicator")
       let indicator = primitiveIndicator
@@ -43,7 +44,7 @@ class Command: NamedModelObject {
 
   :param: completion The block to invoke upon completing command execution
   */
-  func execute(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+  public func execute(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
     let operation = self.operation
     operation.completionBlock = {completion?(success: operation.success, error: operation.error)}
     operation.start()
@@ -57,7 +58,7 @@ class Command: NamedModelObject {
 
   :returns: Command?
   */
-  override class func importObjectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Command? {
+  override public class func importObjectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Command? {
     if self === Command.self, let classJSONValue = data["class"] as? String {
       switch classJSONValue {
         case "power":  return PowerCommand(data: data, context: context)

@@ -15,11 +15,11 @@ import MoonKit
   turned on or off.
 */
 @objc(PowerCommand)
-class PowerCommand: Command {
+public final class PowerCommand: Command {
 
-  @NSManaged var device: ComponentDevice
+  @NSManaged public var device: ComponentDevice
   @NSManaged var primitiveState: NSNumber
-  var state: State {
+  public var state: State {
     get {
       willAccessValueForKey("state")
       let state = primitiveState
@@ -33,14 +33,14 @@ class PowerCommand: Command {
     }
   }
 
-  @objc enum State: Int { case On = 1, Off = 0 }
+  @objc public enum State: Int { case On = 1, Off = 0 }
 
   /**
   updateWithData:
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     if let stateJSON = data["state"] as? String { state = State(JSONValue: stateJSON) }
     updateRelationshipFromData(data, forKey: "device")
@@ -51,7 +51,7 @@ class PowerCommand: Command {
 
   :returns: MSDictionary!
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     dictionary["class"] = "power"
@@ -71,8 +71,8 @@ class PowerCommand: Command {
 }
 
 extension PowerCommand.State: JSONValueConvertible {
-  var JSONValue: String { return rawValue == 1 ? "on" : "off" }
-  init(JSONValue: String) {
+  public var JSONValue: String { return rawValue == 1 ? "on" : "off" }
+  public init(JSONValue: String) {
     switch JSONValue {
       case "on": self = .On
       default: self = .Off

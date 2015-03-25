@@ -11,21 +11,21 @@ import CoreData
 import MoonKit
 
 @objc(ISYDeviceNode)
-class ISYDeviceNode: NamedModelObject {
+public class ISYDeviceNode: NamedModelObject {
 
-    @NSManaged var address: String
-    @NSManaged var enabled: NSNumber
-    @NSManaged var flag: NSNumber
-    @NSManaged var pnode: String
-    @NSManaged var propertyFormatted: String
-    @NSManaged var propertyID: String
-    @NSManaged var propertyUOM: String
-    @NSManaged var propertyValue: NSNumber
-    @NSManaged var type: String
-    @NSManaged var device: ISYDevice
-    @NSManaged var groups: NSSet
+    @NSManaged public var address: String
+    @NSManaged public var enabled: NSNumber
+    @NSManaged public var flag: NSNumber
+    @NSManaged public var pnode: String
+    @NSManaged public var propertyFormatted: String
+    @NSManaged public var propertyID: String
+    @NSManaged public var propertyUOM: String
+    @NSManaged public var propertyValue: NSNumber
+    @NSManaged public var type: String
+    @NSManaged public var device: ISYDevice
+    @NSManaged public var groups: NSSet
 
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     if let flag              = data["flag"]               as? NSNumber { self.flag = flag }
     if let address           = data["address"]            as? String   { self.address = address }
@@ -43,7 +43,7 @@ class ISYDeviceNode: NamedModelObject {
 
 extension ISYDeviceNode: MSJSONExport {
 
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
     appendValueForKey("flag", toDictionary: dictionary)
     appendValueForKey("address", toDictionary: dictionary)

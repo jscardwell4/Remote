@@ -12,16 +12,16 @@ import CoreData
 import MoonKit
 
 @objc(ControlStateTitleSet)
-class ControlStateTitleSet: ControlStateSet {
+public final class ControlStateTitleSet: ControlStateSet {
 
-  @NSManaged var disabled:                    DictionaryStorage?
-  @NSManaged var selectedDisabled:            DictionaryStorage?
-  @NSManaged var highlighted:                 DictionaryStorage?
-  @NSManaged var highlightedDisabled:         DictionaryStorage?
-  @NSManaged var highlightedSelected:         DictionaryStorage?
-  @NSManaged var normal:                      DictionaryStorage?
-  @NSManaged var selected:                    DictionaryStorage?
-  @NSManaged var highlightedSelectedDisabled: DictionaryStorage?
+  @NSManaged public var disabled:                    DictionaryStorage?
+  @NSManaged public var selectedDisabled:            DictionaryStorage?
+  @NSManaged public var highlighted:                 DictionaryStorage?
+  @NSManaged public var highlightedDisabled:         DictionaryStorage?
+  @NSManaged public var highlightedSelected:         DictionaryStorage?
+  @NSManaged public var normal:                      DictionaryStorage?
+  @NSManaged public var selected:                    DictionaryStorage?
+  @NSManaged public var highlightedSelectedDisabled: DictionaryStorage?
 
   /**
   setTitleAttributes:forState:
@@ -29,7 +29,7 @@ class ControlStateTitleSet: ControlStateSet {
   :param: attributes TitleAttributes?
   :param: state UIControlState
   */
-  func setTitleAttributes(attributes: TitleAttributes?, forState state: UIControlState) {
+  public func setTitleAttributes(attributes: TitleAttributes?, forState state: UIControlState) {
     var property: String?
     switch state {
       case UIControlState.Normal:                                                      property = "normal"
@@ -66,7 +66,7 @@ class ControlStateTitleSet: ControlStateSet {
 
   :returns: TitleAttributes?
   */
-  func titleAttributesForState(state: UIControlState) -> TitleAttributes? {
+  public func titleAttributesForState(state: UIControlState) -> TitleAttributes? {
     var property: String?
     switch state {
       case UIControlState.Normal:                                                      property = "normal"
@@ -84,7 +84,7 @@ class ControlStateTitleSet: ControlStateSet {
     return storage == nil ? nil : TitleAttributes(storage: storage!.dictionary as! [String:AnyObject])
   }
 
-  func attributedStringForState(state: UIControlState) -> NSAttributedString? {
+  public func attributedStringForState(state: UIControlState) -> NSAttributedString? {
     var string: NSAttributedString?
     if let indexedAttributes = self[state.rawValue] as? DictionaryStorage {
       let attributes = TitleAttributes(storage: indexedAttributes.dictionary as! [String:AnyObject])
@@ -104,7 +104,7 @@ class ControlStateTitleSet: ControlStateSet {
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     if let jsonData = data as? [String:[String:AnyObject]] {
@@ -121,7 +121,7 @@ class ControlStateTitleSet: ControlStateSet {
 
   :returns: MSDictionary
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
     UIControlState.enumerate {
       if let attributes = self.titleAttributesForState($0) { dictionary[$0.JSONValue] = attributes.JSONValue }

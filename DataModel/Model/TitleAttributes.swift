@@ -116,29 +116,29 @@ extension NSShadow {
   }
 }
 
-struct TitleAttributes: JSONValueConvertible {
+public struct TitleAttributes: JSONValueConvertible {
 
-  enum IconTextOrderSpecification: JSONValueConvertible, EnumerableType {
+  public enum IconTextOrderSpecification: JSONValueConvertible, EnumerableType {
     case IconText, TextIcon
-    var JSONValue: String {
+    public var JSONValue: String {
       switch self {
         case .IconText: return "icon-text"
         case .TextIcon: return "text-icon"
       }
     }
-    init(JSONValue: String) {
+    public init(JSONValue: String) {
       switch JSONValue {
         case "text-icon": self = .TextIcon
         default:          self = .IconText
       }
     }
 
-    static var all: [IconTextOrderSpecification] { return [.IconText, .TextIcon] }
-    static func enumerate(block: (IconTextOrderSpecification) -> Void) { apply(all, block) }
+    public static var all: [IconTextOrderSpecification] { return [.IconText, .TextIcon] }
+    public static func enumerate(block: (IconTextOrderSpecification) -> Void) { apply(all, block) }
 
   }
 
-  var iconTextOrder: IconTextOrderSpecification {
+  public var iconTextOrder: IconTextOrderSpecification {
     get {
       if let s = self[.IconTextOrder] as? String { return IconTextOrderSpecification(JSONValue: s) }
       else { return .IconText }
@@ -146,22 +146,22 @@ struct TitleAttributes: JSONValueConvertible {
     set { self[.IconTextOrder] = newValue.JSONValue }
   }
 
-  var text: String {
+  public var text: String {
     get { return self[.Text] as? String ?? "" }
     set { self[.Text] = newValue }
   }
 
-  var iconName: String? {
+  public var iconName: String? {
     get { return self[.IconName] as? String }
     set { self[.IconName] = newValue }
   }
 
-  var icon: String {
+  public var icon: String {
     get { if let name = iconName { return UIFont.fontAwesomeIconForName(name) } else { return "" } }
     set { iconName = UIFont.fontAwesomeNameForIcon(newValue) }
   }
 
-  var font: UIFont {
+  public var font: UIFont {
     get {
       var font: UIFont?
       if let fontJSON = self[.Font] as? String {
@@ -172,7 +172,7 @@ struct TitleAttributes: JSONValueConvertible {
     set { self[.Font] = Font(newValue).JSONValue }
   }
 
-  var foregroundColor: UIColor {
+  public var foregroundColor: UIColor {
     get {
       if let s =  self[.ForegroundColor] as? String {
         return UIColor(JSONValue: s)
@@ -183,82 +183,82 @@ struct TitleAttributes: JSONValueConvertible {
     set { self[.ForegroundColor] = newValue.JSONValue }
   }
 
-  var backgroundColor: UIColor? {
+  public var backgroundColor: UIColor? {
     get { if let s =  self[.BackgroundColor] as? String { return UIColor(JSONValue: s)} else { return nil } }
     set { self[.BackgroundColor] = newValue?.JSONValue }
   }
 
-  var ligature: Int {
+  public var ligature: Int {
     get { return self[.Ligature] as? Int ?? 1 }
     set { if 0...1 ~= newValue { self[.Ligature] = newValue } }
   }
 
-  var shadow: NSShadow? {
+  public var shadow: NSShadow? {
     get { if let d = self[.Shadow] as? [String:AnyObject] { return NSShadow(JSONValue: d) } else { return nil } }
     set { self[.Shadow] = newValue?.JSONValue }
   }
 
-  var expansion: Float {
+  public var expansion: Float {
     get { return self[.Expansion] as? Float ?? 0 }
     set { self[.Expansion] = newValue }
   }
 
-  var obliqueness: Float {
+  public var obliqueness: Float {
     get { return self[.Obliqueness] as? Float ?? 0}
     set { self[.Obliqueness] = newValue }
   }
 
-  var strikethroughColor: UIColor {
+  public var strikethroughColor: UIColor {
     get { if let s =  self[.StrikethroughColor] as? String { return UIColor(JSONValue: s)} else { return foregroundColor } }
     set { self[.StrikethroughColor] = newValue.JSONValue }
   }
 
-  var underlineColor: UIColor {
+  public var underlineColor: UIColor {
     get { if let s =  self[.UnderlineColor] as? String { return UIColor(JSONValue: s)} else { return foregroundColor } }
     set { self[.UnderlineColor] = newValue.JSONValue }
   }
 
-  var baselineOffset: Float {
+  public var baselineOffset: Float {
     get { return self[.BaselineOffset] as? Float ?? 0 }
     set { self[.BaselineOffset] = newValue }
   }
 
-  var textEffect: String? {
+  public var textEffect: String? {
     get { return self[.TextEffect] as? String }
     set { self[.TextEffect] = newValue }
   }
 
-  var strokeWidth: Float {
+  public var strokeWidth: Float {
     get { return self[.StrokeWidth] as? Float ?? 0 }
     set { self[.StrokeWidth] = newValue }
   }
 
-  var strokeFill: Bool {
+  public var strokeFill: Bool {
     get { return self[.StrokeFill] as? Bool ?? false }
     set { self[.StrokeFill] = newValue }
   }
 
-  var strokeColor: UIColor {
+  public var strokeColor: UIColor {
     get { if let s = self[.StrokeColor] as? String { return UIColor(JSONValue: s) } else { return foregroundColor } }
     set { self[.StrokeColor] = newValue.JSONValue }
   }
 
-  var underlineStyle: NSUnderlineStyle {
+  public var underlineStyle: NSUnderlineStyle {
     get { return  NSUnderlineStyle(JSONValue: self[.UnderlineStyle] as? String ?? "none") }
     set { self[.UnderlineStyle] = newValue.JSONValue }
   }
 
-  var strikethroughStyle: NSUnderlineStyle {
+  public var strikethroughStyle: NSUnderlineStyle {
     get { return NSUnderlineStyle(JSONValue: self[.StrikethroughStyle] as? String ?? "none") }
     set { self[.StrikethroughStyle] = newValue.JSONValue }
   }
 
-  var kern: Float {
+  public var kern: Float {
     get { return self[.Kern] as? Float ?? 0 }
     set { self[.Kern] = newValue }
   }
 
-  var paragraphStyle: NSParagraphStyle {
+  public var paragraphStyle: NSParagraphStyle {
     get {
       return NSParagraphStyle.paragraphStyleWithAttributes(
           lineSpacing: lineSpacing,
@@ -291,62 +291,62 @@ struct TitleAttributes: JSONValueConvertible {
     }
   }
 
-  var alignment: NSTextAlignment {
+  public var alignment: NSTextAlignment {
     get { return NSTextAlignment(JSONValue: self[.Alignment] as? String ?? "natural") }
     set { self[.Alignment] = newValue.JSONValue }
   }
 
-  var firstLineHeadIndent: CGFloat {
+  public var firstLineHeadIndent: CGFloat {
     get { return self[.FirstLineHeadIndent] as? CGFloat ?? 0 }
     set { self[.FirstLineHeadIndent] = newValue }
   }
 
-  var headIndent: CGFloat {
+  public var headIndent: CGFloat {
     get { return self[.HeadIndent] as? CGFloat ?? 0 }
     set { self[.HeadIndent] = newValue }
   }
 
-  var tailIndent: CGFloat {
+  public var tailIndent: CGFloat {
     get { return self[.TailIndent] as? CGFloat ?? 0 }
     set { self[.TailIndent] = newValue }
   }
 
-  var lineHeightMultiple: CGFloat {
+  public var lineHeightMultiple: CGFloat {
     get { return self[.LineHeightMultiple] as? CGFloat ?? 0 }
     set { self[.LineHeightMultiple] = newValue }
   }
 
-  var maximumLineHeight: CGFloat {
+  public var maximumLineHeight: CGFloat {
     get { return self[.MaximumLineHeight] as? CGFloat ?? 0 }
     set { self[.MaximumLineHeight] = newValue }
   }
 
-  var minimumLineHeight: CGFloat {
+  public var minimumLineHeight: CGFloat {
     get { return self[.MinimumLineHeight] as? CGFloat ?? 0 }
     set { self[.MinimumLineHeight] = newValue }
   }
 
-  var lineSpacing: CGFloat {
+  public var lineSpacing: CGFloat {
     get { return self[.LineSpacing] as? CGFloat ?? 0}
     set { self[.LineSpacing] = newValue }
   }
 
-  var paragraphSpacing: CGFloat {
+  public var paragraphSpacing: CGFloat {
     get { return self[.ParagraphSpacing] as? CGFloat ?? 0 }
     set { self[.ParagraphSpacing] = newValue }
   }
 
-  var paragraphSpacingBefore: CGFloat {
+  public var paragraphSpacingBefore: CGFloat {
     get { return self[.ParagraphSpacingBefore] as? CGFloat ?? 0}
     set { self[.ParagraphSpacingBefore] = newValue }
   }
 
-  var hyphenationFactor: Float {
+  public var hyphenationFactor: Float {
     get { return self[.HyphenationFactor] as? Float ?? 0 }
     set { self[.HyphenationFactor] = newValue }
   }
 
-  var lineBreakMode: NSLineBreakMode {
+  public var lineBreakMode: NSLineBreakMode {
     get { return NSLineBreakMode(JSONValue: self[.LineBreakMode] as? String ?? "by-word-wrapping") }
     set { self[.LineBreakMode] = newValue.JSONValue }
   }
@@ -357,14 +357,14 @@ struct TitleAttributes: JSONValueConvertible {
 
   :returns: String
   */
-  var stringText: String {
+  public var stringText: String {
     switch iconTextOrder {
       case .IconText: return icon + text
       case .TextIcon: return text + icon
     }
   }
 
-  var iconString: NSAttributedString {
+  public var iconString: NSAttributedString {
     var attrs = attributes
     let pointSize: CGFloat = (attrs[PropertyKey.Font.attributeKey!] as? UIFont)?.pointSize ?? 18.0
     let font = UIFont(awesomeFontWithSize: pointSize)
@@ -372,9 +372,9 @@ struct TitleAttributes: JSONValueConvertible {
     return NSAttributedString(string: icon, attributes: attrs as [NSObject:AnyObject])
   }
 
-  var textString: NSAttributedString { return NSAttributedString(string: text, attributes: attributes as [NSObject:AnyObject]) }
+  public var textString: NSAttributedString { return NSAttributedString(string: text, attributes: attributes as [NSObject:AnyObject]) }
 
-  var string: NSAttributedString { return stringWithAttributes(attributes) }
+  public var string: NSAttributedString { return stringWithAttributes(attributes) }
 
   /**
   stringWithAttributes:
@@ -395,7 +395,7 @@ struct TitleAttributes: JSONValueConvertible {
 
   :returns: NSAttributedString
   */
-  func stringWithFillers(fillers: MSDictionary?) -> NSAttributedString {
+  public func stringWithFillers(fillers: MSDictionary?) -> NSAttributedString {
     if fillers != nil {
       var attrs = fillers!
       attrs.setValuesForKeysWithDictionary(attributes as [NSObject:AnyObject])
@@ -403,7 +403,7 @@ struct TitleAttributes: JSONValueConvertible {
     } else { return string }
   }
 
-  var attributes: MSDictionary {
+  public var attributes: MSDictionary {
     let attrs: MSDictionary = [
       NSFontAttributeName                : font,
       NSForegroundColorAttributeName     : foregroundColor,
@@ -428,7 +428,7 @@ struct TitleAttributes: JSONValueConvertible {
     return attrs
   }
 
-  enum MergeKind { case CopyIfNilExisting, CopyAllNonNil, CopyAll }
+  public enum MergeKind { case CopyIfNilExisting, CopyAllNonNil, CopyAll }
 
   /**
   mergeWithTitleAttributes:mergeKind:
@@ -436,7 +436,7 @@ struct TitleAttributes: JSONValueConvertible {
   :param: titleAttributes TitleAttributes
   :param: mergeKind MergeKind = .CopyIfNilExisting
   */
-  mutating func mergeWithTitleAttributes(titleAttributes: TitleAttributes?, mergeKind: MergeKind = .CopyIfNilExisting) {
+  public mutating func mergeWithTitleAttributes(titleAttributes: TitleAttributes?, mergeKind: MergeKind = .CopyIfNilExisting) {
     if titleAttributes != nil {
       PropertyKey.enumerate {
         let existingValue: AnyObject? = self[$0]
@@ -458,18 +458,18 @@ struct TitleAttributes: JSONValueConvertible {
 
   :returns: TitleAttributes
   */
-  func mergedWithTitleAttributes(titleAttributes: TitleAttributes?, mergeKind: MergeKind = .CopyIfNilExisting) -> TitleAttributes {
+  public func mergedWithTitleAttributes(titleAttributes: TitleAttributes?, mergeKind: MergeKind = .CopyIfNilExisting) -> TitleAttributes {
     var mergedAttributes = self
     mergedAttributes.mergeWithTitleAttributes(titleAttributes, mergeKind: mergeKind)
     return mergedAttributes
   }
 
-  subscript(propertyKey: PropertyKey) -> AnyObject? {
+  public subscript(propertyKey: PropertyKey) -> AnyObject? {
     get { return storage[propertyKey.rawValue] }
     set { storage[propertyKey.rawValue] = newValue }
   }
 
-  enum PropertyKey: String, JSONValueConvertible, EnumerableType {
+  public enum PropertyKey: String, JSONValueConvertible, EnumerableType {
     case Text                   = "text"
     case IconName               = "icon-name"
     case Font                   = "font"
@@ -503,10 +503,10 @@ struct TitleAttributes: JSONValueConvertible {
     case LineBreakMode          = "line-break-mode"
     case IconTextOrder          = "icon-text-order"
 
-    var JSONValue: String { return rawValue }
-    init?(JSONValue: String) { self.init(rawValue: JSONValue) }
+    public var JSONValue: String { return rawValue }
+    public init?(JSONValue: String) { self.init(rawValue: JSONValue) }
 
-    var attributeKey: String? {
+    public var attributeKey: String? {
       switch self {
         case .Font:               return NSFontAttributeName
         case .ForegroundColor:    return NSForegroundColorAttributeName
@@ -528,7 +528,7 @@ struct TitleAttributes: JSONValueConvertible {
       }
     }
 
-    static var all: [PropertyKey] {
+    public static var all: [PropertyKey] {
       return [.Font,
               .ForegroundColor,
               .BackgroundColor,
@@ -577,7 +577,7 @@ struct TitleAttributes: JSONValueConvertible {
               .LineSpacing]
     }
 
-    static var attributeKeys: [PropertyKey] {
+    public static var attributeKeys: [PropertyKey] {
       return [.Font,
               .ForegroundColor,
               .BackgroundColor,
@@ -601,43 +601,43 @@ struct TitleAttributes: JSONValueConvertible {
 
     :param: block (PropertyKey) -> Void
     */
-    static func enumerate(block: (PropertyKey) -> Void) { apply(all, block) }
+    public static func enumerate(block: (PropertyKey) -> Void) { apply(all, block) }
 
     /**
     enumerateParagraphPropertyKeys:
 
     :param: block (PropertyKey) -> Void
     */
-    static func enumerateParagraphPropertyKeys(block: (PropertyKey) -> Void) { apply(paragraphKeys, block) }
+    public static func enumerateParagraphPropertyKeys(block: (PropertyKey) -> Void) { apply(paragraphKeys, block) }
 
     /**
     enumerateAttributePropertyKeys:
 
     :param: block (PropertyKey) -> Void
     */
-    static func enumerateAttributePropertyKeys(block: (PropertyKey) -> Void) { apply(attributeKeys, block) }
+    public static func enumerateAttributePropertyKeys(block: (PropertyKey) -> Void) { apply(attributeKeys, block) }
 
   }
 
   private var storage: [String:AnyObject]
-  var dictionaryValue: NSDictionary { return storage as NSDictionary }
+  public var dictionaryValue: NSDictionary { return storage as NSDictionary }
 
   /** init */
-  init() { storage = [:] }
+  public init() { storage = [:] }
 
   /**
   initWithStorage:
 
   :param: storage [String AnyObject]
   */
-  init(storage: [String:AnyObject]) { self.storage = storage }
+  public init(storage: [String:AnyObject]) { self.storage = storage }
 
   /**
   initWithJSONValue:
 
   :param: JSONValue [String AnyObject]
   */
-  init(JSONValue: [String:AnyObject]) {
+  public init(JSONValue: [String:AnyObject]) {
     storage = [:]
 
     PropertyKey.enumerate {
@@ -705,7 +705,7 @@ struct TitleAttributes: JSONValueConvertible {
 
   }
 
-  var JSONValue: [String:AnyObject] {
+  public var JSONValue: [String:AnyObject] {
     var dictionary: [String:AnyObject] = [:]
     PropertyKey.enumerate {
       if let value: AnyObject = self[$0] {

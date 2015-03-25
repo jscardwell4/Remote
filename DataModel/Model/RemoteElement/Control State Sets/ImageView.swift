@@ -11,27 +11,27 @@ import CoreData
 import MoonKit
 
 @objc(ImageView)
-class ImageView: ModelObject {
+public final class ImageView: ModelObject {
 
-  @NSManaged var color: UIColor?
-  @NSManaged var image: Image
-  @NSManaged var imagePath: String
+  @NSManaged public var color: UIColor?
+  @NSManaged public var image: Image
+  @NSManaged public var imagePath: String
 
-  @NSManaged var buttonIcon: Button?
-  @NSManaged var buttonImage: Button?
-  @NSManaged var imageSetDisabled: ControlStateImageSet?
-  @NSManaged var imageSetDisabledSelected: ControlStateImageSet?
-  @NSManaged var imageSetHighlighted: ControlStateImageSet?
-  @NSManaged var imageSetHighlightedDisabled: ControlStateImageSet?
-  @NSManaged var imageSetHighlightedSelected: ControlStateImageSet?
-  @NSManaged var imageSetNormal: ControlStateImageSet?
-  @NSManaged var imageSetSelected: ControlStateImageSet?
-  @NSManaged var imageSetSelectedHighlightedDisabled: ControlStateImageSet?
+  @NSManaged public var buttonIcon: Button?
+  @NSManaged public var buttonImage: Button?
+  @NSManaged public var imageSetDisabled: ControlStateImageSet?
+  @NSManaged public var imageSetDisabledSelected: ControlStateImageSet?
+  @NSManaged public var imageSetHighlighted: ControlStateImageSet?
+  @NSManaged public var imageSetHighlightedDisabled: ControlStateImageSet?
+  @NSManaged public var imageSetHighlightedSelected: ControlStateImageSet?
+  @NSManaged public var imageSetNormal: ControlStateImageSet?
+  @NSManaged public var imageSetSelected: ControlStateImageSet?
+  @NSManaged public var imageSetSelectedHighlightedDisabled: ControlStateImageSet?
 
 
-  var rawImage: UIImage? { return image.image }
+  public var rawImage: UIImage? { return image.image }
 
-  var colorImage: UIImage? {
+  public var colorImage: UIImage? {
     if let img = rawImage {
       if let imgColor = color { return UIImage(fromAlphaOfImage: img, color: imgColor) }
       else { return img }
@@ -45,7 +45,7 @@ class ImageView: ModelObject {
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     updateRelationshipFromData(data, forKey: "image")
@@ -61,7 +61,7 @@ class ImageView: ModelObject {
 
   :returns: MSDictionary!
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     dictionary["image"] = image.commentedUUID

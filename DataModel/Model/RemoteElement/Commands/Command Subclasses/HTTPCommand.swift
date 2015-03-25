@@ -16,17 +16,17 @@ import MoonKit
   SmartLinc (http://www.insteon.net/2412N-smartlinc-central-controller.html) controllers.
 */
 @objc(HTTPCommand)
-class HTTPCommand: SendCommand {
+public final class HTTPCommand: SendCommand {
 
   /** The url for the http request sent by `ConnectionManager`. */
-  @NSManaged var url: NSURL
+  @NSManaged public var url: NSURL
 
   /**
   JSONDictionary
 
   :returns: MSDictionary!
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     dictionary["class"] = "http"
@@ -43,7 +43,7 @@ class HTTPCommand: SendCommand {
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     if let urlString = data["url"] as? String, url = NSURL(string: urlString) { self.url = url }
   }

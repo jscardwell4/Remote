@@ -10,12 +10,12 @@ import Foundation
 import CoreData
 import MoonKit
 
-@objc protocol Model {
+@objc public protocol Model {
   var uuid: String { get }
 }
 
 @objc(ModelObject)
-class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
+public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
 
 
   /// MARK: - Initializers
@@ -27,7 +27,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
   :param: entity NSEntityDescription
   :param: context NSManagedObjectContext?
   */
-  override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+  override public init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
     super.init(entity: entity, insertIntoManagedObjectContext: context)
     setPrimitiveValue(MSNonce(), forKey: "uuid")
  }
@@ -37,7 +37,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
 
   :param: context NSManagedObjectContext
   */
-  init(context: NSManagedObjectContext?) {
+  public init(context: NSManagedObjectContext?) {
     super.init(entity: self.dynamicType.entityDescription, insertIntoManagedObjectContext: context)
     setPrimitiveValue(MSNonce(), forKey: "uuid")
  }
@@ -48,7 +48,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
   :param: uuid String
   :param: context NSManagedObjectContext
   */
-  init?(uuid: String, context: NSManagedObjectContext) {
+  public init?(uuid: String, context: NSManagedObjectContext) {
     super.init(entity: self.dynamicType.entityDescription, insertIntoManagedObjectContext: nil)
     if self.dynamicType.objectWithUUID(uuid, context: context) == nil && self.dynamicType.isValidUUID(uuid) {
       context.insertObject(self)
@@ -62,7 +62,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
   :param: data [String AnyObject]
   :param: context NSManagedObjectContext
   */
-  required init?(data: [String:AnyObject], context: NSManagedObjectContext) {
+  required public init?(data: [String:AnyObject], context: NSManagedObjectContext) {
     if let uuid = data["uuid"] as? String {
       super.init(entity: self.dynamicType.entityDescription, insertIntoManagedObjectContext: nil)
       if self.dynamicType.objectWithUUID(uuid, context: context) == nil && self.dynamicType.isValidUUID(uuid) {
@@ -84,7 +84,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
   The one property all core data entities need to have in the model to be representable as a `ModelObject`. The value
   of an object's `uuid` attribute serves as a unique identifier for the lifetime of the object.
   */
-  private(set) var uuid: String {
+  private(set) public var uuid: String {
     get {
       willAccessValueForKey("uuid")
       let uuid = primitiveValueForKey("uuid") as? String
@@ -100,7 +100,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
     }
   }
 
-  class var entityDescription: NSEntityDescription {
+  public class var entityDescription: NSEntityDescription {
     let entities = DataManager.stack.managedObjectModel.entities as! [NSEntityDescription]
     if let entity = findFirst(entities, {$0.managedObjectClassName == self.className()}) { return  entity }
     else { fatalError("unable to locate entity for class '\(className())'") }
@@ -113,7 +113,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
 
   :returns: String
   */
-  class var entityName: String { return entityDescription.name! }
+  public class var entityName: String { return entityDescription.name! }
 
 
   /// MARK: - Validation
@@ -127,7 +127,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
 
   :returns: Bool
   */
-  class func isValidUUID(uuid: String) -> Bool { return uuid ~= "[A-F0-9]{8}-(?:[A-F0-9]{4}-){3}[A-Z0-9]{12}" }
+  public class func isValidUUID(uuid: String) -> Bool { return uuid ~= "[A-F0-9]{8}-(?:[A-F0-9]{4}-){3}[A-Z0-9]{12}" }
 
 
   /// MARK: - Fetching existing objects
@@ -142,7 +142,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
 
   :returns: Self?
   */
-  class func objectWithUUID(uuid: String, context: NSManagedObjectContext) -> Self? {
+  public class func objectWithUUID(uuid: String, context: NSManagedObjectContext) -> Self? {
     if isValidUUID(uuid) { return objectWithValue(uuid, forAttribute: "uuid", context: context) } else { return nil }
   }
 
@@ -154,7 +154,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
 
   :returns: Self?
   */
-  class func objectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Self? {
+  public class func objectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Self? {
     if let uuid = data["uuid"] as? String, object = objectWithUUID(uuid, context: context) { return object }
     else { return nil }
   }
@@ -168,7 +168,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
 
   :returns: Self?
   */
-  class func objectWithValue(value: AnyObject, forAttribute attribute: String, context: NSManagedObjectContext) -> Self? {
+  public class func objectWithValue(value: AnyObject, forAttribute attribute: String, context: NSManagedObjectContext) -> Self? {
     return objectMatchingPredicate(NSPredicate(format: "%K == %@", argumentArray: [attribute, value]), context: context)
   }
 
@@ -180,7 +180,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
 
   :returns: Self?
   */
-  class func objectMatchingPredicate(predicate: NSPredicate, context: NSManagedObjectContext) -> Self? {
+  public class func objectMatchingPredicate(predicate: NSPredicate, context: NSManagedObjectContext) -> Self? {
     return typeCast(objectsMatchingPredicate(predicate, fetchLimit: 1, context: context).first, self)
   }
 
@@ -195,7 +195,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
 
   :returns: [ModelObject]
   */
-  class func objectsMatchingPredicate(predicate: NSPredicate,
+  public class func objectsMatchingPredicate(predicate: NSPredicate,
                            fetchLimit: Int = 0,
                              sortBy: String? = nil,
                             ascending: Bool = true,
@@ -221,7 +221,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
 
   :returns: [ModelObject]
   */
-  class func objectsInContext(context: NSManagedObjectContext,
+  public class func objectsInContext(context: NSManagedObjectContext,
                        sortBy: String? = nil,
                     ascending: Bool = true) -> [ModelObject]
   {
@@ -239,7 +239,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
 
   :returns: NSFetchedResultsController
   */
-  class func objectsInContext(context: NSManagedObjectContext,
+  public class func objectsInContext(context: NSManagedObjectContext,
                     groupedBy groupBy: String,
                 withPredicate predicate: NSPredicate = ∀"TRUEPREDICATE",
                      sortedBy sortBy: String,
@@ -266,7 +266,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
 
   :returns: [AnyObject]
   */
-  class func allValuesForAttribute(attribute: String, context: NSManagedObjectContext) -> [AnyObject] {
+  public class func allValuesForAttribute(attribute: String, context: NSManagedObjectContext) -> [AnyObject] {
     let request = NSFetchRequest(entityName: entityName)
     request.resultType = .DictionaryResultType
     request.returnsDistinctResults = true
@@ -291,7 +291,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
 
   :returns: Self?
   */
-  class func importObjectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Self? {
+  public class func importObjectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Self? {
     if let object = objectWithData(data, context: context) { return object }
     else { return self(data: data, context: context) }
   }
@@ -304,7 +304,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
 
   :returns: [ModelObject]
   */
-  class func importObjectsFromData(data: AnyObject, context: NSManagedObjectContext) -> [ModelObject] {
+  public class func importObjectsFromData(data: AnyObject, context: NSManagedObjectContext) -> [ModelObject] {
     if let dataArray = data as? [[String:AnyObject]] {
       return compressed(dataArray.map{self.importObjectWithData($0, context: context)})
     } else { return [] }
@@ -320,7 +320,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
 
   :param: data [String:AnyObject]
   */
-  func updateWithData(data: [String:AnyObject]) {}
+  public func updateWithData(data: [String:AnyObject]) {}
 
   /**
   updateRelationshipFromData:forKey:ofType:
@@ -375,7 +375,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
 
   :returns: Bool
   */
-  func updateRelationshipFromData(data: [String:AnyObject], forKey key: String, lookupKey: String? = nil) -> Bool {
+  public func updateRelationshipFromData(data: [String:AnyObject], forKey key: String, lookupKey: String? = nil) -> Bool {
     if let relationshipDescription = entity.relationshipsByName[key] as? NSRelationshipDescription,
       relatedTypeName = relationshipDescription.destinationEntity?.managedObjectClassName,
       relatedType = NSClassFromString(relatedTypeName) as? ModelObject.Type
@@ -403,7 +403,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
 
   :returns: Int
   */
-  class func countInContext(context: NSManagedObjectContext, predicate: NSPredicate = ∀"TRUEPREDICATE") -> Int {
+  public class func countInContext(context: NSManagedObjectContext, predicate: NSPredicate = ∀"TRUEPREDICATE") -> Int {
     let request = NSFetchRequest(entityName: entityName, predicate: predicate)
     var error: NSError?
     let result = context.countForFetchRequest(request, error: &error)
@@ -421,7 +421,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
 
   :param: context NSManagedObjectContext
   */
-  class func deleteObjectsInContext(context: NSManagedObjectContext) {
+  public class func deleteObjectsInContext(context: NSManagedObjectContext) {
     deleteObjectsMatchingPredicate(∀"TRUEPREDICATE", context: context)
   }
 
@@ -431,7 +431,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
   :param: predicate NSPredicate
   :param: context NSManagedObjectContext
   */
-  class func deleteObjectsMatchingPredicate(predicate: NSPredicate, context: NSManagedObjectContext) {
+  public class func deleteObjectsMatchingPredicate(predicate: NSPredicate, context: NSManagedObjectContext) {
     context.deleteObjects(Set(objectsMatchingPredicate(predicate, context: context)))
   }
 
@@ -447,7 +447,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
 
   :returns: Bool
   */
-  func attributeValueIsDefault(attribute: String) -> Bool {
+  public func attributeValueIsDefault(attribute: String) -> Bool {
     if let value: AnyObject = valueForKey(attribute),
       let defaultValue: AnyObject = defaultValueForAttribute(attribute) where value.isEqual(defaultValue) { return true }
     else { return valueForKey(attribute) == nil && defaultValueForAttribute(attribute) == nil }
@@ -461,7 +461,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
   :param: nonDefault Bool = true
   :param: dictionary MSDictionary
   */
-  func appendValueForKey(key: String,
+  public func appendValueForKey(key: String,
                   forKey: String? = nil,
             ifNotDefault nonDefault: Bool = false,
             toDictionary dictionary: MSDictionary)
@@ -478,7 +478,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
   :param: key String
   :param: dictionary MSDictionary
   */
-  func appendValueForKeyPath(keypath: String, forKey key: String? = nil, toDictionary dictionary: MSDictionary) {
+  public func appendValueForKeyPath(keypath: String, forKey key: String? = nil, toDictionary dictionary: MSDictionary) {
     dictionary[(key ?? keypath).dashcaseString] = NSNull.collectionSafeValue(valueForKeyPath(keypath))
   }
 
@@ -489,7 +489,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
   :param: key String
   :param: dictionary MSDictionary
   */
-  func appendValue(value: AnyObject?,
+  public func appendValue(value: AnyObject?,
             forKey key: String,
       ifNotDefault nonDefault: Bool = false,
  toDictionary dictionary: MSDictionary)
@@ -497,7 +497,7 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
     if !(nonDefault && attributeValueIsDefault(key)) && value != nil { dictionary[key.dashcaseString] = value! }
   }
 
-  var JSONString: String {
+  public var JSONString: String {
     return JSONDictionary().JSONString.stringByReplacingOccurrencesOfString("\\/", withString: "\\")
   }
 
@@ -506,9 +506,9 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
 
   :returns: MSDictionary
   */
-  func JSONDictionary() -> MSDictionary { return MSDictionary(object: uuid, forKey: "uuid") }
+  public func JSONDictionary() -> MSDictionary { return MSDictionary(object: uuid, forKey: "uuid") }
 
-  var JSONObject: AnyObject { return JSONDictionary().JSONObject }
+  public var JSONObject: AnyObject { return JSONDictionary().JSONObject }
 
 }
 
@@ -521,4 +521,4 @@ class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
 
 :returns: Bool
 */
-func ==(lhs: ModelObject, rhs: ModelObject) -> Bool { return lhs.isEqual(rhs) }
+public func ==(lhs: ModelObject, rhs: ModelObject) -> Bool { return lhs.isEqual(rhs) }

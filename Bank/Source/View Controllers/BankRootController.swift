@@ -11,9 +11,11 @@ import UIKit
 import ObjectiveC
 import MoonKit
 
-private let RootCellIdentifier = "RootCell"
+
 
 public class BankRootController: UITableViewController, BankController {
+
+  static let RootCellIdentifier = "RootCell"
 
   /** loadView */
   override public func loadView() {

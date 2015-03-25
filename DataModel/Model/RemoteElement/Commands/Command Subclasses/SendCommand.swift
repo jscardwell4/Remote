@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(SendCommand)
-class SendCommand: Command {
+public class SendCommand: Command {
   override var operation: CommandOperation {
     return SendCommandOperation(command: self)
   }

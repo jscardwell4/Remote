@@ -63,18 +63,18 @@ http://192.168.1.9/rest/nodes/1B%206E%20B2%201/cmd/DON
 
 */
 @objc(ISYDevice)
-class ISYDevice: NetworkDevice {
+public class ISYDevice: NetworkDevice {
 
-    @NSManaged var baseURL: String
-    @NSManaged var deviceType: String
-    @NSManaged var friendlyName: String
-    @NSManaged var manufacturer: String
-    @NSManaged var manufacturerURL: String
-    @NSManaged var modelDescription: String
-    @NSManaged var modelName: String
-    @NSManaged var modelNumber: String
+    @NSManaged public var baseURL: String
+    @NSManaged public var deviceType: String
+    @NSManaged public var friendlyName: String
+    @NSManaged public var manufacturer: String
+    @NSManaged public var manufacturerURL: String
+    @NSManaged public var modelDescription: String
+    @NSManaged public var modelName: String
+    @NSManaged public var modelNumber: String
     @NSManaged var primitiveGroups: NSMutableSet?
-    var groups: [ISYDeviceGroup] {
+    public var groups: [ISYDeviceGroup] {
       get {
         willAccessValueForKey("groups")
         let groups = primitiveGroups?.allObjects as? [ISYDeviceGroup]
@@ -88,7 +88,7 @@ class ISYDevice: NetworkDevice {
       }
     }
     @NSManaged var primitiveNodes: NSMutableSet?
-    var nodes: [ISYDeviceNode] {
+    public var nodes: [ISYDeviceNode] {
       get {
         willAccessValueForKey("nodes")
         let nodes = primitiveNodes?.allObjects as? [ISYDeviceNode]
@@ -107,7 +107,7 @@ class ISYDevice: NetworkDevice {
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     if let modelNumber       = data["model-number"]      as? String { self.modelNumber = modelNumber }
     if let modelName         = data["model-name"]        as? String { self.modelName = modelName }
@@ -138,7 +138,7 @@ extension ISYDevice: MSJSONExport {
 
   :returns: MSDictionary!
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
       appendValueForKey("modelNumber", toDictionary: dictionary)
       appendValueForKey("modelName", toDictionary: dictionary)

@@ -53,7 +53,7 @@ extension UIControlState: EnumerableType {
 extension UIControlState {
 
   /** Corresponding property name suitable for use in methods such as `valueForKey:` */
-  var controlStateSetProperty: String? {
+  public var controlStateSetProperty: String? {
     let jsonValue = JSONValue
     return count(jsonValue) > 0 ? jsonValue.camelcaseString : nil
   }
@@ -63,7 +63,7 @@ extension UIControlState {
 
   :param: controlStateSetProperty String
   */
-  init?(controlStateSetProperty: String) {
+  public init?(controlStateSetProperty: String) {
     switch controlStateSetProperty {
       case "normal":                      self = .Normal
       case "disabled":                    self = .Disabled
@@ -79,9 +79,9 @@ extension UIControlState {
 }
 
 @objc(ControlStateSet)
-class ControlStateSet: ModelObject {
+public class ControlStateSet: ModelObject {
 
-  var dictionary: [String:AnyObject] {
+  public var dictionary: [String:AnyObject] {
     var dict: [String:AnyObject] = [:]
     UIControlState.enumerate {
       if let key = $0.controlStateSetProperty, let value: AnyObject = self.valueForKey(key) {
@@ -91,9 +91,9 @@ class ControlStateSet: ModelObject {
     return dict
   }
 
-  var allValues: [AnyObject] { return Array(dictionary.values) }
+  public var allValues: [AnyObject] { return Array(dictionary.values) }
 
-  var isEmpty: Bool { return dictionary.isEmpty }
+  public var isEmpty: Bool { return dictionary.isEmpty }
 
   /**
   Accessor employs fallthrough logic for properties with nil values
@@ -102,7 +102,7 @@ class ControlStateSet: ModelObject {
 
   :returns: AnyObject?
   */
-  subscript(idx: UInt) -> AnyObject? {
+  public subscript(idx: UInt) -> AnyObject? {
     get {
       let state = UIControlState(rawValue: idx)
       if let property = state.controlStateSetProperty, let value: AnyObject = self[property] {
@@ -126,7 +126,7 @@ class ControlStateSet: ModelObject {
 
   :returns: AnyObject?
   */
-  subscript(property: String) -> AnyObject? {
+  public subscript(property: String) -> AnyObject? {
     get { return UIControlState(controlStateSetProperty: property) != nil ? valueForKey(property) : nil }
     set { if UIControlState(controlStateSetProperty: property) != nil { setValue(newValue, forKey: property) } }
   }

@@ -14,22 +14,22 @@ import MoonKit
   `MacroCommand` is a `Command` subclass that can execute a series of commands.
 */
 @objc(MacroCommand)
-class MacroCommand: Command {
+public final class MacroCommand: Command {
 
-  @NSManaged var commands: NSOrderedSet?
+  @NSManaged public var commands: NSOrderedSet?
 
-  var count: Int { return commands?.count ?? 0 }
-  let queue = NSOperationQueue(name: "com.moondeerstudios.macro")
+  public var count: Int { return commands?.count ?? 0 }
+  public let queue = NSOperationQueue(name: "com.moondeerstudios.macro")
 
   override var operation: CommandOperation { return MacroCommandOperation(command: self) }
 
   /** awakeFromInsert */
-  override func awakeFromInsert() {
+  override public func awakeFromInsert() {
     super.awakeFromInsert()
     indicator = true
   }
 
-  subscript(index: Int) -> Command {
+  public subscript(index: Int) -> Command {
     get {
       precondition(commands != nil && index >= 0 && index < commands!.count, "index out of bounds")
       return commands?[index] as! Command
@@ -45,7 +45,7 @@ class MacroCommand: Command {
   
   :param: completion Optional block to invoke after command execution completes
   */
-  override func execute(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+  override public func execute(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
     if let commands = self.commands?.array as? [Command] {
       let operations = commands.map {$0.operation}
       var precedingOperation: CommandOperation?
@@ -82,7 +82,7 @@ class MacroCommand: Command {
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     if let commandsData = data["commands"] as? [[String:AnyObject]] {
@@ -114,7 +114,7 @@ class MacroCommand: Command {
 
   :returns: MSDictionary!
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     dictionary["class"] = "macro"

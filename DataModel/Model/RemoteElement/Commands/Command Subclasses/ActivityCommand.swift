@@ -11,16 +11,16 @@ import CoreData
 import MoonKit
 
 @objc(ActivityCommand)
-class ActivityCommand: Command {
+public final class ActivityCommand: Command {
 
-  @NSManaged var activity: Activity?
+  @NSManaged public var activity: Activity?
 
   /**
   JSONDictionary
 
   :returns: MSDictionary!
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     dictionary["class"] = "activity"
@@ -33,7 +33,7 @@ class ActivityCommand: Command {
   }
 
   /** awakeFromInsert */
-  override func awakeFromInsert() {
+  override public func awakeFromInsert() {
     super.awakeFromInsert()
     indicator = true
   }
@@ -43,7 +43,7 @@ class ActivityCommand: Command {
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     updateRelationshipFromData(data, forKey: "activity")
   }

@@ -16,16 +16,16 @@ import MoonKit
   [iTach](http://www.globalcache.com/products/itach) devices from Global Caché are supported.
 */
 @objc(SendIRCommand)
-class SendIRCommand: SendCommand {
+public final class SendIRCommand: SendCommand {
 
-  @NSManaged var portOverride: NSNumber
+  @NSManaged public var portOverride: NSNumber
 
-  @NSManaged var code: IRCode
+  @NSManaged public var code: IRCode
 
-  var componentDevice: ComponentDevice { return code.device }
-  var networkDevice: NetworkDevice? { return componentDevice.networkDevice }
+  public var componentDevice: ComponentDevice { return code.device }
+  public var networkDevice: NetworkDevice? { return componentDevice.networkDevice }
 
-  var commandString: String {
+  public var commandString: String {
     return "sendir,1:\(componentDevice.port),<tag>,\(code.frequency),\(code.repeatCount),\(code.offset),\(code.onOffPattern)"
   }
 
@@ -34,7 +34,7 @@ class SendIRCommand: SendCommand {
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     updateRelationshipFromData(data, forKey: "code")
   }
@@ -44,7 +44,7 @@ class SendIRCommand: SendCommand {
 
   :returns: MSDictionary!
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     dictionary["class"] = "sendir"

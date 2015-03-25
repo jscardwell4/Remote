@@ -9,7 +9,7 @@
 import Foundation
 import MoonKit
 
-class CommandOperation: NSOperation {
+internal class CommandOperation: NSOperation {
 
   private(set) override var executing: Bool {
     get {
@@ -80,7 +80,7 @@ class CommandOperation: NSOperation {
 }
 
 
-class ActivityCommandOperation: CommandOperation {
+final class ActivityCommandOperation: CommandOperation {
 
   /** main */
   override func main() {
@@ -95,7 +95,7 @@ class ActivityCommandOperation: CommandOperation {
 
 }
 
-class SwitchCommandOperation: CommandOperation {
+final class SwitchCommandOperation: CommandOperation {
 
   /** main */
   override func main() {
@@ -104,7 +104,7 @@ class SwitchCommandOperation: CommandOperation {
 
 }
 
-class SendCommandOperation: CommandOperation {
+final class SendCommandOperation: CommandOperation {
 
   /** main */
   override func main() {
@@ -113,7 +113,7 @@ class SendCommandOperation: CommandOperation {
 
 }
 
-class DelayCommandOperation: CommandOperation {
+final class DelayCommandOperation: CommandOperation {
 
   /** main */
   override func main() {
@@ -122,7 +122,7 @@ class DelayCommandOperation: CommandOperation {
 
 }
 
-class MacroCommandOperation: CommandOperation {
+final class MacroCommandOperation: CommandOperation {
 
   /** main */
   override func main() {
@@ -131,7 +131,7 @@ class MacroCommandOperation: CommandOperation {
 
 }
 
-class SystemCommandOperation: CommandOperation {
+final class SystemCommandOperation: CommandOperation {
 
   /** main */
   override func main() {

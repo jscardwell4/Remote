@@ -11,23 +11,23 @@ import CoreData
 import MoonKit
 
 @objc(ControlStateImageSet)
-class ControlStateImageSet: ControlStateSet {
+public final class ControlStateImageSet: ControlStateSet {
 
-  @NSManaged var normal: ImageView?
-  @NSManaged var disabled: ImageView?
-  @NSManaged var selected: ImageView?
-  @NSManaged var highlighted: ImageView?
-  @NSManaged var highlightedDisabled: ImageView?
-  @NSManaged var highlightedSelected: ImageView?
-  @NSManaged var highlightedSelectedDisabled: ImageView?
-  @NSManaged var selectedDisabled: ImageView?
+  @NSManaged public var normal: ImageView?
+  @NSManaged public var disabled: ImageView?
+  @NSManaged public var selected: ImageView?
+  @NSManaged public var highlighted: ImageView?
+  @NSManaged public var highlightedDisabled: ImageView?
+  @NSManaged public var highlightedSelected: ImageView?
+  @NSManaged public var highlightedSelectedDisabled: ImageView?
+  @NSManaged public var selectedDisabled: ImageView?
 
   /**
   updateWithData:
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     if let jsonData = data as? [String:[String:AnyObject]], let moc = managedObjectContext {
@@ -45,7 +45,7 @@ class ControlStateImageSet: ControlStateSet {
 
   :returns: MSDictionary!
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     UIControlState.enumerate {

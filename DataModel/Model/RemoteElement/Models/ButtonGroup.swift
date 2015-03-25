@@ -17,17 +17,17 @@ interact with the <Remote> object to which it typically will belong. <ButtonGrou
 use an instance of the `ButtonGroup` class to govern their style, behavior, etc.
 */
 @objc(ButtonGroup)
-class ButtonGroup: RemoteElement {
+public final class ButtonGroup: RemoteElement {
 
-  struct PanelAssignment: RawOptionSetType, JSONValueConvertible {
+  public struct PanelAssignment: RawOptionSetType, JSONValueConvertible {
 
-    private(set) var rawValue: Int
-    init(rawValue: Int) { self.rawValue = rawValue & 0b0001_1111 }
-    init(nilLiteral:()) { rawValue = 0 }
+    private(set) public var rawValue: Int
+    public init(rawValue: Int) { self.rawValue = rawValue & 0b0001_1111 }
+    public init(nilLiteral:()) { rawValue = 0 }
 
-    enum Location: Int, JSONValueConvertible {
+    public enum Location: Int, JSONValueConvertible {
       case Undefined, Top, Bottom, Left, Right
-      var JSONValue: String {
+      public var JSONValue: String {
         switch self {
           case .Undefined: return "undefined"
           case .Top:       return "top"
@@ -36,7 +36,7 @@ class ButtonGroup: RemoteElement {
           case .Right:     return "right"
         }
       }
-      init(JSONValue: String) {
+      public init(JSONValue: String) {
         switch JSONValue {
           case "top":    self = .Top
           case "bottom": self = .Bottom
@@ -46,9 +46,9 @@ class ButtonGroup: RemoteElement {
         }
       }
     }
-    enum Trigger: Int, JSONValueConvertible  {
+    public enum Trigger: Int, JSONValueConvertible  {
       case Undefined, OneFinger, TwoFinger, ThreeFinger
-      var JSONValue: String {
+      public var JSONValue: String {
         switch self {
           case .Undefined:   return "undefined"
           case .OneFinger:   return "1"
@@ -56,7 +56,7 @@ class ButtonGroup: RemoteElement {
           case .ThreeFinger: return "3"
         }
       }
-     init(JSONValue: String) {
+     public init(JSONValue: String) {
        switch JSONValue {
          case "1": self = .OneFinger
          case "2": self = .TwoFinger
@@ -66,11 +66,11 @@ class ButtonGroup: RemoteElement {
     }
     }
 
-    var location: Location {
+    public var location: Location {
       get { return Location(rawValue: rawValue & 0b0111) ?? .Undefined }
       set { rawValue = newValue.rawValue | (trigger.rawValue >> 3) }
     }
-    var trigger: Trigger {
+    public var trigger: Trigger {
       get { return Trigger(rawValue: (rawValue << 3) & 0b0011) ?? .Undefined }
       set { rawValue = location.rawValue | (newValue.rawValue >> 3) }
     }
@@ -81,11 +81,11 @@ class ButtonGroup: RemoteElement {
     :param: location Location
     :param: trigger Trigger
     */
-    init(location: Location, trigger: Trigger) { rawValue = location.rawValue | (trigger.rawValue >> 3) }
+    public init(location: Location, trigger: Trigger) { rawValue = location.rawValue | (trigger.rawValue >> 3) }
 
-    static var Unassigned: PanelAssignment = PanelAssignment(location: .Undefined, trigger: .Undefined)
+    public static var Unassigned: PanelAssignment = PanelAssignment(location: .Undefined, trigger: .Undefined)
 
-    init(JSONValue: String) {
+    public init(JSONValue: String) {
       rawValue = 0
       let length = count(JSONValue)
       if length > 3 {
@@ -93,14 +93,14 @@ class ButtonGroup: RemoteElement {
         trigger = Trigger(JSONValue: String(JSONValue[(length - 1) ..< length]))
       }
     }
-    var JSONValue: String { return "\(location.JSONValue)\(trigger.JSONValue)"}
+    public var JSONValue: String { return "\(location.JSONValue)\(trigger.JSONValue)"}
 
   }
 
-  override var elementType: BaseType { return .ButtonGroup }
+  override public var elementType: BaseType { return .ButtonGroup }
 
   /** awakeFromInsert */
-  override func awakeFromInsert() {
+  override public func awakeFromInsert() {
     super.awakeFromInsert()
     labelAttributes = DictionaryStorage(context: managedObjectContext!)
   }
@@ -110,7 +110,7 @@ class ButtonGroup: RemoteElement {
 
   :param: preset Preset
   */
-  override init(preset: Preset) {
+  override public init(preset: Preset) {
     super.init(preset: preset)
 
     autohide = preset.autohide ?? false
@@ -120,19 +120,19 @@ class ButtonGroup: RemoteElement {
     // if let panelAssignment = preset.panelAssignment { self.panelAssignment = panelAssignment }
   }
 
-  required init(context: NSManagedObjectContext, insert: Bool) {
+  required public init(context: NSManagedObjectContext, insert: Bool) {
       fatalError("init(context:insert:) has not been implemented")
   }
 
-  required init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+  required public init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
       fatalError("init(entity:insertIntoManagedObjectContext:) has not been implemented")
   }
 
-  required init(context: NSManagedObjectContext?) {
+  required public init(context: NSManagedObjectContext?) {
       fatalError("init(context:) has not been implemented")
   }
 
-  required init?(data: [String : AnyObject], context: NSManagedObjectContext) {
+  required public init?(data: [String : AnyObject], context: NSManagedObjectContext) {
       fatalError("init(data:context:) has not been implemented")
   }
 
@@ -155,26 +155,26 @@ class ButtonGroup: RemoteElement {
 //    super.init(context: context)
 //  }
 
-  @NSManaged var commandContainer: CommandContainer?
-  @NSManaged var autohide: Bool
+  @NSManaged public var commandContainer: CommandContainer?
+  @NSManaged public var autohide: Bool
   // @NSManaged var label: NSAttributedString?
-  @NSManaged var labelAttributes: DictionaryStorage
-  @NSManaged var labelConstraints: String?
+  @NSManaged public var labelAttributes: DictionaryStorage
+  @NSManaged public var labelConstraints: String?
 
-  var isPanel: Bool { return panelLocation != .Undefined && panelTrigger != .Undefined }
+  public var isPanel: Bool { return panelLocation != .Undefined && panelTrigger != .Undefined }
 
-  var panelLocation: PanelAssignment.Location {
+  public var panelLocation: PanelAssignment.Location {
     get { return panelAssignment.location }
     set { var assignment = panelAssignment; assignment.location = newValue; panelAssignment = assignment }
   }
 
-  var panelTrigger: PanelAssignment.Trigger {
+  public var panelTrigger: PanelAssignment.Trigger {
     get { return panelAssignment.trigger }
     set { var assignment = panelAssignment; assignment.trigger = newValue; panelAssignment = assignment }
   }
 
   @NSManaged var primitivePanelAssignment: NSNumber
-  var panelAssignment: PanelAssignment {
+  public var panelAssignment: PanelAssignment {
     get {
       willAccessValueForKey("panelAssignment")
       let panelAssignment = PanelAssignment(rawValue: primitivePanelAssignment.integerValue)
@@ -194,7 +194,7 @@ class ButtonGroup: RemoteElement {
   :param: container CommandContainer?
   :param: mode String
   */
-  func setCommandContainer(container: CommandContainer?, forMode mode: String) {
+  public func setCommandContainer(container: CommandContainer?, forMode mode: String) {
     setURIForObject(container, forKey: "commandContainer", forMode: mode)
   }
 
@@ -205,7 +205,7 @@ class ButtonGroup: RemoteElement {
 
   :returns: CommandContainer?
   */
-  func commandContainerForMode(mode: String) -> CommandContainer? {
+  public func commandContainerForMode(mode: String) -> CommandContainer? {
     return faultedObjectForKey("commandContainer", forMode: mode) as? CommandContainer
   }
 
@@ -215,7 +215,7 @@ class ButtonGroup: RemoteElement {
   :param: label NSAttributedString?
   :param: mode String
   */
-  func setLabel(label: NSAttributedString?, forMode mode: String) {
+  public func setLabel(label: NSAttributedString?, forMode mode: String) {
     setObject(label, forKey: "label", forMode: mode)
   }
 
@@ -226,7 +226,7 @@ class ButtonGroup: RemoteElement {
 
   :returns: NSAttributedString?
   */
-  func labelForMode(mode: String) -> NSAttributedString? {
+  public func labelForMode(mode: String) -> NSAttributedString? {
     return objectForKey("label", forMode: mode) as? NSAttributedString
   }
 
@@ -235,14 +235,14 @@ class ButtonGroup: RemoteElement {
 
   :param: mode String
   */
-  override func updateForMode(mode: String) {
+  override public func updateForMode(mode: String) {
     super.updateForMode(mode)
     commandContainer = commandContainerForMode(mode) ?? commandContainerForMode(RemoteElement.DefaultMode)
 
     updateButtons()
   }
 
-  var commandSetIndex: Int = 0 {
+  public var commandSetIndex: Int = 0 {
     didSet {
       if let collection = commandContainer as? CommandSetCollection {
         if !contains((0 ..< Int(collection.count)), commandSetIndex) { commandSetIndex = 0 }
@@ -252,7 +252,7 @@ class ButtonGroup: RemoteElement {
   }
 
   /** updateButtons */
-  func updateButtons() {
+  public func updateButtons() {
     var commandSet: CommandSet?
     if commandContainer != nil && commandContainer! is CommandSet { commandSet = commandContainer! as? CommandSet }
     else if let collection = commandContainer as? CommandSetCollection {
@@ -275,7 +275,7 @@ class ButtonGroup: RemoteElement {
 
   :returns: NSAttributedString?
   */
-  func labelForCommandSetAtIndex(idx: Int) -> NSAttributedString? {
+  public func labelForCommandSetAtIndex(idx: Int) -> NSAttributedString? {
     var commandSetLabel: NSAttributedString?
     if let collection = commandContainer as? CommandSetCollection {
       if contains(0 ..< Int(collection.count), idx) {
@@ -296,7 +296,7 @@ class ButtonGroup: RemoteElement {
 
   :param: data [String:AnyObject]
   */
-  override func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
     if let moc = managedObjectContext {
@@ -330,7 +330,7 @@ class ButtonGroup: RemoteElement {
 
   :returns: MSDictionary
   */
-  override func JSONDictionary() -> MSDictionary {
+  override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
     let commandSets = MSDictionary()
@@ -361,20 +361,20 @@ class ButtonGroup: RemoteElement {
 }
 
 extension ButtonGroup.PanelAssignment: Equatable {}
-func ==(lhs: ButtonGroup.PanelAssignment, rhs: ButtonGroup.PanelAssignment) -> Bool { return lhs.rawValue == rhs.rawValue }
+public func ==(lhs: ButtonGroup.PanelAssignment, rhs: ButtonGroup.PanelAssignment) -> Bool { return lhs.rawValue == rhs.rawValue }
 
 extension ButtonGroup.PanelAssignment: BitwiseOperationsType {
-  static var allZeros: ButtonGroup.PanelAssignment { return self(rawValue: 0) }
+  static public var allZeros: ButtonGroup.PanelAssignment { return self(rawValue: 0) }
 }
-func &(lhs: ButtonGroup.PanelAssignment, rhs: ButtonGroup.PanelAssignment) -> ButtonGroup.PanelAssignment {
+public func &(lhs: ButtonGroup.PanelAssignment, rhs: ButtonGroup.PanelAssignment) -> ButtonGroup.PanelAssignment {
   return ButtonGroup.PanelAssignment(rawValue: (lhs.rawValue & rhs.rawValue))
 }
-func |(lhs: ButtonGroup.PanelAssignment, rhs: ButtonGroup.PanelAssignment) -> ButtonGroup.PanelAssignment {
+public func |(lhs: ButtonGroup.PanelAssignment, rhs: ButtonGroup.PanelAssignment) -> ButtonGroup.PanelAssignment {
   return ButtonGroup.PanelAssignment(rawValue: (lhs.rawValue | rhs.rawValue))
 }
-func ^(lhs: ButtonGroup.PanelAssignment, rhs: ButtonGroup.PanelAssignment) -> ButtonGroup.PanelAssignment {
+public func ^(lhs: ButtonGroup.PanelAssignment, rhs: ButtonGroup.PanelAssignment) -> ButtonGroup.PanelAssignment {
   return ButtonGroup.PanelAssignment(rawValue: (lhs.rawValue ^ rhs.rawValue))
 }
-prefix func ~(x: ButtonGroup.PanelAssignment) -> ButtonGroup.PanelAssignment {
+public prefix func ~(x: ButtonGroup.PanelAssignment) -> ButtonGroup.PanelAssignment {
   return ButtonGroup.PanelAssignment(rawValue: ~(x.rawValue))
 }
