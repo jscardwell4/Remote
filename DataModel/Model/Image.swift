@@ -56,17 +56,17 @@ final public class Image: IndexedEditableModelObject, ModelCollectionItem {
   public typealias CollectionType = ImageCategory
   public var collection: CollectionType? { get { return imageCategory } set { if newValue != nil { imageCategory = newValue! } } }
 
-  override public var index: ModelIndex { return imageCategory.index + "\(name)" }
+  override public var pathIndex: PathModelIndex { return imageCategory.pathIndex + "\(name)" }
 
   /**
   modelWithIndex:context:
 
-  :param: index ModelIndex
+  :param: index PathModelIndex
   :param: context NSManagedObjectContext
 
   :returns: Self?
   */
-  override public class func modelWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Image? {
+  override public class func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Image? {
     return ImageCategory.itemWithIndex(index, context: context)
   }
 

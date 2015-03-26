@@ -21,16 +21,16 @@ import MoonKit
 
 // MARK: ModelCollection
 public protocol ModelCollection {
-  typealias ItemType: IndexedModel
+  typealias ItemType: PathIndexedModel
   var items: [ItemType] { get set }
-  func itemWithIndex(index: ModelIndex) -> ItemType?
+  func itemWithIndex(index: PathModelIndex) -> ItemType?
 }
 
 // MARK: NestingModelCollection
 public protocol NestingModelCollection: ModelCollection {
-   typealias NestedType: IndexedModel
+   typealias NestedType: PathIndexedModel
   var subcategories: [NestedType] { get set }
-  func subcategoryWithIndex(index: ModelIndex) -> NestedType?
+  func subcategoryWithIndex(index: PathModelIndex) -> NestedType?
 }
 
 // MARK: ModelCollectionItem
@@ -40,9 +40,9 @@ public protocol ModelCollectionItem: EditableModel {
 }
 
 // MARK: RootedModel
-public protocol RootedModel: IndexedModel {
-  static func itemWithIndex<T:IndexedModel>(index: ModelIndex, context: NSManagedObjectContext) -> T?
-  static func rootItemWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Self?
+public protocol RootedModel: PathIndexedModel {
+  static func itemWithIndex<T:PathIndexedModel>(index: PathModelIndex, context: NSManagedObjectContext) -> T?
+  static func rootItemWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self?
 }
 
 // MARK: - Base editable model classes
@@ -93,9 +93,10 @@ public class EditableModelObject: NamedModelObject, EditableModel {
 
 }
 
-public class IndexedEditableModelObject: EditableModelObject, IndexedModel {
+public class IndexedEditableModelObject: EditableModelObject, PathIndexedModel {
   
-  public var index: ModelIndex { return ModelIndex(name) }
+  public var pathIndex: PathModelIndex { return PathModelIndex(name) }
+  public override var index: ModelIndex { return pathIndex }
 
   /**
   modelWithIndex:context:
@@ -105,7 +106,7 @@ public class IndexedEditableModelObject: EditableModelObject, IndexedModel {
 
   :returns: Self?
   */
-  public class func modelWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Self? {
+  public class func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self? {
     return objectWithValue(index.rawValue, forAttribute: "name", context: context)
   }
 }
@@ -120,11 +121,11 @@ findByIndex:idx:
 
 :returns: C.Generator.Element?
 */
-public func findByIndex<C:CollectionType where C.Generator.Element:IndexedModel>(c: C, idx: ModelIndex) -> C.Generator.Element? {
+public func findByIndex<C:CollectionType where C.Generator.Element:PathIndexedModel>(c: C, idx: PathModelIndex) -> C.Generator.Element? {
   return findFirst(c, {$0.index == idx})
 }
 
-//func indexForItem<T:IndexedModel>(model: T) -> ModelIndex { return "\(model.name)" }
+//func indexForItem<T:PathIndexedModel>(model: T) -> ModelIndex { return "\(model.name)" }
 
 /**
 itemWithIndex:withRoot:
@@ -134,8 +135,8 @@ itemWithIndex:withRoot:
 
 :returns: T?
 */
-public func itemWithIndexFromRoot<T:IndexedModel, U:RootedModel
-  where U:NestingModelCollection, U.NestedType == U>(index: ModelIndex, root: U) -> T?
+public func itemWithIndexFromRoot<T:PathIndexedModel, U:RootedModel
+  where U:NestingModelCollection, U.NestedType == U>(index:PathModelIndex, root: U) -> T?
 {
   if root.index == index { return root as? T }
   var i = 2

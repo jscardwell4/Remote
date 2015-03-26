@@ -18,11 +18,11 @@ final public class Manufacturer: IndexedEditableModelObject, NestingModelCollect
 
   public typealias NestedType = IRCodeSet
   public var subcategories: [NestedType] { get { return Array(codeSets) } set { codeSets = Set(newValue) } }
-  public func subcategoryWithIndex(index: ModelIndex) -> IRCodeSet? { return findByIndex(codeSets, index) }
+  public func subcategoryWithIndex(index: PathModelIndex) -> IRCodeSet? { return findByIndex(codeSets, index) }
 
   public typealias ItemType = IRCode
   public var items: [ItemType] { get { return [] } set {} }
-  public func itemWithIndex(index: ModelIndex) -> ItemType? { return nil }
+  public func itemWithIndex(index: PathModelIndex) -> ItemType? { return nil }
 
   /**
   itemWithIndex:context:
@@ -32,11 +32,11 @@ final public class Manufacturer: IndexedEditableModelObject, NestingModelCollect
 
   :returns: T?
   */
-  public class func itemWithIndex<T:IndexedModel>(var index: ModelIndex, context: NSManagedObjectContext) -> T? {
+  public class func itemWithIndex<T:PathIndexedModel>(var index: PathModelIndex, context: NSManagedObjectContext) -> T? {
     if index.isEmpty || index.count > 3 { return nil }
 
     let manufacturerIndex = index.removeAtIndex(0)
-    if let manufacturer = rootItemWithIndex(ModelIndex(manufacturerIndex), context: context) {
+    if let manufacturer = rootItemWithIndex(PathModelIndex(manufacturerIndex), context: context) {
       if index.isEmpty { return manufacturer as? T }
       let codeSetIndex = index.removeAtIndex(0)
       if let codeSet = manufacturer.subcategoryWithIndex("\(manufacturerIndex)/\(codeSetIndex)") {
@@ -56,7 +56,7 @@ final public class Manufacturer: IndexedEditableModelObject, NestingModelCollect
 
   :returns: Self?
   */
-  public class func rootItemWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Self? {
+  public class func rootItemWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self? {
     return objectWithValue(index.rawValue, forAttribute: "name", context: context)
   }
 

@@ -28,17 +28,17 @@ final public class IRCode: IndexedEditableModelObject, ModelCollectionItem {
   public typealias CollectionType = IRCodeSet
   public var collection: CollectionType? { get { return codeSet } set { if newValue != nil { codeSet = newValue! } } }
 
-  override public var index: ModelIndex { return codeSet.index + "\(name)" }
+  override public var pathIndex: PathModelIndex { return codeSet.pathIndex + "\(name)" }
 
   /**
   modelWithIndex:context:
 
-  :param: index ModelIndex
+  :param: index PathModelIndex
   :param: context NSManagedObjectContext
 
   :returns: IRCode?
   */
-  override public class func modelWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> IRCode? {
+  override public class func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> IRCode? {
     return Manufacturer.itemWithIndex(index, context: context)
   }
 
@@ -117,7 +117,7 @@ extension IRCode: MSJSONExport {
     let dictionary = super.JSONDictionary()
 
     appendValueForKeyPath("device.commentedUUID", forKey: "device", toDictionary: dictionary)
-    appendValue(codeSet.index.description, forKey: "code-set.index", ifNotDefault: false, toDictionary: dictionary)
+    appendValue(codeSet.index.rawValue, forKey: "code-set.index", ifNotDefault: false, toDictionary: dictionary)
     appendValueForKey("setsDeviceInput", toDictionary: dictionary)
     appendValueForKey("repeatCount", toDictionary: dictionary)
 

@@ -13,11 +13,12 @@ import MoonKit
 @objc public protocol Model {
   var uuid: String { get }
   var managedObjectContext: NSManagedObjectContext? { get }
+  var index: ModelIndex { get }
 }
 
-public protocol IndexedModel: Model {
-  var index: ModelIndex { get }
-  static func modelWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Self?
+public protocol PathIndexedModel: Model {
+  var pathIndex: PathModelIndex { get }
+  static func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self?
 }
 
 @objc(ModelObject)
@@ -104,6 +105,12 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
         didChangeValueForKey("uuid")
       }
     }
+  }
+
+  /** Accessor for the model's `uuid` as a `UUIDModelIndex` */
+  public var index: ModelIndex {
+    if let uuidIndex = UUIDModelIndex(rawValue: uuid) { return uuidIndex }
+    else { fatalError("unable to generate uuid index for model, is uuid nil?") }
   }
 
   public class var entityDescription: NSEntityDescription {

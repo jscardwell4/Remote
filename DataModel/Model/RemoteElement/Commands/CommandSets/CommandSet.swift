@@ -36,9 +36,9 @@ public final class CommandSet: CommandContainer {
       primitiveType = newValue.rawValue
       didChangeValueForKey("type")
       if let sharedKeys = CommandSet.sharedKeysByType[newValue] {
-        index = MSDictionary(sharedKeys: Array(map(sharedKeys){$0.rawValue}))
+        containerIndex = MSDictionary(sharedKeys: Array(map(sharedKeys){$0.rawValue}))
       } else {
-        index = MSDictionary()
+        containerIndex = MSDictionary()
       }
     }
   }
@@ -51,8 +51,8 @@ public final class CommandSet: CommandContainer {
   :returns: Command?
   */
   public subscript(key: RemoteElement.Role) -> Command? {
-    get { return index[key.rawValue] as? Command }
-    set { index[key.rawValue] = newValue }
+    get { return containerIndex[key.rawValue] as? Command }
+    set { containerIndex[key.rawValue] = newValue }
   }
 
   /**
@@ -88,7 +88,7 @@ public final class CommandSet: CommandContainer {
     let dictionary = super.JSONDictionary()
 
     dictionary["type"] = type.JSONValue
-    index.enumerateKeysAndObjectsUsingBlock { (key, uri, _) -> Void in
+    containerIndex.enumerateKeysAndObjectsUsingBlock { (key, uri, _) -> Void in
       if let command = self.managedObjectContext?.objectForURI(uri as! NSURL) as? Command {
         dictionary[RemoteElement.Role(rawValue: (key as! NSNumber).integerValue).JSONValue] = command.JSONDictionary()
       }

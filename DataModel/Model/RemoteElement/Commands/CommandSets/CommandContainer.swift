@@ -13,9 +13,9 @@ import MoonKit
 @objc(CommandContainer)
 public class CommandContainer: NamedModelObject {
 
-  @NSManaged public var index: MSDictionary
+  @NSManaged public var containerIndex: MSDictionary
   @NSManaged public var buttonGroup: ButtonGroup?
 
-  public var count: Int { return index.count }
+  public var count: Int { return containerIndex.count }
 
 }

@@ -284,8 +284,8 @@ import MoonKit
    valueClassName: "NSDictionary",
      defaultValue: NSDictionary())
 
-    // index attribute on command containers
-    modifyAttribute("index",
+    // containerIndex attribute on command containers
+    modifyAttribute("containerIndex",
         forEntities: [commandContainer, commandSet, commandSetCollection],
      valueClassName: "MSDictionary",
        defaultValue: MSDictionary())

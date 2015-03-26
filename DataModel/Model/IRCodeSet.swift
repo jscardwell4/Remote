@@ -20,22 +20,22 @@ final public class IRCodeSet: IndexedEditableModelObject, ModelCollection, Model
 
   public typealias ItemType = IRCode
   public var items: [ItemType] { get { return Array(codes) } set { codes = Set(newValue) } }
-  public func itemWithIndex(index: ModelIndex) -> ItemType? { return findByIndex(codes, index) }
+  public func itemWithIndex(index: PathModelIndex) -> ItemType? { return findByIndex(codes, index) }
 
   public typealias CollectionType = Manufacturer
   public var collection: CollectionType? { get { return manufacturer } set { if newValue != nil { manufacturer = newValue! } } }
 
-  override public var index: ModelIndex { return manufacturer.index + "\(name)" }
+  override public var pathIndex: PathModelIndex { return manufacturer.pathIndex + "\(name)" }
 
   /**
   modelWithIndex:context:
 
-  :param: index ModelIndex
+  :param: index PathModelIndex
   :param: context NSManagedObjectContext
 
   :returns: IRCodeSet?
   */
-  override public class func modelWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> IRCodeSet? {
+  override public class func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> IRCodeSet? {
     return Manufacturer.itemWithIndex(index, context: context)
   }
 
@@ -61,7 +61,7 @@ final public class IRCodeSet: IndexedEditableModelObject, ModelCollection, Model
   override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()
 
-    appendValue(manufacturer.index.description, forKey: "manufacturer.index", ifNotDefault: false, toDictionary: dictionary)
+    appendValue(manufacturer.index.rawValue, forKey: "manufacturer.index", ifNotDefault: false, toDictionary: dictionary)
     appendValueForKeyPath("codes.JSONDictionary", forKey: "codes", toDictionary: dictionary)
     appendValueForKeyPath("devices.commentedUUID", forKey: "devices", toDictionary: dictionary)
 

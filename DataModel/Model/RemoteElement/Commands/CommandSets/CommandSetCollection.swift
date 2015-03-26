@@ -24,20 +24,20 @@ public final class CommandSetCollection: CommandContainer {
   */
   public subscript(label: String) -> CommandSet? {
     get {
-      if let commandSetUUID = index[label] as? String,
+      if let commandSetUUID = containerIndex[label] as? String,
         let moc = managedObjectContext,
         let commandSet = CommandSet.objectWithUUID(commandSetUUID, context: moc) {
       return commandSet }
       else { return nil }
     }
     set {
-      if let existingUUID = index[label] as? String where newValue == nil,
+      if let existingUUID = containerIndex[label] as? String where newValue == nil,
         let moc = managedObjectContext,
         let existingCommandSet = CommandSet.objectWithUUID(existingUUID, context: moc) {
           let mutableCommandSets = mutableOrderedSetValueForKey("commandSets")
           mutableCommandSets.removeObject(existingCommandSet)
       }
-      index[label] = newValue?.uuid
+      containerIndex[label] = newValue?.uuid
     }
   }
 
@@ -48,7 +48,7 @@ public final class CommandSetCollection: CommandContainer {
 
   :returns: String?
   */
-  public func labelForCommandSet(commandSet: CommandSet) -> String? { return index.keyForObject(commandSet.uuid) as? String }
+  public func labelForCommandSet(commandSet: CommandSet) -> String? { return containerIndex.keyForObject(commandSet.uuid) as? String }
 
   /**
   commandSetAtIndex:
@@ -70,7 +70,7 @@ public final class CommandSetCollection: CommandContainer {
 
   :returns: String?
   */
-  public func labelAtIndex(idx: Int) -> String? { return idx < Int(count) ? index.keyAtIndex(UInt(idx)) as? String : nil }
+  public func labelAtIndex(idx: Int) -> String? { return idx < Int(count) ? containerIndex.keyAtIndex(UInt(idx)) as? String : nil }
 
   /**
   updateWithData:

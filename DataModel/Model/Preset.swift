@@ -30,7 +30,7 @@ final public class Preset: IndexedEditableModelObject, ModelCollectionItem {
   public typealias CollectionType = PresetCategory
   public var collection: CollectionType? { get { return presetCategory } set { if newValue != nil { presetCategory = newValue! } } }
 
-  override public var index: ModelIndex { return presetCategory.index + "\(name)" }
+  override public var pathIndex: PathModelIndex { return presetCategory.pathIndex + "\(name)" }
 
   public subscript(key: String) -> AnyObject? {
     get { return storage[key] }
@@ -83,7 +83,7 @@ final public class Preset: IndexedEditableModelObject, ModelCollectionItem {
   public var backgroundImage: Image? {
     get {
       if let moc = managedObjectContext, index = storage["backgroundImage"] as? String {
-        return ImageCategory.itemWithIndex(ModelIndex(index), context: moc)
+        return ImageCategory.itemWithIndex(PathModelIndex(index), context: moc)
       } else { return nil }
     }
     set { storage["background-image"] = newValue }

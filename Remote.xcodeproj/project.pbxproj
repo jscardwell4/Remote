@@ -299,7 +299,10 @@
 		C27BCCAD1801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC891801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png */; };
 		C27BCCAE1801C16A0002464C /* IntegerKeyboard_Erase.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC8A1801C16A0002464C /* IntegerKeyboard_Erase.png */; };
 		C27BCCAF1801C16A0002464C /* IntegerKeyboard_Erase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */; };
-		C293C73C1AC2406400408D35 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C235911C19C7ACB900920F8D /* MoonKit.framework */; };
+		C285D71D1AC44A0A00C527F6 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C285D7161AC449E700C527F6 /* MoonKit.framework */; };
+		C285D71E1AC44A0A00C527F6 /* MoonKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C285D7161AC449E700C527F6 /* MoonKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C285D7271AC44A2400C527F6 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C285D7261AC44A1F00C527F6 /* CocoaLumberjack.framework */; };
+		C285D7281AC44A2400C527F6 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C285D7261AC44A1F00C527F6 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C293C73E1AC25F7700408D35 /* Modellndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C73D1AC25F7700408D35 /* Modellndex.swift */; };
 		C293C7491AC3164700408D35 /* Bank.h in Headers */ = {isa = PBXBuildFile; fileRef = C293C7481AC3164700408D35 /* Bank.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C293C74F1AC3164700408D35 /* Bank.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C293C7441AC3164700408D35 /* Bank.framework */; };
@@ -413,12 +416,8 @@
 		C2E8D9F719BCD5C400E6098E /* zigbee.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9BB19BCD5C400E6098E /* zigbee.xsd */; };
 		C2E9F3EC1ABC9797007581F2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F3EB1ABC9797007581F2 /* AppDelegate.swift */; };
 		C2E9F3F31ABC9797007581F2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F3F21ABC9797007581F2 /* Images.xcassets */; };
-		C2E9F40D1ABC9816007581F2 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C235911C19C7ACB900920F8D /* MoonKit.framework */; };
-		C2E9F40E1ABC9816007581F2 /* MoonKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C235911C19C7ACB900920F8D /* MoonKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C2E9F4121ABC982B007581F2 /* DataModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* DataModel.framework */; };
 		C2E9F4131ABC982B007581F2 /* DataModel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* DataModel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C2E9F4161ABC9848007581F2 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2F01E2A1A02FCF7007F6966 /* CocoaLumberjack.framework */; };
-		C2E9F4171ABC9848007581F2 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2F01E2A1A02FCF7007F6966 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C2E9F41B1ABC9A63007581F2 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F41A1ABC9A62007581F2 /* Default-568h@2x.png */; };
 		C2E9F5511ABCA395007581F2 /* ComponentDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4561ABCA395007581F2 /* ComponentDevice.swift */; };
 		C2E9F55F1ABCA395007581F2 /* EditableModelObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4641ABCA395007581F2 /* EditableModelObject.swift */; };
@@ -513,8 +512,6 @@
 		C2E9F64F1ABCA7A3007581F2 /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6371ABCA7A3007581F2 /* Glyphish.xcassets */; };
 		C2E9F6501ABCA7A3007581F2 /* Remote.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6381ABCA7A3007581F2 /* Remote.xcassets */; };
 		C2EF968417F79E06005AA639 /* TableCellDetailArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2EF968317F79E06005AA639 /* TableCellDetailArrow@2x.png */; };
-		C2F01E1F1A02FBC6007F6966 /* MoonKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C235911C19C7ACB900920F8D /* MoonKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C2F01E2D1A02FD09007F6966 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2F01E2A1A02FCF7007F6966 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C2F01E2F1A030BD6007F6966 /* ColorSelectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F01E2E1A030BD6007F6966 /* ColorSelectionController.swift */; };
 		C2F01E311A03D9E3007F6966 /* BackgroundEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F01E301A03D9E3007F6966 /* BackgroundEditingController.swift */; };
 		C2F436FE19BAB8E600B60FC3 /* ISYDeviceConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F436FD19BAB8E600B60FC3 /* ISYDeviceConnection.m */; };
@@ -547,13 +544,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		C204457019FBDD25005355A9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C2358F1519C78D6D00920F8D;
-			remoteInfo = MoonKit;
-		};
 		C215CC141ABB102F00E8077E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
@@ -561,26 +551,54 @@
 			remoteGlobalIDString = C215CBFE1ABB102F00E8077E;
 			remoteInfo = RemoteData;
 		};
-		C22437131ABE438100434998 /* PBXContainerItemProxy */ = {
+		C285D7151AC449E700C527F6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
+			containerPortal = C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C2358F1619C78D6D00920F8D;
+			remoteInfo = MoonKit;
+		};
+		C285D7171AC449E700C527F6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C2C482D219C9F98A002E84A9;
+			remoteInfo = "Moonkit Tests";
+		};
+		C285D7191AC449E700C527F6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = C256F07E1ABDFFE5005B7CB3;
 			remoteInfo = MoonKitOSX;
 		};
-		C22437151ABE438100434998 /* PBXContainerItemProxy */ = {
+		C285D71B1AC449E700C527F6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
+			containerPortal = C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = C256F0881ABDFFE5005B7CB3;
 			remoteInfo = MoonKitOSXTests;
 		};
-		C235911B19C7ACB900920F8D /* PBXContainerItemProxy */ = {
+		C285D71F1AC44A0A00C527F6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
+			containerPortal = C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C2358F1519C78D6D00920F8D;
+			remoteInfo = MoonKit;
+		};
+		C285D7251AC44A1F00C527F6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C285D7211AC44A1E00C527F6 /* Lumberjack.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = C2358F1619C78D6D00920F8D;
-			remoteInfo = Moonkit;
+			remoteGlobalIDString = DCB3185114EB418E001CFBEE;
+			remoteInfo = CocoaLumberjack;
+		};
+		C285D7291AC44A2400C527F6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C285D7211AC44A1E00C527F6 /* Lumberjack.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = DCB3185014EB418E001CFBEE;
+			remoteInfo = CocoaLumberjack;
 		};
 		C293C7501AC3164700408D35 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -610,13 +628,6 @@
 			remoteGlobalIDString = C215CBFE1ABB102F00E8077E;
 			remoteInfo = DataModel;
 		};
-		C2AA245719CB15500062CF4C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C2C482D219C9F98A002E84A9;
-			remoteInfo = "Moonkit Tests";
-		};
 		C2C482C919C9F968002E84A9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
@@ -624,40 +635,12 @@
 			remoteGlobalIDString = C26BAEA716DC10FE0093D5B4;
 			remoteInfo = Remote;
 		};
-		C2E9F40F1ABC9816007581F2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C2358F1519C78D6D00920F8D;
-			remoteInfo = MoonKit;
-		};
 		C2E9F4141ABC982B007581F2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = C215CBFE1ABB102F00E8077E;
 			remoteInfo = RemoteData;
-		};
-		C2E9F4181ABC9848007581F2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2F01E241A02FCF7007F6966 /* Lumberjack.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = DCB3185014EB418E001CFBEE;
-			remoteInfo = CocoaLumberjack;
-		};
-		C2F01E201A02FBC6007F6966 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C2358F1519C78D6D00920F8D;
-			remoteInfo = MoonKit;
-		};
-		C2F01E291A02FCF7007F6966 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2F01E241A02FCF7007F6966 /* Lumberjack.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = DCB3185114EB418E001CFBEE;
-			remoteInfo = CocoaLumberjack;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -669,8 +652,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				C2E9F4131ABC982B007581F2 /* DataModel.framework in Embed Frameworks */,
-				C2E9F4171ABC9848007581F2 /* CocoaLumberjack.framework in Embed Frameworks */,
-				C2E9F40E1ABC9816007581F2 /* MoonKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -681,10 +662,10 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C2F01E2D1A02FD09007F6966 /* CocoaLumberjack.framework in Embed Frameworks */,
 				C215CC171ABB102F00E8077E /* DataModel.framework in Embed Frameworks */,
+				C285D71E1AC44A0A00C527F6 /* MoonKit.framework in Embed Frameworks */,
+				C285D7281AC44A2400C527F6 /* CocoaLumberjack.framework in Embed Frameworks */,
 				C293C75C1AC3164700408D35 /* Bank.framework in Embed Frameworks */,
-				C2F01E1F1A02FBC6007F6966 /* MoonKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1022,6 +1003,8 @@
 		C27BCC891801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Erase-Highlighted@2x.png"; sourceTree = "<group>"; };
 		C27BCC8A1801C16A0002464C /* IntegerKeyboard_Erase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_Erase.png; sourceTree = "<group>"; };
 		C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Erase@2x.png"; sourceTree = "<group>"; };
+		C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MSKit.xcodeproj; path = MSKit/MSKit.xcodeproj; sourceTree = "<group>"; };
+		C285D7211AC44A1E00C527F6 /* Lumberjack.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lumberjack.xcodeproj; path = MSKit/../../../../GitHub/CocoaLumberjack/Framework/Desktop/Lumberjack.xcodeproj; sourceTree = "<group>"; };
 		C293C73D1AC25F7700408D35 /* Modellndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modellndex.swift; sourceTree = "<group>"; };
 		C293C7441AC3164700408D35 /* Bank.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bank.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C293C7471AC3164700408D35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1079,7 +1062,6 @@
 		C2CA76DB19BA5BFF00ACCD76 /* desc.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = desc.xml; sourceTree = "<group>"; };
 		C2CA76DC19BA5C3D00ACCD76 /* parsed_desc.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = parsed_desc.txt; sourceTree = "<group>"; };
 		C2CA76DE19BA98A100ACCD76 /* Main-iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Main-iPad.storyboard"; sourceTree = "<group>"; };
-		C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MSKit.xcodeproj; path = MSKit/MSKit.xcodeproj; sourceTree = "<group>"; };
 		C2CEFF1B1A2F8FF400F3BE24 /* RemoteStyleKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteStyleKit.swift; sourceTree = "<group>"; };
 		C2D361DD182BE49600775239 /* RemoteElementKeys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementKeys.m; sourceTree = "<group>"; };
 		C2D361DF182BE4B400775239 /* RemoteElementKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteElementKeys.h; sourceTree = "<group>"; };
@@ -1328,7 +1310,6 @@
 		C2E9F6371ABCA7A3007581F2 /* Glyphish.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Glyphish.xcassets; sourceTree = "<group>"; };
 		C2E9F6381ABCA7A3007581F2 /* Remote.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Remote.xcassets; sourceTree = "<group>"; };
 		C2EF968317F79E06005AA639 /* TableCellDetailArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TableCellDetailArrow@2x.png"; sourceTree = "<group>"; };
-		C2F01E241A02FCF7007F6966 /* Lumberjack.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lumberjack.xcodeproj; path = MSKit/../../../../GitHub/CocoaLumberjack/Framework/Desktop/Lumberjack.xcodeproj; sourceTree = "<group>"; };
 		C2F01E2E1A030BD6007F6966 /* ColorSelectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSelectionController.swift; sourceTree = "<group>"; };
 		C2F01E301A03D9E3007F6966 /* BackgroundEditingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundEditingController.swift; sourceTree = "<group>"; };
 		C2F436FC19BAB8E600B60FC3 /* ISYDeviceConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISYDeviceConnection.h; sourceTree = "<group>"; };
@@ -1357,7 +1338,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C293C73C1AC2406400408D35 /* MoonKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1366,6 +1346,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C293C75B1AC3164700408D35 /* Bank.framework in Frameworks */,
+				C285D71D1AC44A0A00C527F6 /* MoonKit.framework in Frameworks */,
+				C285D7271AC44A2400C527F6 /* CocoaLumberjack.framework in Frameworks */,
 				C215CC161ABB102F00E8077E /* DataModel.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1408,8 +1390,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2E9F4121ABC982B007581F2 /* DataModel.framework in Frameworks */,
-				C2E9F4161ABC9848007581F2 /* CocoaLumberjack.framework in Frameworks */,
-				C2E9F40D1ABC9816007581F2 /* MoonKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1569,9 +1549,9 @@
 		C26BAEAA16DC10FE0093D5B4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C2F01E241A02FCF7007F6966 /* Lumberjack.xcodeproj */,
+				C285D7211AC44A1E00C527F6 /* Lumberjack.xcodeproj */,
+				C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */,
 				C2CA76D919BA34A500ACCD76 /* libicucore.dylib */,
-				C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */,
 				C2CA766519BA099000ACCD76 /* Foundation.framework */,
 				C2CA769119BA1E1800ACCD76 /* CoreGraphics.framework */,
 				C2CA769319BA1E1800ACCD76 /* UIKit.framework */,
@@ -1949,6 +1929,25 @@
 			path = png;
 			sourceTree = "<group>";
 		};
+		C285D70F1AC449E700C527F6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C285D7161AC449E700C527F6 /* MoonKit.framework */,
+				C285D7181AC449E700C527F6 /* Moonkit Tests.xctest */,
+				C285D71A1AC449E700C527F6 /* MoonKitOSX.framework */,
+				C285D71C1AC449E700C527F6 /* MoonKitOSXTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C285D7221AC44A1E00C527F6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C285D7261AC44A1F00C527F6 /* CocoaLumberjack.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		C293C7451AC3164700408D35 /* Bank */ = {
 			isa = PBXGroup;
 			children = (
@@ -2066,17 +2065,6 @@
 			children = (
 			);
 			name = iPad;
-			sourceTree = "<group>";
-		};
-		C2CE8A9C1814231F00555D63 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C235911C19C7ACB900920F8D /* MoonKit.framework */,
-				C2AA245819CB15500062CF4C /* Moonkit Tests.xctest */,
-				C22437141ABE438100434998 /* MoonKitOSX.framework */,
-				C22437161ABE438100434998 /* MoonKitOSXTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		C2E67D1E1705E46D00AB0392 /* Remote Elements */ = {
@@ -2451,14 +2439,6 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
-		C2F01E251A02FCF7007F6966 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C2F01E2A1A02FCF7007F6966 /* CocoaLumberjack.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		C2F940FB19BE5E90007B5CC1 /* iTachClient */ = {
 			isa = PBXGroup;
 			children = (
@@ -2536,10 +2516,10 @@
 			buildRules = (
 			);
 			dependencies = (
-				C204457119FBDD25005355A9 /* PBXTargetDependency */,
-				C2F01E211A02FBC6007F6966 /* PBXTargetDependency */,
 				C215CC151ABB102F00E8077E /* PBXTargetDependency */,
 				C293C75A1AC3164700408D35 /* PBXTargetDependency */,
+				C285D7201AC44A0A00C527F6 /* PBXTargetDependency */,
+				C285D72A1AC44A2400C527F6 /* PBXTargetDependency */,
 			);
 			name = Remote;
 			productName = Remote;
@@ -2631,9 +2611,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				C2E9F4101ABC9816007581F2 /* PBXTargetDependency */,
 				C2E9F4151ABC982B007581F2 /* PBXTargetDependency */,
-				C2E9F4191ABC9848007581F2 /* PBXTargetDependency */,
 			);
 			name = BankApp;
 			productName = RemoteDataUITest;
@@ -2711,12 +2689,12 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = C2F01E251A02FCF7007F6966 /* Products */;
-					ProjectRef = C2F01E241A02FCF7007F6966 /* Lumberjack.xcodeproj */;
+					ProductGroup = C285D7221AC44A1E00C527F6 /* Products */;
+					ProjectRef = C285D7211AC44A1E00C527F6 /* Lumberjack.xcodeproj */;
 				},
 				{
-					ProductGroup = C2CE8A9C1814231F00555D63 /* Products */;
-					ProjectRef = C2CE8A9B1814231F00555D63 /* MSKit.xcodeproj */;
+					ProductGroup = C285D70F1AC449E700C527F6 /* Products */;
+					ProjectRef = C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -2734,39 +2712,39 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		C22437141ABE438100434998 /* MoonKitOSX.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = MoonKitOSX.framework;
-			remoteRef = C22437131ABE438100434998 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C22437161ABE438100434998 /* MoonKitOSXTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = MoonKitOSXTests.xctest;
-			remoteRef = C22437151ABE438100434998 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C235911C19C7ACB900920F8D /* MoonKit.framework */ = {
+		C285D7161AC449E700C527F6 /* MoonKit.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = MoonKit.framework;
-			remoteRef = C235911B19C7ACB900920F8D /* PBXContainerItemProxy */;
+			remoteRef = C285D7151AC449E700C527F6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		C2AA245819CB15500062CF4C /* Moonkit Tests.xctest */ = {
+		C285D7181AC449E700C527F6 /* Moonkit Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = "Moonkit Tests.xctest";
-			remoteRef = C2AA245719CB15500062CF4C /* PBXContainerItemProxy */;
+			remoteRef = C285D7171AC449E700C527F6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		C2F01E2A1A02FCF7007F6966 /* CocoaLumberjack.framework */ = {
+		C285D71A1AC449E700C527F6 /* MoonKitOSX.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MoonKitOSX.framework;
+			remoteRef = C285D7191AC449E700C527F6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C285D71C1AC449E700C527F6 /* MoonKitOSXTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = MoonKitOSXTests.xctest;
+			remoteRef = C285D71B1AC449E700C527F6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C285D7261AC44A1F00C527F6 /* CocoaLumberjack.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = CocoaLumberjack.framework;
-			remoteRef = C2F01E291A02FCF7007F6966 /* PBXContainerItemProxy */;
+			remoteRef = C285D7251AC44A1F00C527F6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -3403,15 +3381,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		C204457119FBDD25005355A9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = MoonKit;
-			targetProxy = C204457019FBDD25005355A9 /* PBXContainerItemProxy */;
-		};
 		C215CC151ABB102F00E8077E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C215CBFE1ABB102F00E8077E /* DataModel */;
 			targetProxy = C215CC141ABB102F00E8077E /* PBXContainerItemProxy */;
+		};
+		C285D7201AC44A0A00C527F6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MoonKit;
+			targetProxy = C285D71F1AC44A0A00C527F6 /* PBXContainerItemProxy */;
+		};
+		C285D72A1AC44A2400C527F6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CocoaLumberjack;
+			targetProxy = C285D7291AC44A2400C527F6 /* PBXContainerItemProxy */;
 		};
 		C293C7511AC3164700408D35 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -3438,25 +3421,10 @@
 			target = C26BAEA716DC10FE0093D5B4 /* Remote */;
 			targetProxy = C2C482C919C9F968002E84A9 /* PBXContainerItemProxy */;
 		};
-		C2E9F4101ABC9816007581F2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = MoonKit;
-			targetProxy = C2E9F40F1ABC9816007581F2 /* PBXContainerItemProxy */;
-		};
 		C2E9F4151ABC982B007581F2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C215CBFE1ABB102F00E8077E /* DataModel */;
 			targetProxy = C2E9F4141ABC982B007581F2 /* PBXContainerItemProxy */;
-		};
-		C2E9F4191ABC9848007581F2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = CocoaLumberjack;
-			targetProxy = C2E9F4181ABC9848007581F2 /* PBXContainerItemProxy */;
-		};
-		C2F01E211A02FBC6007F6966 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = MoonKit;
-			targetProxy = C2F01E201A02FBC6007F6966 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

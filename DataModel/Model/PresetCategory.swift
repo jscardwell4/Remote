@@ -19,26 +19,26 @@ final public class PresetCategory: IndexedEditableModelObject, NestingModelColle
 
   public typealias ItemType = Preset
   public var items: [ItemType] { get { return Array(presets) } set { presets = Set(newValue) } }
-  public func itemWithIndex(index: ModelIndex) -> ItemType? { return findByIndex(presets, index) }
+  public func itemWithIndex(index: PathModelIndex) -> ItemType? { return findByIndex(presets, index) }
 
   public typealias CollectionType = PresetCategory
   public var collection: CollectionType? { get { return parentCategory } set { parentCategory = newValue } }
 
   public typealias NestedType = PresetCategory
   public var subcategories: [NestedType] { get { return Array(childCategories) } set { childCategories = Set(newValue) } }
-  public func subcategoryWithIndex(index: ModelIndex) -> NestedType? { return findByIndex(childCategories, index) }
+  public func subcategoryWithIndex(index: PathModelIndex) -> NestedType? { return findByIndex(childCategories, index) }
 
-  override public var index: ModelIndex { return parentCategory != nil ? parentCategory!.index + "\(name)" : "\(name)" }
+  override public var pathIndex: PathModelIndex { return parentCategory != nil ? parentCategory!.pathIndex + "\(name)" : "\(name)" }
 
   /**
   itemWithIndex:context:
 
-  :param: index ModelIndex
+  :param: index PathModelIndex
   :param: context NSManagedObjectContext
 
   :returns: T?
   */
-  public class func itemWithIndex<T:IndexedModel>(index: ModelIndex, context: NSManagedObjectContext) -> T? {
+  public class func itemWithIndex<T:PathIndexedModel>(index: PathModelIndex, context: NSManagedObjectContext) -> T? {
     if index.isEmpty { return nil }
     var i = 1
     if let rootCategory = rootItemWithIndex(index[0..<i], context: context) {
@@ -49,12 +49,12 @@ final public class PresetCategory: IndexedEditableModelObject, NestingModelColle
   /**
   rootItemWithIndex:context:
 
-  :param: index ModelIndex
+  :param: index PathModelIndex
   :param: context NSManagedObjectContext
 
   :returns: Self?
   */
-  public class func rootItemWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Self? {
+  public class func rootItemWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self? {
     if let name = index.first {
       return objectMatchingPredicate(∀"parentCategory = NULL AND name = '\(name)'", context: context)
     } else { return nil }

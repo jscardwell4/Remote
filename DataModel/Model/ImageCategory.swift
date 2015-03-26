@@ -22,16 +22,16 @@ final public class ImageCategory: IndexedEditableModelObject, NestingModelCollec
 
   public typealias ItemType = Image
   public var items: [ItemType] { get { return Array(images) } set { images = Set(newValue) } }
-  public func itemWithIndex(index: ModelIndex) -> ItemType? { return findByIndex(images, index) }
+  public func itemWithIndex(index: PathModelIndex) -> ItemType? { return findByIndex(images, index) }
 
   public typealias NestedType = ImageCategory
   public var subcategories: [NestedType] { get { return Array(childCategories) } set { childCategories = Set(newValue) } }
-  public func subcategoryWithIndex(index: ModelIndex) -> NestedType? { return findByIndex(childCategories, index) }
+  public func subcategoryWithIndex(index: PathModelIndex) -> NestedType? { return findByIndex(childCategories, index) }
 
   public typealias CollectionType = NestedType
   public var collection: CollectionType? { get { return parentCategory } set { parentCategory = newValue } }
 
-  override public var index: ModelIndex { return parentCategory != nil ? parentCategory!.index + "\(name)" : "\(name)" }
+  override public var pathIndex: PathModelIndex { return parentCategory != nil ? parentCategory!.pathIndex + "\(name)" : "\(name)" }
 
   /**
   itemWithIndex:context:
@@ -41,7 +41,7 @@ final public class ImageCategory: IndexedEditableModelObject, NestingModelCollec
 
   :returns: T?
   */
-  public class func itemWithIndex<T:IndexedModel>(index: ModelIndex, context: NSManagedObjectContext) -> T? {
+  public class func itemWithIndex<T:PathIndexedModel>(index: PathModelIndex, context: NSManagedObjectContext) -> T? {
     if index.isEmpty { return nil }
     var i = 1
     if let rootCategory = rootItemWithIndex(index[0..<i], context: context) {
@@ -52,24 +52,24 @@ final public class ImageCategory: IndexedEditableModelObject, NestingModelCollec
   /**
   modelWithIndex:context:
 
-  :param: index ModelIndex
+  :param: index PathModelIndex
   :param: context NSManagedObjectContext
 
   :returns: ImageCategory?
   */
-  override public class func modelWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> ImageCategory? {
+  override public class func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> ImageCategory? {
     return itemWithIndex(index, context: context)
   }
 
   /**
   rootItemWithIndex:context:
 
-  :param: index ModelIndex
+  :param: index PathModelIndex
   :param: context NSManagedObjectContext
 
   :returns: Self?
   */
-  public class func rootItemWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Self? {
+  public class func rootItemWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self? {
     if let name = index.first {
       return objectMatchingPredicate(∀"parentCategory = NULL AND name = '\(name)'", context: context)
     } else { return nil }
