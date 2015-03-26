@@ -52,8 +52,9 @@ public final class PresetAttributes {
 
   public var backgroundImage: Image? {
     get {
-      if let moc = context, path = storage["backgroundImage"] as? String { return ImageCategory.itemWithIndex(PathModelIndex(path), context: moc) }
-      else { return nil }
+      if let moc = context, path = storage["backgroundImage"] as? String {
+        return Image.modelWithIndex(PathModelIndex(path), context: moc)
+      } else { return nil }
     }
     set { storage["background-image"] = newValue }
   }

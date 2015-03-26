@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(IRCode)
-final public class IRCode: IndexedEditableModelObject, ModelCollectionItem {
+final public class IRCode: EditableModelObject {
   
   @NSManaged public var frequency: Int64
   @NSManaged public var offset: Int16
@@ -25,22 +25,8 @@ final public class IRCode: IndexedEditableModelObject, ModelCollectionItem {
 
   public var manufacturer: Manufacturer { return codeSet.manufacturer }
 
-  public typealias CollectionType = IRCodeSet
-  public var collection: CollectionType? { get { return codeSet } set { if newValue != nil { codeSet = newValue! } } }
-
-  override public var pathIndex: PathModelIndex { return codeSet.pathIndex + "\(name)" }
-
-  /**
-  modelWithIndex:context:
-
-  :param: index PathModelIndex
-  :param: context NSManagedObjectContext
-
-  :returns: IRCode?
-  */
-  override public class func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> IRCode? {
-    return Manufacturer.itemWithIndex(index, context: context)
-  }
+//  public typealias CollectionType = IRCodeSet
+//  public var collection: CollectionType? { get { return codeSet } set { if newValue != nil { codeSet = newValue! } } }
 
   /**
   isValidOnOffPattern:
@@ -134,3 +120,23 @@ extension IRCode: MSJSONExport {
   }
 }
 
+extension IRCode: PathIndexedModel {
+  public var pathIndex: PathModelIndex { return codeSet.pathIndex + "\(name)" }
+
+  /**
+  modelWithIndex:context:
+
+  :param: index PathModelIndex
+  :param: context NSManagedObjectContext
+
+  :returns: IRCode?
+  */
+  public static func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> IRCode? {
+    if index.count != 3 { return nil }
+    let (manufacturerName, codeSetName, codeName) = disperse3(index.pathComponents)
+    if let codeSet = IRCodeSet.modelWithIndex([manufacturerName, codeSetName], context: context) {
+      return findFirst(codeSet.codes, {$0.name == codeName})
+    } else { return nil }
+  }
+  
+}

@@ -11,18 +11,18 @@ import CoreData
 import MoonKit
 
 @objc(Manufacturer)
-final public class Manufacturer: IndexedEditableModelObject, NestingModelCollection, RootedModel {
+final public class Manufacturer: EditableModelObject {
 
   @NSManaged public var codeSets: Set<IRCodeSet>
   @NSManaged public var devices: Set<ComponentDevice>
 
-  public typealias NestedType = IRCodeSet
-  public var subcategories: [NestedType] { get { return Array(codeSets) } set { codeSets = Set(newValue) } }
-  public func subcategoryWithIndex(index: PathModelIndex) -> IRCodeSet? { return findByIndex(codeSets, index) }
+//  public typealias NestedType = IRCodeSet
+//  public var subcategories: [NestedType] { get { return Array(codeSets) } set { codeSets = Set(newValue) } }
+//  public func subcategoryWithIndex(index: PathModelIndex) -> IRCodeSet? { return findByIndex(codeSets, index) }
 
-  public typealias ItemType = IRCode
-  public var items: [ItemType] { get { return [] } set {} }
-  public func itemWithIndex(index: PathModelIndex) -> ItemType? { return nil }
+//  public typealias ItemType = IRCode
+//  public var items: [ItemType] { get { return [] } set {} }
+//  public func itemWithIndex(index: PathModelIndex) -> ItemType? { return nil }
 
   /**
   itemWithIndex:context:
@@ -32,21 +32,21 @@ final public class Manufacturer: IndexedEditableModelObject, NestingModelCollect
 
   :returns: T?
   */
-  public class func itemWithIndex<T:PathIndexedModel>(var index: PathModelIndex, context: NSManagedObjectContext) -> T? {
-    if index.isEmpty || index.count > 3 { return nil }
-
-    let manufacturerIndex = index.removeAtIndex(0)
-    if let manufacturer = rootItemWithIndex(PathModelIndex(manufacturerIndex), context: context) {
-      if index.isEmpty { return manufacturer as? T }
-      let codeSetIndex = index.removeAtIndex(0)
-      if let codeSet = manufacturer.subcategoryWithIndex("\(manufacturerIndex)/\(codeSetIndex)") {
-        if index.isEmpty { return codeSet as? T }
-        let codeIndex = index.removeLast()
-        return codeSet.itemWithIndex("\(manufacturerIndex)/\(codeSetIndex)/\(codeIndex)") as? T
-      }
-    }
-    return nil
-  }
+//  public class func itemWithIndex<T:PathIndexedModel>(var index: PathModelIndex, context: NSManagedObjectContext) -> T? {
+//    if index.isEmpty || index.count > 3 { return nil }
+//
+//    let manufacturerIndex = index.removeAtIndex(0)
+//    if let manufacturer = rootItemWithIndex(PathModelIndex(manufacturerIndex), context: context) {
+//      if index.isEmpty { return manufacturer as? T }
+//      let codeSetIndex = index.removeAtIndex(0)
+//      if let codeSet = manufacturer.subcategoryWithIndex("\(manufacturerIndex)/\(codeSetIndex)") {
+//        if index.isEmpty { return codeSet as? T }
+//        let codeIndex = index.removeLast()
+//        return codeSet.itemWithIndex("\(manufacturerIndex)/\(codeSetIndex)/\(codeIndex)") as? T
+//      }
+//    }
+//    return nil
+//  }
 
   /**
   rootItemWithIndex:context:
@@ -56,9 +56,9 @@ final public class Manufacturer: IndexedEditableModelObject, NestingModelCollect
 
   :returns: Self?
   */
-  public class func rootItemWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self? {
-    return objectWithValue(index.rawValue, forAttribute: "name", context: context)
-  }
+//  public class func rootItemWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self? {
+//    return objectWithValue(index.rawValue, forAttribute: "name", context: context)
+//  }
 
   /**
   updateWithData:
@@ -69,18 +69,6 @@ final public class Manufacturer: IndexedEditableModelObject, NestingModelCollect
     super.updateWithData(data)
     updateRelationshipFromData(data, forKey: "codeSets", lookupKey: "code-sets")
     updateRelationshipFromData(data, forKey: "devices")
-  }
-
-  /**
-  rootCategoryNamed:context:
-
-  :param: name String
-  :param: context NSManagedObjectContext
-
-  :returns: IndexedModelCollection?
-  */
-  public class func rootCategoryNamed(name: String, context: NSManagedObjectContext) -> Manufacturer? {
-    return objectWithValue(name, forAttribute: "name", context: context)
   }
 
   override public func JSONDictionary() -> MSDictionary {
@@ -95,5 +83,22 @@ final public class Manufacturer: IndexedEditableModelObject, NestingModelCollect
     return dictionary
   }
 
+}
+
+extension Manufacturer: PathIndexedModel {
+  public var pathIndex: PathModelIndex { return "\(name)" }
+
+  /**
+  modelWithIndex:context:
+
+  :param: index PathModelIndex
+  :param: context NSManagedObjectContext
+
+  :returns: Self?
+  */
+  public static func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self? {
+    return index.count == 1 ? objectWithValue(index.rawValue, forAttribute: "name", context: context) : nil
+  }
+  
 }
 

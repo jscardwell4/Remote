@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(ImageCategory)
-final public class ImageCategory: IndexedEditableModelObject, NestingModelCollection, ModelCollectionItem, RootedModel {
+final public class ImageCategory: EditableModelObject {
 
   @NSManaged public var images: Set<Image>
   @NSManaged public var childCategories: Set<ImageCategory>
@@ -20,18 +20,17 @@ final public class ImageCategory: IndexedEditableModelObject, NestingModelCollec
   public let previewableItems = true
   public let editableItems = true
 
-  public typealias ItemType = Image
-  public var items: [ItemType] { get { return Array(images) } set { images = Set(newValue) } }
-  public func itemWithIndex(index: PathModelIndex) -> ItemType? { return findByIndex(images, index) }
+//  public typealias ItemType = Image
+//  public var items: [ItemType] { get { return Array(images) } set { images = Set(newValue) } }
+//  public func itemWithIndex(index: PathModelIndex) -> ItemType? { return findByIndex(images, index) }
 
-  public typealias NestedType = ImageCategory
-  public var subcategories: [NestedType] { get { return Array(childCategories) } set { childCategories = Set(newValue) } }
-  public func subcategoryWithIndex(index: PathModelIndex) -> NestedType? { return findByIndex(childCategories, index) }
+//  public typealias NestedType = ImageCategory
+//  public var subcategories: [NestedType] { get { return Array(childCategories) } set { childCategories = Set(newValue) } }
+//  public func subcategoryWithIndex(index: PathModelIndex) -> NestedType? { return findByIndex(childCategories, index) }
 
-  public typealias CollectionType = NestedType
-  public var collection: CollectionType? { get { return parentCategory } set { parentCategory = newValue } }
+//  public typealias CollectionType = NestedType
+//  public var collection: CollectionType? { get { return parentCategory } set { parentCategory = newValue } }
 
-  override public var pathIndex: PathModelIndex { return parentCategory != nil ? parentCategory!.pathIndex + "\(name)" : "\(name)" }
 
   /**
   itemWithIndex:context:
@@ -41,25 +40,13 @@ final public class ImageCategory: IndexedEditableModelObject, NestingModelCollec
 
   :returns: T?
   */
-  public class func itemWithIndex<T:PathIndexedModel>(index: PathModelIndex, context: NSManagedObjectContext) -> T? {
-    if index.isEmpty { return nil }
-    var i = 1
-    if let rootCategory = rootItemWithIndex(index[0..<i], context: context) {
-      return itemWithIndexFromRoot(index, rootCategory)
-    } else { return nil }
-  }
-
-  /**
-  modelWithIndex:context:
-
-  :param: index PathModelIndex
-  :param: context NSManagedObjectContext
-
-  :returns: ImageCategory?
-  */
-  override public class func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> ImageCategory? {
-    return itemWithIndex(index, context: context)
-  }
+//  public class func itemWithIndex<T:PathIndexedModel>(index: PathModelIndex, context: NSManagedObjectContext) -> T? {
+//    if index.isEmpty { return nil }
+//    var i = 1
+//    if let rootCategory = rootItemWithIndex(index[0..<i], context: context) {
+//      return itemWithIndexFromRoot(index, rootCategory)
+//    } else { return nil }
+//  }
 
   /**
   rootItemWithIndex:context:
@@ -69,11 +56,11 @@ final public class ImageCategory: IndexedEditableModelObject, NestingModelCollec
 
   :returns: Self?
   */
-  public class func rootItemWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self? {
-    if let name = index.first {
-      return objectMatchingPredicate(∀"parentCategory = NULL AND name = '\(name)'", context: context)
-    } else { return nil }
-  }
+//  public class func rootItemWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self? {
+//    if let name = index.first {
+//      return objectMatchingPredicate(∀"parentCategory = NULL AND name = '\(name)'", context: context)
+//    } else { return nil }
+//  }
 
   /**
   updateWithData:
@@ -105,5 +92,29 @@ final public class ImageCategory: IndexedEditableModelObject, NestingModelCollec
     return dictionary
   }
   
+}
 
+extension ImageCategory: PathIndexedModel {
+  public var pathIndex: PathModelIndex { return parentCategory != nil ? parentCategory!.pathIndex + "\(name)" : "\(name)" }
+
+  /**
+  modelWithIndex:context:
+
+  :param: index PathModelIndex
+  :param: context NSManagedObjectContext
+
+  :returns: ImageCategory?
+  */
+  public static func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> ImageCategory? {
+    if index.count < 1 { return nil }
+    var pathComponents = index.pathComponents.reverse()
+    var name = pathComponents.removeLast()
+    var currentCategory = objectMatchingPredicate(∀"parentCategory == NULL AND name == '\(name)'", context: context)
+
+    while currentCategory != nil && pathComponents.count > 0 {
+      name = pathComponents.removeLast()
+      currentCategory = findFirst(currentCategory!.childCategories, {$0.name == name})
+    }
+    return currentCategory
+  }
 }

@@ -45,11 +45,15 @@ in the code set named 'AV Receiver' for the manufacturer named 'Sony'
     return result
   }
 
+  public var pathComponents: [String] { return rawValue.pathComponents }
   public var isEmpty: Bool { return rawValue.pathComponents.isEmpty }
   public var count: Int { return rawValue.pathComponents.count }
   public var first: String? { return rawValue.pathComponents.first }
   public var last: String? { return rawValue.pathComponents.last }
 
+  public convenience init(array: [String]) {
+    self.init("/".join(array))
+  }
 
   public func append(component: String) { rawValue += "/" + component }
   public func removeLast() -> String {
@@ -107,6 +111,13 @@ extension PathModelIndex: MutableCollectionType {
 // MARK: SequenceType
 extension PathModelIndex: SequenceType {
   public func generate() -> IndexingGenerator<Array<String>> { return rawValue.pathComponents.generate() }
+}
+
+// MARK: ArrayLiteralConvertible
+extension PathModelIndex: ArrayLiteralConvertible {
+  public convenience init(arrayLiteral elements: String...) {
+    self.init("/".join(elements))
+  }
 }
 
 // MARK: Equatable

@@ -11,33 +11,19 @@ import CoreData
 import MoonKit
 
 @objc(IRCodeSet)
-final public class IRCodeSet: IndexedEditableModelObject, ModelCollection, ModelCollectionItem {
+final public class IRCodeSet: EditableModelObject {
 
 
   @NSManaged public var devices: Set<ComponentDevice>
   @NSManaged public var codes: Set<IRCode>
   @NSManaged public var manufacturer: Manufacturer
 
-  public typealias ItemType = IRCode
-  public var items: [ItemType] { get { return Array(codes) } set { codes = Set(newValue) } }
-  public func itemWithIndex(index: PathModelIndex) -> ItemType? { return findByIndex(codes, index) }
+//  public typealias ItemType = IRCode
+//  public var items: [ItemType] { get { return Array(codes) } set { codes = Set(newValue) } }
+//  public func itemWithIndex(index: PathModelIndex) -> ItemType? { return findByIndex(codes, index) }
 
-  public typealias CollectionType = Manufacturer
-  public var collection: CollectionType? { get { return manufacturer } set { if newValue != nil { manufacturer = newValue! } } }
-
-  override public var pathIndex: PathModelIndex { return manufacturer.pathIndex + "\(name)" }
-
-  /**
-  modelWithIndex:context:
-
-  :param: index PathModelIndex
-  :param: context NSManagedObjectContext
-
-  :returns: IRCodeSet?
-  */
-  override public class func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> IRCodeSet? {
-    return Manufacturer.itemWithIndex(index, context: context)
-  }
+//  public typealias CollectionType = Manufacturer
+//  public var collection: CollectionType? { get { return manufacturer } set { if newValue != nil { manufacturer = newValue! } } }
 
 
   /**
@@ -71,5 +57,25 @@ final public class IRCodeSet: IndexedEditableModelObject, ModelCollection, Model
     return dictionary
   }
 
+}
 
+extension IRCodeSet: PathIndexedModel {
+  public var pathIndex: PathModelIndex { return manufacturer.pathIndex + "\(name)" }
+
+  /**
+  modelWithIndex:context:
+
+  :param: index PathModelIndex
+  :param: context NSManagedObjectContext
+
+  :returns: IRCodeSet?
+  */
+  public static func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> IRCodeSet? {
+    if let manufacturerName = index.first, codeSetName = index.last where index.count == 2,
+      let manufacturer = Manufacturer.modelWithIndex("\(manufacturerName)", context: context)
+    {
+      return findFirst(manufacturer.codeSets, {$0.name == codeSetName})
+    } else { return nil }
+  }
+  
 }

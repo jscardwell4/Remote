@@ -12,7 +12,7 @@ import MoonKit
 
 // MARK: - Model related protocols
 // MARK: EditableModel
-@objc public protocol EditableModel: NamedModel {
+@objc public protocol EditableModel: Model {
   var user: Bool { get }
   func save()
   func delete()
@@ -20,30 +20,30 @@ import MoonKit
 }
 
 // MARK: ModelCollection
-public protocol ModelCollection {
-  typealias ItemType: PathIndexedModel
-  var items: [ItemType] { get set }
-  func itemWithIndex(index: PathModelIndex) -> ItemType?
-}
+//public protocol ModelCollection {
+//  typealias ItemType: PathIndexedModel
+//  var items: [ItemType] { get set }
+//  func itemWithIndex(index: PathModelIndex) -> ItemType?
+//}
 
 // MARK: NestingModelCollection
-public protocol NestingModelCollection: ModelCollection {
-   typealias NestedType: PathIndexedModel
-  var subcategories: [NestedType] { get set }
-  func subcategoryWithIndex(index: PathModelIndex) -> NestedType?
-}
+//public protocol NestingModelCollection: ModelCollection {
+//   typealias NestedType: PathIndexedModel
+//  var subcategories: [NestedType] { get set }
+//  func subcategoryWithIndex(index: PathModelIndex) -> NestedType?
+//}
 
 // MARK: ModelCollectionItem
-public protocol ModelCollectionItem: EditableModel {
-  typealias CollectionType
-  var collection: CollectionType? { get set }
-}
+//public protocol ModelCollectionItem: EditableModel {
+//  typealias CollectionType
+//  var collection: CollectionType? { get set }
+//}
 
 // MARK: RootedModel
-public protocol RootedModel: PathIndexedModel {
-  static func itemWithIndex<T:PathIndexedModel>(index: PathModelIndex, context: NSManagedObjectContext) -> T?
-  static func rootItemWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self?
-}
+//public protocol RootedModel: PathIndexedModel {
+//  static func itemWithIndex<T:PathIndexedModel>(index: PathModelIndex, context: NSManagedObjectContext) -> T?
+//  static func rootItemWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self?
+//}
 
 // MARK: - Base editable model classes
 public class EditableModelObject: NamedModelObject, EditableModel {
@@ -93,24 +93,6 @@ public class EditableModelObject: NamedModelObject, EditableModel {
 
 }
 
-public class IndexedEditableModelObject: EditableModelObject, PathIndexedModel {
-  
-  public var pathIndex: PathModelIndex { return PathModelIndex(name) }
-  public override var index: ModelIndex { return pathIndex }
-
-  /**
-  modelWithIndex:context:
-
-  :param: index ModelIndex
-  :param: context NSManagedObjectContext
-
-  :returns: Self?
-  */
-  public class func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self? {
-    return objectWithValue(index.rawValue, forAttribute: "name", context: context)
-  }
-}
-
 // MARK: - Support functions
 
 /**
@@ -121,9 +103,9 @@ findByIndex:idx:
 
 :returns: C.Generator.Element?
 */
-public func findByIndex<C:CollectionType where C.Generator.Element:PathIndexedModel>(c: C, idx: PathModelIndex) -> C.Generator.Element? {
-  return findFirst(c, {$0.index == idx})
-}
+//public func findByIndex<C:CollectionType where C.Generator.Element:PathIndexedModel>(c: C, idx: PathModelIndex) -> C.Generator.Element? {
+//  return findFirst(c, {$0.index == idx})
+//}
 
 //func indexForItem<T:PathIndexedModel>(model: T) -> ModelIndex { return "\(model.name)" }
 
@@ -135,18 +117,18 @@ itemWithIndex:withRoot:
 
 :returns: T?
 */
-public func itemWithIndexFromRoot<T:PathIndexedModel, U:RootedModel
-  where U:NestingModelCollection, U.NestedType == U>(index:PathModelIndex, root: U) -> T?
-{
-  if root.index == index { return root as? T }
-  var i = 2
-  var currentCategory = root
-  while i < index.count - 1 {
-    if let category = currentCategory.subcategoryWithIndex(index[0..<i++]) { currentCategory = category } else { return nil }
-  }
-  if let category = currentCategory.subcategoryWithIndex(index) { return category as? T }
-  if let categoryItem = currentCategory.itemWithIndex(index) { return categoryItem as? T }
-
-  return nil
-}
+//public func itemWithIndexFromRoot<T:PathIndexedModel, U:RootedModel
+//  where U:NestingModelCollection, U.NestedType == U>(index:PathModelIndex, root: U) -> T?
+//{
+//  if root.index == index { return root as? T }
+//  var i = 2
+//  var currentCategory = root
+//  while i < index.count - 1 {
+//    if let category = currentCategory.subcategoryWithIndex(index[0..<i++]) { currentCategory = category } else { return nil }
+//  }
+//  if let category = currentCategory.subcategoryWithIndex(index) { return category as? T }
+//  if let categoryItem = currentCategory.itemWithIndex(index) { return categoryItem as? T }
+//
+//  return nil
+//}
 

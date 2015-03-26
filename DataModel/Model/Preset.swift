@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(Preset)
-final public class Preset: IndexedEditableModelObject, ModelCollectionItem {
+final public class Preset: EditableModelObject {
 
   public var preview: UIImage { return UIImage() }
   public var thumbnail: UIImage { return preview }
@@ -27,10 +27,8 @@ final public class Preset: IndexedEditableModelObject, ModelCollectionItem {
     storage = DictionaryStorage(context: managedObjectContext!)
   }
 
-  public typealias CollectionType = PresetCategory
-  public var collection: CollectionType? { get { return presetCategory } set { if newValue != nil { presetCategory = newValue! } } }
-
-  override public var pathIndex: PathModelIndex { return presetCategory.pathIndex + "\(name)" }
+//  public typealias CollectionType = PresetCategory
+//  public var collection: CollectionType? { get { return presetCategory } set { if newValue != nil { presetCategory = newValue! } } }
 
   public subscript(key: String) -> AnyObject? {
     get { return storage[key] }
@@ -83,7 +81,7 @@ final public class Preset: IndexedEditableModelObject, ModelCollectionItem {
   public var backgroundImage: Image? {
     get {
       if let moc = managedObjectContext, index = storage["backgroundImage"] as? String {
-        return ImageCategory.itemWithIndex(PathModelIndex(index), context: moc)
+        return Image.modelWithIndex(PathModelIndex(index), context: moc)
       } else { return nil }
     }
     set { storage["background-image"] = newValue }
@@ -194,4 +192,26 @@ final public class Preset: IndexedEditableModelObject, ModelCollectionItem {
     set { storage["command"] = newValue }
   }
 
+}
+
+extension Preset: PathIndexedModel {
+  public var pathIndex: PathModelIndex { return presetCategory.pathIndex + "\(name)" }
+
+  /**
+  modelWithIndex:context:
+
+  :param: index PathModelIndex
+  :param: context NSManagedObjectContext
+
+  :returns: Preset?
+  */
+  public static func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Preset? {
+    if index.count < 1 { return nil }
+    var pathComponents = index.pathComponents
+    let oresetName = pathComponents.removeLast()
+    if let oresetCategory = PresetCategory.modelWithIndex(PathModelIndex(array: pathComponents), context: context) {
+      return findFirst(oresetCategory.presets, {$0.name == oresetName})
+    } else { return nil }
+
+  }
 }

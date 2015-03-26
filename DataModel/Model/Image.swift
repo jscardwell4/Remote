@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(Image)
-final public class Image: IndexedEditableModelObject, ModelCollectionItem {
+final public class Image: EditableModelObject {
 
   public var assetName: String {
     get {
@@ -53,22 +53,8 @@ final public class Image: IndexedEditableModelObject, ModelCollectionItem {
   @NSManaged public var views: NSSet
   @NSManaged public var imageCategory: ImageCategory
 
-  public typealias CollectionType = ImageCategory
-  public var collection: CollectionType? { get { return imageCategory } set { if newValue != nil { imageCategory = newValue! } } }
-
-  override public var pathIndex: PathModelIndex { return imageCategory.pathIndex + "\(name)" }
-
-  /**
-  modelWithIndex:context:
-
-  :param: index PathModelIndex
-  :param: context NSManagedObjectContext
-
-  :returns: Self?
-  */
-  override public class func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Image? {
-    return ImageCategory.itemWithIndex(index, context: context)
-  }
+//  public typealias CollectionType = ImageCategory
+//  public var collection: CollectionType? { get { return imageCategory } set { if newValue != nil { imageCategory = newValue! } } }
 
   override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
@@ -108,4 +94,25 @@ final public class Image: IndexedEditableModelObject, ModelCollectionItem {
   public var preview: UIImage { return image ?? UIImage() }
   public var thumbnail: UIImage { return preview }
 
+}
+
+extension Image: PathIndexedModel {
+  public var pathIndex: PathModelIndex { return imageCategory.pathIndex + "\(name)" }
+
+  /**
+  modelWithIndex:context:
+
+  :param: index PathModelIndex
+  :param: context NSManagedObjectContext
+
+  :returns: Image?
+  */
+  public static func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Image? {
+    if index.count < 1 { return nil }
+    var pathComponents = index.pathComponents
+    let imageName = pathComponents.removeLast()
+    if let imageCategory = ImageCategory.modelWithIndex(PathModelIndex(array: pathComponents), context: context) {
+      return findFirst(imageCategory.images, {$0.name == imageName})
+    } else { return nil }
+  }
 }
