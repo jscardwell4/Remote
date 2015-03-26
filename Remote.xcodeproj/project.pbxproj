@@ -300,7 +300,7 @@
 		C27BCCAE1801C16A0002464C /* IntegerKeyboard_Erase.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC8A1801C16A0002464C /* IntegerKeyboard_Erase.png */; };
 		C27BCCAF1801C16A0002464C /* IntegerKeyboard_Erase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */; };
 		C293C73C1AC2406400408D35 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C235911C19C7ACB900920F8D /* MoonKit.framework */; };
-		C293C73E1AC25F7700408D35 /* Modelndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C73D1AC25F7700408D35 /* Modelndex.swift */; };
+		C293C73E1AC25F7700408D35 /* Modellndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C73D1AC25F7700408D35 /* Modellndex.swift */; };
 		C293C7491AC3164700408D35 /* Bank.h in Headers */ = {isa = PBXBuildFile; fileRef = C293C7481AC3164700408D35 /* Bank.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C293C74F1AC3164700408D35 /* Bank.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C293C7441AC3164700408D35 /* Bank.framework */; };
 		C293C7581AC3164700408D35 /* BankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C7571AC3164700408D35 /* BankTests.swift */; };
@@ -1022,7 +1022,7 @@
 		C27BCC891801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Erase-Highlighted@2x.png"; sourceTree = "<group>"; };
 		C27BCC8A1801C16A0002464C /* IntegerKeyboard_Erase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_Erase.png; sourceTree = "<group>"; };
 		C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Erase@2x.png"; sourceTree = "<group>"; };
-		C293C73D1AC25F7700408D35 /* Modelndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modelndex.swift; sourceTree = "<group>"; };
+		C293C73D1AC25F7700408D35 /* Modellndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modellndex.swift; sourceTree = "<group>"; };
 		C293C7441AC3164700408D35 /* Bank.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bank.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C293C7471AC3164700408D35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C293C7481AC3164700408D35 /* Bank.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bank.h; sourceTree = "<group>"; };
@@ -2324,7 +2324,7 @@
 				C2E9F4641ABCA395007581F2 /* EditableModelObject.swift */,
 				C2E9F4561ABCA395007581F2 /* ComponentDevice.swift */,
 				C2E9F4F31ABCA395007581F2 /* Activity.swift */,
-				C293C73D1AC25F7700408D35 /* Modelndex.swift */,
+				C293C73D1AC25F7700408D35 /* Modellndex.swift */,
 				C2E9F4F41ABCA395007581F2 /* ActivityController.swift */,
 				C2E9F4F51ABCA395007581F2 /* DictionaryStorage.swift */,
 				C2E9F4F61ABCA395007581F2 /* Font.swift */,
@@ -3247,7 +3247,7 @@
 				C293C7751AC318EB00408D35 /* Image.swift in Sources */,
 				C2E9F5DF1ABCA395007581F2 /* ActivityCommand.swift in Sources */,
 				C2E9F61E1ABCA395007581F2 /* DataManager.swift in Sources */,
-				C293C73E1AC25F7700408D35 /* Modelndex.swift in Sources */,
+				C293C73E1AC25F7700408D35 /* Modellndex.swift in Sources */,
 				C2E9F6001ABCA395007581F2 /* CommandSetCollection.swift in Sources */,
 				C293C7761AC318EB00408D35 /* ImageCategory.swift in Sources */,
 				C2E9F5E11ABCA395007581F2 /* DelayCommand.swift in Sources */,

@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(Image)
-final public class Image: IndexedEditableModelObject, ModelCategoryItem {
+final public class Image: IndexedEditableModelObject, ModelCollectionItem {
 
   public var assetName: String {
     get {
@@ -53,8 +53,8 @@ final public class Image: IndexedEditableModelObject, ModelCategoryItem {
   @NSManaged public var views: NSSet
   @NSManaged public var imageCategory: ImageCategory
 
-  public typealias CategoryType = ImageCategory
-  public var category: CategoryType? { get { return imageCategory } set { if newValue != nil { imageCategory = newValue! } } }
+  public typealias CollectionType = ImageCategory
+  public var collection: CollectionType? { get { return imageCategory } set { if newValue != nil { imageCategory = newValue! } } }
 
   override public var index: ModelIndex { return imageCategory.index + "\(name)" }
 

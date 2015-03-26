@@ -15,7 +15,7 @@ A simple structure that serves as a glorified file path for use as an index.
 i.e. 'Sony/AV Receiver/Volume Up' would be an index for the code named 'Volume Up'
 in the code set named 'AV Receiver' for the manufacturer named 'Sony'
 */
-public struct ModelIndex: _DestructorSafeContainer {
+@objc public final class ModelIndex {
   private var components: [String] = []
   public init(_ value: String) { components = value.pathComponents }
 }
@@ -28,36 +28,38 @@ extension ModelIndex {
   public var first: String? { return components.first }
   public var last: String? { return components.last }
 
-  public mutating func append(component: String) { components.append(component) }
-  public mutating func removeLast() -> String { return components.removeLast() }
-  public mutating func insert(component: String, atIndex i: Int) { components.insert(component, atIndex: i) }
-  public mutating func removeAtIndex(index: Int) -> String { return components.removeAtIndex(index) }
-  public mutating func replaceRange(subRange: Range<Int>, with newElements: [String]) {
+  public func append(component: String) { components.append(component) }
+  public func removeLast() -> String { return components.removeLast() }
+  public func insert(component: String, atIndex i: Int) { components.insert(component, atIndex: i) }
+  public func removeAtIndex(index: Int) -> String { return components.removeAtIndex(index) }
+  public func replaceRange(subRange: Range<Int>, with newElements: [String]) {
     components.replaceRange(subRange, with: newElements)
   }
-  public mutating func splice(newElements: [String], atIndex i: Int) { components.splice(newElements, atIndex: i) }
-  public mutating func removeRange(subRange: Range<Int>) { components.removeRange(subRange) }
+  public func splice(newElements: [String], atIndex i: Int) { components.splice(newElements, atIndex: i) }
+  public func removeRange(subRange: Range<Int>) { components.removeRange(subRange) }
 }
 
 // MARK: RawRepresentable
 extension ModelIndex: RawRepresentable {
   private(set) public var rawValue: String { get { return join("/", components) } set { components = newValue.pathComponents } }
-  public init(rawValue: String) { self = ModelIndex(rawValue) }
+  public convenience init(rawValue: String) { self.init(rawValue) }
 }
 
 // MARK: StringLiteralConvertible
 extension ModelIndex: StringLiteralConvertible {
-  public init(stringLiteral value: String) { self = ModelIndex(value) }
-  public init(extendedGraphemeClusterLiteral value: String) { self = ModelIndex(value) }
-  public init(unicodeScalarLiteral value: String) { self = ModelIndex(value) }
+  public convenience init(stringLiteral value: String) { self.init(value) }
+  public convenience init(extendedGraphemeClusterLiteral value: String) { self.init(value) }
+  public convenience init(unicodeScalarLiteral value: String) { self.init(value) }
 }
 
 // MARK: StringInterpolationConvertible
 extension ModelIndex: StringInterpolationConvertible {
-  public init(stringInterpolation strings: ModelIndex...) { components = reduce(strings, [String](), { $0 + $1.components }) }
-  public init<T>(stringInterpolationSegment expr: T) {
+  public convenience init(stringInterpolation strings: ModelIndex...) {
+    self.init("/".join(reduce(strings, [String](), { $0 + $1.components })))
+  }
+  public convenience init<T>(stringInterpolationSegment expr: T) {
     let exprString = toString(expr)
-    if exprString != "/" { rawValue = exprString }
+    self.init(exprString != "/" ? exprString : "")
   }
 }
 

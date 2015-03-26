@@ -12,6 +12,12 @@ import MoonKit
 
 @objc public protocol Model {
   var uuid: String { get }
+  var managedObjectContext: NSManagedObjectContext? { get }
+}
+
+public protocol IndexedModel: Model {
+  var index: ModelIndex { get }
+  static func modelWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Self?
 }
 
 @objc(ModelObject)

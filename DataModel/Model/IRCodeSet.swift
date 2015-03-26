@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(IRCodeSet)
-final public class IRCodeSet: IndexedEditableModelObject, ModelCategory, ModelCategoryItem {
+final public class IRCodeSet: IndexedEditableModelObject, ModelCollection, ModelCollectionItem {
 
 
   @NSManaged public var devices: Set<ComponentDevice>
@@ -22,8 +22,8 @@ final public class IRCodeSet: IndexedEditableModelObject, ModelCategory, ModelCa
   public var items: [ItemType] { get { return Array(codes) } set { codes = Set(newValue) } }
   public func itemWithIndex(index: ModelIndex) -> ItemType? { return findByIndex(codes, index) }
 
-  public typealias CategoryType = Manufacturer
-  public var category: CategoryType? { get { return manufacturer } set { if newValue != nil { manufacturer = newValue! } } }
+  public typealias CollectionType = Manufacturer
+  public var collection: CollectionType? { get { return manufacturer } set { if newValue != nil { manufacturer = newValue! } } }
 
   override public var index: ModelIndex { return manufacturer.index + "\(name)" }
 

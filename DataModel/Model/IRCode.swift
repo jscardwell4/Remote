@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(IRCode)
-final public class IRCode: IndexedEditableModelObject, ModelCategoryItem {
+final public class IRCode: IndexedEditableModelObject, ModelCollectionItem {
   
   @NSManaged public var frequency: Int64
   @NSManaged public var offset: Int16
@@ -25,8 +25,8 @@ final public class IRCode: IndexedEditableModelObject, ModelCategoryItem {
 
   public var manufacturer: Manufacturer { return codeSet.manufacturer }
 
-  public typealias CategoryType = IRCodeSet
-  public var category: CategoryType? { get { return codeSet } set { if newValue != nil { codeSet = newValue! } } }
+  public typealias CollectionType = IRCodeSet
+  public var collection: CollectionType? { get { return codeSet } set { if newValue != nil { codeSet = newValue! } } }
 
   override public var index: ModelIndex { return codeSet.index + "\(name)" }
 

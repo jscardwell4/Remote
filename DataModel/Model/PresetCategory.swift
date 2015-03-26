@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(PresetCategory)
-final public class PresetCategory: IndexedEditableModelObject, NestingModelCategory, ModelCategoryItem, RootedEditableModel {
+final public class PresetCategory: IndexedEditableModelObject, NestingModelCollection, ModelCollectionItem, RootedModel {
 
   @NSManaged public var presets: Set<Preset>
   @NSManaged public var childCategories: Set<PresetCategory>
@@ -21,8 +21,8 @@ final public class PresetCategory: IndexedEditableModelObject, NestingModelCateg
   public var items: [ItemType] { get { return Array(presets) } set { presets = Set(newValue) } }
   public func itemWithIndex(index: ModelIndex) -> ItemType? { return findByIndex(presets, index) }
 
-  public typealias CategoryType = PresetCategory
-  public var category: CategoryType? { get { return parentCategory } set { parentCategory = newValue } }
+  public typealias CollectionType = PresetCategory
+  public var collection: CollectionType? { get { return parentCategory } set { parentCategory = newValue } }
 
   public typealias NestedType = PresetCategory
   public var subcategories: [NestedType] { get { return Array(childCategories) } set { childCategories = Set(newValue) } }
@@ -38,7 +38,7 @@ final public class PresetCategory: IndexedEditableModelObject, NestingModelCateg
 
   :returns: T?
   */
-  public class func itemWithIndex<T:IndexedEditableModel>(index: ModelIndex, context: NSManagedObjectContext) -> T? {
+  public class func itemWithIndex<T:IndexedModel>(index: ModelIndex, context: NSManagedObjectContext) -> T? {
     if index.isEmpty { return nil }
     var i = 1
     if let rootCategory = rootItemWithIndex(index[0..<i], context: context) {

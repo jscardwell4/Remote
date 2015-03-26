@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(Preset)
-final public class Preset: IndexedEditableModelObject, ModelCategoryItem {
+final public class Preset: IndexedEditableModelObject, ModelCollectionItem {
 
   public var preview: UIImage { return UIImage() }
   public var thumbnail: UIImage { return preview }
@@ -27,8 +27,8 @@ final public class Preset: IndexedEditableModelObject, ModelCategoryItem {
     storage = DictionaryStorage(context: managedObjectContext!)
   }
 
-  public typealias CategoryType = PresetCategory
-  public var category: CategoryType? { get { return presetCategory } set { if newValue != nil { presetCategory = newValue! } } }
+  public typealias CollectionType = PresetCategory
+  public var collection: CollectionType? { get { return presetCategory } set { if newValue != nil { presetCategory = newValue! } } }
 
   override public var index: ModelIndex { return presetCategory.index + "\(name)" }
 

@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(Manufacturer)
-final public class Manufacturer: IndexedEditableModelObject, NestingModelCategory, RootedEditableModel {
+final public class Manufacturer: IndexedEditableModelObject, NestingModelCollection, RootedModel {
 
   @NSManaged public var codeSets: Set<IRCodeSet>
   @NSManaged public var devices: Set<ComponentDevice>
@@ -32,7 +32,7 @@ final public class Manufacturer: IndexedEditableModelObject, NestingModelCategor
 
   :returns: T?
   */
-  public class func itemWithIndex<T:IndexedEditableModel>(var index: ModelIndex, context: NSManagedObjectContext) -> T? {
+  public class func itemWithIndex<T:IndexedModel>(var index: ModelIndex, context: NSManagedObjectContext) -> T? {
     if index.isEmpty || index.count > 3 { return nil }
 
     let manufacturerIndex = index.removeAtIndex(0)
@@ -77,7 +77,7 @@ final public class Manufacturer: IndexedEditableModelObject, NestingModelCategor
   :param: name String
   :param: context NSManagedObjectContext
 
-  :returns: IndexedModelCategory?
+  :returns: IndexedModelCollection?
   */
   public class func rootCategoryNamed(name: String, context: NSManagedObjectContext) -> Manufacturer? {
     return objectWithValue(name, forAttribute: "name", context: context)

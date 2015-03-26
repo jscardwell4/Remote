@@ -19,26 +19,29 @@ import MoonKit
   func rollback()
 }
 
-// MARK: ModelCategory
-public protocol ModelCategory {
-  typealias ItemType: IndexedEditableModel
+// MARK: ModelCollection
+public protocol ModelCollection {
+  typealias ItemType: IndexedModel
   var items: [ItemType] { get set }
   func itemWithIndex(index: ModelIndex) -> ItemType?
 }
 
-// MARK: NestingModelCategory
-public protocol NestingModelCategory: ModelCategory {
-   typealias NestedType: IndexedEditableModel
+// MARK: NestingModelCollection
+public protocol NestingModelCollection: ModelCollection {
+   typealias NestedType: IndexedModel
   var subcategories: [NestedType] { get set }
   func subcategoryWithIndex(index: ModelIndex) -> NestedType?
 }
 
-// MARK: ModelCategoryItem
-public protocol ModelCategoryItem: EditableModel {  typealias CategoryType; var category: CategoryType? { get set } }
+// MARK: ModelCollectionItem
+public protocol ModelCollectionItem: EditableModel {
+  typealias CollectionType
+  var collection: CollectionType? { get set }
+}
 
-// MARK: RootedEditableModel
-public protocol RootedEditableModel: IndexedEditableModel {
-  static func itemWithIndex<T:IndexedEditableModel>(index: ModelIndex, context: NSManagedObjectContext) -> T?
+// MARK: RootedModel
+public protocol RootedModel: IndexedModel {
+  static func itemWithIndex<T:IndexedModel>(index: ModelIndex, context: NSManagedObjectContext) -> T?
   static func rootItemWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Self?
 }
 
@@ -90,12 +93,7 @@ public class EditableModelObject: NamedModelObject, EditableModel {
 
 }
 
-public protocol IndexedEditableModel: EditableModel {
-  var index: ModelIndex { get }
-  static func modelWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Self?
-}
-
-public class IndexedEditableModelObject: EditableModelObject, IndexedEditableModel {
+public class IndexedEditableModelObject: EditableModelObject, IndexedModel {
   
   public var index: ModelIndex { return ModelIndex(name) }
 
@@ -122,11 +120,11 @@ findByIndex:idx:
 
 :returns: C.Generator.Element?
 */
-public func findByIndex<C:CollectionType where C.Generator.Element:IndexedEditableModel>(c: C, idx: ModelIndex) -> C.Generator.Element? {
+public func findByIndex<C:CollectionType where C.Generator.Element:IndexedModel>(c: C, idx: ModelIndex) -> C.Generator.Element? {
   return findFirst(c, {$0.index == idx})
 }
 
-//func indexForItem<T:IndexedEditableModel>(model: T) -> ModelIndex { return "\(model.name)" }
+//func indexForItem<T:IndexedModel>(model: T) -> ModelIndex { return "\(model.name)" }
 
 /**
 itemWithIndex:withRoot:
@@ -136,8 +134,8 @@ itemWithIndex:withRoot:
 
 :returns: T?
 */
-public func itemWithIndexFromRoot<T:IndexedEditableModel, U:RootedEditableModel
-  where U:NestingModelCategory, U.NestedType == U>(index: ModelIndex, root: U) -> T?
+public func itemWithIndexFromRoot<T:IndexedModel, U:RootedModel
+  where U:NestingModelCollection, U.NestedType == U>(index: ModelIndex, root: U) -> T?
 {
   if root.index == index { return root as? T }
   var i = 2

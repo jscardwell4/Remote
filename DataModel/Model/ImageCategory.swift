@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(ImageCategory)
-final public class ImageCategory: IndexedEditableModelObject, NestingModelCategory, ModelCategoryItem, RootedEditableModel {
+final public class ImageCategory: IndexedEditableModelObject, NestingModelCollection, ModelCollectionItem, RootedModel {
 
   @NSManaged public var images: Set<Image>
   @NSManaged public var childCategories: Set<ImageCategory>
@@ -28,8 +28,8 @@ final public class ImageCategory: IndexedEditableModelObject, NestingModelCatego
   public var subcategories: [NestedType] { get { return Array(childCategories) } set { childCategories = Set(newValue) } }
   public func subcategoryWithIndex(index: ModelIndex) -> NestedType? { return findByIndex(childCategories, index) }
 
-  public typealias CategoryType = NestedType
-  public var category: CategoryType? { get { return parentCategory } set { parentCategory = newValue } }
+  public typealias CollectionType = NestedType
+  public var collection: CollectionType? { get { return parentCategory } set { parentCategory = newValue } }
 
   override public var index: ModelIndex { return parentCategory != nil ? parentCategory!.index + "\(name)" : "\(name)" }
 
@@ -41,7 +41,7 @@ final public class ImageCategory: IndexedEditableModelObject, NestingModelCatego
 
   :returns: T?
   */
-  public class func itemWithIndex<T:IndexedEditableModel>(index: ModelIndex, context: NSManagedObjectContext) -> T? {
+  public class func itemWithIndex<T:IndexedModel>(index: ModelIndex, context: NSManagedObjectContext) -> T? {
     if index.isEmpty { return nil }
     var i = 1
     if let rootCategory = rootItemWithIndex(index[0..<i], context: context) {
