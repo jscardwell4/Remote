@@ -72,10 +72,9 @@ class ITachDeviceDetailController: BankItemDetailController {
     ////////////////////////////////////////////////////////////////////////////////
 
     let componentDevicesSection = DetailSection(section: 1, title: "Component Devices")
-    // FIXME:
-//    for (idx, device) in enumerate(sortedByName(iTachDevice.componentDevices?.allObjects as? [ComponentDevice] ?? [])) {
-//      componentDevicesSection.addRow({ DetailListRow(pushableItem: device) }, forKey: "\(RowKey.ComponentDevices)\(idx)")
-//    }
+    for (idx, device) in enumerate(sortedByName(iTachDevice.componentDevices?.allObjects as? [ComponentDevice] ?? [])) {
+      componentDevicesSection.addRow({ DetailListRow(pushableItem: device) }, forKey: "\(RowKey.ComponentDevices)\(idx)")
+    }
 
     sections[SectionKey.ComponentDevices] = componentDevicesSection
 

@@ -208,10 +208,9 @@ class ButtonPresetDetailController: PresetDetailController {
 
       self.pushedTitleAttributesKey = state.JSONValue
 
-      // FIXME:
-//      let controller = TitleAttributesDetailController(item: attributesDelegate)
-//      controller.title = state.JSONValue.titlecaseString
-//      self.pushController(controller)
+      let controller = TitleAttributesDetailController(item: attributesDelegate)
+      controller.title = state.JSONValue.titlecaseString
+      self.pushController(controller)
     }
     row.delete = {
       var titles = preset.titles!
@@ -348,8 +347,7 @@ class ButtonPresetDetailController: PresetDetailController {
       if self.editing {
         MSLogDebug("now would be a great time to pop up some kind of icon selection interface")
       } else if image != nil {
-        // FIXME:
-//        self.pushController(image!.detailController())
+        self.pushController(image!.detailController())
       }
     }
     row.delete = {
@@ -485,8 +483,7 @@ class ButtonPresetDetailController: PresetDetailController {
       if self.editing {
         MSLogDebug("now would be a great time to pop up some kind of image selection interface")
       } else if image != nil {
-        // FIXME:
-//        self.pushController(image!.detailController())
+        self.pushController(image!.detailController())
       }
     }
     row.delete = {

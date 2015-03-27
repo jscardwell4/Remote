@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import MoonKit
+import DataModel
 
 final class DetailListRow: DetailRow {
 
@@ -28,42 +29,44 @@ final class DetailListRow: DetailRow {
 
   :param: pushableItem EditableModel
   */
-//  convenience init(pushableItem: protocol<EditableModel, Detailable>) {
-//    self.init()
-//    select = {
-//      let controller = pushableItem.detailController()
-//      if let nav = UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController {
-//        nav.pushViewController(controller, animated: true)
-//      }
-//    }
-//    delete = { pushableItem.delete() }
-//    info = pushableItem
-//  }
+  convenience init(pushableItem: protocol<EditableModel, Detailable>) {
+    self.init()
+    select = {
+      let controller = pushableItem.detailController()
+      if let nav = UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController {
+        nav.pushViewController(controller, animated: true)
+      }
+    }
+    delete = { pushableItem.delete() }
+    info = pushableItem
+  }
 
   /**
   initWithPushableCategory:hasEditingState:
 
   :param: pushableCategory BankItemCategory
   */
-//  convenience init(pushableCategory: ModelCategory) {
-//    self.init()
-//    select = {
-//      if let controller = BankCollectionController(category: pushableCategory) {
-//        if let nav = UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController {
-//          nav.pushViewController(controller, animated: true)
-//        }
-//      }
-//    }
-//    delete = { pushableCategory.delete() }
-//    info = pushableCategory
-//  }
+  convenience init(pushableCollection: BankModelCollection) {
+    self.init()
+    select = {
+      if let controller = BankCollectionController(collection: pushableCollection) {
+        if let nav = UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController {
+          nav.pushViewController(controller, animated: true)
+        }
+      }
+    }
+    if let editableCollection = pushableCollection as? Editable {
+      delete = { editableCollection.delete() }
+    }
+    info = pushableCollection
+  }
 
   /**
   initWithNamedItem:hasEditingState:
 
   :param: namedItem NamedModelObject
   */
-//  convenience init(namedItem: NamedModelObject) { self.init(); info = namedItem }
+  convenience init(namedItem: NamedModelObject) { self.init(); info = namedItem }
 
   /** init */
 //  override init() { super.init() }

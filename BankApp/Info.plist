@@ -24,29 +24,29 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Apple Symbols.ttf</string>
-		<string>AdobePiStd.otf</string>
-		<string>Fico.otf</string>
-		<string>modernpics.otf</string>
-		<string>gui_design_icons.otf</string>
-		<string>iconSweets.otf</string>
-		<string>iconic_fill.otf</string>
-		<string>iconic_stroke.otf</string>
-		<string>glyphish.ttf</string>
-		<string>Type Dynamic - Elysio Black Italic.otf</string>
-		<string>Type Dynamic - Elysio Black.otf</string>
-		<string>Type Dynamic - Elysio Bold Italic.otf</string>
-		<string>Type Dynamic - Elysio Bold.otf</string>
-		<string>Type Dynamic - Elysio Hairline Italic.otf</string>
-		<string>Type Dynamic - Elysio Hairline.otf</string>
-		<string>Type Dynamic - Elysio Light Italic.otf</string>
-		<string>Type Dynamic - Elysio Light.otf</string>
-		<string>Type Dynamic - Elysio Medium Italic.otf</string>
-		<string>Type Dynamic - Elysio Medium.otf</string>
-		<string>Type Dynamic - Elysio Regular Italic.otf</string>
-		<string>Type Dynamic - Elysio Thin Italic.otf</string>
-		<string>Type Dynamic - Elysio Thin.otf</string>
-		<string>Type Dynamic - Elysio.otf</string>
+		<string>Frameworks/Bank.framework/Apple Symbols.ttf</string>
+		<string>Frameworks/Bank.framework/AdobePiStd.otf</string>
+		<string>Frameworks/Bank.framework/Fico.otf</string>
+		<string>Frameworks/Bank.framework/modernpics.otf</string>
+		<string>Frameworks/Bank.framework/gui_design_icons.otf</string>
+		<string>Frameworks/Bank.framework/iconSweets.otf</string>
+		<string>Frameworks/Bank.framework/iconic_fill.otf</string>
+		<string>Frameworks/Bank.framework/iconic_stroke.otf</string>
+		<string>Frameworks/Bank.framework/glyphish.ttf</string>
+		<string>Frameworks/Bank.framework/Type Dynamic - Elysio Black Italic.otf</string>
+		<string>Frameworks/Bank.framework/Type Dynamic - Elysio Black.otf</string>
+		<string>Frameworks/Bank.framework/Type Dynamic - Elysio Bold Italic.otf</string>
+		<string>Frameworks/Bank.framework/Type Dynamic - Elysio Bold.otf</string>
+		<string>Frameworks/Bank.framework/Type Dynamic - Elysio Hairline Italic.otf</string>
+		<string>Frameworks/Bank.framework/Type Dynamic - Elysio Hairline.otf</string>
+		<string>Frameworks/Bank.framework/Type Dynamic - Elysio Light Italic.otf</string>
+		<string>Frameworks/Bank.framework/Type Dynamic - Elysio Light.otf</string>
+		<string>Frameworks/Bank.framework/Type Dynamic - Elysio Medium Italic.otf</string>
+		<string>Frameworks/Bank.framework/Type Dynamic - Elysio Medium.otf</string>
+		<string>Frameworks/Bank.framework/Type Dynamic - Elysio Regular Italic.otf</string>
+		<string>Frameworks/Bank.framework/Type Dynamic - Elysio Thin Italic.otf</string>
+		<string>Frameworks/Bank.framework/Type Dynamic - Elysio Thin.otf</string>
+		<string>Frameworks/Bank.framework/Type Dynamic - Elysio.otf</string>
 	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>

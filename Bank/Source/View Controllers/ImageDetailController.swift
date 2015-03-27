@@ -42,8 +42,7 @@ class ImageDetailController: BankItemDetailController {
 
     let detailsSection = DetailSection(section: 0)
 
-    // FIXME:
-//    detailsSection.addRow({ DetailLabelRow(pushableCategory: image.category, label: "Category") }, forKey: RowKey.Category)
+    detailsSection.addRow({ DetailLabelRow(pushableCollection: image.imageCategory, label: "Category") }, forKey: RowKey.Category)
     detailsSection.addRow({ DetailLabelRow(label: "Asset", value: image.assetName) }, forKey: RowKey.Asset)
     detailsSection.addRow({ DetailLabelRow(label: "Size", value: PrettySize(image.size)) }, forKey: RowKey.Size)
 
@@ -56,8 +55,7 @@ class ImageDetailController: BankItemDetailController {
     let image = model as! Image
 
     let previewSection = DetailSection(section: 1)
-    // FIXME:
-//    previewSection.addRow({ DetailImageRow(previewableItem: image) }, forKey: RowKey.Preview)
+    previewSection.addRow({ DetailImageRow(previewableItem: image) }, forKey: RowKey.Preview)
 
     sections[SectionKey.Preview] = previewSection
 

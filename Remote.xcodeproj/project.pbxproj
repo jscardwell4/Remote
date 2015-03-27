@@ -19,6 +19,38 @@
 		C221159A1AC5883D0071F2D0 /* BankRootCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F47C1ABCA395007581F2 /* BankRootCell.swift */; };
 		C221159C1AC58A980071F2D0 /* BankProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C221159B1AC58A980071F2D0 /* BankProtocols.swift */; };
 		C221159E1AC58E5E0071F2D0 /* BankSurrogateCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4541ABCA395007581F2 /* BankSurrogateCategory.swift */; };
+		C22115AE1AC59CD30071F2D0 /* Apple Symbols.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6211ABCA7A3007581F2 /* Apple Symbols.ttf */; };
+		C22115AF1AC59CD30071F2D0 /* Fico.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6221ABCA7A3007581F2 /* Fico.otf */; };
+		C22115B01AC59CD30071F2D0 /* glyphish.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6231ABCA7A3007581F2 /* glyphish.ttf */; };
+		C22115B11AC59CD30071F2D0 /* gui_design_icons.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6241ABCA7A3007581F2 /* gui_design_icons.otf */; };
+		C22115B21AC59CD30071F2D0 /* iconic_fill.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6251ABCA7A3007581F2 /* iconic_fill.otf */; };
+		C22115B31AC59CD30071F2D0 /* iconic_stroke.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6261ABCA7A3007581F2 /* iconic_stroke.otf */; };
+		C22115B41AC59CD30071F2D0 /* iconSweets.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6271ABCA7A3007581F2 /* iconSweets.otf */; };
+		C22115B51AC59CD30071F2D0 /* modernpics.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6281ABCA7A3007581F2 /* modernpics.otf */; };
+		C22115B61AC59CD30071F2D0 /* Type Dynamic - Elysio Black Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6291ABCA7A3007581F2 /* Type Dynamic - Elysio Black Italic.otf */; };
+		C22115B71AC59CD30071F2D0 /* Type Dynamic - Elysio Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F62A1ABCA7A3007581F2 /* Type Dynamic - Elysio Black.otf */; };
+		C22115B81AC59CD30071F2D0 /* Type Dynamic - Elysio Bold Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F62B1ABCA7A3007581F2 /* Type Dynamic - Elysio Bold Italic.otf */; };
+		C22115B91AC59CD30071F2D0 /* Type Dynamic - Elysio Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F62C1ABCA7A3007581F2 /* Type Dynamic - Elysio Bold.otf */; };
+		C22115BA1AC59CD30071F2D0 /* Type Dynamic - Elysio Hairline Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F62D1ABCA7A3007581F2 /* Type Dynamic - Elysio Hairline Italic.otf */; };
+		C22115BB1AC59CD30071F2D0 /* Type Dynamic - Elysio Hairline.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F62E1ABCA7A3007581F2 /* Type Dynamic - Elysio Hairline.otf */; };
+		C22115BC1AC59CD30071F2D0 /* Type Dynamic - Elysio Light Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F62F1ABCA7A3007581F2 /* Type Dynamic - Elysio Light Italic.otf */; };
+		C22115BD1AC59CD30071F2D0 /* Type Dynamic - Elysio Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6301ABCA7A3007581F2 /* Type Dynamic - Elysio Light.otf */; };
+		C22115BE1AC59CD30071F2D0 /* Type Dynamic - Elysio Medium Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6311ABCA7A3007581F2 /* Type Dynamic - Elysio Medium Italic.otf */; };
+		C22115BF1AC59CD30071F2D0 /* Type Dynamic - Elysio Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6321ABCA7A3007581F2 /* Type Dynamic - Elysio Medium.otf */; };
+		C22115C01AC59CD30071F2D0 /* Type Dynamic - Elysio Regular Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6331ABCA7A3007581F2 /* Type Dynamic - Elysio Regular Italic.otf */; };
+		C22115C11AC59CD30071F2D0 /* Type Dynamic - Elysio Thin Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6341ABCA7A3007581F2 /* Type Dynamic - Elysio Thin Italic.otf */; };
+		C22115C21AC59CD30071F2D0 /* Type Dynamic - Elysio Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6351ABCA7A3007581F2 /* Type Dynamic - Elysio Thin.otf */; };
+		C22115C31AC59CD30071F2D0 /* Type Dynamic - Elysio.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6361ABCA7A3007581F2 /* Type Dynamic - Elysio.otf */; };
+		C22115C41AC59CDE0071F2D0 /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6371ABCA7A3007581F2 /* Glyphish.xcassets */; };
+		C22115C51AC59CE40071F2D0 /* Remote.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6381ABCA7A3007581F2 /* Remote.xcassets */; };
+		C22115CE1AC5A9AC0071F2D0 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C285D7261AC44A1F00C527F6 /* CocoaLumberjack.framework */; };
+		C22115CF1AC5A9AC0071F2D0 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C285D7261AC44A1F00C527F6 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C22115D21AC5A9AC0071F2D0 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C285D7161AC449E700C527F6 /* MoonKit.framework */; };
+		C22115D31AC5A9AC0071F2D0 /* MoonKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C285D7161AC449E700C527F6 /* MoonKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C22115D61AC5A9AC0071F2D0 /* DataModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* DataModel.framework */; };
+		C22115D71AC5A9AC0071F2D0 /* DataModel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* DataModel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C22115D81AC5A9AD0071F2D0 /* Bank.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C293C7441AC3164700408D35 /* Bank.framework */; };
+		C22115D91AC5A9AD0071F2D0 /* Bank.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C293C7441AC3164700408D35 /* Bank.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C222480519B76E270093B07C /* ISYConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C222480419B76E270093B07C /* ISYConnectionManager.m */; };
 		C22645F619F6EB20001F5A5E /* AuxiliaryStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59216DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard */; };
 		C231C6421A197C74003D2587 /* SwitchToRemoteCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B465716FF679B0042B59E /* SwitchToRemoteCommandEditingViewController.m */; };
@@ -480,8 +512,6 @@
 		C2E8D9F719BCD5C400E6098E /* zigbee.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9BB19BCD5C400E6098E /* zigbee.xsd */; };
 		C2E9F3EC1ABC9797007581F2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F3EB1ABC9797007581F2 /* AppDelegate.swift */; };
 		C2E9F3F31ABC9797007581F2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F3F21ABC9797007581F2 /* Images.xcassets */; };
-		C2E9F4121ABC982B007581F2 /* DataModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* DataModel.framework */; };
-		C2E9F4131ABC982B007581F2 /* DataModel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* DataModel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C2E9F41B1ABC9A63007581F2 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F41A1ABC9A62007581F2 /* Default-568h@2x.png */; };
 		C2E9F5511ABCA395007581F2 /* ComponentDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4561ABCA395007581F2 /* ComponentDevice.swift */; };
 		C2E9F55F1ABCA395007581F2 /* EditableModelObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4641ABCA395007581F2 /* EditableModelObject.swift */; };
@@ -551,30 +581,6 @@
 		C2E9F6141ABCA395007581F2 /* RemoteElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F53C1ABCA395007581F2 /* RemoteElement.swift */; };
 		C2E9F61A1ABCA395007581F2 /* TitleAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F5421ABCA395007581F2 /* TitleAttributes.swift */; };
 		C2E9F61E1ABCA395007581F2 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F5471ABCA395007581F2 /* DataManager.swift */; };
-		C2E9F6391ABCA7A3007581F2 /* Apple Symbols.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6211ABCA7A3007581F2 /* Apple Symbols.ttf */; };
-		C2E9F63A1ABCA7A3007581F2 /* Fico.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6221ABCA7A3007581F2 /* Fico.otf */; };
-		C2E9F63B1ABCA7A3007581F2 /* glyphish.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6231ABCA7A3007581F2 /* glyphish.ttf */; };
-		C2E9F63C1ABCA7A3007581F2 /* gui_design_icons.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6241ABCA7A3007581F2 /* gui_design_icons.otf */; };
-		C2E9F63D1ABCA7A3007581F2 /* iconic_fill.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6251ABCA7A3007581F2 /* iconic_fill.otf */; };
-		C2E9F63E1ABCA7A3007581F2 /* iconic_stroke.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6261ABCA7A3007581F2 /* iconic_stroke.otf */; };
-		C2E9F63F1ABCA7A3007581F2 /* iconSweets.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6271ABCA7A3007581F2 /* iconSweets.otf */; };
-		C2E9F6401ABCA7A3007581F2 /* modernpics.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6281ABCA7A3007581F2 /* modernpics.otf */; };
-		C2E9F6411ABCA7A3007581F2 /* Type Dynamic - Elysio Black Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6291ABCA7A3007581F2 /* Type Dynamic - Elysio Black Italic.otf */; };
-		C2E9F6421ABCA7A3007581F2 /* Type Dynamic - Elysio Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F62A1ABCA7A3007581F2 /* Type Dynamic - Elysio Black.otf */; };
-		C2E9F6431ABCA7A3007581F2 /* Type Dynamic - Elysio Bold Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F62B1ABCA7A3007581F2 /* Type Dynamic - Elysio Bold Italic.otf */; };
-		C2E9F6441ABCA7A3007581F2 /* Type Dynamic - Elysio Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F62C1ABCA7A3007581F2 /* Type Dynamic - Elysio Bold.otf */; };
-		C2E9F6451ABCA7A3007581F2 /* Type Dynamic - Elysio Hairline Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F62D1ABCA7A3007581F2 /* Type Dynamic - Elysio Hairline Italic.otf */; };
-		C2E9F6461ABCA7A3007581F2 /* Type Dynamic - Elysio Hairline.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F62E1ABCA7A3007581F2 /* Type Dynamic - Elysio Hairline.otf */; };
-		C2E9F6471ABCA7A3007581F2 /* Type Dynamic - Elysio Light Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F62F1ABCA7A3007581F2 /* Type Dynamic - Elysio Light Italic.otf */; };
-		C2E9F6481ABCA7A3007581F2 /* Type Dynamic - Elysio Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6301ABCA7A3007581F2 /* Type Dynamic - Elysio Light.otf */; };
-		C2E9F6491ABCA7A3007581F2 /* Type Dynamic - Elysio Medium Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6311ABCA7A3007581F2 /* Type Dynamic - Elysio Medium Italic.otf */; };
-		C2E9F64A1ABCA7A3007581F2 /* Type Dynamic - Elysio Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6321ABCA7A3007581F2 /* Type Dynamic - Elysio Medium.otf */; };
-		C2E9F64B1ABCA7A3007581F2 /* Type Dynamic - Elysio Regular Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6331ABCA7A3007581F2 /* Type Dynamic - Elysio Regular Italic.otf */; };
-		C2E9F64C1ABCA7A3007581F2 /* Type Dynamic - Elysio Thin Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6341ABCA7A3007581F2 /* Type Dynamic - Elysio Thin Italic.otf */; };
-		C2E9F64D1ABCA7A3007581F2 /* Type Dynamic - Elysio Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6351ABCA7A3007581F2 /* Type Dynamic - Elysio Thin.otf */; };
-		C2E9F64E1ABCA7A3007581F2 /* Type Dynamic - Elysio.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6361ABCA7A3007581F2 /* Type Dynamic - Elysio.otf */; };
-		C2E9F64F1ABCA7A3007581F2 /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6371ABCA7A3007581F2 /* Glyphish.xcassets */; };
-		C2E9F6501ABCA7A3007581F2 /* Remote.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6381ABCA7A3007581F2 /* Remote.xcassets */; };
 		C2EF968417F79E06005AA639 /* TableCellDetailArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2EF968317F79E06005AA639 /* TableCellDetailArrow@2x.png */; };
 		C2F01E2F1A030BD6007F6966 /* ColorSelectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F01E2E1A030BD6007F6966 /* ColorSelectionController.swift */; };
 		C2F01E311A03D9E3007F6966 /* BackgroundEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F01E301A03D9E3007F6966 /* BackgroundEditingController.swift */; };
@@ -614,6 +620,55 @@
 			proxyType = 1;
 			remoteGlobalIDString = C215CBFE1ABB102F00E8077E;
 			remoteInfo = RemoteData;
+		};
+		C22115AB1AC5996F0071F2D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C2358F1519C78D6D00920F8D;
+			remoteInfo = MoonKit;
+		};
+		C22115C61AC5A5980071F2D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C215CBFE1ABB102F00E8077E;
+			remoteInfo = DataModel;
+		};
+		C22115C81AC5A5980071F2D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C293C7431AC3164700408D35;
+			remoteInfo = Bank;
+		};
+		C22115CA1AC5A5980071F2D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C285D7211AC44A1E00C527F6 /* Lumberjack.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = DCB3185014EB418E001CFBEE;
+			remoteInfo = CocoaLumberjack;
+		};
+		C22115CC1AC5A5980071F2D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C2358F1519C78D6D00920F8D;
+			remoteInfo = MoonKit;
+		};
+		C22115D01AC5A9AC0071F2D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C285D7211AC44A1E00C527F6 /* Lumberjack.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = DCB3185014EB418E001CFBEE;
+			remoteInfo = CocoaLumberjack;
+		};
+		C22115D41AC5A9AC0071F2D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C2358F1519C78D6D00920F8D;
+			remoteInfo = MoonKit;
 		};
 		C285D7151AC449E700C527F6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -706,23 +761,19 @@
 			remoteGlobalIDString = C26BAEA716DC10FE0093D5B4;
 			remoteInfo = Remote;
 		};
-		C2E9F4141ABC982B007581F2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C215CBFE1ABB102F00E8077E;
-			remoteInfo = RemoteData;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		C2E9F4111ABC9816007581F2 /* Embed Frameworks */ = {
+		C22115DA1AC5A9AD0071F2D0 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C2E9F4131ABC982B007581F2 /* DataModel.framework in Embed Frameworks */,
+				C22115D71AC5A9AC0071F2D0 /* DataModel.framework in Embed Frameworks */,
+				C22115D31AC5A9AC0071F2D0 /* MoonKit.framework in Embed Frameworks */,
+				C22115D91AC5A9AD0071F2D0 /* Bank.framework in Embed Frameworks */,
+				C22115CF1AC5A9AC0071F2D0 /* CocoaLumberjack.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1462,7 +1513,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C2E9F4121ABC982B007581F2 /* DataModel.framework in Frameworks */,
+				C22115D61AC5A9AC0071F2D0 /* DataModel.framework in Frameworks */,
+				C22115D21AC5A9AC0071F2D0 /* MoonKit.framework in Frameworks */,
+				C22115D81AC5A9AD0071F2D0 /* Bank.framework in Frameworks */,
+				C22115CE1AC5A9AC0071F2D0 /* CocoaLumberjack.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1484,7 +1538,6 @@
 			isa = PBXGroup;
 			children = (
 				C2E9F5471ABCA395007581F2 /* DataManager.swift */,
-				C2E9F61F1ABCA7A2007581F2 /* Resources */,
 				C2E9F4B51ABCA395007581F2 /* CoreData */,
 				C2E9F4F11ABCA395007581F2 /* Model */,
 				C215CC031ABB102F00E8077E /* DataModel.h */,
@@ -1610,7 +1663,6 @@
 		C26BAE9F16DC10FE0093D5B4 = {
 			isa = PBXGroup;
 			children = (
-				C2E9F41A1ABC9A62007581F2 /* Default-568h@2x.png */,
 				C26BBA9916DC19C50093D5B4 /* Resources */,
 				C26BAEB316DC10FE0093D5B4 /* Remote */,
 				C2CA769519BA1E1800ACCD76 /* ISYClient */,
@@ -2046,6 +2098,7 @@
 		C293C7451AC3164700408D35 /* Bank */ = {
 			isa = PBXGroup;
 			children = (
+				C2E9F61F1ABCA7A2007581F2 /* Resources */,
 				C2E9F44B1ABCA395007581F2 /* Source */,
 				C293C7481AC3164700408D35 /* Bank.h */,
 				C293C7461AC3164700408D35 /* Supporting Files */,
@@ -2222,6 +2275,7 @@
 		C2E9F3E91ABC9797007581F2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C2E9F41A1ABC9A62007581F2 /* Default-568h@2x.png */,
 				C2E9F3EA1ABC9797007581F2 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -2582,6 +2636,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				C22115AC1AC5996F0071F2D0 /* PBXTargetDependency */,
 			);
 			name = DataModel;
 			productName = RemoteData;
@@ -2690,12 +2745,17 @@
 				C2E9F3E31ABC9797007581F2 /* Sources */,
 				C2E9F3E41ABC9797007581F2 /* Frameworks */,
 				C2E9F3E51ABC9797007581F2 /* Resources */,
-				C2E9F4111ABC9816007581F2 /* Embed Frameworks */,
+				C22115DA1AC5A9AD0071F2D0 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				C2E9F4151ABC982B007581F2 /* PBXTargetDependency */,
+				C22115C71AC5A5980071F2D0 /* PBXTargetDependency */,
+				C22115C91AC5A5980071F2D0 /* PBXTargetDependency */,
+				C22115CB1AC5A5980071F2D0 /* PBXTargetDependency */,
+				C22115CD1AC5A5980071F2D0 /* PBXTargetDependency */,
+				C22115D11AC5A9AC0071F2D0 /* PBXTargetDependency */,
+				C22115D51AC5A9AC0071F2D0 /* PBXTargetDependency */,
 			);
 			name = BankApp;
 			productName = RemoteDataUITest;
@@ -2845,43 +2905,23 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C2E9F6501ABCA7A3007581F2 /* Remote.xcassets in Resources */,
 				C2E9F5B71ABCA395007581F2 /* Manufacturer_Test.json in Resources */,
 				C2E9F5AE1ABCA395007581F2 /* ComponentDevice.json in Resources */,
 				C2E9F5BC1ABCA395007581F2 /* Preset_Button_Rectangular.json in Resources */,
-				C2E9F64D1ABCA7A3007581F2 /* Type Dynamic - Elysio Thin.otf in Resources */,
 				C2E9F5B91ABCA395007581F2 /* Manufacturer_Yamaha.json in Resources */,
-				C2E9F6461ABCA7A3007581F2 /* Type Dynamic - Elysio Hairline.otf in Resources */,
 				C2E9F5C41ABCA395007581F2 /* Preset_ButtonGroup_OverlayPanel.json in Resources */,
-				C2E9F6481ABCA7A3007581F2 /* Type Dynamic - Elysio Light.otf in Resources */,
 				C2E9F5C51ABCA395007581F2 /* Preset_ButtonGroup_Rocker.json in Resources */,
-				C2E9F6451ABCA7A3007581F2 /* Type Dynamic - Elysio Hairline Italic.otf in Resources */,
 				C2E9F5C81ABCA395007581F2 /* Preset_Combined.json in Resources */,
 				C2E9F5B21ABCA395007581F2 /* Manufacturer_Dish.json in Resources */,
-				C2E9F64C1ABCA7A3007581F2 /* Type Dynamic - Elysio Thin Italic.otf in Resources */,
-				C2E9F6431ABCA7A3007581F2 /* Type Dynamic - Elysio Bold Italic.otf in Resources */,
 				C2E9F5B61ABCA395007581F2 /* Manufacturer_Sony.json in Resources */,
-				C2E9F64E1ABCA7A3007581F2 /* Type Dynamic - Elysio.otf in Resources */,
-				C2E9F6391ABCA7A3007581F2 /* Apple Symbols.ttf in Resources */,
 				C2E9F5AD1ABCA395007581F2 /* ActivityController.json in Resources */,
 				C2E9F5CA1ABCA395007581F2 /* Remote_Demo.json in Resources */,
-				C2E9F6471ABCA7A3007581F2 /* Type Dynamic - Elysio Light Italic.otf in Resources */,
-				C2E9F64B1ABCA7A3007581F2 /* Type Dynamic - Elysio Regular Italic.otf in Resources */,
 				C2E9F5B01ABCA395007581F2 /* Glyphish_Test.json in Resources */,
-				C2E9F6441ABCA7A3007581F2 /* Type Dynamic - Elysio Bold.otf in Resources */,
 				C2E9F5AF1ABCA395007581F2 /* Glyphish.json in Resources */,
-				C2E9F6401ABCA7A3007581F2 /* modernpics.otf in Resources */,
-				C2E9F63E1ABCA7A3007581F2 /* iconic_stroke.otf in Resources */,
-				C2E9F6421ABCA7A3007581F2 /* Type Dynamic - Elysio Black.otf in Resources */,
-				C2E9F63F1ABCA7A3007581F2 /* iconSweets.otf in Resources */,
-				C2E9F6491ABCA7A3007581F2 /* Type Dynamic - Elysio Medium Italic.otf in Resources */,
 				C2E9F5C61ABCA395007581F2 /* Preset_ButtonGroup_Toolbar.json in Resources */,
 				C2E9F5BF1ABCA395007581F2 /* Preset_Button_Toolbar.json in Resources */,
-				C2E9F63D1ABCA7A3007581F2 /* iconic_fill.otf in Resources */,
 				C2E9F5BA1ABCA395007581F2 /* NetworkDevice.json in Resources */,
-				C2E9F63C1ABCA7A3007581F2 /* gui_design_icons.otf in Resources */,
 				C2E9F5C11ABCA395007581F2 /* Preset_ButtonGroup_Dpad.json in Resources */,
-				C2E9F64A1ABCA7A3007581F2 /* Type Dynamic - Elysio Medium.otf in Resources */,
 				C2E9F5AC1ABCA395007581F2 /* Activity.json in Resources */,
 				C2E9F5C01ABCA395007581F2 /* Preset_ButtonGroup_1x3.json in Resources */,
 				C2E9F5B81ABCA395007581F2 /* Manufacturer_Toshiba.json in Resources */,
@@ -2893,13 +2933,9 @@
 				C2E9F5BD1ABCA395007581F2 /* Preset_Button_Round.json in Resources */,
 				C2E9F5C71ABCA395007581F2 /* Preset_ButtonGroup_Transport.json in Resources */,
 				C2E9F5B31ABCA395007581F2 /* Manufacturer_LG.json in Resources */,
-				C2E9F6411ABCA7A3007581F2 /* Type Dynamic - Elysio Black Italic.otf in Resources */,
-				C2E9F64F1ABCA7A3007581F2 /* Glyphish.xcassets in Resources */,
 				C2E9F5BE1ABCA395007581F2 /* Preset_Button_Roundish.json in Resources */,
 				C2E9F5B11ABCA395007581F2 /* Manufacturer.json in Resources */,
 				C2E9F5BB1ABCA395007581F2 /* Preset.json in Resources */,
-				C2E9F63B1ABCA7A3007581F2 /* glyphish.ttf in Resources */,
-				C2E9F63A1ABCA7A3007581F2 /* Fico.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3185,6 +3221,30 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C22115BB1AC59CD30071F2D0 /* Type Dynamic - Elysio Hairline.otf in Resources */,
+				C22115BC1AC59CD30071F2D0 /* Type Dynamic - Elysio Light Italic.otf in Resources */,
+				C22115C11AC59CD30071F2D0 /* Type Dynamic - Elysio Thin Italic.otf in Resources */,
+				C22115B11AC59CD30071F2D0 /* gui_design_icons.otf in Resources */,
+				C22115B51AC59CD30071F2D0 /* modernpics.otf in Resources */,
+				C22115C01AC59CD30071F2D0 /* Type Dynamic - Elysio Regular Italic.otf in Resources */,
+				C22115B01AC59CD30071F2D0 /* glyphish.ttf in Resources */,
+				C22115B81AC59CD30071F2D0 /* Type Dynamic - Elysio Bold Italic.otf in Resources */,
+				C22115C21AC59CD30071F2D0 /* Type Dynamic - Elysio Thin.otf in Resources */,
+				C22115AF1AC59CD30071F2D0 /* Fico.otf in Resources */,
+				C22115BD1AC59CD30071F2D0 /* Type Dynamic - Elysio Light.otf in Resources */,
+				C22115B71AC59CD30071F2D0 /* Type Dynamic - Elysio Black.otf in Resources */,
+				C22115B41AC59CD30071F2D0 /* iconSweets.otf in Resources */,
+				C22115C41AC59CDE0071F2D0 /* Glyphish.xcassets in Resources */,
+				C22115BA1AC59CD30071F2D0 /* Type Dynamic - Elysio Hairline Italic.otf in Resources */,
+				C22115B91AC59CD30071F2D0 /* Type Dynamic - Elysio Bold.otf in Resources */,
+				C22115B21AC59CD30071F2D0 /* iconic_fill.otf in Resources */,
+				C22115B31AC59CD30071F2D0 /* iconic_stroke.otf in Resources */,
+				C22115BF1AC59CD30071F2D0 /* Type Dynamic - Elysio Medium.otf in Resources */,
+				C22115BE1AC59CD30071F2D0 /* Type Dynamic - Elysio Medium Italic.otf in Resources */,
+				C22115AE1AC59CD30071F2D0 /* Apple Symbols.ttf in Resources */,
+				C22115B61AC59CD30071F2D0 /* Type Dynamic - Elysio Black Italic.otf in Resources */,
+				C22115C31AC59CD30071F2D0 /* Type Dynamic - Elysio.otf in Resources */,
+				C22115C51AC59CE40071F2D0 /* Remote.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3541,6 +3601,41 @@
 			target = C215CBFE1ABB102F00E8077E /* DataModel */;
 			targetProxy = C215CC141ABB102F00E8077E /* PBXContainerItemProxy */;
 		};
+		C22115AC1AC5996F0071F2D0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MoonKit;
+			targetProxy = C22115AB1AC5996F0071F2D0 /* PBXContainerItemProxy */;
+		};
+		C22115C71AC5A5980071F2D0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C215CBFE1ABB102F00E8077E /* DataModel */;
+			targetProxy = C22115C61AC5A5980071F2D0 /* PBXContainerItemProxy */;
+		};
+		C22115C91AC5A5980071F2D0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C293C7431AC3164700408D35 /* Bank */;
+			targetProxy = C22115C81AC5A5980071F2D0 /* PBXContainerItemProxy */;
+		};
+		C22115CB1AC5A5980071F2D0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CocoaLumberjack;
+			targetProxy = C22115CA1AC5A5980071F2D0 /* PBXContainerItemProxy */;
+		};
+		C22115CD1AC5A5980071F2D0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MoonKit;
+			targetProxy = C22115CC1AC5A5980071F2D0 /* PBXContainerItemProxy */;
+		};
+		C22115D11AC5A9AC0071F2D0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CocoaLumberjack;
+			targetProxy = C22115D01AC5A9AC0071F2D0 /* PBXContainerItemProxy */;
+		};
+		C22115D51AC5A9AC0071F2D0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MoonKit;
+			targetProxy = C22115D41AC5A9AC0071F2D0 /* PBXContainerItemProxy */;
+		};
 		C285D7201AC44A0A00C527F6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = MoonKit;
@@ -3575,11 +3670,6 @@
 			isa = PBXTargetDependency;
 			target = C26BAEA716DC10FE0093D5B4 /* Remote */;
 			targetProxy = C2C482C919C9F968002E84A9 /* PBXContainerItemProxy */;
-		};
-		C2E9F4151ABC982B007581F2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C215CBFE1ABB102F00E8077E /* DataModel */;
-			targetProxy = C2E9F4141ABC982B007581F2 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -3834,6 +3924,402 @@
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
+		};
+		C22115DB1AC5B1D60071F2D0 /* SubmoduleTest */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = SubmoduleTest;
+		};
+		C22115DC1AC5B1D60071F2D0 /* SubmoduleTest */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = Remote/Remote.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(BUILT_PRODUCTS_DIR)/$(EFFECTIVE__PLATFORM)",
+				);
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Remote/Source/Remote-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				INFOPLIST_FILE = "Remote/Remote-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-licucore",
+					"-ObjC",
+				);
+				OTHER_SWIFT_FLAGS = "-D DEBUG";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_STYLE = "non-global";
+				SWIFT_OBJC_BRIDGING_HEADER = "Remote/Source/Remote-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = SubmoduleTest;
+		};
+		C22115DD1AC5B1D60071F2D0 /* SubmoduleTest */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ISYClient/ISYClient-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "ISYClient/ISYClient-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
+				WRAPPER_EXTENSION = app;
+			};
+			name = SubmoduleTest;
+		};
+		C22115DE1AC5B1D60071F2D0 /* SubmoduleTest */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iTachClient/iTachClient-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "iTachClient/iTachClient-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
+				WRAPPER_EXTENSION = app;
+			};
+			name = SubmoduleTest;
+		};
+		C22115DF1AC5B1D60071F2D0 /* SubmoduleTest */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "Remote Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Remote.app/Remote";
+			};
+			name = SubmoduleTest;
+		};
+		C22115E01AC5B1D60071F2D0 /* SubmoduleTest */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = DataModel/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = SubmoduleTest;
+		};
+		C22115E11AC5B1D60071F2D0 /* SubmoduleTest */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"BANKTEST=1",
+					"DEBUG=1",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = BankApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_SWIFT_FLAGS = "-D BANKTEST -D DEBUG";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = SubmoduleTest;
+		};
+		C22115E21AC5B1D60071F2D0 /* SubmoduleTest */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					"BANKTEST=1",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Bank/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_SWIFT_FLAGS = "-D BANKTEST -D DEBUG";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = SubmoduleTest;
+		};
+		C22115E31AC5B1D60071F2D0 /* SubmoduleTest */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = BankTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Remote.app/Remote";
+			};
+			name = SubmoduleTest;
 		};
 		C26BAEDE16DC10FE0093D5B4 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -4348,6 +4834,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -4876,15 +5363,14 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"BANKTEST=1",
 					"DEBUG=1",
-					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -4897,6 +5383,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -4923,11 +5410,11 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "BANKTEST=1";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -4964,11 +5451,11 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "BANKTEST=1";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -5005,11 +5492,11 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "BANKTEST=1";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -5122,6 +5609,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C215CC191ABB103000E8077E /* Debug */,
+				C22115E01AC5B1D60071F2D0 /* SubmoduleTest */,
 				C215CC1A1ABB103000E8077E /* Info */,
 				C215CC1B1ABB103000E8077E /* Verbose */,
 				C215CC1C1ABB103000E8077E /* Release */,
@@ -5133,6 +5621,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C26BAEDE16DC10FE0093D5B4 /* Debug */,
+				C22115DB1AC5B1D60071F2D0 /* SubmoduleTest */,
 				C272041119DB3A58008DC4C8 /* Info */,
 				C272040C19DB3A47008DC4C8 /* Verbose */,
 				C26BAEDF16DC10FE0093D5B4 /* Release */,
@@ -5144,6 +5633,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C26BAEE116DC10FE0093D5B4 /* Debug */,
+				C22115DC1AC5B1D60071F2D0 /* SubmoduleTest */,
 				C272041219DB3A58008DC4C8 /* Info */,
 				C272040D19DB3A47008DC4C8 /* Verbose */,
 				C26BAEE216DC10FE0093D5B4 /* Release */,
@@ -5155,6 +5645,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C293C75E1AC3164800408D35 /* Debug */,
+				C22115E21AC5B1D60071F2D0 /* SubmoduleTest */,
 				C293C75F1AC3164800408D35 /* Info */,
 				C293C7601AC3164800408D35 /* Verbose */,
 				C293C7611AC3164800408D35 /* Release */,
@@ -5166,6 +5657,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C293C7631AC3164800408D35 /* Debug */,
+				C22115E31AC5B1D60071F2D0 /* SubmoduleTest */,
 				C293C7641AC3164800408D35 /* Info */,
 				C293C7651AC3164800408D35 /* Verbose */,
 				C293C7661AC3164800408D35 /* Release */,
@@ -5177,6 +5669,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C2C482CB19C9F968002E84A9 /* Debug */,
+				C22115DF1AC5B1D60071F2D0 /* SubmoduleTest */,
 				C272041519DB3A58008DC4C8 /* Info */,
 				C272041019DB3A47008DC4C8 /* Verbose */,
 				C2C482CC19C9F968002E84A9 /* Release */,
@@ -5188,6 +5681,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C2CA76BD19BA1E1900ACCD76 /* Debug */,
+				C22115DD1AC5B1D60071F2D0 /* SubmoduleTest */,
 				C272041319DB3A58008DC4C8 /* Info */,
 				C272040E19DB3A47008DC4C8 /* Verbose */,
 				C2CA76BE19BA1E1900ACCD76 /* Release */,
@@ -5199,6 +5693,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C2E9F4041ABC9797007581F2 /* Debug */,
+				C22115E11AC5B1D60071F2D0 /* SubmoduleTest */,
 				C2E9F4051ABC9797007581F2 /* Info */,
 				C2E9F4061ABC9797007581F2 /* Verbose */,
 				C2E9F4071ABC9797007581F2 /* Release */,
@@ -5210,6 +5705,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C2F9412219BE5E90007B5CC1 /* Debug */,
+				C22115DE1AC5B1D60071F2D0 /* SubmoduleTest */,
 				C272041419DB3A58008DC4C8 /* Info */,
 				C272040F19DB3A47008DC4C8 /* Verbose */,
 				C2F9412319BE5E90007B5CC1 /* Release */,

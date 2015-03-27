@@ -8,7 +8,7 @@
 
 import UIKit
 import MoonKit
-import RemoteData
+import Bank
 
 @UIApplicationMain
 final class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,6 +19,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     MSLog.addTaggingTTYLogger()
     MSLog.addTaggingASLLogger()
     (DDTTYLogger.sharedInstance().logFormatter() as! MSLogFormatter).includeObjectName = false
+    MSLogDebug("main bundle: '\(NSBundle.mainBundle().bundlePath)'")
   }
 
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -27,10 +28,9 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     window = UIWindow(frame: UIScreen.mainScreen().bounds)
     window?.backgroundColor = UIColor.whiteColor()
     window?.makeKeyAndVisible()
-    window?.rootViewController = UIViewController()
-    (DataManager.self as AnyObject).respondsToSelector("fuckoff")
+    window?.rootViewController = UINavigationController(rootViewController: BankRootController())
 
-//    window?.rootViewController = UINavigationController(rootViewController: BankRootController())
+    MSLogDebug("font families…\n\(UIFont.familyNames())")
 
     return true
   }

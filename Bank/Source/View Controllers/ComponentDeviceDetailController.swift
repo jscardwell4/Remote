@@ -59,15 +59,9 @@ class ComponentDeviceDetailController: BankItemDetailController {
     let manufacturerSection = DetailSection(section: 0)
 
     manufacturerSection.addRow({
-      // FIXME:
-      var row = DetailButtonRow()//pushableItem: componentDevice.manufacturer)
+      var row = DetailButtonRow(pushableItem: componentDevice.manufacturer)
       row.name = "Manufacturer"
       row.info = componentDevice.manufacturer
-//      row.editActions = [UITableViewRowAction(style: .Default, title: "Clear", handler: {
-//        (action: UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
-//          componentDevice.manufacturer = nil
-//          self.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0), NSIndexPath(forRow: 1, inSection: 0)])
-//      })]
 
       var pickerRow = DetailPickerRow()
       pickerRow.nilItemTitle = "No Manufacturer"
@@ -124,8 +118,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
 
     manufacturerSection.addRow({
 
-      // FIXME:
-      var row = DetailButtonRow()//pushableCategory: componentDevice.codeSet as? ModelCategory)
+      var row = DetailButtonRow(pushableCollection: componentDevice.codeSet)
       row.name = "Code Set"
       row.info = componentDevice.codeSet
 
@@ -351,10 +344,9 @@ class ComponentDeviceDetailController: BankItemDetailController {
       return row
     }, forKey: RowKey.InputPowersOn)
 
-    // FIXME:
-//    for (idx, input) in enumerate(sortedByName(componentDevice.inputs)) {
-//      inputsSection.addRow({ return DetailListRow(pushableItem: input) }, forKey: "\(SectionKey.Inputs)\(idx)")
-//    }
+    for (idx, input) in enumerate(sortedByName(componentDevice.inputs)) {
+      inputsSection.addRow({ return DetailListRow(pushableItem: input) }, forKey: "\(SectionKey.Inputs)\(idx)")
+    }
 
     sections[SectionKey.Inputs] = inputsSection
   }

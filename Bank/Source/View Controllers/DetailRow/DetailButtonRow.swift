@@ -39,19 +39,19 @@ final class DetailButtonRow: DetailRow {
 
   :param: pushableCategory BankItemCategory
   */
-//  convenience init(pushableCategory: ModelCategory?) {
-//    self.init()
-//    info = pushableCategory
-//    select = {
-//      if let category = pushableCategory {
-//        if let controller = BankCollectionController(category: category) {
-//          if let nav = UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController {
-//            nav.pushViewController(controller, animated: true)
-//          }
-//        }
-//      }
-//    }
-//  }
+  convenience init(pushableCollection: BankModelCollection?) {
+    self.init()
+    info = pushableCollection
+    select = {
+      if let collection = pushableCollection {
+        if let controller = BankCollectionController(collection: collection) {
+          if let nav = UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController {
+            nav.pushViewController(controller, animated: true)
+          }
+        }
+      }
+    }
+  }
 
   /**
   initWithPushableItem:

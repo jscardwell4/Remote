@@ -64,89 +64,88 @@ class PresetDetailController: BankItemDetailController {
  /** loadCommonAttributesSection */
  private func loadCommonAttributesSection() {
 
-    let preset = model as! Preset
+  let preset = model as! Preset
 
-    let commonAttributesSection = DetailSection(section: 1, title: "Common Attributes")
+  let commonAttributesSection = DetailSection(section: 1, title: "Common Attributes")
 
-  //FIXME:
-//    commonAttributesSection.addRow({ DetailLabelRow(pushableCategory: preset.presetCategory, label: "Category") },
-//                            forKey: RowKey.Category)
+  commonAttributesSection.addRow({ DetailLabelRow(pushableCollection: preset.presetCategory, label: "Category") },
+                          forKey: RowKey.Category)
 
-    let baseType = preset.baseType
+  let baseType = preset.baseType
 
-    commonAttributesSection.addRow({ DetailLabelRow(label: "Base Type", value: baseType.JSONValue.titlecaseString) },
-                            forKey: RowKey.BaseType)
+  commonAttributesSection.addRow({ DetailLabelRow(label: "Base Type", value: baseType.JSONValue.titlecaseString) },
+                          forKey: RowKey.BaseType)
 
-    var roles: [RemoteElement.Role]
+  var roles: [RemoteElement.Role]
 
-    switch baseType {
-      case .Button: roles = RemoteElement.Role.buttonRoles
-      case .ButtonGroup: roles = RemoteElement.Role.buttonGroupRoles
-      default: roles = [.Undefined]
+  switch baseType {
+    case .Button: roles = RemoteElement.Role.buttonRoles
+    case .ButtonGroup: roles = RemoteElement.Role.buttonGroupRoles
+    default: roles = [.Undefined]
+  }
+
+  commonAttributesSection.addRow({
+    let row = DetailButtonRow()
+    row.name = "Role"
+    row.info = preset.role.JSONValue.titlecaseString
+
+    var pickerRow = DetailPickerRow()
+    pickerRow.titleForInfo = {($0 as! String).titlecaseString}
+    pickerRow.data = roles.map{$0.JSONValue}
+    pickerRow.info = preset.role.JSONValue
+    pickerRow.didSelectItem = {
+      if !self.didCancel {
+        preset.role = RemoteElement.Role(JSONValue: $0 as! String)
+        self.cellDisplayingPicker?.info = ($0 as! String).titlecaseString
+        pickerRow.info = $0
+      }
     }
+
+    row.detailPickerRow = pickerRow
+
+    return row
+  }, forKey: RowKey.Role)
+
+  if [.ButtonGroup, .Button] ∋ baseType {
+
+      commonAttributesSection.addRow({
+        let row = DetailButtonRow()
+        row.name = "Shape"
+        row.info = preset.shape.JSONValue.titlecaseString
+
+        var pickerRow = DetailPickerRow()
+        pickerRow.didSelectItem = {
+          if !self.didCancel {
+            preset.shape = RemoteElement.Shape(JSONValue: $0 as! String)
+            self.cellDisplayingPicker?.info = ($0 as! String).titlecaseString
+            pickerRow.info = $0
+          }
+        }
+        pickerRow.titleForInfo = {($0 as! String).titlecaseString}
+        pickerRow.data = RemoteElement.Shape.allShapes.map{$0.JSONValue}
+        pickerRow.info = preset.shape.JSONValue
+
+        row.detailPickerRow = pickerRow
+
+        return row
+      }, forKey: RowKey.Shape)
+
+      commonAttributesSection.addRow({
+        let row = DetailTextFieldRow()
+        row.name = "Style"
+        row.info = preset.style.JSONValue.capitalizedString
+        row.placeholderText = "None"
+        row.valueDidChange = { preset.style = RemoteElement.Style(JSONValue: ($0 as! String).lowercaseString) }
+
+        return row
+      }, forKey: RowKey.Style)
+  }
 
     commonAttributesSection.addRow({
-      let row = DetailButtonRow()
-      row.name = "Role"
-      row.info = preset.role.JSONValue.titlecaseString
-
-      var pickerRow = DetailPickerRow()
-      pickerRow.titleForInfo = {($0 as! String).titlecaseString}
-      pickerRow.data = roles.map{$0.JSONValue}
-      pickerRow.info = preset.role.JSONValue
-      pickerRow.didSelectItem = {
-        if !self.didCancel {
-          preset.role = RemoteElement.Role(JSONValue: $0 as! String)
-          self.cellDisplayingPicker?.info = ($0 as! String).titlecaseString
-          pickerRow.info = $0
-        }
-      }
-
-      row.detailPickerRow = pickerRow
-
+      let row = DetailLabeledImageRow(label: "Background Image", previewableItem: preset.backgroundImage)
+      row.placeholderImage = DrawingKit.imageOfNoImage(frame: CGRect(size: CGSize(square: 32.0)))
       return row
-    }, forKey: RowKey.Role)
-
-    if [.ButtonGroup, .Button] ∋ baseType {
-
-        commonAttributesSection.addRow({
-          let row = DetailButtonRow()
-          row.name = "Shape"
-          row.info = preset.shape.JSONValue.titlecaseString
-
-          var pickerRow = DetailPickerRow()
-          pickerRow.didSelectItem = {
-            if !self.didCancel {
-              preset.shape = RemoteElement.Shape(JSONValue: $0 as! String)
-              self.cellDisplayingPicker?.info = ($0 as! String).titlecaseString
-              pickerRow.info = $0
-            }
-          }
-          pickerRow.titleForInfo = {($0 as! String).titlecaseString}
-          pickerRow.data = RemoteElement.Shape.allShapes.map{$0.JSONValue}
-          pickerRow.info = preset.shape.JSONValue
-
-          row.detailPickerRow = pickerRow
-
-          return row
-        }, forKey: RowKey.Shape)
-
-        commonAttributesSection.addRow({
-          let row = DetailTextFieldRow()
-          row.name = "Style"
-          row.info = preset.style.JSONValue.capitalizedString
-          row.placeholderText = "None"
-          row.valueDidChange = { preset.style = RemoteElement.Style(JSONValue: ($0 as! String).lowercaseString) }
-
-          return row
-        }, forKey: RowKey.Style)
-    }
-
-//    commonAttributesSection.addRow({
-//      let row = DetailLabeledImageRow(label: "Background Image", previewableItem: preset.backgroundImage)
-//      row.placeholderImage = DrawingKit.imageOfNoImage(frame: CGRect(size: CGSize(square: 32.0)))
-//      return row
-//    }, forKey: RowKey.BackgroundImage)
+    }, forKey: RowKey.BackgroundImage)
 
     commonAttributesSection.addRow({
       let row = DetailSliderRow()

@@ -108,8 +108,7 @@ private func loadNodesSection() {
     ////////////////////////////////////////////////////////////////////////////////
 
     var nodesSection = DetailSection(section: 3, title: "Nodes")
-  // FIXME:
-//    for (idx, node) in enumerate(sortedByName(iSYDevice.nodes)) { nodesSection.addRow({ DetailListRow(namedItem: node) }, forKey: "\(RowKey.Nodes)\(idx)") }
+    for (idx, node) in enumerate(sortedByName(iSYDevice.nodes)) { nodesSection.addRow({ DetailListRow(namedItem: node) }, forKey: "\(RowKey.Nodes)\(idx)") }
 
     sections[SectionKey.Nodes] = nodesSection
 }
@@ -123,8 +122,7 @@ private func loadGroupsSection() {
     ////////////////////////////////////////////////////////////////////////////////
 
     var groupsSection = DetailSection(section: 4, title: "Groups")
-  // FIXME:
-//    for (idx, group) in enumerate(sortedByName(iSYDevice.groups)) { groupsSection.addRow({ DetailListRow(namedItem: group) }, forKey: "\(RowKey.Groups)\(idx)") }
+    for (idx, group) in enumerate(sortedByName(iSYDevice.groups)) { groupsSection.addRow({ DetailListRow(namedItem: group) }, forKey: "\(RowKey.Groups)\(idx)") }
 
     sections[SectionKey.Groups] = groupsSection
 }
@@ -138,10 +136,9 @@ private func loadComponentDevicesSection() {
     ////////////////////////////////////////////////////////////////////////////////
 
     var componentDevicesSection = DetailSection(section: 5, title: "Component Devices")
-  // FIXME:
-//    for (idx, device) in enumerate(sortedByName(iSYDevice.componentDevices?.allObjects as? [ComponentDevice] ?? [])) {
-//      componentDevicesSection.addRow({ DetailListRow(pushableItem: device) }, forKey: "\(RowKey.ComponentDevices)\(idx)")
-//    }
+    for (idx, device) in enumerate(sortedByName(iSYDevice.componentDevices?.allObjects as? [ComponentDevice] ?? [])) {
+      componentDevicesSection.addRow({ DetailListRow(pushableItem: device) }, forKey: "\(RowKey.ComponentDevices)\(idx)")
+    }
 
     sections[SectionKey.ComponentDevices] = componentDevicesSection
 

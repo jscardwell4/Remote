@@ -43,10 +43,9 @@ class ManufacturerDetailController: BankItemDetailController {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let devicesSection = DetailSection(section: 0, title: "Devices")
-    // FIXME:
-//    for (idx, device) in enumerate(sortedByName(manufacturer.devices)) {
-//      devicesSection.addRow({ DetailListRow(pushableItem: device) }, forKey: "\(RowKey.Devices)\(idx)")
-//    }
+    for (idx, device) in enumerate(sortedByName(manufacturer.devices)) {
+      devicesSection.addRow({ DetailListRow(pushableItem: device) }, forKey: "\(RowKey.Devices)\(idx)")
+    }
 
     sections[SectionKey.Devices] = devicesSection
   }
@@ -61,10 +60,9 @@ class ManufacturerDetailController: BankItemDetailController {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let codeSetsSection = DetailSection(section: 1, title: "Code Sets")
-    // FIXME:
-//    for (idx, codeSet) in enumerate(sortedByName(manufacturer.codeSets)) {
-//      codeSetsSection.addRow({ DetailListRow(pushableCategory: codeSet) }, forKey: "\(RowKey.CodeSets)\(idx)")
-//    }
+    for (idx, codeSet) in enumerate(sortedByName(manufacturer.codeSets)) {
+      codeSetsSection.addRow({ DetailListRow(pushableCollection: codeSet) }, forKey: "\(RowKey.CodeSets)\(idx)")
+    }
 
     /// Create the sections
     ////////////////////////////////////////////////////////////////////////////////

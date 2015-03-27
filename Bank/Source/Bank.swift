@@ -13,6 +13,8 @@ import DataModel
 
 final class Bank {
 
+  private static let bankBundle = NSBundle(forClass: Bank.self)
+
   /// The bank's constant class properties
   ////////////////////////////////////////////////////////////////////////////////
 
@@ -28,12 +30,12 @@ final class Bank {
   static let backgroundColor            = UIColor.whiteColor()
 
   // Images
-  static let exportBarItemImage         = UIImage(named:"702-share-toolbar")!
-  static let exportBarItemImageSelected = UIImage(named:"702-share-toolbar-selected")!
-  static let importBarItemImage         = UIImage(named:"703-download-toolbar")!
-  static let importBarItemImageSelected = UIImage(named:"703-download-toolbar-selected")!
-  static let searchBarItemImage         = UIImage(named:"708-search-toolbar")!
-  static let searchBarItemImageSelected = UIImage(named:"708-search-toolbar-selected")!
+  static let exportBarItemImage         = UIImage(named:"702-share-toolbar", inBundle: bankBundle, compatibleWithTraitCollection: nil)!
+  static let exportBarItemImageSelected = UIImage(named:"702-share-toolbar-selected", inBundle: bankBundle, compatibleWithTraitCollection: nil)!
+  static let importBarItemImage         = UIImage(named:"703-download-toolbar", inBundle: bankBundle, compatibleWithTraitCollection: nil)!
+  static let importBarItemImageSelected = UIImage(named:"703-download-toolbar-selected", inBundle: bankBundle, compatibleWithTraitCollection: nil)!
+  static let searchBarItemImage         = UIImage(named:"708-search-toolbar", inBundle: bankBundle, compatibleWithTraitCollection: nil)!
+  static let searchBarItemImageSelected = UIImage(named:"708-search-toolbar-selected", inBundle: bankBundle, compatibleWithTraitCollection: nil)!
 
   static let defaultRowHeight: CGFloat = 38.0
   static let separatorStyle: UITableViewCellSeparatorStyle = .None
@@ -183,39 +185,73 @@ final class Bank {
     })
   }
 
-  class var dismissBarButtonItem: BlockBarButtonItem {
-    return BlockBarButtonItem(barButtonSystemItem: .Done, action: {
-      () -> Void in
-      if let url = NSURL(string: "mainmenu") {
-        UIApplication.sharedApplication().openURL(url)
-      }
-    })
-  }
+  #if BANKTEST
+  static let dismissButton = UIBarButtonItem.flexibleSpace()
+  #else
+  /** A bar button item that asks the application to return to the main menu */
+  static let dismissButton = BlockBarButtonItem(barButtonSystemItem: .Done, action: {
+    () -> Void in
+    if let url = NSURL(string: "mainmenu") {
+      UIApplication.sharedApplication().openURL(url)
+    }
+  })
+  #endif
 
+  /** A simple structure for packaging top level bank category data for consumption by `BankRootController` */
   struct RootCategory {
     let label: String
     let icon: UIImage
-    let subcategories: [ModelCollection]
+    let collections: [ModelCollection]
     let items: [NamedModel]
 
     init(label: String,
       icon: UIImage,
-      subcategories: [ModelCollection] = [],
+      collections: [ModelCollection] = [],
       items: [NamedModel] = [])
     {
       self.label = label
       self.icon = icon
-      self.subcategories = subcategories
+      self.collections = collections
       self.items = items
     }
   }
-  
-  class var rootCategories: [RootCategory] { return []
-//    return [ ComponentDevice.rootCategory,
-//             IRCode.rootCategory,
-//             Image.rootCategory,
-//             Manufacturer.rootCategory,
-//             NetworkDevice.rootCategory,
-//             Preset.rootCategory ]
+
+  class var rootCategories: [RootCategory] {
+    let context = DataManager.rootContext
+    let componentDeviceRoot = RootCategory(
+      label: "Component Devices",
+      icon: UIImage(named: "969-television", inBundle: bankBundle, compatibleWithTraitCollection: nil)!,
+      items: ComponentDevice.objectsInContext(context, sortBy: "name") as? [ComponentDevice] ?? []
+    )
+    let irCodeRoot = RootCategory(
+      label: "IR Codes",
+      icon: UIImage(named: "tv-remote", inBundle: bankBundle, compatibleWithTraitCollection: nil)!,
+      collections: IRCodeSet.objectsInContext(context, sortBy: "name") as? [IRCodeSet] ?? []
+    )
+    let imageRoot = RootCategory(
+      label: "Images",
+      icon: UIImage(named: "926-photos", inBundle: bankBundle, compatibleWithTraitCollection: nil)!,
+      collections: ImageCategory.objectsMatchingPredicate(∀"parentCategory == NULL",
+                                                    sortBy: "name",
+                                                   context: context) as? [ImageCategory] ?? []
+    )
+    let manufacturerRoot = RootCategory(
+      label: "Manufacturers",
+      icon: UIImage(named: "1022-factory", inBundle: bankBundle, compatibleWithTraitCollection: nil)!,
+      items: Manufacturer.objectsInContext(context, sortBy: "name") as? [Manufacturer] ?? []
+    )
+    let networkDeviceRoot = RootCategory(
+      label: "Network Devices",
+      icon: UIImage(named: "937-wifi-signal", inBundle: bankBundle, compatibleWithTraitCollection: nil)!,
+      items: NetworkDevice.objectsInContext(context, sortBy: "name") as? [NetworkDevice] ?? []
+    )
+    let presetRoot = RootCategory(
+      label: "Presets",
+      icon: UIImage(named: "1059-sliders", inBundle: bankBundle, compatibleWithTraitCollection: nil)!,
+      collections: PresetCategory.objectsMatchingPredicate(∀"parentCategory == NULL",
+                                                    sortBy: "name",
+                                                   context: context) as? [PresetCategory] ?? []
+    )
+    return [componentDeviceRoot, irCodeRoot, imageRoot, manufacturerRoot, networkDeviceRoot, presetRoot]
   }
 }

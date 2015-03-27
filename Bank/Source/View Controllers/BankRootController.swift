@@ -55,9 +55,7 @@ public class BankRootController: UITableViewController, BankController {
   */
   override public func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
-    if "Bank" != (NSProcessInfo.processInfo().arguments[0] as! String).lastPathComponent {
-      navigationItem.rightBarButtonItem = Bank.dismissBarButtonItem
-    }
+    navigationItem.rightBarButtonItem = Bank.dismissButton
     navigationController?.toolbarHidden = false
     rootCategories = Bank.rootCategories
   }
@@ -86,7 +84,7 @@ extension BankRootController: UITableViewDelegate {
   override public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     let rootCategory = rootCategories[indexPath.row]
     let collection = BankSurrogateCategory(title: rootCategory.label,
-                                         collections: rootCategory.subcategories,
+                                         collections: rootCategory.collections,
                                          items: rootCategory.items)
     let collectionController = BankCollectionController(collection: collection)!
     navigationController?.pushViewController(collectionController, animated: true)

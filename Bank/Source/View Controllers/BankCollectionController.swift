@@ -71,7 +71,7 @@ class BankCollectionController: UICollectionViewController, BankController {
 
       } else {
 
-        rightBarButtonItems = [ Bank.dismissBarButtonItem ]
+        rightBarButtonItems = [ Bank.dismissButton ]
 
       }
 
@@ -176,7 +176,7 @@ class BankCollectionController: UICollectionViewController, BankController {
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
     exportSelectionMode = false
-    navigationItem.rightBarButtonItem = Bank.dismissBarButtonItem
+    navigationItem.rightBarButtonItem = Bank.dismissButton
 
     //FIXME: Circular dependency
 //    if !(category is PreviewableCategory) { viewingMode = .List }
