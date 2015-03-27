@@ -11,8 +11,6 @@ import UIKit
 import ObjectiveC
 import MoonKit
 
-
-
 public class BankRootController: UITableViewController, BankController {
 
   static let RootCellIdentifier = "RootCell"
@@ -25,7 +23,7 @@ public class BankRootController: UITableViewController, BankController {
     tableView = {
       let tableView = UITableView(frame: UIScreen.mainScreen().bounds, style: .Plain)
       tableView.backgroundColor = Bank.backgroundColor
-      tableView.registerClass(BankRootCell.self, forCellReuseIdentifier: RootCellIdentifier)
+      tableView.registerClass(BankRootCell.self, forCellReuseIdentifier: self.dynamicType.RootCellIdentifier)
       tableView.separatorStyle = Bank.separatorStyle
       tableView.rowHeight = Bank.defaultRowHeight
       return tableView
@@ -48,7 +46,7 @@ public class BankRootController: UITableViewController, BankController {
   */
   func importFromFile(fileURL: NSURL) {}
 
-  var rootCategories: [BankRootCategory<ModelCategory,EditableModel>] = []
+  var rootCategories: [Bank.RootCategory] = []
 
   /**
   viewWillAppear:
@@ -87,14 +85,11 @@ extension BankRootController: UITableViewDelegate {
   */
   override public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     let rootCategory = rootCategories[indexPath.row]
-    //FIXME: surrogate category is broken
-//    let category = BankSurrogateCategory(title: rootCategory.label,
-//                                         subcategories: rootCategory.subcategories,
-//                                         items: rootCategory.items,
-//                                         previewableItems: rootCategory.previewableItems,
-//                                         editableItems: rootCategory.editableItems)
-//    let collectionController = BankCollectionController(category: category)!
-//    navigationController?.pushViewController(collectionController, animated: true)
+    let collection = BankSurrogateCategory(title: rootCategory.label,
+                                         collections: rootCategory.subcategories,
+                                         items: rootCategory.items)
+    let collectionController = BankCollectionController(collection: collection)!
+    navigationController?.pushViewController(collectionController, animated: true)
   }
 
 }
@@ -121,7 +116,9 @@ extension BankRootController: UITableViewDataSource {
 
   :returns: Int
   */
-  override public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return rootCategories.count }
+  override public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return rootCategories.count
+  }
 
 
   /**
@@ -133,7 +130,8 @@ extension BankRootController: UITableViewDataSource {
   :returns: UITableViewCell
   */
   override public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier(RootCellIdentifier, forIndexPath: indexPath) as! BankRootCell
+    let cell = tableView.dequeueReusableCellWithIdentifier(self.dynamicType.RootCellIdentifier,
+                                              forIndexPath: indexPath) as! BankRootCell
     cell.rootCategory = rootCategories[indexPath.row]
     return cell
   }

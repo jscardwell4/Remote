@@ -11,56 +11,7 @@ import UIKit
 import MoonKit
 import DataModel
 
-@objc protocol Detailable { func detailController() -> UIViewController }
-@objc protocol Previewable { var preview: UIImage { get }; var thumbnail: UIImage { get } }
-
-protocol BankItemSelectionDelegate {
-  func bankController(bankController: BankController, didSelectItem item: EditableModel)
-}
-
-/** Protocol for types that want to display Bank toolbars, or other assets */
-protocol BankController: class {
-
-  var exportSelection: [MSJSONExport] { get }
-  var exportSelectionMode: Bool { get set }
-
-  func selectAllExportableItems() // Called from select all bar button action
-  func importFromFile(fileURL: NSURL)
-
-}
-
-protocol SearchableBankController: BankController {
-
-  func searchBankObjects()  // Called from search bar button action
-
-}
-
-//struct BankRootCategory<SubcategoryType:ModelCategory, ItemType:EditableModel> {
-//  let label: String
-//  let icon: UIImage
-//  let subcategories: [SubcategoryType]
-//  let items: [ItemType]
-//  let previewableItems:   Bool
-//  let editableItems:      Bool
-//
-//  init(label: String,
-//    icon: UIImage,
-//    subcategories: [SubcategoryType] = [],
-//    items: [ItemType] = [],
-//    previewableItems: Bool = false,
-//    editableItems: Bool = false)
-//  {
-//    self.label = label
-//    self.icon = icon
-//    self.subcategories = subcategories
-//    self.items = items
-//    self.previewableItems = previewableItems
-//    self.editableItems = editableItems
-//  }
-//}
-
-class Bank {
-
+final class Bank {
 
   /// The bank's constant class properties
   ////////////////////////////////////////////////////////////////////////////////
@@ -241,12 +192,30 @@ class Bank {
     })
   }
 
-//  class var rootCategories: [BankRootCategory<ModelCategory,EditableModel>] {
+  struct RootCategory {
+    let label: String
+    let icon: UIImage
+    let subcategories: [ModelCollection]
+    let items: [NamedModel]
+
+    init(label: String,
+      icon: UIImage,
+      subcategories: [ModelCollection] = [],
+      items: [NamedModel] = [])
+    {
+      self.label = label
+      self.icon = icon
+      self.subcategories = subcategories
+      self.items = items
+    }
+  }
+  
+  class var rootCategories: [RootCategory] { return []
 //    return [ ComponentDevice.rootCategory,
 //             IRCode.rootCategory,
 //             Image.rootCategory,
 //             Manufacturer.rootCategory,
 //             NetworkDevice.rootCategory,
 //             Preset.rootCategory ]
-//  }
+  }
 }

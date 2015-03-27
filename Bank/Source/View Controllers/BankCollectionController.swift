@@ -18,7 +18,7 @@ class BankCollectionController: UICollectionViewController, BankController {
 	private let itemCellIdentifier = "ItemCell"
 	private let categoryCellIdentifier = "CategoryCell"
 
-  var collection: ModelCollection!
+  var collection: BankModelCollection!
 
   enum Mode { case Default, Selection }
 
@@ -97,7 +97,7 @@ class BankCollectionController: UICollectionViewController, BankController {
   :param: collection ModelCollection
   :param: mode Mode = .Default
   */
-  init?(collection: ModelCollection, mode: Mode = .Default) {
+  init?(collection: BankModelCollection, mode: Mode = .Default) {
   	self.mode = mode
     super.init(collectionViewLayout: BankCollectionLayout())
     self.collection = collection
@@ -319,7 +319,7 @@ class BankCollectionController: UICollectionViewController, BankController {
   func detailItemAtIndexPath(indexPath: NSIndexPath) {
     switch indexPath.section {
       case 0:
-        if let nestedCollection = nestedCollectionForIndexPath(indexPath),
+        if let nestedCollection = nestedCollectionForIndexPath(indexPath) as? BankModelCollection,
           controller = BankCollectionController(collection: nestedCollection, mode: mode)
         {
           controller.selectionDelegate = selectionDelegate

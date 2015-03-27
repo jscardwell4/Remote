@@ -18,7 +18,7 @@ import DataModel
 }
 
 @objc(TitleAttributesDelegate)
-public class TitleAttributesDelegate: Editable {//, Detailable {
+public class TitleAttributesDelegate: Editable , Detailable {
 
   var titleAttributes: TitleAttributes
 
@@ -49,7 +49,7 @@ public class TitleAttributesDelegate: Editable {//, Detailable {
 
   :returns: UIViewController
   */
-//  func detailController() -> UIViewController { return TitleAttributesDetailController(item: self) }
+  func detailController() -> UIViewController { return TitleAttributesDetailController(item: self) }
 
   /**
   defaultSuppliedForProperty:
