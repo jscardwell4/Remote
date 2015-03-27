@@ -39,7 +39,6 @@
 		C22115C11AC59CD30071F2D0 /* Type Dynamic - Elysio Thin Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6341ABCA7A3007581F2 /* Type Dynamic - Elysio Thin Italic.otf */; };
 		C22115C21AC59CD30071F2D0 /* Type Dynamic - Elysio Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6351ABCA7A3007581F2 /* Type Dynamic - Elysio Thin.otf */; };
 		C22115C31AC59CD30071F2D0 /* Type Dynamic - Elysio.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6361ABCA7A3007581F2 /* Type Dynamic - Elysio.otf */; };
-		C22115C41AC59CDE0071F2D0 /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6371ABCA7A3007581F2 /* Glyphish.xcassets */; };
 		C22115C51AC59CE40071F2D0 /* Remote.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6381ABCA7A3007581F2 /* Remote.xcassets */; };
 		C222480519B76E270093B07C /* ISYConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C222480419B76E270093B07C /* ISYConnectionManager.m */; };
 		C22645F619F6EB20001F5A5E /* AuxiliaryStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59216DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard */; };
@@ -406,7 +405,6 @@
 		C2A4EC4D178B990F00FD3AFF /* App_Icon@2x-ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = C2A4EC4B178B990F00FD3AFF /* App_Icon@2x-ios7.png */; };
 		C2A4EC4E178B990F00FD3AFF /* image.512x512.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2A4EC4C178B990F00FD3AFF /* image.512x512.jpg */; };
 		C2B54E731A0EF195005281B4 /* RemoteElementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C235A2F61A0E96B10067E226 /* RemoteElementView.swift */; };
-		C2C205F71AC5D8E8006F88E8 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2C205F61AC5D8E8006F88E8 /* MoonKit.framework */; };
 		C2C482C819C9F968002E84A9 /* Remote_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2C482C719C9F968002E84A9 /* Remote_Tests.m */; };
 		C2CA769019BA1E1800ACCD76 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA766519BA099000ACCD76 /* Foundation.framework */; };
 		C2CA769219BA1E1800ACCD76 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA769119BA1E1800ACCD76 /* CoreGraphics.framework */; };
@@ -595,6 +593,10 @@
 		C2F9413719BE6418007B5CC1 /* 1068-gray-exit-fullscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99719BCBF6800E6098E /* 1068-gray-exit-fullscreen.png */; };
 		C2F9413819BE6418007B5CC1 /* 1068-gray-exit-fullscreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99819BCBF6800E6098E /* 1068-gray-exit-fullscreen@2x.png */; };
 		C2F9414D19BE7EB7007B5CC1 /* MessageQueueEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F9414C19BE7EB7007B5CC1 /* MessageQueueEntry.m */; };
+		C2FA4B891AC5E2FC0071429E /* Bank.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C293C7441AC3164700408D35 /* Bank.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C2FA4B8B1AC5E3250071429E /* DataModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* DataModel.framework */; };
+		C2FA4B8C1AC5E3250071429E /* DataModel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* DataModel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C2FA4B921AC5E5260071429E /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2FA4B911AC5E5260071429E /* Glyphish.xcassets */; };
 		C2FFB602170B986C0079C283 /* REPresetCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FFB601170B986B0079C283 /* REPresetCollectionViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -634,7 +636,29 @@
 			remoteGlobalIDString = C26BAEA716DC10FE0093D5B4;
 			remoteInfo = Remote;
 		};
+		C2FA4B8D1AC5E3250071429E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C215CBFE1ABB102F00E8077E;
+			remoteInfo = DataModel;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C2FA4B8A1AC5E2FD0071429E /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C2FA4B8C1AC5E3250071429E /* DataModel.framework in Embed Frameworks */,
+				C2FA4B891AC5E2FC0071429E /* Bank.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		C2011DCB19B238F900B982CD /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
@@ -1272,7 +1296,6 @@
 		C2E9F6341ABCA7A3007581F2 /* Type Dynamic - Elysio Thin Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Type Dynamic - Elysio Thin Italic.otf"; sourceTree = "<group>"; };
 		C2E9F6351ABCA7A3007581F2 /* Type Dynamic - Elysio Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Type Dynamic - Elysio Thin.otf"; sourceTree = "<group>"; };
 		C2E9F6361ABCA7A3007581F2 /* Type Dynamic - Elysio.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Type Dynamic - Elysio.otf"; sourceTree = "<group>"; };
-		C2E9F6371ABCA7A3007581F2 /* Glyphish.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Glyphish.xcassets; sourceTree = "<group>"; };
 		C2E9F6381ABCA7A3007581F2 /* Remote.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Remote.xcassets; sourceTree = "<group>"; };
 		C2EF968317F79E06005AA639 /* TableCellDetailArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TableCellDetailArrow@2x.png"; sourceTree = "<group>"; };
 		C2F01E2E1A030BD6007F6966 /* ColorSelectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSelectionController.swift; sourceTree = "<group>"; };
@@ -1294,6 +1317,7 @@
 		C2F9410D19BE5E90007B5CC1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		C2F9414B19BE7EB7007B5CC1 /* MessageQueueEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageQueueEntry.h; sourceTree = "<group>"; };
 		C2F9414C19BE7EB7007B5CC1 /* MessageQueueEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageQueueEntry.m; sourceTree = "<group>"; };
+		C2FA4B911AC5E5260071429E /* Glyphish.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Glyphish.xcassets; sourceTree = "<group>"; };
 		C2FFB600170B986A0079C283 /* REPresetCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REPresetCollectionViewController.h; sourceTree = "<group>"; };
 		C2FFB601170B986B0079C283 /* REPresetCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REPresetCollectionViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1350,7 +1374,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C2C205F71AC5D8E8006F88E8 /* MoonKit.framework in Frameworks */,
+				C2FA4B8B1AC5E3250071429E /* DataModel.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2354,8 +2378,8 @@
 		C2E9F61F1ABCA7A2007581F2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C2FA4B911AC5E5260071429E /* Glyphish.xcassets */,
 				C2E9F6201ABCA7A3007581F2 /* Fonts */,
-				C2E9F6371ABCA7A3007581F2 /* Glyphish.xcassets */,
 				C2E9F6381ABCA7A3007581F2 /* Remote.xcassets */,
 			);
 			path = Resources;
@@ -2552,11 +2576,13 @@
 				C2E9F3E31ABC9797007581F2 /* Sources */,
 				C2E9F3E41ABC9797007581F2 /* Frameworks */,
 				C2E9F3E51ABC9797007581F2 /* Resources */,
+				C2FA4B8A1AC5E2FD0071429E /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				C2C3B9211AC5DAC9001DC6CC /* PBXTargetDependency */,
+				C2FA4B8E1AC5E3250071429E /* PBXTargetDependency */,
 			);
 			name = BankApp;
 			productName = RemoteDataUITest;
@@ -2972,6 +2998,7 @@
 				C22115C11AC59CD30071F2D0 /* Type Dynamic - Elysio Thin Italic.otf in Resources */,
 				C22115B11AC59CD30071F2D0 /* gui_design_icons.otf in Resources */,
 				C22115B51AC59CD30071F2D0 /* modernpics.otf in Resources */,
+				C2FA4B921AC5E5260071429E /* Glyphish.xcassets in Resources */,
 				C22115C01AC59CD30071F2D0 /* Type Dynamic - Elysio Regular Italic.otf in Resources */,
 				C22115B01AC59CD30071F2D0 /* glyphish.ttf in Resources */,
 				C22115B81AC59CD30071F2D0 /* Type Dynamic - Elysio Bold Italic.otf in Resources */,
@@ -2980,7 +3007,6 @@
 				C22115BD1AC59CD30071F2D0 /* Type Dynamic - Elysio Light.otf in Resources */,
 				C22115B71AC59CD30071F2D0 /* Type Dynamic - Elysio Black.otf in Resources */,
 				C22115B41AC59CD30071F2D0 /* iconSweets.otf in Resources */,
-				C22115C41AC59CDE0071F2D0 /* Glyphish.xcassets in Resources */,
 				C22115BA1AC59CD30071F2D0 /* Type Dynamic - Elysio Hairline Italic.otf in Resources */,
 				C22115B91AC59CD30071F2D0 /* Type Dynamic - Elysio Bold.otf in Resources */,
 				C22115B21AC59CD30071F2D0 /* iconic_fill.otf in Resources */,
@@ -3366,6 +3392,11 @@
 			isa = PBXTargetDependency;
 			target = C26BAEA716DC10FE0093D5B4 /* Remote */;
 			targetProxy = C2C482C919C9F968002E84A9 /* PBXContainerItemProxy */;
+		};
+		C2FA4B8E1AC5E3250071429E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C215CBFE1ABB102F00E8077E /* DataModel */;
+			targetProxy = C2FA4B8D1AC5E3250071429E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
