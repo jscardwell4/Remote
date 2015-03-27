@@ -325,7 +325,6 @@
 		C27BCCAD1801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC891801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png */; };
 		C27BCCAE1801C16A0002464C /* IntegerKeyboard_Erase.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC8A1801C16A0002464C /* IntegerKeyboard_Erase.png */; };
 		C27BCCAF1801C16A0002464C /* IntegerKeyboard_Erase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */; };
-		C28104BB1AC5CF7F003C6E7A /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C28104BA1AC5CF7F003C6E7A /* MoonKit.framework */; };
 		C285D82B1AC48A5400C527F6 /* TitleAttributesDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F5431ABCA395007581F2 /* TitleAttributesDelegate.swift */; };
 		C285D82F1AC48BA500C527F6 /* BankCollectionAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4731ABCA395007581F2 /* BankCollectionAttributes.swift */; };
 		C285D8301AC48BC800C527F6 /* BankCollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4791ABCA395007581F2 /* BankCollectionLayout.swift */; };
@@ -407,6 +406,7 @@
 		C2A4EC4D178B990F00FD3AFF /* App_Icon@2x-ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = C2A4EC4B178B990F00FD3AFF /* App_Icon@2x-ios7.png */; };
 		C2A4EC4E178B990F00FD3AFF /* image.512x512.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2A4EC4C178B990F00FD3AFF /* image.512x512.jpg */; };
 		C2B54E731A0EF195005281B4 /* RemoteElementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C235A2F61A0E96B10067E226 /* RemoteElementView.swift */; };
+		C2C205F71AC5D8E8006F88E8 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2C205F61AC5D8E8006F88E8 /* MoonKit.framework */; };
 		C2C482C819C9F968002E84A9 /* Remote_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2C482C719C9F968002E84A9 /* Remote_Tests.m */; };
 		C2CA769019BA1E1800ACCD76 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA766519BA099000ACCD76 /* Foundation.framework */; };
 		C2CA769219BA1E1800ACCD76 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA769119BA1E1800ACCD76 /* CoreGraphics.framework */; };
@@ -619,6 +619,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = C26BAEA716DC10FE0093D5B4;
 			remoteInfo = Remote;
+		};
+		C2C3B9201AC5DAC9001DC6CC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C293C7431AC3164700408D35;
+			remoteInfo = Bank;
 		};
 		C2C482C919C9F968002E84A9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -961,7 +968,6 @@
 		C27BCC891801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Erase-Highlighted@2x.png"; sourceTree = "<group>"; };
 		C27BCC8A1801C16A0002464C /* IntegerKeyboard_Erase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_Erase.png; sourceTree = "<group>"; };
 		C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Erase@2x.png"; sourceTree = "<group>"; };
-		C28104BA1AC5CF7F003C6E7A /* MoonKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MoonKit.framework; path = "MoonKit/build/Debug-iphoneos/MoonKit.framework"; sourceTree = "<group>"; };
 		C285D8691AC4C0E800C527F6 /* DataModelProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataModelProtocols.swift; path = Model/DataModelProtocols.swift; sourceTree = "<group>"; };
 		C293C73D1AC25F7700408D35 /* Modellndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modellndex.swift; sourceTree = "<group>"; };
 		C293C7441AC3164700408D35 /* Bank.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bank.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -989,6 +995,7 @@
 		C2A4102519B4BFB90089AACA /* NetworkDeviceMulticastConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkDeviceMulticastConnection.m; sourceTree = "<group>"; };
 		C2A4EC4B178B990F00FD3AFF /* App_Icon@2x-ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "App_Icon@2x-ios7.png"; sourceTree = "<group>"; };
 		C2A4EC4C178B990F00FD3AFF /* image.512x512.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image.512x512.jpg; sourceTree = "<group>"; };
+		C2C205F61AC5D8E8006F88E8 /* MoonKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MoonKit.framework; path = "MoonKit/build/Debug-iphoneos/MoonKit.framework"; sourceTree = "<group>"; };
 		C2C482C319C9F968002E84A9 /* Remote Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Remote Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2C482C619C9F968002E84A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2C482C719C9F968002E84A9 /* Remote_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Remote_Tests.m; sourceTree = "<group>"; };
@@ -1296,7 +1303,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C28104BB1AC5CF7F003C6E7A /* MoonKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1344,6 +1350,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2C205F71AC5D8E8006F88E8 /* MoonKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1522,7 +1529,7 @@
 		C26BAEAA16DC10FE0093D5B4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C28104BA1AC5CF7F003C6E7A /* MoonKit.framework */,
+				C2C205F61AC5D8E8006F88E8 /* MoonKit.framework */,
 				C2CA76D919BA34A500ACCD76 /* libicucore.dylib */,
 				C2CA766519BA099000ACCD76 /* Foundation.framework */,
 				C2CA769119BA1E1800ACCD76 /* CoreGraphics.framework */,
@@ -2549,6 +2556,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				C2C3B9211AC5DAC9001DC6CC /* PBXTargetDependency */,
 			);
 			name = BankApp;
 			productName = RemoteDataUITest;
@@ -3349,6 +3357,11 @@
 			target = C26BAEA716DC10FE0093D5B4 /* Remote */;
 			targetProxy = C293C7521AC3164700408D35 /* PBXContainerItemProxy */;
 		};
+		C2C3B9211AC5DAC9001DC6CC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C293C7431AC3164700408D35 /* Bank */;
+			targetProxy = C2C3B9201AC5DAC9001DC6CC /* PBXContainerItemProxy */;
+		};
 		C2C482CA19C9F968002E84A9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C26BAEA716DC10FE0093D5B4 /* Remote */;
@@ -3878,6 +3891,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -5047,6 +5061,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -5095,6 +5110,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = "BANKTEST=1";
@@ -5136,6 +5152,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = "BANKTEST=1";
@@ -5177,6 +5194,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = "BANKTEST=1";
