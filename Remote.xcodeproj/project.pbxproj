@@ -10,8 +10,6 @@
 		C203CC371A17DA1E0064D4CB /* RemoteElementViewConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C203CC361A17DA1E0064D4CB /* RemoteElementViewConstraint.swift */; };
 		C20D11AF1A40E28700C33499 /* RemoteDrawingKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D11AE1A40E28700C33499 /* RemoteDrawingKit.swift */; };
 		C215CC041ABB102F00E8077E /* DataModel.h in Headers */ = {isa = PBXBuildFile; fileRef = C215CC031ABB102F00E8077E /* DataModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C215CC161ABB102F00E8077E /* DataModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* DataModel.framework */; };
-		C215CC171ABB102F00E8077E /* DataModel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* DataModel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */; };
 		C21C43041A80015E004F8DA8 /* MainMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21C43031A80015E004F8DA8 /* MainMenuController.swift */; };
 		C21F07CC1AA378E700F1F8DD /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21F07CB1AA378E700F1F8DD /* ActivityViewController.swift */; };
@@ -43,14 +41,6 @@
 		C22115C31AC59CD30071F2D0 /* Type Dynamic - Elysio.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6361ABCA7A3007581F2 /* Type Dynamic - Elysio.otf */; };
 		C22115C41AC59CDE0071F2D0 /* Glyphish.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6371ABCA7A3007581F2 /* Glyphish.xcassets */; };
 		C22115C51AC59CE40071F2D0 /* Remote.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6381ABCA7A3007581F2 /* Remote.xcassets */; };
-		C22115CE1AC5A9AC0071F2D0 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C285D7261AC44A1F00C527F6 /* CocoaLumberjack.framework */; };
-		C22115CF1AC5A9AC0071F2D0 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C285D7261AC44A1F00C527F6 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C22115D21AC5A9AC0071F2D0 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C285D7161AC449E700C527F6 /* MoonKit.framework */; };
-		C22115D31AC5A9AC0071F2D0 /* MoonKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C285D7161AC449E700C527F6 /* MoonKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C22115D61AC5A9AC0071F2D0 /* DataModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* DataModel.framework */; };
-		C22115D71AC5A9AC0071F2D0 /* DataModel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* DataModel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C22115D81AC5A9AD0071F2D0 /* Bank.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C293C7441AC3164700408D35 /* Bank.framework */; };
-		C22115D91AC5A9AD0071F2D0 /* Bank.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C293C7441AC3164700408D35 /* Bank.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C222480519B76E270093B07C /* ISYConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C222480419B76E270093B07C /* ISYConnectionManager.m */; };
 		C22645F619F6EB20001F5A5E /* AuxiliaryStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59216DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard */; };
 		C231C6421A197C74003D2587 /* SwitchToRemoteCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B465716FF679B0042B59E /* SwitchToRemoteCommandEditingViewController.m */; };
@@ -335,10 +325,7 @@
 		C27BCCAD1801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC891801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png */; };
 		C27BCCAE1801C16A0002464C /* IntegerKeyboard_Erase.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC8A1801C16A0002464C /* IntegerKeyboard_Erase.png */; };
 		C27BCCAF1801C16A0002464C /* IntegerKeyboard_Erase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */; };
-		C285D71D1AC44A0A00C527F6 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C285D7161AC449E700C527F6 /* MoonKit.framework */; };
-		C285D71E1AC44A0A00C527F6 /* MoonKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C285D7161AC449E700C527F6 /* MoonKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C285D7271AC44A2400C527F6 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C285D7261AC44A1F00C527F6 /* CocoaLumberjack.framework */; };
-		C285D7281AC44A2400C527F6 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C285D7261AC44A1F00C527F6 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C28104BB1AC5CF7F003C6E7A /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C28104BA1AC5CF7F003C6E7A /* MoonKit.framework */; };
 		C285D82B1AC48A5400C527F6 /* TitleAttributesDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F5431ABCA395007581F2 /* TitleAttributesDelegate.swift */; };
 		C285D82F1AC48BA500C527F6 /* BankCollectionAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4731ABCA395007581F2 /* BankCollectionAttributes.swift */; };
 		C285D8301AC48BC800C527F6 /* BankCollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4791ABCA395007581F2 /* BankCollectionLayout.swift */; };
@@ -403,8 +390,6 @@
 		C293C7491AC3164700408D35 /* Bank.h in Headers */ = {isa = PBXBuildFile; fileRef = C293C7481AC3164700408D35 /* Bank.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C293C74F1AC3164700408D35 /* Bank.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C293C7441AC3164700408D35 /* Bank.framework */; };
 		C293C7581AC3164700408D35 /* BankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C7571AC3164700408D35 /* BankTests.swift */; };
-		C293C75B1AC3164700408D35 /* Bank.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C293C7441AC3164700408D35 /* Bank.framework */; };
-		C293C75C1AC3164700408D35 /* Bank.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C293C7441AC3164700408D35 /* Bank.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C293C7751AC318EB00408D35 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C7691AC318EB00408D35 /* Image.swift */; };
 		C293C7761AC318EB00408D35 /* ImageCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C76A1AC318EB00408D35 /* ImageCategory.swift */; };
 		C293C7771AC318EB00408D35 /* IRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C76B1AC318EB00408D35 /* IRCode.swift */; };
@@ -614,117 +599,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		C215CC141ABB102F00E8077E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C215CBFE1ABB102F00E8077E;
-			remoteInfo = RemoteData;
-		};
-		C22115AB1AC5996F0071F2D0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C2358F1519C78D6D00920F8D;
-			remoteInfo = MoonKit;
-		};
-		C22115C61AC5A5980071F2D0 /* PBXContainerItemProxy */ = {
+		C28104BE1AC5D059003C6E7A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = C215CBFE1ABB102F00E8077E;
 			remoteInfo = DataModel;
-		};
-		C22115C81AC5A5980071F2D0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C293C7431AC3164700408D35;
-			remoteInfo = Bank;
-		};
-		C22115CA1AC5A5980071F2D0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C285D7211AC44A1E00C527F6 /* Lumberjack.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = DCB3185014EB418E001CFBEE;
-			remoteInfo = CocoaLumberjack;
-		};
-		C22115CC1AC5A5980071F2D0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C2358F1519C78D6D00920F8D;
-			remoteInfo = MoonKit;
-		};
-		C22115D01AC5A9AC0071F2D0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C285D7211AC44A1E00C527F6 /* Lumberjack.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = DCB3185014EB418E001CFBEE;
-			remoteInfo = CocoaLumberjack;
-		};
-		C22115D41AC5A9AC0071F2D0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C2358F1519C78D6D00920F8D;
-			remoteInfo = MoonKit;
-		};
-		C285D7151AC449E700C527F6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C2358F1619C78D6D00920F8D;
-			remoteInfo = MoonKit;
-		};
-		C285D7171AC449E700C527F6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C2C482D219C9F98A002E84A9;
-			remoteInfo = "Moonkit Tests";
-		};
-		C285D7191AC449E700C527F6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C256F07E1ABDFFE5005B7CB3;
-			remoteInfo = MoonKitOSX;
-		};
-		C285D71B1AC449E700C527F6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C256F0881ABDFFE5005B7CB3;
-			remoteInfo = MoonKitOSXTests;
-		};
-		C285D71F1AC44A0A00C527F6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C2358F1519C78D6D00920F8D;
-			remoteInfo = MoonKit;
-		};
-		C285D7251AC44A1F00C527F6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C285D7211AC44A1E00C527F6 /* Lumberjack.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = DCB3185114EB418E001CFBEE;
-			remoteInfo = CocoaLumberjack;
-		};
-		C285D7291AC44A2400C527F6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C285D7211AC44A1E00C527F6 /* Lumberjack.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = DCB3185014EB418E001CFBEE;
-			remoteInfo = CocoaLumberjack;
-		};
-		C285D82D1AC48A5400C527F6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C285D8231AC44D3500C527F6;
-			remoteInfo = MoonKitLite;
 		};
 		C293C7501AC3164700408D35 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -740,20 +620,6 @@
 			remoteGlobalIDString = C26BAEA716DC10FE0093D5B4;
 			remoteInfo = Remote;
 		};
-		C293C7591AC3164700408D35 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C293C7431AC3164700408D35;
-			remoteInfo = Bank;
-		};
-		C293C7671AC3165A00408D35 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C215CBFE1ABB102F00E8077E;
-			remoteInfo = DataModel;
-		};
 		C2C482C919C9F968002E84A9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
@@ -762,37 +628,6 @@
 			remoteInfo = Remote;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		C22115DA1AC5A9AD0071F2D0 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				C22115D71AC5A9AC0071F2D0 /* DataModel.framework in Embed Frameworks */,
-				C22115D31AC5A9AC0071F2D0 /* MoonKit.framework in Embed Frameworks */,
-				C22115D91AC5A9AD0071F2D0 /* Bank.framework in Embed Frameworks */,
-				C22115CF1AC5A9AC0071F2D0 /* CocoaLumberjack.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C2F01E221A02FBC6007F6966 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				C215CC171ABB102F00E8077E /* DataModel.framework in Embed Frameworks */,
-				C285D71E1AC44A0A00C527F6 /* MoonKit.framework in Embed Frameworks */,
-				C285D7281AC44A2400C527F6 /* CocoaLumberjack.framework in Embed Frameworks */,
-				C293C75C1AC3164700408D35 /* Bank.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		C2011DCB19B238F900B982CD /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
@@ -1126,8 +961,7 @@
 		C27BCC891801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Erase-Highlighted@2x.png"; sourceTree = "<group>"; };
 		C27BCC8A1801C16A0002464C /* IntegerKeyboard_Erase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_Erase.png; sourceTree = "<group>"; };
 		C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Erase@2x.png"; sourceTree = "<group>"; };
-		C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MSKit.xcodeproj; path = MSKit/MSKit.xcodeproj; sourceTree = "<group>"; };
-		C285D7211AC44A1E00C527F6 /* Lumberjack.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lumberjack.xcodeproj; path = MSKit/../../../../GitHub/CocoaLumberjack/Framework/Desktop/Lumberjack.xcodeproj; sourceTree = "<group>"; };
+		C28104BA1AC5CF7F003C6E7A /* MoonKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MoonKit.framework; path = "MoonKit/build/Debug-iphoneos/MoonKit.framework"; sourceTree = "<group>"; };
 		C285D8691AC4C0E800C527F6 /* DataModelProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataModelProtocols.swift; path = Model/DataModelProtocols.swift; sourceTree = "<group>"; };
 		C293C73D1AC25F7700408D35 /* Modellndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modellndex.swift; sourceTree = "<group>"; };
 		C293C7441AC3164700408D35 /* Bank.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bank.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1462,6 +1296,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C28104BB1AC5CF7F003C6E7A /* MoonKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1469,10 +1304,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C293C75B1AC3164700408D35 /* Bank.framework in Frameworks */,
-				C285D71D1AC44A0A00C527F6 /* MoonKit.framework in Frameworks */,
-				C285D7271AC44A2400C527F6 /* CocoaLumberjack.framework in Frameworks */,
-				C215CC161ABB102F00E8077E /* DataModel.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1513,10 +1344,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C22115D61AC5A9AC0071F2D0 /* DataModel.framework in Frameworks */,
-				C22115D21AC5A9AC0071F2D0 /* MoonKit.framework in Frameworks */,
-				C22115D81AC5A9AD0071F2D0 /* Bank.framework in Frameworks */,
-				C22115CE1AC5A9AC0071F2D0 /* CocoaLumberjack.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1695,8 +1522,7 @@
 		C26BAEAA16DC10FE0093D5B4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C285D7211AC44A1E00C527F6 /* Lumberjack.xcodeproj */,
-				C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */,
+				C28104BA1AC5CF7F003C6E7A /* MoonKit.framework */,
 				C2CA76D919BA34A500ACCD76 /* libicucore.dylib */,
 				C2CA766519BA099000ACCD76 /* Foundation.framework */,
 				C2CA769119BA1E1800ACCD76 /* CoreGraphics.framework */,
@@ -2073,26 +1899,6 @@
 				C26BBAE716DC1B5C0093D5B4 /* Windows-White@2x.png */,
 			);
 			path = png;
-			sourceTree = "<group>";
-		};
-		C285D70F1AC449E700C527F6 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C285D7161AC449E700C527F6 /* MoonKit.framework */,
-				C285D7181AC449E700C527F6 /* Moonkit Tests.xctest */,
-				C285D71A1AC449E700C527F6 /* MoonKitOSX.framework */,
-				C285D71C1AC449E700C527F6 /* MoonKitOSXTests.xctest */,
-				C285D82E1AC48A5400C527F6 /* MoonKitLite.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		C285D7221AC44A1E00C527F6 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C285D7261AC44A1F00C527F6 /* CocoaLumberjack.framework */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		C293C7451AC3164700408D35 /* Bank */ = {
@@ -2636,7 +2442,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				C22115AC1AC5996F0071F2D0 /* PBXTargetDependency */,
 			);
 			name = DataModel;
 			productName = RemoteData;
@@ -2650,15 +2455,10 @@
 				C26BAEA416DC10FE0093D5B4 /* Sources */,
 				C26BAEA516DC10FE0093D5B4 /* Frameworks */,
 				C26BAEA616DC10FE0093D5B4 /* Resources */,
-				C2F01E221A02FBC6007F6966 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				C215CC151ABB102F00E8077E /* PBXTargetDependency */,
-				C293C75A1AC3164700408D35 /* PBXTargetDependency */,
-				C285D7201AC44A0A00C527F6 /* PBXTargetDependency */,
-				C285D72A1AC44A2400C527F6 /* PBXTargetDependency */,
 			);
 			name = Remote;
 			productName = Remote;
@@ -2677,7 +2477,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				C293C7681AC3165A00408D35 /* PBXTargetDependency */,
+				C28104BF1AC5D059003C6E7A /* PBXTargetDependency */,
 			);
 			name = Bank;
 			productName = Bank;
@@ -2745,17 +2545,10 @@
 				C2E9F3E31ABC9797007581F2 /* Sources */,
 				C2E9F3E41ABC9797007581F2 /* Frameworks */,
 				C2E9F3E51ABC9797007581F2 /* Resources */,
-				C22115DA1AC5A9AD0071F2D0 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				C22115C71AC5A5980071F2D0 /* PBXTargetDependency */,
-				C22115C91AC5A5980071F2D0 /* PBXTargetDependency */,
-				C22115CB1AC5A5980071F2D0 /* PBXTargetDependency */,
-				C22115CD1AC5A5980071F2D0 /* PBXTargetDependency */,
-				C22115D11AC5A9AC0071F2D0 /* PBXTargetDependency */,
-				C22115D51AC5A9AC0071F2D0 /* PBXTargetDependency */,
 			);
 			name = BankApp;
 			productName = RemoteDataUITest;
@@ -2831,16 +2624,6 @@
 			mainGroup = C26BAE9F16DC10FE0093D5B4;
 			productRefGroup = C26BAEA916DC10FE0093D5B4 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = C285D7221AC44A1E00C527F6 /* Products */;
-					ProjectRef = C285D7211AC44A1E00C527F6 /* Lumberjack.xcodeproj */;
-				},
-				{
-					ProductGroup = C285D70F1AC449E700C527F6 /* Products */;
-					ProjectRef = C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				C26BAEA716DC10FE0093D5B4 /* Remote */,
@@ -2854,51 +2637,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		C285D7161AC449E700C527F6 /* MoonKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = MoonKit.framework;
-			remoteRef = C285D7151AC449E700C527F6 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C285D7181AC449E700C527F6 /* Moonkit Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Moonkit Tests.xctest";
-			remoteRef = C285D7171AC449E700C527F6 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C285D71A1AC449E700C527F6 /* MoonKitOSX.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = MoonKitOSX.framework;
-			remoteRef = C285D7191AC449E700C527F6 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C285D71C1AC449E700C527F6 /* MoonKitOSXTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = MoonKitOSXTests.xctest;
-			remoteRef = C285D71B1AC449E700C527F6 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C285D7261AC44A1F00C527F6 /* CocoaLumberjack.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = CocoaLumberjack.framework;
-			remoteRef = C285D7251AC44A1F00C527F6 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C285D82E1AC48A5400C527F6 /* MoonKitLite.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = MoonKitLite.framework;
-			remoteRef = C285D82D1AC48A5400C527F6 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		C215CBFD1ABB102F00E8077E /* Resources */ = {
@@ -3596,55 +3334,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		C215CC151ABB102F00E8077E /* PBXTargetDependency */ = {
+		C28104BF1AC5D059003C6E7A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C215CBFE1ABB102F00E8077E /* DataModel */;
-			targetProxy = C215CC141ABB102F00E8077E /* PBXContainerItemProxy */;
-		};
-		C22115AC1AC5996F0071F2D0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = MoonKit;
-			targetProxy = C22115AB1AC5996F0071F2D0 /* PBXContainerItemProxy */;
-		};
-		C22115C71AC5A5980071F2D0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C215CBFE1ABB102F00E8077E /* DataModel */;
-			targetProxy = C22115C61AC5A5980071F2D0 /* PBXContainerItemProxy */;
-		};
-		C22115C91AC5A5980071F2D0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C293C7431AC3164700408D35 /* Bank */;
-			targetProxy = C22115C81AC5A5980071F2D0 /* PBXContainerItemProxy */;
-		};
-		C22115CB1AC5A5980071F2D0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = CocoaLumberjack;
-			targetProxy = C22115CA1AC5A5980071F2D0 /* PBXContainerItemProxy */;
-		};
-		C22115CD1AC5A5980071F2D0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = MoonKit;
-			targetProxy = C22115CC1AC5A5980071F2D0 /* PBXContainerItemProxy */;
-		};
-		C22115D11AC5A9AC0071F2D0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = CocoaLumberjack;
-			targetProxy = C22115D01AC5A9AC0071F2D0 /* PBXContainerItemProxy */;
-		};
-		C22115D51AC5A9AC0071F2D0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = MoonKit;
-			targetProxy = C22115D41AC5A9AC0071F2D0 /* PBXContainerItemProxy */;
-		};
-		C285D7201AC44A0A00C527F6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = MoonKit;
-			targetProxy = C285D71F1AC44A0A00C527F6 /* PBXContainerItemProxy */;
-		};
-		C285D72A1AC44A2400C527F6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = CocoaLumberjack;
-			targetProxy = C285D7291AC44A2400C527F6 /* PBXContainerItemProxy */;
+			targetProxy = C28104BE1AC5D059003C6E7A /* PBXContainerItemProxy */;
 		};
 		C293C7511AC3164700408D35 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -3655,16 +3348,6 @@
 			isa = PBXTargetDependency;
 			target = C26BAEA716DC10FE0093D5B4 /* Remote */;
 			targetProxy = C293C7521AC3164700408D35 /* PBXContainerItemProxy */;
-		};
-		C293C75A1AC3164700408D35 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C293C7431AC3164700408D35 /* Bank */;
-			targetProxy = C293C7591AC3164700408D35 /* PBXContainerItemProxy */;
-		};
-		C293C7681AC3165A00408D35 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C215CBFE1ABB102F00E8077E /* DataModel */;
-			targetProxy = C293C7671AC3165A00408D35 /* PBXContainerItemProxy */;
 		};
 		C2C482CA19C9F968002E84A9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -3743,6 +3426,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -3799,6 +3483,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3850,6 +3535,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3901,6 +3587,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3944,7 +3631,6 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(BUILT_PRODUCTS_DIR)/$(EFFECTIVE__PLATFORM)",
@@ -4140,6 +3826,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -4349,7 +4036,6 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(BUILT_PRODUCTS_DIR)/$(EFFECTIVE__PLATFORM)",
@@ -4387,7 +4073,6 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(BUILT_PRODUCTS_DIR)/$(EFFECTIVE__PLATFORM)",
@@ -4431,7 +4116,6 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(BUILT_PRODUCTS_DIR)/$(EFFECTIVE__PLATFORM)",
@@ -4619,7 +4303,6 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(BUILT_PRODUCTS_DIR)/$(EFFECTIVE__PLATFORM)",
