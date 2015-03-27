@@ -10,17 +10,6 @@ import Foundation
 import CoreData
 import MoonKit
 
-@objc public protocol Model {
-  var uuid: String { get }
-  var managedObjectContext: NSManagedObjectContext? { get }
-  var index: ModelIndex { get }
-}
-
-public protocol PathIndexedModel: Model {
-  var pathIndex: PathModelIndex { get }
-  static func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self?
-}
-
 @objc(ModelObject)
 public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
 

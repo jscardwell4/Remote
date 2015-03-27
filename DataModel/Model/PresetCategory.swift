@@ -114,3 +114,11 @@ extension PresetCategory: PathIndexedModel {
 
   }
 }
+
+extension PresetCategory: ModelCollection {
+  public var items: [NamedModel] { return sortedByName(presets) }
+}
+
+extension PresetCategory: NestingModelCollection {
+  public var collections: [ModelCollection] { return sortedByName(childCategories) }
+}

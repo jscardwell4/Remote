@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import MoonKit
+import DataModel
 
 protocol BankCollectionZoomViewDelegate {
   func didDismissZoomView(BankCollectionZoomView)

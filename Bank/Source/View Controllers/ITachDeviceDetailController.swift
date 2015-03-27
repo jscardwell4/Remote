@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import MoonKit
+import DataModel
 
 class ITachDeviceDetailController: BankItemDetailController {
 
@@ -71,9 +72,10 @@ class ITachDeviceDetailController: BankItemDetailController {
     ////////////////////////////////////////////////////////////////////////////////
 
     let componentDevicesSection = DetailSection(section: 1, title: "Component Devices")
-    for (idx, device) in enumerate(sortedByName(iTachDevice.componentDevices?.allObjects as? [ComponentDevice] ?? [])) {
-      componentDevicesSection.addRow({ DetailListRow(pushableItem: device) }, forKey: "\(RowKey.ComponentDevices)\(idx)")
-    }
+    // FIXME:
+//    for (idx, device) in enumerate(sortedByName(iTachDevice.componentDevices?.allObjects as? [ComponentDevice] ?? [])) {
+//      componentDevicesSection.addRow({ DetailListRow(pushableItem: device) }, forKey: "\(RowKey.ComponentDevices)\(idx)")
+//    }
 
     sections[SectionKey.ComponentDevices] = componentDevicesSection
 

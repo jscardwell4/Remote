@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import MoonKit
+import DataModel
 
 final class DetailButtonRow: DetailRow {
 
@@ -38,19 +39,19 @@ final class DetailButtonRow: DetailRow {
 
   :param: pushableCategory BankItemCategory
   */
-  convenience init(pushableCategory: ModelCategory?) {
-    self.init()
-    info = pushableCategory
-    select = {
-      if let category = pushableCategory {
-        if let controller = BankCollectionController(category: category) {
-          if let nav = UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController {
-            nav.pushViewController(controller, animated: true)
-          }
-        }
-      }
-    }
-  }
+//  convenience init(pushableCategory: ModelCategory?) {
+//    self.init()
+//    info = pushableCategory
+//    select = {
+//      if let category = pushableCategory {
+//        if let controller = BankCollectionController(category: category) {
+//          if let nav = UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController {
+//            nav.pushViewController(controller, animated: true)
+//          }
+//        }
+//      }
+//    }
+//  }
 
   /**
   initWithPushableItem:

@@ -79,3 +79,7 @@ extension IRCodeSet: PathIndexedModel {
   }
   
 }
+
+extension IRCodeSet: ModelCollection {
+  public var items: [NamedModel] { return sortedByName(codes) }
+}

@@ -10,36 +10,23 @@ import Foundation
 import CoreData
 import MoonKit
 
-// MARK: - Model related protocols
-// MARK: EditableModel
-@objc public protocol EditableModel: Model {
-  var user: Bool { get }
-  func save()
-  func delete()
-  func rollback()
-}
-
-// MARK: ModelCollection
 //public protocol ModelCollection {
 //  typealias ItemType: PathIndexedModel
 //  var items: [ItemType] { get set }
 //  func itemWithIndex(index: PathModelIndex) -> ItemType?
 //}
 
-// MARK: NestingModelCollection
 //public protocol NestingModelCollection: ModelCollection {
 //   typealias NestedType: PathIndexedModel
 //  var subcategories: [NestedType] { get set }
 //  func subcategoryWithIndex(index: PathModelIndex) -> NestedType?
 //}
 
-// MARK: ModelCollectionItem
 //public protocol ModelCollectionItem: EditableModel {
 //  typealias CollectionType
 //  var collection: CollectionType? { get set }
 //}
 
-// MARK: RootedModel
 //public protocol RootedModel: PathIndexedModel {
 //  static func itemWithIndex<T:PathIndexedModel>(index: PathModelIndex, context: NSManagedObjectContext) -> T?
 //  static func rootItemWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self?
@@ -60,7 +47,7 @@ public class EditableModelObject: NamedModelObject, EditableModel {
     }
   }
 
-  public var editable: Bool { return true }
+  public var editable: Bool { return user }
 
   /** rollback */
   public func rollback() { if let moc = self.managedObjectContext { moc.performBlockAndWait { moc.rollback() } } }

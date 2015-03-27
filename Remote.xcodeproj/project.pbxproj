@@ -303,6 +303,66 @@
 		C285D71E1AC44A0A00C527F6 /* MoonKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C285D7161AC449E700C527F6 /* MoonKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C285D7271AC44A2400C527F6 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C285D7261AC44A1F00C527F6 /* CocoaLumberjack.framework */; };
 		C285D7281AC44A2400C527F6 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C285D7261AC44A1F00C527F6 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C285D82B1AC48A5400C527F6 /* TitleAttributesDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F5431ABCA395007581F2 /* TitleAttributesDelegate.swift */; };
+		C285D82F1AC48BA500C527F6 /* BankCollectionAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4731ABCA395007581F2 /* BankCollectionAttributes.swift */; };
+		C285D8301AC48BC800C527F6 /* BankCollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4791ABCA395007581F2 /* BankCollectionLayout.swift */; };
+		C285D8311AC48BD600C527F6 /* BankCollectionZoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F47A1ABCA395007581F2 /* BankCollectionZoomView.swift */; };
+		C285D8321AC48C3200C527F6 /* DetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4841ABCA395007581F2 /* DetailCell.swift */; };
+		C285D8331AC48C4400C527F6 /* DetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4931ABCA395007581F2 /* DetailController.swift */; };
+		C285D8341AC48C5500C527F6 /* DetailSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4A71ABCA395007581F2 /* DetailSection.swift */; };
+		C285D8351AC48C5E00C527F6 /* DetailSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4A81ABCA395007581F2 /* DetailSectionHeader.swift */; };
+		C285D8361AC48C6800C527F6 /* FilteringDetailSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4A91ABCA395007581F2 /* FilteringDetailSection.swift */; };
+		C285D8371AC48C6B00C527F6 /* FilteringDetailSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4AA1ABCA395007581F2 /* FilteringDetailSectionHeader.swift */; };
+		C285D8381AC48C8400C527F6 /* DetailAttributedTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4821ABCA395007581F2 /* DetailAttributedTextCell.swift */; };
+		C285D8391AC48C8400C527F6 /* DetailButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4831ABCA395007581F2 /* DetailButtonCell.swift */; };
+		C285D83A1AC48C8400C527F6 /* DetailColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4851ABCA395007581F2 /* DetailColorCell.swift */; };
+		C285D83B1AC48C8400C527F6 /* DetailCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4861ABCA395007581F2 /* DetailCustomCell.swift */; };
+		C285D83C1AC48C8400C527F6 /* DetailImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4871ABCA395007581F2 /* DetailImageCell.swift */; };
+		C285D83D1AC48C8400C527F6 /* DetailLabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4881ABCA395007581F2 /* DetailLabelCell.swift */; };
+		C285D83E1AC48C8400C527F6 /* DetailLabeledImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4891ABCA395007581F2 /* DetailLabeledImageCell.swift */; };
+		C285D83F1AC48C8400C527F6 /* DetailPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F48B1ABCA395007581F2 /* DetailPickerCell.swift */; };
+		C285D8401AC48C8400C527F6 /* DetailSliderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F48C1ABCA395007581F2 /* DetailSliderCell.swift */; };
+		C285D8411AC48C8400C527F6 /* DetailStepperCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F48D1ABCA395007581F2 /* DetailStepperCell.swift */; };
+		C285D8421AC48C8400C527F6 /* DetailSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F48E1ABCA395007581F2 /* DetailSwitchCell.swift */; };
+		C285D8431AC48C8400C527F6 /* DetailTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F48F1ABCA395007581F2 /* DetailTextFieldCell.swift */; };
+		C285D8441AC48C8400C527F6 /* DetailTextInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4901ABCA395007581F2 /* DetailTextInputCell.swift */; };
+		C285D8451AC48C8400C527F6 /* DetailTextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4911ABCA395007581F2 /* DetailTextViewCell.swift */; };
+		C285D8461AC48C8400C527F6 /* DetailTwoToneSliderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4921ABCA395007581F2 /* DetailTwoToneSliderCell.swift */; };
+		C285D8471AC48C9800C527F6 /* DetailAttributedTextRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4961ABCA395007581F2 /* DetailAttributedTextRow.swift */; };
+		C285D8481AC48C9800C527F6 /* DetailButtonRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4971ABCA395007581F2 /* DetailButtonRow.swift */; };
+		C285D8491AC48C9800C527F6 /* DetailColorRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4981ABCA395007581F2 /* DetailColorRow.swift */; };
+		C285D84A1AC48C9800C527F6 /* DetailCustomRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4991ABCA395007581F2 /* DetailCustomRow.swift */; };
+		C285D84B1AC48C9800C527F6 /* DetailImageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F49A1ABCA395007581F2 /* DetailImageRow.swift */; };
+		C285D84C1AC48C9800C527F6 /* DetailLabeledImageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F49B1ABCA395007581F2 /* DetailLabeledImageRow.swift */; };
+		C285D84D1AC48C9800C527F6 /* DetailLabelRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F49C1ABCA395007581F2 /* DetailLabelRow.swift */; };
+		C285D84E1AC48C9800C527F6 /* DetailPickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F49E1ABCA395007581F2 /* DetailPickerRow.swift */; };
+		C285D84F1AC48C9800C527F6 /* DetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F49F1ABCA395007581F2 /* DetailRow.swift */; };
+		C285D8501AC48C9800C527F6 /* DetailSliderRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4A01ABCA395007581F2 /* DetailSliderRow.swift */; };
+		C285D8511AC48C9800C527F6 /* DetailStepperRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4A11ABCA395007581F2 /* DetailStepperRow.swift */; };
+		C285D8521AC48C9800C527F6 /* DetailSwitchRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4A21ABCA395007581F2 /* DetailSwitchRow.swift */; };
+		C285D8531AC48C9800C527F6 /* DetailTextFieldRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4A31ABCA395007581F2 /* DetailTextFieldRow.swift */; };
+		C285D8541AC48C9800C527F6 /* DetailTextInputRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4A41ABCA395007581F2 /* DetailTextInputRow.swift */; };
+		C285D8551AC48C9800C527F6 /* DetailTextViewRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4A51ABCA395007581F2 /* DetailTextViewRow.swift */; };
+		C285D8561AC48C9800C527F6 /* DetailTwoToneSliderRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4A61ABCA395007581F2 /* DetailTwoToneSliderRow.swift */; };
+		C285D8571AC48D1300C527F6 /* ButtonGroupPresetDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F47E1ABCA395007581F2 /* ButtonGroupPresetDetailController.swift */; };
+		C285D8581AC48D2200C527F6 /* PresetDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4B11ABCA395007581F2 /* PresetDetailController.swift */; };
+		C285D8591AC48D3800C527F6 /* BankItemDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F47B1ABCA395007581F2 /* BankItemDetailController.swift */; };
+		C285D85A1AC48D4D00C527F6 /* NamedItemDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4B01ABCA395007581F2 /* NamedItemDetailController.swift */; };
+		C285D85B1AC48E4000C527F6 /* DetailListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F48A1ABCA395007581F2 /* DetailListCell.swift */; };
+		C285D85C1AC48E4400C527F6 /* DetailListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F49D1ABCA395007581F2 /* DetailListRow.swift */; };
+		C285D85D1AC48E8500C527F6 /* RemotePresetDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4B21ABCA395007581F2 /* RemotePresetDetailController.swift */; };
+		C285D85E1AC48E8500C527F6 /* TitleAttributesDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4B31ABCA395007581F2 /* TitleAttributesDetailController.swift */; };
+		C285D85F1AC48EB600C527F6 /* ImageDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4AB1ABCA395007581F2 /* ImageDetailController.swift */; };
+		C285D8601AC48EB600C527F6 /* IRCodeDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4AC1ABCA395007581F2 /* IRCodeDetailController.swift */; };
+		C285D8611AC48EB600C527F6 /* ISYDeviceDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4AD1ABCA395007581F2 /* ISYDeviceDetailController.swift */; };
+		C285D8621AC48EB600C527F6 /* ITachDeviceDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4AE1ABCA395007581F2 /* ITachDeviceDetailController.swift */; };
+		C285D8631AC48EB600C527F6 /* ManufacturerDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4AF1ABCA395007581F2 /* ManufacturerDetailController.swift */; };
+		C285D8641AC48F5E00C527F6 /* ComponentDeviceDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4801ABCA395007581F2 /* ComponentDeviceDetailController.swift */; };
+		C285D8651AC48FCA00C527F6 /* ButtonPresetDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F47F1ABCA395007581F2 /* ButtonPresetDetailController.swift */; };
+		C285D8661AC4BF6300C527F6 /* BankCollectionCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4741ABCA395007581F2 /* BankCollectionCategoryCell.swift */; };
+		C285D8671AC4BF9800C527F6 /* BankCollectionItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4781ABCA395007581F2 /* BankCollectionItemCell.swift */; };
+		C285D8681AC4BFDF00C527F6 /* BankCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4761ABCA395007581F2 /* BankCollectionController.swift */; };
+		C285D86A1AC4C0E800C527F6 /* DataModelProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C285D8691AC4C0E800C527F6 /* DataModelProtocols.swift */; };
 		C293C73E1AC25F7700408D35 /* Modellndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C73D1AC25F7700408D35 /* Modellndex.swift */; };
 		C293C7491AC3164700408D35 /* Bank.h in Headers */ = {isa = PBXBuildFile; fileRef = C293C7481AC3164700408D35 /* Bank.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C293C74F1AC3164700408D35 /* Bank.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C293C7441AC3164700408D35 /* Bank.framework */; };
@@ -599,6 +659,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = DCB3185014EB418E001CFBEE;
 			remoteInfo = CocoaLumberjack;
+		};
+		C285D82D1AC48A5400C527F6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C285D8231AC44D3500C527F6;
+			remoteInfo = MoonKitLite;
 		};
 		C293C7501AC3164700408D35 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1005,6 +1072,7 @@
 		C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Erase@2x.png"; sourceTree = "<group>"; };
 		C285D70E1AC449E700C527F6 /* MSKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MSKit.xcodeproj; path = MSKit/MSKit.xcodeproj; sourceTree = "<group>"; };
 		C285D7211AC44A1E00C527F6 /* Lumberjack.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Lumberjack.xcodeproj; path = MSKit/../../../../GitHub/CocoaLumberjack/Framework/Desktop/Lumberjack.xcodeproj; sourceTree = "<group>"; };
+		C285D8691AC4C0E800C527F6 /* DataModelProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataModelProtocols.swift; path = Model/DataModelProtocols.swift; sourceTree = "<group>"; };
 		C293C73D1AC25F7700408D35 /* Modellndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modellndex.swift; sourceTree = "<group>"; };
 		C293C7441AC3164700408D35 /* Bank.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bank.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C293C7471AC3164700408D35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1416,6 +1484,7 @@
 				C2E9F4F11ABCA395007581F2 /* Model */,
 				C215CC031ABB102F00E8077E /* DataModel.h */,
 				C215CC011ABB102F00E8077E /* Supporting Files */,
+				C285D8691AC4C0E800C527F6 /* DataModelProtocols.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -1936,6 +2005,7 @@
 				C285D7181AC449E700C527F6 /* Moonkit Tests.xctest */,
 				C285D71A1AC449E700C527F6 /* MoonKitOSX.framework */,
 				C285D71C1AC449E700C527F6 /* MoonKitOSXTests.xctest */,
+				C285D82E1AC48A5400C527F6 /* MoonKitLite.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2747,6 +2817,13 @@
 			remoteRef = C285D7251AC44A1F00C527F6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		C285D82E1AC48A5400C527F6 /* MoonKitLite.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MoonKitLite.framework;
+			remoteRef = C285D82D1AC48A5400C527F6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -3227,6 +3304,7 @@
 				C2E9F61E1ABCA395007581F2 /* DataManager.swift in Sources */,
 				C293C73E1AC25F7700408D35 /* Modellndex.swift in Sources */,
 				C2E9F6001ABCA395007581F2 /* CommandSetCollection.swift in Sources */,
+				C285D86A1AC4C0E800C527F6 /* DataModelProtocols.swift in Sources */,
 				C293C7761AC318EB00408D35 /* ImageCategory.swift in Sources */,
 				C2E9F5E11ABCA395007581F2 /* DelayCommand.swift in Sources */,
 				C293C7781AC318EB00408D35 /* IRCodeSet.swift in Sources */,
@@ -3327,10 +3405,69 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C285D8391AC48C8400C527F6 /* DetailButtonCell.swift in Sources */,
+				C285D8521AC48C9800C527F6 /* DetailSwitchRow.swift in Sources */,
+				C285D8301AC48BC800C527F6 /* BankCollectionLayout.swift in Sources */,
+				C285D82B1AC48A5400C527F6 /* TitleAttributesDelegate.swift in Sources */,
+				C285D8371AC48C6B00C527F6 /* FilteringDetailSectionHeader.swift in Sources */,
+				C285D8361AC48C6800C527F6 /* FilteringDetailSection.swift in Sources */,
+				C285D84B1AC48C9800C527F6 /* DetailImageRow.swift in Sources */,
+				C285D8651AC48FCA00C527F6 /* ButtonPresetDetailController.swift in Sources */,
+				C285D8321AC48C3200C527F6 /* DetailCell.swift in Sources */,
+				C285D8561AC48C9800C527F6 /* DetailTwoToneSliderRow.swift in Sources */,
+				C285D8511AC48C9800C527F6 /* DetailStepperRow.swift in Sources */,
+				C285D8421AC48C8400C527F6 /* DetailSwitchCell.swift in Sources */,
+				C285D83F1AC48C8400C527F6 /* DetailPickerCell.swift in Sources */,
+				C285D85B1AC48E4000C527F6 /* DetailListCell.swift in Sources */,
 				C26D84B71AC33752000230B9 /* ImportExportFileManager.swift in Sources */,
+				C285D8411AC48C8400C527F6 /* DetailStepperCell.swift in Sources */,
+				C285D8471AC48C9800C527F6 /* DetailAttributedTextRow.swift in Sources */,
+				C285D8571AC48D1300C527F6 /* ButtonGroupPresetDetailController.swift in Sources */,
+				C285D85A1AC48D4D00C527F6 /* NamedItemDetailController.swift in Sources */,
+				C285D8441AC48C8400C527F6 /* DetailTextInputCell.swift in Sources */,
+				C285D85E1AC48E8500C527F6 /* TitleAttributesDetailController.swift in Sources */,
+				C285D84C1AC48C9800C527F6 /* DetailLabeledImageRow.swift in Sources */,
+				C285D84D1AC48C9800C527F6 /* DetailLabelRow.swift in Sources */,
+				C285D8601AC48EB600C527F6 /* IRCodeDetailController.swift in Sources */,
+				C285D8551AC48C9800C527F6 /* DetailTextViewRow.swift in Sources */,
 				C26D84B91AC34DF0000230B9 /* Bank.swift in Sources */,
+				C285D8501AC48C9800C527F6 /* DetailSliderRow.swift in Sources */,
+				C285D8531AC48C9800C527F6 /* DetailTextFieldRow.swift in Sources */,
+				C285D8381AC48C8400C527F6 /* DetailAttributedTextCell.swift in Sources */,
 				C26D84B61AC33738000230B9 /* DocumentSelectionController.swift in Sources */,
+				C285D85D1AC48E8500C527F6 /* RemotePresetDetailController.swift in Sources */,
+				C285D82F1AC48BA500C527F6 /* BankCollectionAttributes.swift in Sources */,
+				C285D8481AC48C9800C527F6 /* DetailButtonRow.swift in Sources */,
+				C285D8461AC48C8400C527F6 /* DetailTwoToneSliderCell.swift in Sources */,
+				C285D8621AC48EB600C527F6 /* ITachDeviceDetailController.swift in Sources */,
+				C285D84A1AC48C9800C527F6 /* DetailCustomRow.swift in Sources */,
+				C285D8681AC4BFDF00C527F6 /* BankCollectionController.swift in Sources */,
+				C285D8341AC48C5500C527F6 /* DetailSection.swift in Sources */,
+				C285D8641AC48F5E00C527F6 /* ComponentDeviceDetailController.swift in Sources */,
 				C26D84BB1AC34E25000230B9 /* BankCollectionCell.swift in Sources */,
+				C285D8541AC48C9800C527F6 /* DetailTextInputRow.swift in Sources */,
+				C285D83E1AC48C8400C527F6 /* DetailLabeledImageCell.swift in Sources */,
+				C285D8351AC48C5E00C527F6 /* DetailSectionHeader.swift in Sources */,
+				C285D8401AC48C8400C527F6 /* DetailSliderCell.swift in Sources */,
+				C285D8631AC48EB600C527F6 /* ManufacturerDetailController.swift in Sources */,
+				C285D8331AC48C4400C527F6 /* DetailController.swift in Sources */,
+				C285D8581AC48D2200C527F6 /* PresetDetailController.swift in Sources */,
+				C285D83B1AC48C8400C527F6 /* DetailCustomCell.swift in Sources */,
+				C285D8491AC48C9800C527F6 /* DetailColorRow.swift in Sources */,
+				C285D8451AC48C8400C527F6 /* DetailTextViewCell.swift in Sources */,
+				C285D83A1AC48C8400C527F6 /* DetailColorCell.swift in Sources */,
+				C285D8611AC48EB600C527F6 /* ISYDeviceDetailController.swift in Sources */,
+				C285D8311AC48BD600C527F6 /* BankCollectionZoomView.swift in Sources */,
+				C285D83C1AC48C8400C527F6 /* DetailImageCell.swift in Sources */,
+				C285D8661AC4BF6300C527F6 /* BankCollectionCategoryCell.swift in Sources */,
+				C285D85C1AC48E4400C527F6 /* DetailListRow.swift in Sources */,
+				C285D8591AC48D3800C527F6 /* BankItemDetailController.swift in Sources */,
+				C285D8671AC4BF9800C527F6 /* BankCollectionItemCell.swift in Sources */,
+				C285D8431AC48C8400C527F6 /* DetailTextFieldCell.swift in Sources */,
+				C285D85F1AC48EB600C527F6 /* ImageDetailController.swift in Sources */,
+				C285D84E1AC48C9800C527F6 /* DetailPickerRow.swift in Sources */,
+				C285D83D1AC48C8400C527F6 /* DetailLabelCell.swift in Sources */,
+				C285D84F1AC48C9800C527F6 /* DetailRow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

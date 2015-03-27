@@ -8,12 +8,13 @@
 import Foundation
 import UIKit
 import MoonKit
+import DataModel
 
 class BankCollectionCategoryCell: BankCollectionCell {
 
-  var category: ModelCategory? { didSet { label.text = category?.name } }
+  var collection: ModelCollection? { didSet { label.text = collection?.name } }
 
-  override var exportItem: MSJSONExport? { return category as? MSJSONExport }
+  override var exportItem: MSJSONExport? { return collection as? MSJSONExport }
 
   private let label: UILabel = {
     let view = UILabel()

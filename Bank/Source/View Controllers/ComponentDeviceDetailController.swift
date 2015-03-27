@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import MoonKit
+import DataModel
 
 class ComponentDeviceDetailController: BankItemDetailController {
 
@@ -58,7 +59,8 @@ class ComponentDeviceDetailController: BankItemDetailController {
     let manufacturerSection = DetailSection(section: 0)
 
     manufacturerSection.addRow({
-      var row = DetailButtonRow(pushableItem: componentDevice.manufacturer)
+      // FIXME:
+      var row = DetailButtonRow()//pushableItem: componentDevice.manufacturer)
       row.name = "Manufacturer"
       row.info = componentDevice.manufacturer
 //      row.editActions = [UITableViewRowAction(style: .Default, title: "Clear", handler: {
@@ -122,7 +124,8 @@ class ComponentDeviceDetailController: BankItemDetailController {
 
     manufacturerSection.addRow({
 
-      var row = DetailButtonRow(pushableCategory: componentDevice.codeSet as? ModelCategory)
+      // FIXME:
+      var row = DetailButtonRow()//pushableCategory: componentDevice.codeSet as? ModelCategory)
       row.name = "Code Set"
       row.info = componentDevice.codeSet
 
@@ -348,9 +351,10 @@ class ComponentDeviceDetailController: BankItemDetailController {
       return row
     }, forKey: RowKey.InputPowersOn)
 
-    for (idx, input) in enumerate(sortedByName(componentDevice.inputs)) {
-      inputsSection.addRow({ return DetailListRow(pushableItem: input) }, forKey: "\(SectionKey.Inputs)\(idx)")
-    }
+    // FIXME:
+//    for (idx, input) in enumerate(sortedByName(componentDevice.inputs)) {
+//      inputsSection.addRow({ return DetailListRow(pushableItem: input) }, forKey: "\(SectionKey.Inputs)\(idx)")
+//    }
 
     sections[SectionKey.Inputs] = inputsSection
   }

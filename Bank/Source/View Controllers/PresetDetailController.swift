@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import MoonKit
+import DataModel
 
 // TODO: Cancel needs to reset any changed color values
 
@@ -67,8 +68,9 @@ class PresetDetailController: BankItemDetailController {
 
     let commonAttributesSection = DetailSection(section: 1, title: "Common Attributes")
 
-    commonAttributesSection.addRow({ DetailLabelRow(pushableCategory: preset.category, label: "Category") },
-                            forKey: RowKey.Category)
+  //FIXME:
+//    commonAttributesSection.addRow({ DetailLabelRow(pushableCategory: preset.presetCategory, label: "Category") },
+//                            forKey: RowKey.Category)
 
     let baseType = preset.baseType
 

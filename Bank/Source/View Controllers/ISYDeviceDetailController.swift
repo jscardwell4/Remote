@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import MoonKit
+import DataModel
 
 class ISYDeviceDetailController: BankItemDetailController {
 
@@ -107,7 +108,8 @@ private func loadNodesSection() {
     ////////////////////////////////////////////////////////////////////////////////
 
     var nodesSection = DetailSection(section: 3, title: "Nodes")
-    for (idx, node) in enumerate(sortedByName(iSYDevice.nodes)) { nodesSection.addRow({ DetailListRow(namedItem: node) }, forKey: "\(RowKey.Nodes)\(idx)") }
+  // FIXME:
+//    for (idx, node) in enumerate(sortedByName(iSYDevice.nodes)) { nodesSection.addRow({ DetailListRow(namedItem: node) }, forKey: "\(RowKey.Nodes)\(idx)") }
 
     sections[SectionKey.Nodes] = nodesSection
 }
@@ -121,7 +123,8 @@ private func loadGroupsSection() {
     ////////////////////////////////////////////////////////////////////////////////
 
     var groupsSection = DetailSection(section: 4, title: "Groups")
-    for (idx, group) in enumerate(sortedByName(iSYDevice.groups)) { groupsSection.addRow({ DetailListRow(namedItem: group) }, forKey: "\(RowKey.Groups)\(idx)") }
+  // FIXME:
+//    for (idx, group) in enumerate(sortedByName(iSYDevice.groups)) { groupsSection.addRow({ DetailListRow(namedItem: group) }, forKey: "\(RowKey.Groups)\(idx)") }
 
     sections[SectionKey.Groups] = groupsSection
 }
@@ -135,9 +138,10 @@ private func loadComponentDevicesSection() {
     ////////////////////////////////////////////////////////////////////////////////
 
     var componentDevicesSection = DetailSection(section: 5, title: "Component Devices")
-    for (idx, device) in enumerate(sortedByName(iSYDevice.componentDevices?.allObjects as? [ComponentDevice] ?? [])) {
-      componentDevicesSection.addRow({ DetailListRow(pushableItem: device) }, forKey: "\(RowKey.ComponentDevices)\(idx)")
-    }
+  // FIXME:
+//    for (idx, device) in enumerate(sortedByName(iSYDevice.componentDevices?.allObjects as? [ComponentDevice] ?? [])) {
+//      componentDevicesSection.addRow({ DetailListRow(pushableItem: device) }, forKey: "\(RowKey.ComponentDevices)\(idx)")
+//    }
 
     sections[SectionKey.ComponentDevices] = componentDevicesSection
 

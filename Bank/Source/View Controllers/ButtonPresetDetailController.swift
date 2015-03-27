@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 import MoonKit
-
+import DataModel
 
 class ButtonPresetDetailController: PresetDetailController {
 
@@ -208,9 +208,10 @@ class ButtonPresetDetailController: PresetDetailController {
 
       self.pushedTitleAttributesKey = state.JSONValue
 
-      let controller = TitleAttributesDetailController(item: attributesDelegate)
-      controller.title = state.JSONValue.titlecaseString
-      self.pushController(controller)
+      // FIXME:
+//      let controller = TitleAttributesDetailController(item: attributesDelegate)
+//      controller.title = state.JSONValue.titlecaseString
+//      self.pushController(controller)
     }
     row.delete = {
       var titles = preset.titles!
@@ -336,7 +337,7 @@ class ButtonPresetDetailController: PresetDetailController {
     let json = preset.icons?[state.JSONValue]
     var image: Image?
     if let path = json?["image"] as? String, moc = preset.managedObjectContext {
-      image = ImageCategory.itemForIndex(path, context: moc) as? Image
+      image = Image.modelWithIndex(PathModelIndex(path), context: moc)
     }
 
     let row = DetailImageRow()
@@ -347,7 +348,8 @@ class ButtonPresetDetailController: PresetDetailController {
       if self.editing {
         MSLogDebug("now would be a great time to pop up some kind of icon selection interface")
       } else if image != nil {
-        self.pushController(image!.detailController())
+        // FIXME:
+//        self.pushController(image!.detailController())
       }
     }
     row.delete = {
@@ -472,7 +474,7 @@ class ButtonPresetDetailController: PresetDetailController {
     let json = preset.images?[state.JSONValue]
     var image: Image?
     if let path = json?["image"] as? String, moc = preset.managedObjectContext {
-      image = ImageCategory.itemForIndex(path, context: moc) as? Image
+      image = Image.modelWithIndex(PathModelIndex(path), context: moc)
     }
 
     let row = DetailImageRow()
@@ -483,7 +485,8 @@ class ButtonPresetDetailController: PresetDetailController {
       if self.editing {
         MSLogDebug("now would be a great time to pop up some kind of image selection interface")
       } else if image != nil {
-        self.pushController(image!.detailController())
+        // FIXME:
+//        self.pushController(image!.detailController())
       }
     }
     row.delete = {

@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import MoonKit
+import DataModel
 
 @objc(ManufacturerDetailController)
 class ManufacturerDetailController: BankItemDetailController {
@@ -42,9 +43,10 @@ class ManufacturerDetailController: BankItemDetailController {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let devicesSection = DetailSection(section: 0, title: "Devices")
-    for (idx, device) in enumerate(sortedByName(manufacturer.devices)) {
-      devicesSection.addRow({ DetailListRow(pushableItem: device) }, forKey: "\(RowKey.Devices)\(idx)")
-    }
+    // FIXME:
+//    for (idx, device) in enumerate(sortedByName(manufacturer.devices)) {
+//      devicesSection.addRow({ DetailListRow(pushableItem: device) }, forKey: "\(RowKey.Devices)\(idx)")
+//    }
 
     sections[SectionKey.Devices] = devicesSection
   }
@@ -59,9 +61,10 @@ class ManufacturerDetailController: BankItemDetailController {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let codeSetsSection = DetailSection(section: 1, title: "Code Sets")
-    for (idx, codeSet) in enumerate(sortedByName(manufacturer.codeSets)) {
-      codeSetsSection.addRow({ DetailListRow(pushableCategory: codeSet) }, forKey: "\(RowKey.CodeSets)\(idx)")
-    }
+    // FIXME:
+//    for (idx, codeSet) in enumerate(sortedByName(manufacturer.codeSets)) {
+//      codeSetsSection.addRow({ DetailListRow(pushableCategory: codeSet) }, forKey: "\(RowKey.CodeSets)\(idx)")
+//    }
 
     /// Create the sections
     ////////////////////////////////////////////////////////////////////////////////

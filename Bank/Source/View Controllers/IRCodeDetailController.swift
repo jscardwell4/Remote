@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import MoonKit
+import DataModel
 
 /**
 The `IRCodeDetailController` is the view controller responsible for viewing and editing

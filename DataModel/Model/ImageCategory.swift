@@ -118,3 +118,11 @@ extension ImageCategory: PathIndexedModel {
     return currentCategory
   }
 }
+
+extension ImageCategory: ModelCollection {
+  public var items: [NamedModel] { return sortedByName(images) }
+}
+
+extension ImageCategory: NestingModelCollection {
+  public var collections: [ModelCollection] { return sortedByName(childCategories) }
+}

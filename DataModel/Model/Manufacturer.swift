@@ -102,3 +102,7 @@ extension Manufacturer: PathIndexedModel {
   
 }
 
+extension Manufacturer: NestingModelCollection {
+  public var collections: [ModelCollection] { return sortedByName(codeSets) }
+}
+

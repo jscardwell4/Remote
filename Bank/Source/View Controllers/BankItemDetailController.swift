@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import MoonKit
+import DataModel
 
 class BankItemDetailController: NamedItemDetailController {
 
@@ -45,12 +46,12 @@ class BankItemDetailController: NamedItemDetailController {
 
   :param: model EditableModel
   */
-  init(var model: protocol<EditableModel, Detailable>) {
+  init(var model: protocol<EditableModel, Detailable, DynamicallyNamed>) {
     if let dataModel = model as? NamedModelObject {
       context = DataManager.mainContext()
       let objectID = dataModel.objectID
       var error: NSError?
-      if let m = context.existingObjectWithID(objectID, error: &error) as? protocol<EditableModel, Detailable> {
+      if let m = context.existingObjectWithID(objectID, error: &error) as? protocol<EditableModel, Detailable, DynamicallyNamed> {
         model = m
       }
     } else {

@@ -41,18 +41,18 @@ final class DetailLabelRow: DetailRow {
   :param: pushableCategory BankItemCategory
   :param: label String
   */
-  convenience init(pushableCategory: ModelCategory, label: String) {
-    self.init()
-    select = {
-      if let controller = BankCollectionController(category: pushableCategory) {
-        if let nav = UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController {
-          nav.pushViewController(controller, animated: true)
-        }
-      }
-    }
-    name = label
-    info = pushableCategory
-  }
+//  convenience init(pushableCategory: ModelCategory, label: String) {
+//    self.init()
+//    select = {
+//      if let controller = BankCollectionController(category: pushableCategory) {
+//        if let nav = UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController {
+//          nav.pushViewController(controller, animated: true)
+//        }
+//      }
+//    }
+//    name = label
+//    info = pushableCategory
+//  }
 
   /** init */
   override init() { super.init() }

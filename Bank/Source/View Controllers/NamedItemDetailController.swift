@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 import MoonKit
-
+import DataModel
 
 @objc(NamedItemDetailController)
 class NamedItemDetailController: DetailController {
