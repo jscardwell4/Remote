@@ -211,6 +211,7 @@
 		C23592FE19C8E04200920F8D /* String+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592E919C8E04200920F8D /* String+MoonKitAdditions.swift */; };
 		C235930419C8E04200920F8D /* JSONParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592F219C8E04200920F8D /* JSONParser.swift */; };
 		C24D19EA19EDAE1500CC3CD9 /* InlinePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24D19E919EDAE1500CC3CD9 /* InlinePickerView.swift */; };
+		C24E0EB91AC6141B0044248E /* Bool+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24E0EB81AC6141B0044248E /* Bool+MoonKitAdditions.swift */; };
 		C256F0831ABDFFE5005B7CB3 /* MoonKitOSX.h in Headers */ = {isa = PBXBuildFile; fileRef = C256F0821ABDFFE5005B7CB3 /* MoonKitOSX.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C256F0891ABDFFE5005B7CB3 /* MoonKitOSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C256F07E1ABDFFE5005B7CB3 /* MoonKitOSX.framework */; };
 		C256F0901ABDFFE5005B7CB3 /* MoonKitOSXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C256F08F1ABDFFE5005B7CB3 /* MoonKitOSXTests.swift */; };
@@ -311,6 +312,7 @@
 		C2456BE419C39C8A007162F3 /* NSIndexPath+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+MSKitAdditions.m"; sourceTree = "<group>"; };
 		C24D19E919EDAE1500CC3CD9 /* InlinePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlinePickerView.swift; sourceTree = "<group>"; };
 		C24D19EC19EDB54400CC3CD9 /* UIView+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+MoonKitAdditions.swift"; sourceTree = "<group>"; };
+		C24E0EB81AC6141B0044248E /* Bool+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bool+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C24ECC8F19DE085D00C1870E /* BlockBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockBarButtonItem.swift; sourceTree = "<group>"; };
 		C256F07E1ABDFFE5005B7CB3 /* MoonKitOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoonKitOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C256F0811ABDFFE5005B7CB3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -345,7 +347,7 @@
 		C2B84B091A27890A000D699C /* Set.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Set.swift; sourceTree = "<group>"; };
 		C2B9B4091AC1C499005BA67C /* RegularExpression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegularExpression.swift; sourceTree = "<group>"; };
 		C2BE96E71A467E85007599B2 /* NSManagedObjectModel+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectModel+MoonKitAdditions.swift"; sourceTree = "<group>"; };
-		C2C3B91E1AC5DA7D001DC6CC /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = "../GitHub/CocoaLumberjack/Framework/Desktop/build/Debug-iphoneos/CocoaLumberjack.framework"; sourceTree = "<group>"; };
+		C2C3B91E1AC5DA7D001DC6CC /* CocoaLumberjack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2C482D219C9F98A002E84A9 /* Moonkit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Moonkit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2C482D519C9F98A002E84A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2C482D619C9F98A002E84A9 /* Moonkit_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Moonkit_Tests.m; sourceTree = "<group>"; };
@@ -644,6 +646,7 @@
 				C2F8C3161A362606004229FE /* UIResponder+MoonKitAdditions.swift */,
 				C21D7AE31AA60E3F000DE8A3 /* NSError+MoonKitAdditions.swift */,
 				C2C4B72B1AA951D700912951 /* NSManagedObject+MoonKitAdditions.swift */,
+				C24E0EB81AC6141B0044248E /* Bool+MoonKitAdditions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1527,6 +1530,7 @@
 				C2358F7319C78E0C00920F8D /* MSSingleton.m in Sources */,
 				C2358F7419C78E0C00920F8D /* MSSingletonController.m in Sources */,
 				C28E35BE1A45DBF300438CCF /* Array+MoonKitAdditions.swift in Sources */,
+				C24E0EB91AC6141B0044248E /* Bool+MoonKitAdditions.swift in Sources */,
 				C235930419C8E04200920F8D /* JSONParser.swift in Sources */,
 				C21493BF1A35285A00D274A2 /* ColorSwatch.swift in Sources */,
 				C28E50951A13CA7300DF3206 /* ToggleImageSegmentedControl.swift in Sources */,

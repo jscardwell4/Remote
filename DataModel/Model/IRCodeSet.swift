@@ -57,6 +57,22 @@ final public class IRCodeSet: EditableModelObject {
     return dictionary
   }
 
+  /**
+  objectWithIndex:context:
+
+  :param: index PathModelIndex
+  :param: context NSManagedObjectContext
+
+  :returns: Image?
+  */
+  @objc(objectWithPathIndex:context:)
+  public override class func objectWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> IRCodeSet? {
+    if let object = modelWithIndex(index, context: context) {
+      MSLogDebug("located code set with name '\(object.name)'")
+      return object
+    } else { return nil }
+  }
+
 }
 
 extension IRCodeSet: PathIndexedModel {

@@ -83,6 +83,22 @@ final public class Manufacturer: EditableModelObject {
     return dictionary
   }
 
+  /**
+  objectWithIndex:context:
+
+  :param: index PathModelIndex
+  :param: context NSManagedObjectContext
+
+  :returns: Image?
+  */
+  @objc(objectWithPathIndex:context:)
+  public override class func objectWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Manufacturer? {
+    if let object = modelWithIndex(index, context: context) {
+      MSLogDebug("located manufacter with name '\(object.name)'")
+      return object
+    } else { return nil }
+  }
+
 }
 
 extension Manufacturer: PathIndexedModel {

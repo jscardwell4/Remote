@@ -94,6 +94,22 @@ final public class Image: EditableModelObject {
   public var preview: UIImage { return image ?? UIImage() }
   public var thumbnail: UIImage { return preview }
 
+  /**
+  objectWithIndex:context:
+
+  :param: index PathModelIndex
+  :param: context NSManagedObjectContext
+
+  :returns: Image?
+  */
+  @objc(objectWithPathIndex:context:)
+  public override class func objectWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Image? {
+    if let object = modelWithIndex(index, context: context) {
+      MSLogDebug("located image with name '\(object.name)'")
+      return object
+    } else { return nil }
+  }
+
 }
 
 extension Image: PathIndexedModel {

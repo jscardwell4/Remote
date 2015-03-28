@@ -86,6 +86,21 @@ final public class PresetCategory: EditableModelObject {
   }
 
 
+  /**
+  objectWithIndex:context:
+
+  :param: index PathModelIndex
+  :param: context NSManagedObjectContext
+
+  :returns: Image?
+  */
+  @objc(objectWithPathIndex:context:)
+  public override class func objectWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> PresetCategory? {
+    if let object = modelWithIndex(index, context: context) {
+      MSLogDebug("located preset category with name '\(object.name)'")
+      return object
+    } else { return nil }
+  }
 
 }
 

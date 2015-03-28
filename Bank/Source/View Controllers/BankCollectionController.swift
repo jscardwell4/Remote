@@ -67,13 +67,9 @@ class BankCollectionController: UICollectionViewController, BankController {
         rightBarButtonItems = [exportButton, selectAllButton]
 
         showIndicator = true
-
-
-      } else {
-
-        rightBarButtonItems = [ Bank.dismissButton ]
-
       }
+      else if let dismissButton = Bank.dismissButton { rightBarButtonItems = [dismissButton] }
+      else { rightBarButtonItems = [] }
 
       collectionView?.allowsMultipleSelection = exportSelectionMode  // Update selection mode
 
@@ -143,10 +139,10 @@ class BankCollectionController: UICollectionViewController, BankController {
 //	      if self.collection is PreviewableCategory {
 //
 //	        // Create the segmented control
-//	        let displayOptions = ToggleImageSegmentedControl(items: [UIImage(named: "1073-grid-1-toolbar")!,
-//	                                                                 UIImage(named: "1073-grid-1-toolbar-selected")!,
-//	                                                                 UIImage(named: "1076-grid-4-toolbar")!,
-//	                                                                 UIImage(named: "1076-grid-4-toolbar-selected")!])
+//	        let displayOptions = ToggleImageSegmentedControl(items: [Bank.bankImageNamed("1073-grid-1-toolbar"),
+//	                                                                 Bank.bankImageNamed("1073-grid-1-toolbar-selected"),
+//	                                                                 Bank.bankImageNamed("1076-grid-4-toolbar"),
+//	                                                                 Bank.bankImageNamed("1076-grid-4-toolbar-selected")])
 //	        displayOptions.selectedSegmentIndex = self.viewingMode.rawValue
 //	        displayOptions.toggleAction = {[unowned self] control in
 //	          self.viewingMode = BankCollectionAttributes.ViewingMode(rawValue: control.selectedSegmentIndex)!

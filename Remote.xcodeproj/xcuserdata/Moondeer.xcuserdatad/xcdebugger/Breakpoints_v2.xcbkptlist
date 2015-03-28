@@ -3618,11 +3618,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DataModel/Model/ModelObject.swift"
-            timestampString = "448940255.461738"
+            timestampString = "449206124.316565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "189"
-            endingLineNumber = "189"
+            startingLineNumber = "220"
+            endingLineNumber = "220"
             landmarkName = "ModelObject"
             landmarkType = "3">
          </BreakpointContent>

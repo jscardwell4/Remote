@@ -331,6 +331,7 @@ import MoonKit
 
     /** Type of value marked for logging */
     public enum LogValue: String {
+      case File     = "file"
       case Model    = "model"
       case Parsed   = "parsed"
       case Imported = "imported"
@@ -485,6 +486,7 @@ import MoonKit
 
       self.modelFlags ➤ {
         var fileName: String?
+        var logFile = false
         var logParsed = false
         var logImported = false
         var removeExisting = false
@@ -492,7 +494,10 @@ import MoonKit
           switch marker {
             case .Remove: removeExisting = true
             case .LoadFile(let f): fileName = f
-            case .Log(let values): logParsed = values ∋ .Parsed; logImported = values ∋ .Imported
+            case .Log(let values):
+              logParsed = values ∋ .Parsed
+              logImported = values ∋ .Imported
+              logFile = values ∋ .File
           default: break
           }
         }
@@ -501,6 +506,7 @@ import MoonKit
           self.loadDataFromFile(fileName!,
                            type: $0.modelType,
                         context: rootContext,
+                        logFile: logFile,
                       logParsed: logParsed,
                     logImported: logImported)
         }
@@ -564,6 +570,7 @@ import MoonKit
   private class func loadDataFromFile<T:ModelObject>(file: String,
                                                 type: T.Type,
                                              context: NSManagedObjectContext,
+                                             logFile: Bool,
                                            logParsed: Bool,
                                          logImported: Bool)
   {
@@ -574,7 +581,10 @@ import MoonKit
       data: AnyObject = JSONSerialization.objectByParsingFile(filePath, options: 1, error: &error)
       where MSHandleError(error) == false
     {
-
+      if logFile {
+        MSLogDebug("content of file to parse:\n" + (String(contentsOfFile: filePath,
+                                                           encoding: NSUTF8StringEncoding,
+                                                              error: nil) ?? "")) }
       if logParsed { MSLogDebug("json objects from parsed file:\n\(data)") }
 
       if let dataDictionary = data as? [String:AnyObject],

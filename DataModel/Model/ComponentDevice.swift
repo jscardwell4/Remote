@@ -77,7 +77,7 @@ public final class ComponentDevice: EditableModelObject {
     updateRelationshipFromData(data, forKey: "offCommand")
     updateRelationshipFromData(data, forKey: "manufacturer")
     updateRelationshipFromData(data, forKey: "networkDevice")
-    updateRelationshipFromData(data, forKey: "codeSet")
+//    updateRelationshipFromData(data, forKey: "codeSet")
   }
 
 }

@@ -91,7 +91,23 @@ final public class ImageCategory: EditableModelObject {
 
     return dictionary
   }
-  
+
+  /**
+  objectWithIndex:context:
+
+  :param: index PathModelIndex
+  :param: context NSManagedObjectContext
+
+  :returns: Image?
+  */
+  @objc(objectWithPathIndex:context:)
+  public override class func objectWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> ImageCategory? {
+    if let object = modelWithIndex(index, context: context) {
+      MSLogDebug("located image category with name '\(object.name)'")
+      return object
+    } else { return nil }
+  }
+
 }
 
 extension ImageCategory: PathIndexedModel {

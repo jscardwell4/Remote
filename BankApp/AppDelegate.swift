@@ -30,8 +30,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     window?.makeKeyAndVisible()
     window?.rootViewController = UINavigationController(rootViewController: BankRootController())
 
-    MSLogDebug("font families…\n\(UIFont.familyNames())")
-
     return true
   }
 

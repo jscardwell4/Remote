@@ -98,7 +98,8 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
 
   /** Accessor for the model's `uuid` as a `UUIDModelIndex` */
   public var index: ModelIndex {
-    if let uuidIndex = UUIDModelIndex(rawValue: uuid) { return uuidIndex }
+    if self is PathIndexedModel { return (self as! PathIndexedModel).pathIndex }
+    else if let uuidIndex = UUIDModelIndex(rawValue: uuid) { return uuidIndex }
     else { fatalError("unable to generate uuid index for model, is uuid nil?") }
   }
 
@@ -149,6 +150,31 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
   }
 
   /**
+  objectWithIndex:context:
+
+  :param: index ModelIndex
+  :param: context NSManagedObjectContext
+
+  :returns: Self?
+  */
+  public class func objectWithIndex(index: UUIDModelIndex, context: NSManagedObjectContext) -> Self? {
+    return objectWithUUID(index.rawValue, context: context)
+  }
+
+  /**
+  objectWithIndex:context:
+
+  :param: index PathModelIndex
+  :param: context NSManagedObjectContext
+
+  :returns: Self?
+  */
+  @objc(objectWithPathIndex:context:)
+  public class func objectWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self? {
+    return nil
+  }
+
+  /**
   Returns the existing object matched by `data` or nil if no match exists
 
   :param: data [String AnyObject]
@@ -158,6 +184,11 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
   */
   public class func objectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Self? {
     if let uuid = data["uuid"] as? String, object = objectWithUUID(uuid, context: context) { return object }
+    else if let rawIndex = data["index"] as? String {
+      if let index = UUIDModelIndex(rawValue: rawIndex) { return objectWithIndex(index, context: context) }
+      else if let index = PathModelIndex(rawValue: rawIndex) { return objectWithIndex(index, context: context) }
+      else { return nil }
+    }
     else { return nil }
   }
 

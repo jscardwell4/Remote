@@ -3,14 +3,14 @@
     "uuid": "F0419941-0226-4D06-A4F0-4F3B70BE23CF",
     "name": "Dish Hopper",
     "always-on": true,
-    "code-set.path": "Dish/Dish",
-    "manufacturer.name": "Dish"
+    "code-set.index": "Dish/Dish",
+    "manufacturer.index": "Dish"
   },
   {
     "uuid": "DB69F934-E193-4C45-9598-1D5155B8E6E5",
     "name": "PS3",
     "port": 3,
-    "manufacturer.name": "Sony"
+    "manufacturer.index": "Sony"
   },
   {
     "uuid": "18A7C007-4DED-48D6-9A72-FA63640C49B5",
@@ -20,22 +20,22 @@
     "code-set.path": "Sony/AV Receiver",
     "off-command": {
       "class": "sendir",
-      "code.path": "Sony/AV Receiver/Power"
+      "code.index": "Sony/AV Receiver/Power"
     },
-    "manufacturer.name": "Sony"
+    "manufacturer.index": "Sony"
   },
   {
     "uuid": "CC67B0D5-13E8-4548-BDBF-7B81CAA85A9F",
     "name": "Samsung TV",
     "port": 3,
-    "code-set.path": "Samsung/Samsung TV",
+    "code-set.index": "Samsung/Samsung TV",
     "on-command": {
       "class": "sendir",
-      "code.path": "Samsung/Samsung TV/Power On"
+      "code.index": "Samsung/Samsung TV/Power On"
     },
     "off-command": {
       "class": "sendir",
-      "code.path": "Samsung/Samsung TV/Power Off"
+      "code.index": "Samsung/Samsung TV/Power Off"
     },
     "manufacturer.name": "Samsung"
   }

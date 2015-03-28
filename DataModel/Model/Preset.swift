@@ -192,6 +192,22 @@ final public class Preset: EditableModelObject {
     set { storage["command"] = newValue }
   }
 
+  /**
+  objectWithIndex:context:
+
+  :param: index PathModelIndex
+  :param: context NSManagedObjectContext
+
+  :returns: Image?
+  */
+  @objc(objectWithPathIndex:context:)
+  public override class func objectWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Preset? {
+    if let object = modelWithIndex(index, context: context) {
+      MSLogDebug("located preset with name '\(object.name)'")
+      return object
+    } else { return nil }
+  }
+
 }
 
 extension Preset: PathIndexedModel {

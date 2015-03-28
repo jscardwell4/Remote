@@ -94,6 +94,22 @@ final public class IRCode: EditableModelObject {
     if let onOffPattern = data["on-off-pattern"] as? String { self.onOffPattern = onOffPattern }
   }
 
+  /**
+  objectWithIndex:context:
+
+  :param: index PathModelIndex
+  :param: context NSManagedObjectContext
+
+  :returns: Image?
+  */
+  @objc(objectWithPathIndex:context:)
+  public override class func objectWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> IRCode? {
+    if let object = modelWithIndex(index, context: context) {
+      MSLogDebug("located code with name '\(object.name)'")
+      return object
+    } else { return nil }
+  }
+
 }
 
 extension IRCode: MSJSONExport {
