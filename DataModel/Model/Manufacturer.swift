@@ -16,50 +16,6 @@ final public class Manufacturer: EditableModelObject {
   @NSManaged public var codeSets: Set<IRCodeSet>
   @NSManaged public var devices: Set<ComponentDevice>
 
-//  public typealias NestedType = IRCodeSet
-//  public var subcategories: [NestedType] { get { return Array(codeSets) } set { codeSets = Set(newValue) } }
-//  public func subcategoryWithIndex(index: PathModelIndex) -> IRCodeSet? { return findByIndex(codeSets, index) }
-
-//  public typealias ItemType = IRCode
-//  public var items: [ItemType] { get { return [] } set {} }
-//  public func itemWithIndex(index: PathModelIndex) -> ItemType? { return nil }
-
-  /**
-  itemWithIndex:context:
-
-  :param: index String
-  :param: context NSManagedObjectContext
-
-  :returns: T?
-  */
-//  public class func itemWithIndex<T:PathIndexedModel>(var index: PathModelIndex, context: NSManagedObjectContext) -> T? {
-//    if index.isEmpty || index.count > 3 { return nil }
-//
-//    let manufacturerIndex = index.removeAtIndex(0)
-//    if let manufacturer = rootItemWithIndex(PathModelIndex(manufacturerIndex), context: context) {
-//      if index.isEmpty { return manufacturer as? T }
-//      let codeSetIndex = index.removeAtIndex(0)
-//      if let codeSet = manufacturer.subcategoryWithIndex("\(manufacturerIndex)/\(codeSetIndex)") {
-//        if index.isEmpty { return codeSet as? T }
-//        let codeIndex = index.removeLast()
-//        return codeSet.itemWithIndex("\(manufacturerIndex)/\(codeSetIndex)/\(codeIndex)") as? T
-//      }
-//    }
-//    return nil
-//  }
-
-  /**
-  rootItemWithIndex:context:
-
-  :param: index String
-  :param: context NSManagedObjectContext
-
-  :returns: Self?
-  */
-//  public class func rootItemWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self? {
-//    return objectWithValue(index.rawValue, forAttribute: "name", context: context)
-//  }
-
   /**
   updateWithData:
 
@@ -67,7 +23,8 @@ final public class Manufacturer: EditableModelObject {
   */
   override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    updateRelationshipFromData(data, forKey: "codeSets", lookupKey: "code-sets")
+
+    updateRelationshipFromData(data, forKey: "codeSets")
     updateRelationshipFromData(data, forKey: "devices")
   }
 
@@ -97,6 +54,13 @@ final public class Manufacturer: EditableModelObject {
       MSLogDebug("located manufacter with name '\(object.name)'")
       return object
     } else { return nil }
+  }
+
+  override public var description: String {
+    return "\(super.description)\n\t" + "\n\t".join(
+      "code sets = [" + ", ".join(map(codeSets, {$0.name})) + "]",
+      "devices = [" + ", ".join(map(devices, {$0.name})) + "]"
+    )
   }
 
 }

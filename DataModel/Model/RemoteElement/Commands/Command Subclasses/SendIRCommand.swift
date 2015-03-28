@@ -36,7 +36,22 @@ public final class SendIRCommand: SendCommand {
   */
   override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    updateRelationshipFromData(data, forKey: "code")
+    
+//    updateRelationshipFromData(data, forKey: "code")
+//    if let codeData = data["code"] as? [String:AnyObject] {
+//      println("codeData: \(codeData)")
+//      if let rawCodeIndex = codeData["index"] as? String, codeIndex = PathModelIndex(rawValue: rawCodeIndex) {
+//        println("codeIndex: \(codeIndex.rawValue)")
+//        if let moc = managedObjectContext, code = IRCode.modelWithIndex(codeIndex, context: moc) {
+//          println("code: \(code)")
+//          self.code = code
+//        }
+//      }
+//    }
+    if let code: IRCode = relatedObjectWithData(data, forKey: "code") {
+      println(code)
+      self.code = code
+    }
   }
 
   /**

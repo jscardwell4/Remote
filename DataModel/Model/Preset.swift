@@ -27,9 +27,6 @@ final public class Preset: EditableModelObject {
     storage = DictionaryStorage(context: managedObjectContext!)
   }
 
-//  public typealias CollectionType = PresetCategory
-//  public var collection: CollectionType? { get { return presetCategory } set { if newValue != nil { presetCategory = newValue! } } }
-
   public subscript(key: String) -> AnyObject? {
     get { return storage[key] }
     set { storage[key] = newValue }
@@ -206,6 +203,75 @@ final public class Preset: EditableModelObject {
       MSLogDebug("located preset with name '\(object.name)'")
       return object
     } else { return nil }
+  }
+
+  override public var description: String {
+    return "\(super.description)\n\t" + "\n\t".join(
+      "category = \(presetCategory.index)",
+      "parent = \(parentPreset?.index ?? nil)",
+      "base type = \(baseType)",
+      "role = \(role)",
+      "shape = \(shape)",
+      "style = \(style)",
+      "background image = \(backgroundImage?.index ?? nil)",
+      "background image alpha = \(backgroundImageAlpha?.floatValue ?? nil)",
+      "background color = \(backgroundColor ?? nil)",
+      "constraints = \(constraints ?? nil)",
+      {
+        switch self.baseType {
+        case .Remote:
+          return "top bar hidden = \(self.topBarHidden)"
+        case .ButtonGroup:
+          let labelAttributesString: String
+          if let labelAttributes = self.labelAttributes {
+            labelAttributesString = "\n" + labelAttributes.description.indentedBy(4)
+          } else {
+            labelAttributesString = "nil"
+          }
+          let labelConstraintsString: String
+          if let labelConstraints = self.labelConstraints {
+            labelConstraintsString = "\n" + labelConstraints.indentedBy(4)
+          } else {
+            labelConstraintsString = "nil"
+          }
+          return "\n\t".join(
+            "autohide = \(self.autohide ?? nil)",
+            "panel assignment = \(self.panelAssignment)",
+            "label attributes = \(labelAttributesString)",
+            "label constraints = \(labelConstraintsString)"
+          )
+        case .Button:
+          let titlesString: String
+          if let titles = self.titles {
+            titlesString = "\n" + titles.description.indentedBy(4)
+          } else { titlesString = "nil" }
+          let iconsString: String
+          if let icons = self.icons {
+            iconsString = "\n" + icons.description.indentedBy(4)
+          } else { iconsString = "nil" }
+          let imagesString: String
+          if let images = self.images {
+            imagesString = "\n" + images.description.indentedBy(4)
+          } else { imagesString = "nil" }
+          let backgroundColorsString: String
+          if let backgroundColors = self.backgroundColors {
+            backgroundColorsString = "\n" + backgroundColors.description.indentedBy(4)
+          } else { backgroundColorsString = "nil" }
+
+          return "\n\t".join(
+            "title edge insets = \(self.titleEdgeInsets)",
+            "content edge insets = \(self.contentEdgeInsets)",
+            "image edge insets = \(self.imageEdgeInsets)",
+            "titles = \(titlesString)",
+            "icons = \(iconsString)",
+            "images = \(imagesString)",
+            "background colors = \(backgroundColorsString)"
+          )
+        default: break
+        }
+        return ""
+      }()
+    )
   }
 
 }

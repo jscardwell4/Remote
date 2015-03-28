@@ -55,15 +55,6 @@ public final class ComponentDevice: EditableModelObject {
   }
 
   /**
-  objectForKeyedSubscript:
-
-  :param: name String!
-
-  :returns: AnyObject!
-  */
-//  subscript(name: String) -> AnyObject! { return (codes.allObjects as [IRCode]).filter{$0.name == name}.first }
-
-  /**
   updateWithData:
 
   :param: data [String:AnyObject]
@@ -77,7 +68,27 @@ public final class ComponentDevice: EditableModelObject {
     updateRelationshipFromData(data, forKey: "offCommand")
     updateRelationshipFromData(data, forKey: "manufacturer")
     updateRelationshipFromData(data, forKey: "networkDevice")
+
+    if let codeSetData = data["code-set"] as? [String:AnyObject] {
+      if let rawCodeSetIndex = codeSetData["index"] as? String, codeSetIndex = PathModelIndex(rawValue: rawCodeSetIndex) {
+        if let moc = managedObjectContext, codeSet = IRCodeSet.modelWithIndex(codeSetIndex, context: moc) {
+          self.codeSet = codeSet
+        }
+      }
+    }
 //    updateRelationshipFromData(data, forKey: "codeSet")
+  }
+
+  override public var description: String {
+    return "\(super.description)\n\t" + "\n\t".join(
+      "always on = \(alwaysOn)",
+      "input powers on = \(inputPowersOn)",
+      "inputs = [" + ", ".join(map(inputs, {$0.name})) + "]",
+      "port = \(port)",
+      "power = \(power)",
+      "manufacturer = \(manufacturer.index)",
+      "code set = \(codeSet?.index ?? nil)"
+    )
   }
 
 }

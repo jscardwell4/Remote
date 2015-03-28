@@ -20,48 +20,6 @@ final public class ImageCategory: EditableModelObject {
   public let previewableItems = true
   public let editableItems = true
 
-//  public typealias ItemType = Image
-//  public var items: [ItemType] { get { return Array(images) } set { images = Set(newValue) } }
-//  public func itemWithIndex(index: PathModelIndex) -> ItemType? { return findByIndex(images, index) }
-
-//  public typealias NestedType = ImageCategory
-//  public var subcategories: [NestedType] { get { return Array(childCategories) } set { childCategories = Set(newValue) } }
-//  public func subcategoryWithIndex(index: PathModelIndex) -> NestedType? { return findByIndex(childCategories, index) }
-
-//  public typealias CollectionType = NestedType
-//  public var collection: CollectionType? { get { return parentCategory } set { parentCategory = newValue } }
-
-
-  /**
-  itemWithIndex:context:
-
-  :param: index String
-  :param: context NSManagedObjectContext
-
-  :returns: T?
-  */
-//  public class func itemWithIndex<T:PathIndexedModel>(index: PathModelIndex, context: NSManagedObjectContext) -> T? {
-//    if index.isEmpty { return nil }
-//    var i = 1
-//    if let rootCategory = rootItemWithIndex(index[0..<i], context: context) {
-//      return itemWithIndexFromRoot(index, rootCategory)
-//    } else { return nil }
-//  }
-
-  /**
-  rootItemWithIndex:context:
-
-  :param: index PathModelIndex
-  :param: context NSManagedObjectContext
-
-  :returns: Self?
-  */
-//  public class func rootItemWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self? {
-//    if let name = index.first {
-//      return objectMatchingPredicate(∀"parentCategory = NULL AND name = '\(name)'", context: context)
-//    } else { return nil }
-//  }
-
   /**
   updateWithData:
 
@@ -108,6 +66,13 @@ final public class ImageCategory: EditableModelObject {
     } else { return nil }
   }
 
+  override public var description: String {
+    return "\(super.description)\n\t" + "\n\t".join(
+      "image count = \(images.count)",
+      "subcategories = [" + ", ".join(map(childCategories, {$0.name})) + "]",
+      "parent = \(parentCategory?.name ?? nil)"
+    )
+  }
 }
 
 extension ImageCategory: PathIndexedModel {

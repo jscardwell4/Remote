@@ -39,6 +39,11 @@
 			<key>orderHint</key>
 			<integer>9</integer>
 		</dict>
+		<key>DataModelApp.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>12</integer>
+		</dict>
 		<key>ISYClient.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -159,6 +164,16 @@
 			<true/>
 		</dict>
 		<key>C2E9F3FA1ABC9797007581F2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C2F4C58A1AC6E95300DB3695</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C2F4C59E1AC6E95300DB3695</key>
 		<dict>
 			<key>primary</key>
 			<true/>

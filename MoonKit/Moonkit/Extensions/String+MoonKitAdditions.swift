@@ -78,6 +78,11 @@ public extension String {
   public var isDashcase: Bool { return ~/"^\\p{Ll}+(-\\p{Ll}*)*$" ~= self }
   public var isTitlecase: Bool { return ~/"^\\p{Lu}\\p{Ll}*(\\P{L}+\\p{Lu}\\p{Ll}*)*$" ~= self }
 
+  public func indentedBy(indent: Int) -> String {
+    let spacer = " " * indent
+    return spacer + "\n\(spacer)".join("\n".split(self))
+  }
+
   /**
   join:
 

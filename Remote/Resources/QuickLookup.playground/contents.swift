@@ -134,3 +134,6 @@ public final class UUIDModelIndex: ModelIndex, StringInterpolationConvertible {
     super.init(toString(expr))
   }
 }
+
+let index = PathModelIndex("what/the/fuck")
+println(index)

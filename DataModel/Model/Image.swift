@@ -53,9 +53,6 @@ final public class Image: EditableModelObject {
   @NSManaged public var views: NSSet
   @NSManaged public var imageCategory: ImageCategory
 
-//  public typealias CollectionType = ImageCategory
-//  public var collection: CollectionType? { get { return imageCategory } set { if newValue != nil { imageCategory = newValue! } } }
-
   override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     updateRelationshipFromData(data, forKey: "imageCategory", lookupKey: "category")
@@ -108,6 +105,15 @@ final public class Image: EditableModelObject {
       MSLogDebug("located image with name '\(object.name)'")
       return object
     } else { return nil }
+  }
+
+  override public var description: String {
+    return "\(super.description)\n\t" + "\n\t".join(
+      "asset name = \(assetName)",
+      "left cap = \(leftCap)",
+      "top cap = \(topCap)",
+      "catgegory = \(imageCategory.index)"
+    )
   }
 
 }

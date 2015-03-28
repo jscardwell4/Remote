@@ -255,16 +255,18 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
   }
 
   override public var debugDescription: String {
-    return "\n".join(description,
-      "firstItem: \(firstItem)",
-      "secondItem: \(secondItem)",
-      "firstAttribute: \(firstAttribute)",
-      "secondAttribute: \(secondAttribute)",
-      "multiplier: \(multiplier)",
-      "constant: \(constant)",
-      "identifier: \(identifier)",
-      "priority: \(priority)",
-      "owner: \(owner)")
+    return "\(super.description)\n\t" + "\n\t".join(
+      description,
+      "first item = \(firstItem.index)",
+      "second item = \(secondItem?.index ?? nil)",
+      "first attribute = \(firstAttribute)",
+      "second attribute = \(secondAttribute)",
+      "multiplier = \(multiplier)",
+      "constant = \(constant)",
+      "identifier = \(identifier)",
+      "priority = \(priority)",
+      "owner = \(owner?.index ?? nil)"
+    )
   }
 
   /**

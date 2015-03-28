@@ -228,6 +228,7 @@ import MoonKit
     let controlStateColorSet = entities["ControlStateColorSet"]!
     let imageView            = entities["ImageView"]!
     let activityCommand      = entities["ActivityCommand"]!
+    let newtorkDevice        = entities["NetworkDevice"]!
 
     // set `user` default value
     modifyAttribute("user", forEntities: [componentDevice], defaultValue: true)
@@ -242,6 +243,7 @@ import MoonKit
     modifyAttribute("codes", forEntities: [iRCodeSet], defaultValue: NSSet())
     modifyAttribute("images", forEntities: [imageCategory], defaultValue: NSSet())
     modifyAttribute("presets", forEntities: [presetCategory], defaultValue: NSSet())
+    modifyAttribute("componentDevices", forEntities: [newtorkDevice], defaultValue: NSSet())
 
     // size attributes on images
     modifyAttribute("size",

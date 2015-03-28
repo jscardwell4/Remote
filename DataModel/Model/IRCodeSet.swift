@@ -18,14 +18,6 @@ final public class IRCodeSet: EditableModelObject {
   @NSManaged public var codes: Set<IRCode>
   @NSManaged public var manufacturer: Manufacturer
 
-//  public typealias ItemType = IRCode
-//  public var items: [ItemType] { get { return Array(codes) } set { codes = Set(newValue) } }
-//  public func itemWithIndex(index: PathModelIndex) -> ItemType? { return findByIndex(codes, index) }
-
-//  public typealias CollectionType = Manufacturer
-//  public var collection: CollectionType? { get { return manufacturer } set { if newValue != nil { manufacturer = newValue! } } }
-
-
   /**
   updateWithData:
 
@@ -73,6 +65,14 @@ final public class IRCodeSet: EditableModelObject {
     } else { return nil }
   }
 
+  override public var description: String {
+    return "\(super.description)\n\t" + "\n\t".join(
+      "manufacturer = \(manufacturer.index)",
+      "code count = \(codes.count)",
+      "devices = [" + ", ".join(map(devices, {$0.name})) + "]"
+    )
+  }
+
 }
 
 extension IRCodeSet: PathIndexedModel {
@@ -93,7 +93,7 @@ extension IRCodeSet: PathIndexedModel {
       return findFirst(manufacturer.codeSets, {$0.name == codeSetName})
     } else { return nil }
   }
-  
+
 }
 
 extension IRCodeSet: ModelCollection {

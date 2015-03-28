@@ -177,6 +177,13 @@ public func apply<S:SequenceType>(sequence: S, block: (S.Generator.Element) -> V
 
 /** Operator function for the apply function */
 public func ➤<S:SequenceType>(lhs: S, rhs: (S.Generator.Element) -> Void) { apply(lhs, rhs) }
+public func ➤<T>(lhs: T, rhs: (T) -> Void) { rhs(lhs) }
+
+public func enumeratingMap<S : SequenceType, T>(source: S, transform: (Int,S.Generator.Element) -> T) -> [T] {
+  var mapped: [T] = []
+  for (i, element) in enumerate(source) { mapped.append(transform(i, element)) }
+  return mapped
+}
 
 /**
 unique<T:Equatable>:

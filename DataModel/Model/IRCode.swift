@@ -25,9 +25,6 @@ final public class IRCode: EditableModelObject {
 
   public var manufacturer: Manufacturer { return codeSet.manufacturer }
 
-//  public typealias CollectionType = IRCodeSet
-//  public var collection: CollectionType? { get { return codeSet } set { if newValue != nil { codeSet = newValue! } } }
-
   /**
   isValidOnOffPattern:
 
@@ -108,6 +105,18 @@ final public class IRCode: EditableModelObject {
       MSLogDebug("located code with name '\(object.name)'")
       return object
     } else { return nil }
+  }
+
+  override public var description: String {
+    return "\(super.description)\n\t" + "\n\t".join(
+      "code set = \(codeSet.index)",
+      "device = \(device?.name ?? nil)",
+      "sets device input = \(setsDeviceInput)",
+      "frequency = \(frequency)",
+      "offset = \(offset)",
+      "repeat count = \(repeatCount)",
+      "on-off pattern = \(onOffPattern)"
+    )
   }
 
 }

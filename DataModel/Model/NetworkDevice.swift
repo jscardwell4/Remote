@@ -14,7 +14,7 @@ import MoonKit
 public class NetworkDevice: EditableModelObject {
 
   @NSManaged public var uniqueIdentifier: String!
-  @NSManaged public var componentDevices: NSSet?
+  @NSManaged public var componentDevices: Set<ComponentDevice>
 
   /**
   deviceExistsWithIdentifier:
@@ -30,6 +30,13 @@ public class NetworkDevice: EditableModelObject {
   override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
     if let uniqueIdentifier = data["unique-identifier"] as? String { self.uniqueIdentifier = uniqueIdentifier }
+  }
+
+  override public var description: String {
+    return "\(super.description)\n\t" + "\n\t".join(
+      "unique identifier = \(uniqueIdentifier)",
+      "component devices = [" + ", ".join(map(componentDevices, {$0.name})) + "]"
+    )
   }
 
   /**

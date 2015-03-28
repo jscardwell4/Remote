@@ -117,7 +117,7 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
   :returns: String
   */
   public class var entityName: String { return entityDescription.name! }
-
+  public var entityName: String { return self.dynamicType.entityName }
 
   /// MARK: - Validation
   ////////////////////////////////////////////////////////////////////////////////
@@ -185,9 +185,16 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
   public class func objectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Self? {
     if let uuid = data["uuid"] as? String, object = objectWithUUID(uuid, context: context) { return object }
     else if let rawIndex = data["index"] as? String {
-      if let index = UUIDModelIndex(rawValue: rawIndex) { return objectWithIndex(index, context: context) }
-      else if let index = PathModelIndex(rawValue: rawIndex) { return objectWithIndex(index, context: context) }
-      else { return nil }
+      if let index = UUIDModelIndex(rawValue: rawIndex), object = objectWithIndex(index, context: context) {
+        println("object for index \(index.rawValue): \(object)")
+        return object
+      } else if let index = PathModelIndex(rawValue: rawIndex), object = objectWithIndex(index, context: context) {
+        println("object for index \(index.rawValue): \(object)")
+        return object
+      } else {
+        println("failed to locate object with index \(rawIndex)")
+        return nil
+      }
     }
     else { return nil }
   }
@@ -218,31 +225,30 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
   }
 
   /**
-  objectsMatchingPredicate:fetchLimit:sortBy:ascending:context:
+  objectsMatchingPredicate:fetchLimit:sortBy:ascending:context:error:
 
   :param: predicate NSPredicate
   :param: fetchLimit Int = 0
   :param: sortBy String? = nil
   :param: ascending Bool = true
   :param: context NSManagedObjectContext
+  :param: error NSErrorPointer = nil
 
   :returns: [ModelObject]
   */
   public class func objectsMatchingPredicate(predicate: NSPredicate,
-                           fetchLimit: Int = 0,
-                             sortBy: String? = nil,
-                            ascending: Bool = true,
-                              context: NSManagedObjectContext) -> [ModelObject]
+                                  fetchLimit: Int = 0,
+                                      sortBy: String? = nil,
+                                   ascending: Bool = true,
+                                     context: NSManagedObjectContext,
+                                       error: NSErrorPointer = nil) -> [ModelObject]
   {
     let request = NSFetchRequest(entityName: entityName, predicate: predicate)
     request.fetchLimit = fetchLimit
     if sortBy != nil {
       request.sortDescriptors = ",".split(sortBy!).map{NSSortDescriptor(key: $0, ascending: ascending)}
     }
-    var error: NSError?
-    let results = context.executeFetchRequest(request, error: &error) as? [ModelObject]
-    MSHandleError(error)
-    return results ?? []
+    return context.executeFetchRequest(request, error: error) as? [ModelObject] ?? []
   }
 
   /**
@@ -401,6 +407,28 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
   }
 
   /**
+  relatedObjectWithData:forKey:lookupKey:
+
+  :param: data [String AnyObject]
+  :param: key String
+  :param: lookupKey String? = nil
+
+  :returns: T?
+  */
+  public func relatedObjectWithData<T:ModelObject>(data: [String:AnyObject], forKey key: String, lookupKey: String? = nil) -> T? {
+    if let relationshipDescription = entity.relationshipsByName[key] as? NSRelationshipDescription,
+      relatedTypeName = relationshipDescription.destinationEntity?.managedObjectClassName,
+      relatedType = NSClassFromString(relatedTypeName) as? ModelObject.Type,
+      relatedObjectData = data[lookupKey ?? key.dashcaseString] as? [String:AnyObject],
+      moc = managedObjectContext
+    {
+      let relatedObject = relatedType.objectWithData(relatedObjectData, context: moc)
+      println("relatedObject: \(relatedObject)")
+      return relatedObject as? T
+    } else { return nil }
+  }
+
+  /**
   updateRelationshipFromData:forKey:
 
   :param: data [String AnyObject]
@@ -543,8 +571,13 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
 
   public var JSONObject: AnyObject { return JSONDictionary().JSONObject }
 
+  override public var description: String {
+    return "\(className):\n\t" + "\n\t".join(
+      "entity = \(entityName)",
+      "index = \(index)" + (self is PathIndexedModel ? "\n\tuuid = \(uuid)" : "")
+    )
+  }
 }
-
 
 /**
 `Equatable` support for `ModelObject`
