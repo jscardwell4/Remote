@@ -364,8 +364,9 @@ public final class Button: RemoteElement {
 
       if let titles = data["titles"] as? [String:[String:AnyObject]] {
         for (mode, values) in titles {
-          let titleSet = ControlStateTitleSet.importObjectWithData(values, context: moc)
-          if titleSet != nil { setTitles(titleSet, forMode: mode) }
+          if let titleSet: ControlStateTitleSet = ControlStateTitleSet.importObjectWithData(values, context: moc) {
+            setTitles(titleSet, forMode: mode)
+          }
         }
       }
 

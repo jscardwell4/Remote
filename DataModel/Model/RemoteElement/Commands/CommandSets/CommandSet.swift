@@ -71,7 +71,7 @@ public final class CommandSet: CommandContainer {
         let commands = data - "type"
         for (roleJSON, roleData) in commands {
           if let commandData = roleData as? [String:AnyObject],
-            let command = Command.importObjectWithData(commandData, context: moc) {
+            let command: Command = Command.importObjectWithData(commandData, context: moc) {
               self[RemoteElement.Role(JSONValue: roleJSON)] = command
           }
         }

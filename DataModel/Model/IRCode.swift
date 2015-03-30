@@ -101,13 +101,7 @@ final public class IRCode: EditableModelObject {
   */
   @objc(objectWithPathIndex:context:)
   public override class func objectWithIndex(index: PathIndex, context: NSManagedObjectContext) -> IRCode? {
-    if let object = modelWithIndex(index, context: context) {
-      MSLogDebug("located code with name '\(object.name)'")
-      return object
-    } else {
-      MSLogDebug("unable to locate code for index '\(index)'")
-      return nil
-    }
+    return modelWithIndex(index, context: context)
   }
 
   override public var description: String {
@@ -126,6 +120,11 @@ final public class IRCode: EditableModelObject {
 
 extension IRCode: MSJSONExport {
 
+  /**
+  JSONDictionary
+
+  :returns: MSDictionary
+  */
   override public func JSONDictionary() -> MSDictionary {
 
     let dictionary = super.JSONDictionary()
@@ -162,10 +161,9 @@ extension IRCode: PathIndexedModel {
   public static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> IRCode? {
     if index.count != 3 { return nil }
     if let codeSet = IRCodeSet.modelWithIndex(index[0...1], context: context) {
-      MSLogDebug("located code set with name '\(codeSet.name)'")
       return objectMatchingPredicate(∀"codeSet.uuid == '\(codeSet.uuid)' AND name == '\(index[2].pathDecoded)'", context: context)
     } else {
-      MSLogDebug("failed to locate code set for index '\(index[0...1])'")
+      MSLogInfo("failed to locate code set for index '\(index[0...1])'")
       return nil
     }
   }

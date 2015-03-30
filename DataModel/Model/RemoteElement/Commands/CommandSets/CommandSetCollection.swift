@@ -82,7 +82,7 @@ public final class CommandSetCollection: CommandContainer {
 
     if let commandSetsData = data as? [String:[String:AnyObject]], let moc = managedObjectContext {
       for (label, commandSetData) in commandSetsData {
-        if let commandSet = CommandSet.importObjectWithData(commandSetData, context: moc) {
+        if let commandSet: CommandSet = CommandSet.importObjectWithData(commandSetData, context: moc) {
           self[label] = commandSet
         }
       }

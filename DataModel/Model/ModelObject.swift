@@ -9,6 +9,7 @@
 import Foundation
 import CoreData
 import MoonKit
+import ObjectiveC
 
 @objc(ModelObject)
 public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
@@ -209,7 +210,10 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
 
   :returns: Self?
   */
-  public class func objectWithValue(value: AnyObject, forAttribute attribute: String, context: NSManagedObjectContext) -> Self? {
+  public class func objectWithValue(value: AnyObject,
+                       forAttribute attribute: String,
+                            context: NSManagedObjectContext) -> Self?
+  {
     return objectMatchingPredicate(NSPredicate(format: "%K == %@", argumentArray: [attribute, value]), context: context)
   }
 
