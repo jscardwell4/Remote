@@ -22,13 +22,13 @@ final public class Image: EditableModelObject {
       return assetName
     }
     set {
-      let img: UIImage? = UIImage(named: newValue)
-      if img != nil {
+//      let img: UIImage? = UIImage(named: newValue)
+//      if img != nil {
         willChangeValueForKey("assetName")
         setPrimitiveValue(newValue, forKey: "assetName")
         didChangeValueForKey("assetName")
-        size = img!.size
-      }
+//        size = img!.size
+//      }
     }
 
   }
@@ -94,13 +94,13 @@ final public class Image: EditableModelObject {
   /**
   objectWithIndex:context:
 
-  :param: index PathModelIndex
+  :param: index PathIndex
   :param: context NSManagedObjectContext
 
   :returns: Image?
   */
   @objc(objectWithPathIndex:context:)
-  public override class func objectWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Image? {
+  public override class func objectWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Image? {
     if let object = modelWithIndex(index, context: context) {
       MSLogDebug("located image with name '\(object.name)'")
       return object
@@ -112,28 +112,27 @@ final public class Image: EditableModelObject {
       "asset name = \(assetName)",
       "left cap = \(leftCap)",
       "top cap = \(topCap)",
-      "catgegory = \(imageCategory.index)"
+      "catgegory = \(imageCategory.index.rawValue)"
     )
   }
 
 }
 
 extension Image: PathIndexedModel {
-  public var pathIndex: PathModelIndex { return imageCategory.pathIndex + "\(name)" }
+  public var pathIndex: PathIndex { return imageCategory.pathIndex + indexedName }
 
   /**
   modelWithIndex:context:
 
-  :param: index PathModelIndex
+  :param: index PathIndex
   :param: context NSManagedObjectContext
 
   :returns: Image?
   */
-  public static func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Image? {
+  public static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Image? {
     if index.count < 1 { return nil }
-    var pathComponents = index.pathComponents
-    let imageName = pathComponents.removeLast()
-    if let imageCategory = ImageCategory.modelWithIndex(PathModelIndex(array: pathComponents), context: context) {
+    let imageName = index.removeLast().pathDecoded
+    if let imageCategory = ImageCategory.modelWithIndex(index, context: context) {
       return findFirst(imageCategory.images, {$0.name == imageName})
     } else { return nil }
   }

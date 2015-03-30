@@ -33,6 +33,14 @@ class ViewController: UIViewController {
     didSet { entityButton.setTitle(selectedEntity?.name! ?? "Select Entity", forState: .Normal) }
   }
 
+  var selectedModelObjectType: ModelObject.Type? {
+    if let entityClassName = selectedEntity?.managedObjectClassName,
+      modelObjectClass = NSClassFromString(entityClassName) as? ModelObject.Type { return modelObjectClass }
+    else { return nil }
+  }
+
+  @IBAction func dumpJSON() { if let type = selectedModelObjectType { DataManager.dumpJSONForModelType(type) } }
+
   @IBOutlet weak var queryTextView: UITextView!
   @IBOutlet weak var resultsTextView: UITextView!
   @IBOutlet weak var errorsTextView: UITextView!
@@ -45,22 +53,20 @@ class ViewController: UIViewController {
   let context: NSManagedObjectContext = DataManager.mainContext()
 
   func processQuery(query: String) {
-    if let entityClassName = selectedEntity?.managedObjectClassName,
-      modelObjectClass = NSClassFromString(entityClassName) as? ModelObject.Type
-    {
+    if let type = selectedModelObjectType {
       var error: NSError?
-      let results = modelObjectClass.objectsMatchingPredicate(∀query, context: context, error: &error)
-      var resultsText = resultsTextView.text == "No results" ? "" : "\(resultsTextView.text)\n"
-      let i = resultsText.length
-      resultsText += "query: \(query)\n"
-      resultsText += "results…\n"
-      let mappedResults = enumeratingMap(results, {"\($0): \($1)"})
-      resultsText += "\n\n".join(mappedResults)
-      resultsTextView.text = resultsText
+      let results = type.objectsMatchingPredicate(∀query, context: context, error: &error)
+      resultsTextView.text = resultsTextView.text == "No results" ? "" : "\(resultsTextView.text)\n"
+      let i = resultsTextView.text.length
+      let resultsText = "query: \(query)\nresults…\n" + "\n\n".join(enumeratingMap(results, {"\($0): \($1)"}))
+      resultsTextView.text = "\(resultsTextView.text)\(resultsText)"
       resultsTextView.scrollRangeToVisible(NSRange(i...i+50))
+      println(resultsText)
       if error != nil {
         errorsTextView.text = errorsTextView.text == "No errors" ? "" : "\(errorsTextView.text)\n"
-        errorsTextView.text = "\(errorsTextView.text)\(detailedDescriptionForError(error!, depth: 0))"
+        let errorText = detailedDescriptionForError(error!, depth: 0)
+        errorsTextView.text = "\(errorsTextView.text)\(errorText)"
+        println("error…\n\(errorText)")
       }
     }
   }

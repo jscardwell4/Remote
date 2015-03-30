@@ -54,6 +54,8 @@ public class NamedModelObject: ModelObject, DynamicallyNamed {
     }
   }
 
+  public var indexedName: String { return name.urlUserEncoded }
+
   public var commentedUUID: String { var uuid = self.uuid; uuid.comment = "// \(name)"; return uuid }
 
   /**

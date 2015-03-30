@@ -7,7 +7,22 @@
 //
 
 import Foundation
-import MoonKit
+//import MoonKit
+
+public protocol JSONValueConvertible {
+  typealias JSONValueType
+  var JSONValue: JSONValueType { get }
+  init?(JSONValue: JSONValueType)
+}
+
+@objc public protocol JSONExport {
+  var JSONObject: AnyObject { get }
+  var JSONString: String { get }
+//  optional func JSONDictionary() -> MSDictionary
+//  optional func writeJSONToFile(file: String) -> Bool
+}
+
+
 
 /**
 A simple structure that serves as a glorified file path for use as an index.
@@ -58,7 +73,7 @@ extension ModelIndex: JSONExport {
   public var JSONObject: AnyObject { return JSONValue }
   public var JSONString: String { return JSONObject.JSONString }
 }
-extension ModelIndex: MSJSONExport {}
+//extension ModelIndex: MSJSONExport {}
 
 // MARK: Equatable
 extension ModelIndex: Equatable {}
@@ -301,5 +316,5 @@ public final class UUIDIndex: ModelIndex {
   override public class func isValidRawValue(rawValue: String) -> Bool {
     return rawValue ~= "[A-F0-9]{8}-(?:[A-F0-9]{4}-){3}[A-Z0-9]{12}"
   }
-
+  
 }

@@ -2741,6 +2741,7 @@
 				TargetAttributes = {
 					C215CBFE1ABB102F00E8077E = {
 						CreatedOnToolsVersion = 6.3;
+						DevelopmentTeam = JT6STF4SHA;
 					};
 					C26BAEA716DC10FE0093D5B4 = {
 						DevelopmentTeam = JT6STF4SHA;
@@ -5388,6 +5389,7 @@
 				C2F4C5AB1AC6E95300DB3695 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C2F9412119BE5E90007B5CC1 /* Build configuration list for PBXNativeTarget "iTachClient" */ = {
 			isa = XCConfigurationList;

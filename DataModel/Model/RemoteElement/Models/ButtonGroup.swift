@@ -106,12 +106,12 @@ public final class ButtonGroup: RemoteElement {
   }
 
   /**
-  initWithPreset:
+  updateWithPreset:
 
   :param: preset Preset
   */
-  override public init(preset: Preset) {
-    super.init(preset: preset)
+  override func updateWithPreset(preset: Preset) {
+    super.updateWithPreset(preset)
 
     autohide = preset.autohide ?? false
 
@@ -119,41 +119,6 @@ public final class ButtonGroup: RemoteElement {
     labelConstraints = preset.labelConstraints
     // if let panelAssignment = preset.panelAssignment { self.panelAssignment = panelAssignment }
   }
-
-  required public init(context: NSManagedObjectContext, insert: Bool) {
-      fatalError("init(context:insert:) has not been implemented")
-  }
-
-  required public init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-      fatalError("init(entity:insertIntoManagedObjectContext:) has not been implemented")
-  }
-
-  required public init(context: NSManagedObjectContext?) {
-      fatalError("init(context:) has not been implemented")
-  }
-
-  required public init?(data: [String : AnyObject], context: NSManagedObjectContext) {
-      fatalError("init(data:context:) has not been implemented")
-  }
-
-  /**
-  initWithEntity:insertIntoManagedObjectContext:
-
-  :param: entity NSEntityDescription
-  :param: context NSManagedObjectContext?
-  */
-//  override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-//    super.init(entity: entity, insertIntoManagedObjectContext: context)
-//  }
-
-  /**
-  initWithContext:
-
-  :param: context NSManagedObjectContext
-  */
-//  override init(context: NSManagedObjectContext) {
-//    super.init(context: context)
-//  }
 
   @NSManaged public var commandContainer: CommandContainer?
   @NSManaged public var autohide: Bool

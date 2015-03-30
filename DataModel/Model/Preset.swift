@@ -78,7 +78,7 @@ final public class Preset: EditableModelObject {
   public var backgroundImage: Image? {
     get {
       if let moc = managedObjectContext, index = storage["backgroundImage"] as? String {
-        return Image.modelWithIndex(PathModelIndex(index), context: moc)
+        return Image.modelWithIndex(PathIndex(index)!, context: moc)
       } else { return nil }
     }
     set { storage["background-image"] = newValue }
@@ -192,13 +192,13 @@ final public class Preset: EditableModelObject {
   /**
   objectWithIndex:context:
 
-  :param: index PathModelIndex
+  :param: index PathIndex
   :param: context NSManagedObjectContext
 
   :returns: Image?
   */
   @objc(objectWithPathIndex:context:)
-  public override class func objectWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Preset? {
+  public override class func objectWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Preset? {
     if let object = modelWithIndex(index, context: context) {
       MSLogDebug("located preset with name '\(object.name)'")
       return object
@@ -207,8 +207,8 @@ final public class Preset: EditableModelObject {
 
   override public var description: String {
     return "\(super.description)\n\t" + "\n\t".join(
-      "category = \(presetCategory.index)",
-      "parent = \(parentPreset?.index ?? nil)",
+      "category = \(presetCategory.index.rawValue)",
+      "parent = \(parentPreset?.index.rawValue ?? nil)",
       "base type = \(baseType)",
       "role = \(role)",
       "shape = \(shape)",
@@ -277,22 +277,21 @@ final public class Preset: EditableModelObject {
 }
 
 extension Preset: PathIndexedModel {
-  public var pathIndex: PathModelIndex { return presetCategory.pathIndex + "\(name)" }
+  public var pathIndex: PathIndex { return presetCategory.pathIndex + indexedName }
 
   /**
   modelWithIndex:context:
 
-  :param: index PathModelIndex
+  :param: index PathIndex
   :param: context NSManagedObjectContext
 
   :returns: Preset?
   */
-  public static func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Preset? {
+  public static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Preset? {
     if index.count < 1 { return nil }
-    var pathComponents = index.pathComponents
-    let oresetName = pathComponents.removeLast()
-    if let oresetCategory = PresetCategory.modelWithIndex(PathModelIndex(array: pathComponents), context: context) {
-      return findFirst(oresetCategory.presets, {$0.name == oresetName})
+    let presetName = index.removeLast()
+    if let presetCategory = PresetCategory.modelWithIndex(index, context: context) {
+      return findFirst(presetCategory.presets, {$0.name == presetName})
     } else { return nil }
 
   }

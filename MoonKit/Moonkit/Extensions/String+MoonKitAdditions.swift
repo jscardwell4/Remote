@@ -78,6 +78,30 @@ public extension String {
   public var isDashcase: Bool { return ~/"^\\p{Ll}+(-\\p{Ll}*)*$" ~= self }
   public var isTitlecase: Bool { return ~/"^\\p{Lu}\\p{Ll}*(\\P{L}+\\p{Lu}\\p{Ll}*)*$" ~= self }
 
+  public var pathEncoded: String { return self.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding) ?? self }
+  public var urlFragmentEncoded: String {
+    return self.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLFragmentAllowedCharacterSet())
+      ?? self
+  }
+  public var urlPathEncoded: String {
+    return self.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())
+      ?? self
+  }
+  public var urlQueryEncoded: String {
+    return self.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
+      ?? self
+  }
+
+  public var urlUserEncoded: String {
+    return self.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLUserAllowedCharacterSet())
+      ?? self
+  }
+
+  public var pathDecoded: String { return self.stringByRemovingPercentEncoding ?? self }
+
+  public var forwardSlashEncoded: String { return sub("/", "%2F") }
+  public var forwardSlashDecoded: String { return sub("%2F", "/").sub("%2f", "/") }
+
   public func indentedBy(indent: Int) -> String {
     let spacer = " " * indent
     return spacer + "\n\(spacer)".join("\n".split(self))
@@ -128,6 +152,21 @@ public extension String {
         self = string as String
       } else { return nil }
     } else { return nil }
+  }
+
+  /**
+  sub:replacement:
+
+  :param: target String
+  :param: replacement String
+
+  :returns: String
+  */
+  public func sub(target: String, _ replacement: String) -> String {
+    return stringByReplacingOccurrencesOfString(target,
+                                     withString: replacement,
+                                        options: nil,
+                                          range: startIndex..<endIndex)
   }
 
   /**

@@ -549,7 +549,7 @@ import MoonKit
 
   :param: modelType ModelObject.Type
   */
-  private class func dumpJSONForModelType(modelType: ModelObject.Type) {
+  public class func dumpJSONForModelType(modelType: ModelObject.Type) {
     let className = (modelType.self as AnyObject).className
     let objects: [ModelObject]
     switch className {

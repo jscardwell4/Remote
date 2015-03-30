@@ -27,6 +27,13 @@ public final class ComponentDevice: EditableModelObject {
 
   private var ignoreNextPowerCommand = false
 
+  /**
+  requiresUniqueNaming
+
+  :returns: Bool
+  */
+  public override class func requiresUniqueNaming() -> Bool { return true }
+
   func ignorePowerCommand(completion: ((Bool, NSError?) -> Void)?) -> Bool {
     if ignoreNextPowerCommand {
       ignoreNextPowerCommand = false
@@ -70,7 +77,7 @@ public final class ComponentDevice: EditableModelObject {
     updateRelationshipFromData(data, forKey: "networkDevice")
 
     if let codeSetData = data["code-set"] as? [String:AnyObject] {
-      if let rawCodeSetIndex = codeSetData["index"] as? String, codeSetIndex = PathModelIndex(rawValue: rawCodeSetIndex) {
+      if let rawCodeSetIndex = codeSetData["index"] as? String, codeSetIndex = PathIndex(rawValue: rawCodeSetIndex) {
         if let moc = managedObjectContext, codeSet = IRCodeSet.modelWithIndex(codeSetIndex, context: moc) {
           self.codeSet = codeSet
         }
@@ -80,15 +87,32 @@ public final class ComponentDevice: EditableModelObject {
   }
 
   override public var description: String {
-    return "\(super.description)\n\t" + "\n\t".join(
+    var description = "\(super.description)\n\t" + "\n\t".join(
       "always on = \(alwaysOn)",
       "input powers on = \(inputPowersOn)",
       "inputs = [" + ", ".join(map(inputs, {$0.name})) + "]",
       "port = \(port)",
       "power = \(power)",
       "manufacturer = \(manufacturer.index)",
-      "code set = \(codeSet?.index ?? nil)"
+      "code set = "
     )
+    if let codeSet = self.codeSet {
+      description += codeSet.index.rawValue
+    } else { description += "nil" }
+    return description
+  }
+
+  /**
+  objectWithIndex:context:
+
+  :param: index PathIndex
+  :param: context NSManagedObjectContext
+
+  :returns: ComponentDevice?
+  */
+  @objc(objectWithPathIndex:context:)
+  override public class func objectWithIndex(index: PathIndex, context: NSManagedObjectContext) -> ComponentDevice? {
+    return modelWithIndex(index, context: context)
   }
 
 }
@@ -122,3 +146,11 @@ extension ComponentDevice: MSJSONExport {
   }
 
 }
+
+extension ComponentDevice: PathIndexedModel {
+  public var pathIndex: PathIndex { return PathIndex(indexedName)! }
+  public static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> ComponentDevice? {
+    return objectWithValue(index.rawValue.pathDecoded, forAttribute: "name", context: context)
+  }
+}
+

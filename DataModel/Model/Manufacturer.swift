@@ -17,6 +17,13 @@ final public class Manufacturer: EditableModelObject {
   @NSManaged public var devices: Set<ComponentDevice>
 
   /**
+  requiresUniqueNaming
+
+  :returns: Bool
+  */
+  public override class func requiresUniqueNaming() -> Bool { return true }
+
+  /**
   updateWithData:
 
   :param: data [String AnyObject]
@@ -43,17 +50,14 @@ final public class Manufacturer: EditableModelObject {
   /**
   objectWithIndex:context:
 
-  :param: index PathModelIndex
+  :param: index PathIndex
   :param: context NSManagedObjectContext
 
   :returns: Image?
   */
   @objc(objectWithPathIndex:context:)
-  public override class func objectWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Manufacturer? {
-    if let object = modelWithIndex(index, context: context) {
-      MSLogDebug("located manufacter with name '\(object.name)'")
-      return object
-    } else { return nil }
+  public override class func objectWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Manufacturer? {
+    return modelWithIndex(index, context: context)
   }
 
   override public var description: String {
@@ -66,18 +70,18 @@ final public class Manufacturer: EditableModelObject {
 }
 
 extension Manufacturer: PathIndexedModel {
-  public var pathIndex: PathModelIndex { return "\(name)" }
+  public var pathIndex: PathIndex { return PathIndex(indexedName)! }
 
   /**
   modelWithIndex:context:
 
-  :param: index PathModelIndex
+  :param: index PathIndex
   :param: context NSManagedObjectContext
 
   :returns: Self?
   */
-  public static func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self? {
-    return index.count == 1 ? objectWithValue(index.rawValue, forAttribute: "name", context: context) : nil
+  public static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Self? {
+    return index.count == 1 ? objectWithValue(index.rawValue.pathDecoded, forAttribute: "name", context: context) : nil
   }
   
 }

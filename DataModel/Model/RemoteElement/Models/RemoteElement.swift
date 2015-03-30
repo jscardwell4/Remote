@@ -34,32 +34,21 @@ public class RemoteElement: NamedModelObject {
   }
 
   /**
-  initWithAttributes:
+  initWithPreset:
 
   :param: preset Preset
   */
   public init(preset: Preset) {
-    super.init(context: preset.managedObjectContext!)
-    role = preset.role
-    shape = preset.shape
-    style = preset.style
-    setBackgroundColor(preset.backgroundColor, forMode: RemoteElement.DefaultMode)
-    setBackgroundImage(preset.backgroundImage, forMode: RemoteElement.DefaultMode)
-    setBackgroundImageAlpha(preset.backgroundImageAlpha, forMode: RemoteElement.DefaultMode)
-    var elements: OrderedSet<RemoteElement> = []
-    if let subelementPresets = preset.subelements {
-      for subelementPreset in subelementPresets.array as! [Preset] {
-        if let element = RemoteElement.remoteElementFromPreset(subelementPreset) {
-          elements.append(element)
-        }
-      }
-    }
-    childElements = elements
-    if let constraints = preset.constraints {
-      constraintManager.setConstraintsFromString(constraints)
-    }
+    super.init(context: preset.managedObjectContext)
+    updateWithPreset(preset)
   }
 
+  /**
+  initWithData:context:
+
+  :param: data [String AnyObject]
+  :param: context NSManagedObjectContext
+  */
   required public init?(data: [String : AnyObject], context: NSManagedObjectContext) {
     super.init(data: data, context: context)
   }
@@ -200,6 +189,32 @@ public class RemoteElement: NamedModelObject {
     if let moc = managedObjectContext {
       apply(flattened(Array(configurations.values).map{Array($0.values).filter{$0 is NSURL}})){moc.deleteObject($0 as! NSManagedObject)}
       moc.processPendingChanges()
+    }
+  }
+
+  /**
+  updateWithPreset:
+
+  :param: preset Preset
+  */
+  func updateWithPreset(preset: Preset) {
+    role = preset.role
+    shape = preset.shape
+    style = preset.style
+    setBackgroundColor(preset.backgroundColor, forMode: RemoteElement.DefaultMode)
+    setBackgroundImage(preset.backgroundImage, forMode: RemoteElement.DefaultMode)
+    setBackgroundImageAlpha(preset.backgroundImageAlpha, forMode: RemoteElement.DefaultMode)
+    var elements: OrderedSet<RemoteElement> = []
+    if let subelementPresets = preset.subelements {
+      for subelementPreset in subelementPresets.array as! [Preset] {
+        if let element = RemoteElement.remoteElementFromPreset(subelementPreset) {
+          elements.append(element)
+        }
+      }
+    }
+    childElements = elements
+    if let constraints = preset.constraints {
+      constraintManager.setConstraintsFromString(constraints)
     }
   }
 

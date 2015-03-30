@@ -8,6 +8,7 @@
 
 import UIKit
 import MoonKit
+import DataModel
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,5 +22,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     MSLogDebug("main bundle: '\(NSBundle.mainBundle().bundlePath)'")
   }
 
+//  func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
+//    let entities = DataManager.stack.managedObjectModel.entities
+//    MSLogDebug("entities:\n\(entities)")
+//    return true
+//  }
 }
 

@@ -40,7 +40,7 @@ public final class SendIRCommand: SendCommand {
 //    updateRelationshipFromData(data, forKey: "code")
 //    if let codeData = data["code"] as? [String:AnyObject] {
 //      println("codeData: \(codeData)")
-//      if let rawCodeIndex = codeData["index"] as? String, codeIndex = PathModelIndex(rawValue: rawCodeIndex) {
+//      if let rawCodeIndex = codeData["index"] as? String, codeIndex = PathIndex(rawValue: rawCodeIndex) {
 //        println("codeIndex: \(codeIndex.rawValue)")
 //        if let moc = managedObjectContext, code = IRCode.modelWithIndex(codeIndex, context: moc) {
 //          println("code: \(code)")
@@ -49,7 +49,7 @@ public final class SendIRCommand: SendCommand {
 //      }
 //    }
     if let code: IRCode = relatedObjectWithData(data, forKey: "code") {
-      println(code)
+//      println(code)
       self.code = code
     }
   }

@@ -14,6 +14,13 @@ public protocol JSONValueConvertible {
   init?(JSONValue: JSONValueType)
 }
 
+@objc public protocol JSONExport {
+  var JSONObject: AnyObject { get }
+  var JSONString: String { get }
+  optional func JSONDictionary() -> MSDictionary
+  optional func writeJSONToFile(file: String) -> Bool
+}
+
 public protocol Presentable {
   var title: String { get }
 }

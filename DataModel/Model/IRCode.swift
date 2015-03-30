@@ -94,22 +94,25 @@ final public class IRCode: EditableModelObject {
   /**
   objectWithIndex:context:
 
-  :param: index PathModelIndex
+  :param: index PathIndex
   :param: context NSManagedObjectContext
 
   :returns: Image?
   */
   @objc(objectWithPathIndex:context:)
-  public override class func objectWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> IRCode? {
+  public override class func objectWithIndex(index: PathIndex, context: NSManagedObjectContext) -> IRCode? {
     if let object = modelWithIndex(index, context: context) {
       MSLogDebug("located code with name '\(object.name)'")
       return object
-    } else { return nil }
+    } else {
+      MSLogDebug("unable to locate code for index '\(index)'")
+      return nil
+    }
   }
 
   override public var description: String {
     return "\(super.description)\n\t" + "\n\t".join(
-      "code set = \(codeSet.index)",
+      "code set = \(codeSet.index.rawValue)",
       "device = \(device?.name ?? nil)",
       "sets device input = \(setsDeviceInput)",
       "frequency = \(frequency)",
@@ -146,22 +149,25 @@ extension IRCode: MSJSONExport {
 }
 
 extension IRCode: PathIndexedModel {
-  public var pathIndex: PathModelIndex { return codeSet.pathIndex + "\(name)" }
+  public var pathIndex: PathIndex { return codeSet.pathIndex + indexedName }
 
   /**
   modelWithIndex:context:
 
-  :param: index PathModelIndex
+  :param: index PathIndex
   :param: context NSManagedObjectContext
 
   :returns: IRCode?
   */
-  public static func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> IRCode? {
+  public static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> IRCode? {
     if index.count != 3 { return nil }
-    let (manufacturerName, codeSetName, codeName) = disperse3(index.pathComponents)
-    if let codeSet = IRCodeSet.modelWithIndex([manufacturerName, codeSetName], context: context) {
-      return findFirst(codeSet.codes, {$0.name == codeName})
-    } else { return nil }
+    if let codeSet = IRCodeSet.modelWithIndex(index[0...1], context: context) {
+      MSLogDebug("located code set with name '\(codeSet.name)'")
+      return objectMatchingPredicate(∀"codeSet.uuid == '\(codeSet.uuid)' AND name == '\(index[2].pathDecoded)'", context: context)
+    } else {
+      MSLogDebug("failed to locate code set for index '\(index[0...1])'")
+      return nil
+    }
   }
   
 }

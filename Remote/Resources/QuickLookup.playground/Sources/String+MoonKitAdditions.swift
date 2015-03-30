@@ -25,8 +25,8 @@ public extension String {
       var s = String(self[startIndex])
       for c in String(dropFirst(self)).unicodeScalars {
         switch c.value {
-          case 65...90: s += "-"; s += String(UnicodeScalar(c.value + 32))
-          default: s.append(c)
+        case 65...90: s += "-"; s += String(UnicodeScalar(c.value + 32))
+        default: s.append(c)
         }
       }
       return s
@@ -40,8 +40,8 @@ public extension String {
       var s = String(self[startIndex]).uppercaseString
       for c in String(dropFirst(self)).unicodeScalars {
         switch c.value {
-          case 65...90: s += " "; s.append(c)
-          default: s.append(c)
+        case 65...90: s += " "; s.append(c)
+        default: s.append(c)
         }
       }
       return s
@@ -58,14 +58,14 @@ public extension String {
       var previousCharacterWasDash = false
       for c in String(dropFirst(self)).unicodeScalars {
         switch c.value {
-          case 45: previousCharacterWasDash = true
-          default:
-            if previousCharacterWasDash {
-              s += String(c).uppercaseString
-              previousCharacterWasDash = false
-            } else {
-              s += String(c).lowercaseString
-            }
+        case 45: previousCharacterWasDash = true
+        default:
+          if previousCharacterWasDash {
+            s += String(c).uppercaseString
+            previousCharacterWasDash = false
+          } else {
+            s += String(c).lowercaseString
+          }
         }
       }
       return s
@@ -77,6 +77,30 @@ public extension String {
   public var isCamelcase: Bool { return ~/"^\\p{Ll}+(\\p{Lu}+\\p{Ll}*)*$" ~= self }
   public var isDashcase: Bool { return ~/"^\\p{Ll}+(-\\p{Ll}*)*$" ~= self }
   public var isTitlecase: Bool { return ~/"^\\p{Lu}\\p{Ll}*(\\P{L}+\\p{Lu}\\p{Ll}*)*$" ~= self }
+
+  public var pathEncoded: String { return self.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding) ?? self }
+  public var urlFragmentEncoded: String {
+    return self.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLFragmentAllowedCharacterSet())
+      ?? self
+  }
+  public var urlPathEncoded: String {
+    return self.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())
+      ?? self
+  }
+  public var urlQueryEncoded: String {
+    return self.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
+      ?? self
+  }
+
+  public var pathDecoded: String { return self.stringByRemovingPercentEncoding ?? self }
+
+  public var forwardSlashEncoded: String { return sub("/", "%2F") }
+  public var forwardSlashDecoded: String { return sub("%2F", "/").sub("%2f", "/") }
+
+  public func indentedBy(indent: Int) -> String {
+    let spacer = " " * indent
+    return spacer + "\n\(spacer)".join("\n".split(self))
+  }
 
   /**
   join:
@@ -123,6 +147,21 @@ public extension String {
         self = string as String
       } else { return nil }
     } else { return nil }
+  }
+
+  /**
+  sub:replacement:
+
+  :param: target String
+  :param: replacement String
+
+  :returns: String
+  */
+  public func sub(target: String, _ replacement: String) -> String {
+    return stringByReplacingOccurrencesOfString(target,
+      withString: replacement,
+      options: nil,
+      range: startIndex..<endIndex)
   }
 
   /**
@@ -240,9 +279,9 @@ public extension String {
   */
   public func stringByReplacingMatchesForRegEx(regex: RegularExpression, withTemplate template: String) -> String {
     return regex.regex?.stringByReplacingMatchesInString(self,
-                                          options: nil,
-                                            range: NSRange(location: 0, length: characterCount),
-                                     withTemplate: template) ?? self
+      options: nil,
+      range: NSRange(location: 0, length: characterCount),
+      withTemplate: template) ?? self
   }
 
   /**
@@ -360,9 +399,6 @@ public extension String {
   public func toRegEx() -> RegularExpression {
     var error: NSError? = nil
     let regex = RegularExpression(pattern: count(self) > 0 ? self : "(?:)", options: nil, error: &error)
-    #if os(iOS)
-//      MSHandleError(error, message: "failed to create regular expression object")
-    #endif
     return regex
   }
 
@@ -373,7 +409,7 @@ public extension String {
   :returns: [String?]
   */
   public func matchFirst(regex: RegularExpression) -> [String?] {
-  	var captures: [String?] = []
+    var captures: [String?] = []
     if let match: NSTextCheckingResult? = regex.regex?.firstMatchInString(self, options: nil, range: NSRange(0..<length)) {
       for i in 1...regex.regex!.numberOfCaptureGroups {
         if let range = match?.rangeAtIndex(i) { captures.append(range.location != NSNotFound ? self[range] : nil) }
@@ -399,13 +435,13 @@ public extension String {
 
 }
 
- extension String: RegularExpressionMatchable {
+extension String: RegularExpressionMatchable {
   public func match(regex: RegularExpression) -> Bool { return regex.match(self) }
 }
 
 public func enumerateMatches(pattern: String,
-                             string: String,
-                             block: (NSTextCheckingResult!, NSMatchingFlags, UnsafeMutablePointer<ObjCBool>) -> Void)
+  string: String,
+  block: (NSTextCheckingResult!, NSMatchingFlags, UnsafeMutablePointer<ObjCBool>) -> Void)
 {
   (~/pattern).regex?.enumerateMatchesInString(string, options: nil, range: NSRange(0..<string.length), usingBlock: block)
 }

@@ -52,15 +52,15 @@ final public class IRCodeSet: EditableModelObject {
   /**
   objectWithIndex:context:
 
-  :param: index PathModelIndex
+  :param: index PathIndex
   :param: context NSManagedObjectContext
 
   :returns: Image?
   */
   @objc(objectWithPathIndex:context:)
-  public override class func objectWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> IRCodeSet? {
+  public override class func objectWithIndex(index: PathIndex, context: NSManagedObjectContext) -> IRCodeSet? {
     if let object = modelWithIndex(index, context: context) {
-      MSLogDebug("located code set with name '\(object.name)'")
+//      MSLogDebug("located code set with name '\(object.name)'")
       return object
     } else { return nil }
   }
@@ -76,22 +76,24 @@ final public class IRCodeSet: EditableModelObject {
 }
 
 extension IRCodeSet: PathIndexedModel {
-  public var pathIndex: PathModelIndex { return manufacturer.pathIndex + "\(name)" }
+  public var pathIndex: PathIndex { return manufacturer.pathIndex + indexedName }
 
   /**
   modelWithIndex:context:
 
-  :param: index PathModelIndex
+  :param: index PathIndex
   :param: context NSManagedObjectContext
 
   :returns: IRCodeSet?
   */
-  public static func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> IRCodeSet? {
-    if let manufacturerName = index.first, codeSetName = index.last where index.count == 2,
-      let manufacturer = Manufacturer.modelWithIndex("\(manufacturerName)", context: context)
-    {
-      return findFirst(manufacturer.codeSets, {$0.name == codeSetName})
-    } else { return nil }
+  public static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> IRCodeSet? {
+    if index.count == 2 {
+      let codeSetName = index.removeLast().pathDecoded
+      if let manufacturer = Manufacturer.modelWithIndex(index, context: context) {
+        return findFirst(manufacturer.codeSets, {$0.name == codeSetName})
+      }
+    }
+    return nil
   }
 
 }

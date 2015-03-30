@@ -17,6 +17,19 @@ public func sequence<T>(v: (T,T)) -> [T] { return [v.0, v.1] }
 public func sequence<T>(v: (T,T,T)) -> [T] { return [v.0, v.1, v.2] }
 public func sequence<T>(v: (T,T,T,T)) -> [T] { return [v.0, v.1, v.2, v.3] }
 
+public func disperse2<S:SequenceType,T where S.Generator.Element == T>(s: S) -> (T, T) {
+  let array = Array(s)
+  return (array[0], array[1])
+}
+public func disperse3<S:SequenceType,T where S.Generator.Element == T>(s: S) -> (T, T, T) {
+  let array = Array(s)
+  return (array[0], array[1], array[2])
+}
+public func disperse4<S:SequenceType,T where S.Generator.Element == T>(s: S) -> (T, T, T, T) {
+  let array = Array(s)
+  return (array[0], array[1], array[2], array[3])
+}
+
 public func typeCast<T,U>(t: T, u: U.Type) -> U? { return t as? U }
 public func typeCast<T,U>(t: T?, u: U.Type) -> U? { return t != nil ? typeCast(t!, u) : nil }
 

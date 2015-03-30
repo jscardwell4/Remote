@@ -71,12 +71,12 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
     }
     updateWithData(data)
   }
-  
+
 
   // MARK: - Properties
 
 
-  /** 
+  /**
   The one property all core data entities need to have in the model to be representable as a `ModelObject`. The value
   of an object's `uuid` attribute serves as a unique identifier for the lifetime of the object.
   */
@@ -96,13 +96,14 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
     }
   }
 
-  /** Accessor for the model's `uuid` as a `UUIDModelIndex` */
+  /** Accessor for the model's `uuid` as a `UUIDIndex` */
   public var index: ModelIndex {
     if self is PathIndexedModel { return (self as! PathIndexedModel).pathIndex }
-    else if let uuidIndex = UUIDModelIndex(rawValue: uuid) { return uuidIndex }
+    else if let uuidIndex = UUIDIndex(rawValue: uuid) { return uuidIndex }
     else { fatalError("unable to generate uuid index for model, is uuid nil?") }
   }
 
+  /** Entity description retrieved from the managed object model */
   public class var entityDescription: NSEntityDescription {
     let entities = DataManager.stack.managedObjectModel.entities as! [NSEntityDescription]
     if let entity = findFirst(entities, {$0.managedObjectClassName == self.className()}) { return  entity }
@@ -157,20 +158,20 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
 
   :returns: Self?
   */
-  public class func objectWithIndex(index: UUIDModelIndex, context: NSManagedObjectContext) -> Self? {
+  public class func objectWithIndex(index: UUIDIndex, context: NSManagedObjectContext) -> Self? {
     return objectWithUUID(index.rawValue, context: context)
   }
 
   /**
   objectWithIndex:context:
 
-  :param: index PathModelIndex
+  :param: index PathIndex
   :param: context NSManagedObjectContext
 
   :returns: Self?
   */
   @objc(objectWithPathIndex:context:)
-  public class func objectWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self? {
+  public class func objectWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Self? {
     return nil
   }
 
@@ -185,14 +186,14 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
   public class func objectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Self? {
     if let uuid = data["uuid"] as? String, object = objectWithUUID(uuid, context: context) { return object }
     else if let rawIndex = data["index"] as? String {
-      if let index = UUIDModelIndex(rawValue: rawIndex), object = objectWithIndex(index, context: context) {
-        println("object for index \(index.rawValue): \(object)")
+      if let index = UUIDIndex(rawValue: rawIndex), object = objectWithIndex(index, context: context) {
+//        println("object for index \(index.rawValue):\n\(object)")
         return object
-      } else if let index = PathModelIndex(rawValue: rawIndex), object = objectWithIndex(index, context: context) {
-        println("object for index \(index.rawValue): \(object)")
+      } else if let index = PathIndex(rawValue: rawIndex), object = objectWithIndex(index, context: context) {
+//        println("object for index \(index.rawValue):\n\(object)")
         return object
       } else {
-        println("failed to locate object with index \(rawIndex)")
+//        println("failed to locate object with index \(rawIndex)")
         return nil
       }
     }
@@ -316,7 +317,7 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
     MSHandleError(error)
     return results ?? []
   }
-  
+
 
   /// MARK: - Importing
   ////////////////////////////////////////////////////////////////////////////////
@@ -423,7 +424,7 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
       moc = managedObjectContext
     {
       let relatedObject = relatedType.objectWithData(relatedObjectData, context: moc)
-      println("relatedObject: \(relatedObject)")
+//      println("relatedObject:n\(relatedObject ?? nil)")
       return relatedObject as? T
     } else { return nil }
   }
@@ -574,7 +575,7 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
   override public var description: String {
     return "\(className):\n\t" + "\n\t".join(
       "entity = \(entityName)",
-      "index = \(index)" + (self is PathIndexedModel ? "\n\tuuid = \(uuid)" : "")
+      "index = \(index.rawValue)" + (self is PathIndexedModel ? "\n\tuuid = \(uuid)" : "")
     )
   }
 }

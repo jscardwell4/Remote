@@ -116,4 +116,24 @@ public final class Activity: NamedModelObject {
     return dictionary
   }
 
+  /**
+  objectWithIndex:context:
+
+  :param: index PathIndex
+  :param: context NSManagedObjectContext
+
+  :returns: Activity?
+  */
+  @objc(objectWithPathIndex:context:)
+  override public class func objectWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Activity? {
+    return modelWithIndex(index, context: context)
+  }
+
+}
+
+extension Activity: PathIndexedModel {
+  public var pathIndex: PathIndex { return PathIndex(indexedName)! }
+  public static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Activity? {
+    return objectWithValue(index.rawValue.pathDecoded, forAttribute: "name", context: context)
+  }
 }

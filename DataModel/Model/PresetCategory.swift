@@ -48,13 +48,13 @@ final public class PresetCategory: EditableModelObject {
   /**
   objectWithIndex:context:
 
-  :param: index PathModelIndex
+  :param: index PathIndex
   :param: context NSManagedObjectContext
 
   :returns: Image?
   */
   @objc(objectWithPathIndex:context:)
-  public override class func objectWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> PresetCategory? {
+  public override class func objectWithIndex(index: PathIndex, context: NSManagedObjectContext) -> PresetCategory? {
     if let object = modelWithIndex(index, context: context) {
       MSLogDebug("located preset category with name '\(object.name)'")
       return object
@@ -62,34 +62,34 @@ final public class PresetCategory: EditableModelObject {
   }
 
   override public var description: String {
-    return "\(super.description)\n\t" + "\n\t".join(
+    var description = "\(super.description)\n\t" + "\n\t".join(
       "presets count = \(presets.count)",
-      "subcategories = [" + ", ".join(map(childCategories, {$0.name})) + "]",
-      "parent = \(parentCategory?.index ?? nil)"
-    )
+      "subcategories = [" + ", ".join(map(childCategories, {$0.name})) + "]")
+    description += "parent = " + (parentCategory?.index.rawValue ?? "nil")
+    return description
   }
 
 }
 
 extension PresetCategory: PathIndexedModel {
-  public var pathIndex: PathModelIndex { return parentCategory != nil ? parentCategory!.pathIndex + "\(name)" : "\(name)" }
+  public var pathIndex: PathIndex { return parentCategory != nil ? parentCategory!.pathIndex + PathIndex(indexedName)! : PathIndex(indexedName)! }
 
   /**
   modelWithIndex:context:
 
-  :param: index PathModelIndex
+  :param: index PathIndex
   :param: context NSManagedObjectContext
 
   :returns: PresetCategory?
   */
-  public static func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> PresetCategory? {
+  public static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> PresetCategory? {
     if index.count < 1 { return nil }
     var pathComponents = index.pathComponents.reverse()
     var name = pathComponents.removeLast()
-    var currentCategory = objectMatchingPredicate(∀"parentCategory == NULL AND name == '\(name)'", context: context)
+    var currentCategory = objectMatchingPredicate(∀"parentCategory == NULL AND name == '\(name.pathDecoded)'", context: context)
 
     while currentCategory != nil && pathComponents.count > 0 {
-      name = pathComponents.removeLast()
+      name = pathComponents.removeLast().pathDecoded
       currentCategory = findFirst(currentCategory!.childCategories, {$0.name == name})
     }
     return currentCategory

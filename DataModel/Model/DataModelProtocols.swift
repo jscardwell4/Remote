@@ -17,8 +17,8 @@ import MoonKit
 }
 
 public protocol PathIndexedModel: Model {
-  var pathIndex: PathModelIndex { get }
-  static func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self?
+  var pathIndex: PathIndex { get }
+  static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Self?
 }
 
 public typealias NamedModel = protocol<Model, DynamicallyNamed>
