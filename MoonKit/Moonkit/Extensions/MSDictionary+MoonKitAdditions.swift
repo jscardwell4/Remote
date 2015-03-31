@@ -14,6 +14,8 @@ extension MSKeyPath: SequenceType {
   }
 }
 
+extension MSDictionary: JSONExport {}
+
 //extension MSDictionary: DictionaryLiteralConvertible {
 //
 //  /**

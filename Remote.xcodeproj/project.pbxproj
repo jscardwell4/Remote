@@ -894,6 +894,7 @@
 		C25E63D519FD4B1400F54626 /* RemoteElementEditingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteElementEditingController.swift; sourceTree = "<group>"; };
 		C25E63E21A01B4E500F54626 /* RemoteEditingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteEditingController.swift; sourceTree = "<group>"; };
 		C25EC02019C3849C00E5A437 /* QuickLookup.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = QuickLookup.playground; sourceTree = "<group>"; };
+		C26A4ECE1ACA1B4E004EEF7C /* RemoteDataModel.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = RemoteDataModel.json; sourceTree = "<group>"; };
 		C26BAEA816DC10FE0093D5B4 /* Remote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Remote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C26BAEB516DC10FE0093D5B4 /* Remote-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Remote-Info.plist"; sourceTree = "<group>"; };
 		C26BAEB716DC10FE0093D5B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -2306,6 +2307,7 @@
 		C2E9F4B51ABCA395007581F2 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				C26A4ECE1ACA1B4E004EEF7C /* RemoteDataModel.json */,
 				C2E9F4B61ABCA395007581F2 /* Database JSON Lists */,
 				C2E9F4DA1ABCA395007581F2 /* Remote.xcdatamodeld */,
 			);

@@ -118,7 +118,7 @@ final public class IRCode: EditableModelObject {
 
 }
 
-extension IRCode: MSJSONExport {
+extension IRCode: JSONExport {
 
   /**
   JSONDictionary

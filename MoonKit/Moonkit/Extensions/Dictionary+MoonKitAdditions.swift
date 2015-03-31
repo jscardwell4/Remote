@@ -8,6 +8,8 @@
 
 import Foundation
 
+extension NSDictionary: JSONExport {}
+
 public protocol KeyValueCollectionTypeGenerator {
   typealias Key
   typealias Value

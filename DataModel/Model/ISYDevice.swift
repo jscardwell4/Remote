@@ -131,7 +131,7 @@ public class ISYDevice: NetworkDevice {
 
 }
 
-extension ISYDevice: MSJSONExport {
+extension ISYDevice: JSONExport {
 
   /**
   JSONDictionary

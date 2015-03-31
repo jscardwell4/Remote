@@ -102,7 +102,7 @@ public class ITachDevice: NetworkDevice {
 
 }
 
-extension ITachDevice: MSJSONExport {
+extension ITachDevice: JSONExport {
 
   override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()

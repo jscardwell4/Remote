@@ -41,7 +41,7 @@ public class ISYDeviceNode: NamedModelObject {
 
 }
 
-extension ISYDeviceNode: MSJSONExport {
+extension ISYDeviceNode: JSONExport {
 
   override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()

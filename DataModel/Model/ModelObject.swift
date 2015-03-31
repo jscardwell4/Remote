@@ -12,7 +12,7 @@ import MoonKit
 import ObjectiveC
 
 @objc(ModelObject)
-public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
+public class ModelObject: NSManagedObject, Model, JSONExport, Hashable, Equatable {
 
 
   /// MARK: - Initializers

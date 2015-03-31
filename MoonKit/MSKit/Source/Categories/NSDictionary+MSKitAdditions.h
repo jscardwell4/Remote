@@ -10,13 +10,17 @@
 #import "MSKitProtocols.h"
 @class MSDictionary;
 
+#pragma clang assume_nonnull begin
+
 typedef void(^NSDictionaryEnumerationBlock)(id obj, id key, BOOL *stop);
 typedef BOOL(^NSDictionaryPredicateBlock)  (id obj, id key, BOOL *stop);
-typedef id  (^NSDictionaryMappingBlock)    (id obj, id key);
+typedef id __nonnull (^NSDictionaryMappingBlock)    (id obj, id key);
 
-@interface NSDictionary (MSKitAdditions) <MSJSONExport, MSKeySearchable, MSKeyContaining, MSObjectContaining>
+@interface NSDictionary (MSKitAdditions) <MSKeySearchable, MSKeyContaining, MSObjectContaining>
 
 @property (nonatomic, readonly) BOOL isEmpty;
+@property (nonatomic, weak, readonly, nonnull) id JSONObject;
+@property (nonatomic, weak, readonly, nonnull) NSString * JSONString;
 
 + (instancetype)dictionaryFromDictionary:(NSDictionary *)dictionary
                             replacements:(NSDictionary *)replacements;
@@ -45,3 +49,5 @@ typedef id  (^NSDictionaryMappingBlock)    (id obj, id key);
 - (void)mapKeysToBlock:(id (^)(id key, id obj))block;
 
 @end
+
+#pragma clang assume_nonnull end

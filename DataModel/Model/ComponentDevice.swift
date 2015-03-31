@@ -117,7 +117,7 @@ public final class ComponentDevice: EditableModelObject {
 
 }
 
-extension ComponentDevice: MSJSONExport {
+extension ComponentDevice: JSONExport {
 
   /**
   JSONDictionary

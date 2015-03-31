@@ -11,54 +11,52 @@
 
 #import "MSKitProtocols.h"
 #import "MSKitDefines.h"
-
 //typedef void(^NSArrayEnumerationBlock)(id obj, NSUInteger idx, BOOL *stop);
 //typedef BOOL(^NSArrayPredicateBlock)  (id obj, NSUInteger idx, BOOL *stop);
 //typedef id  (^NSArrayMappingBlock)    (id obj, NSUInteger idx);
 
-
-@interface NSArray (MSKitAdditions) <MSJSONExport, MSKeySearchable, MSObjectContaining>
+@interface NSArray (MSKitAdditions) <MSKeySearchable, MSObjectContaining>
 
 @property (nonatomic, readonly) BOOL isEmpty;
 
-+ (NSArray *)arrayFromRange:(NSRange)range;
-+ (NSArray *)arrayWithObject:(id)obj count:(NSUInteger)count;
++ (nonnull NSArray *)arrayFromRange:(NSRange)range;
++ (nonnull NSArray *)arrayWithObject:(id __nonnull)obj count:(NSUInteger)count;
 
-@property (nonatomic, readonly) id JSONObject;
-@property (nonatomic, readonly) NSString * JSONString;
+@property (nonatomic, weak, readonly, nonnull) id JSONObject;
+@property (nonatomic, weak, readonly, nonnull) NSString * JSONString;
 
-- (NSSet *)set;
+- (nonnull NSSet *)set;
 - (NSUInteger)lastIndex;
-- (NSOrderedSet *)orderedSet;
+- (nonnull NSOrderedSet *)orderedSet;
 
 
-- (NSArray *)arrayByAddingObjects:(id)objects;
-- (NSArray *)arrayByAddingKeysFromDictionary:(NSDictionary *)dictionary;
-- (NSArray *)arrayByAddingValuesFromDictionary:(NSDictionary *)dictionary;
-- (NSArray *)arrayByAddingObjectsFromSet:(NSSet *)set;
-- (NSArray *)compacted;
-- (NSArray *)arrayByAddingObjectsFromOrderedSet:(NSOrderedSet *)orderedSet;
-- (NSArray *)filteredArrayUsingPredicateWithFormat:(NSString *)format,...;
-- (NSArray *)filteredArrayUsingPredicateWithBlock:(BOOL (^)(id evaluatedObject,
-                                                            NSDictionary * bindings))block;
-- (NSArray *)filteredUsingPredicate:(NSPredicate *)predicate;
-- (NSArray *)filtered:(BOOL (^)(id evaluatedObject))block;
-- (id)objectPassingTest:(BOOL (^)(id obj, NSUInteger idx))predicate;
-- (id)findFirst:(BOOL (^)(id evaluatedObject))predicate;
-- (id)findFirstUsingPredicate:(NSPredicate *)predicate;
-- (NSArray *)objectsPassingTest:(BOOL (^)(id obj, NSUInteger idx, BOOL *stop))predicate;
-- (NSArray *)flattened;
-- (NSArray *)uniqued;
-- (NSArray *)mapped:(id (^)(id obj, NSUInteger idx))block;
+- (nonnull NSArray  *)arrayByAddingObjects:(id __nonnull)objects;
+- (nonnull NSArray  *)arrayByAddingKeysFromDictionary:(NSDictionary * __nonnull)dictionary;
+- (nonnull NSArray  *)arrayByAddingValuesFromDictionary:(NSDictionary * __nonnull)dictionary;
+- (nonnull NSArray  *)arrayByAddingObjectsFromSet:(NSSet * __nonnull)set;
+- (nonnull NSArray  *)compacted;
+- (nonnull NSArray  *)arrayByAddingObjectsFromOrderedSet:(NSOrderedSet * __nonnull)orderedSet;
+- (nonnull NSArray  *)filteredArrayUsingPredicateWithFormat:(NSString * __nonnull)format,...;
+- (nonnull NSArray  *)filteredArrayUsingPredicateWithBlock:(BOOL (^ __nonnull)(id __nonnull evaluatedObject,
+                                                                      NSDictionary * __nullable bindings))block;
+- (nonnull NSArray  *)filteredUsingPredicate:(NSPredicate * __nonnull)predicate;
+- (nonnull NSArray  *)filtered:(BOOL (^ __nonnull)(id __nonnull evaluatedObject))block;
+- (nullable id)objectPassingTest:(BOOL (^ __nonnull)(id __nonnull obj, NSUInteger idx))predicate;
+- (nullable id)findFirst:(BOOL (^ __nonnull)(id __nonnull evaluatedObject))predicate;
+- (nullable id)findFirstUsingPredicate:(NSPredicate * __nonnull)predicate;
+- (nonnull NSArray  *)objectsPassingTest:(BOOL (^ __nonnull)(id __nonnull obj, NSUInteger idx, BOOL * __nonnull stop))predicate;
+- (nonnull NSArray  *)flattened;
+- (nonnull NSArray  *)uniqued;
+- (nonnull NSArray  *)mapped:(id __nullable (^ __nonnull)(id __nonnull obj, NSUInteger idx))block;
 
 @end
 
 
 @interface NSMutableArray (MSKitAdditions)
-+ (instancetype)arrayWithObject:(id)obj count:(NSUInteger)count;
-+ (id)arrayWithNullCapacity:(NSUInteger)capacity;
-- (void)filter:(BOOL (^)(id evaluatedObject))block;
-- (void)map:(id (^)(id obj, NSUInteger idx))block;
++ (nonnull instancetype)arrayWithObject:(id __nonnull)obj count:(NSUInteger)count;
++ (nonnull id)arrayWithNullCapacity:(NSUInteger)capacity;
+- (void)filter:(BOOL (^ __nonnull)(id __nonnull evaluatedObject))block;
+- (void)map:(id __nonnull (^ __nonnull)(id __nonnull obj, NSUInteger idx))block;
 - (void)replaceAllObjectsWithNull;
 - (void)compact;
 - (void)flatten;
@@ -68,4 +66,4 @@
 #define NSArrayOfVariableNames(...) \
 _NSArrayOfVariableNames(@"" # __VA_ARGS__, __VA_ARGS__, nil)
 
-MSEXTERN NSArray * _NSArrayOfVariableNames(NSString * commaSeparatedNamesString, ...);
+MSEXTERN NSArray * __nonnull _NSArrayOfVariableNames(NSString * __nonnull commaSeparatedNamesString, ...);

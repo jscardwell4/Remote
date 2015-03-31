@@ -39,7 +39,17 @@ class ViewController: UIViewController {
     else { return nil }
   }
 
-  @IBAction func dumpJSON() { if let type = selectedModelObjectType { DataManager.dumpJSONForModelType(type) } }
+  @IBAction func dumpJSON() {
+//    if let type = selectedModelObjectType { DataManager.dumpJSONForModelType(type) }
+    if let type = selectedModelObjectType {
+      var error: NSError?
+      let query = queryTextView.text
+      println("dumping json for query '\(query)' …")
+      let results = type.objectsMatchingPredicate(∀query, context: context, error: &error)
+      MSHandleError(error)
+      println((results as NSArray).JSONString)
+    }
+  }
 
   @IBOutlet weak var queryTextView: UITextView!
   @IBOutlet weak var resultsTextView: UITextView!

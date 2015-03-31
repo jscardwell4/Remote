@@ -9,19 +9,22 @@
 @import UIKit;
 #import "MSKitProtocols.h"
 
+#pragma clang assume_nonnull begin
 @class MSKeyPath;
 
-@interface MSDictionary : NSMutableDictionary <MSJSONExport, MSKeySearchable, MSKeyContaining, MSObjectContaining>
+@interface MSDictionary : NSMutableDictionary <MSKeySearchable, MSKeyContaining, MSObjectContaining>
 
-@property (nonatomic, strong)   MSDictionary * userInfo;
+@property (nonatomic, strong, nullable)   MSDictionary * userInfo;
 @property (nonatomic, readonly) NSSet        * validKeys;
 @property (nonatomic, assign)   BOOL           requiresStringKeys;
 @property (nonatomic, readonly) NSDictionary * NSDictionaryValue;
 @property (nonatomic, readonly) BOOL           isEmpty;
-@property (nonatomic, readonly) id<NSCopying>  firstKey;
-@property (nonatomic, readonly) id<NSCopying>  lastKey;
-@property (nonatomic, readonly) id             firstValue;
-@property (nonatomic, readonly) id             lastValue;
+@property (nonatomic, readonly, nullable) id<NSCopying>  firstKey;
+@property (nonatomic, readonly, nullable) id<NSCopying>  lastKey;
+@property (nonatomic, readonly, nullable) id             firstValue;
+@property (nonatomic, readonly, nullable) id             lastValue;
+@property (nonatomic, weak, readonly, nonnull) id JSONObject;
+@property (nonatomic, weak, readonly, nonnull) NSString * JSONString;
 
 + (MSDictionary *)dictionaryWithDictionary:(NSDictionary *)dictionary convertFoundationClasses:(BOOL)convert;
 - (void)convertFoundationClasses;
@@ -39,16 +42,16 @@
 
 - (BOOL)isValidKey:(id<NSCopying>)key;
 
-- (id)objectAtIndexedSubscript:(NSUInteger)idx;
-- (id)objectAtIndex:(NSUInteger)idx;
-- (id)keyAtIndex:(NSUInteger)idx;
+- (nullable id)objectAtIndexedSubscript:(NSUInteger)idx;
+- (nullable id)objectAtIndex:(NSUInteger)idx;
+- (nullable id)keyAtIndex:(NSUInteger)idx;
 
-- (id)keyForObject:(id)object;
+- (nullable id)keyForObject:(id)object;
 - (NSUInteger)indexOfObject:(id)object;
 
-- (id)valueForPath:(MSKeyPath *)path;
+- (nullable id)valueForPath:(MSKeyPath *)path;
 
-- (id)popObjectForKey:(id<NSCopying>)key;
+- (nullable id)popObjectForKey:(id<NSCopying>)key;
 
 - (NSString *)formattedDescription;
 - (NSString *)formattedDescriptionWithLevelIndent:(NSUInteger)levelIndent;
@@ -83,3 +86,5 @@
 - (NSUInteger)indexForValue:(id)value;
 
 @end
+
+#pragma clang assume_nonnull end

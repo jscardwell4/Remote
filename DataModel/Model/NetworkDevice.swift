@@ -73,7 +73,7 @@ public class NetworkDevice: EditableModelObject {
 
 }
 
-extension NetworkDevice: MSJSONExport {
+extension NetworkDevice: JSONExport {
 
   override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()

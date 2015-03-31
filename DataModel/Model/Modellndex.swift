@@ -58,7 +58,7 @@ extension ModelIndex: JSONExport {
   public var JSONObject: AnyObject { return JSONValue }
   public var JSONString: String { return JSONObject.JSONString }
 }
-extension ModelIndex: MSJSONExport {}
+extension ModelIndex: JSONExport {}
 
 // MARK: Equatable
 extension ModelIndex: Equatable {}

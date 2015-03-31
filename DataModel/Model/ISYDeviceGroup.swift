@@ -29,7 +29,7 @@ public class ISYDeviceGroup: NamedModelObject {
 
 }
 
-extension ISYDeviceGroup: MSJSONExport {
+extension ISYDeviceGroup: JSONExport {
 
   override public func JSONDictionary() -> MSDictionary {
     let dictionary = super.JSONDictionary()

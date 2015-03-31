@@ -12,6 +12,7 @@
 #import "NSObject+MSKitAdditions.h"
 #import "MSJSONSerialization.h"
 #import "NSMutableString+MSKitAdditions.h"
+#import "MoonKit/MoonKit-Swift.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;

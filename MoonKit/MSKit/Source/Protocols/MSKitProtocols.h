@@ -36,18 +36,18 @@
 
 @end
 
-@class MSDictionary;
+//@class MSDictionary;
 
-@protocol MSJSONExport <NSObject>
-
-@property (nonatomic, weak, readonly) id         JSONObject;
-@property (nonatomic, weak, readonly) NSString * JSONString;
-
-@optional
-- (MSDictionary *)JSONDictionary;
-- (BOOL)writeJSONToFile:(NSString *)file;
-
-@end
+//@protocol MSJSONExport <NSObject>
+//
+//@property (nonatomic, weak, readonly) id         JSONObject;
+//@property (nonatomic, weak, readonly) NSString * JSONString;
+//
+//@optional
+//- (MSDictionary *)JSONDictionary;
+//- (BOOL)writeJSONToFile:(NSString *)file;
+//
+//@end
 
 @protocol MSKeyContaining <NSObject>
 

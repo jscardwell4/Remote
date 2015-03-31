@@ -9,14 +9,16 @@
 @import Foundation;
 #import "MSKitProtocols.h"
 
-@interface NSOrderedSet (MSKitAdditions) <MSJSONExport, MSKeySearchable>
+@interface NSOrderedSet (MSKitAdditions) <MSKeySearchable>
 
 @property (nonatomic, readonly) BOOL isEmpty;
+@property (nonatomic, weak, readonly, nonnull) id JSONObject;
+@property (nonatomic, weak, readonly, nonnull) NSString * JSONString;
 
-- (NSOrderedSet *)setByMappingToBlock:(id (^)(id obj))block;
+- (nonnull NSOrderedSet *)setByMappingToBlock:(id __nonnull (^ __nonnull)(id __nonnull obj))block;
 
-- (id)objectPassingTest:(BOOL (^)(id obj, NSUInteger idx))predicate;
+- (nullable id)objectPassingTest:(BOOL (^ __nonnull)(id __nonnull obj, NSUInteger idx))predicate;
 
-- (NSString *)componentsJoinedByString:(NSString *)string;
+- (nonnull NSString *)componentsJoinedByString:(NSString * __nonnull)string;
 
 @end

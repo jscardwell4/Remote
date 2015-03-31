@@ -8,6 +8,8 @@
 
 import Foundation
 
+extension NSArray: JSONExport {}
+
 /**
 flattened:
 

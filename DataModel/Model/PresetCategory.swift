@@ -65,7 +65,7 @@ final public class PresetCategory: EditableModelObject {
     var description = "\(super.description)\n\t" + "\n\t".join(
       "presets count = \(presets.count)",
       "subcategories = [" + ", ".join(map(childCategories, {$0.name})) + "]")
-    description += "parent = " + (parentCategory?.index.rawValue ?? "nil")
+    description += "\nparent = " + (parentCategory?.index.rawValue ?? "nil")
     return description
   }
 

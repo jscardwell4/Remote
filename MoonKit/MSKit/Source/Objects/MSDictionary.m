@@ -20,6 +20,7 @@
 #import "MSStack.h"
 #import "MSKeyPath.h"
 #import "NSMutableString+MSKitAdditions.h"
+#import "MoonKit/MoonKit-Swift.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;

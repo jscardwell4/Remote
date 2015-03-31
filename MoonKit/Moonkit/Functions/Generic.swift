@@ -13,9 +13,9 @@ import Foundation
 @inline(__always) prefix func ⩨ <T : _UnsignedIntegerType, U: _UnsignedIntegerType> (x: T) -> U { return numericCast(x) }
 @inline(__always) prefix func ⩨ <T : _SignedIntegerType,   U: _SignedIntegerType>   (x: T) -> U { return numericCast(x) }
 
-public func sequence<T>(v: (T,T)) -> [T] { return [v.0, v.1] }
-public func sequence<T>(v: (T,T,T)) -> [T] { return [v.0, v.1, v.2] }
-public func sequence<T>(v: (T,T,T,T)) -> [T] { return [v.0, v.1, v.2, v.3] }
+public func sequence<T>(v: (T,T)) -> SequenceOf<T> { return SequenceOf([v.0, v.1]) }
+public func sequence<T>(v: (T,T,T)) -> SequenceOf<T> { return SequenceOf([v.0, v.1, v.2]) }
+public func sequence<T>(v: (T,T,T,T)) -> SequenceOf<T> { return SequenceOf([v.0, v.1, v.2, v.3]) }
 
 public func disperse2<S:SequenceType,T where S.Generator.Element == T>(s: S) -> (T, T) {
   let array = Array(s)
@@ -188,9 +188,25 @@ The function is a simple wrapper around `reduce` that ignores the actual reducti
 */
 public func apply<S:SequenceType>(sequence: S, block: (S.Generator.Element) -> Void) { reduce(sequence, Void()){block($0.1)} }
 
-/** Operator function for the apply function */
+/**
+A function that simply calls `apply` and then returns the sequence
+
+:param: sequence S
+:param: block (S.Generator.Element) -> Void
+
+:returns: S
+*/
+public func chainApply<S:SequenceType>(sequence: S, block: (S.Generator.Element) -> Void) -> S {
+  apply(sequence, block); return sequence
+}
+
+/** Operator function for the `apply` function */
 public func ➤<S:SequenceType>(lhs: S, rhs: (S.Generator.Element) -> Void) { apply(lhs, rhs) }
 public func ➤<T>(lhs: T, rhs: (T) -> Void) { rhs(lhs) }
+
+/** Operator function for the `chainApply` function */
+public func ➤|<S:SequenceType>(lhs: S, rhs: (S.Generator.Element) -> Void) -> S { return chainApply(lhs, rhs) }
+public func ➤|<T>(lhs: T, rhs: (T) -> Void) -> T { rhs(lhs); return lhs }
 
 public func enumeratingMap<S : SequenceType, T>(source: S, transform: (Int,S.Generator.Element) -> T) -> [T] {
   var mapped: [T] = []
