@@ -17,7 +17,6 @@
 		C21F10671AC62D7200CD877B /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2C3B91E1AC5DA7D001DC6CC /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C21F10681AC62D8100CD877B /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2C3B91E1AC5DA7D001DC6CC /* CocoaLumberjack.framework */; };
 		C21F10691AC62D8100CD877B /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2C3B91E1AC5DA7D001DC6CC /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C21F106A1AC62FC800CD877B /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C24E0EBE1AC61E080044248E /* MoonKit.framework */; };
 		C21F106B1AC62FC800CD877B /* MoonKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C24E0EBE1AC61E080044248E /* MoonKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C22115951AC5883B0071F2D0 /* BankRootController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F47D1ABCA395007581F2 /* BankRootController.swift */; };
 		C221159A1AC5883D0071F2D0 /* BankRootCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F47C1ABCA395007581F2 /* BankRootCell.swift */; };
@@ -1443,7 +1442,6 @@
 			files = (
 				C24E0EBF1AC61E080044248E /* MoonKit.framework in Frameworks */,
 				C21F10681AC62D8100CD877B /* CocoaLumberjack.framework in Frameworks */,
-				C21F106A1AC62FC800CD877B /* MoonKit.framework in Frameworks */,
 				C2FA4B8B1AC5E3250071429E /* DataModel.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2738,7 +2736,7 @@
 			attributes = {
 				CLASSPREFIX = MS;
 				LastTestingUpgradeCheck = 0510;
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = "Moondeer Studios";
 				TargetAttributes = {
 					C215CBFE1ABB102F00E8077E = {

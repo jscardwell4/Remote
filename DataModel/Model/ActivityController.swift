@@ -88,8 +88,8 @@ public final class ActivityController: ModelObject {
   override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
-    updateRelationshipFromData(data, forKey: "homeRemote")
-    updateRelationshipFromData(data, forKey: "topToolbar")
+    updateRelationshipFromData(data, forAttribute: "homeRemote")
+    updateRelationshipFromData(data, forAttribute: "topToolbar")
   }
 
 }

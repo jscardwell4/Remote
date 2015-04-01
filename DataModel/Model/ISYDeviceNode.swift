@@ -36,7 +36,7 @@ public class ISYDeviceNode: NamedModelObject {
     if let propertyID        = data["property-id"]        as? String   { self.propertyID = propertyID }
     if let propertyUOM       = data["property-uom"]       as? String   { self.propertyUOM = propertyUOM }
     if let propertyValue     = data["property-value"]     as? NSNumber { self.propertyValue = propertyValue }
-    updateRelationshipFromData(data, forKey: "groups")
+    updateRelationshipFromData(data, forAttribute: "groups")
   }
 
 }

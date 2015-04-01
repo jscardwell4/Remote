@@ -598,7 +598,7 @@ import MoonKit
 
       } else if let dataArray = data as? [[String:AnyObject]] {
 
-        let importedObjects = type.importObjectsFromData(dataArray, context: context)
+        let importedObjects = type.importObjectsWithData(dataArray, context: context)
 
         MSLogDebug("\(importedObjects.count) \(type.className()) objects imported from file '\(file).json'")
 

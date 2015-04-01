@@ -27,9 +27,9 @@ final public class ImageCategory: EditableModelObject {
   */
   override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    updateRelationshipFromData(data, forKey: "parentCategory", lookupKey: "category")
-    updateRelationshipFromData(data, forKey: "images")
-    updateRelationshipFromData(data, forKey: "childCategories", lookupKey: "subcategories")
+    updateRelationshipFromData(data, forAttribute: "parentCategory", lookupKey: "category")
+    updateRelationshipFromData(data, forAttribute: "images")
+    updateRelationshipFromData(data, forAttribute: "childCategories", lookupKey: "subcategories")
   }
 
   /**
@@ -60,10 +60,7 @@ final public class ImageCategory: EditableModelObject {
   */
   @objc(objectWithPathIndex:context:)
   public override class func objectWithIndex(index: PathIndex, context: NSManagedObjectContext) -> ImageCategory? {
-    if let object = modelWithIndex(index, context: context) {
-      MSLogDebug("located image category with name '\(object.name)'")
-      return object
-    } else { return nil }
+    return modelWithIndex(index, context: context)
   }
 
   override public var description: String {
@@ -87,16 +84,13 @@ extension ImageCategory: PathIndexedModel {
   :returns: ImageCategory?
   */
   public static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> ImageCategory? {
-    if index.count < 1 { return nil }
-    var pathComponents = index.pathComponents.reverse()
-    var name = pathComponents.removeLast()
-    var currentCategory = objectMatchingPredicate(∀"parentCategory == NULL AND name == '\(name.pathDecoded)'", context: context)
-
-    while currentCategory != nil && pathComponents.count > 0 {
-      name = pathComponents.removeLast().pathDecoded
-      currentCategory = findFirst(currentCategory!.childCategories, {$0.name == name})
+    if index.isEmpty { return nil }
+    else if index.count == 1 {
+      return objectMatchingPredicate(∀"parentCategory == NULL && name == '\(index.rawValue.pathDecoded)'", context: context)
+    } else {
+      let name = index.removeLast().pathDecoded
+      return findFirst(modelWithIndex(index, context: context)?.childCategories, {$0.name == name})
     }
-    return currentCategory
   }
 }
 

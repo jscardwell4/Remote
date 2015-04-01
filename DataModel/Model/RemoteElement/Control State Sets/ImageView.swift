@@ -48,7 +48,7 @@ public final class ImageView: ModelObject {
   override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
-    updateRelationshipFromData(data, forKey: "image")
+    updateRelationshipFromData(data, forAttribute: "image")
 
     if let colorJSON = data["color"] as? String, color = UIColor(JSONValue: colorJSON) {
       self.color = color

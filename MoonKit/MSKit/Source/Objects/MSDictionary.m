@@ -11,7 +11,7 @@
 #import "NSOrderedSet+MSKitAdditions.h"
 #import "NSString+MSKitAdditions.h"
 #import "NSValue+MSKitAdditions.h"
-#import "MSJSONSerialization.h"
+//#import "MSJSONSerialization.h"
 #import "NSPointerArray+MSKitAdditions.h"
 #import "NSNumber+MSKitAdditions.h"
 #import "MSKitMacros.h"
@@ -739,7 +739,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 /// JSONString
 /// @return NSString *
-- (NSString *)JSONString { return [MSJSONSerialization JSONFromObject:self.JSONObject]; }
+- (NSString *)JSONString { return [MSJSONSerialization JSONFromObject:self.JSONObject options:MSJSONWriteFormatOptionsDefault]; }
 
 /// JSONDictionary
 /// @return MSDictionary *

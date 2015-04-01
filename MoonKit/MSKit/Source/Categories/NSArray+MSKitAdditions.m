@@ -10,7 +10,7 @@
 #import "NSString+MSKitAdditions.h"
 #import "MSKitMacros.h"
 #import "NSObject+MSKitAdditions.h"
-#import "MSJSONSerialization.h"
+//#import "MSJSONSerialization.h"
 #import "NSMutableString+MSKitAdditions.h"
 #import "MoonKit/MoonKit-Swift.h"
 
@@ -99,21 +99,22 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 /// JSONString
 /// @return NSString *
 - (NSString *)JSONString {
-  id        jsonObject = self.JSONObject;
-  NSError * error;
-  NSData  * jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject
-                                                       options:NSJSONWritingPrettyPrinted
-                                                         error:&error];
-
-  if (error || !jsonData) {
-    MSHandleErrors(error);
-    return nil;
-  } else {
-    NSMutableString * jsonString = [[NSString stringWithData:jsonData] mutableCopy];
-    [jsonString replaceRegEx:@"^(\\s*\"[^\"]+\") :" withString:@"$1:"];
-    [jsonString replaceOccurrencesOfString:@"\\" withString:@"" options:0 range:NSMakeRange(0, jsonString.length)];
-    return jsonString;
-  }
+  return [MSJSONSerialization JSONFromObject:self.JSONObject options:MSJSONWriteFormatOptionsDefault];
+//  id        jsonObject = self.JSONObject;
+//  NSError * error;
+//  NSData  * jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject
+//                                                       options:NSJSONWritingPrettyPrinted
+//                                                         error:&error];
+//
+//  if (error || !jsonData) {
+//    MSHandleErrors(error);
+//    return nil;
+//  } else {
+//    NSMutableString * jsonString = [[NSString stringWithData:jsonData] mutableCopy];
+//    [jsonString replaceRegEx:@"^(\\s*\"[^\"]+\") :" withString:@"$1:"];
+//    [jsonString replaceOccurrencesOfString:@"\\" withString:@"" options:0 range:NSMakeRange(0, jsonString.length)];
+//    return jsonString;
+//  }
 }
 
 /// writeJSONToFile:

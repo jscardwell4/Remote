@@ -45,7 +45,7 @@ public final class ActivityCommand: Command {
   */
   override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    updateRelationshipFromData(data, forKey: "activity")
+    updateRelationshipFromData(data, forAttribute: "activity")
   }
 
   override var operation: CommandOperation {

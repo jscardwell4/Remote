@@ -188,13 +188,13 @@ public class ModelObject: NSManagedObject, Model, JSONExport, Hashable, Equatabl
     if let uuid = data["uuid"] as? String, object = objectWithUUID(uuid, context: context) { return object }
     else if let rawIndex = data["index"] as? String {
       if let index = UUIDIndex(rawValue: rawIndex), object = objectWithIndex(index, context: context) {
-//        println("object for index \(index.rawValue):\n\(object)")
+        MSLogInfo("object for index \(index.rawValue):\n\(object)")
         return object
       } else if let index = PathIndex(rawValue: rawIndex), object = objectWithIndex(index, context: context) {
-//        println("object for index \(index.rawValue):\n\(object)")
+        MSLogInfo("object for index \(index.rawValue):\n\(object)")
         return object
       } else {
-//        println("failed to locate object with index \(rawIndex)")
+        MSLogInfo("failed to locate object with index \(rawIndex)")
         return nil
       }
     }
@@ -341,14 +341,14 @@ public class ModelObject: NSManagedObject, Model, JSONExport, Hashable, Equatabl
   }
 
   /**
-  importObjectsFromData:context:
+  importObjectsWithData:context:
 
   :param: data AnyObject
   :param: context NSManagedObjectContext
 
   :returns: [ModelObject]
   */
-  public class func importObjectsFromData(data: AnyObject, context: NSManagedObjectContext) -> [ModelObject] {
+  public class func importObjectsWithData(data: AnyObject, context: NSManagedObjectContext) -> [ModelObject] {
     if let dataArray = data as? [[String:AnyObject]] {
       return compressed(dataArray.map{self.importObjectWithData($0, context: context)})
     } else { return [] }
@@ -375,19 +375,19 @@ public class ModelObject: NSManagedObject, Model, JSONExport, Hashable, Equatabl
 
   :returns: Bool
   */
-  private func updateRelationshipFromData(data: [String:AnyObject],
-                                   forKey key: String,
-                                lookupKey: String? = nil,
-                                   ofType type: ModelObject.Type) -> Bool
-  {
-    if let moc = managedObjectContext,
-      objectData = data[lookupKey ?? key.dashcaseString] as? [String:AnyObject],
-      object = type.importObjectWithData(objectData, context: moc)
-    {
-      setValue(object, forKey: key)
-      return true
-    } else { return false }
-  }
+//  private func updateRelationshipFromData(data: [String:AnyObject],
+//                                   forAttribute attribute: String,
+//                                lookupKey: String? = nil,
+//                                   ofType type: ModelObject.Type) -> Bool
+//  {
+//    if let moc = managedObjectContext,
+//      objectData = data[lookupKey ?? attribute.dashcaseString] as? [String:AnyObject],
+//      object = type.importObjectWithData(objectData, context: moc)
+//    {
+//      setValue(object, forKey: attribute)
+//      return true
+//    } else { return false }
+//  }
 
   /**
   updateToManyRelationshipFromData:forKey:ofType:
@@ -398,17 +398,65 @@ public class ModelObject: NSManagedObject, Model, JSONExport, Hashable, Equatabl
 
   :returns: Bool
   */
-  private func updateToManyRelationshipFromData(data: [String:AnyObject],
-                                         forKey key: String,
-                                      lookupKey: String? = nil,
-                                         ofType type: ModelObject.Type,
-                                        ordered: Bool = false) -> Bool
-  {
-    if let moc = managedObjectContext, objectData = data[lookupKey ?? key.dashcaseString] as? [[String:AnyObject]] {
-      let objects = type.importObjectsFromData(objectData, context: moc)
-      setValue(ordered ? NSOrderedSet(array: objects) : NSSet(array: objects), forKey: key)
-      return true
-    } else { return false }
+//  private func updateToManyRelationshipFromData(data: [String:AnyObject],
+//                                   forAttribute attribute: String,
+//                                      lookupKey: String? = nil,
+//                                         ofType type: ModelObject.Type,
+//                                        ordered: Bool = false) -> Bool
+//  {
+//    if let moc = managedObjectContext, objectData = data[lookupKey ?? attribute.dashcaseString] as? [[String:AnyObject]] {
+//      let objects = type.importObjectsWithData(objectData, context: moc)
+//      setValue(ordered ? NSOrderedSet(array: objects) : NSSet(array: objects), forKey: attribute)
+//      return true
+//    } else { return false }
+//  }
+
+  /**
+  updateRelationship:withData:
+
+  :param: relationship NSRelationshipDescription
+  :param: data [String
+
+  :returns: Bool
+  */
+  private func updateRelationship(relationship: NSRelationshipDescription, withData data: [String:AnyObject]) -> Bool {
+    if let moc = managedObjectContext,
+      relatedTypeName = relationship.destinationEntity?.managedObjectClassName,
+      relatedType = NSClassFromString(relatedTypeName) as? ModelObject.Type,
+      relatedObject = relatedType.importObjectWithData(data, context: moc) where !relationship.toMany
+    {
+      setPrimitiveValue(relatedObject, forKey: relationship.name)
+      if let inverseAttributeName = relationship.inverseRelationship?.name {
+        relatedObject.setPrimitiveValue(self, forKey: inverseAttributeName)
+        return true
+      }
+    }
+
+    return false
+  }
+
+  /**
+  updateRelationship:withData:
+
+  :param: relationship NSRelationshipDescription
+  :param: data [[String
+
+  :returns: Bool
+  */
+  private func updateRelationship(relationship: NSRelationshipDescription, withData data: [[String:AnyObject]]) -> Bool {
+    if let moc = managedObjectContext,
+      relatedTypeName = relationship.destinationEntity?.managedObjectClassName,
+      relatedType = NSClassFromString(relatedTypeName) as? ModelObject.Type where relationship.toMany
+    {
+      let relatedObjects = relatedType.importObjectsWithData(data, context: moc)
+      setPrimitiveValue(relationship.ordered ? NSOrderedSet(array: relatedObjects) : NSSet(array: relatedObjects), forKey: relationship.name)
+      if let inverseAttributeName = relationship.inverseRelationship?.name {
+        apply(relatedObjects, {$0.setPrimitiveValue(self, forKey: inverseAttributeName)})
+        return true
+      }
+    }
+
+    return false
   }
 
   /**
@@ -427,9 +475,7 @@ public class ModelObject: NSManagedObject, Model, JSONExport, Hashable, Equatabl
       relatedObjectData = data[lookupKey ?? key.dashcaseString] as? [String:AnyObject],
       moc = managedObjectContext
     {
-      let relatedObject = relatedType.objectWithData(relatedObjectData, context: moc)
-//      println("relatedObject:n\(relatedObject ?? nil)")
-      return relatedObject as? T
+      return relatedType.objectWithData(relatedObjectData, context: moc) as? T
     } else { return nil }
   }
 
@@ -441,19 +487,20 @@ public class ModelObject: NSManagedObject, Model, JSONExport, Hashable, Equatabl
 
   :returns: Bool
   */
-  public func updateRelationshipFromData(data: [String:AnyObject], forKey key: String, lookupKey: String? = nil) -> Bool {
-    if let relationshipDescription = entity.relationshipsByName[key] as? NSRelationshipDescription,
-      relatedTypeName = relationshipDescription.destinationEntity?.managedObjectClassName,
-      relatedType = NSClassFromString(relatedTypeName) as? ModelObject.Type
-    {
-      return relationshipDescription.toMany
-        ? updateToManyRelationshipFromData(data,
-                                    forKey: key,
-                                 lookupKey: lookupKey,
-                                    ofType: relatedType,
-                                   ordered: relationshipDescription.ordered)
-        : updateRelationshipFromData(data, forKey: key, lookupKey: lookupKey, ofType: relatedType)
-    } else { return false }
+  public func updateRelationshipFromData(data: [String:AnyObject], forAttribute attribute: String, lookupKey: String? = nil) -> Bool {
+
+    // Retrieve the relationship description
+    if let relationshipDescription = entity.relationshipsByName[attribute] as? NSRelationshipDescription {
+      // Obtain relationship data
+      let key = lookupKey ?? attribute.dashcaseString
+      if let relationshipData = data[key] as? [String:AnyObject] where !relationshipDescription.toMany {
+        return updateRelationship(relationshipDescription, withData: relationshipData)
+      } else if let relationshipData = data[key] as? [[String:AnyObject]] where relationshipDescription.toMany {
+        return updateRelationship(relationshipDescription, withData: relationshipData)
+      }
+    }
+
+    return false
   }
 
 

@@ -266,7 +266,7 @@ Addtion binary operator for a `PathIndex` and a `String`
 :returns: PathIndex
 */
 public func +(lhs: PathIndex, rhs: String) -> PathIndex {
-  if let rhsAsIndex = PathIndex(rhs) { return lhs + rhs } else { return lhs }
+  if let rhsAsIndex = PathIndex(rhs) { return lhs + rhsAsIndex } else { return lhs }
 }
 
 /**

@@ -347,14 +347,14 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
   }
 
   /**
-  importObjectsFromData:context:
+  importObjectsWithData:context:
 
   :param: data AnyObject?
   :param: context NSManagedObjectContext
 
   :returns: [Constraint]
   */
-  override public class func importObjectsFromData(data: AnyObject, context: NSManagedObjectContext) -> [ModelObject] {
+  override public class func importObjectsWithData(data: AnyObject, context: NSManagedObjectContext) -> [ModelObject] {
     var constraints: [Constraint] = []
     if let rootDictionary = data as? [String:AnyObject] {
       if let index = rootDictionary["index"] as? [String:String] {

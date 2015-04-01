@@ -55,13 +55,13 @@ final public class Image: EditableModelObject {
 
   override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    updateRelationshipFromData(data, forKey: "imageCategory", lookupKey: "category")
+    updateRelationshipFromData(data, forAttribute: "imageCategory", lookupKey: "category")
 
     if let assetName = data["asset-name"] as? String { self.assetName = assetName }
     if let leftCap = data["left-cap"] as? NSNumber { self.leftCap = leftCap.intValue }
     if let topCap = data["top-cap"] as? NSNumber { self.topCap = topCap.intValue }
   }
-
+  // FIXME: Move UIImage retrieval to bank module?
   public var image: UIImage? { return UIImage(named: assetName) }
   public var templateImage: UIImage? { return image?.imageWithRenderingMode(.AlwaysTemplate) }
   override public var commentedUUID: String {
@@ -101,10 +101,7 @@ final public class Image: EditableModelObject {
   */
   @objc(objectWithPathIndex:context:)
   public override class func objectWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Image? {
-    if let object = modelWithIndex(index, context: context) {
-      MSLogDebug("located image with name '\(object.name)'")
-      return object
-    } else { return nil }
+    return modelWithIndex(index, context: context)
   }
 
   override public var description: String {
@@ -132,8 +129,6 @@ extension Image: PathIndexedModel {
   public static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Image? {
     if index.count < 1 { return nil }
     let imageName = index.removeLast().pathDecoded
-    if let imageCategory = ImageCategory.modelWithIndex(index, context: context) {
-      return findFirst(imageCategory.images, {$0.name == imageName})
-    } else { return nil }
+    return findFirst(ImageCategory.modelWithIndex(index, context: context)?.images, {$0.name == imageName})
   }
 }

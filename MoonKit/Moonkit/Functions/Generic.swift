@@ -142,8 +142,8 @@ findFirst:predicate:
 
 :returns: (C.Generator.Element)?
 */
-public func findFirst<C: CollectionType>(domain: C, predicate: (C.Generator.Element) -> Bool) -> (C.Generator.Element)? {
-  for element in domain { if predicate(element) { return element } }
+public func findFirst<C: CollectionType>(domain: C?, predicate: (C.Generator.Element) -> Bool) -> (C.Generator.Element)? {
+  if let collection = domain { for element in collection { if predicate(element) { return element } } }
   return nil
 }
 

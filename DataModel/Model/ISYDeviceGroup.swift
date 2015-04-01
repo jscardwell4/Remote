@@ -24,7 +24,7 @@ public class ISYDeviceGroup: NamedModelObject {
     if let flag = data["flag"] as? NSNumber { self.flag = flag }
     if let address = data["address"] as? String { self.address = address }
     if let family = data["family"] as? NSNumber { self.family = family }
-    updateRelationshipFromData(data, forKey: "members")
+    updateRelationshipFromData(data, forAttribute: "members")
   }
 
 }

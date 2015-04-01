@@ -39,7 +39,7 @@ final public class Preset: EditableModelObject {
   */
   override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    updateRelationshipFromData(data, forKey: "subelements")
+    updateRelationshipFromData(data, forAttribute: "subelements")
     storage.dictionary = data - "subelements"
   }
 

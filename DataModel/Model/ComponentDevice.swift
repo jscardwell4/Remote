@@ -71,19 +71,19 @@ public final class ComponentDevice: EditableModelObject {
 
     if let port = data["port"] as? NSNumber { self.port = port.shortValue }
 
-    updateRelationshipFromData(data, forKey: "onCommand")
-    updateRelationshipFromData(data, forKey: "offCommand")
-    updateRelationshipFromData(data, forKey: "manufacturer")
-    updateRelationshipFromData(data, forKey: "networkDevice")
+    updateRelationshipFromData(data, forAttribute: "onCommand")
+    updateRelationshipFromData(data, forAttribute: "offCommand")
+    updateRelationshipFromData(data, forAttribute: "manufacturer")
+    updateRelationshipFromData(data, forAttribute: "networkDevice")
+    updateRelationshipFromData(data, forAttribute: "codeSet")
 
-    if let codeSetData = data["code-set"] as? [String:AnyObject] {
-      if let rawCodeSetIndex = codeSetData["index"] as? String, codeSetIndex = PathIndex(rawValue: rawCodeSetIndex) {
-        if let moc = managedObjectContext, codeSet = IRCodeSet.modelWithIndex(codeSetIndex, context: moc) {
-          self.codeSet = codeSet
-        }
-      }
-    }
-//    updateRelationshipFromData(data, forKey: "codeSet")
+//    if let codeSetData = data["code-set"] as? [String:AnyObject] {
+//      if let rawCodeSetIndex = codeSetData["index"] as? String, codeSetIndex = PathIndex(rawValue: rawCodeSetIndex) {
+//        if let moc = managedObjectContext, codeSet = IRCodeSet.modelWithIndex(codeSetIndex, context: moc) {
+//          self.codeSet = codeSet
+//        }
+//      }
+//    }
   }
 
   override public var description: String {

@@ -187,7 +187,6 @@
 		C2358FD219C78E4200920F8D /* MSSingletonController.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE890A18138CF700555D63 /* MSSingletonController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358FD319C78E4200920F8D /* MSStack.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE890C18138CF700555D63 /* MSStack.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358FD419C78E4200920F8D /* MSValueTransformers.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE890E18138CF700555D63 /* MSValueTransformers.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2358FD519C78E4200920F8D /* MSJSONSerialization.h in Headers */ = {isa = PBXBuildFile; fileRef = C27828411814629700FC8D54 /* MSJSONSerialization.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358FD819C78E4200920F8D /* MSNotificationReceptionist.h in Headers */ = {isa = PBXBuildFile; fileRef = C20FF1F119AEB67100D11F33 /* MSNotificationReceptionist.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358FD919C78E4300920F8D /* MSXMLParserDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = C222480619B781FD0093B07C /* MSXMLParserDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358FDA19C78E4300920F8D /* MSKeyPath.h in Headers */ = {isa = PBXBuildFile; fileRef = C2F4370219BB813F00B60FC3 /* MSKeyPath.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -203,7 +202,6 @@
 		C2358FE419C78E4400920F8D /* MSView.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE892918138CF700555D63 /* MSView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358FE519C78E4400920F8D /* GCDAsyncSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = C2F9414119BE7D01007B5CC1 /* GCDAsyncSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358FE619C78E4400920F8D /* GCDAsyncUdpSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = C2F9414319BE7D01007B5CC1 /* GCDAsyncUdpSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C23592D319C8759200920F8D /* MSJSONSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = C27828421814629700FC8D54 /* MSJSONSerialization.m */; };
 		C23592D719C8785D00920F8D /* NSMutableString+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C23592D519C8783E00920F8D /* NSMutableString+MSKitAdditions.m */; };
 		C23592D819C8786700920F8D /* NSMutableString+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C23592D419C8783E00920F8D /* NSMutableString+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C23592F419C8E04200920F8D /* BitArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592DE19C8E04200920F8D /* BitArray.swift */; };
@@ -1195,7 +1193,6 @@
 				C2358FD219C78E4200920F8D /* MSSingletonController.h in Headers */,
 				C2358FD319C78E4200920F8D /* MSStack.h in Headers */,
 				C2358FD419C78E4200920F8D /* MSValueTransformers.h in Headers */,
-				C2358FD519C78E4200920F8D /* MSJSONSerialization.h in Headers */,
 				C2358FD819C78E4200920F8D /* MSNotificationReceptionist.h in Headers */,
 				C2358FD919C78E4300920F8D /* MSXMLParserDelegate.h in Headers */,
 				C2358FDA19C78E4300920F8D /* MSKeyPath.h in Headers */,
@@ -1550,7 +1547,6 @@
 				C27372851A1FC0750079624D /* UIColor+MoonKitAdditions.swift in Sources */,
 				C2358F7F19C78E0C00920F8D /* MSMultiselectView.m in Sources */,
 				C2358F8019C78E0C00920F8D /* MSNumberPadView.m in Sources */,
-				C23592D319C8759200920F8D /* MSJSONSerialization.m in Sources */,
 				C2358F8119C78E0C00920F8D /* MSPickerInputView.m in Sources */,
 				C2358F8219C78E0C00920F8D /* MSPopupBarButtonView.m in Sources */,
 				C2358F8319C78E0C00920F8D /* MSReflectingView.m in Sources */,

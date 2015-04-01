@@ -92,9 +92,9 @@ public final class Activity: NamedModelObject {
   override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
-    updateRelationshipFromData(data, forKey: "remote")
-    updateRelationshipFromData(data, forKey: "launchMacro")
-    updateRelationshipFromData(data, forKey: "haltMacro")
+    updateRelationshipFromData(data, forAttribute: "remote")
+    updateRelationshipFromData(data, forAttribute: "launchMacro")
+    updateRelationshipFromData(data, forAttribute: "haltMacro")
   }
 
 

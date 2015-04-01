@@ -1,5 +1,5 @@
 //
-//  MSJSONSerialization.swift
+//  JSONSerialization.swift
 //  MSKit
 //
 //  Created by Jason Cardwell on 10/20/13.
@@ -8,6 +8,7 @@
 
 import Foundation
 
+@objc(MSJSONSerialization)
 public class JSONSerialization: NSObject {
 
   /**
@@ -34,7 +35,6 @@ public class JSONSerialization: NSObject {
     // TODO: Add options support
 
 		var json: String?
-
     var weakStringFromObject: ((AnyObject, Int) -> String)?
 
 		let stringFromObject: (AnyObject, Int) -> String =

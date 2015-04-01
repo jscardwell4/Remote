@@ -84,7 +84,7 @@ final public class IRCode: EditableModelObject {
   */
   override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    updateRelationshipFromData(data, forKey: "category")
+    updateRelationshipFromData(data, forAttribute: "category")
     if let frequency = data["frequencey"] as? NSNumber { self.frequency = frequency.longLongValue }
     if let offset = data["offset"] as? NSNumber { self.offset = offset.shortValue }
     if let repeatCount = data["repeatCount"] as? NSNumber { self.repeatCount = repeatCount.shortValue }

@@ -26,9 +26,9 @@ final public class IRCodeSet: EditableModelObject {
   override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
-    updateRelationshipFromData(data, forKey: "codes")
-    updateRelationshipFromData(data, forKey: "devices")
-    updateRelationshipFromData(data, forKey: "manufacturer")
+    updateRelationshipFromData(data, forAttribute: "codes")
+    updateRelationshipFromData(data, forAttribute: "devices")
+    updateRelationshipFromData(data, forAttribute: "manufacturer")
   }
 
   /**
@@ -59,10 +59,7 @@ final public class IRCodeSet: EditableModelObject {
   */
   @objc(objectWithPathIndex:context:)
   public override class func objectWithIndex(index: PathIndex, context: NSManagedObjectContext) -> IRCodeSet? {
-    if let object = modelWithIndex(index, context: context) {
-//      MSLogDebug("located code set with name '\(object.name)'")
-      return object
-    } else { return nil }
+    return modelWithIndex(index, context: context)
   }
 
   override public var description: String {
@@ -87,13 +84,11 @@ extension IRCodeSet: PathIndexedModel {
   :returns: IRCodeSet?
   */
   public static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> IRCodeSet? {
-    if index.count == 2 {
+    if index.count != 2 { return nil }
+    else {
       let codeSetName = index.removeLast().pathDecoded
-      if let manufacturer = Manufacturer.modelWithIndex(index, context: context) {
-        return findFirst(manufacturer.codeSets, {$0.name == codeSetName})
-      }
+      return findFirst(Manufacturer.modelWithIndex(index, context: context)?.codeSets, {$0.name == codeSetName})
     }
-    return nil
   }
 
 }

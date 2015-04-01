@@ -118,8 +118,8 @@ public class ISYDevice: NetworkDevice {
     if let deviceType        = data["device-type"]       as? String { self.deviceType = deviceType }
     if let baseURL           = data["base-url"]          as? String { self.baseURL = baseURL }
 
-    updateRelationshipFromData(data, forKey: "nodes")
-    updateRelationshipFromData(data, forKey: "groups")
+    updateRelationshipFromData(data, forAttribute: "nodes")
+    updateRelationshipFromData(data, forAttribute: "groups")
   }
 
   /**

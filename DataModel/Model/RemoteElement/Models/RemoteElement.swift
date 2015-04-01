@@ -257,7 +257,7 @@ public class RemoteElement: NamedModelObject {
       }
 
       if let constraintsJSON = data["constraints"] as? [String:AnyObject] {
-        ownedConstraints = Constraint.importObjectsFromData(constraintsJSON, context: moc) as! [Constraint]
+        ownedConstraints = Constraint.importObjectsWithData(constraintsJSON, context: moc) as! [Constraint]
       }
 
     }

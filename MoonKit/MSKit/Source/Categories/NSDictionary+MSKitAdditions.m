@@ -7,7 +7,7 @@
 //
 
 #import "NSDictionary+MSKitAdditions.h"
-#import "MSJSONSerialization.h"
+//#import "MSJSONSerialization.h"
 #import "MSKitMacros.h"
 #import "NSObject+MSKitAdditions.h"
 #import "MSDictionary.h"
@@ -32,14 +32,7 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 /// JSONString
 /// @return NSString *
-- (NSString *)JSONString {
-  id        obj = self.JSONObject;
-  NSError * error;
-  NSData  * data = [NSJSONSerialization dataWithJSONObject:obj options:NSJSONWritingPrettyPrinted error:&error];
-  return (MSHandleErrors(error)
-          ? nil
-          : [[NSString stringWithData:data] stringByReplacingRegEx:@"^(\\s*\"[^\"]+\") :" withString:@"$1:"]);
-}
+- (NSString *)JSONString { return [MSJSONSerialization JSONFromObject:self.JSONObject options:MSJSONWriteFormatOptionsDefault];}
 
 /// JSONObject
 /// @return id

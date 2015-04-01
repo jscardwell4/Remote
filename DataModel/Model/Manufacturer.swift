@@ -31,8 +31,8 @@ final public class Manufacturer: EditableModelObject {
   override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
-    updateRelationshipFromData(data, forKey: "codeSets")
-    updateRelationshipFromData(data, forKey: "devices")
+    updateRelationshipFromData(data, forAttribute: "codeSets")
+    updateRelationshipFromData(data, forAttribute: "devices")
   }
 
   override public func JSONDictionary() -> MSDictionary {
