@@ -19,8 +19,8 @@ typedef id __nonnull (^NSDictionaryMappingBlock)    (id obj, id key);
 @interface NSDictionary (MSKitAdditions) <MSKeySearchable, MSKeyContaining, MSObjectContaining>
 
 @property (nonatomic, readonly) BOOL isEmpty;
-@property (nonatomic, weak, readonly, nonnull) id JSONObject;
-@property (nonatomic, weak, readonly, nonnull) NSString * JSONString;
+//@property (nonatomic, weak, readonly, nonnull) id JSONObject;
+//@property (nonatomic, weak, readonly, nonnull) NSString * JSONString;
 
 + (instancetype)dictionaryFromDictionary:(NSDictionary *)dictionary
                             replacements:(NSDictionary *)replacements;

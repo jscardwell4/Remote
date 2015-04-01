@@ -60,7 +60,7 @@ FOUNDATION_EXPORT const unsigned char MoonKitVersionString[];
 #import <MoonKit/NSMutableString+MSKitAdditions.h>
 #import <MoonKit/NSURL+MSKitAdditions.h>
 #import <MoonKit/NSUserDefaults+MSKitAdditions.h>
-#import <MoonKit/MSJSONSerialization.h>
+//#import <MoonKit/MSJSONSerialization.h>
 #import <MoonKit/NSValue+MSKitAdditions.h>
 #import <MoonKit/MSKVOReceptionist.h>
 #import <MoonKit/MSLog.h>

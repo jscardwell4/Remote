@@ -14,7 +14,10 @@ extension MSKeyPath: SequenceType {
   }
 }
 
-extension MSDictionary: JSONExport {}
+//extension MSDictionary: JSONExport {
+//  public var JSONString: String { return JSONSerialization.JSONFromObject(JSONObject) ?? "" }
+//  public var JSONObject: AnyObject { return self }
+//}
 
 //extension MSDictionary: DictionaryLiteralConvertible {
 //
@@ -38,10 +41,17 @@ extension MSDictionary: JSONExport {}
 
 extension MSDictionary: Printable {
 
+  /**
+  initWithOrderedDictionary:AnyObject>:
+
+  :param: orderedDictionary OrderedDictionary<NSObject
+  :param: AnyObject>
+  */
   convenience init(orderedDictionary: OrderedDictionary<NSObject,AnyObject>) {
     self.init(values: orderedDictionary.values, forKeys: orderedDictionary.keys)
   }
 
+  /** inflate */
   @objc public func inflate() {
 
     // First gather a list of keys to inflate

@@ -23,8 +23,8 @@
 @property (nonatomic, readonly, nullable) id<NSCopying>  lastKey;
 @property (nonatomic, readonly, nullable) id             firstValue;
 @property (nonatomic, readonly, nullable) id             lastValue;
-@property (nonatomic, weak, readonly, nonnull) id JSONObject;
-@property (nonatomic, weak, readonly, nonnull) NSString * JSONString;
+//@property (nonatomic, weak, readonly, nonnull) id JSONObject;
+//@property (nonatomic, weak, readonly, nonnull) NSString * JSONString;
 
 + (MSDictionary *)dictionaryWithDictionary:(NSDictionary *)dictionary convertFoundationClasses:(BOOL)convert;
 - (void)convertFoundationClasses;

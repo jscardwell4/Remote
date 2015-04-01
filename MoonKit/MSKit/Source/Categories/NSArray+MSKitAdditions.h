@@ -22,8 +22,8 @@
 + (nonnull NSArray *)arrayFromRange:(NSRange)range;
 + (nonnull NSArray *)arrayWithObject:(id __nonnull)obj count:(NSUInteger)count;
 
-@property (nonatomic, weak, readonly, nonnull) id JSONObject;
-@property (nonatomic, weak, readonly, nonnull) NSString * JSONString;
+//@property (nonatomic, weak, readonly, nonnull) id JSONObject;
+//@property (nonatomic, weak, readonly, nonnull) NSString * JSONString;
 
 - (nonnull NSSet *)set;
 - (NSUInteger)lastIndex;

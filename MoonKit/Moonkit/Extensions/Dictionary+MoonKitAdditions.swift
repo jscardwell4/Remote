@@ -8,7 +8,15 @@
 
 import Foundation
 
-extension NSDictionary: JSONExport {}
+extension NSDictionary: JSONExport {
+  public var JSONString: String { return JSONSerialization.JSONFromObject(JSONObject) ?? "" }
+  public var JSONObject: AnyObject { return self }
+}
+
+//extension NSDictionary: JSONValueConvertible {
+//  public var JSONValue: NSDictionary { return self }
+//  public convenience init?(JSONValue: NSDictionary) { self.init(dictionary: JSONValue) }
+//}
 
 public protocol KeyValueCollectionTypeGenerator {
   typealias Key
@@ -91,6 +99,43 @@ public func formattedDescription<C: KeyValueCollectionType where C.Generator: Ke
   return join("\n", components)
 }
 
+extension Dictionary {
+  /**
+  init:Value)]:
+
+  :param: elements [(Key
+  :param: Value)]
+  */
+  init(_ elements: [(Key,Value)]) {
+    self = [Key:Value]()
+    for (k, v) in elements { self[k] = v }
+  }
+
+  var keyValuePairs: [(Key, Value)] { return Array(SequenceOf({self.generate()})) }
+}
+
+/**
+keyValuePairs:
+
+:param: dict [K V]
+
+:returns: [(K, V)]
+*/
+public func keyValuePairs<K:Hashable,V>(dict: [K:V]) -> [(K, V)] { return dict.keyValuePairs }
+
+/**
+extended:newElements:V)]:
+
+:param: dict [K V]
+:param: newElements [(K
+:param: V)]
+
+:returns: [K:V]
+*/
+public func extended<K:Hashable,V>(dict: [K:V], newElements: [(K,V)]) -> [K:V] {
+  return Dictionary(Array(SequenceOf({dict.generate()})) + newElements)
+}
+
 /**
 extend:newEntries:
 
@@ -136,4 +181,68 @@ public func filter<K:Hashable,V>(dict: [K:V], include: (K, V) -> Bool) -> [K:V] 
   var filteredDict: [K:V] = [:]
   for (key, value) in dict { if include(key, value) { filteredDict[key] = value } }
   return filteredDict
+}
+
+public func inflate(inout dict: [String:AnyObject]) {
+  // First gather a list of keys to inflate
+  let inflatableKeys = Array(dict.keys.filter({$0 ~= "(?:\\w\\.)+\\w"}))
+
+  // Enumerate the list inflating each key
+  for key in inflatableKeys {
+
+    var keypath = MSKeyPath(fromString:key)  // Create a keypath from the inflatable key
+    let first = keypath.popFirst()!          // This will become our key
+    let last = keypath.popLast()!            // This will become the deepest key in our value
+
+
+
+    let value: AnyObject
+
+    // If our value is an array, we embed each value in the array and keep our value as an array
+    if let valueArray = dict[key] as? [AnyObject] {
+
+      value = valueArray.map{
+        (obj: AnyObject) -> MSDictionary in
+
+        var dict = MSDictionary()  // Create a dictionary within which to embed our value
+        var subdict = dict         // This will reference the dictionary to which our value entered
+
+        // If there are stops along the way from first to last, recursively embed in dictionaries
+        if !keypath.isEmpty {
+          for subkey in keypath {
+            subdict[subkey] = MSDictionary()
+            var subsubdict = subdict[subkey] as! MSDictionary
+            subdict = subsubdict
+          }
+        }
+
+        subdict[last] = obj
+        return dict
+
+        }
+
+    }
+
+      // Otherwise we embed the value
+    else {
+
+      var dict = MSDictionary()  // Create a dictionary within which to embed our value
+      var subdict = dict         // This will reference the dictionary to which our value entered
+
+      // If there are stops along the way from first to last, recursively embed in dictionaries
+      if !keypath.isEmpty {
+        for subkey in keypath {
+          subdict[subkey] = MSDictionary()
+          var subsubdict = subdict[subkey] as! MSDictionary
+          subdict = subsubdict
+        }
+      }
+
+      subdict[last] = dict[key]
+      value = dict
+
+    }
+
+    dict[key] = value                              // Remove the compressed key-value entry
+  }
 }

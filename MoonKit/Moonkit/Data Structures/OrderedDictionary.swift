@@ -58,12 +58,20 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   */
   public init(_ dict: NSDictionary) { self.init(dict as! [NSObject:AnyObject]) }
 
+  public init(_ dict: MSDictionary) {
+    self.init(dict as NSDictionary)
+    let keys = dict.allKeys
+    if let castKeys = (keys as [Any]) as? [Key] {
+      indexKeys = castKeys
+    }
+  }
+
   /**
   init:
 
   :param: dict [Key
   */
-  public init(_ dict:[Key:Value]) {
+  public init(_ dict: [Key:Value]) {
     storage = dict
     indexKeys = Array(dict.keys)
     printableKeys = true
@@ -75,7 +83,7 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   :param: keys [Key]
   :param: values [Value]
   */
-  public init(keys:[Key], values:[Value]) {
+  public init(keys: [Key], values: [Value]) {
     self.init(minimumCapacity: keys.count)
     if keys.count == values.count {
       indexKeys += keys

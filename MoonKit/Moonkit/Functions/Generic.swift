@@ -443,3 +443,5 @@ public func ∪=<T:RawOptionSetType>(inout lhs: T, rhs: T) { lhs = lhs ∪ rhs }
 
 public func ∖<T:RawOptionSetType>(lhs: T, rhs: T) -> T { return unsetOption(rhs, lhs) }
 public func ∖=<T:RawOptionSetType>(inout lhs: T, rhs: T) { lhs = lhs ∖ rhs }
+
+public func +(lhs: Range<Int>, rhs: Int) -> Range<Int> { return lhs.startIndex + rhs ..< lhs.endIndex + rhs }

@@ -240,6 +240,7 @@
 		C28E509B1A143FDC00DF3206 /* MultiselectGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28E509A1A143FDC00DF3206 /* MultiselectGestureRecognizer.swift */; };
 		C29692AA19CE53D400992240 /* JSONSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29692A919CE53D400992240 /* JSONSerialization.swift */; };
 		C2A6261F1A33598300152E97 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A6261E1A33598300152E97 /* Slider.swift */; };
+		C2A70E3B1ACC53D0009C2CF7 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A70E3A1ACC53D0009C2CF7 /* JSON.swift */; };
 		C2B9B40A1AC1C499005BA67C /* RegularExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B9B4091AC1C499005BA67C /* RegularExpression.swift */; };
 		C2BE96E81A467E85007599B2 /* NSManagedObjectModel+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BE96E71A467E85007599B2 /* NSManagedObjectModel+MoonKitAdditions.swift */; };
 		C2C3B91F1AC5DA7D001DC6CC /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2C3B91E1AC5DA7D001DC6CC /* CocoaLumberjack.framework */; };
@@ -343,6 +344,7 @@
 		C295E30319E2FBBB008309B8 /* ToggleImageSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleImageSegmentedControl.swift; sourceTree = "<group>"; };
 		C29692A919CE53D400992240 /* JSONSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONSerialization.swift; path = Moonkit/Parsing/JSONSerialization.swift; sourceTree = SOURCE_ROOT; };
 		C2A6261E1A33598300152E97 /* Slider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
+		C2A70E3A1ACC53D0009C2CF7 /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		C2A7CA9619CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSDictionary+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C2B84B091A27890A000D699C /* Set.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Set.swift; sourceTree = "<group>"; };
 		C2B9B4091AC1C499005BA67C /* RegularExpression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegularExpression.swift; sourceTree = "<group>"; };
@@ -675,6 +677,7 @@
 			isa = PBXGroup;
 			children = (
 				C23592F219C8E04200920F8D /* JSONParser.swift */,
+				C2A70E3A1ACC53D0009C2CF7 /* JSON.swift */,
 			);
 			path = Parsing;
 			sourceTree = "<group>";
@@ -1449,6 +1452,7 @@
 				C2358F4519C78E0C00920F8D /* NSURL+MSKitAdditions.m in Sources */,
 				C2A6261F1A33598300152E97 /* Slider.swift in Sources */,
 				C28E35BA1A451E3800438CCF /* CoreDataStack.swift in Sources */,
+				C2A70E3B1ACC53D0009C2CF7 /* JSON.swift in Sources */,
 				C2064FFD1A13C70F00342FDE /* Geometry.swift in Sources */,
 				C2358F4619C78E0C00920F8D /* NSUserDefaults+MSKitAdditions.m in Sources */,
 				C2CEFF221A30F34400F3BE24 /* Label.swift in Sources */,

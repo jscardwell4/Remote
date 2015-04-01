@@ -186,8 +186,18 @@ public extension String {
   :returns: Character
   */
   public subscript (i: Int) -> Character {
-    let index: String.Index = advance(i < 0 ? self.endIndex : self.startIndex, i)
-    return self[index]
+    get { return self[advance(i < 0 ? self.endIndex : self.startIndex, i)] }
+    mutating set { replaceRange(i...i, with: [newValue]) }
+  }
+
+  /**
+  replaceRange:with:
+
+  :param: subRange Range<Int>
+  :param: newElements C
+  */
+  public mutating func replaceRange<C : CollectionType where C.Generator.Element == Character>(subRange: Range<Int>, with newElements: C) {
+    replaceRange(indexRangeFromIntRange(subRange), with: newElements)
   }
 
   /**
@@ -198,13 +208,17 @@ public extension String {
   :returns: String
   */
   public subscript (r: Range<Int>) -> String {
-    let rangeStart: String.Index = advance(startIndex, r.startIndex)
-    let rangeEnd:   String.Index = advance(r.endIndex < 0 ? endIndex : startIndex, r.endIndex)
-    let range: Range<String.Index> = Range<String.Index>(start: rangeStart, end: rangeEnd)
-    return self[range]
+    get { return self[indexRangeFromIntRange(r)] }
+    mutating set { replaceRange(r, with: newValue) }
   }
 
+  /**
+  subscript:
 
+  :param: r Range<UInt>
+
+  :returns: String
+  */
   public subscript (r: Range<UInt>) -> String {
     let rangeStart: String.Index = advance(startIndex, Int(r.startIndex))
     let rangeEnd:   String.Index = advance(startIndex, Int(distance(r.startIndex, r.endIndex)))
