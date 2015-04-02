@@ -117,6 +117,15 @@ public extension String {
   public func join(strings: String...) -> String { return join(strings) }
 
   /**
+  sandwhich:
+
+  :param: string String
+
+  :returns: String
+  */
+  public func sandwhich(string: String) -> String { return self + string + self }
+
+  /**
   split:
 
   :param: string String

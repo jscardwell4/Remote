@@ -33,6 +33,7 @@ compressed:
 :returns: [T]
 */
 public func compressed<T>(array: [Optional<T>]) -> [T] { return array.filter{$0 != nil}.map{$0!} }
+public func compressed<T:NilLiteralConvertible>(array: [T]) -> [T] { return array.filter{$0 != nil} }
 public prefix func ‽<T>(array: [Optional<T>]) -> [T] { return compressed(array) }
 public postfix func ‽<T>(array: [Optional<T>]) -> [T] { return compressed(array) }
 
