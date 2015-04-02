@@ -143,8 +143,9 @@ public enum JSON: NilLiteralConvertible {
 
 extension JSON: Printable { public var description: String { return stringValue } }
 
+// MARK: - Public functions to convert something into a `JSON` type
 public func toJSONValue(v: Bool) -> JSON { return JSON(v) }
-public func toJSONValue<B:BooleanType>(v: B) -> JSON { return toJSONValue(v.boolValue) }
+public func toJSONValue<B: BooleanType>(v: B) -> JSON { return toJSONValue(v.boolValue) }
 public func toJSONValue(v: String) -> JSON { return JSON(v) }
 public func toJSONValue(v: Float) -> JSON { return JSON(NSNumber(float: v)) }
 public func toJSONValue(v: Double) -> JSON { return JSON(NSNumber(floatLiteral: v)) }
@@ -159,7 +160,7 @@ public func toJSONValue(v: UInt32) -> JSON { return JSON(NSNumber(unsignedInt: v
 public func toJSONValue(v: Int64) -> JSON { return JSON(NSNumber(longLong: v)) }
 public func toJSONValue(v: UInt64) -> JSON { return JSON(NSNumber(unsignedLongLong: v)) }
 public func toJSONValue(v: NSNumber) -> JSON { return JSON(v) }
-public func toJSONValue(v: AnyObject) -> JSON {
+public func toJSONValue(v: AnyObject) -> JSON? {
   if let x = v as? [AnyObject] { return toJSONValue(x) }
   if let x = v as? [String:AnyObject] { return toJSONValue(x) }
   if let x = v as? String { return toJSONValue(x) }
@@ -178,6 +179,27 @@ public func toJSONValue(v: AnyObject) -> JSON {
   if let x = v as? NSNumber { return toJSONValue(x) }
   return nil
 }
-public func toJSONValue<T:AnyObject>(v: [T]) -> JSON { return JSON(compressed(v.map({toJSONValue($0)}))) }
-public func toJSONValue<T:AnyObject>(v: [String:T]) -> JSON { return JSON(Dictionary(v.keyValuePairs.map({($0, toJSONValue($1))}))) }
+public func toJSONValue<T:AnyObject>(v: [T]) -> JSON { return JSON(compressedMap(v, {toJSONValue($0)})) }
+public func toJSONValue(v:NSArray) -> JSON { return toJSONValue(v as [AnyObject]) }
+public func toJSONValue<T:AnyObject>(v: [String:T]) -> JSON { return JSON(compressedMap(v, {toJSONValue($1)})) }
+public func toJSONValue(v: NSDictionary) -> JSON {
+  return toJSONValue(NSDictionary(objects: v.allValues, forKeys: v.allKeys.map({toString($0)})) as! [String:AnyObject])
+}
+public func toJSONValue(v: [String:Bool]) -> JSON { return JSON(compressedMap(v, {toJSONValue($1)})) }
+public func toJSONValue<B:BooleanType>(v: [String:B]) -> JSON { return JSON(compressedMap(v, {toJSONValue($1)})) }
+public func toJSONValue(v: [String:String]) -> JSON { return JSON(compressedMap(v, {toJSONValue($1)})) }
+public func toJSONValue(v: [String:Float]) -> JSON { return JSON(compressedMap(v, {toJSONValue($1)})) }
+public func toJSONValue(v: [String:Double]) -> JSON { return JSON(compressedMap(v, {toJSONValue($1)})) }
+public func toJSONValue(v: [String:Int]) -> JSON { return JSON(compressedMap(v, {toJSONValue($1)})) }
+public func toJSONValue(v: [String:UInt]) -> JSON { return JSON(compressedMap(v, {toJSONValue($1)})) }
+public func toJSONValue(v: [String:Int8]) -> JSON { return JSON(compressedMap(v, {toJSONValue($1)})) }
+public func toJSONValue(v: [String:UInt8]) -> JSON { return JSON(compressedMap(v, {toJSONValue($1)})) }
+public func toJSONValue(v: [String:Int16]) -> JSON { return JSON(compressedMap(v, {toJSONValue($1)})) }
+public func toJSONValue(v: [String:UInt16]) -> JSON { return JSON(compressedMap(v, {toJSONValue($1)})) }
+public func toJSONValue(v: [String:Int32]) -> JSON { return JSON(compressedMap(v, {toJSONValue($1)})) }
+public func toJSONValue(v: [String:UInt32]) -> JSON { return JSON(compressedMap(v, {toJSONValue($1)})) }
+public func toJSONValue(v: [String:Int64]) -> JSON { return JSON(compressedMap(v, {toJSONValue($1)})) }
+public func toJSONValue(v: [String:UInt64]) -> JSON { return JSON(compressedMap(v, {toJSONValue($1)})) }
+public func toJSONValue(v: [String:NSNumber]) -> JSON { return JSON(compressedMap(v, {toJSONValue($1)})) }
+public func toJSONValue(v: [String:AnyObject]) -> JSON { return JSON(compressedMap(v, {toJSONValue($1)})) }
 

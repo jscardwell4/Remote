@@ -33,6 +33,13 @@ public func disperse4<S:SequenceType,T where S.Generator.Element == T>(s: S) -> 
 public func typeCast<T,U>(t: T, u: U.Type) -> U? { return t as? U }
 public func typeCast<T,U>(t: T?, u: U.Type) -> U? { return t != nil ? typeCast(t!, u) : nil }
 
+public func compressed<S:SequenceType, T where S.Generator.Element == Optional<T>>(source: S) -> [T] {
+  return compressed(Array(source))
+}
+public func compressedMap<S:SequenceType, T, U where S.Generator.Element == T>(source: S, transform: (T) -> U?) -> [U] {
+  return compressedMap(Array(source), transform)
+}
+
 /**
 createIdentifier:suffix:
 

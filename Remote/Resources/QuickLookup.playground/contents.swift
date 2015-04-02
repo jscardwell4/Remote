@@ -2,16 +2,6 @@
 import Foundation
 import UIKit
 
-let string = "wtf"
-String(Array(string)[0..<2])
-
-let s: String.Index = string.startIndex
-s.getMirror().disposition
-let m = s.getMirror()
-m.value
-m.valueType
-m.summary
-
-dropLast(string)
-
-
+let array = [[1,2],[3,4]]
+let flatMappedArray = flatMap(array, { $0 })
+flatMappedArray

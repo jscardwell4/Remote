@@ -145,22 +145,22 @@ extend:newEntries:
 public func extend<K,V>(inout x: [K:V], newEntries: [K:V]) { for (key, value) in newEntries { x[key] = value } }
 
 /**
-map:block:
+map:transform:
 
 :param: dict [K:V]
 :param: block (K, V) -> U
 :returns: [K:U]
 */
-public func map<K,V,U>(dict: [K:V], block: (K, V) -> U) -> [K:U] {
+public func map<K,V,U>(dict: [K:V], transform: (K, V) -> U) -> [K:U] {
   var result: [K:U] = [:]
-  for (key, value) in dict { result[key] = block(key, value) }
+  for (key, value) in dict { result[key] = transform(key, value) }
   return result
 }
 
 /**
 subscript:rhs:
 
-:param: lhs [K
+:param: lhs [K:V]
 :param: rhs K
 
 :returns: [K:V]
@@ -173,7 +173,7 @@ public func -<K,V>(var lhs: [K:V], rhs: K) -> [K:V] {
 /**
 filter:
 
-:param: dict [K V]
+:param: dict [K:V]
 
 :returns: [K:V]
 */
@@ -181,6 +181,28 @@ public func filter<K:Hashable,V>(dict: [K:V], include: (K, V) -> Bool) -> [K:V] 
   var filteredDict: [K:V] = [:]
   for (key, value) in dict { if include(key, value) { filteredDict[key] = value } }
   return filteredDict
+}
+
+/**
+compressed:
+
+:param: dict [K:Optional<V>]
+
+:returns: [K:V]
+*/
+public func compressed<K:Hashable,V>(dict: [K:Optional<V>]) -> [K:V] {
+  return Dictionary(dict.keyValuePairs.filter({$1 != nil}).map({($0,$1!)}))
+}
+
+/**
+compressedMap:transform:
+
+:param: dict [K:V]
+:param: block (K, V) -> U?
+:returns: [K:U]
+*/
+public func compressedMap<K:Hashable,V,U>(dict: [K:V], transform: (K, V) -> U?) -> [K:U] {
+  return compressed(map(dict, transform))
 }
 
 public func inflate(inout dict: [String:AnyObject]) {

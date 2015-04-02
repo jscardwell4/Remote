@@ -34,8 +34,19 @@ compressed:
 */
 public func compressed<T>(array: [Optional<T>]) -> [T] { return array.filter{$0 != nil}.map{$0!} }
 public func compressed<T:NilLiteralConvertible>(array: [T]) -> [T] { return array.filter{$0 != nil} }
+
 public prefix func ‽<T>(array: [Optional<T>]) -> [T] { return compressed(array) }
 public postfix func ‽<T>(array: [Optional<T>]) -> [T] { return compressed(array) }
+
+/**
+compressedMap:transform:
+
+:param: array [T]
+:param: transform (T) -> U?
+
+:returns: [U]
+*/
+public func compressedMap<T,U>(array: [T], transform: (T) -> U?) -> [U] { return compressed(array.map(transform)) }
 
 /** unpacking an array into a tuple */
 public func disperse2<T>(v: [T]) -> (T,T) { return (v[0], v[1]) }
