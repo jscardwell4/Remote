@@ -147,7 +147,7 @@ public class JSONSerialization: NSObject {
 
 	:returns: AnyObject?
 	*/
-	class func objectByParsingFile(filePath: String, options: ReadOptions = .None, error: NSErrorPointer = nil) -> AnyObject? {
+	public class func objectByParsingFile(filePath: String, options: ReadOptions = .None, error: NSErrorPointer = nil) -> AnyObject? {
 
     var localError: NSError?      // So we can intercept errors before passing them along to caller
 

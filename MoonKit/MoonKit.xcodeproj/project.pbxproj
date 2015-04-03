@@ -253,6 +253,8 @@
 		C2CEFF2A1A32807E00F3BE24 /* TextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CEFF291A32807E00F3BE24 /* TextInputView.swift */; };
 		C2CEFF2C1A328B2000F3BE24 /* FloatInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CEFF2B1A328B2000F3BE24 /* FloatInputView.swift */; };
 		C2E7C8321A1AA3F0006BC80E /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E7C8311A1AA3F0006BC80E /* Protocols.swift */; };
+		C2E937001ACE04D4003EB3E8 /* JSONParserRedux.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E936FF1ACE04D4003EB3E8 /* JSONParserRedux.swift */; };
+		C2E937021ACE0AB8003EB3E8 /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E937011ACE0AB8003EB3E8 /* JSONValue.swift */; };
 		C2EB15771A1D45C100B64D84 /* ConfiningBlockActionGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EB15761A1D45C100B64D84 /* ConfiningBlockActionGesture.swift */; };
 		C2F01E1B1A02E080007F6966 /* MSColorInputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2F01E1A1A02E080007F6966 /* MSColorInputView.xib */; };
 		C2F094451A32A83A00681AB3 /* DrawingKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F094441A32A83A00681AB3 /* DrawingKit.swift */; };
@@ -517,6 +519,8 @@
 		C2E37782181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAssertionHandler+MSKitAdditions.h"; sourceTree = "<group>"; };
 		C2E37783181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAssertionHandler+MSKitAdditions.m"; sourceTree = "<group>"; };
 		C2E7C8311A1AA3F0006BC80E /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		C2E936FF1ACE04D4003EB3E8 /* JSONParserRedux.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONParserRedux.swift; sourceTree = "<group>"; };
+		C2E937011ACE0AB8003EB3E8 /* JSONValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONValue.swift; sourceTree = "<group>"; };
 		C2EB15761A1D45C100B64D84 /* ConfiningBlockActionGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfiningBlockActionGesture.swift; sourceTree = "<group>"; };
 		C2F01E1A1A02E080007F6966 /* MSColorInputView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MSColorInputView.xib; sourceTree = "<group>"; };
 		C2F01E331A03EDD9007F6966 /* ToggleImageBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleImageBarButtonItem.swift; sourceTree = "<group>"; };
@@ -661,8 +665,11 @@
 		C23592F119C8E04200920F8D /* Parsing */ = {
 			isa = PBXGroup;
 			children = (
+				C29692A919CE53D400992240 /* JSONSerialization.swift */,
 				C23592F219C8E04200920F8D /* JSONParser.swift */,
 				C2A70E3A1ACC53D0009C2CF7 /* JSON.swift */,
+				C2E936FF1ACE04D4003EB3E8 /* JSONParserRedux.swift */,
+				C2E937011ACE0AB8003EB3E8 /* JSONValue.swift */,
 			);
 			path = Parsing;
 			sourceTree = "<group>";
@@ -987,7 +994,6 @@
 		C2CE88EB18138CF700555D63 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
-				C29692A919CE53D400992240 /* JSONSerialization.swift */,
 				C2CE88ED18138CF700555D63 /* MSAssertionHandler.h */,
 				C2CE88EE18138CF700555D63 /* MSAssertionHandler.m */,
 				C2CE88EF18138CF700555D63 /* MSBitVector.h */,
@@ -1469,6 +1475,7 @@
 				C2358F7219C78E0C00920F8D /* MSQueue.m in Sources */,
 				C2358F7319C78E0C00920F8D /* MSSingleton.m in Sources */,
 				C2358F7419C78E0C00920F8D /* MSSingletonController.m in Sources */,
+				C2E937021ACE0AB8003EB3E8 /* JSONValue.swift in Sources */,
 				C28E35BE1A45DBF300438CCF /* Array+MoonKitAdditions.swift in Sources */,
 				C24E0EB91AC6141B0044248E /* Bool+MoonKitAdditions.swift in Sources */,
 				C235930419C8E04200920F8D /* JSONParser.swift in Sources */,
@@ -1482,6 +1489,7 @@
 				C21493C11A35302200D274A2 /* ColorInputView.swift in Sources */,
 				C2358F7C19C78E0C00920F8D /* MSKeyPath.m in Sources */,
 				C24416331ACB16F8007EDEFE /* NSSet+MoonKitAdditions.swift in Sources */,
+				C2E937001ACE04D4003EB3E8 /* JSONParserRedux.swift in Sources */,
 				C2358F7D19C78E0C00920F8D /* MSCheckboxView.m in Sources */,
 				C2358F7E19C78E0C00920F8D /* MSColorInputView.m in Sources */,
 				C27372851A1FC0750079624D /* UIColor+MoonKitAdditions.swift in Sources */,
@@ -2013,6 +2021,7 @@
 				C2A70E4B1ACD8EBA009C2CF7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
 		};
 		C2CE884918138C4900555D63 /* Build configuration list for PBXProject "MoonKit" */ = {
 			isa = XCConfigurationList;

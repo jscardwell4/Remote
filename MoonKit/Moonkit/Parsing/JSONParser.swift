@@ -8,8 +8,6 @@
 
 import Foundation
 
-private var LogLevel: Int32 = 0b11
-
 /**
 
 `JSONParser` is a simple class for parsing a JSON string into an object. The following grammar is used for parsing.
@@ -114,9 +112,6 @@ public class JSONParser: NSObject {
 
     }
 
-    // Log debug info if log level accomodates
-    if LogLevel == 0b1111 { if let error = pointer.memory { MSHandleError(error); dumpState() } }
-
   }
 
   /**
@@ -176,9 +171,9 @@ public class JSONParser: NSObject {
   */
   private func scanFor(type: ScanType,
             inout into object: AnyObject?,
-                       discardingComments: Bool = true,
-                       skipping skipCharacters: NSCharacterSet = NSCharacterSet.whitespaceAndNewlineCharacterSet(),
-                       error: NSErrorPointer = nil) -> Bool
+    discardingComments: Bool = true,
+              skipping skipCharacters: NSCharacterSet = NSCharacterSet.whitespaceAndNewlineCharacterSet(),
+                 error: NSErrorPointer = nil) -> Bool
   {
 
     var success = false
@@ -696,8 +691,6 @@ public class JSONParser: NSObject {
 
     }
 
-//    MSLogVerbose("parsed object…\n\(object)")
-
     return object
 
   }
@@ -741,15 +734,15 @@ private enum Token {
       }
     }
 
-    static var LeftCurlyBracketCharacterSet   = NSCharacterSet(charactersInString: "{" )
-    static var RightCurlyBracketCharacterSet  = NSCharacterSet(charactersInString: "}" )
-    static var LeftSquareBracketCharacterSet  = NSCharacterSet(charactersInString: "[" )
-    static var RightSquareBracketCharacterSet = NSCharacterSet(charactersInString: "]" )
-    static var ColonCharacterSet              = NSCharacterSet(charactersInString: ":" )
-    static var CommaCharacterSet              = NSCharacterSet(charactersInString: "," )
-    static var QuotationCharacterSet          = NSCharacterSet(charactersInString: "\"")
-    static var SolidusCharacterSet            = NSCharacterSet(charactersInString: "/" )
-    static var AsteriskCharacterSet           = NSCharacterSet(charactersInString: "*" )
+    static let LeftCurlyBracketCharacterSet   = NSCharacterSet(charactersInString: "{" )
+    static let RightCurlyBracketCharacterSet  = NSCharacterSet(charactersInString: "}" )
+    static let LeftSquareBracketCharacterSet  = NSCharacterSet(charactersInString: "[" )
+    static let RightSquareBracketCharacterSet = NSCharacterSet(charactersInString: "]" )
+    static let ColonCharacterSet              = NSCharacterSet(charactersInString: ":" )
+    static let CommaCharacterSet              = NSCharacterSet(charactersInString: "," )
+    static let QuotationCharacterSet          = NSCharacterSet(charactersInString: "\"")
+    static let SolidusCharacterSet            = NSCharacterSet(charactersInString: "/" )
+    static let AsteriskCharacterSet           = NSCharacterSet(charactersInString: "*" )
   }
 
   /// Generalized enumeration for value type tokens that are not collections of other tokens
@@ -764,9 +757,9 @@ private enum Token {
       case True  = "true"
       case False = "false"
 
-      static var NullCharacterSet  = NSCharacterSet(charactersInString: "null")
-      static var TrueCharacterSet  = NSCharacterSet(charactersInString: "true")
-      static var FalseCharacterSet = NSCharacterSet(charactersInString: "false")
+      static let NullCharacterSet  = NSCharacterSet(charactersInString: "null")
+      static let TrueCharacterSet  = NSCharacterSet(charactersInString: "true")
+      static let FalseCharacterSet = NSCharacterSet(charactersInString: "false")
 
     }
 
