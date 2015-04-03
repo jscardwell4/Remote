@@ -12,6 +12,12 @@ import MoonKit
 
 class MoonKit_Tests: XCTestCase {
 
+  override class func initialize() {
+    super.initialize()
+    MSLog.addTTYLogger()
+    MSLog.addASLLogger()
+  }
+
   static let filePaths: [String] = {
     var filePaths: [String] = []
     if let bundlePath = NSUserDefaults.standardUserDefaults().stringForKey("XCTestedBundlePath"),
@@ -22,6 +28,10 @@ class MoonKit_Tests: XCTestCase {
     }
     return filePaths
   }()
+
+  static let fileJSON: [String] = [
+    "{\"null\":null,\"boolean\":true,\"number\":89,\"array\":[\"arrayString1\",\"arrayString2\"],\"object\":{\"key\":\"value\"},\"string\":\"string\"}"
+  ]
 
   func testJSONValueTypeSimple() {
     let string = "I am a string"
@@ -130,12 +140,10 @@ class MoonKit_Tests: XCTestCase {
   func testJSONSerialization() {
     let filePath = self.dynamicType.filePaths[0]
     var error: NSError?
-    if let object: AnyObject = JSONSerialization.objectByParsingFile(filePath, error: &error)
+    if let object = JSONSerialization.objectByParsingFile(filePath, error: &error)
       where !MSHandleError(error, message: "trouble parsing file '\(filePath)'")
     {
-      let jsonObject = JSONValue(object)
-      println(jsonObject)
-
+      XCTAssertEqual(object.stringValue, self.dynamicType.fileJSON[0], "unexpected result from parse")
     } else { XCTFail("file parse failed to create an object") }
 
   }

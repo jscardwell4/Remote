@@ -1,74 +1,73 @@
 //
-//  JSONSerialization.swift
-//  MSKit
+//  JSONSerializationRedux.swift
+//  MoonKit
 //
-//  Created by Jason Cardwell on 10/20/13.
-//  Copyright (c) 2013 Jason Cardwell. All rights reserved.
+//  Created by Jason Cardwell on 4/3/15.
+//  Copyright (c) 2015 Jason Cardwell. All rights reserved.
 //
 
 import Foundation
 
-@objc(MSJSONSerialization)
-public class JSONSerialization: NSObject {
+public class JSONSerialization {
 
-	/**
-	JSONFromObject:options:
+  /**
+  JSONFromObject:options:
 
-	:param: object AnyObject
-	:param: options WriteOptions = .None
+  :param: object AnyObject
+  :param: options WriteOptions = .None
 
-	:returns: String
-	*/
+  :returns: String
+  */
   public class func JSONFromObject(object: AnyObject?, options: WriteOptions = .None) -> String? {
     // TODO: Add options support
 
-		var json: String?
+    var json: String?
     var weakStringFromObject: ((AnyObject, Int) -> String)?
 
-		let stringFromObject: (AnyObject, Int) -> String =
-		{(object, depth) in
+    let stringFromObject: (AnyObject, Int) -> String =
+    {(object, depth) in
 
-			let indent = " " * (depth * 4)
-			var string = indent
+      let indent = " " * (depth * 4)
+      var string = indent
 
-			if let array = object as? NSArray {
+      if let array = object as? NSArray {
 
-				string += "["
-				if let comment = array.comment { string += " \(comment)" }
+        string += "["
+        if let comment = array.comment { string += " \(comment)" }
 
-				let objectCount = array.count
+        let objectCount = array.count
 
-				for var i = 0; i < objectCount; i++ {
+        for var i = 0; i < objectCount; i++ {
 
           var valueString = weakStringFromObject!(array[i], depth + 1).stringByTrimmingTrailingWhitespace()
           string += "\n\(valueString)"
 
-					if i + 1 < objectCount { string += "," }
-					if let comment = (array[i] as! NSObject).comment { string += comment }
+          if i + 1 < objectCount { string += "," }
+          if let comment = (array[i] as! NSObject).comment { string += comment }
 
-				}
+        }
 
-				if objectCount > 0 { string += "\n\(indent)" }
+        if objectCount > 0 { string += "\n\(indent)" }
 
-				string += "]"
+        string += "]"
 
-			}
+      }
 
-			else if let dict = object as? NSDictionary {
+      else if let dict = object as? NSDictionary {
 
-				string += "{"
+        string += "{"
 
 
-				if let comment = dict.comment { string += comment }
+        if let comment = dict.comment { string += comment }
 
-				let keys = dict.allKeys
-				let keyCount = keys.count
+        let keys = dict.allKeys
+        let keyCount = keys.count
 
-				for var i = 0; i < keyCount; i++ {
+        for var i = 0; i < keyCount; i++ {
 
           let key: AnyObject = keys[i]
           let value: AnyObject = dict[key as! NSCopying]!
-					let keyString = weakStringFromObject!(key, depth + 1)
+          let keyString = weakStringFromObject!(key, depth + 1)
           let valueString = weakStringFromObject!(value, depth + 1).stringByTrimmingWhitespace()
 
           string += "\n\(keyString): \(valueString)"
@@ -77,51 +76,51 @@ public class JSONSerialization: NSObject {
 
           if let comment = (value as! NSObject).comment { string += comment }
 
-				}
+        }
 
-				if keyCount > 0 { string += "\n\(indent)" }
+        if keyCount > 0 { string += "\n\(indent)" }
 
-				string += "}"
+        string += "}"
 
-			}
+      }
 
-			else if let number = object as? NSNumber {
-				if number === kCFBooleanFalse || number === kCFBooleanTrue { string += number.boolValue ? "true" : "false" }
-				else { string += "\(number)" }
-			}
+      else if let number = object as? NSNumber {
+        if number === kCFBooleanFalse || number === kCFBooleanTrue { string += number.boolValue ? "true" : "false" }
+        else { string += "\(number)" }
+      }
 
-			else if let nullObject = object as? NSNull { string += "null" }
+      else if let nullObject = object as? NSNull { string += "null" }
 
-			else if let stringObject = object as? NSString { string += "\"\(stringObject.stringByEscapingControlCharacters())\"" }
+      else if let stringObject = object as? NSString { string += "\"\(stringObject.stringByEscapingControlCharacters())\"" }
 
-			return string
+      return string
 
-		}
+    }
 
     weakStringFromObject = stringFromObject
 
     if let obj: AnyObject = object where NSJSONSerialization.isValidJSONObject(obj) { json = stringFromObject(obj, 0) }
-		json?.extend("\n")
+    json?.extend("\n")
 
-		return json
+    return json
 
-	}
+  }
 
-	/**
-	objectByParsingString:options:error:
+  /**
+  objectByParsingString:options:error:
 
-	:param: string String
-	:param: options JSONSerializationReadOptions = .None
-	:param: error NSErrorPointer = nil
+  :param: string String
+  :param: options JSONSerializationReadOptions = .None
+  :param: error NSErrorPointer = nil
 
-	:returns: AnyObject?
-	*/
-	public class func objectByParsingString(string: String?,
+  :returns: AnyObject?
+  */
+  public class func objectByParsingString(string: String?,
                                   options: ReadOptions = .None,
-                                    error: NSErrorPointer = nil) -> AnyObject?
+                                    error: NSErrorPointer = nil) -> JSONValue?
   {
     if string == nil { return nil }
-    var object: AnyObject? // Our return object
+    var object: JSONValue? // Our return object
 
     // Create the parser with the provided string
     let parser = JSONParser(string: string!)
@@ -133,30 +132,32 @@ public class JSONSerialization: NSObject {
       if var dicts = container.allObjectsOfKind(MSDictionary.self) as? [MSDictionary] { dicts ➤ {$0.inflate()} }
     }
 
-		return object
-	}
+    return object
+  }
 
 
-	/**
-	This method calls `objectByParsingString:options:error` with the content of the specified file after attempting to replace
+  /**
+  This method calls `objectByParsingString:options:error` with the content of the specified file after attempting to replace
   any '<@include file/to/include.json>' directives with their respective file content.
 
-	:param: filePath String
-	:param: options JSONSerializationReadOptions = .None
-	:param: error NSErrorPointer = nil
+  :param: filePath String
+  :param: options JSONSerializationReadOptions = .None
+  :param: error NSErrorPointer = nil
 
-	:returns: AnyObject?
-	*/
-	public class func objectByParsingFile(filePath: String, options: ReadOptions = .None, error: NSErrorPointer = nil) -> AnyObject? {
+  :returns: JSONValue?
+  */
+  public class func objectByParsingFile(filePath: String, options: ReadOptions = .None, error: NSErrorPointer = nil) -> JSONValue? {
 
     var localError: NSError?      // So we can intercept errors before passing them along to caller
 
     // Create a block for wrapping an underlying error
     let handledError: (Int) -> Bool = {
       if localError == nil { return false }
-      if error != nil { error.memory = NSError(domain: "MSJSONSerializationErrorDomain",
-                                               code: $0,
-                                               underlyingErrors: [localError!]) }
+      if error != nil {
+        error.memory = NSError(domain: "MSJSONSerializationErrorDomain",
+                               code: $0,
+                               underlyingErrors: [localError!])
+      }
       return true
     }
 
@@ -190,56 +191,7 @@ public class JSONSerialization: NSObject {
 
     return nil
 
-	}
-
-}
-
-// Mark - Objective-C compliant mehod wrappers
-extension JSONSerialization {
-
-  /**
-  Wrapper for swift only method `JSONFromObject:options:`
-
-  :param: object AnyObject
-  :param: options WriteOptions.Raw
-
-  :returns: String?
-  */
-  @objc public class func JSONFromObject(object: AnyObject, options: WriteOptions.RawValue) -> String? {
-    return JSONFromObject(object, options: WriteOptions(rawValue: options))
   }
-
-  /**
-  Wrapper for swift-only method `objectByParsingString:options:error:`
-
-  :param: string String
-  :param: options ReadOptions.Raw
-  :param: error NSErrorPointer
-
-  :returns: AnyObject?
-  */
- @objc public class func objectByParsingString(string: String,
-                                       options: ReadOptions.RawValue,
-                                         error: NSErrorPointer) -> AnyObject?
- {
-   return objectByParsingString(string, options:(ReadOptions(rawValue: options) ?? .None), error: error)
- }
-
-  /**
-  Wrapper for swift-only method `objectByParsingFile:options:error:`
-
-  :param: filePath String
-  :param: options ReadOptions.Raw
-  :param: error NSErrorPointer
-
-  :returns: AnyObject?
-  */
- @objc public class func objectByParsingFile(filePath: String,
-                                     options: ReadOptions.RawValue,
-                                       error: NSErrorPointer) -> AnyObject?
- {
-   return objectByParsingFile(filePath, options: (ReadOptions(rawValue: options) ?? .None), error: error)
- }
 
 }
 
@@ -285,8 +237,8 @@ extension JSONSerialization {
     static var BreakAfterComma               : WriteOptions = WriteOptions(rawValue: 0b0000_0100_0000_0000)
     static var BreakBetweenColonAndArray     : WriteOptions = WriteOptions(rawValue: 0b0000_1000_0000_0000)
     static var BreakBetweenColonAndObject    : WriteOptions = WriteOptions(rawValue: 0b0001_0000_0000_0000)
-
+    
     public static var allZeros               : WriteOptions { return WriteOptions.None }
   }
-
+  
 }

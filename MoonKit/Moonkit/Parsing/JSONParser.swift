@@ -1,9 +1,9 @@
 //
 //  JSONParser.swift
-//  HomeRemote
+//  MoonKit
 //
-//  Created by Jason Cardwell on 8/16/14.
-//  Copyright (c) 2014 Moondeer Studios. All rights reserved.
+//  Created by Jason Cardwell on 4/2/15.
+//  Copyright (c) 2015 Jason Cardwell. All rights reserved.
 //
 
 import Foundation
@@ -14,28 +14,73 @@ import Foundation
 *note: All whitespace excluding that which appears inside a quoted string is ignored.
 
 start → array | object
-object → comment? '{' comment? (key-value (comment? ',' comment? key-value)*)? comment? '}' comment?
-key-value → string comment? ':' comment? value
-array → comment? '[' comment? (value (comment? ',' comment? value)*)? comment? ']' comment?
-value → 'null' | 'true' | 'false' | number | string | array | object
+
+object → left-curly-bracket key-value-pairs? right-curly-bracket
+
+key-value-pairs → key-value (comma key-value)*
+
+key-value → string colon value
+
+array → left-square-bracket values? right-square-bracket
+
+values → value (comma value)*
+
+value → 'null'
+
+value → 'true'
+
+value → 'false'
+
+value → number
+
+value → string
+
+value → array
+
+value → object
+
 string → " ­character* "
-character → Any Unicode character except for ", ⏎, \ | \ ["\/bfnrt] | \ u [0-9A-F]{4}
+
+character → Any Unicode character except for ", ⏎, \
+
+character → \ ["\/bfnrt]
+
+character → \ u [0-9A-F]{4}
+
 number →  -? [0-9]+ (. [0-9]+)? ([eE] [+-]? [0-9]+)?
-comment → '/' '/' non-return-character* '⏎' | '/' '*' (non-asterisk-character | '*' non-solidus-character)* '*' '/'
+
+comment → '/' '/' non-return-character* '⏎'
+
+comment → '/' '*' (non-asterisk-character | '*' non-solidus-character)* '*' '/'
+
 non-return-character → Any Unicode character except for ⏎
+
 non-asterisk-character → Any Unicode character except for *
+
 non-solidus-character → Any Unicode character except for /
 
- */
-@objc(MSJSONParser)
-public class JSONParser: NSObject {
+comma → comment? ',' comment?
+
+colon → comment? ':' comment?
+
+left-curly-bracket → comment? '{' comment?
+
+right-curly-bracket → comment? '}' comment?
+
+left-square-bracket → comment? '[' comment?
+
+right-square-bracket → comment? ']' comment?
+
+
+*/
+public class JSONParser {
 
   public var string: String { return scanner.string }
   public var idx:    Int    { get { return scanner.scanLocation } set { scanner.scanLocation = newValue } }
 
-  private var contextStack: Stack<Context>   = Stack<Context>()
-  private var objectStack:  Stack<AnyObject> = Stack<AnyObject>()
-  private var keyStack:     Stack<String>    = Stack<String>()
+  private var contextStack: Stack<Context>   = []
+  private var objectStack:  Stack<JSONValue> = []
+  private var keyStack:     Stack<String>    = []
   private let scanner:      NSScanner
 
   /**
@@ -43,7 +88,7 @@ public class JSONParser: NSObject {
 
   :param: string String
   */
-  public init(string: String) { scanner = NSScanner.localizedScannerWithString(string) as! NSScanner; super.init() }
+  public init(string: String) { scanner = NSScanner.localizedScannerWithString(string) as! NSScanner }
 
 
   // MARK: - Error handling and debugging
@@ -62,9 +107,9 @@ public class JSONParser: NSObject {
   :param: reason String?
   */
   private func setError(pointer: NSErrorPointer,
-                      _ code: JSONParserErrorCode,
-                      _ reason: String?,
-                        underlyingError: NSError? = nil)
+                 _ code: JSONParserErrorCode,
+               _ reason: String?,
+        underlyingError: NSError? = nil)
   {
     // Make sure we have memory in which to put the error object
     if pointer != nil {
@@ -90,7 +135,7 @@ public class JSONParser: NSObject {
 
         }
 
-        // Otherwise just add the underlying error provided
+          // Otherwise just add the underlying error provided
         else {
 
           info[NSUnderlyingErrorKey] = providedUnderlyingError
@@ -139,17 +184,30 @@ public class JSONParser: NSObject {
   /**
   dumpState
   */
-  private func dumpState() {
+  private func dumpState(error: NSError? = nil) {
     println("scanner.atEnd? \(scanner.atEnd)\nidx: \(idx)")
-    println("keyStack[\(keyStack.count)]: \(String.CommaSpace.join(keyStack.map{String.Quote + $0 + String.Quote}))")
-    println("contextStack[\(contextStack.count)]: \(String.CommaSpace.join(contextStack.map{$0.description}))")
-    println("objectStack[\(objectStack.count)]:\n\(String.Newline.join(objectStack.map{$0.description}))")
+    println("keyStack[\(keyStack.count)]: " + ", ".join(keyStack.map{"'\($0)'"}))
+    println("contextStack[\(contextStack.count)]: " + ", ".join(contextStack.map{$0.rawValue}))
+    println("objectStack[\(objectStack.count)]:\n" + "\n".join(objectStack.map{toString($0)}))
+    if error != nil {
+      println("error: \(detailedDescriptionForError(error!, depth: 0))")
+    }
   }
 
 
   // MARK: - Scanning the string
 
+  /** Enumeration to represent the current parser state */
+  private enum Context: String {
+    case Start  = "start"
+    case Object = "object"
+    case Value  = "value"
+    case Array  = "array"
+    case Key    = "key"
+    case End    = "end"
+  }
 
+  /** Enumeration for specifying a type of scan to perform */
   private enum ScanType {
     case CharactersFromSet     (NSCharacterSet)
     case UpToCharactersFromSet (NSCharacterSet)
@@ -185,30 +243,30 @@ public class JSONParser: NSObject {
 
     switch type {
 
-      case .CharactersFromSet(let set):
-        var scannedString: NSString?
-        success = scanner.scanCharactersFromSet(set, intoString: &scannedString)
-        if success { object = scannedString }
+    case .CharactersFromSet(let set):
+      var scannedString: NSString?
+      success = scanner.scanCharactersFromSet(set, intoString: &scannedString)
+      if success { object = scannedString }
 
-      case .UpToCharactersFromSet(let set):
-        var scannedString: NSString?
-        success = scanner.scanUpToCharactersFromSet(set, intoString: &scannedString)
-        if success { object = scannedString }
+    case .UpToCharactersFromSet(let set):
+      var scannedString: NSString?
+      success = scanner.scanUpToCharactersFromSet(set, intoString: &scannedString)
+      if success { object = scannedString }
 
-      case .Text (let text):
-        var scannedString: NSString?
-        success = scanner.scanString(text, intoString: &scannedString)
-        if success { object = scannedString }
+    case .Text (let text):
+      var scannedString: NSString?
+      success = scanner.scanString(text, intoString: &scannedString)
+      if success { object = scannedString }
 
-      case .UpToText(let text):
-        var scannedString: NSString?
-        success = scanner.scanUpToString(text, intoString: &scannedString)
-        if success { object = scannedString }
+    case .UpToText(let text):
+      var scannedString: NSString?
+      success = scanner.scanUpToString(text, intoString: &scannedString)
+      if success { object = scannedString }
 
-      case .Number:
-        var scannedNumber: Double = 0
-        success = scanner.scanDouble(&scannedNumber)
-        if success { object = scannedNumber }
+    case .Number:
+      var scannedNumber: Double = 0
+      success = scanner.scanDouble(&scannedNumber)
+      if success { object = scannedNumber }
 
     }
 
@@ -229,34 +287,34 @@ public class JSONParser: NSObject {
     var scannedObject: AnyObject?
 
     // Try scanning the for solidus characters
-    if scanFor(.CharactersFromSet(Token.PunctuationToken.Solidus.characterSet),
-          into: &scannedObject, discardingComments: false) {
+    if scanFor(.CharactersFromSet(NSCharacterSet(charactersInString: "/" )),
+      into: &scannedObject, discardingComments: false) {
 
-      if let scannedString = scannedObject as? String {
+        if let scannedString = scannedObject as? String {
 
-        if scannedString.hasPrefix("//") {
+          if scannedString.hasPrefix("//") {
 
-          scanFor(.UpToCharactersFromSet(NSCharacterSet.newlineCharacterSet()),
-            into: &scannedObject, discardingComments: false, skipping: NSCharacterSet(charactersInString: ""))
+            scanFor(.UpToCharactersFromSet(NSCharacterSet.newlineCharacterSet()),
+              into: &scannedObject, discardingComments: false, skipping: NSCharacterSet(charactersInString: ""))
 
-        }
-
-        else if scanFor(.CharactersFromSet(Token.PunctuationToken.Asterisk.characterSet),
-          into: &scannedObject, discardingComments: false, skipping: NSCharacterSet(charactersInString: ""))
-        {
-          if !scanFor(.UpToText("*/"), into: &scannedObject, discardingComments: false) {
-            setSyntaxError(error, "open-ended multi-line comment")
           }
 
-          else { scanFor(.Text("*/"), into: &scannedObject, discardingComments: false) }
+          else if scanFor(.CharactersFromSet(NSCharacterSet(charactersInString: "*" )),
+            into: &scannedObject, discardingComments: false, skipping: NSCharacterSet(charactersInString: ""))
+          {
+            if !scanFor(.UpToText("*/"), into: &scannedObject, discardingComments: false) {
+              setSyntaxError(error, "open-ended multi-line comment")
+            }
+
+            else { scanFor(.Text("*/"), into: &scannedObject, discardingComments: false) }
+
+          }
+
+          else { setSyntaxError(error, "malformed comment detected") }
 
         }
 
-        else { setSyntaxError(error, "malformed comment detected") }
-
-      }
-
-      else { setInternalError(error, "scan succeeded but scanned object is empty") }
+        else { setInternalError(error, "scan succeeded but scanned object is empty") }
 
     }
 
@@ -293,7 +351,7 @@ public class JSONParser: NSObject {
 
       else {
 
-        while !success && scanFor(.UpToCharactersFromSet(Token.PunctuationToken.Quotation.characterSet),
+        while !success && scanFor(.UpToCharactersFromSet(NSCharacterSet(charactersInString: "\"")),
           into: &scannedObject, skipping: NSCharacterSet(charactersInString: ""))
         {
           // Make sure we scanned something and that we didn't scan up to an escaped quotation mark
@@ -350,9 +408,9 @@ public class JSONParser: NSObject {
     if scanFor(.Text("{"), into: &scannedObject, error: &localError) {
 
       success = true
-      objectStack.push(MSDictionary())   // Push a new dictionary onto the object stack
-      contextStack.push(Context.Object)  // Push object context
-      contextStack.push(Context.Key)     // Push key context
+      objectStack.push(.Object([:])) // Push a new dictionary onto the object stack
+      contextStack.push(.Object)     // Push object context
+      contextStack.push(.Key)        // Push key context
 
 
     }
@@ -360,41 +418,40 @@ public class JSONParser: NSObject {
     // Then try to scan a comma separating another object key value pair
     else if scanFor(.Text(","), into: &scannedObject, error: &localError) {
       success = true
-      contextStack.push(Context.Key)
+      contextStack.push(.Key)
     }
 
-    // Lastly, try to scan the closing punctuation for an object
+      // Lastly, try to scan the closing punctuation for an object
     else if scanFor(.Text("}"), into: &scannedObject, error: &localError) {
 
+      // Pop context and object stacks
+      if let context = contextStack.pop(), object = objectStack.pop() {
 
-      // Pop context, making sure it is correct
-      if contextStack.pop() != Context.Object { setInternalError(error, "incorrect context popped off of stack",
-                                                                 underlyingError: localError) }
+        switch (context, object) {
 
-      else {
-
-        // Make sure we have another context on the stack
-        if let context = contextStack.peek {
-
-          // Replace start context with end context if we have completed the root object
-          if context == Context.Start {
+          case (_, _) where contextStack.peek == .Start:
+            // Replace start context with end context if we have completed the root object
             contextStack.pop()
-            contextStack.push(Context.End)
+            contextStack.push(.End)
+            objectStack.push(object)
             success = true
-          }
 
-          // If not the root object, pop this object off of the stack and add to underlying object
-          else if let dict = objectStack.pop() as? MSDictionary { success = addValueToTopObject(dict, error) }
+          case (.Object, .Object(_)):
+            success = addValueToTopObject(object, error)
 
-          // If we can't get the completed array, set error
-          else { setInternalError(error, "dictionary absent from object stack", underlyingError: localError) }
+          case (_, .Object(_)):
+            setInternalError(error, "incorrect context popped off of stack", underlyingError: localError)
 
+          case (.Object, _):
+            setInternalError(error, "dictionary absent from object stack", underlyingError: localError)
+
+          default:
+            assert(false, "shouldn't this be unreachable?")
         }
 
-        // Set error if our context stack is empty
-        else { setInternalError(error, "empty context stack", underlyingError: localError) }
-
       }
+
+      else { setInternalError(error, "one or both of context and object stacks is empty", underlyingError: localError) }
 
     }
 
@@ -419,49 +476,47 @@ public class JSONParser: NSObject {
     if scanFor(.Text("["), into: &scannedObject, error: &localError) {
 
       success = true
-      objectStack.push(NSMutableArray())   // Push a new array onto the object stack
-      contextStack.push(Context.Array)  // Push the array context
-      contextStack.push(Context.Value)  // Push the value context
+      objectStack.push(.Array([])) // Push a new array onto the object stack
+      contextStack.push(.Array)    // Push the array context
+      contextStack.push(.Value)    // Push the value context
 
     }
 
-    // Then try to scan a comma separating another object key value pair
+      // Then try to scan a comma separating another object key value pair
     else if scanFor(.Text(","), into: &scannedObject, error: &localError) {
       success = true
-      contextStack.push(Context.Value)
+      contextStack.push(.Value)
     }
 
-    // Lastly, try to scan the closing punctuation for an object
+      // Lastly, try to scan the closing punctuation for an object
     else if scanFor(.Text("]"), into: &scannedObject, error: &localError) {
 
+      // Pop context and object stacks
+      if let context = contextStack.pop(), object = objectStack.pop() {
 
-      // Pop context, making sure it is correct
-      if contextStack.pop() != Context.Array { setInternalError(error, "incorrect context popped off of stack",
-                                                                underlyingError: localError) }
-      else {
-
-        // Make sure we have another context on the stack
-        if let context = contextStack.peek {
-
+        switch (context, object) {
+        case (_, _) where contextStack.peek == .Start:
           // Replace start context with end context if we have completed the root object
-          if context == Context.Start {
-            contextStack.pop()
-            contextStack.push(Context.End)
-            success = true
-          }
+          contextStack.pop()
+          contextStack.push(.End)
+          objectStack.push(object)
+          success = true
 
-          // If not the root object, pop this object off of the stack and add to underlying object
-          else if let array = objectStack.pop() as? NSMutableArray { success = addValueToTopObject(array, error) }
+        case (.Array, .Array(_)):
+          success = addValueToTopObject(object, error)
 
-          // If we can't get the completed array, set error
-          else { setInternalError(error, "array absent from object stack", underlyingError: localError) }
+        case (_, .Array(_)):
+          setInternalError(error, "incorrect context popped off of stack", underlyingError: localError)
 
+        case (.Array, _):
+          setInternalError(error, "array absent from object stack", underlyingError: localError)
+
+        default:
+          assert(false, "shouldn't this be unreachable?")
         }
-
-        // Set error if our context stack is empty
-        else { setInternalError(error, "empty context stack", underlyingError: localError) }
-
       }
+
+      else { setInternalError(error, "one or both of context and object stacks is empty", underlyingError: localError) }
 
     }
 
@@ -479,44 +534,64 @@ public class JSONParser: NSObject {
   private func parseValue(error: NSErrorPointer = nil) -> Bool {
 
     var success = false
-    var value: AnyObject?
+    var value: JSONValue?
     var scanError: NSError?
     var scannedObject: AnyObject?
 
-    if !(contextStack.pop() == Context.Value) { setInternalError(error, "incorrect context popped off of stack"); return false }
+    if !(contextStack.pop() == Context.Value) {
+      setInternalError(error, "incorrect context popped off of stack")
+      return false
+    }
 
     // Try scanning a true literal
-    if scanFor(.Text("true"), into: &scannedObject, error: &scanError) { value = true; success = true }
+    if scanFor(.Text("true"), into: &scannedObject, error: &scanError) {
+      value = true
+      success = true
+    }
 
-    // Try scanning a false literal
-    else if scanFor(.Text("false"), into: &scannedObject, error: &scanError) { value = false; success = true }
+      // Try scanning a false literal
+    else if scanFor(.Text("false"), into: &scannedObject, error: &scanError) {
+      value = false
+      success = true
+    }
 
-    // Try scanning a null literal
-    else if scanFor(.Text("null"), into: &scannedObject, error: &scanError) { value = NSNull(); success = true }
+      // Try scanning a null literal
+    else if scanFor(.Text("null"), into: &scannedObject, error: &scanError) {
+      value = .Null
+      success = true
+    }
 
-    // Try scanning a number
-    else if scanFor(.Number, into: &scannedObject, error: &scanError) { value = scannedObject; success = true }
+      // Try scanning a number
+    else if scanFor(.Number, into: &scannedObject, error: &scanError) {
+      value = .Number(scannedObject as! NSNumber)
+      success = true
+    }
 
-    // Try scanning a string
-    else if scanQuotedString(&scannedObject, &scanError) { value = scannedObject; success = true }
+      // Try scanning a string
+    else if scanQuotedString(&scannedObject, &scanError) {
+      value = .String(scannedObject as! Swift.String)
+      success = true
+    }
 
-    // Try scanning an object
+      // Try scanning an object
     else if parseObject(error: &scanError) { success = true }
 
-    // Try scanning an array
+      // Try scanning an array
     else if parseArray(error: &scanError) { success = true }
 
-    // Set error if we failed to scan anything
+      // Set error if we failed to scan anything
     else { setSyntaxError(error, "failed to parse value", underlyingError: scanError) }
 
     // If we have a value, add it to the top object in our stack
-    if value != nil {
+    if let v = value where success {
 
       var addValueError: NSError?
-      success = addValueToTopObject(value!, &addValueError)
+      success = addValueToTopObject(v, &addValueError)
 
       // Handle error adding value if not successful
-      if !success { setInternalError(error, "error encountered while adding parsed value", underlyingError: addValueError) }
+      if addValueError != nil {
+        setInternalError(error, "error encountered while adding parsed value", underlyingError: addValueError)
+      }
 
     }
 
@@ -538,23 +613,28 @@ public class JSONParser: NSObject {
     var scannedObject: AnyObject?
 
     // Set error if we can't scan a string
-    if !scanQuotedString(&scannedObject, &localError) { setSyntaxError(error, "missing key for object element",
-                                                                       underlyingError: localError) }
+    if !scanQuotedString(&scannedObject, &localError) {
+      setSyntaxError(error, "missing key for object element", underlyingError: localError)
+    }
+
     // Otherwise process what we have scanned
     else {
 
       // Pop off context, making sure it is of the correct value
-      if contextStack.pop() != Context.Key { setInternalError(error, "incorrect context popped off of stack",
-                                                              underlyingError: localError) }
+      if contextStack.pop() != .Key {
+        setInternalError(error, "incorrect context popped off of stack", underlyingError: localError)
+      }
 
-      // Otherwise push the key we scanned into the key stack and look for a colon
+        // Otherwise push the key we scanned into the key stack and look for a colon
       else if let key = scannedObject as? String {
 
         keyStack.push(key)
 
         // Parse the delimiting colon
-        if !scanFor(.Text(":"), into: &scannedObject, error: &localError) { setSyntaxError(error, "missing colon after key",
-                                                                                           underlyingError: localError) }
+        if !scanFor(.Text(":"), into: &scannedObject, error: &localError) {
+          setSyntaxError(error, "missing colon after key", underlyingError: localError)
+        }
+
         // Push value context and set success if we found the colon
         else { contextStack.push(.Value); success = true }
 
@@ -575,51 +655,38 @@ public class JSONParser: NSObject {
 
   :returns: Bool
   */
-  private func addValueToTopObject(value: AnyObject, _ error: NSErrorPointer = nil) -> Bool {
+  private func addValueToTopObject(value: JSONValue, _ error: NSErrorPointer = nil) -> Bool {
 
     var success = false
 
-    if let context = contextStack.peek {
+    if let context = contextStack.peek, object = objectStack.pop() {
 
-      if context == Context.Object {
-
-        // Try getting the top object as a dictionary
-        if let dict = objectStack.peek as? MSDictionary {
-
-          // Set the value for the key obtained from stack
-          if let key = keyStack.pop() {
-            dict[key] = value
+      switch (context, object) {
+        case (.Object, .Object(var d)):
+          if let k = keyStack.pop() {
+            d[k] = value
+            objectStack.push(.Object(d))
             success = true
-          }
+          } else { setInternalError(error, "empty key stack") }
 
-            // Set error if we don't have a key
-          else { setInternalError(error, "empty key stack") }
-
-        }
-        // Otherwise set error
-        else { setInternalError(error, "missing object in stack to receive new value") }
-
-      }
-
-      else if context == Context.Array {
-
-        // Then try getting the top object as an array
-        if var array = objectStack.pop() as? NSMutableArray {
-
-          array.addObject(value)
-          objectStack.push(array)
+        case (.Array, .Array(var a)):
+          a.append(value)
+          objectStack.push(.Array(a))
           success = true
 
-        }
+        case (_, .Object(_)),
+             (_, .Array(_)):
+          setInternalError(error, "invalid context-object pairing: \(context)-\(object)")
 
-        // Otherwise set error
-        else { setInternalError(error, "missing object in stack to receive new value") }
+        case (.Object, _),
+             (.Array, _):
+          setInternalError(error, "missing object in stack to receive new value")
 
+        default:
+          assert(false, "should be unreachable?")
       }
 
-    }
-
-    else { setInternalError(error, "empty context stack") }
+    } else { setInternalError(error, "empty context stack") }
 
     return success
 
@@ -630,9 +697,9 @@ public class JSONParser: NSObject {
 
   :param: error NSErrorPointer = nil
 
-  :returns: AnyObject?
+  :returns: JSONValue?
   */
-  public func parse(error: NSErrorPointer = nil) -> AnyObject? {
+  public func parse(error: NSErrorPointer = nil) -> JSONValue? {
 
     // Start in a known context
     contextStack.push(.Start)
@@ -676,17 +743,15 @@ public class JSONParser: NSObject {
 
     }
 
-    var object: AnyObject?  // Variable to hold result to be returned
+    var object: JSONValue?  // Variable to hold result to be returned
 
     // If the root object ends the text we won't hit the `.End` case in our switch statement
     if !objectStack.isEmpty {
 
-      // Make sure we haven't actually set `object` yet if we have objects left in the stack
-      if object != nil  || objectStack.count > 1 {
-        setInternalError(error, "objects left in stack")
-      }
+      // Make sure we don't have more than one object left in the stack
+      if objectStack.count > 1 { setInternalError(error, "objects left in stack") }
 
-      // If we haven't set object and we have one object in our stack, pop it
+      // Otherwise pop the root object from the stack
       else { object = objectStack.pop() }
 
     }
@@ -695,99 +760,4 @@ public class JSONParser: NSObject {
 
   }
 
-}
-
-// MARK: - Supporting enumerations for the parser
-
-
-
-/// Generalized enumeration for all parsable tokens
-////////////////////////////////////////////////////////////////////////////////////////////////////
-private enum Token {
-
-  /// Enumeration for punctuation tokens used in `Token.Punctation` associations
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
-  enum PunctuationToken: String {
-    case LeftCurlyBracket   = "{"
-    case RightCurlyBracket  = "}"
-    case LeftSquareBracket  = "["
-    case RightSquareBracket = "]"
-    case Colon              = ":"
-    case Comma              = ","
-    case Quotation          = "\""
-    case Solidus            = "/"
-    case Asterisk           = "*"
-
-    var isCommentable: Bool { switch self { case .Quotation, .Solidus, .Asterisk: return false; default: return true } }
-
-    var characterSet: NSCharacterSet {
-      switch self {
-        case .LeftCurlyBracket:   return PunctuationToken.LeftCurlyBracketCharacterSet
-        case .RightCurlyBracket:  return PunctuationToken.RightCurlyBracketCharacterSet
-        case .LeftSquareBracket:  return PunctuationToken.LeftSquareBracketCharacterSet
-        case .RightSquareBracket: return PunctuationToken.RightSquareBracketCharacterSet
-        case .Colon:              return PunctuationToken.ColonCharacterSet
-        case .Comma:              return PunctuationToken.CommaCharacterSet
-        case .Quotation:          return PunctuationToken.QuotationCharacterSet
-        case .Solidus:            return PunctuationToken.SolidusCharacterSet
-        case .Asterisk:           return PunctuationToken.AsteriskCharacterSet
-      }
-    }
-
-    static let LeftCurlyBracketCharacterSet   = NSCharacterSet(charactersInString: "{" )
-    static let RightCurlyBracketCharacterSet  = NSCharacterSet(charactersInString: "}" )
-    static let LeftSquareBracketCharacterSet  = NSCharacterSet(charactersInString: "[" )
-    static let RightSquareBracketCharacterSet = NSCharacterSet(charactersInString: "]" )
-    static let ColonCharacterSet              = NSCharacterSet(charactersInString: ":" )
-    static let CommaCharacterSet              = NSCharacterSet(charactersInString: "," )
-    static let QuotationCharacterSet          = NSCharacterSet(charactersInString: "\"")
-    static let SolidusCharacterSet            = NSCharacterSet(charactersInString: "/" )
-    static let AsteriskCharacterSet           = NSCharacterSet(charactersInString: "*" )
-  }
-
-  /// Generalized enumeration for value type tokens that are not collections of other tokens
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
-  enum ValueToken {
-
-
-    /// Enumeration for value tokens that always have the same representation
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    enum StaticValueToken: String {
-      case Null  = "null"
-      case True  = "true"
-      case False = "false"
-
-      static let NullCharacterSet  = NSCharacterSet(charactersInString: "null")
-      static let TrueCharacterSet  = NSCharacterSet(charactersInString: "true")
-      static let FalseCharacterSet = NSCharacterSet(charactersInString: "false")
-
-    }
-
-    case QuotedString (String)
-    case Number       (NSNumber)
-    case Static       (StaticValueToken)
-
-  }
-
-  case Value        (ValueToken)
-  case Punctuation  (PunctuationToken)
-
-  var characterSet: NSCharacterSet { return self.0.characterSet }
-
-}
-
-/// Enumeration to represent the current parser state
-////////////////////////////////////////////////////////////////////////////////
-private enum Context: Printable {
-  case Start, Object, Value, Array, Key, End
-  var description: String {
-    switch self {
-      case .Start:  return "start"
-      case .Object: return "object"
-      case .Value:  return "value"
-      case .Array:  return "array"
-      case .Key:    return "key"
-      case .End:    return "end"
-    }
-  }
 }
