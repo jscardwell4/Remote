@@ -17,8 +17,9 @@ public struct Stack<T> {
   public var isEmpty: Bool { return count == 0 }
 
   public init() { storage = [T]() }
-  public init(objects:[T]) { storage = objects }
-  public init(object:T) { storage = [object] }
+//  public init(_ objects:[T]) { storage = objects }
+//  public init(_ object:T) { storage = [object] }
+  public init<S:SequenceType where S.Generator.Element == T>(_ sequence: S) { storage = Array(sequence) }
 
   /**
   map<U>:
@@ -55,7 +56,7 @@ public struct Stack<T> {
 
   :returns: Stack<T>
   */
-  public func reversed() -> Stack<T> { return Stack<T>(objects: storage.reverse()) }
+  public func reversed() -> Stack<T> { return Stack<T>(storage.reverse()) }
 
 }
 
@@ -75,6 +76,6 @@ extension Stack: CollectionType, _CollectionType {
 
 extension Stack: ArrayLiteralConvertible {
   public init(arrayLiteral elements: T...) {
-    self = Stack<T>(objects: elements)
+    self = Stack<T>(elements)
   }
 }

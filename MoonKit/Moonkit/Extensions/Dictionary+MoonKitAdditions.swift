@@ -103,8 +103,7 @@ extension Dictionary {
   /**
   init:Value)]:
 
-  :param: elements [(Key
-  :param: Value)]
+  :param: elements [(Key, Value)]
   */
   init(_ elements: [(Key,Value)]) {
     self = [Key:Value]()
@@ -112,6 +111,12 @@ extension Dictionary {
   }
 
   var keyValuePairs: [(Key, Value)] { return Array(SequenceOf({self.generate()})) }
+
+  func map<U>(transform: (Key, Value) -> U) -> [Key:U] {
+    var result: [Key:U] = [:]
+    for (key, value) in self { result[key] = transform(key, value) }
+    return result
+  }
 }
 
 /**
@@ -205,6 +210,8 @@ public func compressedMap<K:Hashable,V,U>(dict: [K:V], transform: (K, V) -> U?) 
   return compressed(map(dict, transform))
 }
 
+public func inflated(var dict: [String:AnyObject]) -> [String:AnyObject] { inflate(&dict); return dict }
+
 public func inflate(inout dict: [String:AnyObject]) {
   // First gather a list of keys to inflate
   let inflatableKeys = Array(dict.keys.filter({$0 ~= "(?:\\w\\.)+\\w"}))
@@ -212,59 +219,43 @@ public func inflate(inout dict: [String:AnyObject]) {
   // Enumerate the list inflating each key
   for key in inflatableKeys {
 
-    var keypath = MSKeyPath(fromString:key)  // Create a keypath from the inflatable key
-    let first = keypath.popFirst()!          // This will become our key
-    let last = keypath.popLast()!            // This will become the deepest key in our value
-
-
-
+    var keys = ".".split(key)
+    let firstKey = keys.first!
+    let lastKey = keys.last!
+    var keypath = Stack(dropLast(dropFirst(keys)))
     let value: AnyObject
 
-    // If our value is an array, we embed each value in the array and keep our value as an array
-    if let valueArray = dict[key] as? [AnyObject] {
-
-      value = valueArray.map{
-        (obj: AnyObject) -> MSDictionary in
-
-        var dict = MSDictionary()  // Create a dictionary within which to embed our value
-        var subdict = dict         // This will reference the dictionary to which our value entered
-
-        // If there are stops along the way from first to last, recursively embed in dictionaries
-        if !keypath.isEmpty {
-          for subkey in keypath {
-            subdict[subkey] = MSDictionary()
-            var subsubdict = subdict[subkey] as! MSDictionary
-            subdict = subsubdict
-          }
-        }
-
-        subdict[last] = obj
-        return dict
-
-        }
-
-    }
-
-      // Otherwise we embed the value
-    else {
-
-      var dict = MSDictionary()  // Create a dictionary within which to embed our value
-      var subdict = dict         // This will reference the dictionary to which our value entered
+    func inflatedValue(obj: AnyObject) -> [String:AnyObject] {
+      var kp = keypath
+      var d: [String:AnyObject] = [lastKey:obj]
 
       // If there are stops along the way from first to last, recursively embed in dictionaries
-      if !keypath.isEmpty {
-        for subkey in keypath {
-          subdict[subkey] = MSDictionary()
-          var subsubdict = subdict[subkey] as! MSDictionary
-          subdict = subsubdict
-        }
-      }
+      while let k = kp.pop() { d = [k: d] }
 
-      subdict[last] = dict[key]
-      value = dict
-
+      return d
     }
 
-    dict[key] = value                              // Remove the compressed key-value entry
+    // If our value is an array, we embed each value in the array and keep our value as an array
+    if let valueArray = dict[key] as? [AnyObject] { value = valueArray.map(inflatedValue) }
+
+      // Otherwise we embed the value
+    else { value = inflatedValue(dict[key]!) }
+
+    dict[firstKey] = value
+    dict[key] = nil                              // Remove the compressed key-value entry
   }
+}
+
+/**
+from stackoverflow answer posted by http://stackoverflow.com/users/59541/nate-cook
+
+:param: lhs [K1 [K2 T]]
+:param: rhs [K1 [K2 T]]
+
+:returns: Bool
+*/
+public func ==<T: Equatable, K1: Hashable, K2: Hashable>(lhs: [K1: [K2: T]], rhs: [K1: [K2: T]]) -> Bool {
+  if lhs.count != rhs.count { return false }
+  for (key, lhsub) in lhs { if let rhsub = rhs[key] where lhsub == rhsub { continue } else { return false } }
+  return true
 }

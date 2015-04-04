@@ -23,10 +23,14 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   public var values: [Value] { return indexKeys.map { self.storage[$0]! } }
   public var dictionary: [Key:Value] { return storage }
 
+  public var keyValuePairs: [(Key, Value)] { return Array(SequenceOf({self.generate()})) }
 
   // MARK: - Initializers
 
-
+  public init() {
+    storage = [Key:Value]()
+    indexKeys = [Key]()
+  }
 
   /**
   initWithMinimumCapacity:
@@ -89,6 +93,16 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
       indexKeys += keys
       for i in 0..<keys.count { let k = keys[i]; let v = values[i]; storage[k] = v }
     }
+  }
+
+  /**
+  init:Value)]:
+
+  :param: elements [(Key, Value)]
+  */
+  public init(_ elements: [(Key,Value)]) {
+    self.init(minimumCapacity: elements.count)
+    for (k, v) in elements { self[k] = v }
   }
 
   /**
@@ -276,6 +290,46 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   */
   public mutating func sort(isOrderedBefore: (Key, Key) -> Bool) { indexKeys.sort(isOrderedBefore) }
 
+  public var inflated: OrderedDictionary<Key, Value> { var dict = self; dict.inflate(); return dict }
+
+  public mutating func inflate() {
+    if let stringKeys = typeCast(keys, Array<String>.self) {
+
+    // First gather a list of keys to inflate
+      let inflatableKeys = Array(stringKeys.filter({$0 ~= "(?:\\w\\.)+\\w"}))
+
+      // Enumerate the list inflating each key
+      for key in inflatableKeys {
+
+        var keyComponents = ".".split(key)
+        let firstKey = keyComponents.first!
+        let lastKey = keyComponents.last!
+        var keypath = Stack(dropLast(dropFirst(keyComponents)))
+        let value: Value
+
+        func inflatedValue(obj: Value) -> OrderedDictionary<Key, Value> {
+          var kp = keypath
+          var d: OrderedDictionary<Key, Value> = [lastKey as! Key:obj]
+
+          // If there are stops along the way from first to last, recursively embed in dictionaries
+          while let k = kp.pop() { d = [k as! Key: d as! Value] }
+
+          return d
+        }
+
+        // If our value is an array, we embed each value in the array and keep our value as an array
+        if let valueArray = typeCast(self[key as! Key], Array<Value>.self) { value = valueArray.map(inflatedValue) as! Value }
+
+          // Otherwise we embed the value
+        else { value = inflatedValue(self[key as! Key]!) as! Value }
+
+        insertValue(value, atIndex: find(keys, key as! Key)!, forKey: firstKey as! Key)
+        self[key as! Key] = nil                              // Remove the compressed key-value entry
+      }
+    }
+  }
+
+
   /**
   reverse
 
@@ -311,6 +365,10 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
     var result: OrderedDictionary<Key, U> = [:]
     for (k, v) in self { result[k] = transform(k, v) }
     return result
+  }
+
+  public func compressedMap<U>(transform: (Key, Value) -> U?) -> OrderedDictionary<Key, U> {
+    return map(transform).filter({$1 != nil}).map({$1!})
   }
 
 }

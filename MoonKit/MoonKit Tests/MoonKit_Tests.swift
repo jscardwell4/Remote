@@ -36,7 +36,7 @@ class MoonKit_Tests: XCTestCase {
   func testJSONValueTypeSimple() {
     let string = "I am a string"
     let bool = true
-    let number = 1
+    let number: NSNumber = 1
     let array = ["item1", "item2"]
     let object = ["key1": "value1", "key2": "value2"]
 
@@ -79,12 +79,12 @@ class MoonKit_Tests: XCTestCase {
     let dict1String = "{\"key1\":\"value1\",\"key2\":2}"
     let dict2 = ["key1": "value1", "key2": "value2"]
     let dict2String = "{\"key1\":\"value1\",\"key2\":\"value2\"}"
-    let dict = ["key1": dict1, "key2": dict2, "key3": "value3"]
+    let dict: OrderedDictionary<String, Any> = ["key1": dict1, "key2": dict2, "key3": "value3"]
     let dictString = "{\"key1\":\(dict1String),\"key2\":\(dict2String),\"key3\":\"value3\"}"
-    let composite1 = [1, "two", array, dict]
+    let composite1: [Any] = [1, "two", array, dict]
     let composite1String = "[1,\"two\",\(arrayString),\(dictString)]"
-    let composite2 = ["key1": 1, "key2": array, "key3": dict, "key4": "value4"]
-    let composite2String = "{\"key1\":1,\"key4\":\"value4\",\"key2\":\(arrayString),\"key3\":\(dictString)}"
+    let composite2: OrderedDictionary<String, Any> = ["key1": 1, "key2": array, "key3": dict, "key4": "value4"]
+    let composite2String = "{\"key1\":1,\"key2\":\(arrayString),\"key3\":\(dictString),\"key4\":\"value4\"}"
 
     let array1JSON = JSONValue(array1)
     if array1JSON == nil { XCTFail("unexpected nil value when converting to `JSONValue` type")}
@@ -137,13 +137,34 @@ class MoonKit_Tests: XCTestCase {
 
   }
 
+  func testInflate() {
+    let dict: [String:AnyObject] = ["key1": "value1", "key.two.has.paths": "value2"]
+    let inflatedDict = inflated(dict)
+    XCTAssert(inflatedDict["key1"] as? NSObject == dict["key1"] as? NSObject)
+    XCTAssert(inflatedDict["key"] as? NSObject == ["two":["has":["paths":"value2"]]] as NSObject)
+    XCTAssert(inflatedDict["key.two.has.paths"] == nil)
+    let orderedDict: OrderedDictionary<String, Any> = ["key1": "value1", "key.two.has.paths": "value2"]
+    let inflatedOrderedDict = orderedDict.inflated
+    XCTAssert(inflatedOrderedDict["key1"] as? NSObject == orderedDict["key1"] as? NSObject)
+    XCTAssert((((inflatedOrderedDict["key"] as? OrderedDictionary<String, Any>)?["two"] as? OrderedDictionary<String, Any>)?["has"] as? OrderedDictionary<String, Any>)?["paths"] as? String == "value2")
+    XCTAssert(inflatedOrderedDict["key.two.has.paths"] == nil)
+  }
+
+  func testJSONValueInflateKeyPaths() {
+    if let object = JSONValue(["key1": "value1", "key.two.has.paths": "value2"]) {
+      XCTAssert(toString(object) == "{\"key1\":\"value1\",\"key.two.has.paths\":\"value2\"}")
+      XCTAssert(toString(object.inflatedKeyPaths) == "{\"key1\":\"value1\",\"key\":{\"two\":{\"has\":{\"paths\":\"value2\"}}}}")
+    }
+  }
+
   func testJSONSerialization() {
     let filePath = self.dynamicType.filePaths[0]
     var error: NSError?
     if let object = JSONSerialization.objectByParsingFile(filePath, error: &error)
       where !MSHandleError(error, message: "trouble parsing file '\(filePath)'")
     {
-      XCTAssertEqual(object.stringValue, self.dynamicType.fileJSON[0], "unexpected result from parse")
+      let expectedStringValue = String(contentsOfFile: filePath, encoding: NSUTF8StringEncoding, error: nil)!
+      XCTAssertEqual(object.stringValue, expectedStringValue, "unexpected result from parse")
     } else { XCTFail("file parse failed to create an object") }
 
   }

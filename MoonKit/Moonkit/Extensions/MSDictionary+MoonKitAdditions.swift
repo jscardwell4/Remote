@@ -47,7 +47,11 @@ extension MSDictionary: Printable {
   :param: orderedDictionary OrderedDictionary<NSObject
   :param: AnyObject>
   */
-  convenience init(orderedDictionary: OrderedDictionary<NSObject,AnyObject>) {
+  public convenience init<K:Hashable where K:AnyObject>(_ orderedDictionary: OrderedDictionary<K,AnyObject>) {
+    self.init(values: orderedDictionary.values, forKeys: orderedDictionary.keys)
+  }
+  
+  public convenience init(_ orderedDictionary: OrderedDictionary<String,AnyObject>) {
     self.init(values: orderedDictionary.values, forKeys: orderedDictionary.keys)
   }
 

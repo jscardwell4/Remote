@@ -13,7 +13,7 @@ public enum JSONValue {
   case Boolean (Bool)
   case String (Swift.String)
   case Array ([JSONValue])
-  case Object ([Swift.String:JSONValue])
+  case Object (OrderedDictionary<Swift.String, JSONValue>)
   case Number (NSNumber)
   case Null
 
@@ -46,7 +46,7 @@ public enum JSONValue {
 
   :param: v AnyObject
   */
-  public init?(_ v: AnyObject) {
+  public init?(_ v: Any) {
     if let x = v as? BooleanType { self = Boolean(x.boolValue) }
     else if let x = v as? NSNumber { self = Number(x) }
     else if let x = v as? Swift.String { self = String(x) }
@@ -56,10 +56,20 @@ public enum JSONValue {
       if converted.count == x.count { self = Array(converted) }
       else { return nil }
     }
+    else if let x = v as? [Any] {
+      let converted = compressedMap(x, {JSONValue($0)})
+      if converted.count == x.count { self = Array(converted) }
+      else { return nil }
+    }
+    else if let x = v as? OrderedDictionary<Swift.String, Any> {
+      let converted = x.compressedMap({JSONValue($1)})
+      if converted.count == x.count { self = Object(converted) }
+      else { return nil }
+    }
     else if let x = v as? NSDictionary {
       let keys = x.allKeys.map({toString($0)})
       let values = compressedMap(x.allValues, {JSONValue($0)})
-      if keys.count == values.count { self = Object(Dictionary(Swift.Array(zip(keys, values)))) }
+      if keys.count == values.count { self = Object(OrderedDictionary(Swift.Array(zip(keys, values)))) }
       else { return nil }
     }
     else { return nil }
@@ -85,7 +95,21 @@ public enum JSONValue {
       case .Number(let n):  return n
       case .String(let s):  return s
       case .Array(let a):   return a.map({$0.objectValue})
-      case .Object(let o):  return map(o, {$1.objectValue})
+      case .Object(let o):  return MSDictionary(o.map({$1.objectValue}))
+    }
+  }
+
+  /** The value any dictionary keypaths expanded into deeper levels */
+  public var inflatedKeyPaths: JSONValue {
+    switch self {
+      case .Array(let a):
+        return .Array(a.map({$0.inflatedKeyPaths}))
+      case .Object(_):
+        if var d = objectValue as? MSDictionary {
+          d.inflate()
+          return .Object(OrderedDictionary(keys: d.allKeys as! [Swift.String], values: compressedMap(d.allValues, {JSONValue($0)})))
+        } else { return self }
+      default: return self
     }
   }
 

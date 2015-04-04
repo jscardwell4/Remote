@@ -134,7 +134,7 @@ public extension String {
   */
   public func split(string: String) -> [String] { return string.componentsSeparatedByString(self) }
 
-  public var pathStack: Stack<String> { return Stack(objects: pathComponents.reverse()) }
+  public var pathStack: Stack<String> { return Stack(pathComponents.reverse()) }
 
   /**
   initWithContentsOfFile:error:
