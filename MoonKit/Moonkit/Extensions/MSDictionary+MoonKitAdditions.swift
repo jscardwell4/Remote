@@ -48,11 +48,11 @@ extension MSDictionary: Printable {
   :param: AnyObject>
   */
   public convenience init<K:Hashable where K:AnyObject>(_ orderedDictionary: OrderedDictionary<K,AnyObject>) {
-    self.init(values: orderedDictionary.values, forKeys: orderedDictionary.keys)
+    self.init(values: Array(orderedDictionary.values), forKeys: Array(orderedDictionary.keys))
   }
   
   public convenience init(_ orderedDictionary: OrderedDictionary<String,AnyObject>) {
-    self.init(values: orderedDictionary.values, forKeys: orderedDictionary.keys)
+    self.init(values: Array(orderedDictionary.values), forKeys: Array(orderedDictionary.keys))
   }
 
   /** inflate */

@@ -29,10 +29,6 @@ class MoonKit_Tests: XCTestCase {
     return filePaths
   }()
 
-  static let fileJSON: [String] = [
-    "{\"null\":null,\"boolean\":true,\"number\":89,\"array\":[\"arrayString1\",\"arrayString2\"],\"object\":{\"key\":\"value\"},\"string\":\"string\"}"
-  ]
-
   func testJSONValueTypeSimple() {
     let string = "I am a string"
     let bool = true
@@ -167,6 +163,32 @@ class MoonKit_Tests: XCTestCase {
       XCTAssertEqual(object.stringValue, expectedStringValue, "unexpected result from parse")
     } else { XCTFail("file parse failed to create an object") }
 
+  }
+
+  func testOrderedDictionary() {
+
+    var orderedDictionary: OrderedDictionary<String, Int> = ["one": 1]
+    orderedDictionary["two"] = 2
+    orderedDictionary.setValue(3, forKey: "three")
+    XCTAssert(Array(orderedDictionary.keys) == ["one", "two", "three"])
+
+    var mappedOrderedDictionary = orderedDictionary.map({($0, $1)})
+    XCTAssert(mappedOrderedDictionary.values[0].0 == "one")
+    XCTAssert(mappedOrderedDictionary.values[0].1 == 1)
+
+    var filteredOrderedDictionary = orderedDictionary.filter({$1 % 2 == 1})
+    XCTAssert(Array(filteredOrderedDictionary.keys) == ["one", "three"])
+
+    var reversedOrderedDictionary = orderedDictionary.reverse()
+    XCTAssert(Array(reversedOrderedDictionary.keys) == ["three", "two", "one"])
+
+    let msDictionary = MSDictionary(values: [4, 5, 6], forKeys: ["four", "five", "six"])
+
+    let fromMSDictionary = msDictionary as? OrderedDictionary<NSObject, AnyObject>
+    XCTAssert(fromMSDictionary != nil)
+
+    let fromOrderedSetfromMSDictionary = fromMSDictionary?._bridgeToObjectiveC()
+    XCTAssert(fromOrderedSetfromMSDictionary != nil)
   }
 
 }

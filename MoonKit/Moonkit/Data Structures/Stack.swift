@@ -17,8 +17,6 @@ public struct Stack<T> {
   public var isEmpty: Bool { return count == 0 }
 
   public init() { storage = [T]() }
-//  public init(_ objects:[T]) { storage = objects }
-//  public init(_ object:T) { storage = [object] }
   public init<S:SequenceType where S.Generator.Element == T>(_ sequence: S) { storage = Array(sequence) }
 
   /**
