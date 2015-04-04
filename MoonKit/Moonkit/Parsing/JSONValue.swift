@@ -10,10 +10,11 @@ import Foundation
 // MARK: - JSONValue
 /** Enumeration of discriminating union to represent a JSON value */
 public enum JSONValue {
+  public typealias ObjectValue = OrderedDictionary<Swift.String, JSONValue>
   case Boolean (Bool)
   case String (Swift.String)
   case Array ([JSONValue])
-  case Object (OrderedDictionary<Swift.String, JSONValue>)
+  case Object (ObjectValue)
   case Number (NSNumber)
   case Null
 
@@ -87,6 +88,50 @@ public enum JSONValue {
     }
   }
 
+  /**
+  stringValueWithDepth:
+
+  :param: depth Int
+
+  :returns: Swift.String
+  */
+  private func stringValueWithDepth(depth: Int) -> Swift.String {
+    switch self {
+      case .Boolean(_),
+           .Null(_),
+           .Number(_),
+           .String(_):
+        return stringValue
+
+      case .Array(let a):
+        let outerIndent = " " * (depth * 4)
+        let innerIndent = outerIndent + " " * 4
+        var string = "["
+        let elements = a.map({$0.stringValueWithDepth(depth + 1)})
+        switch elements.count {
+          case 0: string += "]"
+          case 1: string += "\n\(innerIndent)" + elements[0] + "\n\(outerIndent)]"
+          default: string += "\n\(innerIndent)" + ",\n\(innerIndent)".join(elements) + "\n\(outerIndent)]"
+        }
+        return string
+
+      case .Object(let o):
+        let outerIndent = " " * (depth * 4)
+        let innerIndent = outerIndent + " " * 4
+        var string = "{"
+        let keyValuePairs = o.map({"\"\($0)\": \($1.stringValueWithDepth(depth + 1))"}).values.array
+        switch keyValuePairs.count {
+          case 0: string += "]"
+          case 1: string += "\n\(innerIndent)" + keyValuePairs[0] + "\n\(outerIndent)}"
+          default: string += "\n\(innerIndent)" + ",\n\(innerIndent)".join(keyValuePairs) + "\n\(outerIndent)}"
+        }
+        return string
+    }
+  }
+
+  /** The formatted JSONValue string representation */
+  public var prettyStringValue: Swift.String { return stringValueWithDepth(0) }
+
   /** An object representation of the value */
   public var objectValue: AnyObject {
     switch self {
@@ -102,14 +147,20 @@ public enum JSONValue {
   /** The value any dictionary keypaths expanded into deeper levels */
   public var inflatedKeyPaths: JSONValue {
     switch self {
+
       case .Array(let a):
         return .Array(a.map({$0.inflatedKeyPaths}))
-      case .Object(_):
-        if var d = objectValue as? MSDictionary {
-          d.inflate()
-          return .Object(OrderedDictionary(keys: d.allKeys as! [Swift.String], values: compressedMap(d.allValues, {JSONValue($0)})))
-        } else { return self }
-      default: return self
+
+      case .Object(let o):
+        let expand = {(var keypath: Stack<Swift.String>, var leaf: ObjectValue) -> JSONValue in
+
+          while let k = keypath.pop() { leaf = [k:.Object(leaf)] }
+          return .Object(leaf)
+        }
+        return .Object(o.inflated(expand: expand).map({$1.inflatedKeyPaths}))
+
+      default:
+        return self
     }
   }
 

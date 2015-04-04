@@ -8,5 +8,5 @@
 
 import Foundation
 
-extension NSSet: JSONExport {}
-extension NSOrderedSet: JSONExport {}
+//extension NSSet: JSONExport {}
+//extension NSOrderedSet: JSONExport {}

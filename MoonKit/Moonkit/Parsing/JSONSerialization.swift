@@ -18,6 +18,7 @@ public class JSONSerialization {
 
   :returns: String
   */
+/*
   public class func JSONFromObject(object: AnyObject?, options: WriteOptions = .None) -> String? {
     // TODO: Add options support
 
@@ -105,6 +106,7 @@ public class JSONSerialization {
     return json
 
   }
+*/
 
   /**
   objectByParsingString:options:error:
@@ -127,10 +129,7 @@ public class JSONSerialization {
     object = parser.parse(error: error)
 
     // Inflate key paths
-    if isOptionSet(options, ReadOptions.InflateKeypaths), let container = object as? MSObjectContaining {
-      if let dict = container as? MSDictionary { dict.inflate() }
-      if var dicts = container.allObjectsOfKind(MSDictionary.self) as? [MSDictionary] { dicts ➤ {$0.inflate()} }
-    }
+    if isOptionSet(options, ReadOptions.InflateKeypaths) { object = object?.inflatedKeyPaths }
 
     return object
   }

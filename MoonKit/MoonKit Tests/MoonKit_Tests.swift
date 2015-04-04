@@ -22,9 +22,13 @@ class MoonKit_Tests: XCTestCase {
     var filePaths: [String] = []
     if let bundlePath = NSUserDefaults.standardUserDefaults().stringForKey("XCTestedBundlePath"),
       let bundle = NSBundle(path: bundlePath),
-      let example1JSONFilePath = bundle.pathForResource("example1", ofType: "json")
+      let example1JSONFilePath = bundle.pathForResource("example1", ofType: "json"),
+      let example2JSONFilePath = bundle.pathForResource("example2", ofType: "json"),
+      let example3JSONFilePath = bundle.pathForResource("example3", ofType: "json")
     {
       filePaths.append(example1JSONFilePath)
+      filePaths.append(example2JSONFilePath)
+      filePaths.append(example3JSONFilePath)
     }
     return filePaths
   }()
@@ -140,7 +144,7 @@ class MoonKit_Tests: XCTestCase {
     XCTAssert(inflatedDict["key"] as? NSObject == ["two":["has":["paths":"value2"]]] as NSObject)
     XCTAssert(inflatedDict["key.two.has.paths"] == nil)
     let orderedDict: OrderedDictionary<String, Any> = ["key1": "value1", "key.two.has.paths": "value2"]
-    let inflatedOrderedDict = orderedDict.inflated
+    let inflatedOrderedDict = orderedDict.inflated()
     XCTAssert(inflatedOrderedDict["key1"] as? NSObject == orderedDict["key1"] as? NSObject)
     XCTAssert((((inflatedOrderedDict["key"] as? OrderedDictionary<String, Any>)?["two"] as? OrderedDictionary<String, Any>)?["has"] as? OrderedDictionary<String, Any>)?["paths"] as? String == "value2")
     XCTAssert(inflatedOrderedDict["key.two.has.paths"] == nil)
@@ -154,13 +158,38 @@ class MoonKit_Tests: XCTestCase {
   }
 
   func testJSONSerialization() {
-    let filePath = self.dynamicType.filePaths[0]
+    let filePaths = self.dynamicType.filePaths
     var error: NSError?
-    if let object = JSONSerialization.objectByParsingFile(filePath, error: &error)
-      where !MSHandleError(error, message: "trouble parsing file '\(filePath)'")
+    if let object = JSONSerialization.objectByParsingFile(filePaths[0], error: &error)
+      where !MSHandleError(error, message: "trouble parsing file '\(filePaths[0])'")
     {
-      let expectedStringValue = String(contentsOfFile: filePath, encoding: NSUTF8StringEncoding, error: nil)!
+      let expectedStringValue = String(contentsOfFile: filePaths[0], encoding: NSUTF8StringEncoding, error: nil)!
       XCTAssertEqual(object.stringValue, expectedStringValue, "unexpected result from parse")
+    } else { XCTFail("file parse failed to create an object") }
+
+    error = nil
+    if let object = JSONSerialization.objectByParsingFile(filePaths[1], error: &error)
+      where !MSHandleError(error, message: "trouble parsing file '\(filePaths[1])'")
+    {
+      let expectedStringValue = String(contentsOfFile: filePaths[1], encoding: NSUTF8StringEncoding, error: nil)!
+      XCTAssertEqual(object.stringValue, expectedStringValue, "unexpected result from parse")
+    } else { XCTFail("file parse failed to create an object") }
+
+    error = nil
+    if let object = JSONSerialization.objectByParsingFile(filePaths[2], options: .InflateKeypaths, error: &error)
+      where !MSHandleError(error, message: "trouble parsing file '\(filePaths[2])'")
+    {
+      let expectedStringValue = String(contentsOfFile: filePaths[2], encoding: NSUTF8StringEncoding, error: nil)!
+      XCTAssertNotEqual(object.stringValue, expectedStringValue, "unexpected result from parse")
+    } else { XCTFail("file parse failed to create an object") }
+
+    error = nil
+    if let object = JSONSerialization.objectByParsingFile(filePaths[1], options: .InflateKeypaths, error: &error)
+      where !MSHandleError(error, message: "trouble parsing file '\(filePaths[1])'")
+    {
+      let expectedStringValue = String(contentsOfFile: filePaths[1], encoding: NSUTF8StringEncoding, error: nil)!
+      XCTAssertNotEqual(object.stringValue, expectedStringValue, "unexpected result from parse")
+      println(object.prettyStringValue)
     } else { XCTFail("file parse failed to create an object") }
 
   }

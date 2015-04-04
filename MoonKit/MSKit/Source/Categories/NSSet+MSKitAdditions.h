@@ -13,8 +13,8 @@
 @interface NSSet (MSKitAdditions) <MSKeySearchable>
 
 @property (nonatomic, readonly) BOOL isEmpty;
-@property (nonatomic, weak, readonly, nonnull) id JSONObject;
-@property (nonatomic, weak, readonly, nonnull) NSString * JSONString;
+//@property (nonatomic, weak, readonly, nonnull) id JSONObject;
+//@property (nonatomic, weak, readonly, nonnull) NSString * JSONString;
 
 + (NSSet *)setWithArrays:(NSArray *)arrays;
 

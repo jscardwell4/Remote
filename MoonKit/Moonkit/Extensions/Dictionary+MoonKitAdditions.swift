@@ -8,10 +8,10 @@
 
 import Foundation
 
-extension NSDictionary: JSONExport {
-  public var JSONString: String { return JSONSerialization.JSONFromObject(JSONObject) ?? "" }
-  public var JSONObject: AnyObject { return self }
-}
+//extension NSDictionary: JSONExport {
+//  public var JSONString: String { return JSONSerialization.JSONFromObject(JSONObject) ?? "" }
+//  public var JSONObject: AnyObject { return self }
+//}
 
 //extension NSDictionary: JSONValueConvertible {
 //  public var JSONValue: NSDictionary { return self }

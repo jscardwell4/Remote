@@ -120,10 +120,10 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 /// writeJSONToFile:
 /// @param file
 /// @return BOOL
-- (BOOL)writeJSONToFile:(NSString *)file {
-  NSString * json = self.JSONString;
-  return StringIsEmpty(json) ? NO : [json writeToFile:file];
-}
+//- (BOOL)writeJSONToFile:(NSString *)file {
+//  NSString * json = self.JSONString;
+//  return StringIsEmpty(json) ? NO : [json writeToFile:file];
+//}
 
 /// JSONObject
 /// @return id

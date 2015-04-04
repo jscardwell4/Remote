@@ -290,10 +290,31 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   */
   public mutating func sort(isOrderedBefore: (Key, Key) -> Bool) { _keys.sort(isOrderedBefore) }
 
-  public var inflated: OrderedDictionary<Key, Value> { var result = self; result.inflate(); return result }
+  public func inflated(expand: (Stack<String>, OrderedDictionary<Key, Value>) -> Value = {
+    (var kp: Stack<String>, var leaf: OrderedDictionary<Key, Value>) -> Value  in
+
+    // If there are stops along the way from first to last, recursively embed in dictionaries
+    while let k = kp.pop() { leaf = [k as! Key: leaf as! Value] }
+
+    return leaf as! Value
+    })
+  -> OrderedDictionary<Key, Value>
+  {
+    var result = self
+    result.inflate(expand: expand)
+    return result
+  }
 
   /** inflate */
-  public mutating func inflate() {
+  public mutating func inflate(expand: (Stack<String>, OrderedDictionary<Key, Value>) -> Value = {
+    (var kp: Stack<String>, var leaf: OrderedDictionary<Key, Value>) -> Value  in
+
+      // If there are stops along the way from first to last, recursively embed in dictionaries
+      while let k = kp.pop() { leaf = [k as! Key: leaf as! Value] }
+
+      return leaf as! Value
+    })
+  {
     if let stringKeys = typeCast(_keys, Array<String>.self) {
 
       // First gather a list of keys to inflate
@@ -308,21 +329,23 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
         var keypath = Stack(dropLast(dropFirst(keyComponents)))
         let value: Value
 
-        func inflatedValue(obj: Value) -> OrderedDictionary<Key, Value> {
-          var kp = keypath
-          var d: OrderedDictionary<Key, Value> = [lastKey as! Key:obj]
-
-          // If there are stops along the way from first to last, recursively embed in dictionaries
-          while let k = kp.pop() { d = [k as! Key: d as! Value] }
-
-          return d
-        }
+//        func inflatedValue(obj: Value) -> OrderedDictionary<Key, Value> {
+//          var kp = keypath
+//          var d: OrderedDictionary<Key, Value> = [lastKey as! Key:obj]
+//
+//          // If there are stops along the way from first to last, recursively embed in dictionaries
+//          while let k = kp.pop() { d = [k as! Key: d as! Value] }
+//
+//          return d
+//        }
 
         // If our value is an array, we embed each value in the array and keep our value as an array
-        if let valueArray = typeCast(self[key as! Key], Array<Value>.self) { value = valueArray.map(inflatedValue) as! Value }
+        if let valueArray = typeCast(self[key as! Key], Array<Value>.self) {
+          value = valueArray.map({expand(keypath, [lastKey as! Key:$0])}) as! Value
+        }
 
           // Otherwise we embed the value
-        else { value = inflatedValue(self[key as! Key]!) as! Value }
+        else { value = expand(keypath, [lastKey as! Key: self[key as! Key]!]) }
 
         insertValue(value, atIndex: find(_keys, key as! Key)!, forKey: firstKey as! Key)
         self[key as! Key] = nil                              // Remove the compressed key-value entry

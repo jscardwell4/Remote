@@ -353,12 +353,13 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 /// @return NSString *
 - (NSString *)formattedDescriptionWithOptions:(NSUInteger)options levelIndent:(NSUInteger)levelIndent {
 
-  NSMutableString * description = [self.JSONString mutableCopy];
-  [description replaceRegEx:@"(?<=\\s)[\\{\\[]|[\\]\\}],?$|,$|\\b\\\"|\\\"\\b|\\\",?$|(?<=: )\\\"|^[\\{\\[]"
-                 withString:@""];
-  [description shiftRight:levelIndent];
+//  NSMutableString * description = [self.JSONString mutableCopy];
+//  [description replaceRegEx:@"(?<=\\s)[\\{\\[]|[\\]\\}],?$|,$|\\b\\\"|\\\"\\b|\\\",?$|(?<=: )\\\"|^[\\{\\[]"
+//                 withString:@""];
+//  [description shiftRight:levelIndent];
 
-  return description;
+//  return description;
+  return [self description];
 
 }
 

@@ -8,10 +8,10 @@
 
 import Foundation
 
-extension NSArray: JSONExport {
-  public var JSONString: String { return JSONSerialization.JSONFromObject(JSONObject) ?? "" }
-  public var JSONObject: AnyObject { return self }
-}
+//extension NSArray: JSONExport {
+//  public var JSONString: String { return JSONSerialization.JSONFromObject(JSONObject) ?? "" }
+//  public var JSONObject: AnyObject { return self }
+//}
 
 /**
 flattened:
