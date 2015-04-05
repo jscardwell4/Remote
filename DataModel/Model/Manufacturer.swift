@@ -35,16 +35,12 @@ final public class Manufacturer: EditableModelObject {
     updateRelationshipFromData(data, forAttribute: "devices")
   }
 
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
-    appendValueForKeyPath("devices.commentedUUID",   forKey: "devices", toDictionary: dictionary)
-    appendValueForKeyPath("codeSets.JSONDictionary", forKey: "code-sets", toDictionary: dictionary)
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+    appendValueForKeyPath("devices.index",   forKey: "devices", toDictionary: &dict)
+    appendValueForKey("codeSets", toDictionary: &dict)
+    return .Object(dict)
   }
 
   /**

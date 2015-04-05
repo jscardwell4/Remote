@@ -228,10 +228,10 @@ public class RemoteElement: NamedModelObject {
 
     if let moc = managedObjectContext {
 
-      if let roleJSON = data["role"]   as? String   { role  = Role(JSONValue: roleJSON)   }
+      if let roleJSON = data["role"]   as? String   { role  = Role(jsonValue: roleJSON.jsonValue)   }
       if let keyJSON = data["key"]     as? String   { key   = keyJSON                     }
-      if let shapeJSON = data["shape"] as? String   { shape = Shape(JSONValue: shapeJSON) }
-      if let styleJSON = data["style"] as? String   { style = Style(JSONValue: styleJSON) }
+      if let shapeJSON = data["shape"] as? String   { shape = Shape(jsonValue: shapeJSON.jsonValue) }
+      if let styleJSON = data["style"] as? String   { style = Style(jsonValue: styleJSON.jsonValue) }
       if let tagJSON = data["tag"]     as? NSNumber { tag   = tagJSON                     }
 
       if let backgroundColorJSON = data["background-color"] as? [String:String] {
@@ -264,46 +264,32 @@ public class RemoteElement: NamedModelObject {
 
   }
 
-  /**
-  JSONDictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
-  :returns: MSDictionary
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
+    if key != nil  { dict["key"] = .String(key!)   }
 
-    func ifNotDefaultSetValue(@autoclosure value: () -> NSObject?, forKey key: String) {
-      if let v = value() {
-        if !self.attributeValueIsDefault(key) {
-          dictionary[key.camelCaseToDashCase()] = v
-        }
-      }
-    }
+    appendValueForKey("tag", toDictionary: &dict)
+    appendValueForKey("role", ifNotDefault: true, toDictionary: &dict)
+    appendValueForKey("shape", ifNotDefault: true, toDictionary: &dict)
+    appendValueForKey("style", ifNotDefault: true, toDictionary: &dict)
 
-    dictionary["name"] = name
-    if key != nil  { dictionary["key"] = key!   }
-
-    appendValueForKey("tag", toDictionary: dictionary)
-    ifNotDefaultSetValue(role.JSONValue,  forKey: "role" )
-    ifNotDefaultSetValue(shape.JSONValue, forKey: "shape")
-    ifNotDefaultSetValue(style.JSONValue, forKey: "style")
-
-    var backgroundColors:      [String:String]   = [:]
-    var backgroundImages:      [String:String]   = [:]
-    var backgroundImageAlphas: [String:NSNumber] = [:]
+    var backgroundColors:      JSONValue.ObjectValue = [:]
+    var backgroundImages:      JSONValue.ObjectValue = [:]
+    var backgroundImageAlphas: JSONValue.ObjectValue = [:]
 
     for mode in modes {
-      if let color = backgroundColorForMode(mode)?.string { backgroundColors[mode] = color }
-      if let image = backgroundImageForMode(mode)?.imagePath { backgroundImages[mode] = image }
-      if let alpha = backgroundImageAlphaForMode(mode) { backgroundImageAlphas[mode] = alpha }
+      if let color = backgroundColorForMode(mode) { backgroundColors[mode] = color.jsonValue }
+      if let image = backgroundImageForMode(mode) { backgroundImages[mode] = image.imagePath.jsonValue }
+      if let alpha = backgroundImageAlphaForMode(mode) { backgroundImageAlphas[mode] = alpha.jsonValue }
     }
 
-    if backgroundColors.count > 0      { dictionary["background-color"]       = backgroundColors      }
-    if backgroundImages.count > 0      { dictionary["background-image"]       = backgroundImages      }
-    if backgroundImageAlphas.count > 0 { dictionary["background-image-alpha"] = backgroundImageAlphas }
+    if backgroundColors.count > 0      { dict["background-color"]       = .Object(backgroundColors)      }
+    if backgroundImages.count > 0      { dict["background-image"]       = .Object(backgroundImages)      }
+    if backgroundImageAlphas.count > 0 { dict["background-image-alpha"] = .Object(backgroundImageAlphas) }
 
-    let subelementDictionaries = childElements.map{$0.JSONDictionary()}.array
-    if subelementDictionaries.count > 0 { dictionary["subelements"] = subelementDictionaries}
+    let subelementJSON = childElements.array.map({$0.jsonValue})
+    if subelementJSON.count > 0 { dict["subelements"] = .Array(subelementJSON) }
 
     let constraints = ownedConstraints
     if constraints.count > 0 {
@@ -311,32 +297,26 @@ public class RemoteElement: NamedModelObject {
       let firstItemUUIDs = OrderedSet<String>(constraints.map{$0.firstItem.uuid})
       let secondItemUUIDs = OrderedSet<String>(constraints.filter{$0.secondItem != nil}.map{$0.secondItem!.uuid})
       let uuids = firstItemUUIDs + secondItemUUIDs
-      var uuidIndex: [String:String] = [name.camelCase(): uuid]
+      var uuidIndex: JSONValue.ObjectValue = [name.camelCase(): uuid.jsonValue]
       for uuid in uuids {
         if uuid == self.uuid { continue }
-        if let element = childElements.filter({$0.uuid == uuid}).first {
-          uuidIndex[element.name.camelCase()] = uuid
-        }
+        if let element = findFirst(childElements, {$0.uuid == uuid}) { uuidIndex[element.name.camelCase()] = uuid.jsonValue }
       }
-      var constraintsDictionary: [String:AnyObject] = [:]
+      var constraintsJSON: JSONValue.ObjectValue = [:]
       if uuidIndex.count == 1 {
         let k = uuidIndex.keys.first!
-        let v: AnyObject = uuidIndex[k]!
-        constraintsDictionary["index.\(k)"] = v
+        let v = uuidIndex[k]!
+        constraintsJSON["index.\(k)"] = v
       }
       else {
-        constraintsDictionary["index"] = uuidIndex
+        constraintsJSON["index"] = .Object(uuidIndex)
       }
       var format: [String] = constraints.map{$0.description}
       format.sort(<)
-      constraintsDictionary["format"] = format.count == 1 ? format[0] : format
-      dictionary["constraints"] = constraintsDictionary
+      constraintsJSON["format"] = format.count == 1 ? format[0].jsonValue : .Array(format.map({$0.jsonValue}))
+      dict["constraints"] = .Object(constraintsJSON)
     }
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+    return .Object(dict)
   }
 
   /**
@@ -423,7 +403,7 @@ public class RemoteElement: NamedModelObject {
   /** autoGenerateName */
   override func autoGenerateName() -> String {
     let roleName = (role != RemoteElement.Role.Undefined
-                   ? String(map(role.JSONValue){(c:Character) -> Character in c == "-" ? " " : c}).capitalizedString + " "
+                   ? String(map(role.jsonValue.value as! String){(c:Character) -> Character in c == "-" ? " " : c}).capitalizedString + " "
                    : "")
     let baseName = entity.managedObjectClassName
     let generatedName = roleName + baseName
@@ -720,7 +700,7 @@ public class RemoteElement: NamedModelObject {
 }
 
 extension RemoteElement.BaseType: JSONValueConvertible {
-  public var JSONValue: String {
+  public var jsonValue: JSONValue {
     switch self {
       case .Undefined:   return "undefined"
       case .Remote:      return "remote"
@@ -730,19 +710,19 @@ extension RemoteElement.BaseType: JSONValueConvertible {
   }
 
 
-  public init(JSONValue: String) {
-    switch JSONValue {
-      case RemoteElement.BaseType.Remote.JSONValue:      self = .Remote
-      case RemoteElement.BaseType.ButtonGroup.JSONValue: self = .ButtonGroup
-      case RemoteElement.BaseType.Button.JSONValue:      self = .Button
-      default:                                           self = .Undefined
+  public init(jsonValue: JSONValue) {
+    switch jsonValue.value as? String ?? "" {
+      case RemoteElement.BaseType.Remote.jsonValue.value as! String:      self = .Remote
+      case RemoteElement.BaseType.ButtonGroup.jsonValue.value as! String: self = .ButtonGroup
+      case RemoteElement.BaseType.Button.jsonValue.value as! String:      self = .Button
+      default:                                                            self = .Undefined
     }
   }
 }
 
 
 extension RemoteElement.Shape: JSONValueConvertible {
-  public var JSONValue: String {
+  public var jsonValue: JSONValue {
     switch self {
       case .Undefined:        return "undefined"
       case .RoundedRectangle: return "rounded-rectangle"
@@ -753,14 +733,14 @@ extension RemoteElement.Shape: JSONValueConvertible {
     }
   }
 
-  public init(JSONValue: String) {
-    switch JSONValue {
-      case RemoteElement.Shape.RoundedRectangle.JSONValue: self = .RoundedRectangle
-      case RemoteElement.Shape.Oval.JSONValue:             self = .Oval
-      case RemoteElement.Shape.Rectangle.JSONValue:        self = .Rectangle
-      case RemoteElement.Shape.Triangle.JSONValue:         self = .Triangle
-      case RemoteElement.Shape.Diamond.JSONValue:          self = .Diamond
-      default:                                             self = .Undefined
+  public init(jsonValue: JSONValue) {
+    switch jsonValue.value as? String ?? "" {
+      case RemoteElement.Shape.RoundedRectangle.jsonValue.value as! String: self = .RoundedRectangle
+      case RemoteElement.Shape.Oval.jsonValue.value as! String:             self = .Oval
+      case RemoteElement.Shape.Rectangle.jsonValue.value as! String:        self = .Rectangle
+      case RemoteElement.Shape.Triangle.jsonValue.value as! String:         self = .Triangle
+      case RemoteElement.Shape.Diamond.jsonValue.value as! String:          self = .Diamond
+      default:                                                              self = .Undefined
     }
   }
 
@@ -768,7 +748,7 @@ extension RemoteElement.Shape: JSONValueConvertible {
 
 extension RemoteElement.Style: JSONValueConvertible {
 
-  public var JSONValue: String {
+  public var jsonValue: JSONValue {
     var segments: [String] = []
     if self & RemoteElement.Style.ApplyGloss != nil {
       var k = "gloss"
@@ -779,11 +759,11 @@ extension RemoteElement.Style: JSONValueConvertible {
     }
     if self & RemoteElement.Style.DrawBorder != nil { segments.append("border") }
     if self & RemoteElement.Style.Stretchable != nil { segments.append("stretchable") }
-    return " ".join(segments)
+    return " ".join(segments).jsonValue
   }
 
-  public init(JSONValue: String) {
-    let components = split(JSONValue){$0 == " "}
+  public init(jsonValue: JSONValue) {
+    let components = split(jsonValue.value as? String ?? ""){$0 == " "}
     var style = RemoteElement.Style.Undefined
     for component in components {
       switch component {
@@ -807,7 +787,7 @@ extension RemoteElement.Role: Hashable {
 
 extension RemoteElement.Role: JSONValueConvertible {
 
-  public var JSONValue: String {
+  public var jsonValue: JSONValue {
     switch self {
       case RemoteElement.Role.SelectionPanel:       return "selection-panel"
       case RemoteElement.Role.Toolbar:              return "toolbar"
@@ -857,53 +837,53 @@ extension RemoteElement.Role: JSONValueConvertible {
     }
   }
 
-  public init(JSONValue: String) {
-    switch JSONValue {
-      case RemoteElement.Role.SelectionPanel.JSONValue:       self = RemoteElement.Role.SelectionPanel
-      case RemoteElement.Role.Toolbar.JSONValue:              self = RemoteElement.Role.Toolbar
-      case RemoteElement.Role.TopToolbar.JSONValue:           self = RemoteElement.Role.TopToolbar
-      case RemoteElement.Role.DPad.JSONValue:                 self = RemoteElement.Role.DPad
-      case RemoteElement.Role.Numberpad.JSONValue:            self = RemoteElement.Role.Numberpad
-      case RemoteElement.Role.Transport.JSONValue:            self = RemoteElement.Role.Transport
-      case RemoteElement.Role.Rocker.JSONValue:               self = RemoteElement.Role.Rocker
-      case RemoteElement.Role.ToolbarButton.JSONValue:        self = RemoteElement.Role.ToolbarButton
-      case RemoteElement.Role.ConnectionStatus.JSONValue:     self = RemoteElement.Role.ConnectionStatus
-      case RemoteElement.Role.BatteryStatus.JSONValue:        self = RemoteElement.Role.BatteryStatus
-      case RemoteElement.Role.RockerButton.JSONValue:         self = RemoteElement.Role.RockerButton
-      case RemoteElement.Role.Top.JSONValue:                  self = RemoteElement.Role.Top
-      case RemoteElement.Role.Bottom.JSONValue:               self = RemoteElement.Role.Bottom
-      case RemoteElement.Role.PanelButton.JSONValue:          self = RemoteElement.Role.PanelButton
-      case RemoteElement.Role.Tuck.JSONValue:                 self = RemoteElement.Role.Tuck
-      case RemoteElement.Role.SelectionPanelButton.JSONValue: self = RemoteElement.Role.SelectionPanelButton
-      case RemoteElement.Role.DPadButton.JSONValue:           self = RemoteElement.Role.DPadButton
-      case RemoteElement.Role.Up.JSONValue:                   self = RemoteElement.Role.Up
-      case RemoteElement.Role.Down.JSONValue:                 self = RemoteElement.Role.Down
-      case RemoteElement.Role.Left.JSONValue:                 self = RemoteElement.Role.Left
-      case RemoteElement.Role.Right.JSONValue:                self = RemoteElement.Role.Right
-      case RemoteElement.Role.Center.JSONValue:               self = RemoteElement.Role.Center
-      case RemoteElement.Role.NumberpadButton.JSONValue:      self = RemoteElement.Role.NumberpadButton
-      case RemoteElement.Role.One.JSONValue:                  self = RemoteElement.Role.One
-      case RemoteElement.Role.Two.JSONValue:                  self = RemoteElement.Role.Two
-      case RemoteElement.Role.Three.JSONValue:                self = RemoteElement.Role.Three
-      case RemoteElement.Role.Four.JSONValue:                 self = RemoteElement.Role.Four
-      case RemoteElement.Role.Five.JSONValue:                 self = RemoteElement.Role.Five
-      case RemoteElement.Role.Six.JSONValue:                  self = RemoteElement.Role.Six
-      case RemoteElement.Role.Seven.JSONValue:                self = RemoteElement.Role.Seven
-      case RemoteElement.Role.Eight.JSONValue:                self = RemoteElement.Role.Eight
-      case RemoteElement.Role.Nine.JSONValue:                 self = RemoteElement.Role.Nine
-      case RemoteElement.Role.Zero.JSONValue:                 self = RemoteElement.Role.Zero
-      case RemoteElement.Role.Aux1.JSONValue:                 self = RemoteElement.Role.Aux1
-      case RemoteElement.Role.Aux2.JSONValue:                 self = RemoteElement.Role.Aux2
-      case RemoteElement.Role.TransportButton.JSONValue:      self = RemoteElement.Role.TransportButton
-      case RemoteElement.Role.Play.JSONValue:                 self = RemoteElement.Role.Play
-      case RemoteElement.Role.Stop.JSONValue:                 self = RemoteElement.Role.Stop
-      case RemoteElement.Role.Pause.JSONValue:                self = RemoteElement.Role.Pause
-      case RemoteElement.Role.Skip.JSONValue:                 self = RemoteElement.Role.Skip
-      case RemoteElement.Role.Replay.JSONValue:               self = RemoteElement.Role.Replay
-      case RemoteElement.Role.FF.JSONValue:                   self = RemoteElement.Role.FF
-      case RemoteElement.Role.Rewind.JSONValue:               self = RemoteElement.Role.Rewind
-      case RemoteElement.Role.Record.JSONValue:               self = RemoteElement.Role.Record
-      default:                                                self = RemoteElement.Role.Undefined
+  public init(jsonValue: JSONValue) {
+    switch jsonValue.value as? String ?? "" {
+      case RemoteElement.Role.SelectionPanel.jsonValue.value as! String:       self = RemoteElement.Role.SelectionPanel
+      case RemoteElement.Role.Toolbar.jsonValue.value as! String:              self = RemoteElement.Role.Toolbar
+      case RemoteElement.Role.TopToolbar.jsonValue.value as! String:           self = RemoteElement.Role.TopToolbar
+      case RemoteElement.Role.DPad.jsonValue.value as! String:                 self = RemoteElement.Role.DPad
+      case RemoteElement.Role.Numberpad.jsonValue.value as! String:            self = RemoteElement.Role.Numberpad
+      case RemoteElement.Role.Transport.jsonValue.value as! String:            self = RemoteElement.Role.Transport
+      case RemoteElement.Role.Rocker.jsonValue.value as! String:               self = RemoteElement.Role.Rocker
+      case RemoteElement.Role.ToolbarButton.jsonValue.value as! String:        self = RemoteElement.Role.ToolbarButton
+      case RemoteElement.Role.ConnectionStatus.jsonValue.value as! String:     self = RemoteElement.Role.ConnectionStatus
+      case RemoteElement.Role.BatteryStatus.jsonValue.value as! String:        self = RemoteElement.Role.BatteryStatus
+      case RemoteElement.Role.RockerButton.jsonValue.value as! String:         self = RemoteElement.Role.RockerButton
+      case RemoteElement.Role.Top.jsonValue.value as! String:                  self = RemoteElement.Role.Top
+      case RemoteElement.Role.Bottom.jsonValue.value as! String:               self = RemoteElement.Role.Bottom
+      case RemoteElement.Role.PanelButton.jsonValue.value as! String:          self = RemoteElement.Role.PanelButton
+      case RemoteElement.Role.Tuck.jsonValue.value as! String:                 self = RemoteElement.Role.Tuck
+      case RemoteElement.Role.SelectionPanelButton.jsonValue.value as! String: self = RemoteElement.Role.SelectionPanelButton
+      case RemoteElement.Role.DPadButton.jsonValue.value as! String:           self = RemoteElement.Role.DPadButton
+      case RemoteElement.Role.Up.jsonValue.value as! String:                   self = RemoteElement.Role.Up
+      case RemoteElement.Role.Down.jsonValue.value as! String:                 self = RemoteElement.Role.Down
+      case RemoteElement.Role.Left.jsonValue.value as! String:                 self = RemoteElement.Role.Left
+      case RemoteElement.Role.Right.jsonValue.value as! String:                self = RemoteElement.Role.Right
+      case RemoteElement.Role.Center.jsonValue.value as! String:               self = RemoteElement.Role.Center
+      case RemoteElement.Role.NumberpadButton.jsonValue.value as! String:      self = RemoteElement.Role.NumberpadButton
+      case RemoteElement.Role.One.jsonValue.value as! String:                  self = RemoteElement.Role.One
+      case RemoteElement.Role.Two.jsonValue.value as! String:                  self = RemoteElement.Role.Two
+      case RemoteElement.Role.Three.jsonValue.value as! String:                self = RemoteElement.Role.Three
+      case RemoteElement.Role.Four.jsonValue.value as! String:                 self = RemoteElement.Role.Four
+      case RemoteElement.Role.Five.jsonValue.value as! String:                 self = RemoteElement.Role.Five
+      case RemoteElement.Role.Six.jsonValue.value as! String:                  self = RemoteElement.Role.Six
+      case RemoteElement.Role.Seven.jsonValue.value as! String:                self = RemoteElement.Role.Seven
+      case RemoteElement.Role.Eight.jsonValue.value as! String:                self = RemoteElement.Role.Eight
+      case RemoteElement.Role.Nine.jsonValue.value as! String:                 self = RemoteElement.Role.Nine
+      case RemoteElement.Role.Zero.jsonValue.value as! String:                 self = RemoteElement.Role.Zero
+      case RemoteElement.Role.Aux1.jsonValue.value as! String:                 self = RemoteElement.Role.Aux1
+      case RemoteElement.Role.Aux2.jsonValue.value as! String:                 self = RemoteElement.Role.Aux2
+      case RemoteElement.Role.TransportButton.jsonValue.value as! String:      self = RemoteElement.Role.TransportButton
+      case RemoteElement.Role.Play.jsonValue.value as! String:                 self = RemoteElement.Role.Play
+      case RemoteElement.Role.Stop.jsonValue.value as! String:                 self = RemoteElement.Role.Stop
+      case RemoteElement.Role.Pause.jsonValue.value as! String:                self = RemoteElement.Role.Pause
+      case RemoteElement.Role.Skip.jsonValue.value as! String:                 self = RemoteElement.Role.Skip
+      case RemoteElement.Role.Replay.jsonValue.value as! String:               self = RemoteElement.Role.Replay
+      case RemoteElement.Role.FF.jsonValue.value as! String:                   self = RemoteElement.Role.FF
+      case RemoteElement.Role.Rewind.jsonValue.value as! String:               self = RemoteElement.Role.Rewind
+      case RemoteElement.Role.Record.jsonValue.value as! String:               self = RemoteElement.Role.Record
+      default:                                                                 self = RemoteElement.Role.Undefined
     }
   }
 }

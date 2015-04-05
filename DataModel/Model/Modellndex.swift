@@ -50,15 +50,8 @@ in the code set named 'AV Receiver' for the manufacturer named 'Sony'
 
 // MARK: JSONValueConvertible
 extension ModelIndex: JSONValueConvertible {
-  public var JSONValue: String { return rawValue }
+  public var jsonValue: JSONValue { return rawValue.jsonValue }
 }
-
-// MARK: JSONExport
-extension ModelIndex: JSONExport {
-  public var JSONObject: AnyObject { return JSONValue }
-  public var JSONString: String { return JSONObject.JSONString }
-}
-extension ModelIndex: JSONExport {}
 
 // MARK: Equatable
 extension ModelIndex: Equatable {}

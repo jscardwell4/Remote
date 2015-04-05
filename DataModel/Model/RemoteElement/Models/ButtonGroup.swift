@@ -27,7 +27,7 @@ public final class ButtonGroup: RemoteElement {
 
     public enum Location: Int, JSONValueConvertible {
       case Undefined, Top, Bottom, Left, Right
-      public var JSONValue: String {
+      public var jsonValue: JSONValue {
         switch self {
           case .Undefined: return "undefined"
           case .Top:       return "top"
@@ -36,8 +36,8 @@ public final class ButtonGroup: RemoteElement {
           case .Right:     return "right"
         }
       }
-      public init(JSONValue: String) {
-        switch JSONValue {
+      public init(jsonValue: JSONValue) {
+        switch jsonValue.value as? String ?? "" {
           case "top":    self = .Top
           case "bottom": self = .Bottom
           case "left":   self = .Left
@@ -48,7 +48,7 @@ public final class ButtonGroup: RemoteElement {
     }
     public enum Trigger: Int, JSONValueConvertible  {
       case Undefined, OneFinger, TwoFinger, ThreeFinger
-      public var JSONValue: String {
+      public var jsonValue: JSONValue {
         switch self {
           case .Undefined:   return "undefined"
           case .OneFinger:   return "1"
@@ -56,8 +56,8 @@ public final class ButtonGroup: RemoteElement {
           case .ThreeFinger: return "3"
         }
       }
-     public init(JSONValue: String) {
-       switch JSONValue {
+     public init(jsonValue: JSONValue) {
+       switch jsonValue.value as? String ?? "" {
          case "1": self = .OneFinger
          case "2": self = .TwoFinger
          case "3": self = .ThreeFinger
@@ -85,15 +85,16 @@ public final class ButtonGroup: RemoteElement {
 
     public static var Unassigned: PanelAssignment = PanelAssignment(location: .Undefined, trigger: .Undefined)
 
-    public init(JSONValue: String) {
+    public init(jsonValue: JSONValue) {
       rawValue = 0
-      let length = count(JSONValue)
+      let string = jsonValue.value as? String ?? ""
+      let length = count(string)
       if length > 3 {
-        location = Location(JSONValue: String(JSONValue[0 ..< (length - 1)]))
-        trigger = Trigger(JSONValue: String(JSONValue[(length - 1) ..< length]))
+        location = Location(jsonValue: .String(string[0 ..< (length - 1)]))
+        trigger = Trigger(jsonValue: .String(string[(length - 1) ..< length]))
       }
     }
-    public var JSONValue: String { return "\(location.JSONValue)\(trigger.JSONValue)"}
+    public var jsonValue: JSONValue { return .String("\(location.jsonValue.value as! String)\(trigger.jsonValue.value as! String)") }
 
   }
 
@@ -290,37 +291,29 @@ public final class ButtonGroup: RemoteElement {
 
   }
 
-  /**
-  JSONDictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
-  :returns: MSDictionary
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    let commandSets = MSDictionary()
-    let commandSetCollections = MSDictionary()
-    let labels = MSDictionary()
+    var commandSets           : JSONValue.ObjectValue = [:]
+    var commandSetCollections : JSONValue.ObjectValue = [:]
+    var labels                : JSONValue.ObjectValue = [:]
 
     for mode in modes as [String] {
       if let container = commandContainerForMode(mode) {
-        let dict = container.JSONDictionary()
-        if container is CommandSetCollection { commandSetCollections[mode] = dict }
-        else if container is CommandSet { commandSets[mode] = dict }
+        let d = container.jsonValue
+        if container is CommandSetCollection { commandSetCollections[mode] = d }
+        else if container is CommandSet { commandSets[mode] = d }
       }
-      if let label = labelForMode(mode) { labels[mode] = label }
+      // TODO: Probably need to add jsonValue to NSAttributedString to export labels
+      if let label = labelForMode(mode) { labels[mode] = JSONValue(label) }
     }
 
-    if commandSetCollections.count > 0 { dictionary["command-set-collection"] = commandSetCollections }
-    if commandSets.count > 0 { dictionary["command-set"] = commandSets }
-    if labels.count > 0 { dictionary["label"] = labels }
-    if let constraints = labelConstraints { dictionary["label-constraints"] = constraints }
-    if !labelAttributes.dictionary.isEmpty { dictionary["label-attributes"] = labelAttributes.dictionary }
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+    if commandSetCollections.count > 0 { dict["command-set-collection"] = .Object(commandSetCollections) }
+    if commandSets.count > 0 { dict["command-set"] = .Object(commandSets) }
+    if labels.count > 0 { dict["label"] = .Object(labels) }
+    if let constraints = labelConstraints { dict["label-constraints"] = .String(constraints) }
+    if !labelAttributes.dictionary.isEmpty { dict["label-attributes"] = labelAttributes.jsonValue }
+    return .Object(dict)
   }
 
 }

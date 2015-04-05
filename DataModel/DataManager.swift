@@ -12,10 +12,12 @@ import MoonKit
 
 @objc public final class DataManager {
 
+  private static let dataModelBundle = NSBundle(forClass: DataManager.self)
+
   /** initialize */
   class func initialize() {
+    MSLogDebug("bundle path: '\(dataModelBundle.bundlePath)'")
     MSLogDebug("performing \(dataFlag)\nmodel flags…\n" + "\n".join(modelFlags.map({$0.description})))
-
     if databaseStoreURL.checkResourceIsReachableAndReturnError(nil)
       && dataFlag.remove
     {
@@ -39,7 +41,7 @@ import MoonKit
                                                       create: true,
                                                        error: &error)
       where !MSHandleError(error, message: "failed to retrieve application support directory"),
-      let identifier = NSBundle(forClass: DataManager.self).bundleIdentifier
+      let identifier = dataModelBundle.bundleIdentifier
     {
       let bundleSupportDirectoryURL = supportDirectoryURL.URLByAppendingPathComponent(identifier)
 
@@ -57,7 +59,7 @@ import MoonKit
 
   /** URL for the preloaded persistent store located in the bundle */
   public static let databaseBundleURL: NSURL = {
-    if let url = NSBundle(forClass: DataManager.self).URLForResource(DataManager.resourceBaseName, withExtension: "sqlite") {
+    if let url = dataModelBundle.URLForResource(DataManager.resourceBaseName, withExtension: "sqlite") {
       return url
     } else { fatalError("Unable to locate database bundle resource") }
   }()
@@ -65,13 +67,14 @@ import MoonKit
 
   /** The core data stack, if this is nil we may as well shutdown */
   public static let stack: CoreDataStack = {
-    if let modelURL = NSBundle(forClass:DataManager.self).URLForResource(DataManager.resourceBaseName, withExtension: "momd"),
+    if let modelURL = dataModelBundle.URLForResource(DataManager.resourceBaseName, withExtension: "momd"),
       mom = NSManagedObjectModel(contentsOfURL: modelURL),
       stack = CoreDataStack(managedObjectModel: DataManager.augmentModel(mom),
                             persistentStoreURL: databaseStoreURL,
                             options: [NSMigratePersistentStoresAutomaticallyOption: true,
                                       NSInferMappingModelAutomaticallyOption: true])
     {
+      MSLogDebug("persistent store url: '\(databaseStoreURL)'")
       if dataFlag.logModel { MSLogDebug("managed object model:\n\(stack.managedObjectModel.description)") }
       return stack
     } else { fatalError("failed to instantiate core data stack, aborting…") }
@@ -481,9 +484,14 @@ import MoonKit
     public var description: String { return "\(rawValue):\n\t" + "\n\t".join(markers.map({$0.description})) }
   }
 
-  /** loadData */
+  /**
+  Load data from files parsed from command line arguments and save the root context
+
+  :param: completion ((Bool, NSError?) -> Void)? = nil
+  */
   class func loadData(completion: ((Bool, NSError?) -> Void)? = nil) {
 
+    // TODO: Check if this is broken due to race condition/asynchronous calls
     rootContext.performBlock {[rootContext = self.rootContext] in
 
       self.modelFlags ➤ {
@@ -513,10 +521,22 @@ import MoonKit
                     logImported: logImported)
         }
       }
+    }
 
+    saveRootContext(completion: completion)
+
+  }
+
+  /** 
+  Save the root context 
+  
+  :param: completion ((Bool, NSError?) -> Void)? = nil
+  */
+  public class func saveRootContext(completion: ((Bool, NSError?) -> Void)? = nil) {
+    rootContext.performBlock {
       var error: NSError?
       MSLogDebug("saving context…")
-      if rootContext.save(&error) && !MSHandleError(error, message: "error occurred while saving context") {
+      if self.rootContext.save(&error) && !MSHandleError(error, message: "error occurred while saving context") {
         MSLogDebug("context saved successfully")
         completion?(true, nil)
       } else {
@@ -558,7 +578,7 @@ import MoonKit
     default:
       objects = modelType.objectsInContext(rootContext)
     }
-    let json = (objects as NSArray).JSONString
+    let json: JSONValue = .Array(objects.map({$0.jsonValue}))
     MSLogDebug("\(className) objects: \n\(json)\n")
   }
 
@@ -568,45 +588,56 @@ import MoonKit
   :param: file String
   :param: type T.Type
   :param: context NSManagedObjectContext
+  :param: logFile Bool = false
+  :param: logParsed Bool = false
+  :param: logImported Bool = false
+  :param: completion ((Bool, NSError?) -> Void)? = nil
   */
-  private class func loadDataFromFile<T:ModelObject>(file: String,
+  public class func loadDataFromFile<T:ModelObject>(file: String,
                                                 type: T.Type,
                                              context: NSManagedObjectContext,
-                                             logFile: Bool,
-                                           logParsed: Bool,
-                                         logImported: Bool)
+                                             logFile: Bool = false,
+                                           logParsed: Bool = false,
+                                         logImported: Bool = false,
+                                          completion: ((Bool, NSError?) -> Void)? = nil)
   {
     MSLogDebug("parsing file '\(file).json'")
 
     var error: NSError?
-    if let filePath = NSBundle(forClass: self).pathForResource(file, ofType: "json"),
-      data: AnyObject = JSONSerialization.objectByParsingFile(filePath, options: 1, error: &error)
-      where MSHandleError(error) == false
-    {
-      if logFile {
-        MSLogDebug("content of file to parse:\n" + (String(contentsOfFile: filePath,
-                                                           encoding: NSUTF8StringEncoding,
-                                                              error: nil) ?? "")) }
-      if logParsed { MSLogDebug("json objects from parsed file:\n\(data)") }
+    context.performBlockAndWait {
+      if let filePath = self.dataModelBundle.pathForResource(file, ofType: "json"),
+        json = JSONSerialization.objectByParsingFile(filePath, options: .InflateKeypaths, error: &error)
+        where MSHandleError(error) == false
+      {
+        if logFile {
+          MSLogDebug("content of file to parse:\n" + (String(contentsOfFile: filePath,
+                                                             encoding: NSUTF8StringEncoding,
+                                                                error: nil) ?? "")) }
+        let data: AnyObject = json.objectValue
 
-      if let dataDictionary = data as? [String:AnyObject],
-        importedObject = type(data: dataDictionary, context: context) {
+        if logParsed { MSLogDebug("json objects from parsed file:\n\(data)") }
 
-        MSLogDebug("imported \(type.className()) from file '\(file).json'")
+        if let dataDictionary = data as? [String:AnyObject],
+          importedObject = type(data: dataDictionary, context: context) {
 
-        if logImported { MSLogDebug("json output for imported object:\n\(importedObject.JSONString)") }
+          MSLogDebug("imported \(type.className()) from file '\(file).json'")
 
-      } else if let dataArray = data as? [[String:AnyObject]] {
+          if logImported { MSLogDebug("json output for imported object:\n\(importedObject.jsonValue)") }
 
-        let importedObjects = type.importObjectsWithData(dataArray, context: context)
+        } else if let dataArray = data as? [[String:AnyObject]] {
 
-        MSLogDebug("\(importedObjects.count) \(type.className()) objects imported from file '\(file).json'")
+          let importedObjects = type.importObjectsWithData(dataArray, context: context)
 
-        if logImported { MSLogDebug("json output for imported object:\n\((importedObjects as NSArray).JSONString)") }
+          MSLogDebug("\(importedObjects.count) \(type.className()) objects imported from file '\(file).json'")
 
-      } else { MSLogError("file content must resolve into [String:AnyObject] or [[String:AnyObject]]") }
+          if logImported { MSLogDebug("json output for imported object:\n\(JSONValue.Array((importedObjects as [ModelObject]).map({$0.jsonValue})).prettyStringValue)") }
 
-    } else { MSLogError("failed to parse file '\(file).json'") }
+        } else { MSLogError("file content must resolve into [String:AnyObject] or [[String:AnyObject]]") }
+
+      } else { MSLogError("failed to parse file '\(file).json'") }
+
+    }
+    completion?(error == nil, error)
   }
 
 }

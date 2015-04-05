@@ -27,20 +27,14 @@ public class ISYDeviceGroup: NamedModelObject {
     updateRelationshipFromData(data, forAttribute: "members")
   }
 
-}
-
-extension ISYDeviceGroup: JSONExport {
-
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-    appendValueForKey("flag", toDictionary: dictionary)
-    appendValueForKey("address", toDictionary: dictionary)
-    appendValueForKey("family", toDictionary: dictionary)
-    appendValueForKeyPath("members.uuid", forKey: "members.uuid", toDictionary: dictionary)
-    appendValueForKeyPath("device.uuid",  forKey: "device.uuid", toDictionary: dictionary)
-    dictionary.compact()
-    dictionary.compress()
-    return dictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
+    appendValueForKey("flag", toDictionary: &dict)
+    appendValueForKey("address", toDictionary: &dict)
+    appendValueForKey("family", toDictionary: &dict)
+    appendValueForKeyPath("members.uuid", forKey: "members", toDictionary: &dict)
+    appendValueForKeyPath("device.index",  forKey: "device", toDictionary: &dict)
+    return .Object(dict)
   }
 
 }

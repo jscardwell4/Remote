@@ -13,17 +13,17 @@ import MoonKit
 
 /** Add JSON conversion to `UIControlState` */
 extension UIControlState: JSONValueConvertible {
-  public var JSONValue: String {
+  public var jsonValue: JSONValue {
     var flags: [String] = []
     if self & UIControlState.Highlighted != nil { flags.append("highlighted") }
     if self & UIControlState.Selected    != nil { flags.append("selected")    }
     if self & UIControlState.Disabled    != nil { flags.append("disabled")    }
     if flags.count == 0 { flags.append("normal") }
-    return " ".join(flags)
+    return .String(" ".join(flags))
   }
 
-  public init?(JSONValue: String) {
-    let flags = split(JSONValue){$0 == " "}
+  public init?(jsonValue: JSONValue) {
+    let flags = split(jsonValue.value as? String ?? ""){$0 == " "}
     if !contains(1...3, flags.count) { return nil }
     var state = UIControlState.Normal
     for flag in flags {
@@ -54,8 +54,8 @@ extension UIControlState {
 
   /** Corresponding property name suitable for use in methods such as `valueForKey:` */
   public var controlStateSetProperty: String? {
-    let jsonValue = JSONValue
-    return count(jsonValue) > 0 ? jsonValue.camelcaseString : nil
+    let string = jsonValue.value as! String
+    return count(string) > 0 ? string.camelcaseString : nil
   }
 
   /**

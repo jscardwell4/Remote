@@ -392,6 +392,8 @@
 		C285D8671AC4BF9800C527F6 /* BankCollectionItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4781ABCA395007581F2 /* BankCollectionItemCell.swift */; };
 		C285D8681AC4BFDF00C527F6 /* BankCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4761ABCA395007581F2 /* BankCollectionController.swift */; };
 		C285D86A1AC4C0E800C527F6 /* DataModelProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C285D8691AC4C0E800C527F6 /* DataModelProtocols.swift */; };
+		C28E98F81AD1A4B000E78711 /* DataModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28E98F71AD1A4B000E78711 /* DataModelTests.swift */; };
+		C28E98F91AD1A4B000E78711 /* DataModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* DataModel.framework */; };
 		C293C73E1AC25F7700408D35 /* Modellndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C73D1AC25F7700408D35 /* Modellndex.swift */; };
 		C293C7491AC3164700408D35 /* Bank.h in Headers */ = {isa = PBXBuildFile; fileRef = C293C7481AC3164700408D35 /* Bank.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C293C74F1AC3164700408D35 /* Bank.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C293C7441AC3164700408D35 /* Bank.framework */; };
@@ -567,7 +569,6 @@
 		C2E9F60F1ABCA395007581F2 /* ButtonGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F5371ABCA395007581F2 /* ButtonGroup.swift */; };
 		C2E9F6101ABCA395007581F2 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F5381ABCA395007581F2 /* Constraint.swift */; };
 		C2E9F6111ABCA395007581F2 /* ConstraintManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F5391ABCA395007581F2 /* ConstraintManager.swift */; };
-		C2E9F6121ABCA395007581F2 /* PresetAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F53A1ABCA395007581F2 /* PresetAttributes.swift */; };
 		C2E9F6131ABCA395007581F2 /* Remote.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F53B1ABCA395007581F2 /* Remote.swift */; };
 		C2E9F6141ABCA395007581F2 /* RemoteElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F53C1ABCA395007581F2 /* RemoteElement.swift */; };
 		C2E9F61A1ABCA395007581F2 /* TitleAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F5421ABCA395007581F2 /* TitleAttributes.swift */; };
@@ -622,6 +623,13 @@
 
 /* Begin PBXContainerItemProxy section */
 		C28104BE1AC5D059003C6E7A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C215CBFE1ABB102F00E8077E;
+			remoteInfo = DataModel;
+		};
+		C28E98FA1AD1A4B000E78711 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
 			proxyType = 1;
@@ -1049,6 +1057,9 @@
 		C27BCC8A1801C16A0002464C /* IntegerKeyboard_Erase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_Erase.png; sourceTree = "<group>"; };
 		C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Erase@2x.png"; sourceTree = "<group>"; };
 		C285D8691AC4C0E800C527F6 /* DataModelProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataModelProtocols.swift; path = Model/DataModelProtocols.swift; sourceTree = "<group>"; };
+		C28E98F31AD1A4B000E78711 /* DataModelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DataModelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C28E98F61AD1A4B000E78711 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C28E98F71AD1A4B000E78711 /* DataModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModelTests.swift; sourceTree = "<group>"; };
 		C293C73D1AC25F7700408D35 /* Modellndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modellndex.swift; sourceTree = "<group>"; };
 		C293C7441AC3164700408D35 /* Bank.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bank.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C293C7471AC3164700408D35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1403,6 +1414,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C28E98F01AD1A4B000E78711 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C28E98F91AD1A4B000E78711 /* DataModel.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C293C7401AC3164700408D35 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1609,6 +1628,7 @@
 				C293C7451AC3164700408D35 /* Bank */,
 				C293C7541AC3164700408D35 /* BankTests */,
 				C2F4C58C1AC6E95300DB3695 /* DataModelApp */,
+				C28E98F41AD1A4B000E78711 /* DataModelTests */,
 				C26BAEAA16DC10FE0093D5B4 /* Frameworks */,
 				C26BAEA916DC10FE0093D5B4 /* Products */,
 			);
@@ -1626,6 +1646,7 @@
 				C293C7441AC3164700408D35 /* Bank.framework */,
 				C293C74E1AC3164700408D35 /* BankTests.xctest */,
 				C2F4C58B1AC6E95300DB3695 /* DataModelApp.app */,
+				C28E98F31AD1A4B000E78711 /* DataModelTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2010,6 +2031,23 @@
 				C26BBAE716DC1B5C0093D5B4 /* Windows-White@2x.png */,
 			);
 			path = png;
+			sourceTree = "<group>";
+		};
+		C28E98F41AD1A4B000E78711 /* DataModelTests */ = {
+			isa = PBXGroup;
+			children = (
+				C28E98F71AD1A4B000E78711 /* DataModelTests.swift */,
+				C28E98F51AD1A4B000E78711 /* Supporting Files */,
+			);
+			path = DataModelTests;
+			sourceTree = "<group>";
+		};
+		C28E98F51AD1A4B000E78711 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C28E98F61AD1A4B000E78711 /* Info.plist */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		C293C7451AC3164700408D35 /* Bank */ = {
@@ -2599,6 +2637,24 @@
 			productReference = C26BAEA816DC10FE0093D5B4 /* Remote.app */;
 			productType = "com.apple.product-type.application";
 		};
+		C28E98F21AD1A4B000E78711 /* DataModelTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C28E98FC1AD1A4B000E78711 /* Build configuration list for PBXNativeTarget "DataModelTests" */;
+			buildPhases = (
+				C28E98EF1AD1A4B000E78711 /* Sources */,
+				C28E98F01AD1A4B000E78711 /* Frameworks */,
+				C28E98F11AD1A4B000E78711 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C28E98FB1AD1A4B000E78711 /* PBXTargetDependency */,
+			);
+			name = DataModelTests;
+			productName = DataModelTests;
+			productReference = C28E98F31AD1A4B000E78711 /* DataModelTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		C293C7431AC3164700408D35 /* Bank */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C293C75D1AC3164800408D35 /* Build configuration list for PBXNativeTarget "Bank" */;
@@ -2751,6 +2807,9 @@
 							};
 						};
 					};
+					C28E98F21AD1A4B000E78711 = {
+						CreatedOnToolsVersion = 6.3;
+					};
 					C293C7431AC3164700408D35 = {
 						CreatedOnToolsVersion = 6.3;
 						DevelopmentTeam = JT6STF4SHA;
@@ -2795,6 +2854,7 @@
 				C293C7431AC3164700408D35 /* Bank */,
 				C293C74D1AC3164700408D35 /* BankTests */,
 				C2F4C58A1AC6E95300DB3695 /* DataModelApp */,
+				C28E98F21AD1A4B000E78711 /* DataModelTests */,
 			);
 		};
 /* End PBXProject section */
@@ -3116,6 +3176,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C28E98F11AD1A4B000E78711 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C293C7421AC3164700408D35 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3273,7 +3340,6 @@
 				C2E9F5CF1ABCA395007581F2 /* Remote.xcdatamodeld in Sources */,
 				C293C77C1AC318EB00408D35 /* ITachDevice.swift in Sources */,
 				C2E9F6141ABCA395007581F2 /* RemoteElement.swift in Sources */,
-				C2E9F6121ABCA395007581F2 /* PresetAttributes.swift in Sources */,
 				C2E9F6091ABCA395007581F2 /* ControlStateSet.swift in Sources */,
 				C293C7791AC318EB00408D35 /* ISYDevice.swift in Sources */,
 				C2E9F5DC1ABCA395007581F2 /* ModelObject.swift in Sources */,
@@ -3381,6 +3447,14 @@
 				C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */,
 				C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */,
 				C2FFB602170B986C0079C283 /* REPresetCollectionViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C28E98EF1AD1A4B000E78711 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C28E98F81AD1A4B000E78711 /* DataModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3518,6 +3592,11 @@
 			isa = PBXTargetDependency;
 			target = C215CBFE1ABB102F00E8077E /* DataModel */;
 			targetProxy = C28104BE1AC5D059003C6E7A /* PBXContainerItemProxy */;
+		};
+		C28E98FB1AD1A4B000E78711 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C215CBFE1ABB102F00E8077E /* DataModel */;
+			targetProxy = C28E98FA1AD1A4B000E78711 /* PBXContainerItemProxy */;
 		};
 		C293C7511AC3164700408D35 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4289,6 +4368,172 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Remote.app/Remote";
 			};
 			name = Info;
+		};
+		C28E98FD1AD1A4B000E78711 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = DataModelTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		C28E98FE1AD1A4B000E78711 /* Info */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = DataModelTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Info;
+		};
+		C28E98FF1AD1A4B000E78711 /* Verbose */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = DataModelTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Verbose;
+		};
+		C28E99001AD1A4B000E78711 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = DataModelTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
 		};
 		C293C75E1AC3164800408D35 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -5324,6 +5569,16 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		C28E98FC1AD1A4B000E78711 /* Build configuration list for PBXNativeTarget "DataModelTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C28E98FD1AD1A4B000E78711 /* Debug */,
+				C28E98FE1AD1A4B000E78711 /* Info */,
+				C28E98FF1AD1A4B000E78711 /* Verbose */,
+				C28E99001AD1A4B000E78711 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		C293C75D1AC3164800408D35 /* Build configuration list for PBXNativeTarget "Bank" */ = {
 			isa = XCConfigurationList;

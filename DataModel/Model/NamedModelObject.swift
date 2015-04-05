@@ -71,15 +71,10 @@ public class NamedModelObject: ModelObject, DynamicallyNamed {
     if let n = data["name"] as? String { name = n }
   }
 
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-    dictionary["name"] = name
-    return dictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
+    dict["name"] = .String(name)
+    return .Object(dict)
   }
 
   /**

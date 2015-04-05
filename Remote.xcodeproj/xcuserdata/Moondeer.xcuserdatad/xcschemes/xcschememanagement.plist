@@ -44,6 +44,11 @@
 			<key>orderHint</key>
 			<integer>11</integer>
 		</dict>
+		<key>DataModelTests.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>15</integer>
+		</dict>
 		<key>ISYClient.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -109,6 +114,11 @@
 			<true/>
 		</dict>
 		<key>C26BAECC16DC10FE0093D5B4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C28E98F21AD1A4B000E78711</key>
 		<dict>
 			<key>primary</key>
 			<true/>

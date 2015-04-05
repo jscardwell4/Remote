@@ -21,9 +21,9 @@ public class Font: JSONValueConvertible {
   public init(size: CGFloat) { self.size = size }
   public convenience init?(name: String, size: CGFloat) { self.init(name: name); self.size = size }
 
-  public var JSONValue: String { return "\(name)@\(size)" }
-  required public init?(JSONValue: String) {
-    let components: [String?] = JSONValue.matchFirst("^([^@]*)@?([0-9]*\\.?[0-9]*)")
+  public var jsonValue: JSONValue { return "\(name)@\(size)".jsonValue }
+  required public init?(jsonValue: JSONValue) {
+    let components: [String?] = (jsonValue.value as? String)?.matchFirst("^([^@]*)@?([0-9]*\\.?[0-9]*)") ?? []
     if let nameComponent = components.first {
       if nameComponent != nil {
         if (UIFont.familyNames() as! [String]) ∋ nameComponent! { self.name = nameComponent! } else { return nil }

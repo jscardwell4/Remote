@@ -32,22 +32,13 @@ final public class ImageCategory: EditableModelObject {
     updateRelationshipFromData(data, forAttribute: "childCategories", lookupKey: "subcategories")
   }
 
-  /**
-  JSONDictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
-  :returns: MSDictionary
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    appendValueForKeyPath("parentCategory.index", forKey: "category.index", toDictionary: dictionary)
-    appendValueForKeyPath("images.JSONDictionary", forKey: "images", toDictionary: dictionary)
-    appendValueForKeyPath("childCategories.JSONDictionary", forKey: "subcategories", toDictionary: dictionary)
-    
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+    appendValueForKeyPath("parentCategory.index", forKey: "category.index", toDictionary: &dict)
+    appendValueForKey("images", toDictionary: &dict)
+    appendValueForKey("childCategories", forKey: "subcategories", toDictionary: &dict)
+    return .Object(dict)
   }
 
   /**

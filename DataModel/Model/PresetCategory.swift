@@ -28,20 +28,12 @@ final public class PresetCategory: EditableModelObject {
     //TODO: Fill in stub
   }
 
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
     //TODO: Fill in stub
-
-    dictionary.compact()
-    dictionary.compress()
     
-    return dictionary
+    return .Object(dict)
   }
 
 

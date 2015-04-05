@@ -98,22 +98,13 @@ public final class Activity: NamedModelObject {
   }
 
 
-  /**
-  JSONDictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    appendValue(remote?.commentedUUID, forKey: "remote.uuid", toDictionary: dictionary)
-    appendValue(launchMacro?.JSONDictionary(), forKey: "launch-macro", toDictionary: dictionary)
-    appendValue(haltMacro?.JSONDictionary(), forKey: "halt-macro", toDictionary: dictionary)
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+    dict["remote.uuid"] = JSONValue(remote?.uuid)
+    dict["launch-macro"] = launchMacro?.jsonValue
+    dict["halt-macro"] = haltMacro?.jsonValue
+    return .Object(dict)
   }
 
   /**

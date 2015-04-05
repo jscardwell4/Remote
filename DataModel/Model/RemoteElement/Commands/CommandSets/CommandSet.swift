@@ -65,46 +65,38 @@ public final class CommandSet: CommandContainer {
 
     if let moc = managedObjectContext,
       let typeJSON = data["type"] as? String {
-      let type = CommandSetType(JSONValue: typeJSON)
+      let type = CommandSetType(jsonValue: typeJSON.jsonValue)
       if type != .Unspecified {
         self.type = type
         let commands = data - "type"
         for (roleJSON, roleData) in commands {
           if let commandData = roleData as? [String:AnyObject],
             let command: Command = Command.importObjectWithData(commandData, context: moc) {
-              self[RemoteElement.Role(JSONValue: roleJSON)] = command
+              self[RemoteElement.Role(jsonValue: roleJSON.jsonValue)] = command
           }
         }
       }
     }
   }
 
-  /**
-  JSONDictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    dictionary["type"] = type.JSONValue
+    dict["type"] = type.jsonValue
     containerIndex.enumerateKeysAndObjectsUsingBlock { (key, uri, _) -> Void in
       if let command = self.managedObjectContext?.objectForURI(uri as! NSURL) as? Command {
-        dictionary[RemoteElement.Role(rawValue: (key as! NSNumber).integerValue).JSONValue] = command.JSONDictionary()
+        // TODO: This looks atrocious
+        dict[RemoteElement.Role(rawValue: (key as! NSNumber).integerValue).jsonValue.value as! String] = command.jsonValue
       }
     }
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+    return .Object(dict)
   }
 
 
 }
 
 extension CommandSet.CommandSetType: JSONValueConvertible {
-  public var JSONValue: String {
+  public var jsonValue: JSONValue {
     switch self {
       case .Dpad:      return "dpad"
       case .Transport: return "transport"
@@ -114,13 +106,13 @@ extension CommandSet.CommandSetType: JSONValueConvertible {
     }
   }
 
-  public init(JSONValue: String) {
-    switch JSONValue {
-      case "dpad":      self = .Dpad
-      case "transport": self = .Transport
-      case "numberpad": self = .Numberpad
-      case "rocker":    self = .Rocker
-      default:          self = .Unspecified
+  public init(jsonValue: JSONValue) {
+    switch jsonValue.value as? String {
+      case let s where s == "dpad":      self = .Dpad
+      case let s where s == "transport": self = .Transport
+      case let s where s == "numberpad": self = .Numberpad
+      case let s where s == "rocker":    self = .Rocker
+      default:                           self = .Unspecified
     }
   }
 }

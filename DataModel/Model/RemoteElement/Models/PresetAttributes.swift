@@ -31,23 +31,23 @@ public final class PresetAttributes {
   public init(storage: DictionaryStorage) { self.storage = storage; self.context = storage.managedObjectContext }
 
   public var baseType: RemoteElement.BaseType {
-    get { return RemoteElement.BaseType(JSONValue: storage["base-type"] as? String ?? "undefined") }
-    set { storage["base-type"] = newValue.JSONValue }
+    get { return RemoteElement.BaseType(jsonValue: (storage["base-type"] as? String ?? "undefined").jsonValue) }
+    set { storage["base-type"] = newValue.jsonValue.objectValue }
   }
 
   public var role: RemoteElement.Role {
-    get { return RemoteElement.Role(JSONValue: storage["role"] as? String ?? "undefined") }
-    set { storage["role"] = newValue.JSONValue }
+    get { return RemoteElement.Role(jsonValue: (storage["role"] as? String ?? "undefined").jsonValue) }
+    set { storage["role"] = newValue.jsonValue.objectValue }
   }
 
   public var shape: RemoteElement.Shape {
-    get { return RemoteElement.Shape(JSONValue: storage["shape"] as? String ?? "undefined") }
-    set { storage["shape"] = newValue.JSONValue }
+    get { return RemoteElement.Shape(jsonValue: (storage["shape"] as? String ?? "undefined").jsonValue) }
+    set { storage["shape"] = newValue.jsonValue.objectValue }
   }
 
   public var style: RemoteElement.Style {
-    get { return RemoteElement.Style(JSONValue: storage["style"] as? String ?? "undefined") }
-    set { storage["style"] = newValue.JSONValue }
+    get { return RemoteElement.Style(jsonValue: (storage["style"] as? String ?? "undefined").jsonValue) }
+    set { storage["style"] = newValue.jsonValue.objectValue }
   }
 
   public var backgroundImage: Image? {
@@ -65,8 +65,8 @@ public final class PresetAttributes {
   }
 
   public var backgroundColor: UIColor? {
-    get { return UIColor(JSONValue: storage["background-color"] as? String ?? "") }
-    set { storage["background-color"] = newValue?.JSONValue }
+    get { return UIColor(string: storage["background-color"] as? String ?? "") }
+    set { storage["background-color"] = newValue?.string }
   }
 
   public var subelements: [PresetAttributes]? {
@@ -122,8 +122,8 @@ public final class PresetAttributes {
   }
 
   public var panelAssignment: ButtonGroup.PanelAssignment? {
-    get { return ButtonGroup.PanelAssignment(JSONValue: storage["panel-assignment"] as? String ?? "") }
-    set { storage["panel-assignment"] = newValue?.JSONValue }
+    get { return ButtonGroup.PanelAssignment(jsonValue: (storage["panel-assignment"] as? String ?? "").jsonValue) }
+    set { storage["panel-assignment"] = newValue?.jsonValue.objectValue }
   }
 
   /// MARK: - Button attributes

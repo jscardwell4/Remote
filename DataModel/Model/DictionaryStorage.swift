@@ -33,3 +33,9 @@ public final class DictionaryStorage: NSManagedObject {
     set { var d = dictionary; d[key] = newValue; dictionary = d }
   }
 }
+
+extension DictionaryStorage: JSONValueConvertible {
+  public var jsonValue: JSONValue {
+    return JSONValue(dictionary) ?? .Null
+  }
+}

@@ -21,21 +21,12 @@ public final class HTTPCommand: SendCommand {
   /** The url for the http request sent by `ConnectionManager`. */
   @NSManaged public var url: NSURL
 
-  /**
-  JSONDictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    dictionary["class"] = "http"
-    appendValue(url.absoluteString, forKey: "url", toDictionary: dictionary)
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+    dict["class"] = "http"
+    dict["url"] = JSONValue(url.absoluteString)
+    return .Object(dict)
   }
 
   /**

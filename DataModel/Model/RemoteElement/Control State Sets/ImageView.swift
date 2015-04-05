@@ -56,21 +56,12 @@ public final class ImageView: ModelObject {
 
   }
 
-  /**
-  JSONDictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    dictionary["image"] = image.commentedUUID
-    if let color = self.color { dictionary["color"] = color.JSONValue }
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+    dict["image"] = .String(image.uuid)
+    if let color = self.color { dict["color"] = color.jsonValue }
+    return .Object(dict)
   }
 
 

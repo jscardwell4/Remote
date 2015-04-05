@@ -115,33 +115,20 @@ public final class ComponentDevice: EditableModelObject {
     return modelWithIndex(index, context: context)
   }
 
-}
+  override public var jsonValue: JSONValue {
 
-extension ComponentDevice: JSONExport {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
-  /**
-  JSONDictionary
+    appendValueForKey("port", toDictionary: &dict)
+    appendValueForKey("alwaysOn", toDictionary: &dict)
+    appendValueForKey("inputPowersOn", toDictionary: &dict)
 
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-
-    let dictionary = super.JSONDictionary()
-
-    appendValueForKey("port", toDictionary: dictionary)
-    appendValueForKey("alwaysOn", toDictionary: dictionary)
-    appendValueForKey("inputPowersOn", toDictionary: dictionary)
-
-    appendValueForKeyPath("onCommand.JSONDictionary", forKey: "on-command", toDictionary: dictionary)
-    appendValueForKeyPath("offCommand.JSONDictionary", forKey: "off-command", toDictionary: dictionary)
-    appendValueForKeyPath("manufacturer.commentedUUID", forKey: "manufacturer.uuid", toDictionary: dictionary)
-    appendValueForKeyPath("networkDevice.commentedUUID", forKey: "network-device.uuid", toDictionary: dictionary)
-    appendValueForKeyPath("codeSet.commentedUUID", forKey: "code-set", toDictionary: dictionary)
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+    appendValueForKey("onCommand", toDictionary: &dict)
+    appendValueForKey("offCommand", toDictionary: &dict)
+    appendValueForKeyPath("manufacturer.uuid", toDictionary: &dict)
+    appendValueForKeyPath("networkDevice.uuid", toDictionary: &dict)
+    appendValueForKeyPath("codeSet.index", toDictionary: &dict)
+    return .Object(dict)
 
   }
 

@@ -70,20 +70,13 @@ final public class Image: EditableModelObject {
     return uuidCopy as String
   }
 
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-    appendValueForKeyPath("imageCategory.index", forKey: "category.index", toDictionary: dictionary)
-    appendValue(assetName, forKey: "asset-name", toDictionary: dictionary)
-    appendValueForKey("leftCap", toDictionary: dictionary)
-    appendValueForKey("topCap", toDictionary: dictionary)
-    dictionary.compact()
-    dictionary.compress()
-    return dictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
+    appendValueForKeyPath("imageCategory.index", forKey: "category.index", toDictionary: &dict)
+    dict["asset-name"] = assetName.jsonValue
+    appendValueForKey("leftCap", toDictionary: &dict)
+    appendValueForKey("topCap", toDictionary: &dict)
+    return .Object(dict)
   }
 
   public var stretchableImage: UIImage? { return image?.stretchableImageWithLeftCapWidth(Int(leftCap), topCapHeight: Int(topCap)) }

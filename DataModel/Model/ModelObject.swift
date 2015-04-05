@@ -12,7 +12,7 @@ import MoonKit
 import ObjectiveC
 
 @objc(ModelObject)
-public class ModelObject: NSManagedObject, Model, JSONExport, Hashable, Equatable {
+public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable, Equatable {
 
 
   /// MARK: - Initializers
@@ -577,51 +577,69 @@ public class ModelObject: NSManagedObject, Model, JSONExport, Hashable, Equatabl
   public func appendValueForKey(key: String,
                   forKey: String? = nil,
             ifNotDefault nonDefault: Bool = false,
-            toDictionary dictionary: MSDictionary)
+            inout toDictionary dictionary: JSONValue.ObjectValue)
   {
-    if !(nonDefault && attributeValueIsDefault(key)), let value: AnyObject = valueForKey(key) {
-      dictionary[(forKey ?? key).dashcaseString] = value
+    let value: Any?
+    if let attributeDescription = entity.attributesByName[key] as? NSAttributeDescription
+      where attributeDescription.attributeType == .BooleanAttributeType
+    {
+      value = (valueForKey(key) as? NSNumber)?.boolValue
+    } else { value = valueForKey(key) }
+    appendValue(value,
+         forKey: forKey ?? key,
+   ifNotDefault: nonDefault,
+   toDictionary: &dictionary)
+  }
+
+  /**
+  appendValueForKeyPath:forKey:inDictionary:
+
+  :param: keypath String
+  :param: key String
+  :param: dictionary MSDictionary
+  */
+  public func appendValueForKeyPath(keypath: String,
+                             forKey key: String? = nil,
+            ifNotDefault nonDefault: Bool = false,
+                 inout toDictionary dictionary: JSONValue.ObjectValue)
+  {
+    appendValue(valueForKeyPath(keypath),
+         forKey: key ?? keypath,
+   ifNotDefault: nonDefault,
+   toDictionary: &dictionary)
+  }
+
+  /**
+  appendValueForKeyPath:forKey:inDictionary:
+
+  :param: keypath String
+  :param: key String
+  :param: dictionary MSDictionary
+  */
+  public func appendValue(value: Any?,
+                   forKey key: String,
+             ifNotDefault nonDefault: Bool = false,
+       inout toDictionary dictionary: JSONValue.ObjectValue)
+  {
+    if !(nonDefault && attributeValueIsDefault(key)) {
+      if let convertibleValue = value as? JSONValueConvertible {
+        dictionary[key.dashcaseString] = convertibleValue.jsonValue
+      } else if let convertibleValues = value as? [JSONValueConvertible] {
+        dictionary[key.dashcaseString] = .Array(convertibleValues.map({$0.jsonValue}))
+      } else if let convertibleValues = value as? Set<ModelObject> {
+        dictionary[key.dashcaseString] = .Array(Array(convertibleValues).map({$0.jsonValue}))
+      } else {
+        dictionary[key.dashcaseString] = JSONValue(value)
+      }
+
     }
   }
 
-  /**
-  appendValueForKeyPath:forKey:inDictionary:
-
-  :param: keypath String
-  :param: key String
-  :param: dictionary MSDictionary
-  */
-  public func appendValueForKeyPath(keypath: String, forKey key: String? = nil, toDictionary dictionary: MSDictionary) {
-    dictionary[(key ?? keypath).dashcaseString] = NSNull.collectionSafeValue(valueForKeyPath(keypath))
+  public var jsonValue: JSONValue {
+    var dict: JSONValue.ObjectValue = [:]
+    dict["uuid"] = uuid.jsonValue
+    return .Object(dict)
   }
-
-  /**
-  appendValueForKeyPath:forKey:inDictionary:
-
-  :param: keypath String
-  :param: key String
-  :param: dictionary MSDictionary
-  */
-  public func appendValue(value: AnyObject?,
-            forKey key: String,
-      ifNotDefault nonDefault: Bool = false,
- toDictionary dictionary: MSDictionary)
-  {
-    if !(nonDefault && attributeValueIsDefault(key)) && value != nil { dictionary[key.dashcaseString] = value! }
-  }
-
-  public var JSONString: String {
-    return JSONDictionary().JSONString.stringByReplacingOccurrencesOfString("\\/", withString: "\\")
-  }
-
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary
-  */
-  public func JSONDictionary() -> MSDictionary { return MSDictionary(object: uuid, forKey: "uuid") }
-
-  public var JSONObject: AnyObject { return JSONDictionary().JSONObject }
 
   override public var description: String {
     return "\(className):\n\t" + "\n\t".join(

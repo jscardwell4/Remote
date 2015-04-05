@@ -43,42 +43,38 @@ final public class Preset: EditableModelObject {
     storage.dictionary = data - "subelements"
   }
 
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-    appendValueForKeyPath("presetCategory.index", forKey: "preset-category.index", toDictionary: dictionary)
-    dictionary.setValuesForKeysWithDictionary(storage.dictionary)
-    return dictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
+    appendValueForKeyPath("presetCategory.index", toDictionary: &dict)
+    let storageDict = storage.jsonValue.value as! JSONValue.ObjectValue
+    dict += storageDict
+    return .Object(dict)
   }
 
   public var baseType: RemoteElement.BaseType {
-    get { return RemoteElement.BaseType(JSONValue: storage["base-type"] as? String ?? "undefined") }
-    set { storage["base-type"] = newValue.JSONValue }
+    get { return RemoteElement.BaseType(jsonValue: (storage["base-type"] as? String ?? "undefined").jsonValue) }
+    set { storage["base-type"] = newValue.jsonValue.objectValue }
   }
 
   public var role: RemoteElement.Role {
-    get { return RemoteElement.Role(JSONValue: storage["role"] as? String ?? "undefined") }
-    set { storage["role"] = newValue.JSONValue }
+    get { return RemoteElement.Role(jsonValue: (storage["role"] as? String ?? "undefined").jsonValue) }
+    set { storage["role"] = newValue.jsonValue.objectValue }
   }
 
   public var shape: RemoteElement.Shape {
-    get { return RemoteElement.Shape(JSONValue: storage["shape"] as? String ?? "undefined") }
-    set { storage["shape"] = newValue.JSONValue }
+    get { return RemoteElement.Shape(jsonValue: (storage["shape"] as? String ?? "undefined").jsonValue) }
+    set { storage["shape"] = newValue.jsonValue.objectValue }
   }
 
   public var style: RemoteElement.Style {
-    get { return RemoteElement.Style(JSONValue: storage["style"] as? String ?? "undefined") }
-    set { storage["style"] = newValue.JSONValue }
+    get { return RemoteElement.Style(jsonValue: (storage["style"] as? String ?? "undefined").jsonValue) }
+    set { storage["style"] = newValue.jsonValue.objectValue }
   }
 
   public var backgroundImage: Image? {
     get {
-      if let moc = managedObjectContext, index = storage["backgroundImage"] as? String {
-        return Image.modelWithIndex(PathIndex(index)!, context: moc)
+      if let moc = managedObjectContext, path = storage["backgroundImage"] as? String {
+        return Image.objectWithIndex(PathIndex(path)!, context: moc)
       } else { return nil }
     }
     set { storage["background-image"] = newValue }
@@ -90,8 +86,8 @@ final public class Preset: EditableModelObject {
   }
 
   public var backgroundColor: UIColor? {
-    get { return UIColor(JSONValue: storage["background-color"] as? String ?? "") }
-    set { storage["background-color"] = newValue?.JSONValue }
+    get { return UIColor(string: storage["background-color"] as? String ?? "") }
+    set { storage["background-color"] = newValue?.string }
   }
 
   public var constraints: String? {
@@ -126,6 +122,11 @@ final public class Preset: EditableModelObject {
     set { storage["autohide"] = newValue }
   }
 
+  public var label: NSAttributedString? {
+    get { return storage["label"] as? NSAttributedString }
+    set { storage["label"] = newValue }
+  }
+
   public var labelAttributes: [String:AnyObject]? {
     get { return storage["label-attributes"] as? [String:AnyObject] }
     set { storage["label-attributes"] = newValue }
@@ -137,8 +138,8 @@ final public class Preset: EditableModelObject {
   }
 
   public var panelAssignment: ButtonGroup.PanelAssignment? {
-    get { return ButtonGroup.PanelAssignment(JSONValue: storage["panel-assignment"] as? String ?? "") }
-    set { storage["panel-assignment"] = newValue?.JSONValue }
+    get { return ButtonGroup.PanelAssignment(jsonValue: (storage["panel-assignment"] as? String ?? "").jsonValue) }
+    set { storage["panel-assignment"] = newValue?.jsonValue.objectValue }
   }
 
   /// MARK: - Button attributes
@@ -170,18 +171,18 @@ final public class Preset: EditableModelObject {
   }
 
   public var titleEdgeInsets: UIEdgeInsets {
-    get { return UIEdgeInsetsFromString(storage["title-edge-insets"] as? String ?? "{0, 0, 0, 0}") }
-    set { storage["title-edge-insets"] = NSStringFromUIEdgeInsets(newValue) }
+    get { return (storage["title-edge-insets"] as? NSValue)?.UIEdgeInsetsValue() ?? UIEdgeInsets.zeroInsets }
+    set { storage["title-edge-insets"] = NSValue(UIEdgeInsets: newValue) }
   }
 
   public var contentEdgeInsets: UIEdgeInsets {
-    get { return UIEdgeInsetsFromString(storage["content-edge-insets"] as? String ?? "{0, 0, 0, 0}") }
-    set { storage["contentEdgeInsets"] = NSStringFromUIEdgeInsets(newValue) }
+    get { return (storage["content-edge-insets"] as? NSValue)?.UIEdgeInsetsValue() ?? UIEdgeInsets.zeroInsets }
+    set { storage["contentEdgeInsets"] = NSValue(UIEdgeInsets: newValue) }
   }
 
   public var imageEdgeInsets: UIEdgeInsets {
-    get { return UIEdgeInsetsFromString(storage["image-edge-insets"] as? String ?? "{0, 0, 0, 0}") }
-    set { storage["image-edge-insets"] = NSStringFromUIEdgeInsets(newValue) }
+    get { return (storage["image-edge-insets"] as? NSValue)?.UIEdgeInsetsValue() ?? UIEdgeInsets.zeroInsets }
+    set { storage["image-edge-insets"] = NSValue(UIEdgeInsets: newValue) }
   }
 
   public var command: [String:String]? {

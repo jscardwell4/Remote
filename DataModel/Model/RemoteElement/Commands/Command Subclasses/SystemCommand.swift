@@ -45,31 +45,22 @@ public final class SystemCommand: Command {
   override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
-    if let typeJSON = data["type"] as? String { type = SystemCommandType(JSONValue: typeJSON) }
+    if let typeJSON = data["type"] as? String { type = SystemCommandType(jsonValue: typeJSON.jsonValue) }
   }
 
-  /**
-  JSONDictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    dictionary["class"] = "system"
-    appendValueForKey("type", toDictionary: dictionary)
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+    dict["class"] = "system"
+    appendValueForKey("type", toDictionary: &dict)
+    return .Object(dict)
   }
 
   override var operation: CommandOperation { return SystemCommandOperation(command: self) }
 }
 
 extension SystemCommand.SystemCommandType: JSONValueConvertible {
-  public var JSONValue: String {
+  public var jsonValue: JSONValue {
     switch self {
       case .ProximitySensor: return "proximity-sensor"
       case .URLRequest:      return "url-request"
@@ -80,8 +71,8 @@ extension SystemCommand.SystemCommandType: JSONValueConvertible {
     }
   }
 
-  public init(JSONValue: String) {
-    switch JSONValue {
+  public init(jsonValue: JSONValue) {
+    switch jsonValue.value as? String ?? "" {
       case "proximity-sensor": self = .ProximitySensor
       case "url-request":      self = .URLRequest
       case "launch-screen":    self = .LaunchScreen

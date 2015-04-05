@@ -32,7 +32,7 @@ public final class ControlStateImageSet: ControlStateSet {
 
     if let jsonData = data as? [String:[String:AnyObject]], let moc = managedObjectContext {
       for (stateKey, dictionary) in jsonData {
-        if let controlState = UIControlState(JSONValue: stateKey),
+        if let controlState = UIControlState(jsonValue: .String(stateKey)),
           let imageView = ImageView.importObjectWithData(dictionary, context: moc) {
             self[controlState.rawValue] = imageView
         }
@@ -40,24 +40,15 @@ public final class ControlStateImageSet: ControlStateSet {
     }
   }
 
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
     UIControlState.enumerate {
       if let imageView = self[$0.rawValue] as? ImageView {
-        dictionary[$0.JSONValue] = imageView.JSONDictionary()
+        dict[$0.jsonValue.value as! String] = imageView.jsonValue
       }
     }
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+    return .Object(dict)
   }
 
 

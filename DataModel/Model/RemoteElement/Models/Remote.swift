@@ -102,7 +102,7 @@ public final class Remote: RemoteElement {
       if let panels = data["panels"] as? [String:String] {
         for (key, uuid) in panels {
           if let buttonGroup = subelements.objectPassingTest({($0.0 as! RemoteElement).uuid == uuid}) as? ButtonGroup {
-            let assignment = ButtonGroup.PanelAssignment(JSONValue: key)
+            let assignment = ButtonGroup.PanelAssignment(jsonValue: .String(key))
             if assignment != ButtonGroup.PanelAssignment.Unassigned {
               setButtonGroup(buttonGroup, forPanelAssignment: assignment)
             }
@@ -114,29 +114,20 @@ public final class Remote: RemoteElement {
 
   }
 
-  /**
-  JSONDictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
-  :returns: MSDictionary
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
+    var panels: JSONValue.ObjectValue = [:]
 
-    let panels = MSDictionary()
-
-    for (number, uuid) in panels {
+    for (number, uuid) in self.panels {
       let assignment = ButtonGroup.PanelAssignment(rawValue: number.integerValue)
-      if let commentedUUID = buttonGroupForPanelAssignment(assignment)?.commentedUUID {
-        panels[assignment.JSONValue] = commentedUUID
+      if let assignedUUID = buttonGroupForPanelAssignment(assignment)?.uuid {
+        panels[assignment.jsonValue.value as! String] = .String(assignedUUID)
       }
     }
 
-    if panels.count > 0 { dictionary["panels"] = panels }
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+    if panels.count > 0 { dict["panels"] = .Object(panels) }
+    return .Object(dict)
   }
 
 }

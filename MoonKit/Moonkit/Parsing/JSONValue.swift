@@ -144,6 +144,34 @@ public enum JSONValue {
     }
   }
 
+  /** The associated value */
+  public var value: Any {
+    switch self {
+      case .Boolean(let b): return b
+      case .Null:           return ()
+      case .Number(let n):  return n
+      case .String(let s):  return s
+      case .Array(let a):   return a
+      case .Object(let o):  return o
+    }
+  }
+
+  /**
+  Places the associated value into `v` if possible.
+
+  :param: v T?
+  */
+  public func getValue<T>(inout v: T?) {
+    switch self {
+      case .Boolean(let b): v = b as? T
+      case .Null:           v = nil
+      case .Number(let n):  v = n as? T
+      case .String(let s):  v = s as? T
+      case .Array(let a):   v = a as? T
+      case .Object(let o):  v = typeCast(o, T.self)
+    }
+  }
+
   /** The value any dictionary keypaths expanded into deeper levels */
   public var inflatedKeyPaths: JSONValue {
     switch self {

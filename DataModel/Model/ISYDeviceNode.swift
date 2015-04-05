@@ -39,25 +39,19 @@ public class ISYDeviceNode: NamedModelObject {
     updateRelationshipFromData(data, forAttribute: "groups")
   }
 
-}
-
-extension ISYDeviceNode: JSONExport {
-
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-    appendValueForKey("flag", toDictionary: dictionary)
-    appendValueForKey("address", toDictionary: dictionary)
-    appendValueForKey("type", toDictionary: dictionary)
-    appendValueForKey("enabled", toDictionary: dictionary)
-    appendValueForKey("pnode", toDictionary: dictionary)
-    appendValueForKey("propertyFormatted", toDictionary: dictionary)
-    appendValueForKey("propertyID", toDictionary: dictionary)
-    appendValueForKey("propertyUOM", toDictionary: dictionary)
-    appendValueForKey("propertyValue", toDictionary: dictionary)
-    appendValueForKeyPath("groups.uuid", forKey: "groups", toDictionary: dictionary)
-    dictionary.compact()
-    dictionary.compress()
-    return dictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
+    appendValueForKey("flag", toDictionary: &dict)
+    appendValueForKey("address", toDictionary: &dict)
+    appendValueForKey("type", toDictionary: &dict)
+    appendValueForKey("enabled", toDictionary: &dict)
+    appendValueForKey("pnode", toDictionary: &dict)
+    appendValueForKey("propertyFormatted", toDictionary: &dict)
+    appendValueForKey("propertyID", toDictionary: &dict)
+    appendValueForKey("propertyUOM", toDictionary: &dict)
+    appendValueForKey("propertyValue", toDictionary: &dict)
+    appendValueForKeyPath("groups.uuid", forKey: "groups", toDictionary: &dict)
+    return .Object(dict)
   }
 
 }

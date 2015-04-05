@@ -10,9 +10,15 @@ import Foundation
 import UIKit
 
 extension UIColor: JSONValueConvertible {
-  typealias JSONValueType = String!
-  public var JSONValue: String! { return string }
-  public convenience init?(JSONValue: String) { self.init(string: JSONValue) }
+  public var jsonValue: JSONValue { return JSONValue.String(string!) }
+  public convenience init?(jsonValue: JSONValue) {
+    if let string = jsonValue.value as? String {
+      self.init(string: string)
+    } else {
+      self.init()
+      return nil
+    }
+  }
 }
 
 extension UIColor {

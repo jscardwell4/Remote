@@ -12,7 +12,7 @@ import MoonKit
 
 // TODO: This should probably be an option set, create workaround?
 extension NSUnderlineStyle: JSONValueConvertible, EnumerableType {
-  public var JSONValue: String {
+  public var jsonValue: JSONValue {
     switch self {
       case .StyleNone:         return "none"
       case .StyleSingle:       return "single"
@@ -25,8 +25,8 @@ extension NSUnderlineStyle: JSONValueConvertible, EnumerableType {
       case .ByWord:            return "by-word"
     }
   }
-  public init(JSONValue: String) {
-    switch JSONValue {
+  public init(jsonValue: JSONValue) {
+    switch jsonValue.value as? String ?? "" {
       case "single":        self = .StyleSingle
       case "thick":         self = .StyleThick
       case "double":        self = .StyleDouble
@@ -49,7 +49,7 @@ extension NSUnderlineStyle: JSONValueConvertible, EnumerableType {
 }
 
 extension NSLineBreakMode: JSONValueConvertible, EnumerableType {
-  public var JSONValue: String {
+  public var jsonValue: JSONValue {
     switch self {
       case .ByWordWrapping:      return "word-wrap"
       case .ByCharWrapping:      return "character-wrap"
@@ -59,8 +59,8 @@ extension NSLineBreakMode: JSONValueConvertible, EnumerableType {
       case .ByTruncatingMiddle:  return "truncate-middle"
     }
   }
-  public init(JSONValue: String) {
-    switch JSONValue {
+  public init(jsonValue: JSONValue) {
+    switch jsonValue.value as? String ?? "" {
       case "character-wrap":  self = .ByCharWrapping
       case "clip":            self = .ByClipping
       case "truncate-head":   self = .ByTruncatingHead
@@ -78,7 +78,7 @@ extension NSLineBreakMode: JSONValueConvertible, EnumerableType {
 }
 
 extension NSTextAlignment: JSONValueConvertible, EnumerableType {
-  public var JSONValue: String {
+  public var jsonValue: JSONValue {
     switch self {
       case .Left:      return "left"
       case .Right:     return "right"
@@ -87,8 +87,8 @@ extension NSTextAlignment: JSONValueConvertible, EnumerableType {
       case .Natural:   return "natural"
     }
   }
-  public init(JSONValue: String) {
-    switch JSONValue {
+  public init(jsonValue: JSONValue) {
+    switch jsonValue.value as? String ?? "" {
       case "left":      self = .Left
       case "right":     self = .Right
       case "center":    self = .Center
@@ -101,18 +101,20 @@ extension NSTextAlignment: JSONValueConvertible, EnumerableType {
   public static func enumerate(block: (NSTextAlignment) -> Void) { apply(all, block) }
 }
 
-extension NSShadow {
-  public var JSONValue: [String:AnyObject] {
-    var dict: [String:AnyObject] = ["offset": NSStringFromCGSize(shadowOffset), "radius": shadowBlurRadius]
-    if shadowColor != nil { dict["color"] = (shadowColor as! UIColor).JSONValue }
-    return dict
+extension NSShadow: JSONValueConvertible {
+  public var jsonValue: JSONValue {
+    var dict: JSONValue.ObjectValue = ["offset": .String(NSStringFromCGSize(shadowOffset)), "radius": .Number(shadowBlurRadius)]
+    if shadowColor != nil { dict["color"] = (shadowColor as! UIColor).jsonValue }
+    return .Object(dict)
   }
 
-  public convenience init(JSONValue: [String:AnyObject]) {
+  public convenience init(jsonValue: JSONValue) {
     self.init()
-    if let offset = JSONValue["offset"] as? String { shadowOffset = CGSizeFromString(offset) }
-    if let radius = JSONValue["radius"] as? NSNumber { shadowBlurRadius = CGFloat(radius.floatValue) }
-    if let color = JSONValue["color"] as? String { shadowColor = UIColor(JSONValue: color) }
+    if let dict = jsonValue.value as? JSONValue.ObjectValue {
+      if let offset = dict["offset"]?.value as? String { shadowOffset = CGSizeFromString(offset) }
+      if let radius = dict["radius"]?.value as? NSNumber { shadowBlurRadius = CGFloat(radius.floatValue) }
+      if let color = dict["color"]?.value as? String { shadowColor = UIColor(string: color) }
+    }
   }
 }
 
@@ -120,14 +122,14 @@ public struct TitleAttributes: JSONValueConvertible {
 
   public enum IconTextOrderSpecification: JSONValueConvertible, EnumerableType {
     case IconText, TextIcon
-    public var JSONValue: String {
+    public var jsonValue: JSONValue {
       switch self {
         case .IconText: return "icon-text"
         case .TextIcon: return "text-icon"
       }
     }
-    public init(JSONValue: String) {
-      switch JSONValue {
+    public init(jsonValue: JSONValue) {
+      switch jsonValue.value as? String ?? "" {
         case "text-icon": self = .TextIcon
         default:          self = .IconText
       }
@@ -140,10 +142,10 @@ public struct TitleAttributes: JSONValueConvertible {
 
   public var iconTextOrder: IconTextOrderSpecification {
     get {
-      if let s = self[.IconTextOrder] as? String { return IconTextOrderSpecification(JSONValue: s) }
+      if let s = self[.IconTextOrder] as? String { return IconTextOrderSpecification(jsonValue: .String(s)) }
       else { return .IconText }
     }
-    set { self[.IconTextOrder] = newValue.JSONValue }
+    set { self[.IconTextOrder] = newValue.jsonValue.value as! String }
   }
 
   public var text: String {
@@ -165,27 +167,27 @@ public struct TitleAttributes: JSONValueConvertible {
     get {
       var font: UIFont?
       if let fontJSON = self[.Font] as? String {
-        font = Font(JSONValue: fontJSON)?.font
+        font = Font(jsonValue: fontJSON.jsonValue)?.font
       }
       return font ?? UIFont(name: "HelveticaNeue", size: 12)!
     }
-    set { self[.Font] = Font(newValue).JSONValue }
+    set { self[.Font] = Font(newValue).jsonValue.objectValue }
   }
 
   public var foregroundColor: UIColor {
     get {
       if let s =  self[.ForegroundColor] as? String {
-        return UIColor(JSONValue: s)
+        return UIColor(string: s)
       } else {
         return UIColor.blackColor()
       }
     }
-    set { self[.ForegroundColor] = newValue.JSONValue }
+    set { self[.ForegroundColor] = newValue.string }
   }
 
   public var backgroundColor: UIColor? {
-    get { if let s =  self[.BackgroundColor] as? String { return UIColor(JSONValue: s)} else { return nil } }
-    set { self[.BackgroundColor] = newValue?.JSONValue }
+    get { if let s =  self[.BackgroundColor] as? String { return UIColor(string: s)} else { return nil } }
+    set { self[.BackgroundColor] = newValue?.string }
   }
 
   public var ligature: Int {
@@ -194,8 +196,8 @@ public struct TitleAttributes: JSONValueConvertible {
   }
 
   public var shadow: NSShadow? {
-    get { if let d = self[.Shadow] as? [String:AnyObject] { return NSShadow(JSONValue: d) } else { return nil } }
-    set { self[.Shadow] = newValue?.JSONValue }
+    get { if let d = self[.Shadow] as? [String:AnyObject], json = JSONValue(d) { return NSShadow(jsonValue: json) } else { return nil } }
+    set { self[.Shadow] = newValue?.jsonValue.objectValue }
   }
 
   public var expansion: Float {
@@ -209,13 +211,13 @@ public struct TitleAttributes: JSONValueConvertible {
   }
 
   public var strikethroughColor: UIColor {
-    get { if let s =  self[.StrikethroughColor] as? String { return UIColor(JSONValue: s)} else { return foregroundColor } }
-    set { self[.StrikethroughColor] = newValue.JSONValue }
+    get { if let s =  self[.StrikethroughColor] as? String { return UIColor(string: s)} else { return foregroundColor } }
+    set { self[.StrikethroughColor] = newValue.string }
   }
 
   public var underlineColor: UIColor {
-    get { if let s =  self[.UnderlineColor] as? String { return UIColor(JSONValue: s)} else { return foregroundColor } }
-    set { self[.UnderlineColor] = newValue.JSONValue }
+    get { if let s =  self[.UnderlineColor] as? String { return UIColor(string: s)} else { return foregroundColor } }
+    set { self[.UnderlineColor] = newValue.string }
   }
 
   public var baselineOffset: Float {
@@ -239,18 +241,18 @@ public struct TitleAttributes: JSONValueConvertible {
   }
 
   public var strokeColor: UIColor {
-    get { if let s = self[.StrokeColor] as? String { return UIColor(JSONValue: s) } else { return foregroundColor } }
-    set { self[.StrokeColor] = newValue.JSONValue }
+    get { if let s = self[.StrokeColor] as? String { return UIColor(string: s) } else { return foregroundColor } }
+    set { self[.StrokeColor] = newValue.string }
   }
 
   public var underlineStyle: NSUnderlineStyle {
-    get { return  NSUnderlineStyle(JSONValue: self[.UnderlineStyle] as? String ?? "none") }
-    set { self[.UnderlineStyle] = newValue.JSONValue }
+    get { return  NSUnderlineStyle(jsonValue: .String(self[.UnderlineStyle] as? String ?? "none")) }
+    set { self[.UnderlineStyle] = newValue.jsonValue.value as! String }
   }
 
   public var strikethroughStyle: NSUnderlineStyle {
-    get { return NSUnderlineStyle(JSONValue: self[.StrikethroughStyle] as? String ?? "none") }
-    set { self[.StrikethroughStyle] = newValue.JSONValue }
+    get { return NSUnderlineStyle(jsonValue: .String(self[.StrikethroughStyle] as? String ?? "none")) }
+    set { self[.StrikethroughStyle] = newValue.jsonValue.value as! String }
   }
 
   public var kern: Float {
@@ -292,8 +294,8 @@ public struct TitleAttributes: JSONValueConvertible {
   }
 
   public var alignment: NSTextAlignment {
-    get { return NSTextAlignment(JSONValue: self[.Alignment] as? String ?? "natural") }
-    set { self[.Alignment] = newValue.JSONValue }
+    get { return NSTextAlignment(jsonValue: .String(self[.Alignment] as? String ?? "natural")) }
+    set { self[.Alignment] = newValue.jsonValue.value as! String }
   }
 
   public var firstLineHeadIndent: CGFloat {
@@ -347,8 +349,8 @@ public struct TitleAttributes: JSONValueConvertible {
   }
 
   public var lineBreakMode: NSLineBreakMode {
-    get { return NSLineBreakMode(JSONValue: self[.LineBreakMode] as? String ?? "by-word-wrapping") }
-    set { self[.LineBreakMode] = newValue.JSONValue }
+    get { return NSLineBreakMode(jsonValue: .String(self[.LineBreakMode] as? String ?? "by-word-wrapping")) }
+    set { self[.LineBreakMode] = newValue.jsonValue.value as! String }
   }
 
 
@@ -503,8 +505,8 @@ public struct TitleAttributes: JSONValueConvertible {
     case LineBreakMode          = "line-break-mode"
     case IconTextOrder          = "icon-text-order"
 
-    public var JSONValue: String { return rawValue }
-    public init?(JSONValue: String) { self.init(rawValue: JSONValue) }
+    public var jsonValue: JSONValue { return .String(rawValue) }
+    public init?(jsonValue: JSONValue) { if let s = jsonValue.value as? String { self.init(rawValue: s) } else { return nil } }
 
     public var attributeKey: String? {
       switch self {
@@ -637,62 +639,65 @@ public struct TitleAttributes: JSONValueConvertible {
 
   :param: JSONValue [String AnyObject]
   */
-  public init(JSONValue: [String:AnyObject]) {
+  public init(jsonValue: JSONValue) {
     storage = [:]
+
+    let dict: JSONValue.ObjectValue = jsonValue.value as? JSONValue.ObjectValue ?? [:]
 
     PropertyKey.enumerate {
       (propertyKey: PropertyKey) -> Void in
 
       var storedValue: AnyObject?
 
-      if let value: AnyObject = JSONValue[propertyKey.JSONValue] {
+      if let value: JSONValue = dict[propertyKey.jsonValue.value as! String] {
 
         switch propertyKey {
 
           case .Font:
-            if let f = value as? String { storedValue = Font(JSONValue: f)?.JSONValue }
+            if let f = value.value as? String { storedValue = Font(jsonValue: f.jsonValue)?.jsonValue.objectValue }
 
           case .ForegroundColor, .BackgroundColor, .StrikethroughColor, .UnderlineColor, .StrokeColor:
-            if let c = value as? String { storedValue = UIColor(JSONValue: c)?.JSONValue }
+            if let c = value.value as? String { storedValue = UIColor(string: c)?.string }
 
           case .Ligature:
-            if let i = value as? Int { if i == 0 || i == 1 { storedValue = i } }
+            if let i = value.value as? Int { if i == 0 || i == 1 { storedValue = i } }
 
           case .IconName:
-            if let s = value as? String { if ((UIFont.fontAwesomeIconNames() as NSSet).allObjects as! [String]) ∋ s { storedValue = s } }
+            if let s = value.value as? String { if ((UIFont.fontAwesomeIconNames() as NSSet).allObjects as! [String]) ∋ s { storedValue = s } }
 
           case .Text:
-            if let s = value as? String { storedValue = s }
-            else if value.respondsToSelector("stringValue") { storedValue = value.valueForKey("stringValue") }
+            if let s = value.value as? String { storedValue = s }
+          //FIXME: need to resolve this for JSONValueConvertible changes
+//            else if value.respondsToSelector("stringValue") { storedValue = value.valueForKey("stringValue") }
 
           case .Shadow:
-            if let d = value as? [String:AnyObject] { storedValue = d }
+            if let d = value.objectValue as? MSDictionary { storedValue = d }
 
           case .Expansion, .Obliqueness, .BaselineOffset, .Kern, .HyphenationFactor, .ParagraphSpacingBefore,
                .LineHeightMultiple, .MaximumLineHeight, .MinimumLineHeight, .ParagraphSpacing, .LineSpacing, .TailIndent,
                .HeadIndent, .FirstLineHeadIndent:
-            if let n = value as? NSNumber { storedValue = n }
+            if let n = value.value as? NSNumber { storedValue = n }
 
           case .StrokeWidth:
-            if let n = value as? NSNumber { self[.StrokeFill] = n.floatValue.isSignMinus; storedValue = abs(n.floatValue) }
+            if let n = value.value as? NSNumber { self[.StrokeFill] = n.floatValue.isSignMinus; storedValue = abs(n.floatValue) }
 
           case .TextEffect:
-            if let e = value as? String { if e == "letterpress" { storedValue = e } }
+            if let e = value.value as? String { if e == "letterpress" { storedValue = e } }
 
           case .UnderlineStyle, .StrikethroughStyle:
-            if let n = value as? NSNumber { storedValue = NSUnderlineStyle(rawValue: n.integerValue)?.JSONValue }
-            else if let s = value as? String { storedValue = NSUnderlineStyle(JSONValue: s).JSONValue }
+            if let n = value.value as? NSNumber { storedValue = NSUnderlineStyle(rawValue: n.integerValue)?.jsonValue.value as? String }
+            else if let s = value.value as? String { storedValue = NSUnderlineStyle(jsonValue: value).jsonValue.value as! String }
 
           case .LineBreakMode:
-            if let n = value as? NSNumber { storedValue = NSLineBreakMode(rawValue: n.integerValue)?.JSONValue }
-            else if let s = value as? String { storedValue = NSLineBreakMode(JSONValue: s).JSONValue }
+            if let n = value.value as? NSNumber { storedValue = NSLineBreakMode(rawValue: n.integerValue)?.jsonValue.value as? String }
+            else if let s = value.value as? String { storedValue = NSLineBreakMode(jsonValue: value).jsonValue.value as! String }
 
           case .Alignment:
-            if let n = value as? NSNumber { storedValue = NSTextAlignment(rawValue: n.integerValue)?.JSONValue }
-            else if let s = value as? String { storedValue = NSTextAlignment(JSONValue: s).JSONValue }
+            if let n = value.value as? NSNumber { storedValue = NSTextAlignment(rawValue: n.integerValue)?.jsonValue.value as? String }
+            else if let s = value.value as? String { storedValue = NSTextAlignment(jsonValue: value).jsonValue.value as! String }
 
           case .IconTextOrder:
-            if let s = value as? String { storedValue = IconTextOrderSpecification(JSONValue: s).JSONValue }
+            if let s = value.value as? String { storedValue = IconTextOrderSpecification(jsonValue: value).jsonValue.value as! String }
 
           default: break
         }
@@ -705,17 +710,17 @@ public struct TitleAttributes: JSONValueConvertible {
 
   }
 
-  public var JSONValue: [String:AnyObject] {
-    var dictionary: [String:AnyObject] = [:]
+  public var jsonValue: JSONValue {
+    var dict: JSONValue.ObjectValue = [:]
     PropertyKey.enumerate {
       if let value: AnyObject = self[$0] {
         switch $0 {
-          case .StrokeWidth: dictionary[$0.JSONValue] = self.strokeFill ? -value.floatValue : value
-          default: dictionary[$0.JSONValue] = value
+          case .StrokeWidth: dict[$0.jsonValue.value as! String] = .Number(self.strokeFill ? -(value as! NSNumber).floatValue : (value as! NSNumber))
+          default: dict[$0.jsonValue.value as! String] = JSONValue(value)
         }
       }
     }
-    return dictionary
+    return .Object(dict)
   }
 
 }

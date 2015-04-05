@@ -15,21 +15,12 @@ public final class ActivityCommand: Command {
 
   @NSManaged public var activity: Activity?
 
-  /**
-  JSONDictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    dictionary["class"] = "activity"
-    appendValue(activity?.commentedUUID, forKey: "activity.uuid", toDictionary: dictionary)
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+    dict["class"] = .String("activity")
+    dict["activity.uuid"] = JSONValue(activity?.uuid)
+    return .Object(dict)
   }
 
   /** awakeFromInsert */

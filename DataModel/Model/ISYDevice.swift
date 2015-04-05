@@ -129,30 +129,19 @@ public class ISYDevice: NetworkDevice {
   */
 //  func detailController() -> UIViewController { return ISYDeviceDetailController(model: self) }
 
-}
-
-extension ISYDevice: JSONExport {
-
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-      appendValueForKey("modelNumber", toDictionary: dictionary)
-      appendValueForKey("modelName", toDictionary: dictionary)
-      appendValueForKey("modelDescription", toDictionary: dictionary)
-      appendValueForKey("manufacturerURL", toDictionary: dictionary)
-      appendValueForKey("manufacturer", toDictionary: dictionary)
-      appendValueForKey("friendlyName", toDictionary: dictionary)
-      appendValueForKey("deviceType", toDictionary: dictionary)
-      appendValueForKey("baseURL", toDictionary: dictionary)
-      appendValueForKeyPath("nodes.JSONDictionary",  forKey: "nodes", toDictionary: dictionary)
-      appendValueForKeyPath("groups.JSONDictionary", forKey: "groups", toDictionary: dictionary)
-      dictionary.compact()
-      dictionary.compress()
-      return dictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
+      appendValueForKey("modelNumber", toDictionary: &dict)
+      appendValueForKey("modelName", toDictionary: &dict)
+      appendValueForKey("modelDescription", toDictionary: &dict)
+      appendValueForKey("manufacturerURL", toDictionary: &dict)
+      appendValueForKey("manufacturer", toDictionary: &dict)
+      appendValueForKey("friendlyName", toDictionary: &dict)
+      appendValueForKey("deviceType", toDictionary: &dict)
+      appendValueForKey("baseURL", toDictionary: &dict)
+      appendValueForKey("nodes", toDictionary: &dict)
+      appendValueForKey("groups", toDictionary: &dict)
+      return .Object(dict)
   }
 
 }

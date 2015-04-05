@@ -8,6 +8,12 @@
 
 import Foundation
 
+extension String: JSONValueConvertible { public var jsonValue: JSONValue { return .String(self) } }
+
+extension String: JSONValueInitializable {
+  public init?(jsonValue: JSONValue) { if let string = jsonValue.value as? String { self = string } else { return nil } }
+}
+
 public extension String {
 
   public static let Space:       String = " "
@@ -22,14 +28,22 @@ public extension String {
   public var dashcaseString: String {
     if isDashcase { return self }
     else if isCamelcase {
-      var s = String(self[startIndex])
-      for c in String(dropFirst(self)).unicodeScalars {
-        switch c.value {
-          case 65...90: s += "-"; s += String(UnicodeScalar(c.value + 32))
-          default: s.append(c)
-        }
+      var s = ""
+      var offset = 0
+      for range in compressed(rangesForCapture(0, byMatching: ~/"[a-z][A-Z]")) {
+        s += self[offset...range.startIndex] + "-" + self[range.startIndex + 1...range.endIndex]
+        offset = range.endIndex + 1
       }
-      return s
+      s += self[offset..<length]
+      // ???: Possibly introducing garbage into string?
+      //      var s = String(self[startIndex])
+      //      for c in String(dropFirst(self)).unicodeScalars {
+      //        switch c.value {
+      //          case 65...90: s += "-"; s += String(UnicodeScalar(c.value + 32))
+      //          default: s.append(c)
+      //        }
+      //      }
+      return s.lowercaseString
     } else { return String(map(self){$0 == " " ? "-" : $0}).lowercaseString }
   }
 
@@ -206,7 +220,8 @@ public extension String {
   :param: newElements C
   */
   public mutating func replaceRange<C : CollectionType where C.Generator.Element == Character>(subRange: Range<Int>, with newElements: C) {
-    replaceRange(indexRangeFromIntRange(subRange), with: newElements)
+    let range = indexRangeFromIntRange(subRange)
+    replaceRange(range, with: newElements)
   }
 
   /**

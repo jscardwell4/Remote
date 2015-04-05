@@ -71,16 +71,10 @@ public class NetworkDevice: EditableModelObject {
 //    return device
 //  }
 
-}
-
-extension NetworkDevice: JSONExport {
-
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-      appendValue(uniqueIdentifier, forKey: "unique-identifier", toDictionary: dictionary)
-      dictionary.compact()
-      dictionary.compress()
-      return dictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
+      dict["unique-identifier"] = JSONValue(uniqueIdentifier)
+      return .Object(dict)
   }
 
 }

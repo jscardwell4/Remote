@@ -84,7 +84,7 @@ final public class IRCode: EditableModelObject {
   */
   override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    updateRelationshipFromData(data, forAttribute: "category")
+//    updateRelationshipFromData(data, forAttribute: "codeSet")
     if let frequency = data["frequencey"] as? NSNumber { self.frequency = frequency.longLongValue }
     if let offset = data["offset"] as? NSNumber { self.offset = offset.shortValue }
     if let repeatCount = data["repeatCount"] as? NSNumber { self.repeatCount = repeatCount.shortValue }
@@ -116,34 +116,21 @@ final public class IRCode: EditableModelObject {
     )
   }
 
-}
+  override public var jsonValue: JSONValue {
 
-extension IRCode: JSONExport {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
-  /**
-  JSONDictionary
+    appendValueForKeyPath("device.uuid", forKey: "device", toDictionary: &dict)
+    appendValue(codeSet.index.rawValue, forKey: "code-set.index", ifNotDefault: false, toDictionary: &dict)
+    appendValueForKey("setsDeviceInput", toDictionary: &dict)
+    appendValueForKey("repeatCount", toDictionary: &dict)
 
-  :returns: MSDictionary
-  */
-  override public func JSONDictionary() -> MSDictionary {
+    appendValueForKey("offset", toDictionary: &dict)
+    appendValueForKey("frequency", toDictionary: &dict)
 
-    let dictionary = super.JSONDictionary()
-
-    appendValueForKeyPath("device.commentedUUID", forKey: "device", toDictionary: dictionary)
-    appendValue(codeSet.index.rawValue, forKey: "code-set.index", ifNotDefault: false, toDictionary: dictionary)
-    appendValueForKey("setsDeviceInput", toDictionary: dictionary)
-    appendValueForKey("repeatCount", toDictionary: dictionary)
-
-    appendValueForKey("offset", toDictionary: dictionary)
-    appendValueForKey("frequency", toDictionary: dictionary)
-
-    appendValue(onOffPattern, forKey: "on-off-pattern", toDictionary: dictionary)
-    appendValue(prontoHex,    forKey: "pronto-hex", toDictionary: dictionary)
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary;
+    dict["on-off-pattern"] = JSONValue(onOffPattern)
+    dict["pronto-hex"] = JSONValue(prontoHex)
+    return .Object(dict)
   }
 }
 

@@ -33,30 +33,21 @@ public final class SwitchCommand: Command {
     }
   }
 
-  /**
-  JSONDictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    dictionary["class"] = "switch"
-    appendValueForKey("type", toDictionary: dictionary)
+    dict["class"] = "switch"
+    appendValueForKey("type", toDictionary: &dict)
     switch type {
       case .Remote:
         if let targetRemote = Remote.objectWithUUID(target, context: managedObjectContext!) {
-          dictionary["target"] = target
+          dict["target"] = target.jsonValue
         }
       case .Mode:
-        dictionary["target"] = target
+        dict["target"] = target.jsonValue
       default: break
     }
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+    return .Object(dict)
   }
 
   /**
@@ -66,7 +57,7 @@ public final class SwitchCommand: Command {
   */
   override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    if let typeJSON = data["type"] as? String { self.type = SwitchType(JSONValue: typeJSON) }
+    if let typeJSON = data["type"] as? String { self.type = SwitchType(jsonValue: typeJSON.jsonValue) }
     if let target = data["target"] as? String { self.target = target }
   }
 
@@ -76,7 +67,7 @@ public final class SwitchCommand: Command {
 }
 
 extension SwitchCommand.SwitchType: JSONValueConvertible {
-  public var JSONValue: String {
+  public var jsonValue: JSONValue {
     switch self {
       case .Undefined: return "undefined"
       case .Remote:    return "remote"
@@ -84,11 +75,11 @@ extension SwitchCommand.SwitchType: JSONValueConvertible {
     }
   }
 
-  public init(JSONValue: String) {
-    switch JSONValue {
-      case SwitchCommand.SwitchType.Remote.JSONValue: self = .Remote
-      case SwitchCommand.SwitchType.Mode.JSONValue:   self = .Mode
-      default:                                        self = .Undefined
+  public init(jsonValue: JSONValue) {
+    switch jsonValue.value as? String ?? "" {
+      case SwitchCommand.SwitchType.Remote.jsonValue.value as! String: self = .Remote
+      case SwitchCommand.SwitchType.Mode.jsonValue.value as! String:   self = .Mode
+      default:                                                         self = .Undefined
     }
   }
 }

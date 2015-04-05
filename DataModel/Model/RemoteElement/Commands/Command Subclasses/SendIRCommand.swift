@@ -53,22 +53,12 @@ public final class SendIRCommand: SendCommand {
 //    }
   }
 
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    dictionary["class"] = "sendir"
-    dictionary["code.uuid"] = code.uuid
-    appendValueForKey("portOverride", toDictionary: dictionary)
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
+    dict["class"] = "sendir"
+    dict["code.uuid"] = code.uuid.jsonValue
+    appendValueForKey("portOverride", toDictionary: &dict)
+    return .Object(dict)
   }
 
 }

@@ -172,13 +172,18 @@ public class JSONSerialization {
       // Iterate through matches for pattern
       for range in compressed(string.rangesForCapture(0, byMatching: includePattern)) {
 
+        let adjustedRange = range + offset
+
         // Get the name of the file to include
-        if let file = String(Array(string)[range]).substringForCapture(1, inFirstMatchFor:includePattern),
+        if let file = String(Array(string)[adjustedRange]).substringForCapture(1, inFirstMatchFor:includePattern),
           text = String(contentsOfFile: "\(directory)/\(file)", encoding: NSUTF8StringEncoding, error: &localError)
           where !handledError(NSFileReadUnknownError)
         {
           // Replace include directive with the text
-          string[range + offset] = text
+          let prefix = string[0..<adjustedRange.startIndex]
+          let suffix = string[adjustedRange.endIndex..<string.length]
+          string = prefix + text + suffix
+//          string[adjustedRange] = text
           offset += text.length - count(range) // Update `offset`
 
         } else { return nil }

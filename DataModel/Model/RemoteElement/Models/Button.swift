@@ -416,49 +416,40 @@ public final class Button: RemoteElement {
 
   }
 
-  /**
-  JSONDictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
+    dict["background-color"] = nil
 
-  :returns: MSDictionary
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-    dictionary["background-color"] = NSNull()
-
-    let titles            = MSDictionary()
-    let backgroundColors  = MSDictionary()
-    let icons             = MSDictionary()
-    let images            = MSDictionary()
-    let commands          = MSDictionary()
-    let longPressCommands = MSDictionary()
+    var titles            : JSONValue.ObjectValue = [:]
+    var backgroundColors  : JSONValue.ObjectValue = [:]
+    var icons             : JSONValue.ObjectValue = [:]
+    var images            : JSONValue.ObjectValue = [:]
+    var commands          : JSONValue.ObjectValue = [:]
+    var longPressCommands : JSONValue.ObjectValue = [:]
 
     for mode in modes as [String] {
-      if let modeTitles = titlesForMode(mode)?.JSONDictionary() { titles[mode] = modeTitles }
-      if let modeBackgroundColors = backgroundColorsForMode(mode)?.JSONDictionary() {
+      if let modeTitles = titlesForMode(mode)?.jsonValue { titles[mode] = modeTitles }
+      if let modeBackgroundColors = backgroundColorsForMode(mode)?.jsonValue {
         backgroundColors[mode] = modeBackgroundColors
       }
-      if let modeIcons = iconsForMode(mode)?.JSONDictionary() { icons[mode] = modeIcons }
-      if let modeImages = imagesForMode(mode)?.JSONDictionary() { images[mode] = modeImages }
-      if let modeCommand = commandForMode(mode)?.JSONDictionary() { commands[mode] = modeCommand }
-      if let modeLongPressCommand = longPressCommandForMode(mode)?.JSONDictionary() {
+      if let modeIcons = iconsForMode(mode)?.jsonValue { icons[mode] = modeIcons }
+      if let modeImages = imagesForMode(mode)?.jsonValue { images[mode] = modeImages }
+      if let modeCommand = commandForMode(mode)?.jsonValue { commands[mode] = modeCommand }
+      if let modeLongPressCommand = longPressCommandForMode(mode)?.jsonValue {
         longPressCommands[mode] = modeLongPressCommand
       }
     }
 
-    dictionary["commands"]           = commands
-    dictionary["titles"]             = titles
-    dictionary["icons"]              = icons
-    dictionary["background-colors"]  = backgroundColors
-    dictionary["images"]             = images
+    dict["commands"]           = .Object(commands)
+    dict["titles"]             = .Object(titles)
+    dict["icons"]              = .Object(icons)
+    dict["background-colors"]  = .Object(backgroundColors)
+    dict["images"]             = .Object(images)
 
-    appendValueForKey("titleEdgeInsets", toDictionary: dictionary)
-    appendValueForKey("imageEdgeInsets", toDictionary: dictionary)
-    appendValueForKey("contentEdgeInsets", toDictionary: dictionary)
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+    appendValueForKey("titleEdgeInsets", toDictionary: &dict)
+    appendValueForKey("imageEdgeInsets", toDictionary: &dict)
+    appendValueForKey("contentEdgeInsets", toDictionary: &dict)
+    return .Object(dict)
   }
 
   /**

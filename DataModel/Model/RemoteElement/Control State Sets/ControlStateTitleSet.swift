@@ -109,29 +109,19 @@ public final class ControlStateTitleSet: ControlStateSet {
 
     if let jsonData = data as? [String:[String:AnyObject]] {
       for (stateKey, dictionary) in jsonData {
-        if let controlState = UIControlState(JSONValue: stateKey) {
-          setTitleAttributes(TitleAttributes(JSONValue: dictionary), forState: controlState)
+        if let controlState = UIControlState(jsonValue: .String(stateKey)), json = JSONValue(dictionary) {
+          setTitleAttributes(TitleAttributes(jsonValue: json), forState: controlState)
         }
       }
     }
   }
 
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
     UIControlState.enumerate {
-      if let attributes = self.titleAttributesForState($0) { dictionary[$0.JSONValue] = attributes.JSONValue }
+      if let attributes = self.titleAttributesForState($0) { dict[$0.jsonValue.value as! String] = attributes.jsonValue }
     }
-
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+    return .Object(dict)
   }
 
 }

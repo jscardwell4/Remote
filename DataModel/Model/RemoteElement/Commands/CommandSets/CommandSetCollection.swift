@@ -90,20 +90,11 @@ public final class CommandSetCollection: CommandContainer {
 
   }
 
-  /**
-  JSONDictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+    // TODO: fill in stub
+    return .Object(dict)
   }
 
 

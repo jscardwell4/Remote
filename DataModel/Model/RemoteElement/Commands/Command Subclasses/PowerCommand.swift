@@ -42,26 +42,17 @@ public final class PowerCommand: Command {
   */
   override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
-    if let stateJSON = data["state"] as? String { state = State(JSONValue: stateJSON) }
+    if let stateJSON = data["state"] as? String { state = State(jsonValue: stateJSON.jsonValue) }
     updateRelationshipFromData(data, forAttribute: "device")
   }
 
-  /**
-  JSONDictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    dictionary["class"] = "power"
-    dictionary["device.uuid"] = device.commentedUUID
-    dictionary["state"] = state.JSONValue
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+    dict["class"] = "power"
+    dict["device.uuid"] = .String(device.uuid)
+    dict["state"] = state.jsonValue
+    return .Object(dict)
   }
 
   override var operation: CommandOperation {
@@ -71,9 +62,9 @@ public final class PowerCommand: Command {
 }
 
 extension PowerCommand.State: JSONValueConvertible {
-  public var JSONValue: String { return rawValue == 1 ? "on" : "off" }
-  public init(JSONValue: String) {
-    switch JSONValue {
+  public var jsonValue: JSONValue { return rawValue == 1 ? "on" : "off" }
+  public init(jsonValue: JSONValue) {
+    switch jsonValue.value as? String ?? "" {
       case "on": self = .On
       default: self = .Off
     }

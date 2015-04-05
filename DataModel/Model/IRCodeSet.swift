@@ -26,27 +26,21 @@ final public class IRCodeSet: EditableModelObject {
   override public func updateWithData(data: [String:AnyObject]) {
     super.updateWithData(data)
 
+//    MSLogDebug("self.codes before updating codes = \(self.codes)")
     updateRelationshipFromData(data, forAttribute: "codes")
+//    MSLogDebug("self.codes after updating codes = \(self.codes)")
     updateRelationshipFromData(data, forAttribute: "devices")
-    updateRelationshipFromData(data, forAttribute: "manufacturer")
+//    updateRelationshipFromData(data, forAttribute: "manufacturer")
   }
 
-  /**
-  JSONDictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
-  :returns: MSDictionary
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    appendValue(manufacturer.index.rawValue, forKey: "manufacturer.index", ifNotDefault: false, toDictionary: dictionary)
-    appendValueForKeyPath("codes.JSONDictionary", forKey: "codes", toDictionary: dictionary)
-    appendValueForKeyPath("devices.commentedUUID", forKey: "devices", toDictionary: dictionary)
-
-    dictionary.compact()
-    dictionary.compress()
+    appendValue(manufacturer.index.rawValue, forKey: "manufacturer.index", ifNotDefault: false, toDictionary: &dict)
+    appendValueForKey("codes", toDictionary: &dict)
+    appendValueForKeyPath("devices.uuid", forKey: "devices", toDictionary: &dict)
     
-    return dictionary
+    return .Object(dict)
   }
 
   /**

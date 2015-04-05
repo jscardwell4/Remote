@@ -28,21 +28,12 @@ public final class DelayCommand: Command {
     if let duration = data["duration"] as? NSNumber { self.duration = duration }
   }
 
-  /**
-  JSONDictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    dictionary["class"] = "delay"
-    appendValueForKey("duration", toDictionary: dictionary)
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+    dict["class"] = "delay"
+    appendValueForKey("duration", toDictionary: &dict)
+    return .Object(dict)
   }
 
   override var operation: CommandOperation { return DelayCommandOperation(command: self) }

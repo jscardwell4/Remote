@@ -109,21 +109,12 @@ public final class MacroCommand: Command {
 
   }
 
-  /**
-  JSONDictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    dictionary["class"] = "macro"
-    appendValueForKeyPath("commands.JSONDictionary", forKey: "commands", toDictionary: dictionary)
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+    dict["class"] = "macro"
+    appendValueForKey("commands", toDictionary: &dict)
+    return .Object(dict)
   }
 
 

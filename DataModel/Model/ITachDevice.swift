@@ -100,23 +100,18 @@ public class ITachDevice: NetworkDevice {
   */
 //  func detailController() -> UIViewController { return ITachDeviceDetailController(model: self) }
 
-}
 
-extension ITachDevice: JSONExport {
-
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-    appendValueForKey("pcbPN", toDictionary: dictionary)
-    appendValueForKey("pkgLevel", toDictionary: dictionary)
-    appendValueForKey("sdkClass", toDictionary: dictionary)
-    appendValueForKey("make", toDictionary: dictionary)
-    appendValueForKey("model", toDictionary: dictionary)
-    appendValueForKey("status", toDictionary: dictionary)
-    appendValueForKey("configURL", toDictionary: dictionary)
-    appendValueForKey("revision", toDictionary: dictionary)
-    dictionary.compact()
-    dictionary.compress()
-    return dictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
+    appendValueForKey("pcbPN", toDictionary: &dict)
+    appendValueForKey("pkgLevel", toDictionary: &dict)
+    appendValueForKey("sdkClass", toDictionary: &dict)
+    appendValueForKey("make", toDictionary: &dict)
+    appendValueForKey("model", toDictionary: &dict)
+    appendValueForKey("status", toDictionary: &dict)
+    appendValueForKey("configURL", toDictionary: &dict)
+    appendValueForKey("revision", toDictionary: &dict)
+    return .Object(dict)
   }
 
 }

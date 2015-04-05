@@ -60,24 +60,15 @@ public final class ActivityController: ModelObject {
     return findFirstInContext(context) ?? ActivityController(context: context)
   }
 
-  /**
-  JSONDictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
+    dict["homeRemote.uuid"] = .String(homeRemote.uuid)
+    dict["currentRemote.uuid"] = .String(currentRemote.uuid)
+    dict["currentActivity.uuid"] = .String(currentActivity?.uuid ?? "")
+    dict["top-toolbar"] = topToolbar.jsonValue
+    dict["activities"] = .Array(activities.map({$0.jsonValue}))
 
-  :returns: MSDictionary
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    appendValue(homeRemote.commentedUUID, forKey: "homeRemote.uuid", toDictionary: dictionary)
-    appendValue(currentRemote.commentedUUID, forKey: "currentRemote.uuid", toDictionary: dictionary)
-    appendValue(currentActivity?.commentedUUID, forKey: "currentActivity.uuid", toDictionary: dictionary)
-    appendValue(topToolbar.JSONDictionary(), forKey: "top-toolbar", toDictionary: dictionary)
-    appendValue(activities, forKey: "activities", toDictionary: dictionary)
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+    return .Object(dict)
   }
 
   /**

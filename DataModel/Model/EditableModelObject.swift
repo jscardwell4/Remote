@@ -39,20 +39,12 @@ public class EditableModelObject: NamedModelObject, EditableModel {
     if let user = data["user"] as? NSNumber { self.user = user.boolValue }
   }
 
-  /**
-  JSONDictionary
+  override public var jsonValue: JSONValue {
+    var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
-  :returns: MSDictionary
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    appendValueForKey("user", toDictionary: dictionary)
-
-    dictionary.compact()
-    dictionary.compress()
+    dict["user"] = user.jsonValue
     
-    return dictionary
+    return .Object(dict)
   }
 
   override public var description: String { return "\(super.description)\n\tuser = \(user)" }

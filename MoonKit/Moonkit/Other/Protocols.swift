@@ -9,16 +9,15 @@
 import Foundation
 
 public protocol JSONValueConvertible {
-  typealias JSONValueType
-  var JSONValue: JSONValueType { get }
-  init?(JSONValue: JSONValueType)
+  var jsonValue: JSONValue { get }
 }
 
-@objc public protocol JSONExport {
-  var JSONObject: AnyObject { get }
-  var JSONString: String { get }
-  optional func JSONDictionary() -> MSDictionary
-  optional func writeJSONToFile(file: String) -> Bool
+public protocol JSONValueInitializable {
+  init?(jsonValue: JSONValue)
+}
+
+public protocol JSONExport {
+  var jsonString: String { get }
 }
 
 public protocol Presentable {
