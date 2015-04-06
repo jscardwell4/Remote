@@ -53,7 +53,7 @@ public class Command: NamedModelObject {
   /**
   importObjectWithData:context:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   :param: context NSManagedObjectContext!
 
   :returns: Command?

@@ -90,18 +90,19 @@ public final class Remote: RemoteElement {
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
     if let moc = managedObjectContext {
 
-      if let topBarHidden = data["top-bar-hidden"] as? NSNumber { self.topBarHidden = topBarHidden.boolValue }
+      if let topBarHidden = BooleanJSONValue(data.value["top-bar-hidden"] ?? .Null) { self.topBarHidden = topBarHidden.value }
 
-      if let panels = data["panels"] as? [String:String] {
-        for (key, uuid) in panels {
-          if let buttonGroup = subelements.objectPassingTest({($0.0 as! RemoteElement).uuid == uuid}) as? ButtonGroup {
+      if let panels = ObjectJSONValue(data.value["panels"] ?? .Null) {
+        for (key, json) in panels.value {
+          if let uuid = json.value as? String,
+            buttonGroup = subelements.objectPassingTest({($0.0 as! RemoteElement).uuid == uuid}) as? ButtonGroup {
             let assignment = ButtonGroup.PanelAssignment(jsonValue: .String(key))
             if assignment != ButtonGroup.PanelAssignment.Unassigned {
               setButtonGroup(buttonGroup, forPanelAssignment: assignment)

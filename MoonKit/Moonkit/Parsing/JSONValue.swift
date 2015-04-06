@@ -11,69 +11,60 @@ import Foundation
 /** Enumeration of discriminating union to represent a JSON value */
 public enum JSONValue {
   public typealias ObjectValue = OrderedDictionary<Swift.String, JSONValue>
+  public typealias ArrayValue = Swift.Array<JSONValue>
+
   case Boolean (Bool)
   case String (Swift.String)
-  case Array ([JSONValue])
+  case Array (ArrayValue)
   case Object (ObjectValue)
   case Number (NSNumber)
   case Null
 
-  /**
-  Initialize with bool
-
-  :param: boolean Bool
-  */
-  public init(_ boolean: Bool) { self = Boolean(boolean) }
-
-  /**
-  Initialize with String
-
-  :param: string Swift.String
-  */
-  public init(_ string: Swift.String) { self = String(string) }
-
-  /**
-  Initialize with number
-
-  :param: number NSNumber
-  */
-  public init(_ number: NSNumber) { self = Number(number) }
-
   /** Initialize to `Null` */
   public init() { self = Null }
+
+  /**
+  Initialize from a convertible type
+
+  :param: v T:JSONValueConvertible
+  */
+  public init<T:JSONValueConvertible>(_ v: T) { self = v.jsonValue }
 
   /**
   Initialize with any object or return nil upon conversion failure
 
   :param: v AnyObject
   */
-  public init?(_ v: Any) {
-    if let x = v as? BooleanType { self = Boolean(x.boolValue) }
-    else if let x = v as? NSNumber { self = Number(x) }
-    else if let x = v as? Swift.String { self = String(x) }
-    else if let x = v as? NSNull { self = Null }
-    else if let x = v as? NSArray {
-      let converted = compressedMap(x, {JSONValue($0)})
-      if converted.count == x.count { self = Array(converted) }
+  public init?(_ value: Any?) {
+    if let v = value {
+      if let x = v as? JSONValueConvertible { self = x.jsonValue }
+      else if let x = v as? NSNumber { self = Number(x) }
+      else if let x = v as? Swift.String { self = String(x) }
+      else if let x = v as? BooleanType { self = Boolean(x.boolValue) }
+      else if let x = v as? NSNull { self = Null }
+      else if let x = v as? NSArray {
+        let converted = compressedMap(x, {JSONValue($0)})
+        if converted.count == x.count { self = Array(converted) }
+        else { return nil }
+      }
+      else if let x = v as? [Any] {
+        let converted = compressedMap(x, {JSONValue($0)})
+        if converted.count == x.count { self = Array(converted) }
+        else { return nil }
+      }
+      else if let x = v as? OrderedDictionary<Swift.String, Any> {
+        let converted = x.compressedMap({JSONValue($1)})
+        if converted.count == x.count { self = Object(converted) }
+        else { return nil }
+      }
+      else if let x = v as? NSDictionary {
+        let keys = x.allKeys.map({toString($0)})
+        let values = compressedMap(x.allValues, {JSONValue($0)})
+        if keys.count == values.count { self = Object(OrderedDictionary(Swift.Array(zip(keys, values)))) }
+        else { return nil }
+      }
       else { return nil }
-    }
-    else if let x = v as? [Any] {
-      let converted = compressedMap(x, {JSONValue($0)})
-      if converted.count == x.count { self = Array(converted) }
-      else { return nil }
-    }
-    else if let x = v as? OrderedDictionary<Swift.String, Any> {
-      let converted = x.compressedMap({JSONValue($1)})
-      if converted.count == x.count { self = Object(converted) }
-      else { return nil }
-    }
-    else if let x = v as? NSDictionary {
-      let keys = x.allKeys.map({toString($0)})
-      let values = compressedMap(x.allValues, {JSONValue($0)})
-      if keys.count == values.count { self = Object(OrderedDictionary(Swift.Array(zip(keys, values)))) }
-      else { return nil }
-    }
-    else { return nil }
+    } else { return nil }
   }
 
   /** The condensed JSONValue string representation */
@@ -259,3 +250,106 @@ extension JSONValue: DebugPrintable {
     return description
   }
 }
+
+// MARK: - Convenience structs that wrap specific enum cases
+
+public struct ObjectJSONValue {
+  public let value: JSONValue.ObjectValue
+  public init?(_ v: JSONValue?) { switch v ?? .Null { case .Object(let o): value = o; default: return nil } }
+  public subscript(key: String) -> JSONValue? { return value[key] }
+}
+
+public struct ArrayJSONValue {
+  public let value: [JSONValue]
+  public init?(_ v: JSONValue?) { switch v ?? .Null { case .Array(let a): value = a; default: return nil } }
+  public subscript(idx: Int) -> JSONValue { return value[idx] }
+}
+
+// MARK: - Type extensions
+
+extension Bool: JSONValueConvertible { public var jsonValue: JSONValue { return .Boolean(self) } }
+
+extension Bool: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue) { if let b = jsonValue.value as? Bool { self = b } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+}
+
+extension String: JSONValueConvertible { public var jsonValue: JSONValue { return .String(self) } }
+
+extension String: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue) { if let string = jsonValue.value as? String { self = string } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+}
+
+extension Int: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(NSNumber(long: self))} }
+extension Int: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.longValue } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+}
+
+extension Int8: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(NSNumber(char: self))} }
+extension Int8: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.charValue } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+}
+
+extension Int16: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(NSNumber(short: self))} }
+extension Int16: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.shortValue } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+}
+
+extension Int32: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(NSNumber(int:self))} }
+extension Int32: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.intValue } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+}
+
+extension Int64: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(NSNumber(longLong: self))} }
+extension Int64: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.longLongValue } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+}
+
+extension UInt: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(NSNumber(unsignedLong: self))} }
+extension UInt: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.unsignedLongValue } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+}
+
+extension UInt8: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(NSNumber(unsignedChar: self))} }
+extension UInt8: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.unsignedCharValue } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+}
+
+extension UInt16: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(NSNumber(unsignedShort: self))} }
+extension UInt16: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.unsignedShortValue } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+}
+
+extension UInt32: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(NSNumber(unsignedInt: self))} }
+extension UInt32: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.unsignedIntValue } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+}
+
+extension UInt64: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(NSNumber(unsignedLongLong: self))} }
+extension UInt64: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.unsignedLongLongValue } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+}
+
+extension Float: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(self)} }
+extension Float: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.floatValue } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+}
+
+extension Double: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(self)} }
+extension Double: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.doubleValue } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+}
+

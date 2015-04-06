@@ -32,11 +32,11 @@ public class EditableModelObject: NamedModelObject, EditableModel {
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let user = data["user"] as? NSNumber { self.user = user.boolValue }
+    if let user = BooleanJSONValue(data["user"] ?? .Null) { self.user = user.value }
   }
 
   override public var jsonValue: JSONValue {

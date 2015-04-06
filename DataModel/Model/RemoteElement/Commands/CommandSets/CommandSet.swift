@@ -58,9 +58,9 @@ public final class CommandSet: CommandContainer {
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
     if let moc = managedObjectContext,

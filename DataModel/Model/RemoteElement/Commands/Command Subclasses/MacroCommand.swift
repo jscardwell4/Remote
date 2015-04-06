@@ -80,15 +80,15 @@ public final class MacroCommand: Command {
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
-    if let commandsData = data["commands"] as? [[String:AnyObject]] {
+    if let commandsData = ArrayJSONValue(data["commands"] ?? .Null) {
       var commands: [Command] = []
-      for commandData in commandsData {
-        if let commandClassNameJSON = commandData["class"] as? String, let moc = managedObjectContext {
+      for commandData in commandsData.compressedMap({ObjectJSONValue($0)}) {
+        if let commandClassNameJSON = commandData.value["class"]?.value as? String, let moc = managedObjectContext {
           let command: Command?
           switch commandClassNameJSON {
             case "power":    command = PowerCommand.importObjectWithData(commandData, context: moc)

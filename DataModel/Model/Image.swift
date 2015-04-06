@@ -53,13 +53,13 @@ final public class Image: EditableModelObject {
   @NSManaged public var views: NSSet
   @NSManaged public var imageCategory: ImageCategory
 
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
     updateRelationshipFromData(data, forAttribute: "imageCategory", lookupKey: "category")
 
-    if let assetName = data["asset-name"] as? String { self.assetName = assetName }
-    if let leftCap = data["left-cap"] as? NSNumber { self.leftCap = leftCap.intValue }
-    if let topCap = data["top-cap"] as? NSNumber { self.topCap = topCap.intValue }
+    if let assetName = data.value["asset-name"]?.value as? String { self.assetName = assetName }
+    if let leftCap = data.value["left-cap"]?.value as? NSNumber { self.leftCap = leftCap.intValue }
+    if let topCap = data.value["top-cap"]?.value as? NSNumber { self.topCap = topCap.intValue }
   }
   // FIXME: Move UIImage retrieval to bank module?
   public var image: UIImage? { return UIImage(named: assetName) }

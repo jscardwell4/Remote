@@ -87,9 +87,9 @@ public final class Activity: NamedModelObject {
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
     updateRelationshipFromData(data, forAttribute: "remote")

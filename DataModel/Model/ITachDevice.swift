@@ -79,18 +79,18 @@ public class ITachDevice: NetworkDevice {
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let pcbPN     = data["pcb-pn"]     as? String { self.pcbPN = pcbPN }
-    if let pkgLevel  = data["pkg-level"]  as? String { self.pkgLevel = pkgLevel }
-    if let sdkClass  = data["sdk-class"]  as? String { self.sdkClass = sdkClass }
-    if let make      = data["make"]       as? String { self.make = make }
-    if let model     = data["model"]      as? String { self.model = model }
-    if let status    = data["status"]     as? String { self.status = status }
-    if let configURL = data["config-url"] as? String { self.configURL = configURL }
-    if let revision  = data["revision"]   as? String { self.revision = revision }
+    if let pcbPN     = data.value["pcb-pn"]?.value     as? String { self.pcbPN = pcbPN }
+    if let pkgLevel  = data.value["pkg-level"]?.value  as? String { self.pkgLevel = pkgLevel }
+    if let sdkClass  = data.value["sdk-class"]?.value  as? String { self.sdkClass = sdkClass }
+    if let make      = data.value["make"]?.value       as? String { self.make = make }
+    if let model     = data.value["model"]?.value      as? String { self.model = model }
+    if let status    = data.value["status"]?.value     as? String { self.status = status }
+    if let configURL = data.value["config-url"]?.value as? String { self.configURL = configURL }
+    if let revision  = data.value["revision"]?.value   as? String { self.revision = revision }
   }
 
   /**

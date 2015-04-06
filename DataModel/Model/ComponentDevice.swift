@@ -64,9 +64,9 @@ public final class ComponentDevice: EditableModelObject {
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
     if let port = data["port"] as? NSNumber { self.port = port.shortValue }

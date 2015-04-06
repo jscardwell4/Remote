@@ -105,18 +105,18 @@ public class ISYDevice: NetworkDevice {
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let modelNumber       = data["model-number"]      as? String { self.modelNumber = modelNumber }
-    if let modelName         = data["model-name"]        as? String { self.modelName = modelName }
-    if let modelDescription  = data["model-description"] as? String { self.modelDescription = modelDescription }
-    if let manufacturerURL   = data["manufacturer-url"]  as? String { self.manufacturerURL = manufacturerURL }
-    if let manufacturer      = data["manufacturer"]      as? String { self.manufacturer = manufacturer }
-    if let friendlyName      = data["friendly-name"]     as? String { self.friendlyName = friendlyName }
-    if let deviceType        = data["device-type"]       as? String { self.deviceType = deviceType }
-    if let baseURL           = data["base-url"]          as? String { self.baseURL = baseURL }
+    if let modelNumber       = data.value["model-number"]?.value      as? String { self.modelNumber = modelNumber }
+    if let modelName         = data.value["model-name"]?.value        as? String { self.modelName = modelName }
+    if let modelDescription  = data.value["model-description"]?.value as? String { self.modelDescription = modelDescription }
+    if let manufacturerURL   = data.value["manufacturer-url"]?.value  as? String { self.manufacturerURL = manufacturerURL }
+    if let manufacturer      = data.value["manufacturer"] ?.value     as? String { self.manufacturer = manufacturer }
+    if let friendlyName      = data.value["friendly-name"]?.value     as? String { self.friendlyName = friendlyName }
+    if let deviceType        = data.value["device-type"]?.value       as? String { self.deviceType = deviceType }
+    if let baseURL           = data.value["base-url"]?.value          as? String { self.baseURL = baseURL }
 
     updateRelationshipFromData(data, forAttribute: "nodes")
     updateRelationshipFromData(data, forAttribute: "groups")

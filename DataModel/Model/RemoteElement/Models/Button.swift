@@ -355,16 +355,17 @@ public final class Button: RemoteElement {
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
     if let moc = managedObjectContext {
 
-      if let titles = data["titles"] as? [String:[String:AnyObject]] {
-        for (mode, values) in titles {
-          if let titleSet: ControlStateTitleSet = ControlStateTitleSet.importObjectWithData(values, context: moc) {
+      if let titles = ObjectJSONValue(data.value["titles"] ?? .Null) {
+        for (mode, values) in titles.value {
+          if let json = ObjectJSONValue(values),
+            titleSet: ControlStateTitleSet = ControlStateTitleSet.importObjectWithData(json, context: moc) {
             setTitles(titleSet, forMode: mode)
           }
         }
@@ -394,21 +395,23 @@ public final class Button: RemoteElement {
         }
       }
 
-      if let longPressCommands = data["long-press-commands"] as? [String:[String:AnyObject]] {
-        for (mode, values) in longPressCommands {
-          setCommand(Command.importObjectWithData(values, context: moc), forMode: mode)
+      if let longPressCommands = ObjectJSONValue(data.value["long-press-commands"] ?? .Null){
+        for (mode, values) in longPressCommands.value {
+          if let json = ObjectJSONValue(values) {
+            setCommand(Command.importObjectWithData(json, context: moc), forMode: mode)
+          }
         }
       }
 
-      if let titleEdgeInsets = data["title-edge-insets"] as? String {
+      if let titleEdgeInsets = data.value["title-edge-insets"]?.value as? String {
         self.titleEdgeInsets = UIEdgeInsetsFromString(titleEdgeInsets)
       }
 
-      if let contentEdgeInsets = data["content-edge-insets"] as? String {
+      if let contentEdgeInsets = data.value["content-edge-insets"]?.value as? String {
         self.contentEdgeInsets = UIEdgeInsetsFromString(contentEdgeInsets)
       }
 
-      if let imageEdgeInsets = data["image-edge-insets"] as? String {
+      if let imageEdgeInsets = data.value["image-edge-insets"]?.value as? String {
         self.imageEdgeInsets = UIEdgeInsetsFromString(imageEdgeInsets)
       }
 

@@ -102,9 +102,9 @@ public final class ControlStateTitleSet: ControlStateSet {
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
     if let jsonData = data as? [String:[String:AnyObject]] {

@@ -80,15 +80,15 @@ final public class IRCode: EditableModelObject {
   /**
   updateWithData:
 
-  :param: data [String AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 //    updateRelationshipFromData(data, forAttribute: "codeSet")
-    if let frequency = data["frequencey"] as? NSNumber { self.frequency = frequency.longLongValue }
-    if let offset = data["offset"] as? NSNumber { self.offset = offset.shortValue }
-    if let repeatCount = data["repeatCount"] as? NSNumber { self.repeatCount = repeatCount.shortValue }
-    if let onOffPattern = data["on-off-pattern"] as? String { self.onOffPattern = onOffPattern }
+    if let frequency = data.value["frequencey"]?.value as? NSNumber { self.frequency = frequency.longLongValue }
+    if let offset = data.value["offset"]?.value as? NSNumber { self.offset = offset.shortValue }
+    if let repeatCount = data.value["repeatCount"]?.value as? NSNumber { self.repeatCount = repeatCount.shortValue }
+    if let onOffPattern = data.value["on-off-pattern"]?.value as? String { self.onOffPattern = onOffPattern }
   }
 
   /**

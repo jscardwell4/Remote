@@ -25,17 +25,17 @@ public class ISYDeviceNode: NamedModelObject {
     @NSManaged public var device: ISYDevice
     @NSManaged public var groups: NSSet
 
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let flag              = data["flag"]               as? NSNumber { self.flag = flag }
-    if let address           = data["address"]            as? String   { self.address = address }
-    if let type              = data["type"]               as? String   { self.type = type }
-    if let enabled           = data["enabled"]            as? NSNumber { self.enabled = enabled }
-    if let pnode             = data["pnode"]              as? String   { self.pnode = pnode }
-    if let propertyFormatted = data["property-formatted"] as? String   { self.propertyFormatted = propertyFormatted }
-    if let propertyID        = data["property-id"]        as? String   { self.propertyID = propertyID }
-    if let propertyUOM       = data["property-uom"]       as? String   { self.propertyUOM = propertyUOM }
-    if let propertyValue     = data["property-value"]     as? NSNumber { self.propertyValue = propertyValue }
+    if let flag              = data.value["flag"]?.value               as? NSNumber { self.flag = flag }
+    if let address           = data.value["address"]?.value            as? String   { self.address = address }
+    if let type              = data.value["type"]?.value               as? String   { self.type = type }
+    if let enabled           = data.value["enabled"]?.value            as? NSNumber { self.enabled = enabled }
+    if let pnode             = data.value["pnode"]?.value              as? String   { self.pnode = pnode }
+    if let propertyFormatted = data.value["property-formatted"]?.value as? String   { self.propertyFormatted = propertyFormatted }
+    if let propertyID        = data.value["property-id"]?.value        as? String   { self.propertyID = propertyID }
+    if let propertyUOM       = data.value["property-uom"]?.value       as? String   { self.propertyUOM = propertyUOM }
+    if let propertyValue     = data.value["property-value"]?.value     as? NSNumber { self.propertyValue = propertyValue }
     updateRelationshipFromData(data, forAttribute: "groups")
   }
 

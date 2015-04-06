@@ -35,12 +35,13 @@ final public class Preset: EditableModelObject {
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
     updateRelationshipFromData(data, forAttribute: "subelements")
-    storage.dictionary = data - "subelements"
+    // FIXME: Broken with change to data type
+//    storage.dictionary = data - "subelements"
   }
 
   override public var jsonValue: JSONValue {

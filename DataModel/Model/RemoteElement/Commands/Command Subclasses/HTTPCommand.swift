@@ -32,11 +32,11 @@ public final class HTTPCommand: SendCommand {
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let urlString = data["url"] as? String, url = NSURL(string: urlString) { self.url = url }
+    if let urlString = data.value["url"]?.value as? String, url = NSURL(string: urlString) { self.url = url }
   }
 
 }

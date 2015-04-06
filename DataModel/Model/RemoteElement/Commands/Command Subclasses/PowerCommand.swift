@@ -38,11 +38,11 @@ public final class PowerCommand: Command {
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let stateJSON = data["state"] as? String { state = State(jsonValue: stateJSON.jsonValue) }
+    if let stateJSON = data.value["state"]?.value as? String { state = State(jsonValue: stateJSON.jsonValue) }
     updateRelationshipFromData(data, forAttribute: "device")
   }
 

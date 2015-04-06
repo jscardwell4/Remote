@@ -27,9 +27,9 @@ public class NetworkDevice: EditableModelObject {
     return objectWithValue(identifier, forAttribute: "uniqueIdentifier", context: DataManager.rootContext) != nil
   }
 
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let uniqueIdentifier = data["unique-identifier"] as? String { self.uniqueIdentifier = uniqueIdentifier }
+    if let uniqueIdentifier = data.value["unique-identifier"]?.value as? String { self.uniqueIdentifier = uniqueIdentifier }
   }
 
   override public var description: String {
@@ -42,7 +42,7 @@ public class NetworkDevice: EditableModelObject {
   /**
   importObjectWithData:context:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   :param: context NSManagedObjectContext
 
   :returns: NetworkDevice?

@@ -46,7 +46,7 @@ public class RemoteElement: NamedModelObject {
   /**
   initWithData:context:
 
-  :param: data [String AnyObject]
+  :param: data ObjectJSONValue
   :param: context NSManagedObjectContext
   */
   required public init?(data: [String : AnyObject], context: NSManagedObjectContext) {
@@ -221,9 +221,9 @@ public class RemoteElement: NamedModelObject {
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
     if let moc = managedObjectContext {

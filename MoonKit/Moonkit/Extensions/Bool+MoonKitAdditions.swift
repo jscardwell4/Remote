@@ -19,6 +19,3 @@ extension Bool {
   }
 }
 
-extension Bool: JSONValueConvertible {
-  public var jsonValue: JSONValue { return .Boolean(self) }
-}

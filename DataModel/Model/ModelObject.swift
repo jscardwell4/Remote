@@ -56,11 +56,11 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   initWithData:context:
 
-  :param: data [String AnyObject]
+  :param: data ObjectJSONValue
   :param: context NSManagedObjectContext
   */
-  required public init?(data: [String:AnyObject], context: NSManagedObjectContext) {
-    if let uuid = data["uuid"] as? String {
+  required public init?(data: ObjectJSONValue, context: NSManagedObjectContext) {
+    if let uuid = data.value["uuid"]?.value as? String {
       super.init(entity: self.dynamicType.entityDescription, insertIntoManagedObjectContext: nil)
       if self.dynamicType.objectWithUUID(uuid, context: context) == nil && self.dynamicType.isValidUUID(uuid) {
         context.insertObject(self)
@@ -179,14 +179,14 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   Returns the existing object matched by `data` or nil if no match exists
 
-  :param: data [String AnyObject]
+  :param: data ObjectJSONValue
   :param: context NSManagedObjectContext
 
   :returns: Self?
   */
-  public class func objectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Self? {
-    if let uuid = data["uuid"] as? String, object = objectWithUUID(uuid, context: context) { return object }
-    else if let rawIndex = data["index"] as? String {
+  public class func objectWithData(data: ObjectJSONValue, context: NSManagedObjectContext) -> Self? {
+    if let uuid = data.value["uuid"]?.value as? String, object = objectWithUUID(uuid, context: context) { return object }
+    else if let rawIndex = data.value["index"]?.value as? String {
       if let index = UUIDIndex(rawValue: rawIndex), object = objectWithIndex(index, context: context) {
         MSLogInfo("object for index \(index.rawValue):\n\(object)")
         return object
@@ -330,12 +330,12 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   Attempts to fetch an existing object using `data` and if that fails a new object is created
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   :param: context NSManagedObjectContext
 
   :returns: Self?
   */
-  public class func importObjectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Self? {
+  public class func importObjectWithData(data: ObjectJSONValue, context: NSManagedObjectContext) -> Self? {
     if let object = objectWithData(data, context: context) { return object }
     else { return self(data: data, context: context) }
   }
@@ -343,15 +343,13 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   importObjectsWithData:context:
 
-  :param: data AnyObject
+  :param: data ArrayJSONValue
   :param: context NSManagedObjectContext
 
   :returns: [ModelObject]
   */
-  public class func importObjectsWithData(data: AnyObject, context: NSManagedObjectContext) -> [ModelObject] {
-    if let dataArray = data as? [[String:AnyObject]] {
-      return compressed(dataArray.map{self.importObjectWithData($0, context: context)})
-    } else { return [] }
+  public class func importObjectsWithData(data: ArrayJSONValue, context: NSManagedObjectContext) -> [ModelObject] {
+    return compressedMap(compressedMap(data.value, {ObjectJSONValue($0)}), {self.importObjectWithData($0, context: context)})
   }
 
 
@@ -362,64 +360,19 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  public func updateWithData(data: [String:AnyObject]) {}
-
-  /**
-  updateRelationshipFromData:forKey:ofType:
-
-  :param: data [String AnyObject]
-  :param: key String
-  :param: type ModelObject.Type
-
-  :returns: Bool
-  */
-//  private func updateRelationshipFromData(data: [String:AnyObject],
-//                                   forAttribute attribute: String,
-//                                lookupKey: String? = nil,
-//                                   ofType type: ModelObject.Type) -> Bool
-//  {
-//    if let moc = managedObjectContext,
-//      objectData = data[lookupKey ?? attribute.dashcaseString] as? [String:AnyObject],
-//      object = type.importObjectWithData(objectData, context: moc)
-//    {
-//      setValue(object, forKey: attribute)
-//      return true
-//    } else { return false }
-//  }
-
-  /**
-  updateToManyRelationshipFromData:forKey:ofType:
-
-  :param: data [String AnyObject]
-  :param: key String
-  :param: type ModelObject.Type
-
-  :returns: Bool
-  */
-//  private func updateToManyRelationshipFromData(data: [String:AnyObject],
-//                                   forAttribute attribute: String,
-//                                      lookupKey: String? = nil,
-//                                         ofType type: ModelObject.Type,
-//                                        ordered: Bool = false) -> Bool
-//  {
-//    if let moc = managedObjectContext, objectData = data[lookupKey ?? attribute.dashcaseString] as? [[String:AnyObject]] {
-//      let objects = type.importObjectsWithData(objectData, context: moc)
-//      setValue(ordered ? NSOrderedSet(array: objects) : NSSet(array: objects), forKey: attribute)
-//      return true
-//    } else { return false }
-//  }
+  public func updateWithData(data:ObjectJSONValue) {}
 
   /**
   updateRelationship:withData:
 
   :param: relationship NSRelationshipDescription
-  :param: data [String
+  :param: data ObjectJSONValue
 
   :returns: Bool
   */
-  private func updateRelationship(relationship: NSRelationshipDescription, withData data: [String:AnyObject]) -> Bool {
+  private func updateRelationship(relationship: NSRelationshipDescription, withData data: ObjectJSONValue) -> Bool {
     if let moc = managedObjectContext,
       relatedTypeName = relationship.destinationEntity?.managedObjectClassName,
       relatedType = NSClassFromString(relatedTypeName) as? ModelObject.Type,
@@ -439,11 +392,11 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   updateRelationship:withData:
 
   :param: relationship NSRelationshipDescription
-  :param: data [[String
+  :param: data ArrayJSONValue
 
   :returns: Bool
   */
-  private func updateRelationship(relationship: NSRelationshipDescription, withData data: [[String:AnyObject]]) -> Bool {
+  private func updateRelationship(relationship: NSRelationshipDescription, withData data: ArrayJSONValue) -> Bool {
     if let moc = managedObjectContext,
       relatedTypeName = relationship.destinationEntity?.managedObjectClassName,
       relatedType = NSClassFromString(relatedTypeName) as? ModelObject.Type where relationship.toMany
@@ -462,17 +415,17 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   relatedObjectWithData:forKey:lookupKey:
 
-  :param: data [String AnyObject]
+  :param: data ObjectJSONValue
   :param: key String
   :param: lookupKey String? = nil
 
   :returns: T?
   */
-  public func relatedObjectWithData<T:ModelObject>(data: [String:AnyObject], forKey key: String, lookupKey: String? = nil) -> T? {
+  public func relatedObjectWithData<T:ModelObject>(data: ObjectJSONValue, forKey key: String, lookupKey: String? = nil) -> T? {
     if let relationshipDescription = entity.relationshipsByName[key] as? NSRelationshipDescription,
       relatedTypeName = relationshipDescription.destinationEntity?.managedObjectClassName,
       relatedType = NSClassFromString(relatedTypeName) as? ModelObject.Type,
-      relatedObjectData = data[lookupKey ?? key.dashcaseString] as? [String:AnyObject],
+      relatedObjectData = ObjectJSONValue(data.value[lookupKey ?? key.dashcaseString] ?? .Null),
       moc = managedObjectContext
     {
       return relatedType.objectWithData(relatedObjectData, context: moc) as? T
@@ -482,20 +435,20 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   updateRelationshipFromData:forKey:
 
-  :param: data [String AnyObject]
+  :param: data ObjectJSONValue
   :param: key String
 
   :returns: Bool
   */
-  public func updateRelationshipFromData(data: [String:AnyObject], forAttribute attribute: String, lookupKey: String? = nil) -> Bool {
+  public func updateRelationshipFromData(data: ObjectJSONValue, forAttribute attribute: String, lookupKey: String? = nil) -> Bool {
 
     // Retrieve the relationship description
     if let relationshipDescription = entity.relationshipsByName[attribute] as? NSRelationshipDescription {
       // Obtain relationship data
       let key = lookupKey ?? attribute.dashcaseString
-      if let relationshipData = data[key] as? [String:AnyObject] where !relationshipDescription.toMany {
+      if let relationshipData = ObjectJSONValue(data.value[key] ?? .Null) where !relationshipDescription.toMany {
         return updateRelationship(relationshipDescription, withData: relationshipData)
-      } else if let relationshipData = data[key] as? [[String:AnyObject]] where relationshipDescription.toMany {
+      } else if let relationshipData = ArrayJSONValue(data.value[key] ?? .Null) where relationshipDescription.toMany {
         return updateRelationship(relationshipDescription, withData: relationshipData)
       }
     }

@@ -13,7 +13,8 @@ public protocol JSONValueConvertible {
 }
 
 public protocol JSONValueInitializable {
-  init?(jsonValue: JSONValue)
+  init?(_ jsonValue: JSONValue)
+  init?(_ jsonValue: JSONValue?)
 }
 
 public protocol JSONExport {

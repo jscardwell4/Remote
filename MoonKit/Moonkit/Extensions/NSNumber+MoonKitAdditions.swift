@@ -11,3 +11,11 @@ import Foundation
 extension NSNumber: JSONValueConvertible {
   public var jsonValue: JSONValue { return .Number(self) }
 }
+
+//extension NSNumber: JSONValueInitializable {
+//  public init?(_ jsonValue: JSONValue) {
+//    if let n = jsonValue.value as? NSNumber {
+//      super.init
+//    }
+//  }
+//}

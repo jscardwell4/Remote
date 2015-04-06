@@ -40,15 +40,15 @@ class MoonKit_Tests: XCTestCase {
     let array = ["item1", "item2"]
     let object = ["key1": "value1", "key2": "value2"]
 
-    let stringJSON = JSONValue(string)
+    let stringJSON = string.jsonValue
     switch stringJSON { case .String: break; default: XCTFail("unexpected enumeration value, expected 'JSON.String'") }
     XCTAssertEqual(stringJSON.stringValue, "\"I am a string\"", "unexpected stringValue")
 
-    let boolJSON = JSONValue(bool)
+    let boolJSON = bool.jsonValue
     switch boolJSON { case .Boolean: break; default: XCTFail("unexpected enumeration value, expected 'JSON.Boolean'") }
     XCTAssertEqual(boolJSON.stringValue, "true", "unexpected stringValue")
 
-    let numberJSON = JSONValue(number)
+    let numberJSON = number.jsonValue
     switch numberJSON { case .Number: break; default: XCTFail("unexpected enumeration value, expected 'JSON.Number'") }
     XCTAssertEqual(numberJSON.stringValue, "1", "unexpected stringValue")
 

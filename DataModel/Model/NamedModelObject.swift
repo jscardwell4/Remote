@@ -64,11 +64,11 @@ public class NamedModelObject: ModelObject, DynamicallyNamed {
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let n = data["name"] as? String { name = n }
+    if let n = data.value["name"]?.value as? String { name = n }
   }
 
   override public var jsonValue: JSONValue {

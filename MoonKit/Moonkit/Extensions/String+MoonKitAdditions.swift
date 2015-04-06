@@ -8,12 +8,6 @@
 
 import Foundation
 
-extension String: JSONValueConvertible { public var jsonValue: JSONValue { return .String(self) } }
-
-extension String: JSONValueInitializable {
-  public init?(jsonValue: JSONValue) { if let string = jsonValue.value as? String { self = string } else { return nil } }
-}
-
 public extension String {
 
   public static let Space:       String = " "

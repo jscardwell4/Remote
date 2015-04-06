@@ -21,9 +21,9 @@ final public class IRCodeSet: EditableModelObject {
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
 //    MSLogDebug("self.codes before updating codes = \(self.codes)")

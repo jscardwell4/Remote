@@ -21,11 +21,11 @@ public final class DelayCommand: Command {
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let duration = data["duration"] as? NSNumber { self.duration = duration }
+    if let duration = NumberJSONValue(data["duration"] ?? .Null) { self.duration = duration.value }
   }
 
   override public var jsonValue: JSONValue {
