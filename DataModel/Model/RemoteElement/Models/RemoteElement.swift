@@ -242,7 +242,7 @@ public class RemoteElement: NamedModelObject {
         for (mode, value) in backgroundImageAlphaJSON { setObject(value, forKey: "backgroundImageAlpha", forMode: mode) }
       }
 
-      if let backgroundImageJSON = data["background-image"] as? [String:[String:AnyObject]] {
+      if let backgroundImageJSON = ObjectJSONValue(data["background-image"]) {
         for (mode, value) in backgroundImageJSON {
           setURIForObject(Image.importObjectWithData(value, context: moc), forKey: "backgroundImage", forMode: mode)
         }

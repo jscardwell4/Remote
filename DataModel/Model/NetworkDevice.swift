@@ -29,7 +29,7 @@ public class NetworkDevice: EditableModelObject {
 
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let uniqueIdentifier = data.value["unique-identifier"]?.value as? String { self.uniqueIdentifier = uniqueIdentifier }
+    if let uniqueIdentifier = String(data["unique-identifier"]) { self.uniqueIdentifier = uniqueIdentifier }
   }
 
   override public var description: String {

@@ -137,6 +137,26 @@ class MoonKit_Tests: XCTestCase {
 
   }
 
+  func testJSONValueRawValue() {
+
+    func rawValueTest(rawValue: String, expectedValue: JSONValue?) {
+      if expectedValue == nil && expectedValue != .Null {
+        XCTAssert(JSONValue(rawValue: rawValue) == nil, "unexpected json value resulted from raw value '\(rawValue)'")
+      } else if let jsonValue = JSONValue(rawValue: rawValue), expected = expectedValue {
+        XCTAssertEqual(jsonValue, expected)
+      } else {
+        XCTFail("expected to create a json value out of raw value '\(rawValue)'")
+      }
+    }
+
+    rawValueTest("\"I am a string\"", .String("I am a string") as JSONValue?)
+    rawValueTest("true", .Boolean(true) as JSONValue?)
+    rawValueTest("1", .Number(1) as JSONValue?)
+    rawValueTest("[\"item1\", \"item2\"]", .Array([.String("item1"), .String("item2")]) as JSONValue?)
+    rawValueTest("{\"key1\": \"value1\", \"key2\": \"value2\"}", .Object(["key1": .String("value1"), "key2": .String("value2")]) as JSONValue?)
+    rawValueTest("null", .Null as JSONValue?)
+  }
+
   func testInflate() {
     let dict: [String:AnyObject] = ["key1": "value1", "key.two.has.paths": "value2"]
     let inflatedDict = inflated(dict)
@@ -192,6 +212,32 @@ class MoonKit_Tests: XCTestCase {
       println(object.prettyStringValue)
     } else { XCTFail("file parse failed to create an object") }
 
+  }
+
+  func testJSONParser() {
+
+    func parserTest(string: String, allowFragment: Bool, ignoreExcess: Bool, expectToFail: Bool) {
+      let parser = JSONParser(string: string, allowFragment: allowFragment, ignoreExcess: ignoreExcess)
+      var error: NSError?
+      if expectToFail { XCTAssert(parser.parse(error: &error) == nil, "expected parse for '\(string)' to fail") }
+      else if let object = parser.parse(error: &error) {
+        MSHandleError(error, message: "parse failed for '\(string)'")
+        XCTAssert(object.rawValue == string, "unexpected raw value")
+      } else {
+        MSHandleError(error, message: "parse failed")
+        XCTFail("failed to parse json into an object")
+      }
+    }
+
+    parserTest("{\"key\":\"value\"}", false, false, false)
+    parserTest("[1,2,3]", false, false, false)
+    parserTest("\"I am a fragment\"", false, false, true)
+    parserTest("\"I am a fragment\"", true, false, false)
+    parserTest("true", true, false, false)
+    parserTest("null", true, false, false)
+    parserTest("42", true, false, false)
+    parserTest("{\"key\":\"value\"}", true, false, false)
+    parserTest("[1,2,3]", true, false, false)
   }
 
   func testOrderedDictionary() {

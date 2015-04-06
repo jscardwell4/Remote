@@ -83,14 +83,14 @@ public class ITachDevice: NetworkDevice {
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let pcbPN     = data.value["pcb-pn"]?.value     as? String { self.pcbPN = pcbPN }
-    if let pkgLevel  = data.value["pkg-level"]?.value  as? String { self.pkgLevel = pkgLevel }
-    if let sdkClass  = data.value["sdk-class"]?.value  as? String { self.sdkClass = sdkClass }
-    if let make      = data.value["make"]?.value       as? String { self.make = make }
-    if let model     = data.value["model"]?.value      as? String { self.model = model }
-    if let status    = data.value["status"]?.value     as? String { self.status = status }
-    if let configURL = data.value["config-url"]?.value as? String { self.configURL = configURL }
-    if let revision  = data.value["revision"]?.value   as? String { self.revision = revision }
+    if let pcbPN     = String(data["pcb-pn"]) { self.pcbPN = pcbPN }
+    if let pkgLevel  = String(data["pkg-level"]) { self.pkgLevel = pkgLevel }
+    if let sdkClass  = String(data["sdk-class"]) { self.sdkClass = sdkClass }
+    if let make      = String(data["make"]) { self.make = make }
+    if let model     = String(data["model"]) { self.model = model }
+    if let status    = String(data["status"]) { self.status = status }
+    if let configURL = String(data["config-url"]) { self.configURL = configURL }
+    if let revision  = String(data["revision"]) { self.revision = revision }
   }
 
   /**

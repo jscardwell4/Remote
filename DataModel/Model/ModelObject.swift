@@ -60,7 +60,7 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   :param: context NSManagedObjectContext
   */
   required public init?(data: ObjectJSONValue, context: NSManagedObjectContext) {
-    if let uuid = data.value["uuid"]?.value as? String {
+    if let uuid = String(data["uuid"]) {
       super.init(entity: self.dynamicType.entityDescription, insertIntoManagedObjectContext: nil)
       if self.dynamicType.objectWithUUID(uuid, context: context) == nil && self.dynamicType.isValidUUID(uuid) {
         context.insertObject(self)
@@ -185,8 +185,8 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   :returns: Self?
   */
   public class func objectWithData(data: ObjectJSONValue, context: NSManagedObjectContext) -> Self? {
-    if let uuid = data.value["uuid"]?.value as? String, object = objectWithUUID(uuid, context: context) { return object }
-    else if let rawIndex = data.value["index"]?.value as? String {
+    if let uuid = String(data["uuid"]), object = objectWithUUID(uuid, context: context) { return object }
+    else if let rawIndex = String(data["index"]) {
       if let index = UUIDIndex(rawValue: rawIndex), object = objectWithIndex(index, context: context) {
         MSLogInfo("object for index \(index.rawValue):\n\(object)")
         return object
@@ -349,7 +349,7 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   :returns: [ModelObject]
   */
   public class func importObjectsWithData(data: ArrayJSONValue, context: NSManagedObjectContext) -> [ModelObject] {
-    return compressedMap(compressedMap(data.value, {ObjectJSONValue($0)}), {self.importObjectWithData($0, context: context)})
+    return compressedMap(compressedMap(data, {ObjectJSONValue($0)}), {self.importObjectWithData($0, context: context)})
   }
 
 
@@ -425,7 +425,7 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
     if let relationshipDescription = entity.relationshipsByName[key] as? NSRelationshipDescription,
       relatedTypeName = relationshipDescription.destinationEntity?.managedObjectClassName,
       relatedType = NSClassFromString(relatedTypeName) as? ModelObject.Type,
-      relatedObjectData = ObjectJSONValue(data.value[lookupKey ?? key.dashcaseString] ?? .Null),
+      relatedObjectData = ObjectJSONValue(data[lookupKey ?? key.dashcaseString] ?? .Null),
       moc = managedObjectContext
     {
       return relatedType.objectWithData(relatedObjectData, context: moc) as? T
@@ -446,9 +446,9 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
     if let relationshipDescription = entity.relationshipsByName[attribute] as? NSRelationshipDescription {
       // Obtain relationship data
       let key = lookupKey ?? attribute.dashcaseString
-      if let relationshipData = ObjectJSONValue(data.value[key] ?? .Null) where !relationshipDescription.toMany {
+      if let relationshipData = ObjectJSONValue(data[key] ?? .Null) where !relationshipDescription.toMany {
         return updateRelationship(relationshipDescription, withData: relationshipData)
-      } else if let relationshipData = ArrayJSONValue(data.value[key] ?? .Null) where relationshipDescription.toMany {
+      } else if let relationshipData = ArrayJSONValue(data[key] ?? .Null) where relationshipDescription.toMany {
         return updateRelationship(relationshipDescription, withData: relationshipData)
       }
     }

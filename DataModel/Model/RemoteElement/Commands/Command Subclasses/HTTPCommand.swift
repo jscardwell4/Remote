@@ -36,7 +36,7 @@ public final class HTTPCommand: SendCommand {
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let urlString = data.value["url"]?.value as? String, url = NSURL(string: urlString) { self.url = url }
+    if let urlString = String(data["url"]), url = NSURL(string: urlString) { self.url = url }
   }
 
 }

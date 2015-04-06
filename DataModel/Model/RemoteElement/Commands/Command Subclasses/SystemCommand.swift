@@ -45,7 +45,7 @@ public final class SystemCommand: Command {
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
-    if let typeJSON = data.value["type"]?.value as? String { type = SystemCommandType(jsonValue: typeJSON.jsonValue) }
+    if let typeJSON = String(data["type"]) { type = SystemCommandType(jsonValue: typeJSON.jsonValue) }
   }
 
   override public var jsonValue: JSONValue {

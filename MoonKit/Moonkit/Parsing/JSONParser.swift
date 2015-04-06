@@ -76,6 +76,8 @@ right-square-bracket → comment? ']' comment?
 public class JSONParser {
 
   public var string: String { return scanner.string }
+  public let allowFragment: Bool
+  public let ignoreExcess: Bool
   public var idx:    Int    { get { return scanner.scanLocation } set { scanner.scanLocation = newValue } }
 
   private var contextStack: Stack<Context>   = []
@@ -88,7 +90,11 @@ public class JSONParser {
 
   :param: string String
   */
-  public init(string: String) { scanner = NSScanner.localizedScannerWithString(string) as! NSScanner }
+  public init(string: String, allowFragment: Bool = false, ignoreExcess: Bool = false) {
+    scanner = NSScanner.localizedScannerWithString(string) as! NSScanner
+    self.allowFragment = allowFragment
+    self.ignoreExcess = ignoreExcess
+  }
 
 
   // MARK: - Error handling and debugging
@@ -686,7 +692,19 @@ public class JSONParser {
           assert(false, "should be unreachable?")
       }
 
-    } else { setInternalError(error, "empty context stack") }
+    } else if allowFragment && objectStack.isEmpty {
+      objectStack.push(value)
+      success = true
+      if contextStack.peek == .Start { contextStack.pop(); contextStack.push(.End) }
+    } else if contextStack.isEmpty && objectStack.isEmpty {
+      setInternalError(error, "empty stacks")
+    } else if contextStack.isEmpty {
+      setInternalError(error, "empty context stack")
+    } else if objectStack.isEmpty {
+      setInternalError(error, "empty object stack")
+    } else {
+      setInternalError(error, "an unknown internal error has occurred")
+    }
 
     return success
 
@@ -716,10 +734,19 @@ public class JSONParser {
           // To be valid, we must be able to scan an opening bracked of some kind
           case .Start:
 
+            // Check if we are allowing the string to be a json fragment
+            if allowFragment {
+              contextStack.push(.Value)
+              if !parseValue(error: error) {
+                setSyntaxError(error, "root is not a valid json fragment")
+                return nil
+              }
+            }
+
             // Set error if we fail to match the start of an array or an object and exit loop
-            if !(parseObject(error: error) || parseArray(error: error)) {
+            else if !(parseObject(error: error) || parseArray(error: error)) {
               setSyntaxError(error, "root must be an object/array")
-              break scanLoop
+              return nil
             }
 
           // Try to scan a number, a boolean, null, the start of an object, or the start of an array
@@ -735,11 +762,17 @@ public class JSONParser {
           case .Key: if !parseKey(error: error) { break scanLoop }
 
           // Just break out of scan loop
-          case .End: break scanLoop
+          case .End:
+            if !(scanner.atEnd || ignoreExcess) {
+              setSyntaxError(error, "parse completed but scanner is not at end")
+              return nil
+            }
+            break scanLoop
 
         }
 
-      }
+      } // else { contextStack.push(.End) }
+
 
     }
 

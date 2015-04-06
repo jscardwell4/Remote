@@ -57,8 +57,8 @@ public final class SwitchCommand: Command {
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let typeJSON = data.value["type"]?.value as? String { self.type = SwitchType(jsonValue: typeJSON.jsonValue) }
-    if let target = data.value["target"]?.value as? String { self.target = target }
+    if let typeJSON = String(data["type"]) { self.type = SwitchType(jsonValue: typeJSON.jsonValue) }
+    if let target = String(data["target"]) { self.target = target }
   }
 
   override var operation: CommandOperation {

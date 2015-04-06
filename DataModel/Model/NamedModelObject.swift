@@ -68,7 +68,7 @@ public class NamedModelObject: ModelObject, DynamicallyNamed {
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let n = data.value["name"]?.value as? String { name = n }
+    if let n = String(data["name"]) { name = n }
   }
 
   override public var jsonValue: JSONValue {

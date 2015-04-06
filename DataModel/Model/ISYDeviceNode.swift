@@ -27,15 +27,15 @@ public class ISYDeviceNode: NamedModelObject {
 
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let flag              = data.value["flag"]?.value               as? NSNumber { self.flag = flag }
-    if let address           = data.value["address"]?.value            as? String   { self.address = address }
-    if let type              = data.value["type"]?.value               as? String   { self.type = type }
-    if let enabled           = data.value["enabled"]?.value            as? NSNumber { self.enabled = enabled }
-    if let pnode             = data.value["pnode"]?.value              as? String   { self.pnode = pnode }
-    if let propertyFormatted = data.value["property-formatted"]?.value as? String   { self.propertyFormatted = propertyFormatted }
-    if let propertyID        = data.value["property-id"]?.value        as? String   { self.propertyID = propertyID }
-    if let propertyUOM       = data.value["property-uom"]?.value       as? String   { self.propertyUOM = propertyUOM }
-    if let propertyValue     = data.value["property-value"]?.value     as? NSNumber { self.propertyValue = propertyValue }
+    if let flag              = data["flag"]?.value               as? NSNumber { self.flag = flag }
+    if let address           = String(data["address"])   { self.address = address }
+    if let type              = String(data["type"])   { self.type = type }
+    if let enabled           = data["enabled"]?.value            as? NSNumber { self.enabled = enabled }
+    if let pnode             = String(data["pnode"])   { self.pnode = pnode }
+    if let propertyFormatted = String(data["property-formatted"])   { self.propertyFormatted = propertyFormatted }
+    if let propertyID        = String(data["property-id"])   { self.propertyID = propertyID }
+    if let propertyUOM       = String(data["property-uom"])   { self.propertyUOM = propertyUOM }
+    if let propertyValue     = data["property-value"]?.value     as? NSNumber { self.propertyValue = propertyValue }
     updateRelationshipFromData(data, forAttribute: "groups")
   }
 

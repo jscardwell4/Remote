@@ -206,6 +206,48 @@ public enum JSONValue {
   }
 }
 
+extension JSONValue: RawRepresentable {
+  public var rawValue: Swift.String {
+    switch self {
+      case .Boolean(let b): return toString(b)
+      case .Null:           return "null"
+      case .Number(let n):  return toString(n)
+      case .String(let s):  return "\"".sandwhich(s)
+      case .Array(let a):   return "[" + ",".join(a.map({$0.rawValue})) + "]"
+      case .Object(let o):  return "{" + ",".join(o.keyValuePairs.map({"\"\($0)\":\($1.rawValue)"})) + "}"
+    }
+  }
+  public init?(rawValue: Swift.String) {
+    let parser = JSONParser(string: rawValue, allowFragment: true)
+    var error: NSError?
+    if let value = parser.parse(error: &error) where !MSHandleError(error) { self = value }
+    else { return nil }
+  }
+}
+
+extension JSONValue: Equatable {}
+public func ==(lhs: JSONValue, rhs: JSONValue) -> Bool {
+  return lhs.rawValue == rhs.rawValue
+}
+infix operator ~== {
+  associativity none
+  precedence 130
+}
+public func ~==(lhs: JSONValue, rhs: JSONValue) -> Bool {
+  switch (lhs, rhs) {
+    case (.Boolean(_), .Boolean(_)),
+         (.Number(_), .Number(_)),
+         (.String(_), .String(_)),
+         (.Null, .Null),
+         (.Array(_), .Array(_)),
+         (.Object(_), .Object(_)):
+      return true
+
+    default:
+      return false
+  }
+}
+
 // MARK: BooleanLiteralConvertible
 extension JSONValue: BooleanLiteralConvertible { public init(booleanLiteral b: Bool) { self = Boolean(b) } }
 
@@ -258,12 +300,28 @@ public struct ObjectJSONValue {
   public init?(_ v: JSONValue?) { switch v ?? .Null { case .Object(let o): value = o; default: return nil } }
   public subscript(key: String) -> JSONValue? { return value[key] }
 }
+extension ObjectJSONValue: CollectionType {
+  public typealias Index = JSONValue.ObjectValue.Index
+  public typealias Generator = JSONValue.ObjectValue.Generator
+  public var startIndex: Index { return value.startIndex }
+  public var endIndex: Index { return value.endIndex }
+  public func generate() -> Generator { return value.generate() }
+  public subscript(idx: Index) -> Generator.Element { return value[idx] }
+}
 
 public struct ArrayJSONValue {
   public let value: [JSONValue]
   public init?(_ v: JSONValue?) { switch v ?? .Null { case .Array(let a): value = a; default: return nil } }
-  public subscript(idx: Int) -> JSONValue { return value[idx] }
 }
+extension ArrayJSONValue: CollectionType {
+  public typealias Index = JSONValue.ArrayValue.Index
+  public typealias Generator = JSONValue.ArrayValue.Generator
+  public var startIndex: Index { return value.startIndex }
+  public var endIndex: Index { return value.endIndex }
+  public func generate() -> Generator { return value.generate() }
+  public subscript(idx: Index) -> Generator.Element { return value[idx] }
+}
+
 
 // MARK: - Type extensions
 

@@ -109,14 +109,14 @@ public class ISYDevice: NetworkDevice {
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let modelNumber       = data.value["model-number"]?.value      as? String { self.modelNumber = modelNumber }
-    if let modelName         = data.value["model-name"]?.value        as? String { self.modelName = modelName }
-    if let modelDescription  = data.value["model-description"]?.value as? String { self.modelDescription = modelDescription }
-    if let manufacturerURL   = data.value["manufacturer-url"]?.value  as? String { self.manufacturerURL = manufacturerURL }
-    if let manufacturer      = data.value["manufacturer"] ?.value     as? String { self.manufacturer = manufacturer }
-    if let friendlyName      = data.value["friendly-name"]?.value     as? String { self.friendlyName = friendlyName }
-    if let deviceType        = data.value["device-type"]?.value       as? String { self.deviceType = deviceType }
-    if let baseURL           = data.value["base-url"]?.value          as? String { self.baseURL = baseURL }
+    if let modelNumber       = String(data["model-number"]) { self.modelNumber = modelNumber }
+    if let modelName         = String(data["model-name"]) { self.modelName = modelName }
+    if let modelDescription  = String(data["model-description"]) { self.modelDescription = modelDescription }
+    if let manufacturerURL   = String(data["manufacturer-url"]) { self.manufacturerURL = manufacturerURL }
+    if let manufacturer      = String(data["manufacturer"]) { self.manufacturer = manufacturer }
+    if let friendlyName      = String(data["friendly-name"]) { self.friendlyName = friendlyName }
+    if let deviceType        = String(data["device-type"]) { self.deviceType = deviceType }
+    if let baseURL           = String(data["base-url"]) { self.baseURL = baseURL }
 
     updateRelationshipFromData(data, forAttribute: "nodes")
     updateRelationshipFromData(data, forAttribute: "groups")

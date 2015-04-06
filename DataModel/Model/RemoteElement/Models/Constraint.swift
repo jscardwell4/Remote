@@ -354,21 +354,16 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
 
   :returns: [Constraint]
   */
-  override public class func importObjectsWithData(data: AnyObject, context: NSManagedObjectContext) -> [ModelObject] {
-    var constraints: [Constraint] = []
-    if let rootDictionary = data as? [String:AnyObject] {
-      if let index = rootDictionary["index"] as? [String:String] {
-        if let formatData: AnyObject = rootDictionary["format"] {
-          if formatData is String || formatData is [String] {
-            let formatStrings: [String] = formatData is String ? [(formatData as! String)] : (formatData as! [String])
-            for format in formatStrings {
-              if let constraint = constraintFromFormat(format, index: index, context: context) { constraints.append(constraint) }
-            }
-          }
-        }
-      }
+  public class func importObjectsWithData(data: ObjectJSONValue, context: NSManagedObjectContext) -> [ModelObject] {
+    if let index = ObjectJSONValue(data["index"]) {
+      let convertedIndex = index.value.compressedMap({String($1)}).dictionary
+      let formatStrings: [String]
+      if let formatData = ArrayJSONValue(data["format"]) { formatStrings = compressedMap(formatData.value, {String($0)}) }
+      else if let formatString = String(data["format"]) { formatStrings = [formatString] }
+      else { formatStrings = [] }
+      return compressedMap(formatStrings, {self.constraintFromFormat($0, index: convertedIndex, context: context)})
     }
-    return constraints
+    return []
   }
 
   override public var jsonValue: JSONValue {

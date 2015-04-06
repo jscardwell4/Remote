@@ -269,13 +269,13 @@ public final class ButtonGroup: RemoteElement {
 
       if let autohide = data["autohide"] as? NSNumber { self.autohide = autohide.boolValue }
 
-      if let commandSetData = data["command-set"] as? [String:[String:AnyObject]] {
+      if let commandSetData = ObjectJSONValue(data["command-set"]) {
         for (mode, values) in commandSetData {
           setCommandContainer(CommandSet.importObjectWithData(values, context: moc), forMode: mode)
         }
       }
 
-      else if let collectionData = data["command-set-collection"] as? [String:[String:AnyObject]] {
+      else if let collectionData = ObjectJSONValue(data["command-set-collection"]) {
         for (mode, values) in collectionData {
           setCommandContainer(CommandSetCollection.importObjectWithData(values, context: moc), forMode: mode)
         }

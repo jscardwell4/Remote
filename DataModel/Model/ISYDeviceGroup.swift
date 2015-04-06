@@ -21,9 +21,9 @@ public class ISYDeviceGroup: NamedModelObject {
 
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let flag = data.value["flag"]?.value as? NSNumber { self.flag = flag }
-    if let address = data.value["address"]?.value as? String { self.address = address }
-    if let family = data.value["family"]?.value as? NSNumber { self.family = family }
+    if let flag = data["flag"]?.value as? NSNumber { self.flag = flag }
+    if let address = String(data["address"]) { self.address = address }
+    if let family = data["family"]?.value as? NSNumber { self.family = family }
     updateRelationshipFromData(data, forAttribute: "members")
   }
 

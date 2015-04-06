@@ -362,56 +362,75 @@ public final class Button: RemoteElement {
 
     if let moc = managedObjectContext {
 
-      if let titles = ObjectJSONValue(data.value["titles"] ?? .Null) {
-        for (mode, values) in titles.value {
-          if let json = ObjectJSONValue(values),
-            titleSet: ControlStateTitleSet = ControlStateTitleSet.importObjectWithData(json, context: moc) {
+      if let titles = ObjectJSONValue(data["titles"]) {
+        for (mode, jsonValue) in titles {
+          if let values = ObjectJSONValue(jsonValue),
+            titleSet: ControlStateTitleSet = ControlStateTitleSet.importObjectWithData(values, context: moc)
+          {
             setTitles(titleSet, forMode: mode)
           }
         }
       }
 
-      if let icons = data["icons"] as? [String:[String:AnyObject]] {
-        for (mode, values) in icons {
-          setIcons(ControlStateImageSet.importObjectWithData(values, context: moc), forMode: mode)
-        }
-      }
-
-      if let images = data["images"] as? [String:[String:AnyObject]] {
-        for (mode, values) in images {
-          setImages(ControlStateImageSet.importObjectWithData(values, context: moc), forMode: mode)
-        }
-      }
-
-      if let backgroundColors = data["background-colors"] as? [String:[String:AnyObject]] {
-        for (mode, values) in backgroundColors {
-          setBackgroundColors(ControlStateColorSet.importObjectWithData(values, context: moc), forMode: mode)
-        }
-      }
-
-      if let commands = data["commands"] as? [String:[String:AnyObject]] {
-        for (mode, values) in commands {
-          setCommand(Command.importObjectWithData(values, context: moc), forMode: mode)
-        }
-      }
-
-      if let longPressCommands = ObjectJSONValue(data.value["long-press-commands"] ?? .Null){
-        for (mode, values) in longPressCommands.value {
-          if let json = ObjectJSONValue(values) {
-            setCommand(Command.importObjectWithData(json, context: moc), forMode: mode)
+      if let icons = ObjectJSONValue(data["icons"]) {
+        for (mode, jsonValue) in icons {
+          if let values = ObjectJSONValue(jsonValue),
+            imageSet = ControlStateImageSet.importObjectWithData(values, context: moc)
+          {
+            setIcons(imageSet, forMode: mode)
           }
         }
       }
 
-      if let titleEdgeInsets = data.value["title-edge-insets"]?.value as? String {
+      if let images = ObjectJSONValue(data["images"]) {
+        for (mode, jsonValue) in images {
+          if let values = ObjectJSONValue(jsonValue),
+            imageSet = ControlStateImageSet.importObjectWithData(values, context: moc)
+          {
+            setImages(imageSet, forMode: mode)
+          }
+        }
+      }
+
+      if let backgroundColors = ObjectJSONValue(data["background-colors"]) {
+        for (mode, jsonValue) in backgroundColors {
+          if let values = ObjectJSONValue(jsonValue),
+            colorSet = ControlStateColorSet.importObjectWithData(values, context: moc)
+          {
+            setBackgroundColors(colorSet, forMode: mode)
+          }
+        }
+      }
+
+      if let commands = ObjectJSONValue(data["commands"]) {
+        for (mode, jsonValue) in commands {
+          if let values = ObjectJSONValue(jsonValue),
+            command = Command.importObjectWithData(values, context: moc)
+          {
+            setCommand(command, forMode: mode)
+          }
+        }
+      }
+
+      if let longPressCommands = ObjectJSONValue(data["long-press-commands"] ?? .Null){
+        for (mode, jsonValue) in longPressCommands.value {
+          if let json = ObjectJSONValue(jsonValue),
+            command = Command.importObjectWithData(json, context: moc)
+          {
+            setLongPressCommand(command, forMode: mode)
+          }
+        }
+      }
+
+      if let titleEdgeInsets = String(data["title-edge-insets"]) {
         self.titleEdgeInsets = UIEdgeInsetsFromString(titleEdgeInsets)
       }
 
-      if let contentEdgeInsets = data.value["content-edge-insets"]?.value as? String {
+      if let contentEdgeInsets = String(data["content-edge-insets"]) {
         self.contentEdgeInsets = UIEdgeInsetsFromString(contentEdgeInsets)
       }
 
-      if let imageEdgeInsets = data.value["image-edge-insets"]?.value as? String {
+      if let imageEdgeInsets = String(data["image-edge-insets"]) {
         self.imageEdgeInsets = UIEdgeInsetsFromString(imageEdgeInsets)
       }
 
