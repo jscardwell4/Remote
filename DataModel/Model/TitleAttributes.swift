@@ -26,7 +26,7 @@ extension NSUnderlineStyle: JSONValueConvertible, EnumerableType {
     }
   }
   public init(jsonValue: JSONValue) {
-    switch jsonValue.value as? String ?? "" {
+    switch String(jsonValue) ?? "" {
       case "single":        self = .StyleSingle
       case "thick":         self = .StyleThick
       case "double":        self = .StyleDouble
@@ -60,7 +60,7 @@ extension NSLineBreakMode: JSONValueConvertible, EnumerableType {
     }
   }
   public init(jsonValue: JSONValue) {
-    switch jsonValue.value as? String ?? "" {
+    switch String(jsonValue) ?? "" {
       case "character-wrap":  self = .ByCharWrapping
       case "clip":            self = .ByClipping
       case "truncate-head":   self = .ByTruncatingHead
@@ -88,7 +88,7 @@ extension NSTextAlignment: JSONValueConvertible, EnumerableType {
     }
   }
   public init(jsonValue: JSONValue) {
-    switch jsonValue.value as? String ?? "" {
+    switch String(jsonValue) ?? "" {
       case "left":      self = .Left
       case "right":     self = .Right
       case "center":    self = .Center
@@ -129,7 +129,7 @@ public struct TitleAttributes: JSONValueConvertible {
       }
     }
     public init(jsonValue: JSONValue) {
-      switch jsonValue.value as? String ?? "" {
+      switch String(jsonValue) ?? "" {
         case "text-icon": self = .TextIcon
         default:          self = .IconText
       }
@@ -506,7 +506,7 @@ public struct TitleAttributes: JSONValueConvertible {
     case IconTextOrder          = "icon-text-order"
 
     public var jsonValue: JSONValue { return .String(rawValue) }
-    public init?(jsonValue: JSONValue) { if let s = jsonValue.value as? String { self.init(rawValue: s) } else { return nil } }
+    public init?(jsonValue: JSONValue) { if let s = String(jsonValue) { self.init(rawValue: s) } else { return nil } }
 
     public var attributeKey: String? {
       switch self {
@@ -647,62 +647,114 @@ public struct TitleAttributes: JSONValueConvertible {
     PropertyKey.enumerate {
       (propertyKey: PropertyKey) -> Void in
 
-      var storedValue: AnyObject?
+//      var storedValue: AnyObject?
 
-      if let value: JSONValue = dict[propertyKey.jsonValue.value as! String] {
+      if let value: JSONValue = dict[String(propertyKey.jsonValue)!] {
+//        switch value {
+//        case .String(_):
+//          switch propertyKey {
+//          case .Font:
+//            break
+//          case .ForegroundColor, .BackgroundColor, .StrikethroughColor, .UnderlineColor, .StrokeColor:
+//            break
+//          case .IconName:
+//            break
+//          case .Text:
+//            break
+//          case .TextEffect:
+//            break
+//          case .UnderlineStyle, .StrikethroughStyle:
+//            break
+//          case .LineBreakMode:
+//            break
+//          case .Alignment:
+//            break
+//          case .IconTextOrder:
+//            break
+//          default:
+//            break
+//          }
+//          break
+//        case .Number(_):
+//          switch propertyKey {
+//          case .Ligature:
+//            break
+//          case .Expansion, .Obliqueness, .BaselineOffset, .Kern, .HyphenationFactor, .ParagraphSpacingBefore,
+//               .LineHeightMultiple, .MaximumLineHeight, .MinimumLineHeight, .ParagraphSpacing, .LineSpacing, .TailIndent,
+//               .HeadIndent, .FirstLineHeadIndent:
+//            break
+//          case .StrokeWidth:
+//            break
+//          default:
+//            break
+//          }
+//          break
+//        case .Boolean(_):
+//          break
+//        case .Array(_):
+//          break
+//        case .Object(_):
+//          switch propertyKey {
+//          case .Shadow:
+//            break
+//          default:
+//            break
+//          }
+//          break
+//        }
+//        switch propertyKey {
+//
+//          case .Font:
+//            if let f = value.value as? String { storedValue = Font(jsonValue: f.jsonValue)?.jsonValue.objectValue }
+//
+//          case .ForegroundColor, .BackgroundColor, .StrikethroughColor, .UnderlineColor, .StrokeColor:
+//            if let c = value.value as? String { storedValue = UIColor(string: c)?.string }
+//
+//          case .Ligature:
+//            if let i = value.value as? Int { if i == 0 || i == 1 { storedValue = i } }
+//
+//          case .IconName:
+//            if let s = value.value as? String { if ((UIFont.fontAwesomeIconNames() as NSSet).allObjects as! [String]) ∋ s { storedValue = s } }
+//
+//          case .Text:
+//            if let s = value.value as? String { storedValue = s }
+//          //FIXME: need to resolve this for JSONValueConvertible changes
+////            else if value.respondsToSelector("stringValue") { storedValue = value.valueForKey("stringValue") }
+//
+//          case .Shadow:
+//            if let d = value.objectValue as? MSDictionary { storedValue = d }
+//
+//          case .Expansion, .Obliqueness, .BaselineOffset, .Kern, .HyphenationFactor, .ParagraphSpacingBefore,
+//               .LineHeightMultiple, .MaximumLineHeight, .MinimumLineHeight, .ParagraphSpacing, .LineSpacing, .TailIndent,
+//               .HeadIndent, .FirstLineHeadIndent:
+//            if let n = value.value as? NSNumber { storedValue = n }
+//
+//          case .StrokeWidth:
+//            if let n = value.value as? NSNumber { self[.StrokeFill] = n.floatValue.isSignMinus; storedValue = abs(n.floatValue) }
+//
+//          case .TextEffect:
+//            if let e = value.value as? String { if e == "letterpress" { storedValue = e } }
+//
+//          case .UnderlineStyle, .StrikethroughStyle:
+//            if let n = value.value as? NSNumber { storedValue = NSUnderlineStyle(rawValue: n.integerValue)?.jsonValue.value as? String }
+//            else if let s = value.value as? String { storedValue = NSUnderlineStyle(jsonValue: value).jsonValue.value as! String }
+//
+//          case .LineBreakMode:
+//            if let n = value.value as? NSNumber { storedValue = NSLineBreakMode(rawValue: n.integerValue)?.jsonValue.value as? String }
+//            else if let s = value.value as? String { storedValue = NSLineBreakMode(jsonValue: value).jsonValue.value as! String }
+//
+//          case .Alignment:
+//            if let n = value.value as? NSNumber { storedValue = NSTextAlignment(rawValue: n.integerValue)?.jsonValue.value as? String }
+//            else if let s = value.value as? String { storedValue = NSTextAlignment(jsonValue: value).jsonValue.value as! String }
+//
+//          case .IconTextOrder:
+//            if let s = value.value as? String { storedValue = IconTextOrderSpecification(jsonValue: value).jsonValue.value as! String }
+//
+//          default: break
+//        }
 
-        switch propertyKey {
-
-          case .Font:
-            if let f = value.value as? String { storedValue = Font(jsonValue: f.jsonValue)?.jsonValue.objectValue }
-
-          case .ForegroundColor, .BackgroundColor, .StrikethroughColor, .UnderlineColor, .StrokeColor:
-            if let c = value.value as? String { storedValue = UIColor(string: c)?.string }
-
-          case .Ligature:
-            if let i = value.value as? Int { if i == 0 || i == 1 { storedValue = i } }
-
-          case .IconName:
-            if let s = value.value as? String { if ((UIFont.fontAwesomeIconNames() as NSSet).allObjects as! [String]) ∋ s { storedValue = s } }
-
-          case .Text:
-            if let s = value.value as? String { storedValue = s }
-          //FIXME: need to resolve this for JSONValueConvertible changes
-//            else if value.respondsToSelector("stringValue") { storedValue = value.valueForKey("stringValue") }
-
-          case .Shadow:
-            if let d = value.objectValue as? MSDictionary { storedValue = d }
-
-          case .Expansion, .Obliqueness, .BaselineOffset, .Kern, .HyphenationFactor, .ParagraphSpacingBefore,
-               .LineHeightMultiple, .MaximumLineHeight, .MinimumLineHeight, .ParagraphSpacing, .LineSpacing, .TailIndent,
-               .HeadIndent, .FirstLineHeadIndent:
-            if let n = value.value as? NSNumber { storedValue = n }
-
-          case .StrokeWidth:
-            if let n = value.value as? NSNumber { self[.StrokeFill] = n.floatValue.isSignMinus; storedValue = abs(n.floatValue) }
-
-          case .TextEffect:
-            if let e = value.value as? String { if e == "letterpress" { storedValue = e } }
-
-          case .UnderlineStyle, .StrikethroughStyle:
-            if let n = value.value as? NSNumber { storedValue = NSUnderlineStyle(rawValue: n.integerValue)?.jsonValue.value as? String }
-            else if let s = value.value as? String { storedValue = NSUnderlineStyle(jsonValue: value).jsonValue.value as! String }
-
-          case .LineBreakMode:
-            if let n = value.value as? NSNumber { storedValue = NSLineBreakMode(rawValue: n.integerValue)?.jsonValue.value as? String }
-            else if let s = value.value as? String { storedValue = NSLineBreakMode(jsonValue: value).jsonValue.value as! String }
-
-          case .Alignment:
-            if let n = value.value as? NSNumber { storedValue = NSTextAlignment(rawValue: n.integerValue)?.jsonValue.value as? String }
-            else if let s = value.value as? String { storedValue = NSTextAlignment(jsonValue: value).jsonValue.value as! String }
-
-          case .IconTextOrder:
-            if let s = value.value as? String { storedValue = IconTextOrderSpecification(jsonValue: value).jsonValue.value as! String }
-
-          default: break
-        }
-
-        if storedValue != nil { self[propertyKey] = storedValue }
+//        if storedValue != nil { self[propertyKey] = storedValue }
+        self[propertyKey] = value.rawValue
 
       }
 

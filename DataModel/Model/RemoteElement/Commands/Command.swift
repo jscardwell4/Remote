@@ -58,8 +58,8 @@ public class Command: NamedModelObject {
 
   :returns: Command?
   */
-  override public class func importObjectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Command? {
-    if self === Command.self, let classJSONValue = data["class"] as? String {
+  override public class func importObjectWithData(data: ObjectJSONValue, context: NSManagedObjectContext) -> Command? {
+    if self === Command.self, let classJSONValue = String(data["class"]) {
       switch classJSONValue {
         case "power":  return PowerCommand(data: data, context: context)
         case "delay":  return DelayCommand(data: data, context: context)

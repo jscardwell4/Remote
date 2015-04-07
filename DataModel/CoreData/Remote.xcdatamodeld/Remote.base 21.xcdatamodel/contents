@@ -147,6 +147,7 @@
     </entity>
     <entity name="DictionaryStorage" representedClassName="DictionaryStorage" syncable="YES">
         <attribute name="dictionary" attributeType="Transformable" syncable="YES"/>
+        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
         <relationship name="storageForButtonGroupLabelAttributes" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ButtonGroup" inverseName="labelAttributes" inverseEntity="ButtonGroup" syncable="YES"/>
         <relationship name="storageForPreset" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Preset" inverseName="storage" inverseEntity="Preset" syncable="YES"/>
         <relationship name="storageForTitleSetDisabled" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="disabled" inverseEntity="ControlStateTitleSet" syncable="YES"/>
@@ -278,6 +279,10 @@
         <attribute name="sdkClass" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="JSONStorage" representedClassName="JSONStorage" syncable="YES">
+        <attribute name="dictionary" attributeType="Transformable" syncable="YES"/>
+        <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
+    </entity>
     <entity name="MacroCommand" representedClassName="MacroCommand" parentEntity="Command" syncable="YES">
         <relationship name="activityHalt" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" inverseName="haltMacro" inverseEntity="Activity" syncable="YES"/>
         <relationship name="activityLaunch" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" inverseName="launchMacro" inverseEntity="Activity" syncable="YES"/>
@@ -381,7 +386,7 @@
         <element name="ControlStateImageSet" positionX="0" positionY="0" width="128" height="210"/>
         <element name="ControlStateTitleSet" positionX="0" positionY="0" width="128" height="193"/>
         <element name="DelayCommand" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="DictionaryStorage" positionX="36" positionY="153" width="128" height="208"/>
+        <element name="DictionaryStorage" positionX="36" positionY="153" width="128" height="225"/>
         <element name="HTTPCommand" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Image" positionX="0" positionY="0" width="128" height="195"/>
         <element name="ImageCategory" positionX="36" positionY="180" width="128" height="150"/>
@@ -403,5 +408,6 @@
         <element name="SendIRCommand" positionX="0" positionY="0" width="128" height="118"/>
         <element name="SwitchCommand" positionX="0" positionY="0" width="128" height="75"/>
         <element name="SystemCommand" positionX="0" positionY="0" width="128" height="60"/>
+        <element name="JSONStorage" positionX="36" positionY="153" width="128" height="75"/>
     </elements>
 </model>

@@ -296,6 +296,7 @@
 		C26D84B71AC33752000230B9 /* ImportExportFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4661ABCA395007581F2 /* ImportExportFileManager.swift */; };
 		C26D84B91AC34DF0000230B9 /* Bank.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F44C1ABCA395007581F2 /* Bank.swift */; };
 		C26D84BB1AC34E25000230B9 /* BankCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4751ABCA395007581F2 /* BankCollectionCell.swift */; };
+		C27370C31AD44D6600434457 /* JSONStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27370C21AD44D6600434457 /* JSONStorage.swift */; };
 		C27BCC8C1801C16A0002464C /* IntegerKeyboard_0-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC681801C16A0002464C /* IntegerKeyboard_0-Highlighted@2x.png */; };
 		C27BCC8D1801C16A0002464C /* IntegerKeyboard_0.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC691801C16A0002464C /* IntegerKeyboard_0.png */; };
 		C27BCC8E1801C16A0002464C /* IntegerKeyboard_0@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC6A1801C16A0002464C /* IntegerKeyboard_0@2x.png */; };
@@ -1020,6 +1021,7 @@
 		C26C6E6619B8EC9600B346AE /* NetworkDeviceConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceConnection.h; sourceTree = "<group>"; };
 		C26C6E6719B8EC9600B346AE /* NetworkDeviceConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkDeviceConnection.m; sourceTree = "<group>"; };
 		C26C6E6919B8EF6500B346AE /* NetworkDeviceConnection_Subclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceConnection_Subclass.h; sourceTree = "<group>"; };
+		C27370C21AD44D6600434457 /* JSONStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONStorage.swift; sourceTree = "<group>"; };
 		C27BCC681801C16A0002464C /* IntegerKeyboard_0-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_0-Highlighted@2x.png"; sourceTree = "<group>"; };
 		C27BCC691801C16A0002464C /* IntegerKeyboard_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_0.png; sourceTree = "<group>"; };
 		C27BCC6A1801C16A0002464C /* IntegerKeyboard_0@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_0@2x.png"; sourceTree = "<group>"; };
@@ -2417,6 +2419,7 @@
 				C2E9F4FF1ABCA395007581F2 /* NamedModelObject.swift */,
 				C2E9F5001ABCA395007581F2 /* RemoteElement */,
 				C2E9F5421ABCA395007581F2 /* TitleAttributes.swift */,
+				C27370C21AD44D6600434457 /* JSONStorage.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3354,6 +3357,7 @@
 				C293C73E1AC25F7700408D35 /* Modellndex.swift in Sources */,
 				C2E9F6001ABCA395007581F2 /* CommandSetCollection.swift in Sources */,
 				C285D86A1AC4C0E800C527F6 /* DataModelProtocols.swift in Sources */,
+				C27370C31AD44D6600434457 /* JSONStorage.swift in Sources */,
 				C293C7761AC318EB00408D35 /* ImageCategory.swift in Sources */,
 				C2E9F5E11ABCA395007581F2 /* DelayCommand.swift in Sources */,
 				C293C7781AC318EB00408D35 /* IRCodeSet.swift in Sources */,
@@ -5583,6 +5587,7 @@
 				C28E99001AD1A4B000E78711 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C293C75D1AC3164800408D35 /* Build configuration list for PBXNativeTarget "Bank" */ = {
 			isa = XCConfigurationList;

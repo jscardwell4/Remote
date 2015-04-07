@@ -16,7 +16,7 @@ import MoonKit
 @objc(DelayCommand)
 public final class DelayCommand: Command {
 
-  @NSManaged public var duration: NSNumber
+  @NSManaged public var duration: Float
 
   /**
   updateWithData:
@@ -25,7 +25,7 @@ public final class DelayCommand: Command {
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let duration = NumberJSONValue(data["duration"] ?? .Null) { self.duration = duration.value }
+    if let duration = Float(data["duration"]) { self.duration = duration }
   }
 
   override public var jsonValue: JSONValue {

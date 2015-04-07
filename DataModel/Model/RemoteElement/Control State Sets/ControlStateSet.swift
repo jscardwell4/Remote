@@ -19,11 +19,11 @@ extension UIControlState: JSONValueConvertible {
     if self & UIControlState.Selected    != nil { flags.append("selected")    }
     if self & UIControlState.Disabled    != nil { flags.append("disabled")    }
     if flags.count == 0 { flags.append("normal") }
-    return .String(" ".join(flags))
+    return " ".join(flags).jsonValue
   }
 
   public init?(jsonValue: JSONValue) {
-    let flags = split(jsonValue.value as? String ?? ""){$0 == " "}
+    let flags = " ".split(String(jsonValue) ?? "")
     if !contains(1...3, flags.count) { return nil }
     var state = UIControlState.Normal
     for flag in flags {

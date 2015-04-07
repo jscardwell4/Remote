@@ -49,11 +49,11 @@ public class RemoteElement: NamedModelObject {
   :param: data ObjectJSONValue
   :param: context NSManagedObjectContext
   */
-  required public init?(data: [String : AnyObject], context: NSManagedObjectContext) {
+  required public init?(data: ObjectJSONValue, context: NSManagedObjectContext) {
     super.init(data: data, context: context)
   }
 
-  @NSManaged public var tag: NSNumber
+  @NSManaged public var tag: Int16
   @NSManaged public var key: String?
   public var identifier: String { return "_" + filter(uuid){$0 != "-"} }
 
@@ -75,7 +75,7 @@ public class RemoteElement: NamedModelObject {
     set { secondItemConstraints = NSSet(array: newValue) }
   }
 
-  @NSManaged public var backgroundImageAlpha: NSNumber
+  @NSManaged public var backgroundImageAlpha: Float
   @NSManaged public var backgroundColor: UIColor?
   @NSManaged public var backgroundImage: ImageView?
 
@@ -228,35 +228,40 @@ public class RemoteElement: NamedModelObject {
 
     if let moc = managedObjectContext {
 
-      if let roleJSON = data["role"]   as? String   { role  = Role(jsonValue: roleJSON.jsonValue)   }
-      if let keyJSON = data["key"]     as? String   { key   = keyJSON                     }
-      if let shapeJSON = data["shape"] as? String   { shape = Shape(jsonValue: shapeJSON.jsonValue) }
-      if let styleJSON = data["style"] as? String   { style = Style(jsonValue: styleJSON.jsonValue) }
-      if let tagJSON = data["tag"]     as? NSNumber { tag   = tagJSON                     }
+      if let roleJSON = data["role"] { role = Role(jsonValue: roleJSON) }
+      if let keyJSON = String(data["key"]) { key = keyJSON }
+      if let shapeJSON = data["shape"] { shape = Shape(jsonValue: shapeJSON) }
+      if let styleJSON = data["style"] { style = Style(jsonValue: styleJSON) }
+      if let tagJSON = Int16(data["tag"]) { tag = tagJSON }
 
-      if let backgroundColorJSON = data["background-color"] as? [String:String] {
-        for (mode, value) in backgroundColorJSON { setObject(UIColor(string: value), forKey: "backgroundColor", forMode: mode) }
+      if let backgroundColorJSON = ObjectJSONValue(data["background-color"]) {
+        for (mode, value) in backgroundColorJSON { setObject(UIColor(jsonValue: value), forKey: "backgroundColor", forMode: mode) }
       }
 
-      if let backgroundImageAlphaJSON = data["background-image-alpha"] as? [String:NSNumber] {
-        for (mode, value) in backgroundImageAlphaJSON { setObject(value, forKey: "backgroundImageAlpha", forMode: mode) }
+      if let backgroundImageAlphaJSON = ObjectJSONValue(data["background-image-alpha"]) {
+        for (mode, value) in backgroundImageAlphaJSON { setObject(Float(value), forKey: "backgroundImageAlpha", forMode: mode) }
       }
 
       if let backgroundImageJSON = ObjectJSONValue(data["background-image"]) {
-        for (mode, value) in backgroundImageJSON {
-          setURIForObject(Image.importObjectWithData(value, context: moc), forKey: "backgroundImage", forMode: mode)
+        for (mode, jsonValue) in backgroundImageJSON {
+          if let value = ObjectJSONValue(jsonValue),
+          image = Image.importObjectWithData(value, context: moc)
+          {
+            setURIForObject(image, forKey: "backgroundImage", forMode: mode)
+          }
         }
       }
 
-      if let subelementsJSON = data["subelements"] as? [[String:AnyObject]] {
+      if let subelementsJSON = ArrayJSONValue(data["subelements"]) {
+        let subelementsMapped = compressedMap(subelementsJSON.value, {ObjectJSONValue($0)})
         if elementType == .Remote {
-          childElements = OrderedSet(compressed(subelementsJSON.map{ButtonGroup.importObjectWithData($0, context: moc)}))
+          childElements = OrderedSet(compressedMap(subelementsMapped, {ButtonGroup.importObjectWithData($0, context: moc)}))
         } else if elementType == .ButtonGroup {
-          childElements = OrderedSet(compressed(subelementsJSON.map{Button.importObjectWithData($0,  context: moc)}))
+          childElements = OrderedSet(compressedMap(subelementsMapped, {Button.importObjectWithData($0,  context: moc)}))
         }
       }
 
-      if let constraintsJSON = data["constraints"] as? [String:AnyObject] {
+      if let constraintsJSON = ObjectJSONValue(data["constraints"]) {
         ownedConstraints = Constraint.importObjectsWithData(constraintsJSON, context: moc) as! [Constraint]
       }
 
@@ -347,8 +352,8 @@ public class RemoteElement: NamedModelObject {
 
   :returns: NSNumber?
   */
-  public func backgroundImageAlphaForMode(mode: String) -> NSNumber? {
-    return objectForKey("backgroundImageAlpha", forMode: mode) as? NSNumber
+  public func backgroundImageAlphaForMode(mode: String) -> Float? {
+    return objectForKey("backgroundImageAlpha", forMode: mode) as? Float
   }
 
   /**
@@ -357,7 +362,7 @@ public class RemoteElement: NamedModelObject {
   :param: alpha NSNumber?
   :param: mode String
   */
-  public func setBackgroundImageAlpha(alpha: NSNumber?, forMode mode: String) {
+  public func setBackgroundImageAlpha(alpha: Float?, forMode mode: String) {
     setObject(alpha, forKey: "backgroundImageAlpha", forMode: mode)
   }
 

@@ -80,9 +80,11 @@ public final class CommandSetCollection: CommandContainer {
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
-    if let commandSetsData = data as? [String:[String:AnyObject]], let moc = managedObjectContext {
-      for (label, commandSetData) in commandSetsData {
-        if let commandSet: CommandSet = CommandSet.importObjectWithData(commandSetData, context: moc) {
+    if let moc = managedObjectContext {
+      for (label, jsonValue) in data {
+        if let commandSetData = ObjectJSONValue(jsonValue),
+          commandSet: CommandSet = CommandSet.importObjectWithData(commandSetData, context: moc)
+        {
           self[label] = commandSet
         }
       }

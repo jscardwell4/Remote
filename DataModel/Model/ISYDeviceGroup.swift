@@ -14,16 +14,16 @@ import MoonKit
 public class ISYDeviceGroup: NamedModelObject {
 
   @NSManaged public var address: String
-  @NSManaged public var family: NSNumber
-  @NSManaged public var flag: NSNumber
+  @NSManaged public var family: Int16
+  @NSManaged public var flag: Int16
   @NSManaged public var device: ISYDevice
   @NSManaged public var members: NSSet
 
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let flag = data["flag"]?.value as? NSNumber { self.flag = flag }
+    if let flag = Int16(data["flag"]) { self.flag = flag }
     if let address = String(data["address"]) { self.address = address }
-    if let family = data["family"]?.value as? NSNumber { self.family = family }
+    if let family = Int16(data["family"]) { self.family = family }
     updateRelationshipFromData(data, forAttribute: "members")
   }
 

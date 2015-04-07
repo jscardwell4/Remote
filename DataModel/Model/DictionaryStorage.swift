@@ -11,31 +11,37 @@ import CoreData
 import MoonKit
 
 @objc(DictionaryStorage)
-public final class DictionaryStorage: NSManagedObject {
+public final class DictionaryStorage: ModelObject {
 
-  @NSManaged var primitiveDictionary: NSDictionary
-  public var dictionary: [NSObject:AnyObject] {
+  public var dictionary: OrderedDictionary<String, AnyObject> {
     get {
       willAccessValueForKey("dictionary")
-      let dictionary = primitiveDictionary
+      let dictionary = primitiveValueForKey("dictionary") as! MSDictionary
       didAccessValueForKey("dictionary")
-      return dictionary as [NSObject:AnyObject]
+      return dictionary as! OrderedDictionary<String, AnyObject>
     }
     set {
       willChangeValueForKey("dictionary")
-      primitiveDictionary = newValue
+      setPrimitiveValue(MSDictionary(newValue), forKey: "dictionary")
       didChangeValueForKey("dictionary")
     }
   }
 
-  public subscript(key: NSObject) -> AnyObject? {
+  public subscript(key: String) -> AnyObject? {
     get { return dictionary[key] }
-    set { var d = dictionary; d[key] = newValue; dictionary = d }
+    set {
+      var d = dictionary
+      d[key] = newValue
+      dictionary = d
+    }
+  }
+
+  override public var jsonValue: JSONValue {
+    if let superValue = ObjectJSONValue(super.jsonValue),
+      value = ObjectJSONValue(JSONValue(dictionary))
+    {
+      return .Object(superValue.value + value.value)
+    } else { return .Null }
   }
 }
 
-extension DictionaryStorage: JSONValueConvertible {
-  public var jsonValue: JSONValue {
-    return JSONValue(dictionary) ?? .Null
-  }
-}

@@ -224,6 +224,7 @@ import MoonKit
     let button               = entities["Button"]!
     let preset               = entities["Preset"]!
     let dictionaryStorage    = entities["DictionaryStorage"]!
+    let jsonStorage          = entities["JSONStorage"]!
     let commandContainer     = entities["CommandContainer"]!
     let commandSet           = entities["CommandSet"]!
     let commandSetCollection = entities["CommandSetCollection"]!
@@ -270,8 +271,8 @@ import MoonKit
     // configurations attribute on remote elements
     modifyAttribute("configurations",
         forEntities: [remoteElement, remote, buttonGroup, button],
-     valueClassName: "NSDictionary",
-       defaultValue: NSDictionary())
+     valueClassName: "MSDictionary",
+       defaultValue: MSDictionary())
 
     // panels for RERemote
     modifyAttribute("panels", forEntities: [remote], valueClassName: "NSDictionary", defaultValue: NSDictionary())
@@ -285,9 +286,9 @@ import MoonKit
     modifyAttribute("attributes", forEntities: [preset], valueClassName: "NSDictionary", defaultValue: NSDictionary())
 
     modifyAttribute("dictionary",
-      forEntities: [dictionaryStorage],
-   valueClassName: "NSDictionary",
-     defaultValue: NSDictionary())
+      forEntities: [dictionaryStorage, jsonStorage],
+   valueClassName: "MSDictionary",
+     defaultValue: MSDictionary())
 
     // containerIndex attribute on command containers
     modifyAttribute("containerIndex",
@@ -613,20 +614,18 @@ import MoonKit
           MSLogDebug("content of file to parse:\n" + (String(contentsOfFile: filePath,
                                                              encoding: NSUTF8StringEncoding,
                                                                 error: nil) ?? "")) }
-        let data: AnyObject = json.objectValue
 
-        if logParsed { MSLogDebug("json objects from parsed file:\n\(data)") }
+        if logParsed { MSLogDebug("json objects from parsed file:\n\(json)") }
 
-        if let dataDictionary = data as? [String:AnyObject],
-          importedObject = type(data: dataDictionary, context: context) {
+        if let data = ObjectJSONValue(json), importedObject = type(data: data, context: context) {
 
           MSLogDebug("imported \(type.className()) from file '\(file).json'")
 
           if logImported { MSLogDebug("json output for imported object:\n\(importedObject.jsonValue)") }
 
-        } else if let dataArray = data as? [[String:AnyObject]] {
+        } else if let data = ArrayJSONValue(json) {
 
-          let importedObjects = type.importObjectsWithData(dataArray, context: context)
+          let importedObjects = type.importObjectsWithData(data, context: context)
 
           MSLogDebug("\(importedObjects.count) \(type.className()) objects imported from file '\(file).json'")
 

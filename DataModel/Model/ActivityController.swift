@@ -62,9 +62,9 @@ public final class ActivityController: ModelObject {
 
   override public var jsonValue: JSONValue {
     var dict = super.jsonValue.value as! JSONValue.ObjectValue
-    dict["homeRemote.uuid"] = .String(homeRemote.uuid)
-    dict["currentRemote.uuid"] = .String(currentRemote.uuid)
-    dict["currentActivity.uuid"] = .String(currentActivity?.uuid ?? "")
+    dict["homeRemote.uuid"] = homeRemote.uuid.jsonValue
+    dict["currentRemote.uuid"] = currentRemote.uuid.jsonValue
+    dict["currentActivity.uuid"] = currentActivity?.uuid.jsonValue
     dict["top-toolbar"] = topToolbar.jsonValue
     dict["activities"] = .Array(activities.map({$0.jsonValue}))
 

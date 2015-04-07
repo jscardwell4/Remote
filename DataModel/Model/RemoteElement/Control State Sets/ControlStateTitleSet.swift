@@ -53,7 +53,7 @@ public final class ControlStateTitleSet: ControlStateSet {
           setValue(storage, forKey: property!)
         }
         assert(storage != nil, "what happened? we should have created storage if it didn't exist")
-        storage?.dictionary = attributes!.dictionaryValue as [NSObject:AnyObject]
+        storage?.dictionary = OrderedDictionary(attributes!.dictionaryValue)
       }
     }
 
@@ -77,22 +77,24 @@ public final class ControlStateTitleSet: ControlStateSet {
       case UIControlState.Highlighted|UIControlState.Disabled:                         property = "highlightedDisabled"
       case UIControlState.Selected|UIControlState.Disabled:                            property = "selectedDisabled"
       case UIControlState.Highlighted|UIControlState.Selected|UIControlState.Disabled: property = "highlightedSelectedDisabled"
-      default:                                                                         break
+      default:
+        break
     }
-    var storage: DictionaryStorage?
-    if property != nil { storage = valueForKey(property!) as? DictionaryStorage }
-    return storage == nil ? nil : TitleAttributes(storage: storage!.dictionary as! [String:AnyObject])
+    if property != nil,
+    let storage = valueForKey(property!) as? DictionaryStorage {
+        return TitleAttributes(storage: storage.dictionary.dictionary)
+    } else { return nil }
   }
 
   public func attributedStringForState(state: UIControlState) -> NSAttributedString? {
     var string: NSAttributedString?
     if let indexedAttributes = self[state.rawValue] as? DictionaryStorage {
-      let attributes = TitleAttributes(storage: indexedAttributes.dictionary as! [String:AnyObject])
+      let attributes = TitleAttributes(storage: indexedAttributes.dictionary.dictionary)
       if state == UIControlState.Normal {
         string = attributes.string
       } else {
         var normalAttributes: TitleAttributes?
-        if normal != nil { normalAttributes = TitleAttributes(storage: normal!.dictionary as! [String:AnyObject]) }
+        if normal != nil { normalAttributes = TitleAttributes(jsonValue: normal!.jsonValue) }
         string = normalAttributes == nil ? attributes.string : attributes.stringWithFillers(normalAttributes!.attributes)
       }
     }
@@ -107,11 +109,10 @@ public final class ControlStateTitleSet: ControlStateSet {
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
-    if let jsonData = data as? [String:[String:AnyObject]] {
-      for (stateKey, dictionary) in jsonData {
-        if let controlState = UIControlState(jsonValue: .String(stateKey)), json = JSONValue(dictionary) {
-          setTitleAttributes(TitleAttributes(jsonValue: json), forState: controlState)
-        }
+    for (stateKey, dictionary) in data {
+
+      if let controlState = UIControlState(jsonValue: .String(stateKey)), json = JSONValue(dictionary) {
+        setTitleAttributes(TitleAttributes(jsonValue: json), forState: controlState)
       }
     }
   }

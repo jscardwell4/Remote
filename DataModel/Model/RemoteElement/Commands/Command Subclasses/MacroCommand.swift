@@ -87,8 +87,8 @@ public final class MacroCommand: Command {
 
     if let commandsData = ArrayJSONValue(data["commands"] ?? .Null) {
       var commands: [Command] = []
-      for commandData in commandsData.compressedMap({ObjectJSONValue($0)}) {
-        if let commandClassNameJSON = commandData.value["class"]?.value as? String, let moc = managedObjectContext {
+      for commandData in compressedMap(commandsData, {ObjectJSONValue($0)}) {
+        if let commandClassNameJSON = String(commandData.value["class"]), let moc = managedObjectContext {
           let command: Command?
           switch commandClassNameJSON {
             case "power":    command = PowerCommand.importObjectWithData(commandData, context: moc)

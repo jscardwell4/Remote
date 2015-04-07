@@ -14,8 +14,8 @@ class MoonKit_Tests: XCTestCase {
 
   override class func initialize() {
     super.initialize()
-    MSLog.addTTYLogger()
-    MSLog.addASLLogger()
+    MSLog.addTaggingTTYLogger()
+    MSLog.addTaggingASLLogger()
   }
 
   static let filePaths: [String] = {
@@ -238,6 +238,15 @@ class MoonKit_Tests: XCTestCase {
     parserTest("42", true, false, false)
     parserTest("{\"key\":\"value\"}", true, false, false)
     parserTest("[1,2,3]", true, false, false)
+  }
+
+  func testMSDictionary() {
+    let ordered: OrderedDictionary<String, AnyObject> = ["key1":1, "key2": "value2"]
+    let castToDict = ordered as MSDictionary
+    XCTAssert(ordered.count == castToDict.count)
+    let dict: MSDictionary = ["key1":1, "key2": "value2"]
+    let castToOrdered = dict as OrderedDictionary<NSObject, AnyObject>
+    XCTAssert(dict.count == castToOrdered.count)
   }
 
   func testOrderedDictionary() {

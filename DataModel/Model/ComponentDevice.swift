@@ -69,7 +69,7 @@ public final class ComponentDevice: EditableModelObject {
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
-    if let port = data["port"] as? NSNumber { self.port = port.shortValue }
+    if let port = Int16(data["port"]) { self.port = port }
 
     updateRelationshipFromData(data, forAttribute: "onCommand")
     updateRelationshipFromData(data, forAttribute: "offCommand")

@@ -18,7 +18,7 @@ public final class ActivityCommand: Command {
   override public var jsonValue: JSONValue {
     var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
-    dict["class"] = .String("activity")
+    dict["class"] = "activity".jsonValue
     dict["activity.uuid"] = JSONValue(activity?.uuid)
     return .Object(dict)
   }

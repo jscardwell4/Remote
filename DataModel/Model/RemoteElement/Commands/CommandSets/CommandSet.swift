@@ -64,14 +64,14 @@ public final class CommandSet: CommandContainer {
     super.updateWithData(data)
 
     if let moc = managedObjectContext,
-      let typeJSON = data["type"] as? String {
-      let type = CommandSetType(jsonValue: typeJSON.jsonValue)
+      let typeJSON = data["type"] {
+      let type = CommandSetType(jsonValue: typeJSON)
       if type != .Unspecified {
         self.type = type
-        let commands = data - "type"
-        for (roleJSON, roleData) in commands {
-          if let commandData = roleData as? [String:AnyObject],
-            let command: Command = Command.importObjectWithData(commandData, context: moc) {
+        for (roleJSON, jsonValue) in data {
+          if let roleData = ObjectJSONValue(jsonValue),
+            command: Command = Command.importObjectWithData(roleData, context: moc)
+          {
               self[RemoteElement.Role(jsonValue: roleJSON.jsonValue)] = command
           }
         }
@@ -107,7 +107,7 @@ extension CommandSet.CommandSetType: JSONValueConvertible {
   }
 
   public init(jsonValue: JSONValue) {
-    switch jsonValue.value as? String {
+    switch String(jsonValue) {
       case let s where s == "dpad":      self = .Dpad
       case let s where s == "transport": self = .Transport
       case let s where s == "numberpad": self = .Numberpad

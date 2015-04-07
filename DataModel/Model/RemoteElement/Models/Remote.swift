@@ -97,11 +97,11 @@ public final class Remote: RemoteElement {
 
     if let moc = managedObjectContext {
 
-      if let topBarHidden = BooleanJSONValue(data["top-bar-hidden"] ?? .Null) { self.topBarHidden = topBarHidden.value }
+      if let topBarHidden = Bool(data["top-bar-hidden"]) { self.topBarHidden = topBarHidden }
 
       if let panels = ObjectJSONValue(data["panels"] ?? .Null) {
-        for (key, json) in panels.value {
-          if let uuid = json.value as? String,
+        for (key, json) in panels {
+          if let uuid = String(json),
             buttonGroup = subelements.objectPassingTest({($0.0 as! RemoteElement).uuid == uuid}) as? ButtonGroup {
             let assignment = ButtonGroup.PanelAssignment(jsonValue: .String(key))
             if assignment != ButtonGroup.PanelAssignment.Unassigned {

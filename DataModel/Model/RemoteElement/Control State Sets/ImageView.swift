@@ -50,7 +50,7 @@ public final class ImageView: ModelObject {
 
     updateRelationshipFromData(data, forAttribute: "image")
 
-    if let colorJSON = String(data["color"]), color = UIColor(JSONValue: colorJSON) {
+    if let colorJSON = data["color"], color = UIColor(jsonValue: colorJSON) {
       self.color = color
     }
 

@@ -30,11 +30,10 @@ public final class ControlStateColorSet: ControlStateSet {
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
-    if let jsonData = data as? [String: String] {
-      for (stateKey, colorJSON) in jsonData {
-        if let state = UIControlState(controlStateSetProperty: stateKey.camelcaseString), let color = UIColor(JSONValue: colorJSON) {
-          self[state.rawValue] = color
-        }
+    for (stateKey, colorJSON) in data {
+      if let state = UIControlState(controlStateSetProperty: stateKey.camelcaseString), color = UIColor(jsonValue: colorJSON)
+      {
+        self[state.rawValue] = color
       }
     }
   }

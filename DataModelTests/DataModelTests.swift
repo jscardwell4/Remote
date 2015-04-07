@@ -8,6 +8,7 @@
 
 import UIKit
 import XCTest
+import CoreData
 import DataModel
 import MoonKit
 
@@ -49,4 +50,31 @@ class DataModelTests: XCTestCase {
     }
   }
 
+  func testDictionaryStorage() {
+    let moc = self.dynamicType.context
+    let storage = DictionaryStorage(context: moc)
+    XCTAssert(storage.entityName == "DictionaryStorage", "failed to create new instance of `Dictionary Storage`")
+    let key1 = "key1", key2 = "key2", key3 = "key3"
+    let value1 = "value1", value2 = 2, value3 = ["value3"]
+    storage[key1] = value1; storage[key2] = value2; storage[key3] = value3
+    let stored1 = storage[key1] as? String, stored2 = storage[key2] as? Int, stored3 = storage[key3] as? [String]
+    XCTAssertNotNil(stored1); XCTAssertNotNil(stored2); XCTAssertNotNil(stored3)
+    if let s1 = stored1, s2 = stored2, s3 = stored3 {
+      XCTAssert(s1 == value1); XCTAssert(s2 == value2); XCTAssert(s3 == value3)
+    }
+  }
+
+  func testJSONStorage() {
+    let moc = self.dynamicType.context
+    let storage = JSONStorage(context: moc)
+    XCTAssert(storage.entityName == "JSONStorage", "failed to create new instance of `JSON Storage`")
+    let key1 = "key1", key2 = "key2", key3 = "key3"
+    let value1 = "value1", value2 = 2, value3 = ["value3"]
+    storage[key1] = value1; storage[key2] = value2; storage[key3] = value3
+    let stored1 = storage[key1] as? String, stored2 = storage[key2] as? Int, stored3 = storage[key3] as? [String]
+    XCTAssertNotNil(stored1); XCTAssertNotNil(stored2); XCTAssertNotNil(stored3)
+    if let s1 = stored1, s2 = stored2, s3 = stored3 {
+      XCTAssert(s1 == value1); XCTAssert(s2 == value2); XCTAssert(s3 == value3)
+    }
+  }
 }

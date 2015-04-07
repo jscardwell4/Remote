@@ -433,19 +433,23 @@ extension OrderedDictionary: _ObjectiveCBridgeable {
   public typealias _ObjectiveCType = MSDictionary
   static public func _getObjectiveCType() -> Any.Type { return _ObjectiveCType.self }
   public func _bridgeToObjectiveC() -> _ObjectiveCType {
-    if let kArray = typeCast(_keys, Array<NSObject>.self) {
-      let bridgedKArray = kArray._bridgeToObjectiveC()
-      if let vArray = typeCast(Array(values), Array<AnyObject>.self) {
-        let bridgedVArray = vArray._bridgeToObjectiveC()
-        var dict = MSDictionary()
-        for i in 0..<count {
-          dict.setObject(bridgedVArray[i], forKey: bridgedKArray[i] as! NSCopying)
-        }
-        return dict
+    var keys: [AnyObject] = []
+    var values: [AnyObject] = []
+    for key in self.keys {
+      if key is AnyObject {
+        keys.append(key as! AnyObject)
       }
     }
-    return MSDictionary()
-//    fatalError("failed to bridge `OrderedDictionary` to `MSDictionary`")
+    for value in self.values {
+      if value is AnyObject {
+        values.append(value as! AnyObject)
+      }
+    }
+    if keys.count == values.count && keys.count == self.count {
+      return MSDictionary(values: values, forKeys: keys)
+    } else {
+      return MSDictionary()
+    }
   }
   
   static public func _forceBridgeFromObjectiveC(source: MSDictionary, inout result: OrderedDictionary?) {
@@ -475,8 +479,6 @@ extension OrderedDictionary: _ObjectiveCBridgeable {
 }
 
 // MARK: - Generator
-
-
 
 extension  OrderedDictionary: SequenceType  {
   public func generate() -> OrderedDictionaryGenerator<Key, Value> {

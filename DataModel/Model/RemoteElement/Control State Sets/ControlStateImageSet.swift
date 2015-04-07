@@ -30,11 +30,13 @@ public final class ControlStateImageSet: ControlStateSet {
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
-    if let jsonData = data as? [String:[String:AnyObject]], let moc = managedObjectContext {
-      for (stateKey, dictionary) in jsonData {
-        if let controlState = UIControlState(jsonValue: .String(stateKey)),
-          let imageView = ImageView.importObjectWithData(dictionary, context: moc) {
-            self[controlState.rawValue] = imageView
+    if let moc = managedObjectContext {
+      for (stateKey, jsonValue) in data {
+        if let dictionary = ObjectJSONValue(jsonValue),
+          controlState = UIControlState(jsonValue: stateKey.jsonValue),
+          imageView = ImageView.importObjectWithData(dictionary, context: moc)
+        {
+          self[controlState.rawValue] = imageView
         }
       }
     }
@@ -45,7 +47,7 @@ public final class ControlStateImageSet: ControlStateSet {
 
     UIControlState.enumerate {
       if let imageView = self[$0.rawValue] as? ImageView {
-        dict[$0.jsonValue.value as! String] = imageView.jsonValue
+        dict[String($0.jsonValue)!] = imageView.jsonValue
       }
     }
     return .Object(dict)

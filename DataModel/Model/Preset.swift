@@ -16,7 +16,24 @@ final public class Preset: EditableModelObject {
   public var preview: UIImage { return UIImage() }
   public var thumbnail: UIImage { return preview }
 
-  @NSManaged public var storage: DictionaryStorage
+  private(set) public var storage: DictionaryStorage {
+    get {
+      var storage: DictionaryStorage!
+      willAccessValueForKey("storage")
+      storage = primitiveValueForKey("storage") as? DictionaryStorage
+      didAccessValueForKey("storage")
+      if storage == nil {
+        storage = DictionaryStorage(context: managedObjectContext)
+        setPrimitiveValue(storage, forKey: "storage")
+      }
+      return storage
+    }
+    set {
+      willChangeValueForKey("storage")
+      setPrimitiveValue(newValue, forKey: "storage")
+      didChangeValueForKey("storage")
+    }
+  }
   @NSManaged public var presetCategory: PresetCategory
   @NSManaged public var subelements: NSOrderedSet?
   @NSManaged public var parentPreset: Preset?
@@ -81,8 +98,8 @@ final public class Preset: EditableModelObject {
     set { storage["background-image"] = newValue }
   }
 
-  public var backgroundImageAlpha: NSNumber? {
-    get { return storage["background-image-alpha"] as? NSNumber }
+  public var backgroundImageAlpha: Float? {
+    get { return storage["background-image-alpha"] as? Float }
     set { storage["background-image-alpha"] = newValue }
   }
 
@@ -148,27 +165,27 @@ final public class Preset: EditableModelObject {
 
 
   /** titles data stored in format ["state":["attribute":"value"]] */
-  public var titles: [String:[String:AnyObject]]? {
-    get { return storage["titles"] as? [String:[String:AnyObject]] }
-    set { storage["titles"] = newValue }
+  public var titles: JSONValue? {
+    get { return JSONValue(rawValue: storage["titles"] as? String ?? "") }
+    set { storage["titles"] = newValue?.rawValue }
   }
 
   /** icons data stored in format ["state":["image/color":"value"]] */
-  public var icons: [String:[String:AnyObject]]? {
-    get { return storage["icons"] as? [String:[String:AnyObject]] }
-    set { storage["icons"] = newValue }
+  public var icons: JSONValue? {
+    get { return JSONValue(rawValue: storage["icons"] as? String ?? "") }
+    set { storage["icons"] = newValue?.rawValue }
   }
 
   /** images data stored in format ["state":["image/color":"value"]] */
-  public var images: [String:[String:AnyObject]]? {
-    get { return storage["images"] as? [String:[String:AnyObject]] }
-    set { storage["images"] = newValue }
+  public var images: JSONValue? {
+    get { return JSONValue(rawValue: storage["images"] as? String ?? "") }
+    set { storage["images"] = newValue?.rawValue }
   }
 
   /** backgroundColors data stored in format ["state":"color"] */
-  public var backgroundColors: [String:AnyObject]? {
-    get { return storage["background-colors"] as? [String:AnyObject] }
-    set { storage["background-colors"] = newValue }
+  public var backgroundColors: JSONValue? {
+    get { return JSONValue(rawValue: storage["background-colors"] as? String ?? "") }
+    set { storage["background-colors"] = newValue?.rawValue }
   }
 
   public var titleEdgeInsets: UIEdgeInsets {
@@ -186,9 +203,9 @@ final public class Preset: EditableModelObject {
     set { storage["image-edge-insets"] = NSValue(UIEdgeInsets: newValue) }
   }
 
-  public var command: [String:String]? {
-    get { return storage["command"] as? [String:String] }
-    set { storage["command"] = newValue }
+  public var command: JSONValue? {
+    get { return JSONValue(rawValue: storage["command"] as? String ?? "") }
+    set { storage["command"] = newValue?.rawValue }
   }
 
   /**
@@ -216,7 +233,7 @@ final public class Preset: EditableModelObject {
       "shape = \(shape)",
       "style = \(style)",
       "background image = \(backgroundImage?.index ?? nil)",
-      "background image alpha = \(backgroundImageAlpha?.floatValue ?? nil)",
+      "background image alpha = \(backgroundImageAlpha ?? nil)",
       "background color = \(backgroundColor ?? nil)",
       "constraints = \(constraints ?? nil)",
       {

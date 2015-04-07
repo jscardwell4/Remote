@@ -47,13 +47,13 @@ extension MSDictionary: Printable {
   :param: orderedDictionary OrderedDictionary<NSObject
   :param: AnyObject>
   */
-  public convenience init<K:Hashable where K:AnyObject>(_ orderedDictionary: OrderedDictionary<K,AnyObject>) {
+  public convenience init<K:Hashable, V:AnyObject where K:AnyObject>(_ orderedDictionary: OrderedDictionary<K,V>) {
     self.init(values: Array(orderedDictionary.values), forKeys: Array(orderedDictionary.keys))
   }
   
-  public convenience init(_ orderedDictionary: OrderedDictionary<String,AnyObject>) {
-    self.init(values: Array(orderedDictionary.values), forKeys: Array(orderedDictionary.keys))
-  }
+//  public convenience init(_ orderedDictionary: OrderedDictionary<String,AnyObject>) {
+//    self.init(values: Array(orderedDictionary.values), forKeys: Array(orderedDictionary.keys))
+//  }
 
   /** inflate */
   @objc public func inflate() {

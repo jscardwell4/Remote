@@ -58,8 +58,8 @@ final public class Image: EditableModelObject {
     updateRelationshipFromData(data, forAttribute: "imageCategory", lookupKey: "category")
 
     if let assetName = String(data["asset-name"]) { self.assetName = assetName }
-    if let leftCap = data["left-cap"]?.value as? NSNumber { self.leftCap = leftCap.intValue }
-    if let topCap = data["top-cap"]?.value as? NSNumber { self.topCap = topCap.intValue }
+    if let leftCap = Int32(data["left-cap"]) { self.leftCap = leftCap }
+    if let topCap = Int32(data["top-cap"]) { self.topCap = topCap }
   }
   // FIXME: Move UIImage retrieval to bank module?
   public var image: UIImage? { return UIImage(named: assetName) }

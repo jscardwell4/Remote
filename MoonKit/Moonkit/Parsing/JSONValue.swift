@@ -131,7 +131,7 @@ public enum JSONValue {
       case .Number(let n):  return n
       case .String(let s):  return s
       case .Array(let a):   return a.map({$0.objectValue})
-      case .Object(let o):  return MSDictionary(o.map({$1.objectValue}))
+      case .Object(let o):  return o.map({$1.objectValue}) as MSDictionary //MSDictionary(o.map({$1.objectValue}))
     }
   }
 
@@ -293,6 +293,22 @@ extension JSONValue: DebugPrintable {
   }
 }
 
+// MARK: - Wrapper for using `JSONValue` where a class is needed
+public class WrappedJSONValue: NSCoding {
+  public let jsonValue: JSONValue
+  public init(_ jsonValue: JSONValue) { self.jsonValue = jsonValue }
+  @objc public func encodeWithCoder(aCoder: NSCoder) {
+    aCoder.encodeObject(jsonValue.rawValue)
+  }
+  @objc public required init(coder aDecoder: NSCoder) {
+    if let rawValue = aDecoder.decodeObject() as? String,
+      jsonValue = JSONValue(rawValue: rawValue)
+    {
+      self.jsonValue = jsonValue
+    } else { jsonValue = .Null }
+  }
+}
+
 // MARK: - Convenience structs that wrap specific enum cases
 
 public struct ObjectJSONValue {
@@ -402,6 +418,11 @@ extension UInt64: JSONValueInitializable {
 extension Float: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(self)} }
 extension Float: JSONValueInitializable {
   public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.floatValue } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+}
+extension CGFloat: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(self)} }
+extension CGFloat: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = CGFloat(n.doubleValue) } else { return nil } }
   public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
 }
 

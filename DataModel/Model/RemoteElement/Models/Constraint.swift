@@ -368,17 +368,17 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
 
   override public var jsonValue: JSONValue {
     var dict = super.jsonValue.value as! JSONValue.ObjectValue
-    dict["tag"] = .Number(primitiveTag)
-    if identifier != nil { dict["identifier"] = .String(identifier!) }
-    dict["first-attribute"] = .String(NSLayoutConstraint.pseudoNameForAttribute(firstAttribute))
-    dict["second-attribute"] = .String(NSLayoutConstraint.pseudoNameForAttribute(secondAttribute))
-    dict["relation"] = .String(NSLayoutConstraint.pseudoNameForRelation(relation))
-    dict["multiplier"] = .Number(primitiveMultiplier)
-    dict["constant"] = .Number(primitiveConstant)
-    dict["priority"] = .Number(primitivePriority)
-    dict["first-item.uuid"] = .String(firstItem.uuid)
-    if secondItem != nil { dict["second-item.uuid"] = .String(secondItem!.uuid) }
-    if owner != nil { dict["owner.uuid"] = .String(owner!.uuid) }
+    dict["tag"] = tag.jsonValue
+    dict["identifier"] = identifier?.jsonValue
+    dict["first-attribute"] = NSLayoutConstraint.pseudoNameForAttribute(firstAttribute).jsonValue
+    dict["second-attribute"] = NSLayoutConstraint.pseudoNameForAttribute(secondAttribute).jsonValue
+    dict["relation"] = NSLayoutConstraint.pseudoNameForRelation(relation).jsonValue
+    dict["multiplier"] = multiplier.jsonValue
+    dict["constant"] = constant.jsonValue
+    dict["priority"] = priority.jsonValue
+    dict["first-item.uuid"] = firstItem.uuid.jsonValue
+    dict["second-item.uuid"] = secondItem?.uuid.jsonValue
+    dict["owner.uuid"] = owner?.uuid.jsonValue
     return .Object(dict)
   }
 

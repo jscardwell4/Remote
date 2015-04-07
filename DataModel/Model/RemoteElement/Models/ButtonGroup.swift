@@ -90,21 +90,15 @@ public final class ButtonGroup: RemoteElement {
       let string = jsonValue.value as? String ?? ""
       let length = count(string)
       if length > 3 {
-        location = Location(jsonValue: .String(string[0 ..< (length - 1)]))
-        trigger = Trigger(jsonValue: .String(string[(length - 1) ..< length]))
+        location = Location(jsonValue: string[0 ..< (length - 1)].jsonValue)
+        trigger = Trigger(jsonValue: string[(length - 1) ..< length].jsonValue)
       }
     }
-    public var jsonValue: JSONValue { return .String("\(location.jsonValue.value as! String)\(trigger.jsonValue.value as! String)") }
+    public var jsonValue: JSONValue { return "\(location.jsonValue.value as! String)\(trigger.jsonValue.value as! String)".jsonValue }
 
   }
 
   override public var elementType: BaseType { return .ButtonGroup }
-
-  /** awakeFromInsert */
-  override public func awakeFromInsert() {
-    super.awakeFromInsert()
-    labelAttributes = DictionaryStorage(context: managedObjectContext!)
-  }
 
   /**
   updateWithPreset:
@@ -116,7 +110,7 @@ public final class ButtonGroup: RemoteElement {
 
     autohide = preset.autohide ?? false
 
-    if let labelAttributes = preset.labelAttributes { self.labelAttributes.dictionary = labelAttributes }
+    if let labelAttributes = preset.labelAttributes { self.labelAttributes.dictionary = OrderedDictionary(labelAttributes) }
     labelConstraints = preset.labelConstraints
     // if let panelAssignment = preset.panelAssignment { self.panelAssignment = panelAssignment }
   }
@@ -124,7 +118,25 @@ public final class ButtonGroup: RemoteElement {
   @NSManaged public var commandContainer: CommandContainer?
   @NSManaged public var autohide: Bool
   // @NSManaged var label: NSAttributedString?
-  @NSManaged public var labelAttributes: DictionaryStorage
+  private(set) public var labelAttributes: DictionaryStorage {
+    get {
+      var storage: DictionaryStorage!
+      willAccessValueForKey("labelAttributes")
+      storage = primitiveValueForKey("labelAttributes") as? DictionaryStorage
+      didAccessValueForKey("labelAttributes")
+      if storage == nil {
+        storage = DictionaryStorage(context: managedObjectContext)
+        setPrimitiveValue(storage, forKey: "labelAttributes")
+      }
+      return storage
+    }
+    set {
+      willChangeValueForKey("labelAttributes")
+      setPrimitiveValue(newValue, forKey: "labelAttributes")
+      didChangeValueForKey("labelAttributes")
+    }
+  }
+
   @NSManaged public var labelConstraints: String?
 
   public var isPanel: Bool { return panelLocation != .Undefined && panelTrigger != .Undefined }
@@ -246,11 +258,9 @@ public final class ButtonGroup: RemoteElement {
     if let collection = commandContainer as? CommandSetCollection {
       if contains(0 ..< Int(collection.count), idx) {
         if let text = collection.labelAtIndex(idx) {
-          if let storage = labelAttributes.dictionary as? [String:AnyObject] {
-            var titleAttributes = TitleAttributes(storage: storage)
-            titleAttributes.text = text
-            commandSetLabel = titleAttributes.string
-          }
+          var titleAttributes = TitleAttributes(storage: labelAttributes.dictionary.dictionary)
+          titleAttributes.text = text
+          commandSetLabel = titleAttributes.string
         }
       }
     }
@@ -267,24 +277,33 @@ public final class ButtonGroup: RemoteElement {
 
     if let moc = managedObjectContext {
 
-      if let autohide = data["autohide"] as? NSNumber { self.autohide = autohide.boolValue }
+      if let autohide = Bool(data["autohide"]) { self.autohide = autohide }
 
       if let commandSetData = ObjectJSONValue(data["command-set"]) {
-        for (mode, values) in commandSetData {
-          setCommandContainer(CommandSet.importObjectWithData(values, context: moc), forMode: mode)
+        for (mode, jsonValue) in commandSetData {
+          if let values = ObjectJSONValue(jsonValue),
+            commandSet = CommandSet.importObjectWithData(values, context: moc)
+          {
+            setCommandContainer(commandSet, forMode: mode)
+          }
         }
       }
 
       else if let collectionData = ObjectJSONValue(data["command-set-collection"]) {
-        for (mode, values) in collectionData {
-          setCommandContainer(CommandSetCollection.importObjectWithData(values, context: moc), forMode: mode)
+        for (mode, jsonValue) in collectionData {
+          if let values = ObjectJSONValue(jsonValue),
+            commandSetCollection = CommandSetCollection.importObjectWithData(values, context: moc)
+          {
+            setCommandContainer(commandSetCollection, forMode: mode)
+          }
         }
       }
 
-      labelConstraints = data["label-constraints"] as? String
+      labelConstraints = String(data["label-constraints"])
 
-      if let labelAttributesData = data["label-attributes"] as? [String:AnyObject] {
-        labelAttributes.dictionary = labelAttributesData
+      if let labelAttributesData = ObjectJSONValue(data["label-attributes"]) {
+        // FIXME: Need to be able to obtain AnyObject compatible collection for storage
+//        labelAttributes.dictionary = labelAttributesData
       }
 
     }
@@ -311,7 +330,7 @@ public final class ButtonGroup: RemoteElement {
     if commandSetCollections.count > 0 { dict["command-set-collection"] = .Object(commandSetCollections) }
     if commandSets.count > 0 { dict["command-set"] = .Object(commandSets) }
     if labels.count > 0 { dict["label"] = .Object(labels) }
-    if let constraints = labelConstraints { dict["label-constraints"] = .String(constraints) }
+    if let constraints = labelConstraints { dict["label-constraints"] = constraints.jsonValue }
     if !labelAttributes.dictionary.isEmpty { dict["label-attributes"] = labelAttributes.jsonValue }
     return .Object(dict)
   }

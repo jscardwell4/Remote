@@ -36,7 +36,7 @@ public class EditableModelObject: NamedModelObject, EditableModel {
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let user = BooleanJSONValue(data["user"] ?? .Null) { self.user = user.value }
+    if let user = Bool(data["user"]) { self.user = user }
   }
 
   override public var jsonValue: JSONValue {
