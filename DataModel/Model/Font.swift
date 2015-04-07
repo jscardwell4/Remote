@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-public class Font: JSONValueConvertible {
+public class Font: JSONValueConvertible, JSONValueInitializable {
 
   public var name: String = UIFont.systemFontOfSize(UIFont.systemFontSize()).fontName
   public var size: CGFloat = UIFont.systemFontSize()
@@ -22,19 +22,15 @@ public class Font: JSONValueConvertible {
   public convenience init?(name: String, size: CGFloat) { self.init(name: name); self.size = size }
 
   public var jsonValue: JSONValue { return "\(name)@\(size)".jsonValue }
-  required public init?(jsonValue: JSONValue) {
-    let components: [String?] = (jsonValue.value as? String)?.matchFirst("^([^@]*)@?([0-9]*\\.?[0-9]*)") ?? []
-    if let nameComponent = components.first {
-      if nameComponent != nil {
-        if (UIFont.familyNames() as! [String]) ∋ nameComponent! { self.name = nameComponent! } else { return nil }
-        if let sizeComponent = components.last {
-          if sizeComponent != nil {
-            let scanner = NSScanner(string: sizeComponent!)
-            var s: Float = 0
-            if scanner.scanFloat(&s) { size = CGFloat(s) }
-          }
-        }
-      } else { return nil }
+  required public init?(_ jsonValue: JSONValue?) {
+    if let string = String(jsonValue),
+      (name, capturedSize) = disperse2(string.matchFirst("^([^@]*)@?([0-9]*\\.?[0-9]*)")) as? (String, String?)
+      where UIFont.familyNames() as! [String] ∋ name
+    {
+      self.name = name
+      if let sizeString = capturedSize, size = CGFloat(JSONSerialization.objectByParsingString(sizeString)) {
+        self.size = size
+      } else if capturedSize != nil { return nil }
     } else { return nil }
   }
 }

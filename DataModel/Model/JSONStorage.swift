@@ -13,35 +13,34 @@ import MoonKit
 @objc(JSONStorage)
 public final class JSONStorage: ModelObject {
 
-  public var rawDictionary: OrderedDictionary<String, String> {
+  private var rawDictionary: OrderedDictionary<String, String> {
     get {
       willAccessValueForKey("dictionary")
       let dictionary = primitiveValueForKey("dictionary") as! MSDictionary
       didAccessValueForKey("dictionary")
-      return dictionary as! OrderedDictionary<String, String>
+      return dictionary as? OrderedDictionary<String, String> ?? [:]
     }
     set {
       willChangeValueForKey("dictionary")
-      setPrimitiveValue(MSDictionary(newValue), forKey: "dictionary")
+      setPrimitiveValue(newValue as MSDictionary, forKey: "dictionary")
       didChangeValueForKey("dictionary")
     }
   }
 
-//  public subscript(key: String) -> AnyObject? {
-//    get { return dictionary[key] }
-//    set {
-//      var d = dictionary
-//      d[key] = newValue
-//      dictionary = d
-//    }
-//  }
+  public var dictionary: OrderedDictionary<String, JSONValue> {
+    get { return rawDictionary.compressedMap({JSONValue(rawValue: $1)}) }
+    set { rawDictionary = newValue.map({$1.rawValue}) }
+  }
 
-//  override public var jsonValue: JSONValue {
-//    if let superValue = ObjectJSONValue(super.jsonValue),
-//      value = ObjectJSONValue(JSONValue(dictionary))
-//    {
-//      return .Object(superValue.value + value.value)
-//    } else { return .Null }
-//  }
+  public subscript(key: String) -> JSONValue? {
+    get { return dictionary[key] }
+    set { var d = dictionary; d[key] = newValue; dictionary = d }
+  }
+
+  override public var jsonValue: JSONValue {
+    if let superValue = ObjectJSONValue(super.jsonValue) {
+      return .Object(superValue.value + dictionary)
+    } else { return .Null }
+  }
 }
 

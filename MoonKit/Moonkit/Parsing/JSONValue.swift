@@ -341,94 +341,147 @@ extension ArrayJSONValue: CollectionType {
 
 // MARK: - Type extensions
 
-extension Bool: JSONValueConvertible { public var jsonValue: JSONValue { return .Boolean(self) } }
+extension Bool: JSONValueConvertible {
+  public var jsonValue: JSONValue { return .Boolean(self) }
+}
 
 extension Bool: JSONValueInitializable {
-  public init?(_ jsonValue: JSONValue) { if let b = jsonValue.value as? Bool { self = b } else { return nil } }
-  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) {
+    if let b = jsonValue?.value as? Bool { self = b } else { return nil }
+  }
 }
 
-extension String: JSONValueConvertible { public var jsonValue: JSONValue { return .String(self) } }
+extension String: JSONValueConvertible {
+  public var jsonValue: JSONValue { return .String(self) }
+}
 
 extension String: JSONValueInitializable {
-  public init?(_ jsonValue: JSONValue) { if let string = jsonValue.value as? String { self = string } else { return nil } }
-  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) {
+    if let string = jsonValue?.value as? String { self = string } else { return nil }
+  }
 }
 
-extension Int: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(NSNumber(long: self))} }
+extension Int: JSONValueConvertible {
+  public var jsonValue: JSONValue { return .Number(NSNumber(long: self))}
+}
 extension Int: JSONValueInitializable {
-  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.longValue } else { return nil } }
-  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) {
+    if let n = jsonValue?.value as? NSNumber { self = n.longValue } else { return nil }
+  }
 }
 
-extension Int8: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(NSNumber(char: self))} }
+extension Int8: JSONValueConvertible {
+  public var jsonValue: JSONValue { return .Number(NSNumber(char: self))}
+}
 extension Int8: JSONValueInitializable {
-  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.charValue } else { return nil } }
-  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) {
+    if let n = jsonValue?.value as? NSNumber { self = n.charValue } else { return nil }
+  }
 }
 
-extension Int16: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(NSNumber(short: self))} }
+extension Int16: JSONValueConvertible {
+  public var jsonValue: JSONValue { return .Number(NSNumber(short: self))}
+}
 extension Int16: JSONValueInitializable {
-  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.shortValue } else { return nil } }
-  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) {
+    if let n = jsonValue?.value as? NSNumber { self = n.shortValue } else { return nil }
+  }
 }
 
-extension Int32: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(NSNumber(int:self))} }
+extension Int32: JSONValueConvertible {
+  public var jsonValue: JSONValue { return .Number(NSNumber(int:self))}
+}
 extension Int32: JSONValueInitializable {
-  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.intValue } else { return nil } }
-  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) {
+    if let n = jsonValue?.value as? NSNumber { self = n.intValue } else { return nil }
+  }
 }
 
-extension Int64: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(NSNumber(longLong: self))} }
+extension Int64: JSONValueConvertible {
+  public var jsonValue: JSONValue { return .Number(NSNumber(longLong: self))}
+}
 extension Int64: JSONValueInitializable {
-  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.longLongValue } else { return nil } }
-  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) {
+    if let n = jsonValue?.value as? NSNumber { self = n.longLongValue } else { return nil }
+  }
 }
 
-extension UInt: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(NSNumber(unsignedLong: self))} }
+extension UInt: JSONValueConvertible {
+  public var jsonValue: JSONValue { return .Number(NSNumber(unsignedLong: self))}
+}
 extension UInt: JSONValueInitializable {
-  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.unsignedLongValue } else { return nil } }
-  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) {
+    if let n = jsonValue?.value as? NSNumber { self = n.unsignedLongValue } else { return nil }
+  }
 }
 
-extension UInt8: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(NSNumber(unsignedChar: self))} }
+extension UInt8: JSONValueConvertible {
+  public var jsonValue: JSONValue { return .Number(NSNumber(unsignedChar: self))}
+}
 extension UInt8: JSONValueInitializable {
-  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.unsignedCharValue } else { return nil } }
-  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) {
+    if let n = jsonValue?.value as? NSNumber { self = n.unsignedCharValue } else { return nil }
+  }
 }
 
-extension UInt16: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(NSNumber(unsignedShort: self))} }
+extension UInt16: JSONValueConvertible {
+  public var jsonValue: JSONValue { return .Number(NSNumber(unsignedShort: self))}
+}
 extension UInt16: JSONValueInitializable {
-  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.unsignedShortValue } else { return nil } }
-  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) {
+    if let n = jsonValue?.value as? NSNumber { self = n.unsignedShortValue } else { return nil }
+  }
 }
 
-extension UInt32: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(NSNumber(unsignedInt: self))} }
+extension UInt32: JSONValueConvertible {
+  public var jsonValue: JSONValue { return .Number(NSNumber(unsignedInt: self))}
+}
 extension UInt32: JSONValueInitializable {
-  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.unsignedIntValue } else { return nil } }
-  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) {
+    if let n = jsonValue?.value as? NSNumber { self = n.unsignedIntValue } else { return nil }
+  }
 }
 
-extension UInt64: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(NSNumber(unsignedLongLong: self))} }
+extension UInt64: JSONValueConvertible {
+  public var jsonValue: JSONValue { return .Number(NSNumber(unsignedLongLong: self))}
+}
 extension UInt64: JSONValueInitializable {
-  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.unsignedLongLongValue } else { return nil } }
-  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) {
+    if let n = jsonValue?.value as? NSNumber { self = n.unsignedLongLongValue } else { return nil }
+  }
 }
 
-extension Float: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(self)} }
+extension Float: JSONValueConvertible {
+  public var jsonValue: JSONValue { return .Number(self)}
+}
 extension Float: JSONValueInitializable {
-  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.floatValue } else { return nil } }
-  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) {
+    if let n = jsonValue?.value as? NSNumber { self = n.floatValue } else { return nil }
+  }
 }
-extension CGFloat: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(self)} }
+extension CGFloat: JSONValueConvertible {
+  public var jsonValue: JSONValue { return .Number(self)}
+}
 extension CGFloat: JSONValueInitializable {
-  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = CGFloat(n.doubleValue) } else { return nil } }
-  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) {
+    if let n = jsonValue?.value as? NSNumber { self = CGFloat(n.doubleValue) } else { return nil }
+  }
 }
 
-extension Double: JSONValueConvertible { public var jsonValue: JSONValue { return .Number(self)} }
+extension Double: JSONValueConvertible {
+  public var jsonValue: JSONValue { return .Number(self)}
+}
 extension Double: JSONValueInitializable {
-  public init?(_ jsonValue: JSONValue) { if let n = jsonValue.value as? NSNumber { self = n.doubleValue } else { return nil } }
-  public init?(_ jsonValue: JSONValue?) { if let v = jsonValue { self.init(v) } else { return nil } }
+  public init?(_ jsonValue: JSONValue?) {
+    if let n = jsonValue?.value as? NSNumber { self = n.doubleValue } else { return nil }
+  }
 }
 
+extension CGSize: JSONValueConvertible {
+  public var jsonValue: JSONValue { return .String(NSStringFromCGSize(self)) }
+}
+extension CGSize: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue?) {
+    if let string = String(jsonValue) { self = CGSizeFromString(string) } else { return nil }
+  }
+}

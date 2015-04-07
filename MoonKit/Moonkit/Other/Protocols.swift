@@ -13,7 +13,6 @@ public protocol JSONValueConvertible {
 }
 
 public protocol JSONValueInitializable {
-  init?(_ jsonValue: JSONValue)
   init?(_ jsonValue: JSONValue?)
 }
 

@@ -11,8 +11,10 @@ import UIKit
 
 extension UIColor: JSONValueConvertible {
   public var jsonValue: JSONValue { return JSONValue.String(string!) }
-  public convenience init?(jsonValue: JSONValue) {
-    if let string = jsonValue.value as? String {
+}
+extension UIColor /*: JSONValueInitializable */ {
+  public convenience init?(_ jsonValue: JSONValue?) {
+    if let string = String(jsonValue) {
       self.init(string: string)
     } else {
       self.init()

@@ -118,14 +118,14 @@ public final class ButtonGroup: RemoteElement {
   @NSManaged public var commandContainer: CommandContainer?
   @NSManaged public var autohide: Bool
   // @NSManaged var label: NSAttributedString?
-  private(set) public var labelAttributes: DictionaryStorage {
+  private(set) public var labelAttributes: JSONStorage {
     get {
-      var storage: DictionaryStorage!
+      var storage: JSONStorage!
       willAccessValueForKey("labelAttributes")
-      storage = primitiveValueForKey("labelAttributes") as? DictionaryStorage
+      storage = primitiveValueForKey("labelAttributes") as? JSONStorage
       didAccessValueForKey("labelAttributes")
       if storage == nil {
-        storage = DictionaryStorage(context: managedObjectContext)
+        storage = JSONStorage(context: managedObjectContext)
         setPrimitiveValue(storage, forKey: "labelAttributes")
       }
       return storage
@@ -257,8 +257,9 @@ public final class ButtonGroup: RemoteElement {
     var commandSetLabel: NSAttributedString?
     if let collection = commandContainer as? CommandSetCollection {
       if contains(0 ..< Int(collection.count), idx) {
-        if let text = collection.labelAtIndex(idx) {
-          var titleAttributes = TitleAttributes(storage: labelAttributes.dictionary.dictionary)
+        if let text = collection.labelAtIndex(idx),
+          var titleAttributes = TitleAttributes(labelAttributes.jsonValue)
+        {
           titleAttributes.text = text
           commandSetLabel = titleAttributes.string
         }

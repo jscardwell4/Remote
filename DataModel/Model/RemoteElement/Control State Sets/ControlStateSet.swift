@@ -21,8 +21,10 @@ extension UIControlState: JSONValueConvertible {
     if flags.count == 0 { flags.append("normal") }
     return " ".join(flags).jsonValue
   }
+}
 
-  public init?(jsonValue: JSONValue) {
+extension UIControlState: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue?) {
     let flags = " ".split(String(jsonValue) ?? "")
     if !contains(1...3, flags.count) { return nil }
     var state = UIControlState.Normal

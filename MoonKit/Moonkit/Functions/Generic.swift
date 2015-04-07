@@ -39,6 +39,9 @@ public func compressed<S:SequenceType, T where S.Generator.Element == Optional<T
 public func compressedMap<S:SequenceType, T, U where S.Generator.Element == T>(source: S, transform: (T) -> U?) -> [U] {
   return compressedMap(Array(source), transform)
 }
+public func compressedMap<S:SequenceType, T, U where S.Generator.Element == T>(source: S?, transform: (T) -> U?) -> [U]? {
+  if let s = source { return compressedMap(s, transform) as [U] } else { return nil }
+}
 
 /**
 createIdentifier:suffix:

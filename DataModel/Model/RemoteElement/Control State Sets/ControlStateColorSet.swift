@@ -31,7 +31,7 @@ public final class ControlStateColorSet: ControlStateSet {
     super.updateWithData(data)
 
     for (stateKey, colorJSON) in data {
-      if let state = UIControlState(controlStateSetProperty: stateKey.camelcaseString), color = UIColor(jsonValue: colorJSON)
+      if let state = UIControlState(controlStateSetProperty: stateKey.camelcaseString), color = UIColor(colorJSON)
       {
         self[state.rawValue] = color
       }

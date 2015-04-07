@@ -14,14 +14,14 @@ import MoonKit
 @objc(ControlStateTitleSet)
 public final class ControlStateTitleSet: ControlStateSet {
 
-  @NSManaged public var disabled:                    DictionaryStorage?
-  @NSManaged public var selectedDisabled:            DictionaryStorage?
-  @NSManaged public var highlighted:                 DictionaryStorage?
-  @NSManaged public var highlightedDisabled:         DictionaryStorage?
-  @NSManaged public var highlightedSelected:         DictionaryStorage?
-  @NSManaged public var normal:                      DictionaryStorage?
-  @NSManaged public var selected:                    DictionaryStorage?
-  @NSManaged public var highlightedSelectedDisabled: DictionaryStorage?
+  @NSManaged public var disabled:                    JSONStorage?
+  @NSManaged public var selectedDisabled:            JSONStorage?
+  @NSManaged public var highlighted:                 JSONStorage?
+  @NSManaged public var highlightedDisabled:         JSONStorage?
+  @NSManaged public var highlightedSelected:         JSONStorage?
+  @NSManaged public var normal:                      JSONStorage?
+  @NSManaged public var selected:                    JSONStorage?
+  @NSManaged public var highlightedSelectedDisabled: JSONStorage?
 
   /**
   setTitleAttributes:forState:
@@ -43,17 +43,17 @@ public final class ControlStateTitleSet: ControlStateSet {
       default:                                                                         break
     }
 
-    var storage: DictionaryStorage?
+    var storage: JSONStorage?
     if property != nil {
       if attributes == nil { setValue(nil, forKey: property!) }
       else {
-        storage = valueForKey(property!) as? DictionaryStorage
+        storage = valueForKey(property!) as? JSONStorage
         if storage == nil {
-          storage = DictionaryStorage(context: managedObjectContext)
+          storage = JSONStorage(context: managedObjectContext)
           setValue(storage, forKey: property!)
         }
         assert(storage != nil, "what happened? we should have created storage if it didn't exist")
-        storage?.dictionary = OrderedDictionary(attributes!.dictionaryValue)
+        storage?.dictionary = attributes!.storage
       }
     }
 
@@ -81,20 +81,20 @@ public final class ControlStateTitleSet: ControlStateSet {
         break
     }
     if property != nil,
-    let storage = valueForKey(property!) as? DictionaryStorage {
-        return TitleAttributes(storage: storage.dictionary.dictionary)
+    let storage = valueForKey(property!) as? JSONStorage {
+        return TitleAttributes(storage: storage.dictionary)
     } else { return nil }
   }
 
   public func attributedStringForState(state: UIControlState) -> NSAttributedString? {
     var string: NSAttributedString?
-    if let indexedAttributes = self[state.rawValue] as? DictionaryStorage {
-      let attributes = TitleAttributes(storage: indexedAttributes.dictionary.dictionary)
+    if let indexedAttributes = self[state.rawValue] as? JSONStorage {
+      let attributes = TitleAttributes(storage: indexedAttributes.dictionary)
       if state == UIControlState.Normal {
         string = attributes.string
       } else {
         var normalAttributes: TitleAttributes?
-        if normal != nil { normalAttributes = TitleAttributes(jsonValue: normal!.jsonValue) }
+        if normal != nil { normalAttributes = TitleAttributes(normal!.jsonValue) }
         string = normalAttributes == nil ? attributes.string : attributes.stringWithFillers(normalAttributes!.attributes)
       }
     }
@@ -111,8 +111,8 @@ public final class ControlStateTitleSet: ControlStateSet {
 
     for (stateKey, dictionary) in data {
 
-      if let controlState = UIControlState(jsonValue: .String(stateKey)), json = JSONValue(dictionary) {
-        setTitleAttributes(TitleAttributes(jsonValue: json), forState: controlState)
+      if let controlState = UIControlState(stateKey.jsonValue), json = ObjectJSONValue(dictionary) {
+        setTitleAttributes(TitleAttributes(storage: json.value), forState: controlState)
       }
     }
   }

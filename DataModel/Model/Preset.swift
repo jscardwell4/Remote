@@ -16,14 +16,14 @@ final public class Preset: EditableModelObject {
   public var preview: UIImage { return UIImage() }
   public var thumbnail: UIImage { return preview }
 
-  private(set) public var storage: DictionaryStorage {
+  private(set) public var storage: JSONStorage {
     get {
-      var storage: DictionaryStorage!
+      var storage: JSONStorage!
       willAccessValueForKey("storage")
-      storage = primitiveValueForKey("storage") as? DictionaryStorage
+      storage = primitiveValueForKey("storage") as? JSONStorage
       didAccessValueForKey("storage")
       if storage == nil {
-        storage = DictionaryStorage(context: managedObjectContext)
+        storage = JSONStorage(context: managedObjectContext)
         setPrimitiveValue(storage, forKey: "storage")
       }
       return storage
@@ -37,12 +37,6 @@ final public class Preset: EditableModelObject {
   @NSManaged public var presetCategory: PresetCategory
   @NSManaged public var subelements: NSOrderedSet?
   @NSManaged public var parentPreset: Preset?
-
-  /** awakeFromInsert */
-  override public func awakeFromInsert() {
-    super.awakeFromInsert()
-    storage = DictionaryStorage(context: managedObjectContext!)
-  }
 
   public subscript(key: String) -> AnyObject? {
     get { return storage[key] }

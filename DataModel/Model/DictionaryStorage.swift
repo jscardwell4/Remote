@@ -22,7 +22,7 @@ public final class DictionaryStorage: ModelObject {
     }
     set {
       willChangeValueForKey("dictionary")
-      setPrimitiveValue(MSDictionary(newValue), forKey: "dictionary")
+      setPrimitiveValue(newValue as MSDictionary, forKey: "dictionary")
       didChangeValueForKey("dictionary")
     }
   }

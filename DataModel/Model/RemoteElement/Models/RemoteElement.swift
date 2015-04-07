@@ -235,7 +235,7 @@ public class RemoteElement: NamedModelObject {
       if let tagJSON = Int16(data["tag"]) { tag = tagJSON }
 
       if let backgroundColorJSON = ObjectJSONValue(data["background-color"]) {
-        for (mode, value) in backgroundColorJSON { setObject(UIColor(jsonValue: value), forKey: "backgroundColor", forMode: mode) }
+        for (mode, value) in backgroundColorJSON { setObject(UIColor(value), forKey: "backgroundColor", forMode: mode) }
       }
 
       if let backgroundImageAlphaJSON = ObjectJSONValue(data["background-image-alpha"]) {

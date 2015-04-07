@@ -10,13 +10,17 @@
 @import Foundation;
 @import UIKit;
 
+@class MSDictionary;
+@interface NSAttributedString (_MSKitAdditions)
+- (instancetype)initWithString:(NSString *)str attributes:(MSDictionary *)attrs;
+@end
+
 @interface NSAttributedString (MSKitAdditions)
 
 + (instancetype)attributedStringWithString:(NSString *)string
-                                        attributes:(NSDictionary *)attributes;
+                                attributes:(NSDictionary *)attributes;
 
 + (instancetype)attributedStringWithString:(NSString *)string;
-
 - (NSAttributedString *)attributedStringWithAttribute:(NSString *)attribute value:(id)value;
 - (NSAttributedString *)attributedStringWithAttributes:(NSDictionary *)attributes;
 #if TARGET_OS_IPHONE
