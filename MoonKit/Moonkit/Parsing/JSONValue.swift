@@ -485,3 +485,12 @@ extension CGSize: JSONValueInitializable {
     if let string = String(jsonValue) { self = CGSizeFromString(string) } else { return nil }
   }
 }
+
+extension UIEdgeInsets: JSONValueConvertible {
+  public var jsonValue: JSONValue { return .String(NSStringFromUIEdgeInsets(self)) }
+}
+extension UIEdgeInsets: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue?) {
+    if let string = String(jsonValue) { self = UIEdgeInsetsFromString(string) } else { return nil }
+  }
+}

@@ -33,7 +33,7 @@ public final class ControlStateImageSet: ControlStateSet {
     if let moc = managedObjectContext {
       for (stateKey, jsonValue) in data {
         if let dictionary = ObjectJSONValue(jsonValue),
-          controlState = UIControlState(jsonValue: stateKey.jsonValue),
+          controlState = UIControlState(stateKey.jsonValue),
           imageView = ImageView.importObjectWithData(dictionary, context: moc)
         {
           self[controlState.rawValue] = imageView

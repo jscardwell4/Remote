@@ -510,12 +510,21 @@ public struct OrderedDictionaryGenerator<Key : Hashable, Value> : GeneratorType 
 
 // MARK: - Operations
 
-public func +<K,V>(lhs: OrderedDictionary<K, V>, rhs: OrderedDictionary<K,V>) -> OrderedDictionary<K,V> {
+public func +<K, V>(lhs: OrderedDictionary<K, V>, rhs: OrderedDictionary<K,V>) -> OrderedDictionary<K, V> {
   let keys: [K] = lhs._keys + rhs._keys
   let values: [V] = Array(lhs.values) + Array(rhs.values)
   return OrderedDictionary<K,V>(keys: keys, values: values)
 }
 
-public func +=<K,V>(inout lhs: OrderedDictionary<K, V>, rhs: OrderedDictionary<K, V>) {
+public func +=<K, V>(inout lhs: OrderedDictionary<K, V>, rhs: OrderedDictionary<K, V>) {
   lhs = lhs + rhs
+}
+
+public func -<K, V>(var lhs: OrderedDictionary<K, V>, rhs: K) -> OrderedDictionary<K, V> {
+  lhs.removeValueForKey(rhs)
+  return lhs
+}
+
+public func -=<K, V>(inout lhs: OrderedDictionary<K, V>, rhs: K) {
+  lhs.removeValueForKey(rhs)
 }

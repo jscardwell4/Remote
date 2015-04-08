@@ -69,10 +69,11 @@ public final class CommandSet: CommandContainer {
       if type != .Unspecified {
         self.type = type
         for (roleJSON, jsonValue) in data {
-          if let roleData = ObjectJSONValue(jsonValue),
-            command: Command = Command.importObjectWithData(roleData, context: moc)
+          if let role = RemoteElement.Role(roleJSON.jsonValue),
+            roleData = ObjectJSONValue(jsonValue),
+            command = Command.importObjectWithData(roleData, context: moc)
           {
-              self[RemoteElement.Role(jsonValue: roleJSON.jsonValue)] = command
+              self[role] = command
           }
         }
       }

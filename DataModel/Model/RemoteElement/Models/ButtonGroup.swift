@@ -19,13 +19,13 @@ use an instance of the `ButtonGroup` class to govern their style, behavior, etc.
 @objc(ButtonGroup)
 public final class ButtonGroup: RemoteElement {
 
-  public struct PanelAssignment: RawOptionSetType, JSONValueConvertible {
+  public struct PanelAssignment: RawOptionSetType, JSONValueConvertible, JSONValueInitializable {
 
     private(set) public var rawValue: Int
     public init(rawValue: Int) { self.rawValue = rawValue & 0b0001_1111 }
     public init(nilLiteral:()) { rawValue = 0 }
 
-    public enum Location: Int, JSONValueConvertible {
+    public enum Location: Int, JSONValueConvertible, JSONValueInitializable {
       case Undefined, Top, Bottom, Left, Right
       public var jsonValue: JSONValue {
         switch self {
@@ -36,14 +36,16 @@ public final class ButtonGroup: RemoteElement {
           case .Right:     return "right"
         }
       }
-      public init(jsonValue: JSONValue) {
-        switch jsonValue.value as? String ?? "" {
-          case "top":    self = .Top
-          case "bottom": self = .Bottom
-          case "left":   self = .Left
-          case "right":  self = .Right
-          default:       self = .Undefined
-        }
+      public init?(_ jsonValue: JSONValue?) {
+        if let string = String(jsonValue) {
+          switch string {
+            case "top":    self = .Top
+            case "bottom": self = .Bottom
+            case "left":   self = .Left
+            case "right":  self = .Right
+            default:       self = .Undefined
+          }
+        } else { return nil }
       }
     }
     public enum Trigger: Int, JSONValueConvertible  {
@@ -56,14 +58,16 @@ public final class ButtonGroup: RemoteElement {
           case .ThreeFinger: return "3"
         }
       }
-     public init(jsonValue: JSONValue) {
-       switch jsonValue.value as? String ?? "" {
-         case "1": self = .OneFinger
-         case "2": self = .TwoFinger
-         case "3": self = .ThreeFinger
-         default:  self = .Undefined
-       }
-    }
+      public init?(_ jsonValue: JSONValue?) {
+        if let string = String(jsonValue) {
+          switch string {
+            case "1": self = .OneFinger
+            case "2": self = .TwoFinger
+            case "3": self = .ThreeFinger
+            default:  self = .Undefined
+          }
+        } else { return nil }
+      }
     }
 
     public var location: Location {
@@ -85,16 +89,23 @@ public final class ButtonGroup: RemoteElement {
 
     public static var Unassigned: PanelAssignment = PanelAssignment(location: .Undefined, trigger: .Undefined)
 
-    public init(jsonValue: JSONValue) {
-      rawValue = 0
-      let string = jsonValue.value as? String ?? ""
-      let length = count(string)
-      if length > 3 {
-        location = Location(jsonValue: string[0 ..< (length - 1)].jsonValue)
-        trigger = Trigger(jsonValue: string[(length - 1) ..< length].jsonValue)
-      }
+    public init?(_ jsonValue: JSONValue?) {
+      if let string = String(jsonValue) {
+        rawValue = 0
+        let length = count(string)
+        if length > 3,
+          let l = Location(string[0 ..< (length - 1)].jsonValue),
+          t = Trigger(string[(length - 1) ..< length].jsonValue)
+        {
+          location = l
+          trigger = t
+        } else { return nil }
+      } else { return nil }
     }
-    public var jsonValue: JSONValue { return "\(location.jsonValue.value as! String)\(trigger.jsonValue.value as! String)".jsonValue }
+
+    public var jsonValue: JSONValue {
+      return "\(location.jsonValue.value as! String)\(trigger.jsonValue.value as! String)".jsonValue
+    }
 
   }
 
@@ -110,7 +121,7 @@ public final class ButtonGroup: RemoteElement {
 
     autohide = preset.autohide ?? false
 
-    if let labelAttributes = preset.labelAttributes { self.labelAttributes.dictionary = OrderedDictionary(labelAttributes) }
+    if let labelAttributes = preset.labelAttributes { self.labelAttributes.dictionary = labelAttributes.storage }
     labelConstraints = preset.labelConstraints
     // if let panelAssignment = preset.panelAssignment { self.panelAssignment = panelAssignment }
   }

@@ -103,8 +103,9 @@ public final class Remote: RemoteElement {
         for (key, json) in panels {
           if let uuid = String(json),
             buttonGroup = subelements.objectPassingTest({($0.0 as! RemoteElement).uuid == uuid}) as? ButtonGroup {
-            let assignment = ButtonGroup.PanelAssignment(jsonValue: .String(key))
-            if assignment != ButtonGroup.PanelAssignment.Unassigned {
+            if let assignment = ButtonGroup.PanelAssignment(.String(key))
+              where assignment != ButtonGroup.PanelAssignment.Unassigned
+            {
               setButtonGroup(buttonGroup, forPanelAssignment: assignment)
             }
           }

@@ -205,6 +205,81 @@ extension TitleAttributes {
     case LineBreakMode          = "line-break-mode"
     case IconTextOrder          = "icon-text-order"
 
+    public var type: JSONValueConvertible.Type {
+      switch self {
+        case .Text:                   return String.self
+        case .IconName:               return String.self
+        case .Font:                   return UIFont.self
+        case .ForegroundColor:        return UIColor.self
+        case .BackgroundColor:        return UIColor.self
+        case .Ligature:               return Int.self
+        case .Shadow:                 return NSShadow.self
+        case .Expansion:              return Float.self
+        case .Obliqueness:            return Float.self
+        case .StrikethroughColor:     return UIColor.self
+        case .UnderlineColor:         return UIColor.self
+        case .BaselineOffset:         return CGFloat.self
+        case .TextEffect:             return String.self
+        case .StrokeWidth:            return Float.self
+        case .StrokeFill:             return Bool.self
+        case .StrokeColor:            return UIColor.self
+        case .UnderlineStyle:         return NSUnderlineStyle.self
+        case .StrikethroughStyle:     return NSUnderlineStyle.self
+        case .Kern:                   return Float.self
+        case .Alignment:              return NSTextAlignment.self
+        case .FirstLineHeadIndent:    return CGFloat.self
+        case .HeadIndent:             return CGFloat.self
+        case .TailIndent:             return CGFloat.self
+        case .LineHeightMultiple:     return CGFloat.self
+        case .MaximumLineHeight:      return CGFloat.self
+        case .MinimumLineHeight:      return CGFloat.self
+        case .LineSpacing:            return CGFloat.self
+        case .ParagraphSpacing:       return CGFloat.self
+        case .ParagraphSpacingBefore: return CGFloat.self
+        case .HyphenationFactor:      return Float.self
+        case .LineBreakMode:          return NSLineBreakMode.self
+        case .IconTextOrder:          return IconTextOrderSpecification.self
+      }
+    }
+
+    public var defaultValue: JSONValueConvertible? {
+      switch self {
+        case .Text:                   return ""
+        case .IconName:               return nil
+        case .Font:                   return UIFont(name: "HelveticaNeue", size: 12.0)
+        case .ForegroundColor:        return UIColor.blackColor()
+        case .BackgroundColor:        return nil
+        case .Ligature:               return 1
+        case .Shadow:                 return nil
+        case .Expansion:              return 0.0
+        case .Obliqueness:            return 0.0
+        case .StrikethroughColor:     return nil
+        case .UnderlineColor:         return nil
+        case .BaselineOffset:         return 0.0
+        case .TextEffect:             return nil
+        case .StrokeWidth:            return 0.0
+        case .StrokeFill:             return false
+        case .StrokeColor:            return nil
+        case .UnderlineStyle:         return NSUnderlineStyle.StyleNone
+        case .StrikethroughStyle:     return NSUnderlineStyle.StyleNone
+        case .Kern:                   return 0.0
+        case .Alignment:              return NSTextAlignment.Natural
+        case .FirstLineHeadIndent:    return 0.0
+        case .HeadIndent:             return 0.0
+        case .TailIndent:             return 0.0
+        case .LineHeightMultiple:     return 0.0
+        case .MaximumLineHeight:      return 0.0
+        case .MinimumLineHeight:      return 0.0
+        case .LineSpacing:            return 0.0
+        case .ParagraphSpacing:       return 0.0
+        case .ParagraphSpacingBefore: return 0.0
+        case .HyphenationFactor:      return 0.0
+        case .LineBreakMode:          return NSLineBreakMode.ByWordWrapping
+        case .IconTextOrder:          return IconTextOrderSpecification.IconText
+      }
+    }
+
+
     public var attributeKey: String? {
       switch self {
         case .Font:               return NSFontAttributeName
@@ -232,11 +307,7 @@ extension TitleAttributes {
 extension TitleAttributes.PropertyKey: EnumerableType {
 
   public static var all: [TitleAttributes.PropertyKey] {
-    return [.Font, .ForegroundColor, .BackgroundColor, .Ligature, .IconName, .Text, .Shadow, .Expansion, .Obliqueness,
-            .StrikethroughColor, .UnderlineColor, .BaselineOffset, .TextEffect, .StrokeWidth, .StrokeColor,
-            .UnderlineStyle, .StrikethroughStyle, .Kern, .HyphenationFactor, .ParagraphSpacingBefore, .LineHeightMultiple,
-            .MaximumLineHeight, .MinimumLineHeight, .LineBreakMode, .TailIndent, .HeadIndent, .FirstLineHeadIndent,
-            .Alignment, .ParagraphSpacing, .LineSpacing, .IconTextOrder]
+    return [.IconName, .Text, .IconTextOrder] + attributeKeys + paragraphKeys
   }
 
   static var paragraphKeys: [TitleAttributes.PropertyKey] {
@@ -279,7 +350,7 @@ public struct TitleAttributes: JSONValueConvertible, JSONValueInitializable {
 
   public var font: UIFont {
     get { return self[.Font] as? UIFont ?? UIFont(name: "HelveticaNeue", size: 12)! }
-    set { self[.Font] = newValue.jsonValue }
+    set { self[.Font] = newValue }
   }
 
   public var foregroundColor: UIColor {
@@ -534,8 +605,8 @@ public struct TitleAttributes: JSONValueConvertible, JSONValueInitializable {
   public mutating func mergeWithTitleAttributes(titleAttributes: TitleAttributes?, mergeKind: MergeKind = .CopyIfNilExisting) {
     if titleAttributes != nil {
       PropertyKey.enumerate {
-        let existingValue: Any? = self[$0]
-        let sourceValue: Any? = titleAttributes![$0]
+        let existingValue = self[$0]
+        let sourceValue = titleAttributes![$0]
         switch mergeKind {
           case .CopyIfNilExisting: if sourceValue != nil && existingValue == nil { self[$0] = sourceValue! }
           case .CopyAllNonNil:     if sourceValue != nil { self[$0] = sourceValue! }
@@ -653,5 +724,55 @@ public struct TitleAttributes: JSONValueConvertible, JSONValueInitializable {
   }
 
   public var jsonValue: JSONValue { return .Object(storage) }
+
+  /**
+  initWithAttributedString:
+
+  :param: attributedString NSAttributedString
+  */
+  public init(attributedString: NSAttributedString) {
+    self.init()
+
+    let attributes = attributedString.attributesAtIndex(0, effectiveRange: nil)
+
+    PropertyKey.enumerateAttributePropertyKeys { (propertyKey: TitleAttributes.PropertyKey) -> Void in
+      if let attributeKey = propertyKey.attributeKey, attribute: AnyObject = attributes[attributeKey] {
+        if let convertible = attribute as? JSONValueConvertible {
+          self[propertyKey] = convertible
+        } else {
+          switch propertyKey {
+            case .UnderlineStyle, .StrikethroughStyle:
+              if let style = NSUnderlineStyle(rawValue: (attribute as! NSNumber).integerValue) {
+                self[propertyKey] = style.jsonValue
+            }
+            default: break
+          }
+        }
+      }
+    }
+
+    if let paragraphStyle = attributes[NSParagraphStyleAttributeName] as? NSParagraphStyle {
+      PropertyKey.enumerateParagraphPropertyKeys({ (propertyKey: TitleAttributes.PropertyKey) -> Void in
+        switch propertyKey {
+          case .HyphenationFactor: self[.HyphenationFactor] = paragraphStyle.hyphenationFactor.jsonValue
+          case .ParagraphSpacingBefore: self[.ParagraphSpacingBefore] = paragraphStyle.paragraphSpacingBefore.jsonValue
+          case .LineHeightMultiple: self[.LineHeightMultiple] = paragraphStyle.lineHeightMultiple.jsonValue
+          case .MaximumLineHeight: self[.MaximumLineHeight] = paragraphStyle.maximumLineHeight.jsonValue
+          case .MinimumLineHeight: self[.MinimumLineHeight] = paragraphStyle.minimumLineHeight.jsonValue
+          case .LineBreakMode: self[.LineBreakMode] = paragraphStyle.lineBreakMode.jsonValue
+          case .TailIndent: self[.TailIndent] = paragraphStyle.tailIndent.jsonValue
+          case .HeadIndent: self[.HeadIndent] = paragraphStyle.headIndent.jsonValue
+          case .FirstLineHeadIndent: self[.FirstLineHeadIndent] = paragraphStyle.firstLineHeadIndent.jsonValue
+          case .Alignment: self[.Alignment] = paragraphStyle.alignment.jsonValue
+          case .ParagraphSpacing: self[.ParagraphSpacing] = paragraphStyle.paragraphSpacing.jsonValue
+          case .LineSpacing: self[.LineSpacing] = paragraphStyle.lineSpacing.jsonValue
+          default: break
+        }
+      })
+
+      self[.Text] = attributedString.string.jsonValue
+    }
+
+  }
 
 }

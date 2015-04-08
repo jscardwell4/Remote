@@ -228,11 +228,11 @@ public class RemoteElement: NamedModelObject {
 
     if let moc = managedObjectContext {
 
-      if let roleJSON = data["role"] { role = Role(jsonValue: roleJSON) }
-      if let keyJSON = String(data["key"]) { key = keyJSON }
-      if let shapeJSON = data["shape"] { shape = Shape(jsonValue: shapeJSON) }
-      if let styleJSON = data["style"] { style = Style(jsonValue: styleJSON) }
-      if let tagJSON = Int16(data["tag"]) { tag = tagJSON }
+      if let role = Role(data["role"]) { self.role = role }
+      if let key = String(data["key"]) { self.key = key }
+      if let shape = Shape(data["shape"]) { self.shape = shape }
+      if let style = Style(data["style"]) { self.style = style }
+      if let tag = Int16(data["tag"]) { self.tag = tag }
 
       if let backgroundColorJSON = ObjectJSONValue(data["background-color"]) {
         for (mode, value) in backgroundColorJSON { setObject(UIColor(value), forKey: "backgroundColor", forMode: mode) }
@@ -245,7 +245,7 @@ public class RemoteElement: NamedModelObject {
       if let backgroundImageJSON = ObjectJSONValue(data["background-image"]) {
         for (mode, jsonValue) in backgroundImageJSON {
           if let value = ObjectJSONValue(jsonValue),
-          image = Image.importObjectWithData(value, context: moc)
+            image = Image.importObjectWithData(value, context: moc)
           {
             setURIForObject(image, forKey: "backgroundImage", forMode: mode)
           }
@@ -713,15 +713,18 @@ extension RemoteElement.BaseType: JSONValueConvertible {
       case .Button:      return "button"
     }
   }
+}
 
-
-  public init(jsonValue: JSONValue) {
-    switch jsonValue.value as? String ?? "" {
-      case RemoteElement.BaseType.Remote.jsonValue.value as! String:      self = .Remote
-      case RemoteElement.BaseType.ButtonGroup.jsonValue.value as! String: self = .ButtonGroup
-      case RemoteElement.BaseType.Button.jsonValue.value as! String:      self = .Button
-      default:                                                            self = .Undefined
-    }
+extension RemoteElement.BaseType: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue?) {
+    if jsonValue != nil {
+      switch jsonValue! {
+        case RemoteElement.BaseType.Remote.jsonValue:      self = .Remote
+        case RemoteElement.BaseType.ButtonGroup.jsonValue: self = .ButtonGroup
+        case RemoteElement.BaseType.Button.jsonValue:      self = .Button
+        default:                                           self = .Undefined
+      }
+    } else { return nil }
   }
 }
 
@@ -737,18 +740,21 @@ extension RemoteElement.Shape: JSONValueConvertible {
       case .Diamond:          return "diamond"
     }
   }
+}
 
-  public init(jsonValue: JSONValue) {
-    switch jsonValue.value as? String ?? "" {
-      case RemoteElement.Shape.RoundedRectangle.jsonValue.value as! String: self = .RoundedRectangle
-      case RemoteElement.Shape.Oval.jsonValue.value as! String:             self = .Oval
-      case RemoteElement.Shape.Rectangle.jsonValue.value as! String:        self = .Rectangle
-      case RemoteElement.Shape.Triangle.jsonValue.value as! String:         self = .Triangle
-      case RemoteElement.Shape.Diamond.jsonValue.value as! String:          self = .Diamond
-      default:                                                              self = .Undefined
-    }
+extension RemoteElement.Shape: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue?) {
+    if jsonValue != nil {
+      switch jsonValue! {
+        case RemoteElement.Shape.RoundedRectangle.jsonValue: self = .RoundedRectangle
+        case RemoteElement.Shape.Oval.jsonValue:             self = .Oval
+        case RemoteElement.Shape.Rectangle.jsonValue:        self = .Rectangle
+        case RemoteElement.Shape.Triangle.jsonValue:         self = .Triangle
+        case RemoteElement.Shape.Diamond.jsonValue:          self = .Diamond
+        default:                                             self = .Undefined
+      }
+    } else { return nil }
   }
-
 }
 
 extension RemoteElement.Style: JSONValueConvertible {
@@ -766,22 +772,26 @@ extension RemoteElement.Style: JSONValueConvertible {
     if self & RemoteElement.Style.Stretchable != nil { segments.append("stretchable") }
     return " ".join(segments).jsonValue
   }
+}
 
-  public init(jsonValue: JSONValue) {
-    let components = split(jsonValue.value as? String ?? ""){$0 == " "}
-    var style = RemoteElement.Style.Undefined
-    for component in components {
-      switch component {
-        case "border":          style = style | RemoteElement.Style.DrawBorder
-        case "stretchable":     style = style | RemoteElement.Style.Stretchable
-        case "gloss", "gloss1": style = style | RemoteElement.Style.GlossStyle1
-        case "gloss2":          style = style | RemoteElement.Style.GlossStyle2
-        case "gloss3":          style = style | RemoteElement.Style.GlossStyle3
-        case "gloss4":          style = style | RemoteElement.Style.GlossStyle4
-        default: break
+extension RemoteElement.Style: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue?) {
+    if let string = String(jsonValue) {
+      let components = split(string){$0 == " "}
+      var style = RemoteElement.Style.Undefined
+      for component in components {
+        switch component {
+          case "border":          style = style | RemoteElement.Style.DrawBorder
+          case "stretchable":     style = style | RemoteElement.Style.Stretchable
+          case "gloss", "gloss1": style = style | RemoteElement.Style.GlossStyle1
+          case "gloss2":          style = style | RemoteElement.Style.GlossStyle2
+          case "gloss3":          style = style | RemoteElement.Style.GlossStyle3
+          case "gloss4":          style = style | RemoteElement.Style.GlossStyle4
+          default: break
+        }
       }
-    }
-    self = style
+      self = style
+    } else { return nil }
   }
 
 }
@@ -841,54 +851,58 @@ extension RemoteElement.Role: JSONValueConvertible {
       default:                                      return "undefined"
     }
   }
+}
 
-  public init(jsonValue: JSONValue) {
-    switch jsonValue.value as? String ?? "" {
-      case RemoteElement.Role.SelectionPanel.jsonValue.value as! String:       self = RemoteElement.Role.SelectionPanel
-      case RemoteElement.Role.Toolbar.jsonValue.value as! String:              self = RemoteElement.Role.Toolbar
-      case RemoteElement.Role.TopToolbar.jsonValue.value as! String:           self = RemoteElement.Role.TopToolbar
-      case RemoteElement.Role.DPad.jsonValue.value as! String:                 self = RemoteElement.Role.DPad
-      case RemoteElement.Role.Numberpad.jsonValue.value as! String:            self = RemoteElement.Role.Numberpad
-      case RemoteElement.Role.Transport.jsonValue.value as! String:            self = RemoteElement.Role.Transport
-      case RemoteElement.Role.Rocker.jsonValue.value as! String:               self = RemoteElement.Role.Rocker
-      case RemoteElement.Role.ToolbarButton.jsonValue.value as! String:        self = RemoteElement.Role.ToolbarButton
-      case RemoteElement.Role.ConnectionStatus.jsonValue.value as! String:     self = RemoteElement.Role.ConnectionStatus
-      case RemoteElement.Role.BatteryStatus.jsonValue.value as! String:        self = RemoteElement.Role.BatteryStatus
-      case RemoteElement.Role.RockerButton.jsonValue.value as! String:         self = RemoteElement.Role.RockerButton
-      case RemoteElement.Role.Top.jsonValue.value as! String:                  self = RemoteElement.Role.Top
-      case RemoteElement.Role.Bottom.jsonValue.value as! String:               self = RemoteElement.Role.Bottom
-      case RemoteElement.Role.PanelButton.jsonValue.value as! String:          self = RemoteElement.Role.PanelButton
-      case RemoteElement.Role.Tuck.jsonValue.value as! String:                 self = RemoteElement.Role.Tuck
-      case RemoteElement.Role.SelectionPanelButton.jsonValue.value as! String: self = RemoteElement.Role.SelectionPanelButton
-      case RemoteElement.Role.DPadButton.jsonValue.value as! String:           self = RemoteElement.Role.DPadButton
-      case RemoteElement.Role.Up.jsonValue.value as! String:                   self = RemoteElement.Role.Up
-      case RemoteElement.Role.Down.jsonValue.value as! String:                 self = RemoteElement.Role.Down
-      case RemoteElement.Role.Left.jsonValue.value as! String:                 self = RemoteElement.Role.Left
-      case RemoteElement.Role.Right.jsonValue.value as! String:                self = RemoteElement.Role.Right
-      case RemoteElement.Role.Center.jsonValue.value as! String:               self = RemoteElement.Role.Center
-      case RemoteElement.Role.NumberpadButton.jsonValue.value as! String:      self = RemoteElement.Role.NumberpadButton
-      case RemoteElement.Role.One.jsonValue.value as! String:                  self = RemoteElement.Role.One
-      case RemoteElement.Role.Two.jsonValue.value as! String:                  self = RemoteElement.Role.Two
-      case RemoteElement.Role.Three.jsonValue.value as! String:                self = RemoteElement.Role.Three
-      case RemoteElement.Role.Four.jsonValue.value as! String:                 self = RemoteElement.Role.Four
-      case RemoteElement.Role.Five.jsonValue.value as! String:                 self = RemoteElement.Role.Five
-      case RemoteElement.Role.Six.jsonValue.value as! String:                  self = RemoteElement.Role.Six
-      case RemoteElement.Role.Seven.jsonValue.value as! String:                self = RemoteElement.Role.Seven
-      case RemoteElement.Role.Eight.jsonValue.value as! String:                self = RemoteElement.Role.Eight
-      case RemoteElement.Role.Nine.jsonValue.value as! String:                 self = RemoteElement.Role.Nine
-      case RemoteElement.Role.Zero.jsonValue.value as! String:                 self = RemoteElement.Role.Zero
-      case RemoteElement.Role.Aux1.jsonValue.value as! String:                 self = RemoteElement.Role.Aux1
-      case RemoteElement.Role.Aux2.jsonValue.value as! String:                 self = RemoteElement.Role.Aux2
-      case RemoteElement.Role.TransportButton.jsonValue.value as! String:      self = RemoteElement.Role.TransportButton
-      case RemoteElement.Role.Play.jsonValue.value as! String:                 self = RemoteElement.Role.Play
-      case RemoteElement.Role.Stop.jsonValue.value as! String:                 self = RemoteElement.Role.Stop
-      case RemoteElement.Role.Pause.jsonValue.value as! String:                self = RemoteElement.Role.Pause
-      case RemoteElement.Role.Skip.jsonValue.value as! String:                 self = RemoteElement.Role.Skip
-      case RemoteElement.Role.Replay.jsonValue.value as! String:               self = RemoteElement.Role.Replay
-      case RemoteElement.Role.FF.jsonValue.value as! String:                   self = RemoteElement.Role.FF
-      case RemoteElement.Role.Rewind.jsonValue.value as! String:               self = RemoteElement.Role.Rewind
-      case RemoteElement.Role.Record.jsonValue.value as! String:               self = RemoteElement.Role.Record
-      default:                                                                 self = RemoteElement.Role.Undefined
-    }
+extension RemoteElement.Role: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue?) {
+    if jsonValue != nil {
+      switch jsonValue! {
+        case RemoteElement.Role.SelectionPanel.jsonValue:       self = RemoteElement.Role.SelectionPanel
+        case RemoteElement.Role.Toolbar.jsonValue:              self = RemoteElement.Role.Toolbar
+        case RemoteElement.Role.TopToolbar.jsonValue:           self = RemoteElement.Role.TopToolbar
+        case RemoteElement.Role.DPad.jsonValue:                 self = RemoteElement.Role.DPad
+        case RemoteElement.Role.Numberpad.jsonValue:            self = RemoteElement.Role.Numberpad
+        case RemoteElement.Role.Transport.jsonValue:            self = RemoteElement.Role.Transport
+        case RemoteElement.Role.Rocker.jsonValue:               self = RemoteElement.Role.Rocker
+        case RemoteElement.Role.ToolbarButton.jsonValue:        self = RemoteElement.Role.ToolbarButton
+        case RemoteElement.Role.ConnectionStatus.jsonValue:     self = RemoteElement.Role.ConnectionStatus
+        case RemoteElement.Role.BatteryStatus.jsonValue:        self = RemoteElement.Role.BatteryStatus
+        case RemoteElement.Role.RockerButton.jsonValue:         self = RemoteElement.Role.RockerButton
+        case RemoteElement.Role.Top.jsonValue:                  self = RemoteElement.Role.Top
+        case RemoteElement.Role.Bottom.jsonValue:               self = RemoteElement.Role.Bottom
+        case RemoteElement.Role.PanelButton.jsonValue:          self = RemoteElement.Role.PanelButton
+        case RemoteElement.Role.Tuck.jsonValue:                 self = RemoteElement.Role.Tuck
+        case RemoteElement.Role.SelectionPanelButton.jsonValue: self = RemoteElement.Role.SelectionPanelButton
+        case RemoteElement.Role.DPadButton.jsonValue:           self = RemoteElement.Role.DPadButton
+        case RemoteElement.Role.Up.jsonValue:                   self = RemoteElement.Role.Up
+        case RemoteElement.Role.Down.jsonValue:                 self = RemoteElement.Role.Down
+        case RemoteElement.Role.Left.jsonValue:                 self = RemoteElement.Role.Left
+        case RemoteElement.Role.Right.jsonValue:                self = RemoteElement.Role.Right
+        case RemoteElement.Role.Center.jsonValue:               self = RemoteElement.Role.Center
+        case RemoteElement.Role.NumberpadButton.jsonValue:      self = RemoteElement.Role.NumberpadButton
+        case RemoteElement.Role.One.jsonValue:                  self = RemoteElement.Role.One
+        case RemoteElement.Role.Two.jsonValue:                  self = RemoteElement.Role.Two
+        case RemoteElement.Role.Three.jsonValue:                self = RemoteElement.Role.Three
+        case RemoteElement.Role.Four.jsonValue:                 self = RemoteElement.Role.Four
+        case RemoteElement.Role.Five.jsonValue:                 self = RemoteElement.Role.Five
+        case RemoteElement.Role.Six.jsonValue:                  self = RemoteElement.Role.Six
+        case RemoteElement.Role.Seven.jsonValue:                self = RemoteElement.Role.Seven
+        case RemoteElement.Role.Eight.jsonValue:                self = RemoteElement.Role.Eight
+        case RemoteElement.Role.Nine.jsonValue:                 self = RemoteElement.Role.Nine
+        case RemoteElement.Role.Zero.jsonValue:                 self = RemoteElement.Role.Zero
+        case RemoteElement.Role.Aux1.jsonValue:                 self = RemoteElement.Role.Aux1
+        case RemoteElement.Role.Aux2.jsonValue:                 self = RemoteElement.Role.Aux2
+        case RemoteElement.Role.TransportButton.jsonValue:      self = RemoteElement.Role.TransportButton
+        case RemoteElement.Role.Play.jsonValue:                 self = RemoteElement.Role.Play
+        case RemoteElement.Role.Stop.jsonValue:                 self = RemoteElement.Role.Stop
+        case RemoteElement.Role.Pause.jsonValue:                self = RemoteElement.Role.Pause
+        case RemoteElement.Role.Skip.jsonValue:                 self = RemoteElement.Role.Skip
+        case RemoteElement.Role.Replay.jsonValue:               self = RemoteElement.Role.Replay
+        case RemoteElement.Role.FF.jsonValue:                   self = RemoteElement.Role.FF
+        case RemoteElement.Role.Rewind.jsonValue:               self = RemoteElement.Role.Rewind
+        case RemoteElement.Role.Record.jsonValue:               self = RemoteElement.Role.Record
+        default:                                                self = RemoteElement.Role.Undefined
+      }
+    } else { return nil }
   }
 }
