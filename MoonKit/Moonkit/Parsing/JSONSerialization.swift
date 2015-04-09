@@ -165,36 +165,51 @@ public class JSONSerialization {
       where !handledError(NSFileReadUnknownError)
     {
       // Look for include entries in the file-loaded string
-      let includePattern = ~/"<@include ([^>]+)>"
       let directory = filePath.stringByDeletingLastPathComponent
-      var offset = 0 // Holds the over/under from making substitutions in string
+      while parseIncludeDirectives(&string, directory: directory, error: &localError) > 0 { continue }
 
-      // Iterate through matches for pattern
-      for range in compressed(string.rangesForCapture(0, byMatching: includePattern)) {
-
-        let adjustedRange = range + offset
-
-        // Get the name of the file to include
-        if let file = String(Array(string)[adjustedRange]).substringForCapture(1, inFirstMatchFor:includePattern),
-          text = String(contentsOfFile: "\(directory)/\(file)", encoding: NSUTF8StringEncoding, error: &localError)
-          where !handledError(NSFileReadUnknownError)
-        {
-          // Replace include directive with the text
-          let prefix = string[0..<adjustedRange.startIndex]
-          let suffix = string[adjustedRange.endIndex..<string.length]
-          string = prefix + text + suffix
-//          string[adjustedRange] = text
-          offset += text.length - count(range) // Update `offset`
-
-        } else { return nil }
-      }
-
-      return objectByParsingString(string, options: options, error: error)
+      return handledError(NSFileReadUnknownError) ? nil : objectByParsingString(string, options: options, error: error)
 
     }
 
     return nil
 
+  }
+
+  /**
+  Look for "<@include FileName.json>" directives in the specified string and attempt to replace with file's content
+
+  :param: string String
+  :param: directory String
+  :param: error NSErrorPointer
+
+  :returns: Int The number of directives replaced or -1 if a replacement fails
+  */
+  private static func parseIncludeDirectives(inout string: String, directory: String, error: NSErrorPointer) -> Int {
+    let includePattern = ~/"<@include ([^>]+)>"
+    var offset = 0 // Holds the over/under from making substitutions in string
+    var includeCount = 0
+
+    // Iterate through matches for pattern
+    for range in compressed(string.rangesForCapture(0, byMatching: includePattern)) {
+
+      includeCount++
+
+      let adjustedRange = range + offset
+
+      // Get the name of the file to include
+      if let file = String(Array(string)[adjustedRange]).substringForCapture(1, inFirstMatchFor:includePattern),
+        text = String(contentsOfFile: "\(directory)/\(file)", encoding: NSUTF8StringEncoding, error: error)
+      {
+        // Replace include directive with the text
+        let prefix = string[0..<adjustedRange.startIndex]
+        let suffix = string[adjustedRange.endIndex..<string.length]
+        string = prefix + text + suffix
+        offset += text.length - count(range) // Update `offset`
+
+      } else { return -1 }
+    }
+    return includeCount
   }
 
 }

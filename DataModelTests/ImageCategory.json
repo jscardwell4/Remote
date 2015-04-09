@@ -1,0 +1,6 @@
+{
+  "name": "Backgrounds",
+  "images": [
+    <@include Image.json>
+  ]
+}

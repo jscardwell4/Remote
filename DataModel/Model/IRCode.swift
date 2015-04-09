@@ -19,9 +19,26 @@ final public class IRCode: EditableModelObject {
   @NSManaged public var prontoHex: String?
   @NSManaged public var repeatCount: Int16
   @NSManaged public var setsDeviceInput: Bool
-  @NSManaged public var device: ComponentDevice!
+  @NSManaged public var device: ComponentDevice?
   @NSManaged public var sendCommands: NSSet
-  @NSManaged public var codeSet: IRCodeSet
+
+  public var codeSet: IRCodeSet {
+    get {
+      willAccessValueForKey("codeSet")
+      var codeSet = primitiveValueForKey("codeSet") as? IRCodeSet
+      didAccessValueForKey("codeSet")
+      if codeSet == nil {
+        codeSet = IRCodeSet.defaultCollectionInContext(managedObjectContext!)
+        setPrimitiveValue(codeSet, forKey: "codeSet")
+      }
+      return codeSet!
+    }
+    set {
+      willChangeValueForKey("codeSet")
+      setPrimitiveValue(newValue, forKey: "codeSet")
+      didChangeValueForKey("codeSet")
+    }
+  }
 
   public var manufacturer: Manufacturer { return codeSet.manufacturer }
 
@@ -106,8 +123,8 @@ final public class IRCode: EditableModelObject {
 
   override public var description: String {
     return "\(super.description)\n\t" + "\n\t".join(
-      "code set = \(codeSet.index.rawValue)",
-      "device = \(device?.name ?? nil)",
+      "code set = \(codeSet.index)",
+      "device = \(toString(device?.name))",
       "sets device input = \(setsDeviceInput)",
       "frequency = \(frequency)",
       "offset = \(offset)",
@@ -150,7 +167,7 @@ extension IRCode: PathIndexedModel {
     if let codeSet = IRCodeSet.modelWithIndex(index[0...1], context: context) {
       return objectMatchingPredicate(∀"codeSet.uuid == '\(codeSet.uuid)' AND name == '\(index[2].pathDecoded)'", context: context)
     } else {
-      MSLogInfo("failed to locate code set for index '\(index[0...1])'")
+      MSLogVerbose("failed to locate code set for index '\(index[0...1])'")
       return nil
     }
   }

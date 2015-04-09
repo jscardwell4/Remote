@@ -14,21 +14,27 @@ class MoonKit_Tests: XCTestCase {
 
   override class func initialize() {
     super.initialize()
-    MSLog.addTaggingTTYLogger()
-    MSLog.addTaggingASLLogger()
+    if self === MoonKit_Tests.self {
+      MSLog.addTaggingTTYLogger()
+      MSLog.addTaggingASLLogger()
+    }
   }
 
   static let filePaths: [String] = {
     var filePaths: [String] = []
     if let bundlePath = NSUserDefaults.standardUserDefaults().stringForKey("XCTestedBundlePath"),
-      let bundle = NSBundle(path: bundlePath),
-      let example1JSONFilePath = bundle.pathForResource("example1", ofType: "json"),
-      let example2JSONFilePath = bundle.pathForResource("example2", ofType: "json"),
-      let example3JSONFilePath = bundle.pathForResource("example3", ofType: "json")
+      bundle = NSBundle(path: bundlePath),
+      example1JSONFilePath = bundle.pathForResource("example1", ofType: "json"),
+      example2JSONFilePath = bundle.pathForResource("example2", ofType: "json"),
+      example3JSONFilePath = bundle.pathForResource("example3", ofType: "json"),
+      example4JSONFilePath = bundle.pathForResource("example4", ofType: "json"),
+      example5JSONFilePath = bundle.pathForResource("example5", ofType: "json")
     {
       filePaths.append(example1JSONFilePath)
       filePaths.append(example2JSONFilePath)
       filePaths.append(example3JSONFilePath)
+      filePaths.append(example4JSONFilePath)
+      filePaths.append(example5JSONFilePath)
     }
     return filePaths
   }()
@@ -209,7 +215,20 @@ class MoonKit_Tests: XCTestCase {
     {
       let expectedStringValue = String(contentsOfFile: filePaths[1], encoding: NSUTF8StringEncoding, error: nil)!
       XCTAssertNotEqual(object.stringValue, expectedStringValue, "unexpected result from parse")
-      println(object.prettyStringValue)
+    } else { XCTFail("file parse failed to create an object") }
+
+    error = nil
+    if let object = JSONSerialization.objectByParsingFile(filePaths[3], options: .InflateKeypaths, error: &error)
+      where !MSHandleError(error, message: "trouble parsing file '\(filePaths[3])'")
+    {
+
+    } else { XCTFail("file parse failed to create an object") }
+
+    error = nil
+    if let object = JSONSerialization.objectByParsingFile(filePaths[4], options: .InflateKeypaths, error: &error)
+      where !MSHandleError(error, message: "trouble parsing file '\(filePaths[4])'")
+    {
+
     } else { XCTFail("file parse failed to create an object") }
 
   }

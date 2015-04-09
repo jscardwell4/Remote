@@ -19,11 +19,28 @@ public final class ComponentDevice: EditableModelObject {
   @NSManaged public var port: Int16
   @NSManaged public var power: Bool
   @NSManaged public var codeSet: IRCodeSet?
-  @NSManaged public var manufacturer: Manufacturer
   @NSManaged public var networkDevice: NetworkDevice?
   @NSManaged public var offCommand: SendIRCommand?
   @NSManaged public var onCommand: SendIRCommand?
   @NSManaged public var powerCommands: Set<PowerCommand>
+
+  public var manufacturer: Manufacturer {
+    get {
+      willAccessValueForKey("manufacturer")
+      var manufacturer = primitiveValueForKey("manufacturer") as? Manufacturer
+      didAccessValueForKey("manufacturer")
+      if manufacturer == nil {
+        manufacturer = Manufacturer.defaultCollectionInContext(managedObjectContext!)
+        setPrimitiveValue(manufacturer, forKey: "manufacturer")
+      }
+      return manufacturer!
+    }
+    set {
+      willChangeValueForKey("manufacturer")
+      setPrimitiveValue(newValue, forKey: "manufacturer")
+      didChangeValueForKey("manufacturer")
+    }
+  }
 
   private var ignoreNextPowerCommand = false
 
@@ -75,7 +92,10 @@ public final class ComponentDevice: EditableModelObject {
     updateRelationshipFromData(data, forAttribute: "offCommand")
     updateRelationshipFromData(data, forAttribute: "manufacturer")
     updateRelationshipFromData(data, forAttribute: "networkDevice")
-    updateRelationshipFromData(data, forAttribute: "codeSet")
+
+    if let codeSet: IRCodeSet = relatedObjectWithData(data, forAttribute: "codeSet") {
+      self.codeSet = codeSet
+    }
 
 //    if let codeSetData = data["code-set"] as? [String:AnyObject] {
 //      if let rawCodeSetIndex = codeSetData["index"] as? String, codeSetIndex = PathIndex(rawValue: rawCodeSetIndex) {
@@ -94,11 +114,8 @@ public final class ComponentDevice: EditableModelObject {
       "port = \(port)",
       "power = \(power)",
       "manufacturer = \(manufacturer.index)",
-      "code set = "
+      "code set = \(toString(codeSet?.index))"
     )
-    if let codeSet = self.codeSet {
-      description += codeSet.index.rawValue
-    } else { description += "nil" }
     return description
   }
 

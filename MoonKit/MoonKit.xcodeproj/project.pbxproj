@@ -207,6 +207,9 @@
 		C23592F419C8E04200920F8D /* BitArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592DE19C8E04200920F8D /* BitArray.swift */; };
 		C23592F519C8E04200920F8D /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592DF19C8E04200920F8D /* OrderedDictionary.swift */; };
 		C23592FE19C8E04200920F8D /* String+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592E919C8E04200920F8D /* String+MoonKitAdditions.swift */; };
+		C23F07011AD59A90003BD28B /* ObjcIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23F07001AD59A90003BD28B /* ObjcIO.swift */; };
+		C23F07211AD5AABA003BD28B /* example4.json in Resources */ = {isa = PBXBuildFile; fileRef = C23F07201AD5AABA003BD28B /* example4.json */; };
+		C23F07231AD5ACCC003BD28B /* example5.json in Resources */ = {isa = PBXBuildFile; fileRef = C23F07221AD5ACCC003BD28B /* example5.json */; };
 		C24416331ACB16F8007EDEFE /* NSSet+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24416321ACB16F8007EDEFE /* NSSet+MoonKitAdditions.swift */; };
 		C24D19EA19EDAE1500CC3CD9 /* InlinePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24D19E919EDAE1500CC3CD9 /* InlinePickerView.swift */; };
 		C24E0EB91AC6141B0044248E /* Bool+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24E0EB81AC6141B0044248E /* Bool+MoonKitAdditions.swift */; };
@@ -307,6 +310,9 @@
 		C23592EB19C8E04200920F8D /* UIFont+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C23592EE19C8E04200920F8D /* Generic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Generic.swift; sourceTree = "<group>"; };
 		C23592F019C8E04200920F8D /* FontAwesomeIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontAwesomeIcon.swift; sourceTree = "<group>"; };
+		C23F07001AD59A90003BD28B /* ObjcIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjcIO.swift; sourceTree = "<group>"; };
+		C23F07201AD5AABA003BD28B /* example4.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = example4.json; sourceTree = "<group>"; };
+		C23F07221AD5ACCC003BD28B /* example5.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = example5.json; sourceTree = "<group>"; };
 		C24416321ACB16F8007EDEFE /* NSSet+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSSet+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C2456BE319C39C8A007162F3 /* NSIndexPath+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexPath+MSKitAdditions.h"; sourceTree = "<group>"; };
 		C2456BE419C39C8A007162F3 /* NSIndexPath+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+MSKitAdditions.m"; sourceTree = "<group>"; };
@@ -652,6 +658,7 @@
 				C23592EE19C8E04200920F8D /* Generic.swift */,
 				C216E73F19CBAE0A0052E98A /* Logging.swift */,
 				C2064FF91A13C05900342FDE /* Operators.swift */,
+				C23F07001AD59A90003BD28B /* ObjcIO.swift */,
 			);
 			path = Functions;
 			sourceTree = "<group>";
@@ -753,6 +760,8 @@
 				C2A70E4C1ACD8F95009C2CF7 /* example1.json */,
 				C2CE82741AD07D0400406CE7 /* example2.json */,
 				C2CE82761AD08D8F00406CE7 /* example3.json */,
+				C23F07201AD5AABA003BD28B /* example4.json */,
+				C23F07221AD5ACCC003BD28B /* example5.json */,
 			);
 			path = "MoonKit Tests";
 			sourceTree = "<group>";
@@ -1351,6 +1360,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2CE82771AD08D8F00406CE7 /* example3.json in Resources */,
+				C23F07211AD5AABA003BD28B /* example4.json in Resources */,
+				C23F07231AD5ACCC003BD28B /* example5.json in Resources */,
 				C2A70E4D1ACD8F95009C2CF7 /* example1.json in Resources */,
 				C2CE82751AD07D0400406CE7 /* example2.json in Resources */,
 			);
@@ -1458,6 +1469,7 @@
 				C2358F6419C78E0C00920F8D /* MSPinchGestureRecognizer.m in Sources */,
 				C2358F6519C78E0C00920F8D /* MSSwipeGestureRecognizer.m in Sources */,
 				C2358F6619C78E0C00920F8D /* MSResizingLayer.m in Sources */,
+				C23F07011AD59A90003BD28B /* ObjcIO.swift in Sources */,
 				C2358F6719C78E0C00920F8D /* MSAssertionHandler.m in Sources */,
 				C2CEFF2C1A328B2000F3BE24 /* FloatInputView.swift in Sources */,
 				C2358F6819C78E0C00920F8D /* MSBitVector.m in Sources */,

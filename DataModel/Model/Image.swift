@@ -51,7 +51,24 @@ final public class Image: EditableModelObject {
   @NSManaged public var topCap: Int32
   @NSManaged public var remoteElements: NSSet
   @NSManaged public var views: NSSet
-  @NSManaged public var imageCategory: ImageCategory
+
+  public var imageCategory: ImageCategory {
+    get {
+      willAccessValueForKey("imageCategory")
+      var category = primitiveValueForKey("imageCategory") as? ImageCategory
+      didAccessValueForKey("imageCategory")
+      if category == nil {
+        category = ImageCategory.defaultCollectionInContext(managedObjectContext!)
+        setPrimitiveValue(category, forKey: "imageCategory")
+      }
+      return category!
+    }
+    set {
+      willChangeValueForKey("imageCategory")
+      setPrimitiveValue(newValue, forKey: "imageCategory")
+      didChangeValueForKey("imageCategory")
+    }
+  }
 
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
@@ -102,7 +119,7 @@ final public class Image: EditableModelObject {
       "asset name = \(assetName)",
       "left cap = \(leftCap)",
       "top cap = \(topCap)",
-      "catgegory = \(imageCategory.index.rawValue)"
+      "category = \(imageCategory.index)"
     )
   }
 

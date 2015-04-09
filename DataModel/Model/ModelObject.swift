@@ -379,8 +379,18 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
       relatedObject = relatedType.importObjectWithData(data, context: moc) where !relationship.toMany
     {
       setPrimitiveValue(relatedObject, forKey: relationship.name)
-      if let inverseAttributeName = relationship.inverseRelationship?.name {
-        relatedObject.setPrimitiveValue(self, forKey: inverseAttributeName)
+      if let inverse = relationship.inverseRelationship {
+        if inverse.toMany {
+          if inverse.ordered {
+            let inverseRelatedSet = relatedObject.mutableOrderedSetValueForKey(inverse.name)
+            inverseRelatedSet.addObject(self)
+          } else {
+            let inverseRelatedSet = relatedObject.mutableSetValueForKey(inverse.name)
+            inverseRelatedSet.addObject(self)
+          }
+        } else {
+          relatedObject.setPrimitiveValue(self, forKey: inverse.name)
+        }
         return true
       }
     }
@@ -421,11 +431,11 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
 
   :returns: T?
   */
-  public func relatedObjectWithData<T:ModelObject>(data: ObjectJSONValue, forKey key: String, lookupKey: String? = nil) -> T? {
-    if let relationshipDescription = entity.relationshipsByName[key] as? NSRelationshipDescription,
+  public func relatedObjectWithData<T:ModelObject>(data: ObjectJSONValue, forAttribute attribute: String, lookupKey: String? = nil) -> T? {
+    if let relationshipDescription = entity.relationshipsByName[attribute] as? NSRelationshipDescription,
       relatedTypeName = relationshipDescription.destinationEntity?.managedObjectClassName,
       relatedType = NSClassFromString(relatedTypeName) as? ModelObject.Type,
-      relatedObjectData = ObjectJSONValue(data[lookupKey ?? key.dashcaseString] ?? .Null),
+      relatedObjectData = ObjectJSONValue(data[lookupKey ?? attribute.dashcaseString]),
       moc = managedObjectContext
     {
       return relatedType.objectWithData(relatedObjectData, context: moc) as? T

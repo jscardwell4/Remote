@@ -258,14 +258,14 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
     return "\(super.description)\n\t" + "\n\t".join(
       description,
       "first item = \(firstItem.index)",
-      "second item = \(secondItem?.index ?? nil)",
+      "second item = \(toString(secondItem?.index))",
       "first attribute = \(firstAttribute)",
       "second attribute = \(secondAttribute)",
       "multiplier = \(multiplier)",
       "constant = \(constant)",
       "identifier = \(identifier)",
       "priority = \(priority)",
-      "owner = \(owner?.index ?? nil)"
+      "owner = \(toString(owner?.index))"
     )
   }
 

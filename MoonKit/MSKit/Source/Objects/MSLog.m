@@ -495,7 +495,7 @@
     logFormatter.includeContext          = YES;
     logFormatter.includeTimestamp        = YES;
     logFormatter.addReturnAfterPrefix    = NO;
-    logFormatter.includeObjectName       = YES;
+    logFormatter.includeObjectName       = NO;
     logFormatter.includeSEL              = YES;
     logFormatter.addReturnAfterSEL       = YES;
     logFormatter.addReturnAfterObj       = NO;

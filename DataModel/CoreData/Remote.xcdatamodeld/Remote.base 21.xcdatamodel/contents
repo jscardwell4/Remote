@@ -14,7 +14,7 @@
     <entity name="ActivityCommand" representedClassName="ActivityCommand" parentEntity="Command" syncable="YES">
         <relationship name="activity" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" inverseName="commands" inverseEntity="Activity" syncable="YES"/>
     </entity>
-    <entity name="ActivityController" representedClassName="RemoteController" syncable="YES">
+    <entity name="ActivityController" representedClassName="ActivityController" syncable="YES">
         <attribute name="uuid" attributeType="String" regularExpressionString="(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?" syncable="YES"/>
         <relationship name="currentActivity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" inverseName="controllerCurrent" inverseEntity="Activity" syncable="YES"/>
         <relationship name="currentRemote" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Remote" inverseName="controllerCurrent" inverseEntity="Remote" syncable="YES"/>
@@ -397,6 +397,7 @@
         <element name="ISYDeviceGroup" positionX="0" positionY="0" width="128" height="165"/>
         <element name="ISYDeviceNode" positionX="0" positionY="0" width="128" height="255"/>
         <element name="ITachDevice" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="JSONStorage" positionX="36" positionY="153" width="128" height="225"/>
         <element name="MacroCommand" positionX="0" positionY="0" width="128" height="90"/>
         <element name="Manufacturer" positionX="0" positionY="0" width="128" height="135"/>
         <element name="NetworkDevice" positionX="0" positionY="0" width="128" height="135"/>
@@ -408,6 +409,5 @@
         <element name="SendIRCommand" positionX="0" positionY="0" width="128" height="118"/>
         <element name="SwitchCommand" positionX="0" positionY="0" width="128" height="75"/>
         <element name="SystemCommand" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="JSONStorage" positionX="36" positionY="153" width="128" height="225"/>
     </elements>
 </model>

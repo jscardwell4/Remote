@@ -407,6 +407,21 @@ public func ∌ <T, U:IntervalType where T == U.Bound>(lhs:U, rhs:T) -> Bool { r
 public func ∌<T:Equatable, S:SequenceType where S.Generator.Element == T>(lhs:S, rhs:T) -> Bool { return !(lhs ∋ rhs) }
 
 /**
+toString:
+
+:param: x T?
+
+:returns: String
+*/
+public func toString<T>(x: T?) -> String {
+  if let xx = x {
+    return toString(xx)
+  } else {
+    return "nil"
+  }
+}
+
+/**
 setOption:s:
 
 :param: o T

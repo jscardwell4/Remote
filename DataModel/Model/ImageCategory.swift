@@ -55,10 +55,11 @@ final public class ImageCategory: EditableModelObject {
   }
 
   override public var description: String {
-    var description = "\(super.description)\n\t" + "\n\t".join(
+    let description = "\(super.description)\n\t" + "\n\t".join(
       "image count = \(images.count)",
-      "subcategories = [" + ", ".join(map(childCategories, {$0.name})) + "]")
-    description += "\nparent = " + (parentCategory?.name ?? "nil")
+      "subcategories = [" + ", ".join(map(childCategories, {$0.name})) + "]",
+      "parent = " + (toString(parentCategory?.name))
+    )
     return description
   }
 }
@@ -92,3 +93,16 @@ extension ImageCategory: ModelCollection {
 extension ImageCategory: NestingModelCollection {
   public var collections: [ModelCollection] { return sortedByName(childCategories) }
 }
+
+extension ImageCategory: DefaultingModelCollection {
+  public static func defaultCollectionInContext(context: NSManagedObjectContext) -> ImageCategory {
+    let categoryName = "Uncategorized"
+    if let category = modelWithIndex(PathIndex(categoryName)!, context: context) { return category }
+    else {
+      let category = self(context: context)
+      category.name = categoryName
+      return category
+    }
+  }
+}
+

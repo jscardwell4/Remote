@@ -56,8 +56,9 @@ final public class PresetCategory: EditableModelObject {
   override public var description: String {
     var description = "\(super.description)\n\t" + "\n\t".join(
       "presets count = \(presets.count)",
-      "subcategories = [" + ", ".join(map(childCategories, {$0.name})) + "]")
-    description += "\nparent = " + (parentCategory?.index.rawValue ?? "nil")
+      "subcategories = [" + ", ".join(map(childCategories, {$0.name})) + "]",
+      "parent = \(toString(parentCategory?.index))"
+    )
     return description
   }
 
@@ -95,4 +96,16 @@ extension PresetCategory: ModelCollection {
 
 extension PresetCategory: NestingModelCollection {
   public var collections: [ModelCollection] { return sortedByName(childCategories) }
+}
+
+extension PresetCategory: DefaultingModelCollection {
+  public static func defaultCollectionInContext(context: NSManagedObjectContext) -> PresetCategory {
+    let categoryName = "Uncategorized"
+    if let category = modelWithIndex(PathIndex(categoryName)!, context: context) { return category }
+    else {
+      let category = self(context: context)
+      category.name = categoryName
+      return category
+    }
+  }
 }

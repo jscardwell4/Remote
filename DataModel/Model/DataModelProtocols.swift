@@ -41,3 +41,7 @@ public typealias NamedModel = protocol<Model, DynamicallyNamed>
 @objc public protocol NestingModelCollection: ModelCollection {
   optional var collections: [ModelCollection] { get }
 }
+
+@objc public protocol DefaultingModelCollection: ModelCollection {
+  static func defaultCollectionInContext(context: NSManagedObjectContext) -> Self
+}

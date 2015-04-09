@@ -601,8 +601,8 @@ public class RemoteElement: NamedModelObject {
     private(set) public var rawValue: Int
     public init(rawValue: Int) { self.rawValue = rawValue & 0b0011_1111 }
     public init(nilLiteral:()) { rawValue = 0 }
-    public static var allZeros:       Style { return Style.Undefined }
-    public static var Undefined:      Style = Style(rawValue: 0b0000_0000)
+    public static var allZeros:       Style { return Style.None }
+    public static var None:           Style = Style(rawValue: 0b0000_0000)
     public static var ApplyGloss:     Style = Style(rawValue: 0b0000_0001)
     public static var DrawBorder:     Style = Style(rawValue: 0b0000_0010)
     public static var Stretchable:    Style = Style(rawValue: 0b0000_0100)
@@ -704,6 +704,10 @@ public class RemoteElement: NamedModelObject {
 
 }
 
+extension RemoteElement.BaseType: Printable {
+  public var description: String { return String(jsonValue)! }
+}
+
 extension RemoteElement.BaseType: JSONValueConvertible {
   public var jsonValue: JSONValue {
     switch self {
@@ -728,6 +732,9 @@ extension RemoteElement.BaseType: JSONValueInitializable {
   }
 }
 
+extension RemoteElement.Shape: Printable {
+  public var description: String { return String(jsonValue)! }
+}
 
 extension RemoteElement.Shape: JSONValueConvertible {
   public var jsonValue: JSONValue {
@@ -757,6 +764,10 @@ extension RemoteElement.Shape: JSONValueInitializable {
   }
 }
 
+extension RemoteElement.Style: Printable {
+  public var description: String { return String(jsonValue)! }
+}
+
 extension RemoteElement.Style: JSONValueConvertible {
 
   public var jsonValue: JSONValue {
@@ -770,6 +781,7 @@ extension RemoteElement.Style: JSONValueConvertible {
     }
     if self & RemoteElement.Style.DrawBorder != nil { segments.append("border") }
     if self & RemoteElement.Style.Stretchable != nil { segments.append("stretchable") }
+    if segments.isEmpty { segments.append("none") }
     return " ".join(segments).jsonValue
   }
 }
@@ -778,7 +790,7 @@ extension RemoteElement.Style: JSONValueInitializable {
   public init?(_ jsonValue: JSONValue?) {
     if let string = String(jsonValue) {
       let components = split(string){$0 == " "}
-      var style = RemoteElement.Style.Undefined
+      var style = RemoteElement.Style.None
       for component in components {
         switch component {
           case "border":          style = style | RemoteElement.Style.DrawBorder
@@ -798,6 +810,10 @@ extension RemoteElement.Style: JSONValueInitializable {
 
 extension RemoteElement.Role: Hashable {
   public var hashValue: Int { return rawValue }
+}
+
+extension RemoteElement.Role: Printable {
+  public var description: String { return String(jsonValue)! }
 }
 
 extension RemoteElement.Role: JSONValueConvertible {

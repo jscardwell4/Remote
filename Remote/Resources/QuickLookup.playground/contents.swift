@@ -27,3 +27,26 @@ for h in hex {
   let rgba = hexToRGBA(h)
   let color = UIColor(red: rgba.0, green: rgba.1, blue: rgba.2, alpha: rgba.3)
 }
+
+class BumFuck: NSObject, Printable {
+  override var description: String { return "I'm a bum fuck" }
+}
+
+let fakeBumFuck: BumFuck? = nil
+let realBumFuck: BumFuck? = BumFuck()
+println("fakeBumFuck = \(fakeBumFuck ?? nil)")
+println("realBumFuck = \(toString(realBumFuck!))")
+
+postfix operator -?? {}
+postfix func -??(lhs: AnyObject?) -> String {
+  return toString(lhs != nil ? lhs! : "nil")
+}
+func toString<T>(x: T?) -> String {
+  if let xx = x {
+    return toString(xx)
+  } else {
+    return "nil"
+  }
+}
+realBumFuck-??
+println("realBumFuck = \(toString(realBumFuck))")

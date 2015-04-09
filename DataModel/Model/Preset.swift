@@ -34,7 +34,25 @@ final public class Preset: EditableModelObject {
       didChangeValueForKey("storage")
     }
   }
-  @NSManaged public var presetCategory: PresetCategory
+  
+  public var presetCategory: PresetCategory {
+    get {
+      willAccessValueForKey("presetCategory")
+      var category = primitiveValueForKey("presetCategory") as? PresetCategory
+      didAccessValueForKey("presetCategory")
+      if category == nil {
+        category = PresetCategory.defaultCollectionInContext(managedObjectContext!)
+        setPrimitiveValue(category, forKey: "presetCategory")
+      }
+      return category!
+    }
+    set {
+      willChangeValueForKey("presetCategory")
+      setPrimitiveValue(newValue, forKey: "presetCategory")
+      didChangeValueForKey("presetCategory")
+    }
+  }
+
   @NSManaged public var subelements: NSOrderedSet?
   @NSManaged public var parentPreset: Preset?
 
@@ -77,7 +95,7 @@ final public class Preset: EditableModelObject {
   }
 
   public var style: RemoteElement.Style {
-    get { return RemoteElement.Style(storage["style"]) ?? .Undefined }
+    get { return RemoteElement.Style(storage["style"]) ?? .None }
     set { storage["style"] = newValue.jsonValue }
   }
 
@@ -218,16 +236,16 @@ final public class Preset: EditableModelObject {
 
   override public var description: String {
     return "\(super.description)\n\t" + "\n\t".join(
-      "category = \(presetCategory.index.rawValue)",
-      "parent = \(parentPreset?.index.rawValue ?? nil)",
-      "base type = \(baseType)",
+      "category = \(presetCategory.index)",
+      "parent = \(toString(parentPreset?.index))",
+      "base-type = \(baseType)",
       "role = \(role)",
       "shape = \(shape)",
       "style = \(style)",
-      "background image = \(backgroundImage?.index ?? nil)",
-      "background image alpha = \(backgroundImageAlpha ?? nil)",
-      "background color = \(backgroundColor ?? nil)",
-      "constraints = \(constraints ?? nil)",
+      "background image = \(toString(backgroundImage?.index))",
+      "background image alpha = \(toString(backgroundImageAlpha))",
+      "background color = \(toString(backgroundColor))",
+      "constraints = \(toString(constraints))",
       {
         switch self.baseType {
         case .Remote:
@@ -246,7 +264,7 @@ final public class Preset: EditableModelObject {
             labelConstraintsString = "nil"
           }
           return "\n\t".join(
-            "autohide = \(self.autohide ?? nil)",
+            "autohide = \(toString(self.autohide))",
             "panel assignment = \(self.panelAssignment)",
             "label attributes = \(labelAttributesString)",
             "label constraints = \(labelConstraintsString)"

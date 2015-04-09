@@ -271,8 +271,8 @@ import MoonKit
     // configurations attribute on remote elements
     modifyAttribute("configurations",
         forEntities: [remoteElement, remote, buttonGroup, button],
-     valueClassName: "MSDictionary",
-       defaultValue: MSDictionary())
+     valueClassName: "NSDictionary",
+       defaultValue: NSDictionary())
 
     // panels for RERemote
     modifyAttribute("panels", forEntities: [remote], valueClassName: "NSDictionary", defaultValue: NSDictionary())

@@ -86,3 +86,16 @@ extension Manufacturer: NestingModelCollection {
   public var collections: [ModelCollection] { return sortedByName(codeSets) }
 }
 
+extension Manufacturer: DefaultingModelCollection {
+  public static func defaultCollectionInContext(context: NSManagedObjectContext) -> Manufacturer {
+    let name = "Unspecified"
+    if let manufacturer = modelWithIndex(PathIndex(name)!, context: context) {
+      return manufacturer
+    } else {
+      var manufacturer = self(context: context)
+      manufacturer.name = name
+      return manufacturer
+    }
+  }
+}
+

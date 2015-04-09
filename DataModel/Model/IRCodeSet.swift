@@ -16,7 +16,24 @@ final public class IRCodeSet: EditableModelObject {
 
   @NSManaged public var devices: Set<ComponentDevice>
   @NSManaged public var codes: Set<IRCode>
-  @NSManaged public var manufacturer: Manufacturer
+
+  public var manufacturer: Manufacturer {
+    get {
+      willAccessValueForKey("manufacturer")
+      var manufacturer = primitiveValueForKey("manufacturer") as? Manufacturer
+      didAccessValueForKey("manufacturer")
+      if manufacturer == nil {
+        manufacturer = Manufacturer.defaultCollectionInContext(managedObjectContext!)
+        setPrimitiveValue(manufacturer, forKey: "manufacturer")
+      }
+      return manufacturer!
+    }
+    set {
+      willChangeValueForKey("manufacturer")
+      setPrimitiveValue(newValue, forKey: "manufacturer")
+      didChangeValueForKey("manufacturer")
+    }
+  }
 
   /**
   updateWithData:
@@ -89,4 +106,17 @@ extension IRCodeSet: PathIndexedModel {
 
 extension IRCodeSet: ModelCollection {
   public var items: [NamedModel] { return sortedByName(codes) }
+}
+
+extension IRCodeSet: DefaultingModelCollection {
+  public static func defaultCollectionInContext(context: NSManagedObjectContext) -> IRCodeSet {
+    let name = "Unspecified"
+    if let codeSet = modelWithIndex(PathIndex("\(name)/\(name)")!, context: context) {
+      return codeSet
+    } else {
+      var codeSet = self(context: context)
+      codeSet.name = name
+      return codeSet
+    }
+  }
 }
