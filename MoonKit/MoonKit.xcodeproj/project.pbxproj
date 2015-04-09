@@ -210,7 +210,7 @@
 		C23F07011AD59A90003BD28B /* ObjcIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23F07001AD59A90003BD28B /* ObjcIO.swift */; };
 		C23F07211AD5AABA003BD28B /* example4.json in Resources */ = {isa = PBXBuildFile; fileRef = C23F07201AD5AABA003BD28B /* example4.json */; };
 		C23F07231AD5ACCC003BD28B /* example5.json in Resources */ = {isa = PBXBuildFile; fileRef = C23F07221AD5ACCC003BD28B /* example5.json */; };
-		C24416331ACB16F8007EDEFE /* NSSet+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24416321ACB16F8007EDEFE /* NSSet+MoonKitAdditions.swift */; };
+		C24416331ACB16F8007EDEFE /* Set+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24416321ACB16F8007EDEFE /* Set+MoonKitAdditions.swift */; };
 		C24D19EA19EDAE1500CC3CD9 /* InlinePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24D19E919EDAE1500CC3CD9 /* InlinePickerView.swift */; };
 		C24E0EB91AC6141B0044248E /* Bool+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24E0EB81AC6141B0044248E /* Bool+MoonKitAdditions.swift */; };
 		C256F0831ABDFFE5005B7CB3 /* MoonKitOSX.h in Headers */ = {isa = PBXBuildFile; fileRef = C256F0821ABDFFE5005B7CB3 /* MoonKitOSX.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -313,7 +313,7 @@
 		C23F07001AD59A90003BD28B /* ObjcIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjcIO.swift; sourceTree = "<group>"; };
 		C23F07201AD5AABA003BD28B /* example4.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = example4.json; sourceTree = "<group>"; };
 		C23F07221AD5ACCC003BD28B /* example5.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = example5.json; sourceTree = "<group>"; };
-		C24416321ACB16F8007EDEFE /* NSSet+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSSet+MoonKitAdditions.swift"; sourceTree = "<group>"; };
+		C24416321ACB16F8007EDEFE /* Set+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Set+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C2456BE319C39C8A007162F3 /* NSIndexPath+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexPath+MSKitAdditions.h"; sourceTree = "<group>"; };
 		C2456BE419C39C8A007162F3 /* NSIndexPath+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+MSKitAdditions.m"; sourceTree = "<group>"; };
 		C24D19E919EDAE1500CC3CD9 /* InlinePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlinePickerView.swift; sourceTree = "<group>"; };
@@ -345,6 +345,7 @@
 		C28E509A1A143FDC00DF3206 /* MultiselectGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiselectGestureRecognizer.swift; sourceTree = "<group>"; };
 		C28E98ED1AD196B800E78711 /* NSNumber+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNumber+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C295E30319E2FBBB008309B8 /* ToggleImageSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleImageSegmentedControl.swift; sourceTree = "<group>"; };
+		C2A46E651AD703E70030E3CC /* MoonKit.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MoonKit.playground; path = Moonkit/MoonKit.playground; sourceTree = "<group>"; };
 		C2A6261E1A33598300152E97 /* Slider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
 		C2A70E3A1ACC53D0009C2CF7 /* JSONValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONValue.swift; sourceTree = "<group>"; };
 		C2A70E401ACD8EBA009C2CF7 /* MoonKit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MoonKit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -646,7 +647,7 @@
 				C21D7AE31AA60E3F000DE8A3 /* NSError+MoonKitAdditions.swift */,
 				C2C4B72B1AA951D700912951 /* NSManagedObject+MoonKitAdditions.swift */,
 				C24E0EB81AC6141B0044248E /* Bool+MoonKitAdditions.swift */,
-				C24416321ACB16F8007EDEFE /* NSSet+MoonKitAdditions.swift */,
+				C24416321ACB16F8007EDEFE /* Set+MoonKitAdditions.swift */,
 				C28E98ED1AD196B800E78711 /* NSNumber+MoonKitAdditions.swift */,
 			);
 			path = Extensions;
@@ -777,6 +778,7 @@
 		C2CE884518138C4900555D63 = {
 			isa = PBXGroup;
 			children = (
+				C2A46E651AD703E70030E3CC /* MoonKit.playground */,
 				C285D8251AC44E0300C527F6 /* MoonKitLite */,
 				C29C22E51A3A4CBF00B0101F /* Resources */,
 				C2CE885318138C4900555D63 /* MSKit */,
@@ -1504,7 +1506,7 @@
 				C20650001A13C72600342FDE /* UIBarButtonItem+MoonKitAdditions.swift in Sources */,
 				C21493C11A35302200D274A2 /* ColorInputView.swift in Sources */,
 				C2358F7C19C78E0C00920F8D /* MSKeyPath.m in Sources */,
-				C24416331ACB16F8007EDEFE /* NSSet+MoonKitAdditions.swift in Sources */,
+				C24416331ACB16F8007EDEFE /* Set+MoonKitAdditions.swift in Sources */,
 				C2E937001ACE04D4003EB3E8 /* JSONParser.swift in Sources */,
 				C2358F7D19C78E0C00920F8D /* MSCheckboxView.m in Sources */,
 				C2358F7E19C78E0C00920F8D /* MSColorInputView.m in Sources */,

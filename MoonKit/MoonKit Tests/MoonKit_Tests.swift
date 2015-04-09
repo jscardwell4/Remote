@@ -48,28 +48,28 @@ class MoonKit_Tests: XCTestCase {
 
     let stringJSON = string.jsonValue
     switch stringJSON { case .String: break; default: XCTFail("unexpected enumeration value, expected 'JSON.String'") }
-    XCTAssertEqual(stringJSON.stringValue, "\"I am a string\"", "unexpected stringValue")
+    XCTAssertEqual(stringJSON.rawValue, "\"I am a string\"", "unexpected stringValue")
 
     let boolJSON = bool.jsonValue
     switch boolJSON { case .Boolean: break; default: XCTFail("unexpected enumeration value, expected 'JSON.Boolean'") }
-    XCTAssertEqual(boolJSON.stringValue, "true", "unexpected stringValue")
+    XCTAssertEqual(boolJSON.rawValue, "true", "unexpected stringValue")
 
     let numberJSON = number.jsonValue
     switch numberJSON { case .Number: break; default: XCTFail("unexpected enumeration value, expected 'JSON.Number'") }
-    XCTAssertEqual(numberJSON.stringValue, "1", "unexpected stringValue")
+    XCTAssertEqual(numberJSON.rawValue, "1", "unexpected stringValue")
 
     let arrayJSON = JSONValue(array)
     if arrayJSON == nil { XCTFail("unexpected nil value when converting to `JSONValue` type")}
     else {
       switch arrayJSON! { case .Array: break; default: XCTFail("unexpected enumeration value, expected 'JSON.Array'") }
-      XCTAssertEqual(arrayJSON!.stringValue, "[\"item1\",\"item2\"]", "unexpected stringValue")
+      XCTAssertEqual(arrayJSON!.rawValue, "[\"item1\",\"item2\"]", "unexpected stringValue")
     }
 
     let objectJSON = JSONValue(object)
     if objectJSON == nil { XCTFail("unexpected nil value when converting to `JSONValue` type")}
     else {
       switch objectJSON! { case .Object: break; default: XCTFail("unexpected enumeration value, expected 'JSON.Object'") }
-      XCTAssertEqual(objectJSON!.stringValue, "{\"key1\":\"value1\",\"key2\":\"value2\"}", "unexpected stringValue")
+      XCTAssertEqual(objectJSON!.rawValue, "{\"key1\":\"value1\",\"key2\":\"value2\"}", "unexpected stringValue")
     }
 
   }
@@ -96,49 +96,49 @@ class MoonKit_Tests: XCTestCase {
     if array1JSON == nil { XCTFail("unexpected nil value when converting to `JSONValue` type")}
     else {
       switch array1JSON! { case .Array: break; default: XCTFail("unexpected enumeration value, expected 'JSON.Array")}
-      XCTAssertEqual(array1JSON!.stringValue, array1String)
+      XCTAssertEqual(array1JSON!.rawValue, array1String)
     }
     let array2JSON = JSONValue(array2)
     if array2JSON == nil { XCTFail("unexpected nil value when converting to `JSONValue` type")}
     else {
       switch array2JSON! { case .Array: break; default: XCTFail("unexpected enumeration value, expected 'JSON.Array")}
-      XCTAssertEqual(array2JSON!.stringValue, array2String)
+      XCTAssertEqual(array2JSON!.rawValue, array2String)
     }
     let arrayJSON = JSONValue(array)
     if arrayJSON == nil { XCTFail("unexpected nil value when converting to `JSONValue` type")}
     else {
       switch arrayJSON! { case .Array: break; default: XCTFail("unexpected enumeration value, expected 'JSON.Array")}
-      XCTAssertEqual(arrayJSON!.stringValue, arrayString)
+      XCTAssertEqual(arrayJSON!.rawValue, arrayString)
     }
     let dict1JSON = JSONValue(dict1)
     if dict1JSON == nil { XCTFail("unexpected nil value when converting to `JSONValue` type")}
     else {
       switch dict1JSON! { case .Object: break; default: XCTFail("unexpected enumeration value, expected 'JSON.Object")}
-      XCTAssertEqual(dict1JSON!.stringValue, dict1String)
+      XCTAssertEqual(dict1JSON!.rawValue, dict1String)
     }
     let dict2JSON = JSONValue(dict2)
     if dict2JSON == nil { XCTFail("unexpected nil value when converting to `JSONValue` type")}
     else {
       switch dict2JSON! { case .Object: break; default: XCTFail("unexpected enumeration value, expected 'JSON.Object")}
-      XCTAssertEqual(dict2JSON!.stringValue, dict2String)
+      XCTAssertEqual(dict2JSON!.rawValue, dict2String)
     }
     let dictJSON = JSONValue(dict)
     if dictJSON == nil { XCTFail("unexpected nil value when converting to `JSONValue` type")}
     else {
       switch dictJSON! { case .Object: break; default: XCTFail("unexpected enumeration value, expected 'JSON.Object")}
-      XCTAssertEqual(dictJSON!.stringValue, dictString)
+      XCTAssertEqual(dictJSON!.rawValue, dictString)
     }
     let composite1JSON = JSONValue(composite1)
     if composite1JSON == nil { XCTFail("unexpected nil value when converting to `JSONValue` type")}
     else {
       switch composite1JSON! { case .Array: break; default: XCTFail("unexpected enumeration value, expected 'JSON.Array")}
-      XCTAssertEqual(composite1JSON!.stringValue, composite1String)
+      XCTAssertEqual(composite1JSON!.rawValue, composite1String)
     }
     let composite2JSON = JSONValue(composite2)
     if composite2JSON == nil { XCTFail("unexpected nil value when converting to `JSONValue` type")}
     else {
       switch composite2JSON! { case .Object: break; default: XCTFail("unexpected enumeration value, expected 'JSON.Object")}
-      XCTAssertEqual(composite2JSON!.stringValue, composite2String)
+      XCTAssertEqual(composite2JSON!.rawValue, composite2String)
     }
 
   }
@@ -179,7 +179,7 @@ class MoonKit_Tests: XCTestCase {
   func testJSONValueInflateKeyPaths() {
     if let object = JSONValue(["key1": "value1", "key.two.has.paths": "value2"]) {
       XCTAssert(toString(object) == "{\"key1\":\"value1\",\"key.two.has.paths\":\"value2\"}")
-      XCTAssert(toString(object.inflatedKeyPaths) == "{\"key1\":\"value1\",\"key\":{\"two\":{\"has\":{\"paths\":\"value2\"}}}}")
+      XCTAssert(toString(object.inflatedValue) == "{\"key1\":\"value1\",\"key\":{\"two\":{\"has\":{\"paths\":\"value2\"}}}}")
     }
   }
 
@@ -190,7 +190,7 @@ class MoonKit_Tests: XCTestCase {
       where !MSHandleError(error, message: "trouble parsing file '\(filePaths[0])'")
     {
       let expectedStringValue = String(contentsOfFile: filePaths[0], encoding: NSUTF8StringEncoding, error: nil)!
-      XCTAssertEqual(object.stringValue, expectedStringValue, "unexpected result from parse")
+      XCTAssertEqual(object.rawValue, expectedStringValue, "unexpected result from parse")
     } else { XCTFail("file parse failed to create an object") }
 
     error = nil
@@ -198,7 +198,7 @@ class MoonKit_Tests: XCTestCase {
       where !MSHandleError(error, message: "trouble parsing file '\(filePaths[1])'")
     {
       let expectedStringValue = String(contentsOfFile: filePaths[1], encoding: NSUTF8StringEncoding, error: nil)!
-      XCTAssertEqual(object.stringValue, expectedStringValue, "unexpected result from parse")
+      XCTAssertEqual(object.rawValue, expectedStringValue, "unexpected result from parse")
     } else { XCTFail("file parse failed to create an object") }
 
     error = nil
@@ -206,7 +206,7 @@ class MoonKit_Tests: XCTestCase {
       where !MSHandleError(error, message: "trouble parsing file '\(filePaths[2])'")
     {
       let expectedStringValue = String(contentsOfFile: filePaths[2], encoding: NSUTF8StringEncoding, error: nil)!
-      XCTAssertNotEqual(object.stringValue, expectedStringValue, "unexpected result from parse")
+      XCTAssertNotEqual(object.rawValue, expectedStringValue, "unexpected result from parse")
     } else { XCTFail("file parse failed to create an object") }
 
     error = nil
@@ -214,7 +214,7 @@ class MoonKit_Tests: XCTestCase {
       where !MSHandleError(error, message: "trouble parsing file '\(filePaths[1])'")
     {
       let expectedStringValue = String(contentsOfFile: filePaths[1], encoding: NSUTF8StringEncoding, error: nil)!
-      XCTAssertNotEqual(object.stringValue, expectedStringValue, "unexpected result from parse")
+      XCTAssertNotEqual(object.rawValue, expectedStringValue, "unexpected result from parse")
     } else { XCTFail("file parse failed to create an object") }
 
     error = nil
@@ -275,6 +275,8 @@ class MoonKit_Tests: XCTestCase {
     orderedDictionary.setValue(3, forKey: "three")
     XCTAssert(Array(orderedDictionary.keys) == ["one", "two", "three"])
 
+    XCTAssert(Array(orderedDictionary.valuesForKeys(["one", "two"]).keys) == ["one", "two"])
+
     var mappedOrderedDictionary = orderedDictionary.map({($0, $1)})
     XCTAssert(mappedOrderedDictionary.values[0].0 == "one")
     XCTAssert(mappedOrderedDictionary.values[0].1 == 1)
@@ -290,8 +292,22 @@ class MoonKit_Tests: XCTestCase {
     let fromMSDictionary = msDictionary as? OrderedDictionary<NSObject, AnyObject>
     XCTAssert(fromMSDictionary != nil)
 
-    let fromOrderedSetfromMSDictionary = fromMSDictionary?._bridgeToObjectiveC()
-    XCTAssert(fromOrderedSetfromMSDictionary != nil)
+    let fromOrderedDictionaryfromMSDictionary = fromMSDictionary?._bridgeToObjectiveC()
+    XCTAssert(fromOrderedDictionaryfromMSDictionary != nil)
   }
 
+  func testOrderdSet() {
+    var orderedSet: OrderedSet<String> = []
+    orderedSet.append("one")
+    orderedSet.append("two")
+    orderedSet.append("three")
+    XCTAssert(Array(orderedSet) == ["one", "two", "three"])
+
+    let nsOrderedSet = NSOrderedSet(array: ["four", "five", "six"])
+    let fromNSOrderedSet = nsOrderedSet as? OrderedSet<String>
+    XCTAssert(fromNSOrderedSet != nil)
+
+    let fromOrderedSetFromNSOrderedSet = fromNSOrderedSet?._bridgeToObjectiveC()
+    XCTAssert(fromOrderedSetFromNSOrderedSet != nil)
+  }
 }

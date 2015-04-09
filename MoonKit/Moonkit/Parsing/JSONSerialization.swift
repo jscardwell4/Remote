@@ -129,7 +129,7 @@ public class JSONSerialization {
     object = parser.parse(error: error)
 
     // Inflate key paths
-    if isOptionSet(options, ReadOptions.InflateKeypaths) { object = object?.inflatedKeyPaths }
+    if isOptionSet(options, ReadOptions.InflateKeypaths) { object = object?.inflatedValue }
 
     return object
   }

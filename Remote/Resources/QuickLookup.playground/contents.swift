@@ -1,8 +1,22 @@
 // Playground - noun: a place where people can play
 import Foundation
 import UIKit
-
-
+let excluded = ["device", "code.uuid", "some.other.key", "yetAnotherKey"]
+let expandedKeys = excluded.map({split($0, isSeparator: {$0 == "."})})
+expandedKeys
+let depth = reduce(expandedKeys.map({$0.count}), 0, max)
+depth
+let zippedExpandedKeys = reduce(enumerate(expandedKeys), Array<[String]>(count: depth, repeatedValue: []), {
+  (var result: [[String]], element: (Int, [String])) -> [[String]] in
+  toString(result)
+  toString(element)
+  for (i, s) in enumerate(element.1) {
+    toString((i , s))
+    result[i].append(s)
+  }
+  return result
+})
+toString(zippedExpandedKeys)
 func hexToRGBA(var hex: UInt) -> (CGFloat, CGFloat, CGFloat, CGFloat) {
   let a = CGFloat(hex & 0xFF)
   hex >>= 8

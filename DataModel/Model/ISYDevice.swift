@@ -131,17 +131,18 @@ public class ISYDevice: NetworkDevice {
 
   override public var jsonValue: JSONValue {
     var dict = super.jsonValue.value as! JSONValue.ObjectValue
-      appendValueForKey("modelNumber", toDictionary: &dict)
-      appendValueForKey("modelName", toDictionary: &dict)
-      appendValueForKey("modelDescription", toDictionary: &dict)
-      appendValueForKey("manufacturerURL", toDictionary: &dict)
-      appendValueForKey("manufacturer", toDictionary: &dict)
-      appendValueForKey("friendlyName", toDictionary: &dict)
-      appendValueForKey("deviceType", toDictionary: &dict)
-      appendValueForKey("baseURL", toDictionary: &dict)
-      appendValueForKey("nodes", toDictionary: &dict)
-      appendValueForKey("groups", toDictionary: &dict)
-      return .Object(dict)
+    appendValueForKey("modelNumber", toDictionary: &dict)
+    appendValueForKey("modelName", toDictionary: &dict)
+    appendValueForKey("modelDescription", toDictionary: &dict)
+    appendValueForKey("manufacturerURL", toDictionary: &dict)
+    appendValueForKey("manufacturer", toDictionary: &dict)
+    appendValueForKey("friendlyName", toDictionary: &dict)
+    appendValueForKey("deviceType", toDictionary: &dict)
+    appendValueForKey("baseURL", toDictionary: &dict)
+    appendValueForKey("nodes", toDictionary: &dict)
+    appendValueForKey("groups", toDictionary: &dict)
+    appendValue("isy", forKey: "type", toDictionary: &dict)
+    return .Object(dict)
   }
 
 }

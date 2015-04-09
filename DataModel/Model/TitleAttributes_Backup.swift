@@ -171,7 +171,7 @@ public struct TitleAttributes: JSONValueConvertible {
       }
       return font ?? UIFont(name: "HelveticaNeue", size: 12)!
     }
-    set { self[.Font] = Font(newValue).jsonValue.objectValue }
+    set { self[.Font] = Font(newValue).jsonValue.anyObjectValue }
   }
 
   public var foregroundColor: UIColor {
@@ -197,7 +197,7 @@ public struct TitleAttributes: JSONValueConvertible {
 
   public var shadow: NSShadow? {
     get { if let d = self[.Shadow] as? [String:AnyObject], json = JSONValue(d) { return NSShadow(jsonValue: json) } else { return nil } }
-    set { self[.Shadow] = newValue?.jsonValue.objectValue }
+    set { self[.Shadow] = newValue?.jsonValue.anyObjectValue }
   }
 
   public var expansion: Float {
@@ -705,7 +705,7 @@ public struct TitleAttributes: JSONValueConvertible {
 //        switch propertyKey {
 //
 //          case .Font:
-//            if let f = value.value as? String { storedValue = Font(jsonValue: f.jsonValue)?.jsonValue.objectValue }
+//            if let f = value.value as? String { storedValue = Font(jsonValue: f.jsonValue)?.jsonValue.anyObjectValue }
 //
 //          case .ForegroundColor, .BackgroundColor, .StrikethroughColor, .UnderlineColor, .StrokeColor:
 //            if let c = value.value as? String { storedValue = UIColor(string: c)?.string }
@@ -722,7 +722,7 @@ public struct TitleAttributes: JSONValueConvertible {
 ////            else if value.respondsToSelector("stringValue") { storedValue = value.valueForKey("stringValue") }
 //
 //          case .Shadow:
-//            if let d = value.objectValue as? MSDictionary { storedValue = d }
+//            if let d = value.anyObjectValue as? MSDictionary { storedValue = d }
 //
 //          case .Expansion, .Obliqueness, .BaselineOffset, .Kern, .HyphenationFactor, .ParagraphSpacingBefore,
 //               .LineHeightMultiple, .MaximumLineHeight, .MinimumLineHeight, .ParagraphSpacing, .LineSpacing, .TailIndent,

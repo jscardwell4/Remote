@@ -63,6 +63,22 @@ infix operator ⊄ 	{  // not a subset of
 associativity none
 precedence 130
 }
+infix operator ⊆ {
+associativity none
+precedence 130
+}
+infix operator ⊇ {
+associativity none
+precedence 130
+}
+infix operator ⊈ {
+associativity none
+precedence 130
+}
+infix operator ⊉ {
+associativity none
+precedence 130
+}
 infix operator ⊃ 	{  // superset of
 associativity none
 precedence 130

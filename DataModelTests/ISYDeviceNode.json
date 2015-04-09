@@ -3,7 +3,7 @@
   "flag": 128,
   "address": "20 12 40 1",
   "type": "1.58.193.0",
-  "enabled": 1,
+  "enabled": true,
   "pnode": "20 12 40 1",
   "property-id": "ST",
   "property-value": 255,

@@ -188,13 +188,13 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
     if let uuid = String(data["uuid"]), object = objectWithUUID(uuid, context: context) { return object }
     else if let rawIndex = String(data["index"]) {
       if let index = UUIDIndex(rawValue: rawIndex), object = objectWithIndex(index, context: context) {
-        MSLogInfo("object for index \(index.rawValue):\n\(object)")
+        MSLogVerbose("object for index \(index.rawValue):\n\(object)")
         return object
       } else if let index = PathIndex(rawValue: rawIndex), object = objectWithIndex(index, context: context) {
-        MSLogInfo("object for index \(index.rawValue):\n\(object)")
+        MSLogVerbose("object for index \(index.rawValue):\n\(object)")
         return object
       } else {
-        MSLogInfo("failed to locate object with index \(rawIndex)")
+        MSLogVerbose("failed to locate object with index \(rawIndex)")
         return nil
       }
     }

@@ -53,7 +53,19 @@ final public class Preset: EditableModelObject {
     }
   }
 
-  @NSManaged public var subelements: NSOrderedSet?
+  public var subelements: OrderedSet<Preset>? {
+    get {
+      willAccessValueForKey("subelements")
+      let subelements = primitiveValueForKey("subelements") as? NSOrderedSet
+      didAccessValueForKey("subelements")
+      return subelements as? OrderedSet<Preset>
+    }
+    set {
+      willChangeValueForKey("subelements")
+      setPrimitiveValue(newValue?._bridgeToObjectiveC(), forKey: "subelements")
+      didChangeValueForKey("subelements")
+    }
+  }
   @NSManaged public var parentPreset: Preset?
 
 //  public subscript(key: String) -> AnyObject? {
@@ -76,6 +88,7 @@ final public class Preset: EditableModelObject {
     var dict = super.jsonValue.value as! JSONValue.ObjectValue
     appendValueForKeyPath("presetCategory.index", toDictionary: &dict)
     dict += storage.dictionary
+//    dict["subelements"] = 
     return .Object(dict)
   }
 
@@ -234,8 +247,10 @@ final public class Preset: EditableModelObject {
     } else { return nil }
   }
 
+  // MARK: Printable
+
   override public var description: String {
-    return "\(super.description)\n\t" + "\n\t".join(
+    var description = "\(super.description)\n\t" + "\n\t".join(
       "category = \(presetCategory.index)",
       "parent = \(toString(parentPreset?.index))",
       "base-type = \(baseType)",
@@ -245,7 +260,7 @@ final public class Preset: EditableModelObject {
       "background image = \(toString(backgroundImage?.index))",
       "background image alpha = \(toString(backgroundImageAlpha))",
       "background color = \(toString(backgroundColor))",
-      "constraints = \(toString(constraints))",
+      "constraints = " + "\n".join(map(enumerate("\n".split(toString(constraints))), {$0 > 0 ? $1.indentedBy(17) : $1})),
       {
         switch self.baseType {
         case .Remote:
@@ -301,6 +316,15 @@ final public class Preset: EditableModelObject {
         return ""
       }()
     )
+    if var subelementDescriptions = subelements?.map({$0.description}) where subelementDescriptions.count > 0 {
+      description += "\n\tsubelements = " + subelementDescriptions.removeAtIndex(0)
+      if subelementDescriptions.count > 0 {
+        description += "\n" + "\n\t".join(Array(subelementDescriptions)).indentedBy(17)
+      }
+    } else {
+      description += "\n\tsubelements = nil"
+    }
+    return description
   }
 
 }

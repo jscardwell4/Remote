@@ -10,323 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-// TODO: This should probably be an option set, create workaround?
-extension NSUnderlineStyle: JSONValueConvertible {
-  public var jsonValue: JSONValue {
-    switch self {
-      case .StyleNone:         return "none"
-      case .StyleSingle:       return "single"
-      case .StyleThick:        return "thick"
-      case .StyleDouble:       return "double"
-      case .PatternDot:        return "dot"
-      case .PatternDash:       return "dash"
-      case .PatternDashDot:    return "dash-dot"
-      case .PatternDashDotDot: return "dash-dot-dot"
-      case .ByWord:            return "by-word"
-    }
-  }
-}
-
-extension NSUnderlineStyle: JSONValueInitializable {
-  public init?(_ jsonValue: JSONValue?) {
-    if let string = String(jsonValue) {
-      switch string {
-        case "single":        self = .StyleSingle
-        case "thick":         self = .StyleThick
-        case "double":        self = .StyleDouble
-        case "dot":           self = .PatternDot
-        case "dash":          self = .PatternDash
-        case "dash-dot":      self = .PatternDashDot
-        case "dash-dot-dot":  self = .PatternDashDotDot
-        case "by-word":       self = .ByWord
-        default:              self = .StyleNone
-      }
-    } else { return nil }
-  }
-}
-
-extension NSUnderlineStyle: EnumerableType {
-  public static var all: [NSUnderlineStyle] {
-    return [.StyleNone, .StyleSingle, .StyleThick, .StyleDouble, .PatternDot, .PatternDash,
-            .PatternDashDot, .PatternDashDotDot, .ByWord]
-  }
-
-  public static func enumerate(block: (NSUnderlineStyle) -> Void) { apply(all, block) }
-
-}
-
-extension NSLineBreakMode: JSONValueConvertible {
-  public var jsonValue: JSONValue {
-    switch self {
-      case .ByWordWrapping:      return "word-wrap"
-      case .ByCharWrapping:      return "character-wrap"
-      case .ByClipping:          return "clip"
-      case .ByTruncatingHead:    return "truncate-head"
-      case .ByTruncatingTail:    return "truncate-tail"
-      case .ByTruncatingMiddle:  return "truncate-middle"
-    }
-  }
-}
-
-extension NSLineBreakMode: JSONValueInitializable {
-  public init?(_ jsonValue: JSONValue?) {
-    if let string = String(jsonValue) {
-      switch string {
-        case "character-wrap":  self = .ByCharWrapping
-        case "clip":            self = .ByClipping
-        case "truncate-head":   self = .ByTruncatingHead
-        case "truncate-tail":   self = .ByTruncatingTail
-        case "truncate-middle": self = .ByTruncatingMiddle
-        default:                self = .ByWordWrapping
-      }
-    } else { return nil }
-  }
-}
-
-extension NSLineBreakMode: EnumerableType {
-  public static var all: [NSLineBreakMode] {
-    return [.ByWordWrapping, .ByCharWrapping, .ByClipping, .ByTruncatingHead, .ByTruncatingTail, .ByTruncatingMiddle]
-  }
-
-  public static func enumerate(block: (NSLineBreakMode) -> Void) { apply(all, block) }
-}
-
-extension NSTextAlignment: JSONValueConvertible {
-  public var jsonValue: JSONValue {
-    switch self {
-      case .Left:      return "left"
-      case .Right:     return "right"
-      case .Center:    return "center"
-      case .Justified: return "justified"
-      case .Natural:   return "natural"
-    }
-  }
-}
-
-extension NSTextAlignment: JSONValueInitializable {
-  public init?(_ jsonValue: JSONValue?) {
-    if let string = String(jsonValue) {
-      switch string {
-        case "left":      self = .Left
-        case "right":     self = .Right
-        case "center":    self = .Center
-        case "justified": self = .Justified
-        default:          self = .Natural
-      }
-    } else { return nil }
-  }
-}
-
-extension NSTextAlignment: EnumerableType {
-  public static var all: [NSTextAlignment] { return [.Left, .Right, .Center, .Justified, .Natural] }
-  public static func enumerate(block: (NSTextAlignment) -> Void) { apply(all, block) }
-}
-
-extension NSShadow: JSONValueConvertible {
-  public var jsonValue: JSONValue {
-    var dict: JSONValue.ObjectValue = ["offset": shadowOffset.jsonValue, "radius": shadowBlurRadius.jsonValue]
-    if shadowColor != nil { dict["color"] = (shadowColor as! UIColor).jsonValue }
-    return .Object(dict)
-  }
-}
-
-extension NSShadow /*: JSONValueInitializable */ {
-  public convenience init?(_ jsonValue: JSONValue?) {
-    self.init()
-    if let object = ObjectJSONValue(jsonValue) {
-      if let offset = CGSize(object["offset"]) { shadowOffset = offset }
-      if let radius = CGFloat(object["radius"]) { shadowBlurRadius = radius }
-      if let color = UIColor(object["color"]) { shadowColor = color }
-    }
-  }
-}
-
-extension TitleAttributes {
-  public enum IconTextOrderSpecification: JSONValueConvertible {
-    case IconText, TextIcon
-    public var jsonValue: JSONValue {
-      switch self {
-      case .IconText: return "icon-text"
-      case .TextIcon: return "text-icon"
-      }
-    }
-  }
-}
-extension TitleAttributes.IconTextOrderSpecification: JSONValueInitializable {
-  public init?(_ jsonValue: JSONValue?) {
-    if let string = String(jsonValue) {
-      switch string {
-        case "text-icon": self = .TextIcon
-        default:          self = .IconText
-      }
-    } else { return nil }
-  }
-
-}
-
-extension TitleAttributes.IconTextOrderSpecification: EnumerableType {
-  public static var all: [TitleAttributes.IconTextOrderSpecification] { return [.IconText, .TextIcon] }
-  public static func enumerate(block: (TitleAttributes.IconTextOrderSpecification) -> Void) { apply(all, block) }
-
-}
-
-extension TitleAttributes {
-  public enum PropertyKey: String {
-    case Text                   = "text"
-    case IconName               = "icon-name"
-    case Font                   = "font"
-    case ForegroundColor        = "foreground-color"
-    case BackgroundColor        = "background-color"
-    case Ligature               = "ligature"
-    case Shadow                 = "shadow"
-    case Expansion              = "expansion"
-    case Obliqueness            = "obliqueness"
-    case StrikethroughColor     = "strikethrough-color"
-    case UnderlineColor         = "underline-color"
-    case BaselineOffset         = "baseline-offset"
-    case TextEffect             = "text-effect"
-    case StrokeWidth            = "stroke-width"
-    case StrokeFill             = "stroke-fill"
-    case StrokeColor            = "stroke-color"
-    case UnderlineStyle         = "underline-style"
-    case StrikethroughStyle     = "strikethrough-style"
-    case Kern                   = "kern"
-    case Alignment              = "alignment"
-    case FirstLineHeadIndent    = "first-line-head-indent"
-    case HeadIndent             = "head-indent"
-    case TailIndent             = "tail-indent"
-    case LineHeightMultiple     = "line-height-multiple"
-    case MaximumLineHeight      = "maximum-line-height"
-    case MinimumLineHeight      = "minimum-line-height"
-    case LineSpacing            = "line-spacing"
-    case ParagraphSpacing       = "paragraph-spacing"
-    case ParagraphSpacingBefore = "paragraph-spacing-before"
-    case HyphenationFactor      = "hyphenation-factor"
-    case LineBreakMode          = "line-break-mode"
-    case IconTextOrder          = "icon-text-order"
-
-    public var type: JSONValueConvertible.Type {
-      switch self {
-        case .Text:                   return String.self
-        case .IconName:               return String.self
-        case .Font:                   return UIFont.self
-        case .ForegroundColor:        return UIColor.self
-        case .BackgroundColor:        return UIColor.self
-        case .Ligature:               return Int.self
-        case .Shadow:                 return NSShadow.self
-        case .Expansion:              return Float.self
-        case .Obliqueness:            return Float.self
-        case .StrikethroughColor:     return UIColor.self
-        case .UnderlineColor:         return UIColor.self
-        case .BaselineOffset:         return CGFloat.self
-        case .TextEffect:             return String.self
-        case .StrokeWidth:            return Float.self
-        case .StrokeFill:             return Bool.self
-        case .StrokeColor:            return UIColor.self
-        case .UnderlineStyle:         return NSUnderlineStyle.self
-        case .StrikethroughStyle:     return NSUnderlineStyle.self
-        case .Kern:                   return Float.self
-        case .Alignment:              return NSTextAlignment.self
-        case .FirstLineHeadIndent:    return CGFloat.self
-        case .HeadIndent:             return CGFloat.self
-        case .TailIndent:             return CGFloat.self
-        case .LineHeightMultiple:     return CGFloat.self
-        case .MaximumLineHeight:      return CGFloat.self
-        case .MinimumLineHeight:      return CGFloat.self
-        case .LineSpacing:            return CGFloat.self
-        case .ParagraphSpacing:       return CGFloat.self
-        case .ParagraphSpacingBefore: return CGFloat.self
-        case .HyphenationFactor:      return Float.self
-        case .LineBreakMode:          return NSLineBreakMode.self
-        case .IconTextOrder:          return IconTextOrderSpecification.self
-      }
-    }
-
-    public var defaultValue: JSONValueConvertible? {
-      switch self {
-        case .Text:                   return ""
-        case .IconName:               return nil
-        case .Font:                   return UIFont(name: "HelveticaNeue", size: 12.0)
-        case .ForegroundColor:        return UIColor.blackColor()
-        case .BackgroundColor:        return nil
-        case .Ligature:               return 1
-        case .Shadow:                 return nil
-        case .Expansion:              return 0.0
-        case .Obliqueness:            return 0.0
-        case .StrikethroughColor:     return nil
-        case .UnderlineColor:         return nil
-        case .BaselineOffset:         return 0.0
-        case .TextEffect:             return nil
-        case .StrokeWidth:            return 0.0
-        case .StrokeFill:             return false
-        case .StrokeColor:            return nil
-        case .UnderlineStyle:         return NSUnderlineStyle.StyleNone
-        case .StrikethroughStyle:     return NSUnderlineStyle.StyleNone
-        case .Kern:                   return 0.0
-        case .Alignment:              return NSTextAlignment.Natural
-        case .FirstLineHeadIndent:    return 0.0
-        case .HeadIndent:             return 0.0
-        case .TailIndent:             return 0.0
-        case .LineHeightMultiple:     return 0.0
-        case .MaximumLineHeight:      return 0.0
-        case .MinimumLineHeight:      return 0.0
-        case .LineSpacing:            return 0.0
-        case .ParagraphSpacing:       return 0.0
-        case .ParagraphSpacingBefore: return 0.0
-        case .HyphenationFactor:      return 0.0
-        case .LineBreakMode:          return NSLineBreakMode.ByWordWrapping
-        case .IconTextOrder:          return IconTextOrderSpecification.IconText
-      }
-    }
-
-
-    public var attributeKey: String? {
-      switch self {
-        case .Font:               return NSFontAttributeName
-        case .ForegroundColor:    return NSForegroundColorAttributeName
-        case .BackgroundColor:    return NSBackgroundColorAttributeName
-        case .Ligature:           return NSLigatureAttributeName
-        case .Shadow:             return NSShadowAttributeName
-        case .Expansion:          return NSExpansionAttributeName
-        case .Obliqueness:        return NSObliquenessAttributeName
-        case .StrikethroughColor: return NSStrikethroughColorAttributeName
-        case .UnderlineColor:     return NSUnderlineColorAttributeName
-        case .BaselineOffset:     return NSBaselineOffsetAttributeName
-        case .TextEffect:         return NSTextEffectAttributeName
-        case .StrokeWidth:        return NSStrokeWidthAttributeName
-        case .StrokeColor:        return NSStrokeColorAttributeName
-        case .UnderlineStyle:     return NSUnderlineStyleAttributeName
-        case .StrikethroughStyle: return NSStrikethroughStyleAttributeName
-        case .Kern:               return NSKernAttributeName
-        default:                  return nil
-      }
-    }
-  }
-}
-
-extension TitleAttributes.PropertyKey: EnumerableType {
-
-  public static var all: [TitleAttributes.PropertyKey] {
-    return [.IconName, .Text, .IconTextOrder] + attributeKeys + paragraphKeys
-  }
-
-  static var paragraphKeys: [TitleAttributes.PropertyKey] {
-    return [.HyphenationFactor, .ParagraphSpacingBefore, .LineHeightMultiple, .MaximumLineHeight, .MinimumLineHeight,
-            .LineBreakMode, .TailIndent, .HeadIndent, .FirstLineHeadIndent, .Alignment, .ParagraphSpacing, .LineSpacing]
-  }
-
-  public static var attributeKeys: [TitleAttributes.PropertyKey] {
-    return [.Font, .ForegroundColor, .BackgroundColor, .Ligature, .Shadow, .Expansion, .Obliqueness, .StrikethroughColor,
-            .UnderlineColor, .BaselineOffset, .TextEffect, .StrokeWidth, .StrokeColor, .UnderlineStyle, .StrikethroughStyle,
-            .Kern]
-  }
-
-  public static func enumerate(block: (TitleAttributes.PropertyKey) -> Void) { apply(all, block) }
-  public static func enumerateParagraphPropertyKeys(block: (TitleAttributes.PropertyKey) -> Void) { paragraphKeys ➤ block }
-  public static func enumerateAttributePropertyKeys(block: (TitleAttributes.PropertyKey) -> Void) { attributeKeys ➤ block }
-}
-
-public struct TitleAttributes: JSONValueConvertible, JSONValueInitializable {
+public struct TitleAttributes {
 
   public var iconTextOrder: IconTextOrderSpecification {
     get { return self[.IconTextOrder] as? IconTextOrderSpecification ?? .IconText }
@@ -713,19 +397,6 @@ public struct TitleAttributes: JSONValueConvertible, JSONValueInitializable {
   public init(storage: JSONValue.ObjectValue) { self.storage = storage.filter({(k, _) in PropertyKey(rawValue: k) != nil}) }
 
   /**
-  initWithJSONValue:
-
-  :param: JSONValue [String AnyObject]
-  */
-  public init?(_ jsonValue: JSONValue?) {
-    if let object = ObjectJSONValue(jsonValue) {
-      self.init(storage: object.value)
-    } else { return nil }
-  }
-
-  public var jsonValue: JSONValue { return .Object(storage) }
-
-  /**
   initWithAttributedString:
 
   :param: attributedString NSAttributedString
@@ -775,4 +446,336 @@ public struct TitleAttributes: JSONValueConvertible, JSONValueInitializable {
 
   }
 
+}
+
+extension TitleAttributes: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue?) {
+    if let object = ObjectJSONValue(jsonValue) {
+      self.init(storage: object.value)
+    } else { return nil }
+  }
+}
+
+extension TitleAttributes: JSONValueConvertible {
+  public var jsonValue: JSONValue { return .Object(storage) }
+}
+
+extension TitleAttributes: Printable {
+  public var description: String { return jsonValue.prettyStringValue }
+}
+
+// TODO: This should probably be an option set, create workaround?
+extension NSUnderlineStyle: JSONValueConvertible {
+  public var jsonValue: JSONValue {
+    switch self {
+    case .StyleNone:         return "none"
+    case .StyleSingle:       return "single"
+    case .StyleThick:        return "thick"
+    case .StyleDouble:       return "double"
+    case .PatternDot:        return "dot"
+    case .PatternDash:       return "dash"
+    case .PatternDashDot:    return "dash-dot"
+    case .PatternDashDotDot: return "dash-dot-dot"
+    case .ByWord:            return "by-word"
+    }
+  }
+}
+
+extension NSUnderlineStyle: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue?) {
+    if let string = String(jsonValue) {
+      switch string {
+      case "single":        self = .StyleSingle
+      case "thick":         self = .StyleThick
+      case "double":        self = .StyleDouble
+      case "dot":           self = .PatternDot
+      case "dash":          self = .PatternDash
+      case "dash-dot":      self = .PatternDashDot
+      case "dash-dot-dot":  self = .PatternDashDotDot
+      case "by-word":       self = .ByWord
+      default:              self = .StyleNone
+      }
+    } else { return nil }
+  }
+}
+
+extension NSUnderlineStyle: EnumerableType {
+  public static var all: [NSUnderlineStyle] {
+    return [.StyleNone, .StyleSingle, .StyleThick, .StyleDouble, .PatternDot, .PatternDash,
+      .PatternDashDot, .PatternDashDotDot, .ByWord]
+  }
+
+  public static func enumerate(block: (NSUnderlineStyle) -> Void) { apply(all, block) }
+
+}
+
+extension NSLineBreakMode: JSONValueConvertible {
+  public var jsonValue: JSONValue {
+    switch self {
+    case .ByWordWrapping:      return "word-wrap"
+    case .ByCharWrapping:      return "character-wrap"
+    case .ByClipping:          return "clip"
+    case .ByTruncatingHead:    return "truncate-head"
+    case .ByTruncatingTail:    return "truncate-tail"
+    case .ByTruncatingMiddle:  return "truncate-middle"
+    }
+  }
+}
+
+extension NSLineBreakMode: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue?) {
+    if let string = String(jsonValue) {
+      switch string {
+      case "character-wrap":  self = .ByCharWrapping
+      case "clip":            self = .ByClipping
+      case "truncate-head":   self = .ByTruncatingHead
+      case "truncate-tail":   self = .ByTruncatingTail
+      case "truncate-middle": self = .ByTruncatingMiddle
+      default:                self = .ByWordWrapping
+      }
+    } else { return nil }
+  }
+}
+
+extension NSLineBreakMode: EnumerableType {
+  public static var all: [NSLineBreakMode] {
+    return [.ByWordWrapping, .ByCharWrapping, .ByClipping, .ByTruncatingHead, .ByTruncatingTail, .ByTruncatingMiddle]
+  }
+
+  public static func enumerate(block: (NSLineBreakMode) -> Void) { apply(all, block) }
+}
+
+extension NSTextAlignment: JSONValueConvertible {
+  public var jsonValue: JSONValue {
+    switch self {
+    case .Left:      return "left"
+    case .Right:     return "right"
+    case .Center:    return "center"
+    case .Justified: return "justified"
+    case .Natural:   return "natural"
+    }
+  }
+}
+
+extension NSTextAlignment: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue?) {
+    if let string = String(jsonValue) {
+      switch string {
+      case "left":      self = .Left
+      case "right":     self = .Right
+      case "center":    self = .Center
+      case "justified": self = .Justified
+      default:          self = .Natural
+      }
+    } else { return nil }
+  }
+}
+
+extension NSTextAlignment: EnumerableType {
+  public static var all: [NSTextAlignment] { return [.Left, .Right, .Center, .Justified, .Natural] }
+  public static func enumerate(block: (NSTextAlignment) -> Void) { apply(all, block) }
+}
+
+extension NSShadow: JSONValueConvertible {
+  public var jsonValue: JSONValue {
+    var dict: JSONValue.ObjectValue = ["offset": shadowOffset.jsonValue, "radius": shadowBlurRadius.jsonValue]
+    if shadowColor != nil { dict["color"] = (shadowColor as! UIColor).jsonValue }
+    return .Object(dict)
+  }
+}
+
+extension NSShadow /*: JSONValueInitializable */ {
+  public convenience init?(_ jsonValue: JSONValue?) {
+    self.init()
+    if let object = ObjectJSONValue(jsonValue) {
+      if let offset = CGSize(object["offset"]) { shadowOffset = offset }
+      if let radius = CGFloat(object["radius"]) { shadowBlurRadius = radius }
+      if let color = UIColor(object["color"]) { shadowColor = color }
+    }
+  }
+}
+
+extension TitleAttributes {
+  public enum IconTextOrderSpecification: JSONValueConvertible {
+    case IconText, TextIcon
+    public var jsonValue: JSONValue {
+      switch self {
+      case .IconText: return "icon-text"
+      case .TextIcon: return "text-icon"
+      }
+    }
+  }
+}
+extension TitleAttributes.IconTextOrderSpecification: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue?) {
+    if let string = String(jsonValue) {
+      switch string {
+      case "text-icon": self = .TextIcon
+      default:          self = .IconText
+      }
+    } else { return nil }
+  }
+
+}
+
+extension TitleAttributes.IconTextOrderSpecification: EnumerableType {
+  public static var all: [TitleAttributes.IconTextOrderSpecification] { return [.IconText, .TextIcon] }
+  public static func enumerate(block: (TitleAttributes.IconTextOrderSpecification) -> Void) { apply(all, block) }
+
+}
+
+extension TitleAttributes {
+  public enum PropertyKey: String {
+    case Text                   = "text"
+    case IconName               = "icon-name"
+    case Font                   = "font"
+    case ForegroundColor        = "foreground-color"
+    case BackgroundColor        = "background-color"
+    case Ligature               = "ligature"
+    case Shadow                 = "shadow"
+    case Expansion              = "expansion"
+    case Obliqueness            = "obliqueness"
+    case StrikethroughColor     = "strikethrough-color"
+    case UnderlineColor         = "underline-color"
+    case BaselineOffset         = "baseline-offset"
+    case TextEffect             = "text-effect"
+    case StrokeWidth            = "stroke-width"
+    case StrokeFill             = "stroke-fill"
+    case StrokeColor            = "stroke-color"
+    case UnderlineStyle         = "underline-style"
+    case StrikethroughStyle     = "strikethrough-style"
+    case Kern                   = "kern"
+    case Alignment              = "alignment"
+    case FirstLineHeadIndent    = "first-line-head-indent"
+    case HeadIndent             = "head-indent"
+    case TailIndent             = "tail-indent"
+    case LineHeightMultiple     = "line-height-multiple"
+    case MaximumLineHeight      = "maximum-line-height"
+    case MinimumLineHeight      = "minimum-line-height"
+    case LineSpacing            = "line-spacing"
+    case ParagraphSpacing       = "paragraph-spacing"
+    case ParagraphSpacingBefore = "paragraph-spacing-before"
+    case HyphenationFactor      = "hyphenation-factor"
+    case LineBreakMode          = "line-break-mode"
+    case IconTextOrder          = "icon-text-order"
+
+    public var type: JSONValueConvertible.Type {
+      switch self {
+      case .Text:                   return String.self
+      case .IconName:               return String.self
+      case .Font:                   return UIFont.self
+      case .ForegroundColor:        return UIColor.self
+      case .BackgroundColor:        return UIColor.self
+      case .Ligature:               return Int.self
+      case .Shadow:                 return NSShadow.self
+      case .Expansion:              return Float.self
+      case .Obliqueness:            return Float.self
+      case .StrikethroughColor:     return UIColor.self
+      case .UnderlineColor:         return UIColor.self
+      case .BaselineOffset:         return CGFloat.self
+      case .TextEffect:             return String.self
+      case .StrokeWidth:            return Float.self
+      case .StrokeFill:             return Bool.self
+      case .StrokeColor:            return UIColor.self
+      case .UnderlineStyle:         return NSUnderlineStyle.self
+      case .StrikethroughStyle:     return NSUnderlineStyle.self
+      case .Kern:                   return Float.self
+      case .Alignment:              return NSTextAlignment.self
+      case .FirstLineHeadIndent:    return CGFloat.self
+      case .HeadIndent:             return CGFloat.self
+      case .TailIndent:             return CGFloat.self
+      case .LineHeightMultiple:     return CGFloat.self
+      case .MaximumLineHeight:      return CGFloat.self
+      case .MinimumLineHeight:      return CGFloat.self
+      case .LineSpacing:            return CGFloat.self
+      case .ParagraphSpacing:       return CGFloat.self
+      case .ParagraphSpacingBefore: return CGFloat.self
+      case .HyphenationFactor:      return Float.self
+      case .LineBreakMode:          return NSLineBreakMode.self
+      case .IconTextOrder:          return IconTextOrderSpecification.self
+      }
+    }
+
+    public var defaultValue: JSONValueConvertible? {
+      switch self {
+      case .Text:                   return ""
+      case .IconName:               return nil
+      case .Font:                   return UIFont(name: "HelveticaNeue", size: 12.0)
+      case .ForegroundColor:        return UIColor.blackColor()
+      case .BackgroundColor:        return nil
+      case .Ligature:               return 1
+      case .Shadow:                 return nil
+      case .Expansion:              return 0.0
+      case .Obliqueness:            return 0.0
+      case .StrikethroughColor:     return nil
+      case .UnderlineColor:         return nil
+      case .BaselineOffset:         return 0.0
+      case .TextEffect:             return nil
+      case .StrokeWidth:            return 0.0
+      case .StrokeFill:             return false
+      case .StrokeColor:            return nil
+      case .UnderlineStyle:         return NSUnderlineStyle.StyleNone
+      case .StrikethroughStyle:     return NSUnderlineStyle.StyleNone
+      case .Kern:                   return 0.0
+      case .Alignment:              return NSTextAlignment.Natural
+      case .FirstLineHeadIndent:    return 0.0
+      case .HeadIndent:             return 0.0
+      case .TailIndent:             return 0.0
+      case .LineHeightMultiple:     return 0.0
+      case .MaximumLineHeight:      return 0.0
+      case .MinimumLineHeight:      return 0.0
+      case .LineSpacing:            return 0.0
+      case .ParagraphSpacing:       return 0.0
+      case .ParagraphSpacingBefore: return 0.0
+      case .HyphenationFactor:      return 0.0
+      case .LineBreakMode:          return NSLineBreakMode.ByWordWrapping
+      case .IconTextOrder:          return IconTextOrderSpecification.IconText
+      }
+    }
+
+
+    public var attributeKey: String? {
+      switch self {
+      case .Font:               return NSFontAttributeName
+      case .ForegroundColor:    return NSForegroundColorAttributeName
+      case .BackgroundColor:    return NSBackgroundColorAttributeName
+      case .Ligature:           return NSLigatureAttributeName
+      case .Shadow:             return NSShadowAttributeName
+      case .Expansion:          return NSExpansionAttributeName
+      case .Obliqueness:        return NSObliquenessAttributeName
+      case .StrikethroughColor: return NSStrikethroughColorAttributeName
+      case .UnderlineColor:     return NSUnderlineColorAttributeName
+      case .BaselineOffset:     return NSBaselineOffsetAttributeName
+      case .TextEffect:         return NSTextEffectAttributeName
+      case .StrokeWidth:        return NSStrokeWidthAttributeName
+      case .StrokeColor:        return NSStrokeColorAttributeName
+      case .UnderlineStyle:     return NSUnderlineStyleAttributeName
+      case .StrikethroughStyle: return NSStrikethroughStyleAttributeName
+      case .Kern:               return NSKernAttributeName
+      default:                  return nil
+      }
+    }
+  }
+}
+
+extension TitleAttributes.PropertyKey: EnumerableType {
+
+  public static var all: [TitleAttributes.PropertyKey] {
+    return [.IconName, .Text, .IconTextOrder] + attributeKeys + paragraphKeys
+  }
+
+  static var paragraphKeys: [TitleAttributes.PropertyKey] {
+    return [.HyphenationFactor, .ParagraphSpacingBefore, .LineHeightMultiple, .MaximumLineHeight, .MinimumLineHeight,
+      .LineBreakMode, .TailIndent, .HeadIndent, .FirstLineHeadIndent, .Alignment, .ParagraphSpacing, .LineSpacing]
+  }
+
+  public static var attributeKeys: [TitleAttributes.PropertyKey] {
+    return [.Font, .ForegroundColor, .BackgroundColor, .Ligature, .Shadow, .Expansion, .Obliqueness, .StrikethroughColor,
+      .UnderlineColor, .BaselineOffset, .TextEffect, .StrokeWidth, .StrokeColor, .UnderlineStyle, .StrikethroughStyle,
+      .Kern]
+  }
+
+  public static func enumerate(block: (TitleAttributes.PropertyKey) -> Void) { apply(all, block) }
+  public static func enumerateParagraphPropertyKeys(block: (TitleAttributes.PropertyKey) -> Void) { paragraphKeys ➤ block }
+  public static func enumerateAttributePropertyKeys(block: (TitleAttributes.PropertyKey) -> Void) { attributeKeys ➤ block }
 }

@@ -45,6 +45,18 @@ class DataModelTests: XCTestCase {
     return filePaths
     }()
 
+  func assertJSONEquality(data: ObjectJSONValue,
+                forObject object: JSONValueConvertible?,
+            excludingKeys excluded: [String] = [])
+  {
+    let expectedData = data.value.filter({(k, _) in excluded ∌ k})
+    if let actualData = ObjectJSONValue(object?.jsonValue)?.value.filter({(k, _) in excluded ∌ k}) {
+      for (key, json) in expectedData {
+        XCTAssert(json == actualData[key], "'\(toString(actualData[key]))' != '\(json)' for key '\(key)'")
+      }
+    } else { XCTFail("failed to get json value of created object") }
+  }
+
   func testLoadManufacturersFromFile() {
     let expectation = expectationWithDescription("load manufacturers")
     DataManager.loadDataFromFile("Manufacturer_Test",
@@ -100,6 +112,9 @@ class DataModelTests: XCTestCase {
     if let data = ObjectJSONValue(self.dynamicType.testJSON["Activity"]) {
       let activity = Activity(data: data, context: context)
       XCTAssert(activity != nil)
+      assertJSONEquality(data, forObject: activity, excludingKeys: ["remote", "launch-macro", "halt-macro"])
+      XCTAssertNotNil(activity?.launchMacro)
+      XCTAssertNotNil(activity?.haltMacro)
       // MSLogDebug(toString(toString(activity)))
     } else { XCTFail("could not retrieve test json for `Activity`") }
   }
@@ -108,7 +123,9 @@ class DataModelTests: XCTestCase {
     if let data = ObjectJSONValue(self.dynamicType.testJSON["ActivityController"]) {
       let activityController = ActivityController(data: data, context: context)
       XCTAssert(activityController != nil)
-      MSLogDebug("activityController = \(toString(activityController))")
+      XCTFail("need to fix issue with missing values crashing program")
+//      assertJSONEquality(data, forObject: activityController, excludingKeys: [])
+      // MSLogDebug("activityController = \(toString(activityController))")
     } else { XCTFail("could not retrieve test json for `ActivityController`") }
   }
 
@@ -116,7 +133,7 @@ class DataModelTests: XCTestCase {
     if let data = ObjectJSONValue(self.dynamicType.testJSON["ComponentDevice"]) {
       let componentDevice = ComponentDevice(data: data, context: context)
       XCTAssert(componentDevice != nil)
-      MSLogDebug("componentDevice = \(toString(componentDevice))")
+      assertJSONEquality(data, forObject: componentDevice, excludingKeys: ["code-set", "manufacturer"])
     } else { XCTFail("could not retrieve test json for `ComponentDevice`") }
   }
 
@@ -124,7 +141,7 @@ class DataModelTests: XCTestCase {
     if let data = ObjectJSONValue(self.dynamicType.testJSON["IRCode"]) {
       let irCode = IRCode(data: data, context: context)
       XCTAssert(irCode != nil)
-      MSLogDebug("irCode = \(toString(irCode))")
+      assertJSONEquality(data, forObject: irCode, excludingKeys: [])
     } else { XCTFail("could not retrieve test json for `IRCode`") }
   }
 
@@ -132,7 +149,7 @@ class DataModelTests: XCTestCase {
     if let data = ObjectJSONValue(self.dynamicType.testJSON["IRCodeSet"]) {
       let irCodeSet = IRCodeSet(data: data, context: context)
       XCTAssert(irCodeSet != nil)
-      MSLogDebug("irCodeSet = \(toString(irCodeSet))")
+      assertJSONEquality(data, forObject: irCodeSet, excludingKeys: ["codes"])
     } else { XCTFail("could not retrieve test json for `IRCodeSet`") }
   }
 
@@ -140,7 +157,7 @@ class DataModelTests: XCTestCase {
     if let data = ObjectJSONValue(self.dynamicType.testJSON["ISYDevice"]) {
       let isyDevice = ISYDevice(data: data, context: context)
       XCTAssert(isyDevice != nil)
-      MSLogDebug("isyDevice = \(toString(isyDevice))")
+      assertJSONEquality(data, forObject: isyDevice, excludingKeys: ["nodes", "groups"])
     } else { XCTFail("could not retrieve test json for `ISYDevice`") }
   }
 
@@ -148,7 +165,7 @@ class DataModelTests: XCTestCase {
     if let data = ObjectJSONValue(self.dynamicType.testJSON["ISYDeviceGroup"]) {
       let isyDeviceGroup = ISYDeviceGroup(data: data, context: context)
       XCTAssert(isyDeviceGroup != nil)
-      MSLogDebug("isyDeviceGroup = \(toString(isyDeviceGroup))")
+      assertJSONEquality(data, forObject: isyDeviceGroup, excludingKeys: ["members", "device"])
     } else { XCTFail("could not retrieve test json for `ISYDeviceGroup`") }
   }
 
@@ -156,7 +173,7 @@ class DataModelTests: XCTestCase {
     if let data = ObjectJSONValue(self.dynamicType.testJSON["ISYDeviceNode"]) {
       let isyDeviceNode = ISYDeviceNode(data: data, context: context)
       XCTAssert(isyDeviceNode != nil)
-      MSLogDebug("isyDeviceNode = \(toString(isyDeviceNode))")
+      assertJSONEquality(data, forObject: isyDeviceNode, excludingKeys: ["groups", "device"])
     } else { XCTFail("could not retrieve test json for `ISYDeviceNode`") }
   }
 
@@ -164,7 +181,7 @@ class DataModelTests: XCTestCase {
     if let data = ObjectJSONValue(self.dynamicType.testJSON["ITachDevice"]) {
       let iTachDevice = ITachDevice(data: data, context: context)
       XCTAssert(iTachDevice != nil)
-      MSLogDebug("iTachDevice = \(toString(iTachDevice))")
+      assertJSONEquality(data, forObject: iTachDevice, excludingKeys: [])
     } else { XCTFail("could not retrieve test json for `ITachDevice`") }
   }
 
@@ -172,7 +189,7 @@ class DataModelTests: XCTestCase {
     if let data = ObjectJSONValue(self.dynamicType.testJSON["Image"]) {
       let image = Image(data: data, context: context)
       XCTAssert(image != nil)
-      MSLogDebug("image = \(toString(image))")
+      assertJSONEquality(data, forObject: image, excludingKeys: [])
     } else { XCTFail("could not retrieve test json for `Image`") }
   }
 
@@ -180,7 +197,12 @@ class DataModelTests: XCTestCase {
     if let data = ObjectJSONValue(self.dynamicType.testJSON["ImageCategory"]) {
       let imageCategory = ImageCategory(data: data, context: context)
       XCTAssert(imageCategory != nil)
-      MSLogDebug("imageCategory = \(toString(imageCategory))")
+      assertJSONEquality(data, forObject: imageCategory, excludingKeys: ["images"])
+      if let expectedImageCount = data["images"]?.arrayValue?.count,
+        images = imageCategory?.images
+      {
+        XCTAssertEqual(expectedImageCount, images.count)
+      }
     } else { XCTFail("could not retrieve test json for `ImageCategory`") }
   }
 
@@ -188,7 +210,12 @@ class DataModelTests: XCTestCase {
     if let data = ObjectJSONValue(self.dynamicType.testJSON["Manufacturer"]) {
       let manufacturer = Manufacturer(data: data, context: context)
       XCTAssert(manufacturer != nil)
-      MSLogDebug("manufacturer = \(toString(manufacturer))")
+      assertJSONEquality(data, forObject: manufacturer, excludingKeys: ["code-sets"])
+      if let expectedCodeSetCount = data["code-sets"]?.arrayValue?.count,
+        codeSets = manufacturer?.codeSets
+      {
+        XCTAssertEqual(expectedCodeSetCount, codeSets.count)
+      }
     } else { XCTFail("could not retrieve test json for `Manufacturer`") }
   }
 
@@ -211,7 +238,12 @@ class DataModelTests: XCTestCase {
     if let data = ObjectJSONValue(self.dynamicType.testJSON["Preset"]) {
       let preset = Preset(data: data, context: context)
       XCTAssert(preset != nil)
-      MSLogDebug("preset = \(toString(preset))")
+      assertJSONEquality(data, forObject: preset, excludingKeys: ["subelements"])
+      if let expectedSubelementsCount = data["subelements"]?.arrayValue?.count,
+        subelements = preset?.subelements
+      {
+        XCTAssertEqual(expectedSubelementsCount, subelements.count)
+      }
     } else { XCTFail("could not retrieve test json for `Preset`") }
   }
 
@@ -219,7 +251,12 @@ class DataModelTests: XCTestCase {
     if let data = ObjectJSONValue(self.dynamicType.testJSON["PresetCategory"]) {
       let presetCategory = PresetCategory(data: data, context: context)
       XCTAssert(presetCategory != nil)
-      MSLogDebug("presetCategory = \(toString(presetCategory))")
+      assertJSONEquality(data, forObject: presetCategory, excludingKeys: ["presets"])
+      if let expectedPresetsCount = data["presets"]?.arrayValue?.count,
+        presets = presetCategory?.presets
+      {
+        XCTAssertEqual(expectedPresetsCount, presets.count)
+      }
     } else { XCTFail("could not retrieve test json for `PresetCategory`") }
   }
 
@@ -227,7 +264,8 @@ class DataModelTests: XCTestCase {
     if let data = self.dynamicType.testJSON["TitleAttributes"] {
       let titleAttributes = TitleAttributes(data)
       XCTAssert(titleAttributes != nil)
-      MSLogDebug("titleAttributes = \(toString(titleAttributes))")
+      assertJSONEquality(ObjectJSONValue(data)!, forObject: titleAttributes, excludingKeys: [])
+      // MSLogDebug("titleAttributes = \(toString(titleAttributes))")
     } else { XCTFail("could not retrieve test json for `TitleAttributes`") }
   }
 

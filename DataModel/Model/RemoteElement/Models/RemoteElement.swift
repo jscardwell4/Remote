@@ -206,7 +206,7 @@ public class RemoteElement: NamedModelObject {
     setBackgroundImageAlpha(preset.backgroundImageAlpha, forMode: RemoteElement.DefaultMode)
     var elements: OrderedSet<RemoteElement> = []
     if let subelementPresets = preset.subelements {
-      for subelementPreset in subelementPresets.array as! [Preset] {
+      for subelementPreset in subelementPresets {
         if let element = RemoteElement.remoteElementFromPreset(subelementPreset) {
           elements.append(element)
         }

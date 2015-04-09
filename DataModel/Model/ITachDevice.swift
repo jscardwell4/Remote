@@ -103,6 +103,7 @@ public class ITachDevice: NetworkDevice {
 
   override public var jsonValue: JSONValue {
     var dict = super.jsonValue.value as! JSONValue.ObjectValue
+    dict["type"] = "itach"
     appendValueForKey("pcbPN", toDictionary: &dict)
     appendValueForKey("pkgLevel", toDictionary: &dict)
     appendValueForKey("sdkClass", toDictionary: &dict)

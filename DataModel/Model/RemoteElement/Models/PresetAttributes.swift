@@ -32,22 +32,22 @@ public final class PresetAttributes {
 
   public var baseType: RemoteElement.BaseType {
     get { return RemoteElement.BaseType(jsonValue: (storage["base-type"] as? String ?? "undefined").jsonValue) }
-    set { storage["base-type"] = newValue.jsonValue.objectValue }
+    set { storage["base-type"] = newValue.jsonValue.anyObjectValue }
   }
 
   public var role: RemoteElement.Role {
     get { return RemoteElement.Role(jsonValue: (storage["role"] as? String ?? "undefined").jsonValue) }
-    set { storage["role"] = newValue.jsonValue.objectValue }
+    set { storage["role"] = newValue.jsonValue.anyObjectValue }
   }
 
   public var shape: RemoteElement.Shape {
     get { return RemoteElement.Shape(jsonValue: (storage["shape"] as? String ?? "undefined").jsonValue) }
-    set { storage["shape"] = newValue.jsonValue.objectValue }
+    set { storage["shape"] = newValue.jsonValue.anyObjectValue }
   }
 
   public var style: RemoteElement.Style {
     get { return RemoteElement.Style(jsonValue: (storage["style"] as? String ?? "undefined").jsonValue) }
-    set { storage["style"] = newValue.jsonValue.objectValue }
+    set { storage["style"] = newValue.jsonValue.anyObjectValue }
   }
 
   public var backgroundImage: Image? {
@@ -123,7 +123,7 @@ public final class PresetAttributes {
 
   public var panelAssignment: ButtonGroup.PanelAssignment? {
     get { return ButtonGroup.PanelAssignment(jsonValue: (storage["panel-assignment"] as? String ?? "").jsonValue) }
-    set { storage["panel-assignment"] = newValue?.jsonValue.objectValue }
+    set { storage["panel-assignment"] = newValue?.jsonValue.anyObjectValue }
   }
 
   /// MARK: - Button attributes

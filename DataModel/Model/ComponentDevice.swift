@@ -87,7 +87,7 @@ public final class ComponentDevice: EditableModelObject {
     super.updateWithData(data)
 
     if let port = Int16(data["port"]) { self.port = port }
-
+    if let alwaysOn = Bool(data["always-on"]) { self.alwaysOn = alwaysOn }
     updateRelationshipFromData(data, forAttribute: "onCommand")
     updateRelationshipFromData(data, forAttribute: "offCommand")
     updateRelationshipFromData(data, forAttribute: "manufacturer")

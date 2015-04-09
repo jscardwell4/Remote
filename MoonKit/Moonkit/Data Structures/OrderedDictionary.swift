@@ -13,6 +13,7 @@ import Foundation
 public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
 
   public typealias Index = Int
+  typealias SelfType = OrderedDictionary<Key, Value>
 
   private(set) public var dictionary: [Key:Value]
   private(set) var _keys: [Key]
@@ -24,7 +25,6 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   public var isEmpty: Bool { return _keys.isEmpty }
   public var values: LazyForwardCollection<MapCollectionView<[Key],Value>> {
     return keys.map({self.dictionary[$0]!})
-//    return _keys.map { self.dictionary[$0]! }
   }
 
   public var keyValuePairs: [(Key, Value)] { return Array(SequenceOf({self.generate()})) }
@@ -60,7 +60,7 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   */
   public init(_ dict: NSDictionary) {
     if let kArray = typeCast(dict.allKeys, Array<Key>.self), vArray = typeCast(dict.allValues, Array<Value>.self) {
-      self = OrderedDictionary<Key, Value>(keys: kArray, values: vArray)
+      self = SelfType(keys: kArray, values: vArray)
     } else {
       _keys = []
       dictionary = [:]
@@ -109,24 +109,7 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
     for (k, v) in elements { _keys.append(k); dictionary[k] = v }
   }
 
-  public static func fromMSDictionary(msdict: MSDictionary) -> OrderedDictionary<NSObject, AnyObject> {
-    var orderedDict = OrderedDictionary<NSObject,AnyObject>(minimumCapacity: 4)
-
-    let keys = msdict.allKeys as! [NSObject]
-    let values = msdict.allValues as [AnyObject]
-
-    for i in 0..<keys.count {
-      let k = keys[i]
-      let v: AnyObject = values[i]
-      orderedDict.setValue(v, forKey: k)
-    }
-
-    return orderedDict
-  }
-
   // MARK: - Indexes
-
-
 
   public var startIndex: Index { return 0 }
   public var endIndex: Index { return _keys.count }
@@ -271,6 +254,9 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
     return dictionary.removeValueForKey(key)
   }
 
+  public mutating func removeValuesForKeys<S:SequenceType where S.Generator.Element == Key>(keys: S) {
+    keys ➤ {self.removeValueForKey($0)}
+  }
 
   /**
   removeAll:
@@ -290,31 +276,25 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   */
   public mutating func sort(isOrderedBefore: (Key, Key) -> Bool) { _keys.sort(isOrderedBefore) }
 
-  public func inflated(expand: (Stack<String>, OrderedDictionary<Key, Value>) -> Value = {
-    (var kp: Stack<String>, var leaf: OrderedDictionary<Key, Value>) -> Value  in
+  private static var defaultExpand: (Stack<String>, SelfType) -> Value {
+    return {
+      (var kp: Stack<String>, var leaf: SelfType) -> Value  in
 
-    // If there are stops along the way from first to last, recursively embed in dictionaries
-    while let k = kp.pop() { leaf = [k as! Key: leaf as! Value] }
+      // If there are stops along the way from first to last, recursively embed in dictionaries
+      while let k = kp.pop() { leaf = [k as! Key: leaf as! Value] }
 
-    return leaf as! Value
-    })
-  -> OrderedDictionary<Key, Value>
-  {
+      return leaf as! Value
+    }
+  }
+
+  public func inflated(expand: (Stack<String>, SelfType) -> Value = defaultExpand)  -> SelfType {
     var result = self
     result.inflate(expand: expand)
     return result
   }
 
   /** inflate */
-  public mutating func inflate(expand: (Stack<String>, OrderedDictionary<Key, Value>) -> Value = {
-    (var kp: Stack<String>, var leaf: OrderedDictionary<Key, Value>) -> Value  in
-
-      // If there are stops along the way from first to last, recursively embed in dictionaries
-      while let k = kp.pop() { leaf = [k as! Key: leaf as! Value] }
-
-      return leaf as! Value
-    })
-  {
+  public mutating func inflate(expand: (Stack<String>, SelfType) -> Value = defaultExpand) {
     if let stringKeys = typeCast(_keys, Array<String>.self) {
 
       // First gather a list of keys to inflate
@@ -329,16 +309,6 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
         var keypath = Stack(dropLast(dropFirst(keyComponents)))
         let value: Value
 
-//        func inflatedValue(obj: Value) -> OrderedDictionary<Key, Value> {
-//          var kp = keypath
-//          var d: OrderedDictionary<Key, Value> = [lastKey as! Key:obj]
-//
-//          // If there are stops along the way from first to last, recursively embed in dictionaries
-//          while let k = kp.pop() { d = [k as! Key: d as! Value] }
-//
-//          return d
-//        }
-
         // If our value is an array, we embed each value in the array and keep our value as an array
         if let valueArray = typeCast(self[key as! Key], Array<Value>.self) {
           value = valueArray.map({expand(keypath, [lastKey as! Key:$0])}) as! Value
@@ -348,7 +318,7 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
         else { value = expand(keypath, [lastKey as! Key: self[key as! Key]!]) }
 
         insertValue(value, atIndex: find(_keys, key as! Key)!, forKey: firstKey as! Key)
-        self[key as! Key] = nil                              // Remove the compressed key-value entry
+        self[key as! Key] = nil // Remove the compressed key-value entry
       }
     }
   }
@@ -360,7 +330,7 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
 
   :returns: OrderedDictionary<Key, Value>
   */
-  public mutating func reverse() -> OrderedDictionary<Key, Value> {
+  public mutating func reverse() -> SelfType {
     var result = self
     result._keys = result._keys.reverse()
     return result
@@ -374,8 +344,8 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
 
   :returns: OrderedDictionary<Key, Value>
   */
-  public func filter(includeElement: (Key, Value) -> Bool) -> OrderedDictionary<Key, Value> {
-    var result: OrderedDictionary<Key, Value> = [:]
+  public func filter(includeElement: (Key, Value) -> Bool) -> SelfType {
+    var result: SelfType = [:]
     for (k, v) in self { if includeElement((k, v)) { result.setValue(v, forKey: k) } }
     return result
   }
@@ -405,6 +375,12 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
     return map(transform).filter({$1 != nil}).map({$1!})
   }
 
+  public func valuesForKeys<S:SequenceType where S.Generator.Element == Key>(keys: S) -> OrderedDictionary<Key, Value?> {
+    var result: OrderedDictionary<Key, Value?> = [:]
+    keys ➤ {result[$0] = self[$0]}
+    return result
+  }
+
 }
 
 // MARK: - Printing
@@ -425,7 +401,7 @@ extension  OrderedDictionary: DictionaryLiteralConvertible {
   public init(dictionaryLiteral elements: (Key, Value)...) { self = OrderedDictionary(elements) }
 }
 
-// MARK: _ObjectiveBridgeable ???
+// MARK: _ObjectiveBridgeable
 extension OrderedDictionary: _ObjectiveCBridgeable {
   static public func _isBridgedToObjectiveC() -> Bool {
     return true
