@@ -461,7 +461,7 @@ extension TitleAttributes: JSONValueConvertible {
 }
 
 extension TitleAttributes: Printable {
-  public var description: String { return jsonValue.prettyStringValue }
+  public var description: String { return jsonValue.prettyRawValue }
 }
 
 // TODO: This should probably be an option set, create workaround?

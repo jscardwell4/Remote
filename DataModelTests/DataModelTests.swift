@@ -32,7 +32,7 @@ class DataModelTests: XCTestCase {
       for s in ["Activity", "ActivityController", "ComponentDevice", "Image", "ImageCategory",
                 "IRCode", "IRCodeSet", "ISYDevice", "ISYDeviceGroup", "ISYDeviceNode",
                 "ITachDevice", "Manufacturer", "Preset", "PresetCategory", "TitleAttributes",
-                "Remote", "BuutonGroup", "Button"]
+                "Remote", "ButtonGroup", "Button"]
       {
         var error: NSError?
         if let filePath = bundle.pathForResource(s, ofType: "json"),
@@ -50,12 +50,11 @@ class DataModelTests: XCTestCase {
                 forObject object: JSONValueConvertible?,
             excludingKeys excluded: [String] = [])
   {
-    let expectedData = data.value.filter({(k, _) in excluded ∌ k})
-    if let actualData = ObjectJSONValue(object?.jsonValue)?.value.filter({(k, _) in excluded ∌ k}) {
-      for (key, json) in expectedData {
-        XCTAssert(json == actualData[key], "'\(toString(actualData[key]?.prettyStringValue))' != '\(json.prettyStringValue)' for key '\(key)'")
-      }
-    } else { XCTFail("failed to get json value of created object") }
+
+    let expectedData = data.filter({(k, _) in excluded ∌ k})
+    if let actualData = ObjectJSONValue(object?.jsonValue) {
+      XCTAssertTrue(actualData.contains(expectedData), "\nactual data: \n\(actualData)\ndoes not contain expected data: \n\(expectedData)")
+    } else { XCTFail("failed to get json value for specified object") }
   }
 
   func testLoadManufacturersFromFile() {
@@ -275,5 +274,22 @@ class DataModelTests: XCTestCase {
       } else { XCTFail("failed to create button") }
     } else { XCTFail("could not retrieve test json for `Button`") }
   }
+
+  func testButtonGroup() {
+    if let data = ObjectJSONValue(self.dynamicType.testJSON["ButtonGroup"]) {
+      if let buttonGroup = ButtonGroup(data: data, context: context) {
+        assertJSONEquality(data, forObject: buttonGroup, excludingKeys: ["subelements"])
+      } else { XCTFail("failed to create buttonGroup") }
+    } else { XCTFail("could not retrieve test json for `ButtonGroup`") }
+  }
+
+  func testRemote() {
+    if let data = ObjectJSONValue(self.dynamicType.testJSON["Remote"]) {
+      if let remote = Remote(data: data, context: context) {
+        assertJSONEquality(data, forObject: remote, excludingKeys: ["subelements"])
+      } else { XCTFail("failed to create remote") }
+    } else { XCTFail("could not retrieve test json for `Remote`") }
+  }
+
 
 }

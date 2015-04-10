@@ -3,15 +3,14 @@
   "constraints": {
     "index": {
       "activityButtons": "F358CB82-496C-446D-8833-D4373777D23E",
-      "bottomToolbar": "B81FFF61-4F56-43C1-9E60-3C399EB31C1B",
-      "homeScreen": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD"
+      "bottomToolbar": "B81FFF61-4F56-43C1-9E60-3C399EB31C1B"
     },
     "format": [
-      "activityButtons.centerX = homeScreen.centerX",
-      "activityButtons.centerY = homeScreen.centerY - 22",
-      "bottomToolbar.bottom = homeScreen.bottom",
-      "bottomToolbar.left = homeScreen.left",
-      "bottomToolbar.right = homeScreen.right"
+      "activityButtons.centerX = self",
+      "activityButtons.centerY = self.centerY - 22",
+      "bottomToolbar.bottom = self.bottom",
+      "bottomToolbar.left = self.left",
+      "bottomToolbar.right = self.right"
     ]
   },
   "background-color.default": "black",

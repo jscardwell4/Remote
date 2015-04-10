@@ -49,17 +49,15 @@ public final class ImageView: ModelObject {
     super.updateWithData(data)
 
     updateRelationshipFromData(data, forAttribute: "image")
-
-    if let colorJSON = data["color"], color = UIColor(colorJSON) {
-      self.color = color
-    }
+    if let imagePath = String(data["path"]) { self.imagePath = imagePath }
+    if let color = UIColor(data["color"]) { self.color = color }
 
   }
 
   override public var jsonValue: JSONValue {
     var dict = super.jsonValue.value as! JSONValue.ObjectValue
 
-    dict["image"] = .String(image.uuid)
+    dict["path"] = imagePath.jsonValue
     if let color = self.color { dict["color"] = color.jsonValue }
     return .Object(dict)
   }

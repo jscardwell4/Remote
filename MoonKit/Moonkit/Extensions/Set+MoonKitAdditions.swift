@@ -16,20 +16,24 @@ public func ∉<T>(lhs: T, rhs: Set<T>) -> Bool { return !(lhs ∈ rhs) }
 public func ∌<T>(lhs: Set<T>, rhs: T) -> Bool { return !(lhs ∋ rhs) }
 
 // subset/superset
-public func ⊂<T>(lhs: Set<T>, rhs: Set<T>) -> Bool { return lhs.isStrictSubsetOf(rhs) }
-public func ⊃<T>(lhs: Set<T>, rhs: Set<T>) -> Bool { return lhs.isStrictSupersetOf(rhs) }
-public func ⊄<T>(lhs: Set<T>, rhs: Set<T>) -> Bool { return !(lhs ⊂ rhs) }
-public func ⊅<T>(lhs: Set<T>, rhs: Set<T>) -> Bool { return !(lhs ⊃ rhs) }
-public func ⊆<T>(lhs: Set<T>, rhs: Set<T>) -> Bool { return lhs.isSubsetOf(rhs) }
-public func ⊇<T>(lhs: Set<T>, rhs: Set<T>) -> Bool { return lhs.isSupersetOf(rhs) }
-public func ⊈<T>(lhs: Set<T>, rhs: Set<T>) -> Bool { return !(lhs ⊆ rhs) }
-public func ⊉<T>(lhs: Set<T>, rhs: Set<T>) -> Bool { return !(lhs ⊇ rhs) }
+public func ⊂<S:SequenceType, T where S.Generator.Element == T>(lhs: Set<T>, rhs: S) -> Bool {
+  return lhs.isStrictSubsetOf(rhs)
+}
+public func ⊃<S:SequenceType, T where S.Generator.Element == T>(lhs: Set<T>, rhs: S) -> Bool {
+  return lhs.isStrictSupersetOf(rhs)
+}
+public func ⊄<S:SequenceType, T where S.Generator.Element == T>(lhs: Set<T>, rhs: S) -> Bool { return !(lhs ⊂ rhs) }
+public func ⊅<S:SequenceType, T where S.Generator.Element == T>(lhs: Set<T>, rhs: S) -> Bool { return !(lhs ⊃ rhs) }
+public func ⊆<S:SequenceType, T where S.Generator.Element == T>(lhs: Set<T>, rhs: S) -> Bool { return lhs.isSubsetOf(rhs) }
+public func ⊇<S:SequenceType, T where S.Generator.Element == T>(lhs: Set<T>, rhs: S) -> Bool { return lhs.isSupersetOf(rhs) }
+public func ⊈<S:SequenceType, T where S.Generator.Element == T>(lhs: Set<T>, rhs: S) -> Bool { return !(lhs ⊆ rhs) }
+public func ⊉<S:SequenceType, T where S.Generator.Element == T>(lhs: Set<T>, rhs: S) -> Bool { return !(lhs ⊇ rhs) }
 
 // union
-public func ∪<T>(lhs: Set<T>, rhs: Set<T>) -> Set<T> { return lhs.union(rhs) }
+public func ∪<S:SequenceType, T where S.Generator.Element == T>(lhs: Set<T>, rhs: S) -> Set<T> { return lhs.union(rhs) }
 
 // minus
-public func ∖<T>(lhs: Set<T>, rhs: Set<T>) -> Set<T> { return lhs.subtract(rhs) }
+public func ∖<S:SequenceType, T where S.Generator.Element == T>(lhs: Set<T>, rhs: S) -> Set<T> { return lhs.subtract(rhs) }
 
 // intersect
-public func ∩<T>(lhs: Set<T>, rhs: Set<T>) -> Set<T> { return lhs.intersect(rhs) }
+public func ∩<S:SequenceType, T where S.Generator.Element == T>(lhs: Set<T>, rhs: S) -> Set<T> { return lhs.intersect(rhs) }

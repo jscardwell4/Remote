@@ -2,25 +2,24 @@
   "name": "DVR Activity 1x3",
   "constraints": {
     "index": {
-      "dVRActivity1x3": "B9A5F86F-ED62-49E9-B6D4-AE1093D02202",
       "dVRInternetTV": "6EB0A6D1-992C-4F1D-816B-83E75187FCEB",
       "guideTools": "037BB6A2-A4AF-408A-9F45-E48E0AA20E1E",
       "info": "2E48E207-00B8-481A-A57E-4FA84B51A02C"
     },
     "format": [
-      "dVRActivity1x3.height ≥ 150",
-      "dVRActivity1x3.width ≥ 132",
+      "self.height ≥ 150",
+      "self.width ≥ 132",
       "dVRInternetTV.height = guideTools.height",
-      "dVRInternetTV.left = dVRActivity1x3.left",
-      "dVRInternetTV.right = dVRActivity1x3.right",
+      "dVRInternetTV.left = self.left",
+      "dVRInternetTV.right = self.right",
       "dVRInternetTV.top = guideTools.bottom + 4",
-      "guideTools.left = dVRActivity1x3.left",
-      "guideTools.right = dVRActivity1x3.right",
-      "guideTools.top = dVRActivity1x3.top",
-      "info.bottom = dVRActivity1x3.bottom",
+      "guideTools.left = self.left",
+      "guideTools.right = self.right",
+      "guideTools.top = self.top",
+      "info.bottom = self.bottom",
       "info.height = guideTools.height",
-      "info.left = dVRActivity1x3.left",
-      "info.right = dVRActivity1x3.right",
+      "info.left = self.left",
+      "info.right = self.right",
       "info.top = dVRInternetTV.bottom + 4"
     ]
   },

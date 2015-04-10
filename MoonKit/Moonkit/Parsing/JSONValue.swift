@@ -131,7 +131,7 @@ public enum JSONValue {
   }
 
   /** The formatted JSONValue string representation */
-  public var prettyStringValue: Swift.String { return stringValueWithDepth(0) }
+  public var prettyRawValue: Swift.String { return stringValueWithDepth(0) }
 
   /** An object representation of the value */
   public var anyObjectValue: AnyObject {
@@ -232,6 +232,7 @@ public enum JSONValue {
   }
 }
 
+// MARK: RawRepresentable
 extension JSONValue: RawRepresentable {
   public var rawValue: Swift.String {
     switch self {
@@ -251,9 +252,29 @@ extension JSONValue: RawRepresentable {
   }
 }
 
+// MARK: Equatable
 extension JSONValue: Equatable {}
-public func ==(lhs: JSONValue, rhs: JSONValue) -> Bool { return lhs.rawValue == rhs.rawValue }
+public func ==(lhs: JSONValue, rhs: JSONValue) -> Bool {
+  switch (lhs, rhs) {
+    case (.String(let ls), .String(let rs)) where ls == rs:
+      return true
+    case (.Boolean(let lb), .Boolean(let rb)) where lb == rb:
+      return true
+    case (.Number(let ln), .Number(let rn)) where ln.isEqualToNumber(rn):
+      return true
+    case (.Null, .Null):
+      return true
+    case (.Array(let la), .Array(let ra)) where la == ra:
+      return true
+    case (.Object(let lo), .Object(let ro)) where lo.count == ro.count && lo.keys.array == ro.keys.array:
+      let keys = lo.keys.array
+      return keys.compressedMap({lo[$0]}) == keys.compressedMap({ro[$0]})
+    default:
+      return false
+  }
+}
 
+// MARK: Hashable
 extension JSONValue: Hashable {
   public var hashValue: Int { return rawValue.hashValue }
 }
@@ -295,16 +316,39 @@ extension JSONValue: Printable { public var description: Swift.String { return r
 // MARK: DebugPrintable
 extension JSONValue: DebugPrintable {
   public var debugDescription: Swift.String {
-    var description: Swift.String
+    var description: Swift.String = "\n"
     switch self {
-      case .Boolean(let b): description = "JSONValue.Boolean(\(b))"
-      case .Null:           description = "JSONValue.Null"
-      case .Number(let n):  description = "JSONValue.Number(\(n))"
-      case .String(let s):   description = "JSONValue.String(\(s))"
-      case .Array(let a):   description = "JSONValue.Array(\(a.count) items)"
-      case .Object(let o):  description = "JSONValue.Object(\(o.count) entries)"
+      case .Boolean(let b):
+        description += "JSONValue.Boolean(\(b))"
+      case .Null:
+        description += "JSONValue.Null"
+      case .Number(let n):
+        description += "JSONValue.Number(\(n))"
+      case .String(let s):
+        description += "JSONValue.String(\(s))"
+      case .Array(let a):
+        let c = a.count
+        if c == 1 { description += "JSONValue.Array(1 item)\nitem:\n\t{\n\(a[0].debugDescription.indentedBy(8))\n\t}" }
+        else {
+          description += "JSONValue.Array(\(c) items)"
+          if c > 0 {
+            let items = ",\n".join(a.map({"\t{\n\($0.debugDescription.indentedBy(8))\n\t}"}))
+            description += "\nitems: \(items))"
+          }
+        }
+
+      case .Object(let o):
+        let c = o.count
+        if c == 1 {
+          description += "JSONValue.Object(1 entry)\nentry:\n\t\(o.keys[0]): {\n\(o.values[0].debugDescription.indentedBy(8))\n\t}"
+        } else {
+          description += "JSONValue.Object(\(c) entries)"
+          if c > 0 {
+            let entries = ",\n".join(o.keyValuePairs.map({"\t\($0): {\n\($1.debugDescription.indentedBy(8))\n\t}"}))
+            description += "\nentries:\n\(entries)"
+          }
+        }
     }
-    description += " - \(stringValue)"
     return description
   }
 }
@@ -330,8 +374,15 @@ public class WrappedJSONValue: NSCoding {
 public struct ObjectJSONValue: JSONValueConvertible, JSONValueInitializable {
   public var jsonValue: JSONValue { return .Object(value) }
   public let value: JSONValue.ObjectValue
+  public var count: Int { return value.count }
+  public init(_ value: JSONValue.ObjectValue) { self.value = value }
   public init?(_ v: JSONValue?) { switch v ?? .Null { case .Object(let o): value = o; default: return nil } }
   public subscript(key: String) -> JSONValue? { return value[key] }
+  public var keys: LazyForwardCollection<[String]> { return value.keys }
+  public var values: LazyForwardCollection<MapCollectionView<[String], JSONValue>> { return value.values }
+  public func filter(includeElement: (String, JSONValue) -> Bool) -> ObjectJSONValue {
+    return ObjectJSONValue(value.filter(includeElement))
+  }
   public func map<U>(transform: (String, JSONValue) -> U) -> OrderedDictionary<String, U> {
     return value.map(transform)
   }
@@ -339,6 +390,26 @@ public struct ObjectJSONValue: JSONValueConvertible, JSONValueInitializable {
   public func compressedMap<U>(transform: (String, JSONValue) -> U?) -> OrderedDictionary<String, U> {
     return value.compressedMap(transform)
   }
+
+  public func contains(object: ObjectJSONValue) -> Bool {
+    let objectKeys = Set(object.keys)
+    if objectKeys ⊈ keys { return false }
+    for objectKey in objectKeys {
+      if let objectValue = object[objectKey], selfValue = self[objectKey] {
+        switch (objectValue, selfValue) {
+          case (.Null, .Null): continue
+          case (.String(let os), .String(let ss)) where os == ss: continue
+          case (.Boolean(let ob), .Boolean(let sb)) where ob == sb: continue
+          case (.Number(let on), .Number(let sn)) where on.isEqualToNumber(sn): continue
+          case (.Array(let oa), .Array(let sa)): return ArrayJSONValue(sa).contains(ArrayJSONValue(oa))
+          case (.Object(let oo), .Object(let so)): return ObjectJSONValue(so).contains(ObjectJSONValue(oo))
+          default: return false
+        }
+      } else { return false }
+    }
+    return true
+  }
+
 }
 extension ObjectJSONValue: CollectionType {
   public typealias Index = JSONValue.ObjectValue.Index
@@ -349,9 +420,38 @@ extension ObjectJSONValue: CollectionType {
   public subscript(idx: Index) -> Generator.Element { return value[idx] }
 }
 
-public struct ArrayJSONValue {
+extension ObjectJSONValue: Printable, DebugPrintable {
+  public var description: String { return value.description }
+  public var debugDescription: String { return "MoonKit.ObjectJSONValue - value: \(description)" }
+}
+
+public struct ArrayJSONValue: JSONValueConvertible, JSONValueInitializable {
   public let value: [JSONValue]
+  public var jsonValue: JSONValue { return .Array(value) }
+  public var count: Int { return value.count }
+  public init(_ value: [JSONValue]) { self.value = value }
   public init?(_ v: JSONValue?) { switch v ?? .Null { case .Array(let a): value = a; default: return nil } }
+  public func filter(includeElement: (JSONValue) -> Bool) -> ArrayJSONValue {
+    return ArrayJSONValue(value.filter(includeElement))
+  }
+  public func map<U>(transform: (JSONValue) -> U) -> [U] { return value.map(transform) }
+  public func compressedMap<U>(transform: (JSONValue) -> U?) -> [U] { return value.compressedMap(transform) }
+  public func contains(array: ArrayJSONValue) -> Bool {
+    if array.count > count { return false }
+    for object in array {
+      switch object {
+        case .Null where object ∈ value: continue
+        case .String(_) where object ∈ value: continue
+        case .Number(_) where object ∈ value: continue
+        case .Boolean(_) where object ∈ value: continue
+        case .Object(_) where object ∈ value: continue
+        case .Array(_) where object ∈ value: continue
+        default: return false
+      }
+    }
+
+    return true
+  }
 }
 extension ArrayJSONValue: CollectionType {
   public typealias Index = JSONValue.ArrayValue.Index
@@ -360,6 +460,11 @@ extension ArrayJSONValue: CollectionType {
   public var endIndex: Index { return value.endIndex }
   public func generate() -> Generator { return value.generate() }
   public subscript(idx: Index) -> Generator.Element { return value[idx] }
+}
+
+extension ArrayJSONValue: Printable, DebugPrintable {
+  public var description: String { return value.description }
+  public var debugDescription: String { return "MoonKit.ArrayJSONValue - value: \(description)" }
 }
 
 

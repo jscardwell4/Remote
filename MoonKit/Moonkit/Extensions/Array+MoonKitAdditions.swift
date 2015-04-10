@@ -13,6 +13,12 @@ import Foundation
 //  public var JSONObject: AnyObject { return self }
 //}
 
+extension Array {
+  func compressedMap<U>(transform: (T) -> U?) -> [U] {
+    return compressed(map(transform))
+  }
+}
+
 /**
 flattened:
 
@@ -46,7 +52,7 @@ compressedMap:transform:
 
 :returns: [U]
 */
-public func compressedMap<T,U>(array: [T], transform: (T) -> U?) -> [U] { return compressed(array.map(transform)) }
+public func compressedMap<T,U>(array: [T], transform: (T) -> U?) -> [U] { return array.compressedMap(transform) }
 
 /** unpacking an array into a tuple */
 public func disperse2<T>(v: [T]) -> (T,T) { return (v[0], v[1]) }

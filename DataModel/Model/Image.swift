@@ -13,6 +13,8 @@ import MoonKit
 @objc(Image)
 final public class Image: EditableModelObject {
 
+  // TODO: Consider adding absolute file path as an attribute
+
   public var assetName: String {
     get {
       var assetName: String!
@@ -49,8 +51,8 @@ final public class Image: EditableModelObject {
   }
 
   @NSManaged public var topCap: Int32
-  @NSManaged public var remoteElements: NSSet
-  @NSManaged public var views: NSSet
+  @NSManaged public var remoteElements: Set<RemoteElement>
+  @NSManaged public var views: Set<ImageView>
 
   public var imageCategory: ImageCategory {
     get {

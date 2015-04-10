@@ -629,7 +629,7 @@ import MoonKit
 
           MSLogDebug("\(importedObjects.count) \(type.className()) objects imported from file '\(file).json'")
 
-          if logImported { MSLogDebug("json output for imported object:\n\(JSONValue.Array((importedObjects as [ModelObject]).map({$0.jsonValue})).prettyStringValue)") }
+          if logImported { MSLogDebug("json output for imported object:\n\(JSONValue.Array((importedObjects as [ModelObject]).map({$0.jsonValue})).prettyRawValue)") }
 
         } else { MSLogError("file content must resolve into [String:AnyObject] or [[String:AnyObject]]") }
 
