@@ -517,17 +517,29 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
 
 
   /**
-  attributeValueIsDefault:
+  hasDefaultValue:
 
   :param: attribute String
 
   :returns: Bool
   */
-  public func attributeValueIsDefault(attribute: String) -> Bool {
+  public func hasDefaultValue(attribute: String) -> Bool {
     if let value: AnyObject = valueForKey(attribute),
       let defaultValue: AnyObject = defaultValueForAttribute(attribute) where value.isEqual(defaultValue) { return true }
     else { return valueForKey(attribute) == nil && defaultValueForAttribute(attribute) == nil }
   }
+
+  /**
+  hasNonDefaultValue:
+
+  :param: attribute String
+
+  :returns: Bool
+  */
+  public func hasNonDefaultValue(attribute: String) -> Bool {
+    return !hasDefaultValue(attribute)
+  }
+
 
   /**
   appendValueForKey:forKey:ifNotDefault:inDictionary:
@@ -584,7 +596,7 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
              ifNotDefault nonDefault: Bool = false,
        inout toDictionary dictionary: JSONValue.ObjectValue)
   {
-    if !(nonDefault && attributeValueIsDefault(key)) {
+    if !(nonDefault && hasDefaultValue(key)) {
       if let convertibleValue = value as? JSONValueConvertible {
         dictionary[key.dashcaseString] = convertibleValue.jsonValue
       } else if let convertibleValues = value as? [JSONValueConvertible] {

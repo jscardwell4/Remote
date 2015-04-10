@@ -453,6 +453,9 @@
 		C2CA76D719BA211100ACCD76 /* DSType - User-BoldCameo.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76D619BA211100ACCD76 /* DSType - User-BoldCameo.otf */; };
 		C2CA76DA19BA34A500ACCD76 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA76D919BA34A500ACCD76 /* libicucore.dylib */; };
 		C2CA76DF19BA98A100ACCD76 /* Main-iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76DE19BA98A100ACCD76 /* Main-iPad.storyboard */; };
+		C2CDB8F61AD74BC8006DF88C /* Button.json in Resources */ = {isa = PBXBuildFile; fileRef = C2CDB8F31AD74BC8006DF88C /* Button.json */; };
+		C2CDB8F71AD74BC8006DF88C /* ButtonGroup.json in Resources */ = {isa = PBXBuildFile; fileRef = C2CDB8F41AD74BC8006DF88C /* ButtonGroup.json */; };
+		C2CDB8F81AD74BC8006DF88C /* Remote.json in Resources */ = {isa = PBXBuildFile; fileRef = C2CDB8F51AD74BC8006DF88C /* Remote.json */; };
 		C2CEFF1C1A2F8FF400F3BE24 /* RemoteStyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CEFF1B1A2F8FF400F3BE24 /* RemoteStyleKit.swift */; };
 		C2D361DE182BE49600775239 /* RemoteElementKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D361DD182BE49600775239 /* RemoteElementKeys.m */; };
 		C2E8D99919BCBF6800E6098E /* 1067-gray-enter-fullscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99519BCBF6800E6098E /* 1067-gray-enter-fullscreen.png */; };
@@ -1150,6 +1153,9 @@
 		C2CA76DB19BA5BFF00ACCD76 /* desc.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = desc.xml; sourceTree = "<group>"; };
 		C2CA76DC19BA5C3D00ACCD76 /* parsed_desc.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = parsed_desc.txt; sourceTree = "<group>"; };
 		C2CA76DE19BA98A100ACCD76 /* Main-iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Main-iPad.storyboard"; sourceTree = "<group>"; };
+		C2CDB8F31AD74BC8006DF88C /* Button.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Button.json; sourceTree = "<group>"; };
+		C2CDB8F41AD74BC8006DF88C /* ButtonGroup.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ButtonGroup.json; sourceTree = "<group>"; };
+		C2CDB8F51AD74BC8006DF88C /* Remote.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Remote.json; sourceTree = "<group>"; };
 		C2CEFF1B1A2F8FF400F3BE24 /* RemoteStyleKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteStyleKit.swift; sourceTree = "<group>"; };
 		C2D361DD182BE49600775239 /* RemoteElementKeys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteElementKeys.m; sourceTree = "<group>"; };
 		C2D361DF182BE4B400775239 /* RemoteElementKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteElementKeys.h; sourceTree = "<group>"; };
@@ -1656,11 +1662,11 @@
 				C2F940FB19BE5E90007B5CC1 /* iTachClient */,
 				C2C482C419C9F968002E84A9 /* Remote Tests */,
 				C215CC001ABB102F00E8077E /* DataModel */,
+				C28E98F41AD1A4B000E78711 /* DataModelTests */,
 				C2E9F3E81ABC9797007581F2 /* BankApp */,
 				C293C7451AC3164700408D35 /* Bank */,
 				C293C7541AC3164700408D35 /* BankTests */,
 				C2F4C58C1AC6E95300DB3695 /* DataModelApp */,
-				C28E98F41AD1A4B000E78711 /* DataModelTests */,
 				C26BAEAA16DC10FE0093D5B4 /* Frameworks */,
 				C26BAEA916DC10FE0093D5B4 /* Products */,
 			);
@@ -2068,6 +2074,9 @@
 		C28E98F41AD1A4B000E78711 /* DataModelTests */ = {
 			isa = PBXGroup;
 			children = (
+				C2CDB8F31AD74BC8006DF88C /* Button.json */,
+				C2CDB8F41AD74BC8006DF88C /* ButtonGroup.json */,
+				C2CDB8F51AD74BC8006DF88C /* Remote.json */,
 				C23F07021AD5A54F003BD28B /* Activity.json */,
 				C23F07031AD5A54F003BD28B /* ActivityController.json */,
 				C23F07041AD5A54F003BD28B /* ComponentDevice.json */,
@@ -3234,16 +3243,19 @@
 				C23F07141AD5A54F003BD28B /* Image.json in Resources */,
 				C23F071B1AD5A54F003BD28B /* ITachDevice.json in Resources */,
 				C23F071E1AD5A54F003BD28B /* PresetCategory.json in Resources */,
+				C2CDB8F81AD74BC8006DF88C /* Remote.json in Resources */,
 				C23F071A1AD5A54F003BD28B /* ISYDeviceNode.json in Resources */,
 				C23F07111AD5A54F003BD28B /* Activity.json in Resources */,
 				C23F07181AD5A54F003BD28B /* ISYDevice.json in Resources */,
 				C23F07161AD5A54F003BD28B /* IRCode.json in Resources */,
 				C23F07151AD5A54F003BD28B /* ImageCategory.json in Resources */,
+				C2CDB8F71AD74BC8006DF88C /* ButtonGroup.json in Resources */,
 				C23F07171AD5A54F003BD28B /* IRCodeSet.json in Resources */,
 				C23F071D1AD5A54F003BD28B /* Preset.json in Resources */,
 				C23F071C1AD5A54F003BD28B /* Manufacturer.json in Resources */,
 				C23F07131AD5A54F003BD28B /* ComponentDevice.json in Resources */,
 				C23F071F1AD5A54F003BD28B /* TitleAttributes.json in Resources */,
+				C2CDB8F61AD74BC8006DF88C /* Button.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

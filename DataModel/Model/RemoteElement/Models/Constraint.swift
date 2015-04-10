@@ -355,6 +355,7 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
   :returns: [Constraint]
   */
   public class func importObjectsWithData(data: ObjectJSONValue, context: NSManagedObjectContext) -> [ModelObject] {
+    // TODO: Pre-parse constraint format for $[0-9] and self
     if let index = ObjectJSONValue(data["index"]) {
       let convertedIndex = index.value.compressedMap({String($1)}).dictionary
       let formatStrings: [String]

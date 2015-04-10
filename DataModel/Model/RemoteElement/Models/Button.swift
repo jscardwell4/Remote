@@ -362,77 +362,54 @@ public final class Button: RemoteElement {
 
     if let moc = managedObjectContext {
 
-      if let titles = ObjectJSONValue(data["titles"]) {
+      if let titles = ObjectJSONValue(data["titles"])?.compressedMap({ObjectJSONValue($1)}) {
         for (mode, jsonValue) in titles {
-          if let values = ObjectJSONValue(jsonValue),
-            titleSet: ControlStateTitleSet = ControlStateTitleSet.importObjectWithData(values, context: moc)
-          {
+          if let titleSet = ControlStateTitleSet.importObjectWithData(jsonValue, context: moc) {
             setTitles(titleSet, forMode: mode)
           }
         }
       }
 
-      if let icons = ObjectJSONValue(data["icons"]) {
+      if let icons = ObjectJSONValue(data["icons"])?.compressedMap({ObjectJSONValue($1)}) {
         for (mode, jsonValue) in icons {
-          if let values = ObjectJSONValue(jsonValue),
-            imageSet = ControlStateImageSet.importObjectWithData(values, context: moc)
-          {
+          if let  imageSet = ControlStateImageSet.importObjectWithData(jsonValue, context: moc) {
             setIcons(imageSet, forMode: mode)
           }
         }
       }
 
-      if let images = ObjectJSONValue(data["images"]) {
+      if let images = ObjectJSONValue(data["images"])?.compressedMap({ObjectJSONValue($1)}) {
         for (mode, jsonValue) in images {
-          if let values = ObjectJSONValue(jsonValue),
-            imageSet = ControlStateImageSet.importObjectWithData(values, context: moc)
-          {
+          if let imageSet = ControlStateImageSet.importObjectWithData(jsonValue, context: moc) {
             setImages(imageSet, forMode: mode)
           }
         }
       }
 
-      if let backgroundColors = ObjectJSONValue(data["background-colors"]) {
+      if let backgroundColors = ObjectJSONValue(data["background-colors"])?.compressedMap({ObjectJSONValue($1)}) {
         for (mode, jsonValue) in backgroundColors {
-          if let values = ObjectJSONValue(jsonValue),
-            colorSet = ControlStateColorSet.importObjectWithData(values, context: moc)
-          {
+          if let colorSet = ControlStateColorSet.importObjectWithData(jsonValue, context: moc) {
             setBackgroundColors(colorSet, forMode: mode)
           }
         }
       }
 
-      if let commands = ObjectJSONValue(data["commands"]) {
+      if let commands = ObjectJSONValue(data["commands"])?.compressedMap({ObjectJSONValue($1)}) {
         for (mode, jsonValue) in commands {
-          if let values = ObjectJSONValue(jsonValue),
-            command = Command.importObjectWithData(values, context: moc)
-          {
-            setCommand(command, forMode: mode)
-          }
+          if let command = Command.importObjectWithData(jsonValue, context: moc) { setCommand(command, forMode: mode) }
         }
       }
 
-      if let longPressCommands = ObjectJSONValue(data["long-press-commands"] ?? .Null){
-        for (mode, jsonValue) in longPressCommands.value {
-          if let json = ObjectJSONValue(jsonValue),
-            command = Command.importObjectWithData(json, context: moc)
-          {
-            setLongPressCommand(command, forMode: mode)
-          }
+      if let longPressCommands = ObjectJSONValue(data["long-press-commands"])?.compressedMap({ObjectJSONValue($1)}) {
+        for (mode, jsonValue) in longPressCommands {
+          if let command = Command.importObjectWithData(jsonValue, context: moc){ setLongPressCommand(command, forMode: mode) }
         }
       }
 
-      if let titleEdgeInsets = String(data["title-edge-insets"]) {
-        self.titleEdgeInsets = UIEdgeInsetsFromString(titleEdgeInsets)
-      }
-
-      if let contentEdgeInsets = String(data["content-edge-insets"]) {
-        self.contentEdgeInsets = UIEdgeInsetsFromString(contentEdgeInsets)
-      }
-
-      if let imageEdgeInsets = String(data["image-edge-insets"]) {
-        self.imageEdgeInsets = UIEdgeInsetsFromString(imageEdgeInsets)
-      }
+      let wtf = data["title-edge-insets"]
+      if let titleEdgeInsets = UIEdgeInsets(data["title-edge-insets"]) { self.titleEdgeInsets = titleEdgeInsets } 
+      if let contentEdgeInsets = UIEdgeInsets(data["content-edge-insets"]) { self.contentEdgeInsets = contentEdgeInsets }
+      if let imageEdgeInsets = UIEdgeInsets(data["image-edge-insets"]) { self.imageEdgeInsets = imageEdgeInsets }
 
     }
 
@@ -468,104 +445,11 @@ public final class Button: RemoteElement {
     dict["background-colors"]  = .Object(backgroundColors)
     dict["images"]             = .Object(images)
 
-    appendValueForKey("titleEdgeInsets", toDictionary: &dict)
-    appendValueForKey("imageEdgeInsets", toDictionary: &dict)
-    appendValueForKey("contentEdgeInsets", toDictionary: &dict)
+    dict["title-edge-insets"]   = titleEdgeInsets.jsonValue
+    dict["image-edge-insets"]   = imageEdgeInsets.jsonValue
+    dict["content-edge-insets"] = contentEdgeInsets.jsonValue
+
     return .Object(dict)
   }
 
-  /**
-  deepDescriptionDictionary
-
-  :returns: MSDictionary
-  */
-/*
-  override func deepDescriptionDictionary() -> MSDictionary {
-
-    let element = faultedObject()
-
-    let stringFromDescription: (String?) -> String = {
-      string in string == nil || string!.isEmpty ? "nil" : string!.stringByShiftingLeft(4)
-    }
-
-    let dd = super.deepDescriptionDictionary()
-
-    dd["titles"]            = stringFromDescription(element.titles?.deepDescription())
-    dd["icons"]             = stringFromDescription(element.icons?.deepDescription())
-    dd["backgroundColors"]  = stringFromDescription(element.backgroundColors?.deepDescription())
-    dd["images"]            = stringFromDescription(element.images?.deepDescription())
-    dd["command"]           = stringFromDescription(element.command?.deepDescription())
-    dd["longPressCommand"]  = stringFromDescription(element.longPressCommand?.deepDescription())
-    dd["titleEdgeInsets"]   = "\(element.titleEdgeInsets)"
-    dd["imageEdgeInsets"]   = "\(element.imageEdgeInsets)"
-    dd["contentEdgeInsets"] = "\(element.contentEdgeInsets)"
-
-
-    return dd
-  }
-*/
-
 }
-
-/// MARK: - Presets
-////////////////////////////////////////////////////////////////////////////////
-// extension Button {
-
-//   public protocol ButtonPreset: Preset {
-//     var titles:            ControlStateTitleSet? { get set }
-//     var icons:             ControlStateImageSet? { get set }
-//     var backgroundColors:  ControlStateColorSet? { get set }
-//     var images:            ControlStateImageSet? { get set }
-//     var titleEdgeInsets:   UIEdgeInsets?         { get set }
-//     var imageEdgeInsets:   UIEdgeInsets?         { get set }
-//     var contentEdgeInsets: UIEdgeInsets?         { get set }
-//   }
-
-//   public enum PresetType {
-//     case None
-//     case ConnectionStatus, BatteryStatus                                         // Toolbar
-//     case Top, Bottom                                                             // Rocker
-//     case Tuck, SelectionPanel                                                    // Panel
-//     case Up, Down, Left, Right, Center                                           // DPad
-//     case One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Zero, Aux1, Aux2  // Numberpad
-//     case Play, Stop, Pause, Skip, Replay, FF, Rewind, Record                     // Transport
-
-
-//   }
-
-//   /**
-//   initWithPresetType:context:
-
-//   :param: presetType PresetType
-//   :param: context NSManagedObjectContext
-//   */
-//   convenience init(presetType: PresetType, context: NSManagedObjectContext) {
-//     self.init(context: context)
-//     switch presetType {
-//       case .ConnectionStatus, .BatteryStatus:
-//       case .Top, .Bottom:
-//       case .Up, .Down, .Left, .Right, .Center:
-//       case .One, .Two, .Three, .Four, .Five, .Six, .Seven, .Eight, .Nine, .Zero, .Aux1, .Aux2:
-//       case .Play, .Stop, .Pause, .Skip, .Replay, .FF, .Rewind, .Record:
-//       default: break
-//     }
-//   }
-
-// }
-
-//extension Button.State: Equatable {}
-//func ==(lhs: Button.State, rhs: Button.State) -> Bool { return lhs.rawValue == rhs.rawValue }
-//
-//extension Button.State: BitwiseOperationsType {
-//  static var allZeros: Button.State { return self(rawValue: 0) }
-//}
-//func &(lhs: Button.State, rhs: Button.State) -> Button.State {
-//  return Button.State(rawValue: (lhs.rawValue & rhs.rawValue))
-//}
-//func |(lhs: Button.State, rhs: Button.State) -> Button.State {
-//  return Button.State(rawValue: (lhs.rawValue | rhs.rawValue))
-//}
-//func ^(lhs: Button.State, rhs: Button.State) -> Button.State {
-//  return Button.State(rawValue: (lhs.rawValue ^ rhs.rawValue))
-//}
-//prefix func ~(x: Button.State) -> Button.State { return Button.State(rawValue: ~(x.rawValue)) }

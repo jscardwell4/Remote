@@ -28,13 +28,15 @@ class MoonKit_Tests: XCTestCase {
       example2JSONFilePath = bundle.pathForResource("example2", ofType: "json"),
       example3JSONFilePath = bundle.pathForResource("example3", ofType: "json"),
       example4JSONFilePath = bundle.pathForResource("example4", ofType: "json"),
-      example5JSONFilePath = bundle.pathForResource("example5", ofType: "json")
+      example5JSONFilePath = bundle.pathForResource("example5", ofType: "json"),
+      example6JSONFilePath = bundle.pathForResource("example6", ofType: "json")
     {
       filePaths.append(example1JSONFilePath)
       filePaths.append(example2JSONFilePath)
       filePaths.append(example3JSONFilePath)
       filePaths.append(example4JSONFilePath)
       filePaths.append(example5JSONFilePath)
+      filePaths.append(example6JSONFilePath)
     }
     return filePaths
   }()
@@ -231,6 +233,14 @@ class MoonKit_Tests: XCTestCase {
 
     } else { XCTFail("file parse failed to create an object") }
 
+    error = nil
+    if let object = JSONSerialization.objectByParsingFile(filePaths[5], options: .InflateKeypaths, error: &error)
+      where !MSHandleError(error, message: "trouble parsing file '\(filePaths[5])'")
+    {
+      if let objectValue = ObjectJSONValue(object), insetsValue = objectValue["title-edge-insets"]?.stringValue {
+        XCTAssertEqual(insetsValue, "{20, 20, 20, 20}")
+      } else { XCTFail("could not get object value out of object") }
+    } else { XCTFail("file parse failed to create an object") }
   }
 
   func testJSONParser() {

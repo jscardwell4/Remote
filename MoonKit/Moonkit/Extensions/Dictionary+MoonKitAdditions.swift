@@ -26,13 +26,6 @@ public protocol KeyValueCollectionTypeGenerator {
 
 extension DictionaryGenerator: KeyValueCollectionTypeGenerator {}
 
-public protocol KeyValueCollectionType: CollectionType {
-  typealias Key: Hashable
-  typealias Value
-}
-
-extension Dictionary: KeyValueCollectionType {}
-
 /**
 keys:
 

@@ -15,6 +15,11 @@ let expectedJSON = JSONValue(rawValue: "\n".join("{",
 let expectedJSONObject = ObjectJSONValue(expectedJSON)!
 
 var expectedData = expectedJSONObject.value
+let string = "{20, 20, 20, 20}"
+let insets = UIEdgeInsets(string)
+let json = insets?.jsonValue
+toString(json)
+let moreinsets = UIEdgeInsets(json)
 //let excluded = ["images.name", "name"]
 //let excludedSet = Set(excluded)
 //let expectedDataKeys = Set(expectedData.keys)

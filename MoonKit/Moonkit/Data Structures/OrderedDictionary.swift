@@ -10,7 +10,7 @@ import Foundation
 
 /* Should generator be switched to `IndexingGenerator`? */
 
-public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
+public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType {
 
   public typealias Index = Int
   typealias SelfType = OrderedDictionary<Key, Value>
@@ -35,18 +35,6 @@ public struct OrderedDictionary<Key : Hashable, Value> : CollectionType {
   :param: minimumCapacity Int = 4
   */
   public init(minimumCapacity: Int = 4) {
-    dictionary = Dictionary(minimumCapacity: minimumCapacity)
-    _keys = []
-    _keys.reserveCapacity(minimumCapacity)
-  }
-
-
-  /**
-  Initialize with a minimum capacity with `Printable` keys
-
-  :param: minimumCapacity Int = 4
-  */
-  public init<K,V where K:Printable>(minimumCapacity: Int = 4) {
     dictionary = Dictionary(minimumCapacity: minimumCapacity)
     _keys = []
     _keys.reserveCapacity(minimumCapacity)

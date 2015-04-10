@@ -146,11 +146,8 @@ public struct NSLayoutPseudoConstraint: Equatable, Printable, DebugPrintable {
   :returns: [NSLayoutPseudoConstraint]
   */
   public static func pseudoConstraintsByParsingFormat(format: String) -> [NSLayoutPseudoConstraint] {
-    return flattened(
-      ‽NSLayoutConstraint.splitFormat(format)
-        .filter{!$0.isEmpty}
-        .map{NSLayoutPseudoConstraint(format: $0)?.expanded}
-    )
+    return flattened( compressedMap(NSLayoutConstraint.splitFormat(format).filter{!$0.isEmpty},
+                                    {NSLayoutPseudoConstraint(format: $0)?.expanded}))
   }
 
 }

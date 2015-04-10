@@ -57,22 +57,22 @@ public class RemoteElement: NamedModelObject {
   @NSManaged public var key: String?
   public var identifier: String { return "_" + filter(uuid){$0 != "-"} }
 
-  @NSManaged public var constraints: NSSet
+  @NSManaged public var constraints: Set<Constraint>
   public var ownedConstraints: [Constraint] {
-    get { return constraints.allObjects as? [Constraint] ?? [] }
-    set { constraints = NSSet(array: newValue) }
+    get { return Array(constraints) }
+    set { constraints = Set(newValue) }
   }
 
-  @NSManaged public var firstItemConstraints: NSSet
+  @NSManaged public var firstItemConstraints: Set<Constraint>
   public var firstOrderConstraints: [Constraint] {
-    get { return firstItemConstraints.allObjects as? [Constraint] ?? [] }
-    set { firstItemConstraints = NSSet(array: newValue) }
+    get { return Array(firstItemConstraints) }
+    set { firstItemConstraints = Set(newValue) }
   }
 
-  @NSManaged public var secondItemConstraints: NSSet
+  @NSManaged public var secondItemConstraints: Set<Constraint>
   public var secondOrderConstraints: [Constraint] {
-    get { return secondItemConstraints.allObjects as? [Constraint] ?? [] }
-    set { secondItemConstraints = NSSet(array: newValue) }
+    get { return Array(secondItemConstraints) }
+    set { secondItemConstraints = Set(newValue) }
   }
 
   @NSManaged public var backgroundImageAlpha: Float
@@ -274,51 +274,48 @@ public class RemoteElement: NamedModelObject {
 
     if key != nil  { dict["key"] = .String(key!)   }
 
-    appendValueForKey("tag", toDictionary: &dict)
-    appendValueForKey("role", ifNotDefault: true, toDictionary: &dict)
-    appendValueForKey("shape", ifNotDefault: true, toDictionary: &dict)
-    appendValueForKey("style", ifNotDefault: true, toDictionary: &dict)
+    dict["tag"] = tag.jsonValue
+    if hasNonDefaultValue("role") { dict["role"] = role.jsonValue }
+    if hasNonDefaultValue("shape") { dict["shape"] = shape.jsonValue }
+    if hasNonDefaultValue("style") { dict["style"] = style.jsonValue }
 
-    var backgroundColors:      JSONValue.ObjectValue = [:]
-    var backgroundImages:      JSONValue.ObjectValue = [:]
-    var backgroundImageAlphas: JSONValue.ObjectValue = [:]
+    let bgColors = OrderedDictionary(compressedMap(modes) { mode -> (String, JSONValue)? in
+        if let color = self.backgroundColorForMode(mode)?.jsonValue { return (mode, color) } else { return nil }
+    })
 
-    for mode in modes {
-      if let color = backgroundColorForMode(mode) { backgroundColors[mode] = color.jsonValue }
-      if let image = backgroundImageForMode(mode) { backgroundImages[mode] = image.imagePath.jsonValue }
-      if let alpha = backgroundImageAlphaForMode(mode) { backgroundImageAlphas[mode] = alpha.jsonValue }
-    }
+    let bgImages = OrderedDictionary(compressedMap(modes) { mode -> (String, JSONValue)? in
+      if let image = self.backgroundImageForMode(mode)?.imagePath.jsonValue { return (mode, image) } else { return nil }
+    })
 
-    if backgroundColors.count > 0      { dict["background-color"]       = .Object(backgroundColors)      }
-    if backgroundImages.count > 0      { dict["background-image"]       = .Object(backgroundImages)      }
-    if backgroundImageAlphas.count > 0 { dict["background-image-alpha"] = .Object(backgroundImageAlphas) }
+    let bgImageAlphas = OrderedDictionary(compressedMap(modes) { mode -> (String, JSONValue)? in
+      if let alpha = self.backgroundImageAlphaForMode(mode)?.jsonValue { return (mode, alpha) } else { return nil }
+    })
 
-    let subelementJSON = childElements.array.map({$0.jsonValue})
-    if subelementJSON.count > 0 { dict["subelements"] = .Array(subelementJSON) }
+    if bgColors.count > 0      { dict["background-color"]       = .Object(bgColors)      }
+    if bgImages.count > 0      { dict["background-image"]       = .Object(bgImages)      }
+    if bgImageAlphas.count > 0 { dict["background-image-alpha"] = .Object(bgImageAlphas) }
 
-    let constraints = ownedConstraints
+    let subelementJSON = childElements.map({$0.jsonValue})
+    if subelementJSON.count > 0 { dict["subelements"] = JSONValue(subelementJSON) }
+
     if constraints.count > 0 {
 
-      let firstItemUUIDs = OrderedSet<String>(constraints.map{$0.firstItem.uuid})
-      let secondItemUUIDs = OrderedSet<String>(constraints.filter{$0.secondItem != nil}.map{$0.secondItem!.uuid})
-      let uuids = firstItemUUIDs + secondItemUUIDs
+      let firstItemUUIDs = OrderedSet<String>(map(constraints){$0.firstItem.uuid})
+      let secondItemUUIDs = OrderedSet<String>(compressedMap(constraints){$0.secondItem?.uuid})
       var uuidIndex: JSONValue.ObjectValue = [name.camelCase(): uuid.jsonValue]
-      for uuid in uuids {
-        if uuid == self.uuid { continue }
+      for uuid in (firstItemUUIDs + secondItemUUIDs ∖ Set([self.uuid])) {
         if let element = findFirst(childElements, {$0.uuid == uuid}) { uuidIndex[element.name.camelCase()] = uuid.jsonValue }
       }
       var constraintsJSON: JSONValue.ObjectValue = [:]
       if uuidIndex.count == 1 {
-        let k = uuidIndex.keys.first!
-        let v = uuidIndex[k]!
+        let (k, v) = uuidIndex[uuidIndex.startIndex]
         constraintsJSON["index.\(k)"] = v
       }
       else {
         constraintsJSON["index"] = .Object(uuidIndex)
       }
-      var format: [String] = constraints.map{$0.description}
-      format.sort(<)
-      constraintsJSON["format"] = format.count == 1 ? format[0].jsonValue : .Array(format.map({$0.jsonValue}))
+      let format: [JSONValue] = map(constraints, toString).sorted(<).map({$0.jsonValue})
+      constraintsJSON["format"] = format.count == 1 ? format[0] : .Array(format)
       dict["constraints"] = .Object(constraintsJSON)
     }
     return .Object(dict)

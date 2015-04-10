@@ -33,6 +33,26 @@ public enum JSONValue {
   public init<T:JSONValueConvertible>(_ v: T) { self = v.jsonValue }
 
   /**
+  Initialize to case `Array` using a `JSONValue` sequence
+
+  :param: s S
+  */
+  public init<S:SequenceType where S.Generator.Element == JSONValue>(s: S) {
+    self = Array(Swift.Array(s))
+  }
+
+  /**
+  Initialize to case `Object` using a key-value collection
+
+  :param: c C
+  */
+  public init<C:KeyValueCollectionType where C.KeysLazyCollectionType.Generator.Element == Swift.String,
+                                             C.ValuesLazyCollectionType.Generator.Element == JSONValue>(c: C)
+  {
+    self = Object(OrderedDictionary<Swift.String, JSONValue>(keys: c.keys, values: c.values))
+  }
+  
+  /**
   Initialize with any object or return nil upon conversion failure
 
   :param: v AnyObject
@@ -307,10 +327,18 @@ public class WrappedJSONValue: NSCoding {
 
 // MARK: - Convenience structs that wrap specific enum cases
 
-public struct ObjectJSONValue {
+public struct ObjectJSONValue: JSONValueConvertible, JSONValueInitializable {
+  public var jsonValue: JSONValue { return .Object(value) }
   public let value: JSONValue.ObjectValue
   public init?(_ v: JSONValue?) { switch v ?? .Null { case .Object(let o): value = o; default: return nil } }
   public subscript(key: String) -> JSONValue? { return value[key] }
+  public func map<U>(transform: (String, JSONValue) -> U) -> OrderedDictionary<String, U> {
+    return value.map(transform)
+  }
+
+  public func compressedMap<U>(transform: (String, JSONValue) -> U?) -> OrderedDictionary<String, U> {
+    return value.compressedMap(transform)
+  }
 }
 extension ObjectJSONValue: CollectionType {
   public typealias Index = JSONValue.ObjectValue.Index

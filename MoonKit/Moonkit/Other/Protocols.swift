@@ -20,6 +20,19 @@ public protocol JSONExport {
   var jsonString: String { get }
 }
 
+public protocol KeyValueCollectionType: CollectionType {
+  typealias Key: Hashable
+  typealias Value
+  subscript (key: Key) -> Value? { get }
+  typealias KeysLazyCollectionType: CollectionType
+  typealias ValuesLazyCollectionType: CollectionType
+  var keys: LazyForwardCollection<KeysLazyCollectionType> { get }
+  var values: LazyForwardCollection<ValuesLazyCollectionType> { get }
+}
+
+extension Dictionary: KeyValueCollectionType {}
+
+
 public protocol Presentable {
   var title: String { get }
 }
