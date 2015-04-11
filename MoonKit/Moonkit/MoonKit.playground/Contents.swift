@@ -3,42 +3,39 @@
 import UIKit
 import MoonKit
 
-let backgroundsString = "Backgrounds"
-let agedPaperString = "Aged Paper"
-let imageObjectValue: OrderedDictionary<String, JSONValue> = [
-  "name": agedPaperString.jsonValue,
-  "asset-name": agedPaperString.jsonValue
-]
-let imagesArrayValue = [JSONValue.Object(imageObjectValue)]
+func takesAnInt(i: Int) {
+  println("takesAnInt(i = \(i))")
+}
 
-let rootObjectValue: OrderedDictionary<String, JSONValue> = [
-  "name": backgroundsString.jsonValue,
-  "images": .Array(imagesArrayValue)
-]
+func takesAndReturnsAnInt(i: Int) -> Int? {
+  println("takesAndReturnsAnInt(i = \(i))")
+  return i
+}
 
-let rootJSON = JSONValue.Object(rootObjectValue)
-println(rootJSON.prettyRawValue)
-println(rootJSON.debugDescription)
+infix operator <?> {}
+func <?><T, U>(lhs: T?, rhs: T -> U?) -> U? {
+  return flatMap(lhs, rhs)
+}
 
-let equalStrings = backgroundsString.jsonValue == rootObjectValue["name"]
+infix operator ?> {}
+func ?><T>(lhs: T?, rhs: T -> Void) {
+  if let x = lhs { rhs(x) }
+}
 
-let equalArrays = JSONValue.Array(imagesArrayValue) == rootObjectValue["images"]
+var anI: Int? = 4
 
-let equalObjects = JSONValue.Object(imageObjectValue) == ArrayJSONValue(rootObjectValue["images"])![0]
+flatMap(anI, takesAndReturnsAnInt)
+anI <?> takesAndReturnsAnInt
+anI ?> takesAnInt
+anI = nil
 
-let equalRoots = JSONValue.Object(rootObjectValue) == rootJSON
+flatMap(anI, takesAndReturnsAnInt)
+anI <?> takesAndReturnsAnInt
+anI ?> takesAnInt
 
+typealias T = Int
+typealias U = Int
+anI = 6
+let curriedFlatMap: T? -> (T -> U?) -> U? = curry(flatMap)
+curriedFlatMap(anI)(takesAndReturnsAnInt)
 
-let array1 = ["one".jsonValue, "two".jsonValue, "three".jsonValue]
-let array2 = ["two".jsonValue, "three".jsonValue]
-
-var does1Contain2 = ArrayJSONValue(array1).contains(ArrayJSONValue(array2))
-var does2Contain1 = ArrayJSONValue(array2).contains(ArrayJSONValue(array1))
-
-let object1: JSONValue.ObjectValue = ["one": 1.jsonValue, "two": 2.jsonValue, "three": 3.jsonValue]
-let object2: JSONValue.ObjectValue = ["two": 2.jsonValue, "three": 3.jsonValue]
-
-does1Contain2 = ObjectJSONValue(object1).contains(ObjectJSONValue(object2))
-does2Contain1 = ObjectJSONValue(object2).contains(ObjectJSONValue(object1))
-
-println(toDebugString(ObjectJSONValue(object1)))

@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(DictionaryStorage)
-public final class DictionaryStorage: ModelObject {
+public final class DictionaryStorage: ModelObject, ModelStorage {
 
   public var dictionary: OrderedDictionary<String, AnyObject> {
     get {
@@ -29,11 +29,7 @@ public final class DictionaryStorage: ModelObject {
 
   public subscript(key: String) -> AnyObject? {
     get { return dictionary[key] }
-    set {
-      var d = dictionary
-      d[key] = newValue
-      dictionary = d
-    }
+    set { var d = dictionary; d[key] = newValue; dictionary = d }
   }
 
   override public var jsonValue: JSONValue {

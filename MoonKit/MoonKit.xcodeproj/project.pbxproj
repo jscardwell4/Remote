@@ -207,7 +207,6 @@
 		C23592F419C8E04200920F8D /* BitArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592DE19C8E04200920F8D /* BitArray.swift */; };
 		C23592F519C8E04200920F8D /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592DF19C8E04200920F8D /* OrderedDictionary.swift */; };
 		C23592FE19C8E04200920F8D /* String+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592E919C8E04200920F8D /* String+MoonKitAdditions.swift */; };
-		C23F07011AD59A90003BD28B /* ObjcIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23F07001AD59A90003BD28B /* ObjcIO.swift */; };
 		C23F07211AD5AABA003BD28B /* example4.json in Resources */ = {isa = PBXBuildFile; fileRef = C23F07201AD5AABA003BD28B /* example4.json */; };
 		C23F07231AD5ACCC003BD28B /* example5.json in Resources */ = {isa = PBXBuildFile; fileRef = C23F07221AD5ACCC003BD28B /* example5.json */; };
 		C24416331ACB16F8007EDEFE /* Set+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24416321ACB16F8007EDEFE /* Set+MoonKitAdditions.swift */; };
@@ -311,7 +310,6 @@
 		C23592EB19C8E04200920F8D /* UIFont+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C23592EE19C8E04200920F8D /* Generic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Generic.swift; sourceTree = "<group>"; };
 		C23592F019C8E04200920F8D /* FontAwesomeIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontAwesomeIcon.swift; sourceTree = "<group>"; };
-		C23F07001AD59A90003BD28B /* ObjcIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjcIO.swift; sourceTree = "<group>"; };
 		C23F07201AD5AABA003BD28B /* example4.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = example4.json; sourceTree = "<group>"; };
 		C23F07221AD5ACCC003BD28B /* example5.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = example5.json; sourceTree = "<group>"; };
 		C24416321ACB16F8007EDEFE /* Set+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Set+MoonKitAdditions.swift"; sourceTree = "<group>"; };
@@ -661,7 +659,6 @@
 				C23592EE19C8E04200920F8D /* Generic.swift */,
 				C216E73F19CBAE0A0052E98A /* Logging.swift */,
 				C2064FF91A13C05900342FDE /* Operators.swift */,
-				C23F07001AD59A90003BD28B /* ObjcIO.swift */,
 			);
 			path = Functions;
 			sourceTree = "<group>";
@@ -1475,7 +1472,6 @@
 				C2358F6419C78E0C00920F8D /* MSPinchGestureRecognizer.m in Sources */,
 				C2358F6519C78E0C00920F8D /* MSSwipeGestureRecognizer.m in Sources */,
 				C2358F6619C78E0C00920F8D /* MSResizingLayer.m in Sources */,
-				C23F07011AD59A90003BD28B /* ObjcIO.swift in Sources */,
 				C2358F6719C78E0C00920F8D /* MSAssertionHandler.m in Sources */,
 				C2CEFF2C1A328B2000F3BE24 /* FloatInputView.swift in Sources */,
 				C2358F6819C78E0C00920F8D /* MSBitVector.m in Sources */,

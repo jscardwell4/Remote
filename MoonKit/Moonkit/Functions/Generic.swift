@@ -8,10 +8,10 @@
 
 import Foundation
 
-@inline(__always) prefix func ⩨ <T : _UnsignedIntegerType, U: _SignedIntegerType>   (x: T) -> U { return numericCast(x) }
-@inline(__always) prefix func ⩨ <T : _SignedIntegerType,   U: _UnsignedIntegerType> (x: T) -> U { return numericCast(x) }
-@inline(__always) prefix func ⩨ <T : _UnsignedIntegerType, U: _UnsignedIntegerType> (x: T) -> U { return numericCast(x) }
-@inline(__always) prefix func ⩨ <T : _SignedIntegerType,   U: _SignedIntegerType>   (x: T) -> U { return numericCast(x) }
+//@inline(__always) prefix func ⩨ <T : _UnsignedIntegerType, U: _SignedIntegerType>   (x: T) -> U { return numericCast(x) }
+//@inline(__always) prefix func ⩨ <T : _SignedIntegerType,   U: _UnsignedIntegerType> (x: T) -> U { return numericCast(x) }
+//@inline(__always) prefix func ⩨ <T : _UnsignedIntegerType, U: _UnsignedIntegerType> (x: T) -> U { return numericCast(x) }
+//@inline(__always) prefix func ⩨ <T : _SignedIntegerType,   U: _SignedIntegerType>   (x: T) -> U { return numericCast(x) }
 
 public func sequence<T>(v: (T,T)) -> SequenceOf<T> { return SequenceOf([v.0, v.1]) }
 public func sequence<T>(v: (T,T,T)) -> SequenceOf<T> { return SequenceOf([v.0, v.1, v.2]) }
@@ -213,12 +213,19 @@ public func chainApply<S:SequenceType>(sequence: S, block: (S.Generator.Element)
 /** Operator function for the `apply` function */
 public func ➤<S:SequenceType>(lhs: S, rhs: (S.Generator.Element) -> Void) { apply(lhs, rhs) }
 public func ➤<T>(lhs: T, rhs: (T) -> Void) { rhs(lhs) }
+public func ➤|<T, U>(lhs: T, rhs: (T) -> U) -> U { return rhs(lhs) }
 
 /** Operator function for the `chainApply` function */
 public func ➤|<S:SequenceType>(lhs: S, rhs: (S.Generator.Element) -> Void) -> S { return chainApply(lhs, rhs) }
 public func ➤|<T>(lhs: T, rhs: (T) -> Void) -> T { rhs(lhs); return lhs }
 
-public func enumeratingMap<S : SequenceType, T>(source: S, transform: (Int,S.Generator.Element) -> T) -> [T] {
+/** Operator for monadic bind */
+public func <?><T, U>(lhs: T?, rhs: T -> U?) -> U? { return flatMap(lhs, rhs) }
+
+/** Operator for calling rhs with arg lhs if lhs is not nil */
+public func ?><T>(lhs: T?, rhs: T -> Void) { if let x = lhs { rhs(x) } }
+
+public func enumeratingMap<S: SequenceType, T>(source: S, transform: (Int,S.Generator.Element) -> T) -> [T] {
   var mapped: [T] = []
   for (i, element) in enumerate(source) { mapped.append(transform(i, element)) }
   return mapped
@@ -459,7 +466,9 @@ toggleOption:s:
 
 :returns: T
 */
-public func toggleOption<T:RawOptionSetType>(o: T, s: T) -> T { return isOptionSet(o, s) ? unsetOption(o, s) : setOption(o, s) }
+public func toggleOption<T:RawOptionSetType>(o: T, s: T) -> T {
+  return isOptionSet(o, s) ? unsetOption(o, s) : setOption(o, s)
+}
 
 
 public func ∪<T:RawOptionSetType>(lhs: T, rhs: T) -> T { return setOption(rhs, lhs) }
@@ -470,3 +479,43 @@ public func ∖<T:RawOptionSetType>(lhs: T, rhs: T) -> T { return unsetOption(rh
 public func ∖=<T:RawOptionSetType>(inout lhs: T, rhs: T) { lhs = lhs ∖ rhs }
 
 public func +(lhs: Range<Int>, rhs: Int) -> Range<Int> { return lhs.startIndex + rhs ..< lhs.endIndex + rhs }
+
+
+
+
+/** Compose operator, from "Functional Programming in Swift", www.objc.io */
+public func >>> <A, B, C>( f: A -> B, g: B -> C) -> A -> C { return { x in g(f(x)) } }
+
+/** 
+The curry functions turn a function with x arguments into a series of x functions, each accepting one argument.
+From "Functional Programming in Swift", www.objc.io 
+*/
+public func curry <A, B, C>( f: (A, B) -> C) -> A -> B -> C {
+  return { x in { y in f(x, y) } }
+}
+public func curry <A, B, C, D>( f: (A, B, C) -> D) -> A -> B -> C -> D {
+  return { a in { b in { c in f( a, b, c) } } }
+}
+
+/** 
+The flip function reverses the order of the arguments of the function you pass into it. 
+From "Functional Programming in Swift", www.objc.io
+*/
+public func flip <A, B, C>( f: (B, A) -> C) -> (A, B) -> C { return { (x, y) in f(y, x) } }
+
+/** 
+The >>= operator on optionals is the monadic bind, and can be thought of as a flatMap. 
+From "Functional Programming in Swift", www.objc.io
+*/
+public func >>= <U, T>(optional: T?, f: T -> U?) -> U? { if let x = optional { return f(x) } else { return nil } }
+
+/** 
+The Box class is used to box values and as a workaround to the limitations with generics in the compiler. 
+From "Functional Programming in Swift", www.objc.io
+*/
+class Box<T> {
+  let unbox: T
+  init(_ value: T) { self.unbox = value }
+}
+
+

@@ -1,8 +1,8 @@
 //
-//  JSONStorage.swift
+//  ColorStorage.swift
 //  Remote
 //
-//  Created by Jason Cardwell on 4/7/15.
+//  Created by Jason Cardwell on 4/10/15.
 //  Copyright (c) 2015 Moondeer Studios. All rights reserved.
 //
 
@@ -10,15 +10,15 @@ import Foundation
 import CoreData
 import MoonKit
 
-@objc(JSONStorage)
-public final class JSONStorage: ModelObject, ModelStorage {
+@objc(ColorStorage)
+public final class ColorStorage: ModelObject, ModelStorage {
 
-  private var rawDictionary: OrderedDictionary<String, String> {
+  public var dictionary: OrderedDictionary<String, UIColor> {
     get {
       willAccessValueForKey("dictionary")
       let dictionary = primitiveValueForKey("dictionary") as! MSDictionary
       didAccessValueForKey("dictionary")
-      return dictionary as? OrderedDictionary<String, String> ?? [:]
+      return dictionary as! OrderedDictionary<String, UIColor>
     }
     set {
       willChangeValueForKey("dictionary")
@@ -27,20 +27,17 @@ public final class JSONStorage: ModelObject, ModelStorage {
     }
   }
 
-  public var dictionary: OrderedDictionary<String, JSONValue> {
-    get { return rawDictionary.compressedMap({JSONValue(rawValue: $1)}) }
-    set { rawDictionary = newValue.map({$1.rawValue}) }
-  }
-
-  public subscript(key: String) -> JSONValue? {
+  public subscript(key: String) -> UIColor? {
     get { return dictionary[key] }
     set { var d = dictionary; d[key] = newValue; dictionary = d }
   }
 
   override public var jsonValue: JSONValue {
-    if let superValue = ObjectJSONValue(super.jsonValue) {
-      return .Object(superValue.value + dictionary)
+    if let superValue = ObjectJSONValue(super.jsonValue),
+      value = ObjectJSONValue(JSONValue(dictionary))
+    {
+      return .Object(superValue.value + value.value)
     } else { return .Null }
   }
-}
 
+}

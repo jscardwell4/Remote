@@ -107,6 +107,11 @@ infix operator ➤| {
 associativity none
 precedence 130
 }
+infix operator >>> { associativity left }
+infix operator >>= {}
+infix operator <?> {}
+infix operator ?> {}
+
 prefix operator ‽∪ {}
 prefix operator ‽ {}
 prefix operator !? {}

@@ -311,7 +311,6 @@
 		C26D84B71AC33752000230B9 /* ImportExportFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4661ABCA395007581F2 /* ImportExportFileManager.swift */; };
 		C26D84B91AC34DF0000230B9 /* Bank.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F44C1ABCA395007581F2 /* Bank.swift */; };
 		C26D84BB1AC34E25000230B9 /* BankCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4751ABCA395007581F2 /* BankCollectionCell.swift */; };
-		C27370C31AD44D6600434457 /* JSONStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27370C21AD44D6600434457 /* JSONStorage.swift */; };
 		C27BCC8C1801C16A0002464C /* IntegerKeyboard_0-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC681801C16A0002464C /* IntegerKeyboard_0-Highlighted@2x.png */; };
 		C27BCC8D1801C16A0002464C /* IntegerKeyboard_0.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC691801C16A0002464C /* IntegerKeyboard_0.png */; };
 		C27BCC8E1801C16A0002464C /* IntegerKeyboard_0@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC6A1801C16A0002464C /* IntegerKeyboard_0@2x.png */; };
@@ -426,6 +425,8 @@
 		C293C77E1AC318EB00408D35 /* NetworkDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C7721AC318EB00408D35 /* NetworkDevice.swift */; };
 		C293C77F1AC318EB00408D35 /* Preset.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C7731AC318EB00408D35 /* Preset.swift */; };
 		C293C7801AC318EB00408D35 /* PresetCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C7741AC318EB00408D35 /* PresetCategory.swift */; };
+		C2A0C7511AD88D68008CF88B /* JSONStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A0C7501AD88D68008CF88B /* JSONStorage.swift */; };
+		C2A0C7531AD8905B008CF88B /* ColorStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A0C7521AD8905B008CF88B /* ColorStorage.swift */; };
 		C2A4102619B4BFB90089AACA /* ITachDeviceConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C2A4102319B4BFB90089AACA /* ITachDeviceConnection.m */; };
 		C2A4102719B4BFB90089AACA /* NetworkDeviceMulticastConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C2A4102519B4BFB90089AACA /* NetworkDeviceMulticastConnection.m */; };
 		C2A4EC4D178B990F00FD3AFF /* App_Icon@2x-ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = C2A4EC4B178B990F00FD3AFF /* App_Icon@2x-ios7.png */; };
@@ -1053,7 +1054,6 @@
 		C26C6E6619B8EC9600B346AE /* NetworkDeviceConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceConnection.h; sourceTree = "<group>"; };
 		C26C6E6719B8EC9600B346AE /* NetworkDeviceConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkDeviceConnection.m; sourceTree = "<group>"; };
 		C26C6E6919B8EF6500B346AE /* NetworkDeviceConnection_Subclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceConnection_Subclass.h; sourceTree = "<group>"; };
-		C27370C21AD44D6600434457 /* JSONStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONStorage.swift; sourceTree = "<group>"; };
 		C27370C41AD4697E00434457 /* TitleAttributes_Backup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleAttributes_Backup.swift; sourceTree = "<group>"; };
 		C27BCC681801C16A0002464C /* IntegerKeyboard_0-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_0-Highlighted@2x.png"; sourceTree = "<group>"; };
 		C27BCC691801C16A0002464C /* IntegerKeyboard_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_0.png; sourceTree = "<group>"; };
@@ -1115,6 +1115,8 @@
 		C293C7731AC318EB00408D35 /* Preset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preset.swift; sourceTree = "<group>"; };
 		C293C7741AC318EB00408D35 /* PresetCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetCategory.swift; sourceTree = "<group>"; };
 		C2997F2316FA563900290737 /* RETypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RETypedefs.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		C2A0C7501AD88D68008CF88B /* JSONStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONStorage.swift; sourceTree = "<group>"; };
+		C2A0C7521AD8905B008CF88B /* ColorStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorStorage.swift; sourceTree = "<group>"; };
 		C2A4102219B4BFB90089AACA /* ITachDeviceConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITachDeviceConnection.h; sourceTree = "<group>"; };
 		C2A4102319B4BFB90089AACA /* ITachDeviceConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITachDeviceConnection.m; sourceTree = "<group>"; };
 		C2A4102419B4BFB90089AACA /* NetworkDeviceMulticastConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceMulticastConnection.h; sourceTree = "<group>"; };
@@ -2447,6 +2449,7 @@
 		C2E9F4F11ABCA395007581F2 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				C2A0C7501AD88D68008CF88B /* JSONStorage.swift */,
 				C293C7691AC318EB00408D35 /* Image.swift */,
 				C293C76A1AC318EB00408D35 /* ImageCategory.swift */,
 				C293C76B1AC318EB00408D35 /* IRCode.swift */,
@@ -2474,7 +2477,7 @@
 				C2E9F5001ABCA395007581F2 /* RemoteElement */,
 				C2E9F5421ABCA395007581F2 /* TitleAttributes.swift */,
 				C27370C41AD4697E00434457 /* TitleAttributes_Backup.swift */,
-				C27370C21AD44D6600434457 /* JSONStorage.swift */,
+				C2A0C7521AD8905B008CF88B /* ColorStorage.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3418,6 +3421,7 @@
 				C2E9F6141ABCA395007581F2 /* RemoteElement.swift in Sources */,
 				C2E9F6091ABCA395007581F2 /* ControlStateSet.swift in Sources */,
 				C293C7791AC318EB00408D35 /* ISYDevice.swift in Sources */,
+				C2A0C7511AD88D68008CF88B /* JSONStorage.swift in Sources */,
 				C2E9F5DC1ABCA395007581F2 /* ModelObject.swift in Sources */,
 				C2E9F5F91ABCA395007581F2 /* CommandContainer.swift in Sources */,
 				C2E9F60E1ABCA395007581F2 /* Button.swift in Sources */,
@@ -3430,7 +3434,6 @@
 				C293C73E1AC25F7700408D35 /* ModelIndex.swift in Sources */,
 				C2E9F6001ABCA395007581F2 /* CommandSetCollection.swift in Sources */,
 				C285D86A1AC4C0E800C527F6 /* DataModelProtocols.swift in Sources */,
-				C27370C31AD44D6600434457 /* JSONStorage.swift in Sources */,
 				C293C7761AC318EB00408D35 /* ImageCategory.swift in Sources */,
 				C2E9F5E11ABCA395007581F2 /* DelayCommand.swift in Sources */,
 				C293C7781AC318EB00408D35 /* IRCodeSet.swift in Sources */,
@@ -3443,6 +3446,7 @@
 				C2E9F5ED1ABCA395007581F2 /* SwitchCommand.swift in Sources */,
 				C2E9F5511ABCA395007581F2 /* ComponentDevice.swift in Sources */,
 				C2E9F61A1ABCA395007581F2 /* TitleAttributes.swift in Sources */,
+				C2A0C7531AD8905B008CF88B /* ColorStorage.swift in Sources */,
 				C2E9F5D11ABCA395007581F2 /* Activity.swift in Sources */,
 				C2E9F5DD1ABCA395007581F2 /* NamedModelObject.swift in Sources */,
 				C2E9F5F21ABCA395007581F2 /* Command.swift in Sources */,

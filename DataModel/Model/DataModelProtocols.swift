@@ -45,3 +45,8 @@ public typealias NamedModel = protocol<Model, DynamicallyNamed>
 @objc public protocol DefaultingModelCollection: ModelCollection {
   static func defaultCollectionInContext(context: NSManagedObjectContext) -> Self
 }
+
+public protocol ModelStorage: Model {
+  typealias VendedType
+  subscript(key: String) -> VendedType? { get set }
+}
