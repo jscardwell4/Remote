@@ -16,8 +16,8 @@ public class ISYDeviceGroup: NamedModelObject {
   @NSManaged public var address: String
   @NSManaged public var family: Int16
   @NSManaged public var flag: Int16
-  @NSManaged public var device: ISYDevice
-  @NSManaged public var members: NSSet
+  @NSManaged public var device: ISYDevice!
+  @NSManaged public var members: Set<ISYDeviceNode>
 
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
@@ -28,13 +28,13 @@ public class ISYDeviceGroup: NamedModelObject {
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
-    appendValueForKey("flag", toDictionary: &dict)
-    appendValueForKey("address", toDictionary: &dict)
-    appendValueForKey("family", toDictionary: &dict)
-    appendValueForKeyPath("members.uuid", forKey: "members", toDictionary: &dict)
-    appendValueForKeyPath("device.index",  forKey: "device", toDictionary: &dict)
-    return .Object(dict)
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["flag"] = flag.jsonValue
+    obj["address"] = address.jsonValue
+    obj["family"] = family.jsonValue
+    obj["device.index"] = device?.index.jsonValue
+    obj["members.uuid"] = JSONValue(members)
+    return obj.jsonValue
   }
 
 }

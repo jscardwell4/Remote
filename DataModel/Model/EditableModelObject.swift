@@ -40,11 +40,9 @@ public class EditableModelObject: NamedModelObject, EditableModel {
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
-
-    dict["user"] = user.jsonValue
-    
-    return .Object(dict)
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["user"] = user.jsonValue
+    return obj.jsonValue
   }
 
   override public var description: String { return "\(super.description)\n\tuser = \(user)" }

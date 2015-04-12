@@ -234,15 +234,15 @@ public class RemoteElement: NamedModelObject {
       if let style = Style(data["style"]) { self.style = style }
       if let tag = Int16(data["tag"]) { self.tag = tag }
 
-      if let backgroundColorJSON = ObjectJSONValue(data["background-color"]) {
+      if let backgroundColorJSON = ObjectJSONValue(data["backgroundColor"]) {
         for (mode, value) in backgroundColorJSON { setObject(UIColor(value), forKey: "backgroundColor", forMode: mode) }
       }
 
-      if let backgroundImageAlphaJSON = ObjectJSONValue(data["background-image-alpha"]) {
+      if let backgroundImageAlphaJSON = ObjectJSONValue(data["backgroundImage-alpha"]) {
         for (mode, value) in backgroundImageAlphaJSON { setObject(Float(value), forKey: "backgroundImageAlpha", forMode: mode) }
       }
 
-      if let backgroundImageJSON = ObjectJSONValue(data["background-image"]) {
+      if let backgroundImageJSON = ObjectJSONValue(data["backgroundImage"]) {
         for (mode, jsonValue) in backgroundImageJSON {
           if let value = ObjectJSONValue(jsonValue),
             image = Image.importObjectWithData(value, context: moc)
@@ -270,33 +270,33 @@ public class RemoteElement: NamedModelObject {
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
+    var obj = ObjectJSONValue(super.jsonValue)!
 
-    if key != nil  { dict["key"] = .String(key!)   }
+    if key != nil  { obj["key"] = .String(key!)   }
 
-    dict["tag"] = tag.jsonValue
-    if hasNonDefaultValue("role") { dict["role"] = role.jsonValue }
-    if hasNonDefaultValue("shape") { dict["shape"] = shape.jsonValue }
-    if hasNonDefaultValue("style") { dict["style"] = style.jsonValue }
+    obj["tag"] = tag.jsonValue
+    if hasNonDefaultValue("role") { obj["role"] = role.jsonValue }
+    if hasNonDefaultValue("shape") { obj["shape"] = shape.jsonValue }
+    if hasNonDefaultValue("style") { obj["style"] = style.jsonValue }
 
     let bgColors = OrderedDictionary(compressedMap(modes) { mode -> (String, JSONValue)? in
         if let color = self.backgroundColorForMode(mode)?.jsonValue { return (mode, color) } else { return nil }
     })
 
     let bgImages = OrderedDictionary(compressedMap(modes) { mode -> (String, JSONValue)? in
-      if let image = self.backgroundImageForMode(mode)?.imagePath.jsonValue { return (mode, image) } else { return nil }
+      if let image = self.backgroundImageForMode(mode)?.jsonValue { return (mode, image) } else { return nil }
     })
 
     let bgImageAlphas = OrderedDictionary(compressedMap(modes) { mode -> (String, JSONValue)? in
       if let alpha = self.backgroundImageAlphaForMode(mode)?.jsonValue { return (mode, alpha) } else { return nil }
     })
 
-    if bgColors.count > 0      { dict["background-color"]       = .Object(bgColors)      }
-    if bgImages.count > 0      { dict["background-image"]       = .Object(bgImages)      }
-    if bgImageAlphas.count > 0 { dict["background-image-alpha"] = .Object(bgImageAlphas) }
+    if bgColors.count > 0      { obj["backgroundColor"]       = .Object(bgColors)      }
+    if bgImages.count > 0      { obj["backgroundImage"]       = .Object(bgImages)      }
+    if bgImageAlphas.count > 0 { obj["backgroundImage-alpha"] = .Object(bgImageAlphas) }
 
     let subelementJSON = childElements.map({$0.jsonValue})
-    if subelementJSON.count > 0 { dict["subelements"] = JSONValue(subelementJSON) }
+    if subelementJSON.count > 0 { obj["subelements"] = JSONValue(subelementJSON) }
 
     if constraints.count > 0 {
 
@@ -316,9 +316,9 @@ public class RemoteElement: NamedModelObject {
       }
       let format: [JSONValue] = map(constraints, toString).sorted(<).map({$0.jsonValue})
       constraintsJSON["format"] = format.count == 1 ? format[0] : .Array(format)
-      dict["constraints"] = .Object(constraintsJSON)
+      obj["constraints"] = .Object(constraintsJSON)
     }
-    return .Object(dict)
+    return obj.jsonValue
   }
 
   /**

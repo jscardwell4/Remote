@@ -43,9 +43,9 @@
         "default": {
           "normal": {
             "font": "Helvetica Neue@20",
-            "foreground-color": "white",
-            "stroke-color": "white@50%",
-            "stroke-width": -2,
+            "foregroundColor": "white",
+            "strokeColor": "white@50%",
+            "strokeWidth": -2,
             "alignment": "center",
             "text": "Guide"
           },
@@ -54,17 +54,17 @@
         "tv": {
           "normal": {
             "font": "Helvetica Neue@20",
-            "foreground-color": "white",
-            "stroke-color": "white@50%",
-            "stroke-width": -2,
+            "foregroundColor": "white",
+            "strokeColor": "white@50%",
+            "strokeWidth": -2,
             "alignment": "center",
             "text": "Tools"
           },
           "highlighted.foreground-color": "#00AFFFFF"
         }
       },
-      "background-colors.default.normal": "#060606FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.default.normal": "#060606FF",
+      "titleEdge-insets": "{20, 20, 20, 20}"
     },
     {
       "uuid": "6EB0A6D1-992C-4F1D-816B-83E75187FCEB",
@@ -85,9 +85,9 @@
         "default": {
           "normal": {
             "font": "Helvetica Neue@20",
-            "foreground-color": "white",
-            "stroke-color": "white@50%",
-            "stroke-width": -2,
+            "foregroundColor": "white",
+            "strokeColor": "white@50%",
+            "strokeWidth": -2,
             "alignment": "center",
             "text": "DVR"
           },
@@ -96,17 +96,17 @@
         "tv": {
           "normal": {
             "font": "Helvetica Neue@20",
-            "foreground-color": "white",
-            "stroke-color": "white@50%",
-            "stroke-width": -2,
+            "foregroundColor": "white",
+            "strokeColor": "white@50%",
+            "strokeWidth": -2,
             "alignment": "center",
             "text": "Internet@TV"
           },
           "highlighted.foreground-color": "#00AFFFFF"
         }
       },
-      "background-colors.default.normal": "#060606FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.default.normal": "#060606FF",
+      "titleEdge-insets": "{20, 20, 20, 20}"
     },
     {
       "uuid": "2E48E207-00B8-481A-A57E-4FA84B51A02C",
@@ -126,16 +126,16 @@
       "titles.default": {
         "normal": {
           "font": "Helvetica Neue@20",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": "Info"
         },
         "highlighted.foreground-color": "#00AFFFFF"
       },
-      "background-colors.default.normal": "#060606FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.default.normal": "#060606FF",
+      "titleEdge-insets": "{20, 20, 20, 20}"
     }
   ]
 }

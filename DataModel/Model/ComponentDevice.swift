@@ -87,7 +87,8 @@ public final class ComponentDevice: EditableModelObject {
     super.updateWithData(data)
 
     if let port = Int16(data["port"]) { self.port = port }
-    if let alwaysOn = Bool(data["always-on"]) { self.alwaysOn = alwaysOn }
+    if let alwaysOn = Bool(data["alwaysOn"]) { self.alwaysOn = alwaysOn }
+    if let inputPowersOn = Bool(data["inputPowersOn"]) { self.inputPowersOn = inputPowersOn }
     updateRelationshipFromData(data, forAttribute: "onCommand")
     updateRelationshipFromData(data, forAttribute: "offCommand")
     updateRelationshipFromData(data, forAttribute: "manufacturer")
@@ -96,14 +97,6 @@ public final class ComponentDevice: EditableModelObject {
     if let codeSet: IRCodeSet = relatedObjectWithData(data, forAttribute: "codeSet") {
       self.codeSet = codeSet
     }
-
-//    if let codeSetData = data["code-set"] as? [String:AnyObject] {
-//      if let rawCodeSetIndex = codeSetData["index"] as? String, codeSetIndex = PathIndex(rawValue: rawCodeSetIndex) {
-//        if let moc = managedObjectContext, codeSet = IRCodeSet.modelWithIndex(codeSetIndex, context: moc) {
-//          self.codeSet = codeSet
-//        }
-//      }
-//    }
   }
 
   override public var description: String {
@@ -133,19 +126,16 @@ public final class ComponentDevice: EditableModelObject {
   }
 
   override public var jsonValue: JSONValue {
-
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
-
-    appendValueForKey("port", toDictionary: &dict)
-    appendValueForKey("alwaysOn", toDictionary: &dict)
-    appendValueForKey("inputPowersOn", toDictionary: &dict)
-
-    appendValueForKey("onCommand", toDictionary: &dict)
-    appendValueForKey("offCommand", toDictionary: &dict)
-    appendValueForKeyPath("manufacturer.uuid", toDictionary: &dict)
-    appendValueForKeyPath("networkDevice.uuid", toDictionary: &dict)
-    appendValueForKeyPath("codeSet.index", toDictionary: &dict)
-    return .Object(dict)
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["port"] = port.jsonValue
+    obj["alwaysOn"] = alwaysOn.jsonValue
+    obj["inputPowersOn"] = inputPowersOn.jsonValue
+    obj["onCommand"] = onCommand?.jsonValue
+    obj["offCommand"] = offCommand?.jsonValue
+    obj["manufacturer.index"] = manufacturer.index.jsonValue
+    obj["newtorkDevice.index"] = networkDevice?.index.jsonValue
+    obj["codeSet.index"] = codeSet?.index.jsonValue
+    return obj.jsonValue
 
   }
 

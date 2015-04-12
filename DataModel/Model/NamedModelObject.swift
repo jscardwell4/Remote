@@ -71,12 +71,8 @@ public class NamedModelObject: ModelObject, DynamicallyNamed {
     if let n = String(data["name"]) { name = n }
   }
 
-  override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
-    dict["name"] = .String(name)
-    return .Object(dict)
-  }
-
+  override public var jsonValue: JSONValue { return (ObjectJSONValue(super.jsonValue)! + ("name", name)).jsonValue }
+  
   /**
   autoGenerateName
 

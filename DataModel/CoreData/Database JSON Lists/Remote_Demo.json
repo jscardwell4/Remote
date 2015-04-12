@@ -3,7 +3,7 @@
     "uuid": "F668F0D5-80E4-46A4-A703-EF5A1601C645",
     "name": "Dish Hopper Activity",
     "key": "activity1",
-    "top-bar-hidden": true,
+    "topBar-hidden": true,
     "constraints": {
       "index": {
         "dishHopperActivity": "F668F0D5-80E4-46A4-A703-EF5A1601C645",
@@ -91,9 +91,9 @@
               "default": {
                 "normal": {
                   "font": "Helvetica Neue@20",
-                  "foreground-color": "white",
-                  "stroke-color": "white@50%",
-                  "stroke-width": -2,
+                  "foregroundColor": "white",
+                  "strokeColor": "white@50%",
+                  "strokeWidth": -2,
                   "alignment": "center",
                   "text": "Guide"
                 },
@@ -102,9 +102,9 @@
               "tv": {
                 "normal": {
                   "font": "Helvetica Neue@20",
-                  "foreground-color": "white",
-                  "stroke-color": "white@50%",
-                  "stroke-width": -2,
+                  "foregroundColor": "white",
+                  "strokeColor": "white@50%",
+                  "strokeWidth": -2,
                   "alignment": "center",
                   "text": "Tools"
                 },
@@ -112,7 +112,7 @@
               }
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "6EB0A6D1-992C-4F1D-816B-83E75187FCEB",
@@ -133,9 +133,9 @@
               "default": {
                 "normal": {
                   "font": "Helvetica Neue@20",
-                  "foreground-color": "white",
-                  "stroke-color": "white@50%",
-                  "stroke-width": -2,
+                  "foregroundColor": "white",
+                  "strokeColor": "white@50%",
+                  "strokeWidth": -2,
                   "alignment": "center",
                   "text": "DVR"
                 },
@@ -144,9 +144,9 @@
               "tv": {
                 "normal": {
                   "font": "Helvetica Neue@20",
-                  "foreground-color": "white",
-                  "stroke-color": "white@50%",
-                  "stroke-width": -2,
+                  "foregroundColor": "white",
+                  "strokeColor": "white@50%",
+                  "strokeWidth": -2,
                   "alignment": "center",
                   "text": "Internet@TV"
                 },
@@ -154,7 +154,7 @@
               }
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "2E48E207-00B8-481A-A57E-4FA84B51A02C",
@@ -174,16 +174,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@20",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": "Info"
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           }
         ]
       },
@@ -288,11 +288,11 @@
             }
           }
         },
-        "label-attributes": {
+        "labelAttributes": {
           "font": "Helvetica Neue@20",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center"
         }
       },
@@ -348,15 +348,15 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@28",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": "OK"
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "DAAF0866-265A-41C8-AA68-CAFF633E1190",
@@ -629,16 +629,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": 1
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "FD25B8D7-B6A3-46F5-A14D-BA66EC9B6624",
@@ -649,16 +649,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": 2
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "26D4A4EA-AD0A-4A4F-8F19-AD2EBDF2B4DD",
@@ -669,16 +669,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": 3
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "F7E72BB6-7C56-4D71-8B09-4FE29EF76EB6",
@@ -689,16 +689,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": 4
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "FD56CF91-26C4-47A2-9052-7D3504C85F59",
@@ -709,16 +709,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": 5
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "A9A11EB5-341F-42BB-A482-D81EED4D6436",
@@ -729,16 +729,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": 6
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "8C750F21-4D8D-4F5A-8E1B-0B9294AF2A7C",
@@ -749,16 +749,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": 7
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "789737C2-D0D7-401B-B079-D305C65DA5F9",
@@ -769,16 +769,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": 8
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "2F310C3B-37A8-4AE0-B652-21160A3DBB00",
@@ -789,16 +789,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": 9
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "07B126DA-A7BE-4B1C-ACD1-5DD5F551DDF7",
@@ -809,16 +809,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": 0
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "6F2F49AE-EC61-404B-A544-468A8D9EB74A",
@@ -829,16 +829,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@20",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": "Exit"
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "D7E718BE-7E0D-4C19-8A75-625C8C5445A1",
@@ -849,16 +849,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@20",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": "Enter"
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "E9D65885-43D4-4DFA-A3A6-C4ADCF70D94A",
@@ -866,11 +866,11 @@
             "role": "tuck",
             "titles.default.normal": {
               "font": "FontAwesome@24",
-              "foreground-color": "gray@75%",
-              "text-effect": "letter-press",
-              "icon-name": "chevron-up"
+              "foregroundColor": "gray@75%",
+              "textEffect": "letter-press",
+              "iconName": "chevron-up"
             },
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           }
         ],
         "command-set.default": {
@@ -993,17 +993,17 @@
             "titles.default": {
               "normal": {
                 "font": "FontAwesome@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
-                "icon-name": "play"
+                "iconName": "play"
               },
               "disabled.foreground-color": "#7F7F7FFF",
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "7754F230-C17E-4333-AD7F-202A34AB71E1",
@@ -1014,17 +1014,17 @@
             "titles.default": {
               "normal": {
                 "font": "FontAwesome@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
-                "icon-name": "pause"
+                "iconName": "pause"
               },
               "disabled.foreground-color": "#7F7F7FFF",
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "D4F04A8A-C2CA-4235-8C6E-080AD7DA5A3B",
@@ -1035,17 +1035,17 @@
             "titles.default": {
               "normal": {
                 "font": "FontAwesome@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
-                "icon-name": "backward"
+                "iconName": "backward"
               },
               "disabled.foreground-color": "#7F7F7FFF",
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "804894ED-2BA4-467D-A7E2-43E45ECC946B",
@@ -1056,17 +1056,17 @@
             "titles.default": {
               "normal": {
                 "font": "FontAwesome@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
-                "icon-name": "fast-forward"
+                "iconName": "fast-forward"
               },
               "disabled.foreground-color": "#7F7F7FFF",
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "5996C324-C978-4AE8-97BA-4F5468CCDEFB",
@@ -1077,17 +1077,17 @@
             "titles.default": {
               "normal": {
                 "font": "FontAwesome@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
-                "icon-name": "stop"
+                "iconName": "stop"
               },
               "disabled.foreground-color": "#7F7F7FFF",
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "4BD189E1-996D-4667-B1C0-80C43BC27445",
@@ -1098,17 +1098,17 @@
             "titles.default": {
               "normal": {
                 "font": "FontAwesome@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
-                "icon-name": "step-backward"
+                "iconName": "step-backward"
               },
               "disabled.foreground-color": "#7F7F7FFF",
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "051E7613-FE45-47CE-AE8A-F50B776348AC",
@@ -1116,11 +1116,11 @@
             "role": "tuck",
             "titles.default.normal": {
               "font": "FontAwesome@24",
-              "foreground-color": "gray@75%",
-              "text-effect": "letter-press",
-              "icon-name": "chevron-down"
+              "foregroundColor": "gray@75%",
+              "textEffect": "letter-press",
+              "iconName": "chevron-down"
             },
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "08FF87FF-685F-4A56-A40C-BF954852152B",
@@ -1131,17 +1131,17 @@
             "titles.default": {
               "normal": {
                 "font": "FontAwesome@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
-                "icon-name": "step-forward"
+                "iconName": "step-forward"
               },
               "disabled.foreground-color": "#7F7F7FFF",
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "FC1F0B10-D228-48E5-940E-997D6DD3ED67",
@@ -1152,17 +1152,17 @@
             "titles.default": {
               "normal": {
                 "font": "FontAwesome@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
-                "icon-name": "circle"
+                "iconName": "circle"
               },
               "disabled.foreground-color": "#7F7F7FFF",
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           }
         ],
         "command-set.default": {
@@ -1195,7 +1195,7 @@
             "class": "sendir",
             "code.uuid": "3A8A1370-8842-42C7-9FB3-F01BDCCA9475"
           },
-          "fast-forward": {
+          "fastForward": {
             "class": "sendir",
             "code.uuid": "502E0C1F-9524-4271-893C-089A45FF4BCF"
           }
@@ -1236,16 +1236,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": "STB"
               },
               "selected.foreground-color": "yellow",
               "highlighted.foreground-color": "yellow"
             },
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "DDF69EC8-CE1A-45A0-8721-CD91DBEA2135",
@@ -1255,16 +1255,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": "TV"
               },
               "selected.foreground-color": "yellow",
               "highlighted.foreground-color": "yellow"
             },
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           }
         ]
       },
@@ -1341,9 +1341,9 @@
               "default": {
                 "normal": {
                   "font": "Helvetica Neue@18",
-                  "foreground-color": "white",
-                  "stroke-color": "white@50%",
-                  "stroke-width": -2,
+                  "foregroundColor": "white",
+                  "strokeColor": "white@50%",
+                  "strokeWidth": -2,
                   "alignment": "center",
                   "text": "On Demand"
                 }
@@ -1351,16 +1351,16 @@
               "tv": {
                 "normal": {
                   "font": "Helvetica Neue@18",
-                  "foreground-color": "white",
-                  "stroke-color": "white@50%",
-                  "stroke-width": -2,
+                  "foregroundColor": "white",
+                  "strokeColor": "white@50%",
+                  "strokeWidth": -2,
                   "alignment": "center",
                   "text": "Source"
                 }
               }
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "84B5AAD7-F716-49E4-B2DC-F9654CD5EA83",
@@ -1379,14 +1379,14 @@
             },
             "titles.default.normal": {
               "font": "Helvetica Neue@18",
-              "foreground-color": "white",
-              "stroke-color": "white@50%",
-              "stroke-width": -2,
+              "foregroundColor": "white",
+              "strokeColor": "white@50%",
+              "strokeWidth": -2,
               "alignment": "center",
               "text": "Menu"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "1490C210-7F20-4276-810D-232396713B76",
@@ -1407,9 +1407,9 @@
               "default": {
                 "normal": {
                   "font": "Helvetica Neue@18",
-                  "foreground-color": "white",
-                  "stroke-color": "white@50%",
-                  "stroke-width": -2,
+                  "foregroundColor": "white",
+                  "strokeColor": "white@50%",
+                  "strokeWidth": -2,
                   "alignment": "center",
                   "text": "Last"
                 }
@@ -1417,16 +1417,16 @@
               "tv": {
                 "normal": {
                   "font": "Helvetica Neue@18",
-                  "foreground-color": "white",
-                  "stroke-color": "white@50%",
-                  "stroke-width": -2,
+                  "foregroundColor": "white",
+                  "strokeColor": "white@50%",
+                  "strokeWidth": -2,
                   "alignment": "center",
                   "text": "Return"
                 }
               }
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "5EBDC469-0E9E-4720-A65E-86F6EF652635",
@@ -1445,14 +1445,14 @@
             },
             "titles.default.normal": {
               "font": "Helvetica Neue@18",
-              "foreground-color": "white",
-              "stroke-color": "white@50%",
-              "stroke-width": -2,
+              "foregroundColor": "white",
+              "strokeColor": "white@50%",
+              "strokeWidth": -2,
               "alignment": "center",
               "text": "Exit"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "447B0C03-6390-47B3-8F66-FA58E79AAE81",
@@ -1465,14 +1465,14 @@
             },
             "titles.default.normal": {
               "font": "Helvetica Neue@18",
-              "foreground-color": "white",
-              "stroke-color": "white@50%",
-              "stroke-width": -2,
+              "foregroundColor": "white",
+              "strokeColor": "white@50%",
+              "strokeWidth": -2,
               "alignment": "center",
               "text": "DVR Audio"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "CA88D652-A7F3-4EBE-ABC0-E559CE6AF337",
@@ -1485,14 +1485,14 @@
             },
             "titles.default.normal": {
               "font": "Helvetica Neue@18",
-              "foreground-color": "white",
-              "stroke-color": "white@50%",
-              "stroke-width": -2,
+              "foregroundColor": "white",
+              "strokeColor": "white@50%",
+              "strokeWidth": -2,
               "alignment": "center",
               "text": "TV Audio"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "66E58C75-BC33-4E25-A4AE-876E37FA991E",
@@ -1505,14 +1505,14 @@
             },
             "titles.default.normal": {
               "font": "Helvetica Neue@18",
-              "foreground-color": "white",
-              "stroke-color": "white@50%",
-              "stroke-width": -2,
+              "foregroundColor": "white",
+              "strokeColor": "white@50%",
+              "strokeWidth": -2,
               "alignment": "center",
               "text": "Mute"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "E205BA81-90BD-4943-B2F5-6230AD2D95E9",
@@ -1520,11 +1520,11 @@
             "role": "tuck",
             "titles.default.normal": {
               "font": "FontAwesome@24",
-              "foreground-color": "gray@75%",
-              "text-effect": "letter-press",
-              "icon-name": "chevron-left"
+              "foregroundColor": "gray@75%",
+              "textEffect": "letter-press",
+              "iconName": "chevron-left"
             },
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           }
         ]
       }
@@ -1602,16 +1602,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@20",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": "Dish"
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "DB1C794B-A3BB-4C9E-91EC-88A1D3FB401A",
@@ -1625,16 +1625,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@20",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": "Playstation"
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "58A7D2DB-9635-486A-9336-43D6292674BA",
@@ -1648,16 +1648,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@20",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": " TV"
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "19F3F351-AB2B-435D-A31A-ECB703DDE993",
@@ -1671,16 +1671,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@20",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": "Sonos"
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           }
         ]
       },

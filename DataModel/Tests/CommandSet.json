@@ -1,0 +1,11 @@
+{
+  "type": "rocker",
+  "top": {
+    "class": "sendir",
+    "code.index": "Dish/Dish/Channel%20Up"
+  },
+  "bottom": {
+    "class": "sendir",
+    "code.index": "Dish/Dish/Channel%20Down"
+  }
+}

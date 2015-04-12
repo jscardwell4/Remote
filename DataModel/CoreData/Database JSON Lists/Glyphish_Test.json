@@ -18,7 +18,7 @@
                   {
                     "uuid": "FA95F274-1F45-464F-A096-4F7DCBF1B71F",
                     "name": "Power",
-                    "file-name": "51-gray-power.png"
+                    "fileName": "51-gray-power.png"
                   }
                 ]
               }
@@ -37,22 +37,22 @@
               {
                 "uuid": "9D55C4DF-E6F6-4AFB-8DE8-695B23FBF836",
                 "name": "Minus",
-                "file-name": "437-gray-minus.png"
+                "fileName": "437-gray-minus.png"
               },
               {
                 "uuid": "ACB19263-DA48-415C-BBAF-33EB21E7CC7A",
                 "name": "Light Switch",
-                "file-name": "306-gray-light-switch.png"
+                "fileName": "306-gray-light-switch.png"
               },
               {
                 "uuid": "B331401F-1A58-4C99-A08E-B94F8DCCA02D",
                 "name": "Plus",
-                "file-name": "436-gray-plus.png"
+                "fileName": "436-gray-plus.png"
               },
               {
                 "uuid": "A6925BF4-84F9-464F-A0C8-06109E5DCEEC",
                 "name": "Power Plug",
-                "file-name": "396-gray-power-plug.png"
+                "fileName": "396-gray-power-plug.png"
               }
             ]
           }
@@ -69,42 +69,42 @@
               {
                 "uuid": "FEED12D1-B41F-494A-81C3-67068D4E4226",
                 "name": "Arrow Right",
-                "file-name": "766-gray-arrow-right.png"
+                "fileName": "766-gray-arrow-right.png"
               },
               {
                 "uuid": "9EA9B831-7A8D-4428-A2F2-59A3032AE869",
                 "name": "Arrow Left",
-                "file-name": "765-gray-arrow-left.png"
+                "fileName": "765-gray-arrow-left.png"
               },
               {
                 "uuid": "8029BB34-5FA0-46BB-BDDC-7AB882844384",
                 "name": "Lightning Bolt",
-                "file-name": "856-gray-lightning-bolt.png"
+                "fileName": "856-gray-lightning-bolt.png"
               },
               {
                 "uuid": "CAA4F651-1AA2-4F91-8556-52FA9CBD3A73",
                 "name": "Gear",
-                "file-name": "740-gray-gear.png"
+                "fileName": "740-gray-gear.png"
               },
               {
                 "uuid": "D2F18C26-53C2-4CB1-8108-4D22DC702A00",
                 "name": "Arrow Down",
-                "file-name": "764-gray-arrow-down.png"
+                "fileName": "764-gray-arrow-down.png"
               },
               {
                 "uuid": "9B9D8A62-A483-4E60-A063-EB71140BC677",
                 "name": "Arrow Up",
-                "file-name": "763-gray-arrow-up.png"
+                "fileName": "763-gray-arrow-up.png"
               },
               {
                 "uuid": "BEBC04A8-B178-44E5-9FCA-2055287CC147",
                 "name": "Home",
-                "file-name": "750-gray-home.png"
+                "fileName": "750-gray-home.png"
               },
               {
                 "uuid": "5DB7F915-E25F-48F2-92EB-2903FE50F1F4",
                 "name": "Pencil",
-                "file-name": "830-gray-pencil.png"
+                "fileName": "830-gray-pencil.png"
               }
             ]
           }
@@ -121,12 +121,12 @@
               {
                 "uuid": "F09EA57A-4A6D-4654-8C5E-6D23754B2D93",
                 "name": "Battery",
-                "file-name": "933-gray-battery.png"
+                "fileName": "933-gray-battery.png"
               },
               {
                 "uuid": "2CBE6763-64AC-4438-A169-1A759620381B",
                 "name": "Wifi Signal",
-                "file-name": "937-gray-wifi-signal.png"
+                "fileName": "937-gray-wifi-signal.png"
               }
             ]
           }
@@ -141,7 +141,7 @@
       {
         "uuid": "089D4A98-E7C1-472A-A0A3-30258BE42388",
         "name": "Pro Dots",
-        "file-name": "Pro Dots.png"
+        "fileName": "Pro Dots.png"
       }
     ]
   }

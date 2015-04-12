@@ -1,60 +1,60 @@
 {
   "name": "Rectangular (Small)",
-  "base-type": "button",
+  "baseType": "button",
   "shape": "rectangle",
   "style": "gloss2",
   "constraints": "$0.width = $0.height * 2 :: $0.height = 50",
   "titles": {
     "normal": {
       "font": "Helvetica Neue@20",
-      "foreground-color": "white",
-      "stroke-color": "white@50%",
-      "stroke-width": -2,
+      "foregroundColor": "white",
+      "strokeColor": "white@50%",
+      "strokeWidth": -2,
       "alignment": "center",
       "text": "Rectangular Button"
     },
     "highlighted.foreground-color": "#00AFFFFF"
   },
   "background-colors.normal": "#666666FF",
-  "title-edge-insets": "{20, 20, 20, 20}"
+  "titleEdge-insets": "{20, 20, 20, 20}"
 },
 {
   "name": "Rectangular (Medium)",
-  "base-type": "button",
+  "baseType": "button",
   "shape": "rectangle",
   "style": "gloss2",
   "constraints": "$0.width = $0.height * 2 :: $0.height = 75",
   "titles": {
     "normal": {
       "font": "Helvetica Neue@20",
-      "foreground-color": "white",
-      "stroke-color": "white@50%",
-      "stroke-width": -2,
+      "foregroundColor": "white",
+      "strokeColor": "white@50%",
+      "strokeWidth": -2,
       "alignment": "center",
       "text": "Rectangular Button"
     },
     "highlighted.foreground-color": "#00AFFFFF"
   },
   "background-colors.normal": "#666666FF",
-  "title-edge-insets": "{20, 20, 20, 20}"
+  "titleEdge-insets": "{20, 20, 20, 20}"
 },
 {
   "name": "Rectangular (Large)",
-  "base-type": "button",
+  "baseType": "button",
   "shape": "rectangle",
   "style": "gloss2",
   "constraints": "$0.width = $0.height * 2 :: $0.height = 100",
   "titles": {
     "normal": {
       "font": "Helvetica Neue@20",
-      "foreground-color": "white",
-      "stroke-color": "white@50%",
-      "stroke-width": -2,
+      "foregroundColor": "white",
+      "strokeColor": "white@50%",
+      "strokeWidth": -2,
       "alignment": "center",
       "text": "Rectangular Button"
     },
     "highlighted.foreground-color": "#00AFFFFF"
   },
   "background-colors.normal": "#666666FF",
-  "title-edge-insets": "{20, 20, 20, 20}"
+  "titleEdge-insets": "{20, 20, 20, 20}"
 }

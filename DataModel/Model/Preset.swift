@@ -34,7 +34,7 @@ final public class Preset: EditableModelObject {
       didChangeValueForKey("storage")
     }
   }
-  
+
   public var presetCategory: PresetCategory {
     get {
       willAccessValueForKey("presetCategory")
@@ -85,16 +85,15 @@ final public class Preset: EditableModelObject {
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
-    appendValueForKeyPath("presetCategory.index", toDictionary: &dict)
-    dict += storage.dictionary
-//    dict["subelements"] = 
-    return .Object(dict)
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["presetCategory.index"] = presetCategory.index.jsonValue
+    obj.extend(ObjectJSONValue(storage.jsonValue)!)
+    return obj.jsonValue
   }
 
   public var baseType: RemoteElement.BaseType {
-    get { return RemoteElement.BaseType(storage["base-type"]) ?? .Undefined }
-    set { storage["base-type"] = newValue.jsonValue }
+    get { return RemoteElement.BaseType(storage["baseType"]) ?? .Undefined }
+    set { storage["baseType"] = newValue.jsonValue }
   }
 
   public var role: RemoteElement.Role {
@@ -118,17 +117,17 @@ final public class Preset: EditableModelObject {
         return Image.objectWithIndex(PathIndex(path)!, context: moc)
       } else { return nil }
     }
-    set { storage["background-image"] = newValue?.index.jsonValue }
+    set { storage["backgroundImage"] = newValue?.index.jsonValue }
   }
 
   public var backgroundImageAlpha: Float? {
-    get { return Float(storage["background-image-alpha"]) }
-    set { storage["background-image-alpha"] = newValue?.jsonValue }
+    get { return Float(storage["backgroundImage-alpha"]) }
+    set { storage["backgroundImage-alpha"] = newValue?.jsonValue }
   }
 
   public var backgroundColor: UIColor? {
-    get { return UIColor(storage["background-color"]) }
-    set { storage["background-color"] = newValue?.jsonValue }
+    get { return UIColor(storage["backgroundColor"]) }
+    set { storage["backgroundColor"] = newValue?.jsonValue }
   }
 
   public var constraints: String? {
@@ -147,8 +146,8 @@ final public class Preset: EditableModelObject {
 
 
   public var topBarHidden: Bool? {
-    get { return Bool(storage["top-bar-hidden"]) }
-    set { storage["top-bar-hidden"] = newValue?.jsonValue }
+    get { return Bool(storage["topBarHidden"]) }
+    set { storage["topBarHidden"] = newValue?.jsonValue }
   }
 
   // panels?
@@ -169,18 +168,18 @@ final public class Preset: EditableModelObject {
   }
 
   public var labelAttributes: TitleAttributes? {
-    get { return TitleAttributes(storage["label-attributes"]) }
-    set { storage["label-attributes"] = newValue?.jsonValue }
+    get { return TitleAttributes(storage["labelAttributes"]) }
+    set { storage["labelAttributes"] = newValue?.jsonValue }
   }
 
   public var labelConstraints: String? {
-    get { return String(storage["label-constraints"]) }
-    set { storage["label-constraints"] = newValue?.jsonValue }
+    get { return String(storage["labelConstraints"]) }
+    set { storage["labelConstraints"] = newValue?.jsonValue }
   }
 
   public var panelAssignment: ButtonGroup.PanelAssignment? {
-    get { return ButtonGroup.PanelAssignment(storage["panel-assignment"]) }
-    set { storage["panel-assignment"] = newValue?.jsonValue }
+    get { return ButtonGroup.PanelAssignment(storage["panelAssignment"]) }
+    set { storage["panelAssignment"] = newValue?.jsonValue }
   }
 
   /// MARK: - Button attributes
@@ -207,23 +206,23 @@ final public class Preset: EditableModelObject {
 
   /** backgroundColors data stored in format ["state":"color"] */
   public var backgroundColors: JSONValue? {
-    get { return storage["background-colors"] }
-    set { storage["background-colors"] = newValue }
+    get { return storage["backgroundColors"] }
+    set { storage["backgroundColors"] = newValue }
   }
 
   public var titleEdgeInsets: UIEdgeInsets {
-    get { return UIEdgeInsets(storage["title-edge-insets"]) ?? UIEdgeInsets.zeroInsets }
-    set { storage["title-edge-insets"] = newValue.jsonValue }
+    get { return UIEdgeInsets(storage["titleEdgeInsets"]) ?? UIEdgeInsets.zeroInsets }
+    set { storage["titleEdgeInsets"] = newValue.jsonValue }
   }
 
   public var contentEdgeInsets: UIEdgeInsets {
-    get { return UIEdgeInsets(storage["content-edge-insets"]) ?? UIEdgeInsets.zeroInsets }
+    get { return UIEdgeInsets(storage["contentEdgeInsets"]) ?? UIEdgeInsets.zeroInsets }
     set { storage["contentEdgeInsets"] = newValue.jsonValue }
   }
 
   public var imageEdgeInsets: UIEdgeInsets {
-    get { return UIEdgeInsets(storage["image-edge-insets"]) ?? UIEdgeInsets.zeroInsets }
-    set { storage["image-edge-insets"] = newValue.jsonValue }
+    get { return UIEdgeInsets(storage["imageEdgeInsets"]) ?? UIEdgeInsets.zeroInsets }
+    set { storage["imageEdgeInsets"] = newValue.jsonValue }
   }
 
   public var command: JSONValue? {
@@ -253,7 +252,7 @@ final public class Preset: EditableModelObject {
     var description = "\(super.description)\n\t" + "\n\t".join(
       "category = \(presetCategory.index)",
       "parent = \(toString(parentPreset?.index))",
-      "base-type = \(baseType)",
+      "baseType = \(baseType)",
       "role = \(role)",
       "shape = \(shape)",
       "style = \(style)",

@@ -386,7 +386,7 @@ public final class Button: RemoteElement {
         }
       }
 
-      if let backgroundColors = ObjectJSONValue(data["background-colors"])?.compressedMap({ObjectJSONValue($1)}) {
+      if let backgroundColors = ObjectJSONValue(data["backgroundColors"])?.compressedMap({ObjectJSONValue($1)}) {
         for (mode, jsonValue) in backgroundColors {
           if let colorSet = ControlStateColorSet.importObjectWithData(jsonValue, context: moc) {
             setBackgroundColors(colorSet, forMode: mode)
@@ -400,24 +400,24 @@ public final class Button: RemoteElement {
         }
       }
 
-      if let longPressCommands = ObjectJSONValue(data["long-press-commands"])?.compressedMap({ObjectJSONValue($1)}) {
+      if let longPressCommands = ObjectJSONValue(data["longPress-commands"])?.compressedMap({ObjectJSONValue($1)}) {
         for (mode, jsonValue) in longPressCommands {
           if let command = Command.importObjectWithData(jsonValue, context: moc){ setLongPressCommand(command, forMode: mode) }
         }
       }
 
-      let wtf = data["title-edge-insets"]
-      if let titleEdgeInsets = UIEdgeInsets(data["title-edge-insets"]) { self.titleEdgeInsets = titleEdgeInsets } 
-      if let contentEdgeInsets = UIEdgeInsets(data["content-edge-insets"]) { self.contentEdgeInsets = contentEdgeInsets }
-      if let imageEdgeInsets = UIEdgeInsets(data["image-edge-insets"]) { self.imageEdgeInsets = imageEdgeInsets }
+      let wtf = data["titleEdge-insets"]
+      if let titleEdgeInsets = UIEdgeInsets(data["titleEdge-insets"]) { self.titleEdgeInsets = titleEdgeInsets }
+      if let contentEdgeInsets = UIEdgeInsets(data["contentEdge-insets"]) { self.contentEdgeInsets = contentEdgeInsets }
+      if let imageEdgeInsets = UIEdgeInsets(data["imageEdge-insets"]) { self.imageEdgeInsets = imageEdgeInsets }
 
     }
 
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
-    dict["background-color"] = nil
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["backgroundColor"] = nil
 
     var titles            : JSONValue.ObjectValue = [:]
     var backgroundColors  : JSONValue.ObjectValue = [:]
@@ -439,17 +439,17 @@ public final class Button: RemoteElement {
       }
     }
 
-    dict["commands"]           = .Object(commands)
-    dict["titles"]             = .Object(titles)
-    dict["icons"]              = .Object(icons)
-    dict["background-colors"]  = .Object(backgroundColors)
-    dict["images"]             = .Object(images)
+    obj["commands"]           = .Object(commands)
+    obj["titles"]             = .Object(titles)
+    obj["icons"]              = .Object(icons)
+    obj["backgroundColors"]  = .Object(backgroundColors)
+    obj["images"]             = .Object(images)
 
-    dict["title-edge-insets"]   = titleEdgeInsets.jsonValue
-    dict["image-edge-insets"]   = imageEdgeInsets.jsonValue
-    dict["content-edge-insets"] = contentEdgeInsets.jsonValue
+    obj["titleEdge-insets"]   = titleEdgeInsets.jsonValue
+    obj["imageEdge-insets"]   = imageEdgeInsets.jsonValue
+    obj["contentEdge-insets"] = contentEdgeInsets.jsonValue
 
-    return .Object(dict)
+    return obj.jsonValue
   }
 
 }

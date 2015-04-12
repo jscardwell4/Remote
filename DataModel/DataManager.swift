@@ -131,7 +131,47 @@ import MoonKit
   class func augmentModel(model: NSManagedObjectModel) -> NSManagedObjectModel {
 
     let augmentedModel = model.mutableCopy() as! NSManagedObjectModel
-    let entities = augmentedModel.entitiesByName as! [String:NSEntityDescription]
+
+    // Create common `uuid` attribute
+    let uuid: Void -> NSAttributeDescription = {
+      let uuid = NSAttributeDescription()
+      uuid.name = "uuid"
+      uuid.attributeType = .StringAttributeType
+      uuid.optional = false
+      uuid.setValidationPredicates([∀"SELF MATCHES '(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?'"],
+            withValidationWarnings: [NSValidationStringPatternMatchingError])
+      return uuid
+    }
+
+    // Process each entity for common operations
+    for entity in augmentedModel.entities as! [NSEntityDescription] {
+      if entity.superentity == nil { entity.properties.append(uuid()) }
+      (entity.attributesByName.values.array as! [NSAttributeDescription]).filter({$0.userInfo != nil}) ➤ {
+        (attribute: NSAttributeDescription) -> Void in
+        if let n = attribute.userInfo?["attributeValueClassName"] as? String {
+          attribute.attributeValueClassName = n
+          if !attribute.optional {
+            switch n {
+              case "MSDictionary": attribute.defaultValue = MSDictionary()
+              case "NSDictionary": attribute.defaultValue = NSDictionary()
+              case "UIColor": attribute.defaultValue = UIColor.clearColor()
+              case "NSAttributedString": attribute.defaultValue = NSAttributedString()
+              case "NSURL": attribute.defaultValue = NSURL(string: "http://about:blank")
+              case "NSValue":
+                if let valueType = attribute.userInfo?["NSValueType"] as? String {
+                  switch valueType {
+                    case "CGSize": attribute.defaultValue = NSValue(CGSize: CGSize.zeroSize)
+                    case "UIEdgeInsets": attribute.defaultValue = NSValue(UIEdgeInsets: UIEdgeInsets.zeroInsets)
+                    default: break
+                  }
+                }
+              default: break
+            }
+          }
+        }
+      }
+    }
+
 
     /**
     Helper for modifiying the class and default value for the same attribute on multiple entities
@@ -212,110 +252,105 @@ import MoonKit
 
     }
 
-    let componentDevice      = entities["ComponentDevice"]!
-    let manufacturer         = entities["Manufacturer"]!
-    let imageCategory        = entities["ImageCategory"]!
-    let presetCategory       = entities["PresetCategory"]!
-    let iRCodeSet            = entities["IRCodeSet"]!
-    let image                = entities["Image"]!
-    let remoteElement        = entities["RemoteElement"]!
-    let remote               = entities["Remote"]!
-    let buttonGroup          = entities["ButtonGroup"]!
-    let button               = entities["Button"]!
-    let preset               = entities["Preset"]!
-    let dictionaryStorage    = entities["DictionaryStorage"]!
-    let jsonStorage          = entities["JSONStorage"]!
-    let commandContainer     = entities["CommandContainer"]!
-    let commandSet           = entities["CommandSet"]!
-    let commandSetCollection = entities["CommandSetCollection"]!
-    let hTTPCommand          = entities["HTTPCommand"]!
-    let controlStateColorSet = entities["ControlStateColorSet"]!
-    let imageView            = entities["ImageView"]!
-    let activityCommand      = entities["ActivityCommand"]!
-    let newtorkDevice        = entities["NetworkDevice"]!
+//    let entities = augmentedModel.entitiesByName as! [String:NSEntityDescription]
+
+//    let componentDevice      = entities["ComponentDevice"]!
+//    let manufacturer         = entities["Manufacturer"]!
+//    let imageCategory        = entities["ImageCategory"]!
+//    let presetCategory       = entities["PresetCategory"]!
+//    let iRCodeSet            = entities["IRCodeSet"]!
+//    let image                = entities["Image"]!
+//    let remoteElement        = entities["RemoteElement"]!
+//    let remote               = entities["Remote"]!
+//    let buttonGroup          = entities["ButtonGroup"]!
+//    let button               = entities["Button"]!
+//    let preset               = entities["Preset"]!
+//    let dictionaryStorage    = entities["DictionaryStorage"]!
+//    let jsonStorage          = entities["JSONStorage"]!
+//    let commandContainer     = entities["CommandContainer"]!
+//    let commandSet           = entities["CommandSet"]!
+//    let commandSetCollection = entities["CommandSetCollection"]!
+//    let hTTPCommand          = entities["HTTPCommand"]!
+//    let controlStateColorSet = entities["ControlStateColorSet"]!
+//    let imageView            = entities["ImageView"]!
+//    let activityCommand      = entities["ActivityCommand"]!
+//    let newtorkDevice        = entities["NetworkDevice"]!
 
     // set `user` default value
-    modifyAttribute("user", forEntities: [componentDevice], defaultValue: true)
 
     // indicator attribute on activity commands
-    overrideDefaultValueOfAttribute("indicator", forSubentity: activityCommand, withValue: true)
+//    overrideDefaultValueOfAttribute("indicator", forSubentity: activityCommand, withValue: true)
 
     // create some default sets
-    modifyAttribute("devices", forEntities: [manufacturer, iRCodeSet], defaultValue: NSSet())
-    modifyAttribute("childCategories", forEntities: [imageCategory, presetCategory], defaultValue: NSSet())
-    modifyAttribute("codeSets", forEntities: [manufacturer], defaultValue: NSSet())
-    modifyAttribute("codes", forEntities: [iRCodeSet], defaultValue: NSSet())
-    modifyAttribute("images", forEntities: [imageCategory], defaultValue: NSSet())
-    modifyAttribute("presets", forEntities: [presetCategory], defaultValue: NSSet())
-    modifyAttribute("componentDevices", forEntities: [newtorkDevice], defaultValue: NSSet())
+//    modifyAttribute("devices", forEntities: [manufacturer, iRCodeSet], defaultValue: NSSet())
+//    modifyAttribute("childCategories", forEntities: [imageCategory, presetCategory], defaultValue: NSSet())
+//    modifyAttribute("codeSets", forEntities: [manufacturer], defaultValue: NSSet())
+//    modifyAttribute("codes", forEntities: [iRCodeSet], defaultValue: NSSet())
+//    modifyAttribute("images", forEntities: [imageCategory], defaultValue: NSSet())
+//    modifyAttribute("presets", forEntities: [presetCategory], defaultValue: NSSet())
+//    modifyAttribute("componentDevices", forEntities: [newtorkDevice], defaultValue: NSSet())
 
     // size attributes on images
-    modifyAttribute("size",
-        forEntities: [image],
-     valueClassName: "NSValue",
-       defaultValue: NSValue(CGSize: CGSize.zeroSize))
+//    modifyAttribute("size",
+//        forEntities: [image],
+//     valueClassName: "NSValue",
+//       defaultValue: NSValue(CGSize: CGSize.zeroSize))
 
 
     // background color attributes on remote elements
-    modifyAttribute("backgroundColor",
-        forEntities: [remoteElement, remote, buttonGroup, button],
-     valueClassName: "UIColor",
-       defaultValue: UIColor.clearColor())
+//    modifyAttribute("backgroundColor",
+//        forEntities: [remoteElement, remote, buttonGroup, button],
+//     valueClassName: "UIColor",
+//       defaultValue: UIColor.clearColor())
 
     // edge insets attributes on buttons
-    modifyAttributes(["titleEdgeInsets", "contentEdgeInsets", "imageEdgeInsets"],
-           forEntity: button,
-      valueClassName: "NSValue",
-        defaultValue: NSValue(UIEdgeInsets: UIEdgeInsets.zeroInsets))
+//    modifyAttributes(["titleEdgeInsets", "contentEdgeInsets", "imageEdgeInsets"],
+//           forEntity: button,
+//      valueClassName: "NSValue",
+//        defaultValue: NSValue(UIEdgeInsets: UIEdgeInsets.zeroInsets))
 
     // configurations attribute on remote elements
-    modifyAttribute("configurations",
-        forEntities: [remoteElement, remote, buttonGroup, button],
-     valueClassName: "NSDictionary",
-       defaultValue: NSDictionary())
+//    modifyAttribute("configurations",
+//        forEntities: [remoteElement, remote, buttonGroup, button],
+//     valueClassName: "NSDictionary",
+//       defaultValue: NSDictionary())
 
     // panels for RERemote
-    modifyAttribute("panels", forEntities: [remote], valueClassName: "NSDictionary", defaultValue: NSDictionary())
+//    modifyAttribute("panels", forEntities: [remote], valueClassName: "NSDictionary", defaultValue: NSDictionary())
 
-    // label attribute on button groups
-    modifyAttribute("label", forEntities: [buttonGroup], valueClassName: "NSAttributedString")
+//     modifyAttribute("title", forEntities: [button], valueClassName: "NSAttributedString")
 
-     modifyAttribute("title", forEntities: [button], valueClassName: "NSAttributedString")
-
-    // settings attribute on Preset
-    modifyAttribute("attributes", forEntities: [preset], valueClassName: "NSDictionary", defaultValue: NSDictionary())
-
-    modifyAttribute("dictionary",
-      forEntities: [dictionaryStorage, jsonStorage],
-   valueClassName: "MSDictionary",
-     defaultValue: MSDictionary())
+//    modifyAttribute("dictionary",
+//      forEntities: [dictionaryStorage, jsonStorage],
+//   valueClassName: "MSDictionary",
+//     defaultValue: MSDictionary())
 
     // containerIndex attribute on command containers
-    modifyAttribute("containerIndex",
-        forEntities: [commandContainer, commandSet, commandSetCollection],
-     valueClassName: "MSDictionary",
-       defaultValue: MSDictionary())
+//    modifyAttribute("containerIndex",
+//        forEntities: [commandContainer, commandSet, commandSetCollection],
+//     valueClassName: "MSDictionary",
+//       defaultValue: MSDictionary())
 
     // url attribute on http command
-    modifyAttribute("url",
-        forEntities: [hTTPCommand],
-     valueClassName: "NSURL",
-       defaultValue: NSURL(string: "http://about:blank"))
+//    modifyAttribute("url",
+//        forEntities: [hTTPCommand],
+//     valueClassName: "NSURL",
+//       defaultValue: NSURL(string: "http://about:blank"))
 
     // color attributes on control state color set
-    modifyAttributes(["disabled",
-                      "selectedDisabled",
-                      "highlighted",
-                      "highlightedDisabled",
-                      "highlightedSelected",
-                      "normal",
-                      "selected",
-                      "highlightedSelectedDisabled"],
-           forEntity: controlStateColorSet,
-      valueClassName: "UIColor")
+//    modifyAttributes(["disabled",
+//                      "selectedDisabled",
+//                      "highlighted",
+//                      "highlightedDisabled",
+//                      "highlightedSelected",
+//                      "normal",
+//                      "selected",
+//                      "highlightedSelectedDisabled"],
+//           forEntity: controlStateColorSet,
+//      valueClassName: "UIColor")
 
     // color attribute on image view
-    modifyAttribute("color", forEntities: [imageView], valueClassName: "UIColor")
+//    modifyAttribute("color", forEntities: [imageView], valueClassName: "UIColor")
 
     return augmentedModel
   }

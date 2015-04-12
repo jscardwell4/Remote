@@ -24,6 +24,40 @@ class DataModelTests: XCTestCase {
     }
   }
 
+  override func tearDown() {
+    super.tearDown()
+    context.reset()
+  }
+
+  func assertJSONEquality(data: ObjectJSONValue,
+                forObject object: JSONValueConvertible?,
+            excludingKeys excluded: [String] = [])
+  {
+    let expectedData = data.filter({(k, _) in excluded ∌ k})
+    if let actualData = ObjectJSONValue(object?.jsonValue) where !actualData.contains(expectedData) {
+      var foundTheProblem = false
+      for (key, expectedValue) in expectedData {
+        if let actualValue = actualData[key] {
+          let equalValues = actualValue == expectedValue
+          XCTAssertTrue(equalValues,
+            "actual value '\(actualValue)' does not equal expected value '\(expectedValue)' for key '\(key)'")
+          if !equalValues { foundTheProblem = true; break }
+        } else {
+          XCTFail("missing value for key '\(key)'")
+          foundTheProblem = true
+          break
+        }
+      }
+      if !foundTheProblem {
+        MSLogDebug("problem detected in `-[ObjectJSONValue contains:]`, false negative reported for actual data '\(actualData)' with expected data '\(expectedData)'")
+      }
+    } else if object?.jsonValue == nil { XCTFail("failed to get json value for specified object") }
+  }
+
+}
+
+class IsolatedDataModelTests: DataModelTests {
+
   static let testJSON: [String:JSONValue] = {
     var filePaths: [String:JSONValue] = [:]
     if let bundlePath = NSUserDefaults.standardUserDefaults().stringForKey("XCTestedBundlePath"),
@@ -32,7 +66,10 @@ class DataModelTests: XCTestCase {
       for s in ["Activity", "ActivityController", "ComponentDevice", "Image", "ImageCategory",
                 "IRCode", "IRCodeSet", "ISYDevice", "ISYDeviceGroup", "ISYDeviceNode",
                 "ITachDevice", "Manufacturer", "Preset", "PresetCategory", "TitleAttributes",
-                "Remote", "ButtonGroup", "Button"]
+                "Remote", "ButtonGroup", "Button", "ActivityCommand", "DelayCommand", "HTTPCommand",
+                "MacroCommand", "PowerCommand", "SendIRCommand", "SwitchCommand", "SystemCommand",
+                "CommandSet", "CommandSetCollection", "ControlStateColorSet", "ControlStateImageSet",
+                "ControlStateTitleSet", "ImageView", "Constraint"]
       {
         var error: NSError?
         if let filePath = bundle.pathForResource(s, ofType: "json"),
@@ -45,42 +82,6 @@ class DataModelTests: XCTestCase {
     }
     return filePaths
     }()
-
-  func assertJSONEquality(data: ObjectJSONValue,
-                forObject object: JSONValueConvertible?,
-            excludingKeys excluded: [String] = [])
-  {
-
-    let expectedData = data.filter({(k, _) in excluded ∌ k})
-    if let actualData = ObjectJSONValue(object?.jsonValue) {
-      XCTAssertTrue(actualData.contains(expectedData), "\nactual data: \n\(actualData)\ndoes not contain expected data: \n\(expectedData)")
-    } else { XCTFail("failed to get json value for specified object") }
-  }
-
-  func testLoadManufacturersFromFile() {
-    let expectation = expectationWithDescription("load manufacturers")
-    DataManager.loadDataFromFile("Manufacturer_Test",
-                            type: Manufacturer.self,
-                         context: context,
-                      completion: {(success: Bool, error: NSError?) -> Void in
-                        XCTAssertTrue(success, "loading data from file triggered an error")
-                        DataManager.saveRootContext(completion: { (success: Bool, error: NSError?) -> Void in
-                          XCTAssertTrue(success, "saving context triggered an error")
-                          expectation.fulfill()
-                        })
-                      })
-    waitForExpectationsWithTimeout(10, handler: {(error: NSError?) -> Void in _ = MSHandleError(error)})
-    let manufacturers = Manufacturer.objectsInContext(context) as! [Manufacturer]
-    XCTAssertTrue(manufacturers.count > 0, "where are the manufacturer objects?")
-    XCTAssertEqual(manufacturers[0].name, "Dish", "unexpected name")
-    let codeSets = manufacturers[0].codeSets
-    XCTAssertEqual(codeSets.count, 1, "where is the code set?")
-    let codeSet = IRCodeSet.objectMatchingPredicate(∀"manufacturer.name == 'Dish'", context: context)
-    XCTAssertNotNil(codeSet, "where is the code set?")
-    if codeSet != nil {
-      XCTAssertEqual(codeSet!.codes.count, 47, "unexpected count for code set's codes array")
-    }
-  }
 
   func testDictionaryStorage() {
     let storage = DictionaryStorage(context: context)
@@ -112,7 +113,7 @@ class DataModelTests: XCTestCase {
     if let data = ObjectJSONValue(self.dynamicType.testJSON["Activity"]) {
       let activity = Activity(data: data, context: context)
       XCTAssert(activity != nil)
-      assertJSONEquality(data, forObject: activity, excludingKeys: ["remote", "launch-macro", "halt-macro"])
+      assertJSONEquality(data, forObject: activity, excludingKeys: ["remote", "launchMacro", "haltMacro"])
       XCTAssertNotNil(activity?.launchMacro)
       XCTAssertNotNil(activity?.haltMacro)
     } else { XCTFail("could not retrieve test json for `Activity`") }
@@ -132,7 +133,7 @@ class DataModelTests: XCTestCase {
     if let data = ObjectJSONValue(self.dynamicType.testJSON["ComponentDevice"]) {
       let componentDevice = ComponentDevice(data: data, context: context)
       XCTAssert(componentDevice != nil)
-      assertJSONEquality(data, forObject: componentDevice, excludingKeys: ["code-set", "manufacturer"])
+      assertJSONEquality(data, forObject: componentDevice, excludingKeys: ["codeSet", "manufacturer"])
     } else { XCTFail("could not retrieve test json for `ComponentDevice`") }
   }
 
@@ -209,8 +210,8 @@ class DataModelTests: XCTestCase {
     if let data = ObjectJSONValue(self.dynamicType.testJSON["Manufacturer"]) {
       let manufacturer = Manufacturer(data: data, context: context)
       XCTAssert(manufacturer != nil)
-      assertJSONEquality(data, forObject: manufacturer, excludingKeys: ["code-sets"])
-      if let expectedCodeSetCount = data["code-sets"]?.arrayValue?.count,
+      assertJSONEquality(data, forObject: manufacturer, excludingKeys: ["codeSets"])
+      if let expectedCodeSetCount = data["codeSets"]?.arrayValue?.count,
         codeSets = manufacturer?.codeSets
       {
         XCTAssertEqual(expectedCodeSetCount, codeSets.count)
@@ -270,7 +271,7 @@ class DataModelTests: XCTestCase {
   func testButton() {
     if let data = ObjectJSONValue(self.dynamicType.testJSON["Button"]) {
       if let button = Button(data: data, context: context) {
-        assertJSONEquality(data, forObject: button, excludingKeys: ["commands", "titles", "background-colors"])
+        assertJSONEquality(data, forObject: button, excludingKeys: ["commands", "titles", "backgroundColors"])
       } else { XCTFail("failed to create button") }
     } else { XCTFail("could not retrieve test json for `Button`") }
   }
@@ -286,10 +287,160 @@ class DataModelTests: XCTestCase {
   func testRemote() {
     if let data = ObjectJSONValue(self.dynamicType.testJSON["Remote"]) {
       if let remote = Remote(data: data, context: context) {
-        assertJSONEquality(data, forObject: remote, excludingKeys: ["subelements"])
+        assertJSONEquality(data, forObject: remote, excludingKeys: ["subelements", "constraints", "backgroundImage"])
       } else { XCTFail("failed to create remote") }
     } else { XCTFail("could not retrieve test json for `Remote`") }
   }
 
+  func testActivityCommand() {
+    if let data = ObjectJSONValue(self.dynamicType.testJSON["ActivityCommand"]) {
+      if let activityCommand = ActivityCommand(data: data, context: context) {
+        assertJSONEquality(data, forObject: activityCommand, excludingKeys: [])
+      } else { XCTFail("failed to create activityCommand") }
+    } else { XCTFail("could not retrieve test json for `ActivityCommand`") }
+  }
+
+  func testDelayCommand() {
+    if let data = ObjectJSONValue(self.dynamicType.testJSON["DelayCommand"]) {
+      if let delayCommand = DelayCommand(data: data, context: context) {
+        assertJSONEquality(data, forObject: delayCommand, excludingKeys: [])
+      } else { XCTFail("failed to create delayCommand") }
+    } else { XCTFail("could not retrieve test json for `DelayCommand`") }
+  }
+
+  func testHTTPCommand() {
+    if let data = ObjectJSONValue(self.dynamicType.testJSON["HTTPCommand"]) {
+      if let hTTPCommand = HTTPCommand(data: data, context: context) {
+        assertJSONEquality(data, forObject: hTTPCommand, excludingKeys: [])
+      } else { XCTFail("failed to create hTTPCommand") }
+    } else { XCTFail("could not retrieve test json for `HTTPCommand`") }
+  }
+
+  func testMacroCommand() {
+    if let data = ObjectJSONValue(self.dynamicType.testJSON["MacroCommand"]) {
+      if let macroCommand = MacroCommand(data: data, context: context) {
+        assertJSONEquality(data, forObject: macroCommand, excludingKeys: [])
+      } else { XCTFail("failed to create macroCommand") }
+    } else { XCTFail("could not retrieve test json for `MacroCommand`") }
+  }
+
+  func testPowerCommand() {
+    if let data = ObjectJSONValue(self.dynamicType.testJSON["PowerCommand"]) {
+      if let powerCommand = PowerCommand(data: data, context: context) {
+        assertJSONEquality(data, forObject: powerCommand, excludingKeys: [])
+      } else { XCTFail("failed to create powerCommand") }
+    } else { XCTFail("could not retrieve test json for `PowerCommand`") }
+  }
+
+  func testSendIRCommand() {
+    if let data = ObjectJSONValue(self.dynamicType.testJSON["SendIRCommand"]) {
+      if let sendIRCommand = SendIRCommand(data: data, context: context) {
+        assertJSONEquality(data, forObject: sendIRCommand, excludingKeys: [])
+      } else { XCTFail("failed to create sendIRCommand") }
+    } else { XCTFail("could not retrieve test json for `SendIRCommand`") }
+  }
+
+  func testSwitchCommand() {
+    if let data = ObjectJSONValue(self.dynamicType.testJSON["SwitchCommand"]) {
+      if let switchCommand = SwitchCommand(data: data, context: context) {
+        assertJSONEquality(data, forObject: switchCommand, excludingKeys: [])
+      } else { XCTFail("failed to create switchCommand") }
+    } else { XCTFail("could not retrieve test json for `SwitchCommand`") }
+  }
+
+  func testSystemCommand() {
+    if let data = ObjectJSONValue(self.dynamicType.testJSON["SystemCommand"]) {
+      if let systemCommand = SystemCommand(data: data, context: context) {
+        assertJSONEquality(data, forObject: systemCommand, excludingKeys: [])
+      } else { XCTFail("failed to create systemCommand") }
+    } else { XCTFail("could not retrieve test json for `SystemCommand`") }
+  }
+
+  func testCommandSet() {
+    if let data = ObjectJSONValue(self.dynamicType.testJSON["CommandSet"]) {
+      if let commandSet = CommandSet(data: data, context: context) {
+        assertJSONEquality(data, forObject: commandSet, excludingKeys: [])
+      } else { XCTFail("failed to create commandSet") }
+    } else { XCTFail("could not retrieve test json for `CommandSet`") }
+  }
+
+  func testCommandSetCollection() {
+    if let data = ObjectJSONValue(self.dynamicType.testJSON["CommandSetCollection"]) {
+      if let commandSetCollection = CommandSetCollection(data: data, context: context) {
+        assertJSONEquality(data, forObject: commandSetCollection, excludingKeys: [])
+      } else { XCTFail("failed to create commandSetCollection") }
+    } else { XCTFail("could not retrieve test json for `CommandSetCollection`") }
+  }
+
+  func testControlStateColorSet() {
+    if let data = ObjectJSONValue(self.dynamicType.testJSON["ControlStateColorSet"]) {
+      if let controlStateColorSet = ControlStateColorSet(data: data, context: context) {
+        assertJSONEquality(data, forObject: controlStateColorSet, excludingKeys: [])
+      } else { XCTFail("failed to create controlStateColorSet") }
+    } else { XCTFail("could not retrieve test json for `ControlStateColorSet`") }
+  }
+
+  func testControlStateImageSet() {
+    if let data = ObjectJSONValue(self.dynamicType.testJSON["ControlStateImageSet"]) {
+      if let controlStateImageSet = ControlStateImageSet(data: data, context: context) {
+        assertJSONEquality(data, forObject: controlStateImageSet, excludingKeys: [])
+      } else { XCTFail("failed to create controlStateImageSet") }
+    } else { XCTFail("could not retrieve test json for `ControlStateImageSet`") }
+  }
+
+  func testControlStateTitleSet() {
+    if let data = ObjectJSONValue(self.dynamicType.testJSON["ControlStateTitleSet"]) {
+      if let controlStateTitleSet = ControlStateTitleSet(data: data, context: context) {
+        assertJSONEquality(data, forObject: controlStateTitleSet, excludingKeys: [])
+      } else { XCTFail("failed to create controlStateTitleSet") }
+    } else { XCTFail("could not retrieve test json for `ControlStateTitleSet`") }
+  }
+
+  func testImageView() {
+    if let data = ObjectJSONValue(self.dynamicType.testJSON["ImageView"]) {
+      if let imageView = ImageView(data: data, context: context) {
+        assertJSONEquality(data, forObject: imageView, excludingKeys: [])
+      } else { XCTFail("failed to create imageView") }
+    } else { XCTFail("could not retrieve test json for `ImageView`") }
+  }
+
+  func testConstraint() {
+    if let data = ObjectJSONValue(self.dynamicType.testJSON["Constraint"]) {
+      if let constraint = Constraint(data: data, context: context) {
+        assertJSONEquality(data, forObject: constraint, excludingKeys: [])
+      } else { XCTFail("failed to create constraint") }
+    } else { XCTFail("could not retrieve test json for `Constraint`") }
+  }
+
+
+}
+
+class InterdependentDataModelTests: DataModelTests {
+
+  func testLoadManufacturersFromFile() {
+    let expectation = expectationWithDescription("load manufacturers")
+    DataManager.loadDataFromFile("Manufacturer_Test",
+      type: Manufacturer.self,
+      context: context,
+      completion: {(success: Bool, error: NSError?) -> Void in
+        XCTAssertTrue(success, "loading data from file triggered an error")
+        DataManager.saveRootContext(completion: { (success: Bool, error: NSError?) -> Void in
+          XCTAssertTrue(success, "saving context triggered an error")
+          expectation.fulfill()
+        })
+    })
+    waitForExpectationsWithTimeout(10, handler: {(error: NSError?) -> Void in _ = MSHandleError(error)})
+    let manufacturers = Manufacturer.objectsInContext(context) as! [Manufacturer]
+    XCTAssertTrue(manufacturers.count == 3, "where are the manufacturer objects?")
+    let manufacturerIndex = OrderedDictionary(keys: manufacturers.map({$0.name}), values: manufacturers)
+    XCTAssertEqual(Set(manufacturers.map({$0.name})), Set(["Dish", "Sony", "Samsung"]), "unexpected manufacturer names")
+    let codeSets = manufacturers[0].codeSets
+    XCTAssertEqual(Set(manufacturerIndex.values.array.map({$0.codeSets.count})), Set([1, 3]), "missing or surplus number of code sets")
+    let codeSet = IRCodeSet.objectMatchingPredicate(∀"manufacturer.name == 'Dish'", context: context)
+    XCTAssertNotNil(codeSet, "where is the code set?")
+    if codeSet != nil {
+      XCTAssertEqual(codeSet!.codes.count, 47, "unexpected count for code set's codes array")
+    }
+  }
 
 }

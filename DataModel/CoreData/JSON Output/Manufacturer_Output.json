@@ -5,7 +5,7 @@ Manufacturer objects:
     "uuid": "7D04BD53-C159-4A7C-8D76-4CEA7ADBBA79",
     "name": "Samsung",
     "user": 0,
-    "code-sets": [
+    "codeSets": [
       {
         "uuid": "8901034B-E767-47DD-8A38-47BBCC031339",
         "name": "Samsung TV",
@@ -17,594 +17,594 @@ Manufacturer objects:
             "name": "Fast Forward",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCCCCBCCBCBBBCBBCB21,1776ABBBCCCCCBBBCCCCCCCCBCCBCBBBCBBCBDABBBCCCCCBBBCCCCCCCCBCCBCBBBCBBCBDABBBCCCCCBBBCCCCCCCCBCCBCBBBCBBCBDABBBCCCCCBBBCCCCCCCCBCCBCBBBCBBCB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCCCCBCCBCBBBCBBCB21,1776ABBBCCCCCBBBCCCCCCCCBCCBCBBBCBBCBDABBBCCCCCBBBCCCCCCCCBCCBCBBBCBBCBDABBBCCCCCBBBCCCCCCCCBCCBCBBBCBBCBDABBBCCCCCBBBCCCCCCCCBCCBCBBBCBBCB21,4878"
           },
           {
             "uuid": "5D101F43-4CFD-4EF1-A4ED-3D0A1088F198",
             "name": "Info",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBBBBCCCCCCCCBBB21,1776ABBBCCCCCBBBCCCCCBBBBBCCCCCCCCBBBDABBBCCCCCBBBCCCCCBBBBBCCCCCCCCBBBDABBBCCCCCBBBCCCCCBBBBBCCCCCCCCBBBDABBBCCCCCBBBCCCCCBBBBBCCCCCCCCBBBDABBBCCCCCBBBCCCCCBBBBBCCCCCCCCBBBDABBBCCCCCBBBCCCCCBBBBBCCCCCCCCBBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBBBBCCCCCCCCBBB21,1776ABBBCCCCCBBBCCCCCBBBBBCCCCCCCCBBBDABBBCCCCCBBBCCCCCBBBBBCCCCCCCCBBBDABBBCCCCCBBBCCCCCBBBBBCCCCCCCCBBBDABBBCCCCCBBBCCCCCBBBBBCCCCCCCCBBBDABBBCCCCCBBBCCCCCBBBBBCCCCCCCCBBBDABBBCCCCCBBBCCCCCBBBBBCCCCCCCCBBB21,4878"
           },
           {
             "uuid": "059763F1-2944-4145-A992-5F1E06A23E67",
             "name": "Yahoo!",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBCCBCBCCCBBCBCB21,1776ABBBCCCCCBBBCCCCCBBCCBCBCCCBBCBCBDABBBCCCCCBBBCCCCCBBCCBCBCCCBBCBCBDABBBCCCCCBBBCCCCCBBCCBCBCCCBBCBCBDABBBCCCCCBBBCCCCCBBCCBCBCCCBBCBCB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBCCBCBCCCBBCBCB21,1776ABBBCCCCCBBBCCCCCBBCCBCBCCCBBCBCBDABBBCCCCCBBBCCCCCBBCCBCBCCCBBCBCBDABBBCCCCCBBBCCCCCBBCCBCBCCCBBCBCBDABBBCCCCCBBBCCCCCBBCCBCBCCCBBCBCB21,4878"
           },
           {
             "uuid": "7C50F7A6-AF38-461B-B0E5-5F78F8EAB2E2",
             "name": "Internet@TV",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBCCBCCBCCBBCBBC21,1776ABBBCCCCCBBBCCCCCBBCCBCCBCCBBCBBCDABBBCCCCCBBBCCCCCBBCCBCCBCCBBCBBCDABBBCCCCCBBBCCCCCBBCCBCCBCCBBCBBCDABBBCCCCCBBBCCCCCBBCCBCCBCCBBCBBCDABBBCCCCCBBBCCCCCBBCCBCCBCCBBCBBC21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBCCBCCBCCBBCBBC21,1776ABBBCCCCCBBBCCCCCBBCCBCCBCCBBCBBCDABBBCCCCCBBBCCCCCBBCCBCCBCCBBCBBCDABBBCCCCCBBBCCCCCBBCCBCCBCCBBCBBCDABBBCCCCCBBBCCCCCBBCCBCCBCCBBCBBCDABBBCCCCCBBBCCCCCBBCCBCCBCCBBCBBC21,4878"
           },
           {
             "uuid": "0ED45F22-1507-4142-B75D-7495EA903F50",
             "name": "A-Red",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCCCBBCBBCBBCCBCCB21,1776ABBBCCCCCBBBCCCCCCCBBCBBCBBCCBCCBDABBBCCCCCBBBCCCCCCCBBCBBCBBCCBCCBDABBBCCCCCBBBCCCCCCCBBCBBCBBCCBCCBDABBBCCCCCBBBCCCCCCCBBCBBCBBCCBCCB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCCCBBCBBCBBCCBCCB21,1776ABBBCCCCCBBBCCCCCCCBBCBBCBBCCBCCBDABBBCCCCCBBBCCCCCCCBBCBBCBBCCBCCBDABBBCCCCCBBBCCCCCCCBBCBBCBBCCBCCBDABBBCCCCCBBBCCCCCCCBBCBBCBBCCBCCB21,4878"
           },
           {
             "uuid": "8AC7204C-1DB9-4759-9F85-54CB1145589C",
             "name": "Volume Up",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBBCCCCCCCCBBBBB21,1776ABBBCCCCCBBBCCCCCBBBCCCCCCCCBBBBBDABBBCCCCCBBBCCCCCBBBCCCCCCCCBBBBBDABBBCCCCCBBBCCCCCBBBCCCCCCCCBBBBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBBCCCCCCCCBBBBB21,1776ABBBCCCCCBBBCCCCCBBBCCCCCCCCBBBBBDABBBCCCCCBBBCCCCCBBBCCCCCCCCBBBBBDABBBCCCCCBBBCCCCCBBBCCCCCCCCBBBBB21,4878"
           },
           {
             "uuid": "C370B8FE-AAEC-4A22-84B2-AF37ACF1CB74",
             "name": "Tools",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBCBCCBCCCBCBBCB21,1776ABBBCCCCCBBBCCCCCBBCBCCBCCCBCBBCBDABBBCCCCCBBBCCCCCBBCBCCBCCCBCBBCBDABBBCCCCCBBBCCCCCBBCBCCBCCCBCBBCBDABBBCCCCCBBBCCCCCBBCBCCBCCCBCBBCBDABBBCCCCCBBBCCCCCBBCBCCBCCCBCBBCB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBCBCCBCCCBCBBCB21,1776ABBBCCCCCBBBCCCCCBBCBCCBCCCBCBBCBDABBBCCCCCBBBCCCCCBBCBCCBCCCBCBBCBDABBBCCCCCBBBCCCCCBBCBCCBCCCBCBBCBDABBBCCCCCBBBCCCCCBBCBCCBCCCBCBBCBDABBBCCCCCBBBCCCCCBBCBCCBCCCBCBBCB21,4878"
           },
           {
             "uuid": "535C8EA9-8BB8-470B-8ED5-7719CD1FE7A3",
             "name": "Up",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCCCCCCBBCBBBBBCCB21,1776ABBBCCCCCBBBCCCCCCCCCCBBCBBBBBCCB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCCCCCCBBCBBBBBCCB21,1776ABBBCCCCCBBBCCCCCCCCCCBBCBBBBBCCB21,4878"
           },
           {
             "uuid": "1836F2A9-CA8B-44F0-A6CE-4AFFBD110C35",
             "name": "Pause",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCCBCBCCBCBCBCBBCB21,1776ABBBCCCCCBBBCCCCCCBCBCCBCBCBCBBCBDABBBCCCCCBBBCCCCCCBCBCCBCBCBCBBCBDABBBCCCCCBBBCCCCCCBCBCCBCBCBCBBCBDABBBCCCCCBBBCCCCCCBCBCCBCBCBCBBCB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCCBCBCCBCBCBCBBCB21,1776ABBBCCCCCBBBCCCCCCBCBCCBCBCBCBBCBDABBBCCCCCBBBCCCCCCBCBCCBCBCBCBBCBDABBBCCCCCBBBCCCCCCBCBCCBCBCBCBBCBDABBBCCCCCBBBCCCCCCBCBCCBCBCBCBBCB21,4878"
           },
           {
             "uuid": "B6154923-85B6-4D39-BF88-D875FAFC97C7",
             "name": "HDMI 4",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "172,171,21,65BB21,22CCCCBBBCCCCCBCBCCCBBCBCBBBCC21,1673"
+            "onOffPattern": "172,171,21,65BB21,22CCCCBBBCCCCCBCBCCCBBCBCBBBCC21,1673"
           },
           {
             "uuid": "E707CA28-C97E-444B-BAA9-0F87B48E99EE",
             "name": "Eight",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCBBCCCCCBCCBBBB21,1776ABBBCCCCCBBBCCCCCBCBBCCCCCBCCBBBBDABBBCCCCCBBBCCCCCBCBBCCCCCBCCBBBBDABBBCCCCCBBBCCCCCBCBBCCCCCBCCBBBBDABBBCCCCCBBBCCCCCBCBBCCCCCBCCBBBBDABBBCCCCCBBBCCCCCBCBBCCCCCBCCBBBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCBBCCCCCBCCBBBB21,1776ABBBCCCCCBBBCCCCCBCBBCCCCCBCCBBBBDABBBCCCCCBBBCCCCCBCBBCCCCCBCCBBBBDABBBCCCCCBBBCCCCCBCBBCCCCCBCCBBBBDABBBCCCCCBBBCCCCCBCBBCCCCCBCCBBBBDABBBCCCCCBBBCCCCCBCBBCCCCCBCCBBBB21,4878"
           },
           {
             "uuid": "FE0ED851-E1A9-47E7-AC22-075B4340CCD9",
             "name": "Fav.CH",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCCCBCCCBCBBCBBBCB21,1776ABBBCCCCCBBBCCCCCCCBCCCBCBBCBBBCBDABBBCCCCCBBBCCCCCCCBCCCBCBBCBBBCBDABBBCCCCCBBBCCCCCCCBCCCBCBBCBBBCB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCCCBCCCBCBBCBBBCB21,1776ABBBCCCCCBBBCCCCCCCBCCCBCBBCBBBCBDABBBCCCCCBBBCCCCCCCBCCCBCBBCBBBCBDABBBCCCCCBBBCCCCCCCBCCCBCBBCBBBCB21,4878"
           },
           {
             "uuid": "8B54169C-47C5-410E-854E-DDCB8081EEE3",
             "name": "Down",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCCCCBBCCBBBBCCB21,1776ABBBCCCCCBBBCCCCCBCCCCBBCCBBBBCCBDABBBCCCCCBBBCCCCCBCCCCBBCCBBBBCCB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCCCCBBCCBBBBCCB21,1776ABBBCCCCCBBBCCCCCBCCCCBBCCBBBBCCBDABBBCCCCCBBBCCCCCBCCCCBBCCBBBBCCB21,4878"
           },
           {
             "uuid": "9738F3B8-DA3A-413A-968F-11C1558113AB",
             "name": "Channel Down",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCCCCCBCCCBBBBCBBB21,1776ABBBCCCCCBBBCCCCCCCCCBCCCBBBBCBBBDABBBCCCCCBBBCCCCCCCCCBCCCBBBBCBBBDABBBCCCCCBBBCCCCCCCCCBCCCBBBBCBBBDABBBCCCCCBBBCCCCCCCCCBCCCBBBBCBBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCCCCCBCCCBBBBCBBB21,1776ABBBCCCCCBBBCCCCCCCCCBCCCBBBBCBBBDABBBCCCCCBBBCCCCCCCCCBCCCBBBBCBBBDABBBCCCCCBBBCCCCCCCCCBCCCBBBBCBBBDABBBCCCCCBBBCCCCCCCCCBCCCBBBBCBBB21,4878"
           },
           {
             "uuid": "D01B393B-83FB-4269-A9A4-E9EE4B530C1E",
             "name": "CC",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCBCCBCCCBCBBCBB21,1776ABBBCCCCCBBBCCCCCBCBCCBCCCBCBBCBBDABBBCCCCCBBBCCCCCBCBCCBCCCBCBBCBBDABBBCCCCCBBBCCCCCBCBCCBCCCBCBBCBBDABBBCCCCCBBBCCCCCBCBCCBCCCBCBBCBBDABBBCCCCCBBBCCCCCBCBCCBCCCBCBBCBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCBCCBCCCBCBBCBB21,1776ABBBCCCCCBBBCCCCCBCBCCBCCCBCBBCBBDABBBCCCCCBBBCCCCCBCBCCBCCCBCBBCBBDABBBCCCCCBBBCCCCCBCBCCBCCCBCBBCBBDABBBCCCCCBBBCCCCCBCBCCBCCCBCBBCBBDABBBCCCCCBBBCCCCCBCBCCBCCCBCBBCBB21,4878"
           },
           {
             "uuid": "ED4F0AF0-DFBA-4327-A763-F3CCBA3D305A",
             "name": "Nine",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCCBBBCCCCBCCCBBBB21,1776ABBBCCCCCBBBCCCCCCBBBCCCCBCCCBBBBDABBBCCCCCBBBCCCCCCBBBCCCCBCCCBBBBDABBBCCCCCBBBCCCCCCBBBCCCCBCCCBBBBDABBBCCCCCBBBCCCCCCBBBCCCCBCCCBBBBDABBBCCCCCBBBCCCCCCBBBCCCCBCCCBBBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCCBBBCCCCBCCCBBBB21,1776ABBBCCCCCBBBCCCCCCBBBCCCCBCCCBBBBDABBBCCCCCBBBCCCCCCBBBCCCCBCCCBBBBDABBBCCCCCBBBCCCCCCBBBCCCCBCCCBBBBDABBBCCCCCBBBCCCCCCBBBCCCCBCCCBBBBDABBBCCCCCBBBCCCCCCBBBCCCCBCCCBBBB21,4878"
           },
           {
             "uuid": "2ADB51E9-C541-44E0-B378-DC6CB170FD21",
             "name": "Channel List",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBCBCBBCCCBCBCCB21,1776ABBBCCCCCBBBCCCCCBBCBCBBCCCBCBCCBDABBBCCCCCBBBCCCCCBBCBCBBCCCBCBCCBDABBBCCCCCBBBCCCCCBBCBCBBCCCBCBCCBDABBBCCCCCBBBCCCCCBBCBCBBCCCBCBCCB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBCBCBBCCCBCBCCB21,1776ABBBCCCCCBBBCCCCCBBCBCBBCCCBCBCCBDABBBCCCCCBBBCCCCCBBCBCBBCCCBCBCCBDABBBCCCCCBBBCCCCCBBCBCBBCCCBCBCCBDABBBCCCCCBBBCCCCCBBCBCBBCCCBCBCCB21,4878"
           },
           {
             "uuid": "A2EBAF63-2325-44D9-868D-869A1D9AB4CA",
             "name": "Four",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCCCCBCCCCBBBCBBBB21,1776ABBBCCCCCBBBCCCCCCCCBCCCCBBBCBBBB21,1777ABBBCCCCCBBBCCCCCCCCBCCCCBBBCBBBBDABBBCCCCCBBBCCCCCCCCBCCCCBBBCBBBBDABBBCCCCCBBBCCCCCCCCBCCCCBBBCBBBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCCCCBCCCCBBBCBBBB21,1776ABBBCCCCCBBBCCCCCCCCBCCCCBBBCBBBB21,1777ABBBCCCCCBBBCCCCCCCCBCCCCBBBCBBBBDABBBCCCCCBBBCCCCCCCCBCCCCBBBCBBBBDABBBCCCCCBBBCCCCCCCCBCCCCBBBCBBBB21,4878"
           },
           {
             "uuid": "867B02B1-AFA1-417C-9093-712A66811DDA",
             "name": "One",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CC21,22CBBBCCCCCDDBCCCCCBBCBBBBB21,1776ABBBCCCCCBBBCCCCCCCBCCCCCBBCBBBBBEABBBCCCCCBBBCCCCCCCBCCCCCBBCBBBBBEABBBCCCCCBBBCCCCCCCBCCCCCBBCBBBBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CC21,22CBBBCCCCCDDBCCCCCBBCBBBBB21,1776ABBBCCCCCBBBCCCCCCCBCCCCCBBCBBBBBEABBBCCCCCBBBCCCCCCCBCCCCCBBCBBBBBEABBBCCCCCBBBCCCCCCCBCCCCCBBCBBBBB21,4878"
           },
           {
             "uuid": "73D319F5-DE6E-4F0E-8CDA-C05D1A8D43A3",
             "name": "Source",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCCCCCCCCBBBBBBB21,1776ABBBCCCCCBBBCCCCCBCCCCCCCCBBBBBBBDABBBCCCCCBBBCCCCCBCCCCCCCCBBBBBBBDABBBCCCCCBBBCCCCCBCCCCCCCCBBBBBBBDABBBCCCCCBBBCCCCCBCCCCCCCCBBBBBBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCCCCCCCCBBBBBBB21,1776ABBBCCCCCBBBCCCCCBCCCCCCCCBBBBBBBDABBBCCCCCBBBCCCCCBCCCCCCCCBBBBBBBDABBBCCCCCBBBCCCCCBCCCCCCCCBBBBBBBDABBBCCCCCBBBCCCCCBCCCCCCCCBBBBBBB21,4878"
           },
           {
             "uuid": "FA5387C7-BAD0-418B-ABC9-4A0C39E4FD59",
             "name": "D-Blue",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCCBBCBCCCBCCBCBBB21,1776ABBBCCCCCBBBCCCCCCBBCBCCCBCCBCBBBDABBBCCCCCBBBCCCCCCBBCBCCCBCCBCBBBDABBBCCCCCBBBCCCCCCBBCBCCCBCCBCBBBDABBBCCCCCBBBCCCCCCBBCBCCCBCCBCBBBDABBBCCCCCBBBCCCCCCBBCBCCCBCCBCBBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCCBBCBCCCBCCBCBBB21,1776ABBBCCCCCBBBCCCCCCBBCBCCCBCCBCBBBDABBBCCCCCBBBCCCCCCBBCBCCCBCCBCBBBDABBBCCCCCBBBCCCCCCBBCBCCCBCCBCBBBDABBBCCCCCBBBCCCCCCBBCBCCCBCCBCBBBDABBBCCCCCBBBCCCCCCBBCBCCCBCCBCBBB21,4878"
           },
           {
             "uuid": "5B5018BE-1068-4B95-9177-1762E77997BD",
             "name": "Right",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,170,21,63BB21,21CCCCBBBCCCCCCBCCCBBCBCBBBCCB21,760"
+            "onOffPattern": "171,170,21,63BB21,21CCCCBBBCCCCCCBCCCBBCBCBBBCCB21,760"
           },
           {
             "uuid": "4B73B728-E70C-4743-9315-47F6DF304D0A",
             "name": "Five",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCCBCCCCCBBCBBBB21,1776ABBBCCCCCBBBCCCCCBCCBCCCCCBBCBBBBDABBBCCCCCBBBCCCCCBCCBCCCCCBBCBBBBDABBBCCCCCBBBCCCCCBCCBCCCCCBBCBBBBDABBBCCCCCBBBCCCCCBCCBCCCCCBBCBBBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCCBCCCCCBBCBBBB21,1776ABBBCCCCCBBBCCCCCBCCBCCCCCBBCBBBBDABBBCCCCCBBBCCCCCBCCBCCCCCBBCBBBBDABBBCCCCCBBBCCCCCBCCBCCCCCBBCBBBBDABBBCCCCCBBBCCCCCBCCBCCCCCBBCBBBB21,4878"
           },
           {
             "uuid": "455975FB-715F-4C1D-B432-E6300610E1FB",
             "name": "HDMI 1",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "172,172,21,64BB21,21CCCCBBBCCCCCBCCBCBBBCBBCBCCC21,1673"
+            "onOffPattern": "172,172,21,64BB21,21CCCCBBBCCCCCBCCBCBBBCBBCBCCC21,1673"
           },
           {
             "uuid": "D707B74A-EC15-40CE-83E8-312C46214B69",
             "name": "Power Off",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "172,172,21,64BB21,21CCCCBBBCCCCCCCCBBCCBBBBCCBBC21,1673"
+            "onOffPattern": "172,172,21,64BB21,21CCCCBBBCCCCCCCCBBCCBBBBCCBBC21,1673"
           },
           {
             "uuid": "26F67CF0-59F8-40EB-A0C3-5AFD95109380",
             "name": "Zero",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCCCBCCCCBBBCBBB21,1776ABBBCCCCCBBBCCCCCBCCCBCCCCBBBCBBBDABBBCCCCCBBBCCCCCBCCCBCCCCBBBCBBBDABBBCCCCCBBBCCCCCBCCCBCCCCBBBCBBBDABBBCCCCCBBBCCCCCBCCCBCCCCBBBCBBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCCCBCCCCBBBCBBB21,1776ABBBCCCCCBBBCCCCCBCCCBCCCCBBBCBBBDABBBCCCCCBBBCCCCCBCCCBCCCCBBBCBBBDABBBCCCCCBBBCCCCCBCCCBCCCCBBBCBBBDABBBCCCCCBBBCCCCCBCCCBCCCCBBBCBBB21,4878"
           },
           {
             "uuid": "7FD0C706-7D5E-4C62-9AC4-77E9144AF77F",
             "name": "Six",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCCBCBCCCCBCBCBBBB21,1776ABBBCCCCCBBBCCCCCCBCBCCCCBCBCBBBBDABBBCCCCCBBBCCCCCCBCBCCCCBCBCBBBBDABBBCCCCCBBBCCCCCCBCBCCCCBCBCBBBBDABBBCCCCCBBBCCCCCCBCBCCCCBCBCBBBBDABBBCCCCCBBBCCCCCCBCBCCCCBCBCBBBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCCBCBCCCCBCBCBBBB21,1776ABBBCCCCCBBBCCCCCCBCBCCCCBCBCBBBBDABBBCCCCCBBBCCCCCCBCBCCCCBCBCBBBBDABBBCCCCCBBBCCCCCCBCBCCCCBCBCBBBBDABBBCCCCCBBBCCCCCCBCBCCCCBCBCBBBBDABBBCCCCCBBBCCCCCCBCBCCCCBCBCBBBB21,4878"
           },
           {
             "uuid": "D264E18B-7AA6-406C-BD81-C260E21C0B52",
             "name": "3D",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBBBBCCBCCCCCBBC21,1776ABBBCCCCCBBBCCCCCBBBBBCCBCCCCCBBCDABBBCCCCCBBBCCCCCBBBBBCCBCCCCCBBCDABBBCCCCCBBBCCCCCBBBBBCCBCCCCCBBCDABBBCCCCCBBBCCCCCBBBBBCCBCCCCCBBC21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBBBBCCBCCCCCBBC21,1776ABBBCCCCCBBBCCCCCBBBBBCCBCCCCCBBCDABBBCCCCCBBBCCCCCBBBBBCCBCCCCCBBCDABBBCCCCCBBBCCCCCBBBBBCCBCCCCCBBCDABBBCCCCCBBBCCCCCBBBBBCCBCCCCCBBC21,4878"
           },
           {
             "uuid": "A1B62A16-43A8-473C-9BD3-F89D02D318E6",
             "name": "Return",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCCCCBBCBCBBBCCBCB21,1776ABBBCCCCCBBBCCCCCCCCBBCBCBBBCCBCBDABBBCCCCCBBBCCCCCCCCBBCBCBBBCCBCBDABBBCCCCCBBBCCCCCCCCBBCBCBBBCCBCBDABBBCCCCCBBBCCCCCCCCBBCBCBBBCCBCBDABBBCCCCCBBBCCCCCCCCBBCBCBBBCCBCB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCCCCBBCBCBBBCCBCB21,1776ABBBCCCCCBBBCCCCCCCCBBCBCBBBCCBCBDABBBCCCCCBBBCCCCCCCCBBCBCBBBCCBCBDABBBCCCCCBBBCCCCCCCCBBCBCBBBCCBCBDABBBCCCCCBBBCCCCCCCCBBCBCBBBCCBCBDABBBCCCCCBBBCCCCCCCCBBCBCBBBCCBCB21,4878"
           },
           {
             "uuid": "FA5B3C88-C201-4205-9C6A-5AFBCDEA36F3",
             "name": "HDMI-CEC",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCCBBCCCBCBCCBBBCB21,1776ABBBCCCCCBBBCCCCCCBBCCCBCBCCBBBCBDABBBCCCCCBBBCCCCCCBBCCCBCBCCBBBCBDABBBCCCCCBBBCCCCCCBBCCCBCBCCBBBCB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCCBBCCCBCBCCBBBCB21,1776ABBBCCCCCBBBCCCCCCBBCCCBCBCCBBBCBDABBBCCCCCBBBCCCCCCBBCCCBCBCCBBBCBDABBBCCCCCBBBCCCCCCBBCCCBCBCCBBBCB21,4878"
           },
           {
             "uuid": "F0207ED3-7E3E-459A-9B2D-47A907DCFEE4",
             "name": "Exit",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCBBCBCCCBCCBCBB21,1776ABBBCCCCCBBBCCCCCBCBBCBCCCBCCBCBBDABBBCCCCCBBBCCCCCBCBBCBCCCBCCBCBBDABBBCCCCCBBBCCCCCBCBBCBCCCBCCBCBBDABBBCCCCCBBBCCCCCBCBBCBCCCBCCBCBBDABBBCCCCCBBBCCCCCBCBBCBCCCBCCBCBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCBBCBCCCBCCBCBB21,1776ABBBCCCCCBBBCCCCCBCBBCBCCCBCCBCBBDABBBCCCCCBBBCCCCCBCBBCBCCCBCCBCBBDABBBCCCCCBBBCCCCCBCBBCBCCCBCCBCBBDABBBCCCCCBBBCCCCCBCBBCBCCCBCCBCBBDABBBCCCCCBBBCCCCCBCBBCBCCCBCCBCBB21,4878"
           },
           {
             "uuid": "CF66BB10-150B-40AE-B48B-FDFA9B56E6B8",
             "name": "Record",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCCBCCBCCBBCBBCB21,1776ABBBCCCCCBBBCCCCCBCCBCCBCCBBCBBCBDABBBCCCCCBBBCCCCCBCCBCCBCCBBCBBCBDABBBCCCCCBBBCCCCCBCCBCCBCCBBCBBCBDABBBCCCCCBBBCCCCCBCCBCCBCCBBCBBCB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCCBCCBCCBBCBBCB21,1776ABBBCCCCCBBBCCCCCBCCBCCBCCBBCBBCBDABBBCCCCCBBBCCCCCBCCBCCBCCBBCBBCBDABBBCCCCCBBBCCCCCBCCBCCBCCBBCBBCBDABBBCCCCCBBBCCCCCBCCBCCBCCBBCBBCB21,4878"
           },
           {
             "uuid": "35C8A91B-6AEA-4CFD-A937-39A80C5786E0",
             "name": "Enter",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCCCCBCBBCBBBCBCCB21,1776ABBBCCCCCBBBCCCCCCCCBCBBCBBBCBCCBDABBBCCCCCBBBCCCCCCCCBCBBCBBBCBCCBDABBBCCCCCBBBCCCCCCCCBCBBCBBBCBCCBDABBBCCCCCBBBCCCCCCCCBCBBCBBBCBCCBDABBBCCCCCBBBCCCCCCCCBCBBCBBBCBCCBDABBBCCCCCBBBCCCCCCCCBCBBCBBBCBCCB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCCCCBCBBCBBBCBCCB21,1776ABBBCCCCCBBBCCCCCCCCBCBBCBBBCBCCBDABBBCCCCCBBBCCCCCCCCBCBBCBBBCBCCBDABBBCCCCCBBBCCCCCCCCBCBBCBBBCBCCBDABBBCCCCCBBBCCCCCCCCBCBBCBBBCBCCBDABBBCCCCCBBBCCCCCCCCBCBBCBBBCBCCBDABBBCCCCCBBBCCCCCCCCBCBBCBBBCBCCB21,4878"
           },
           {
             "uuid": "E7BF2480-AE3E-4385-9D46-D57F110EBFD0",
             "name": "Seven",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCCCBBCCCCBBCCBBBB21,1776ABBBCCCCCBBBCCCCCCCBBCCCCBBCCBBBBDABBBCCCCCBBBCCCCCCCBBCCCCBBCCBBBBDABBBCCCCCBBBCCCCCCCBBCCCCBBCCBBBBDABBBCCCCCBBBCCCCCCCBBCCCCBBCCBBBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCCCBBCCCCBBCCBBBB21,1776ABBBCCCCCBBBCCCCCCCBBCCCCBBCCBBBBDABBBCCCCCBBBCCCCCCCBBCCCCBBCCBBBBDABBBCCCCCBBBCCCCCCCBBCCCCBBCCBBBBDABBBCCCCCBBBCCCCCCCBBCCCCBBCCBBBB21,4878"
           },
           {
             "uuid": "515E3707-20F4-42C9-B89E-6B1F17D2F0D7",
             "name": "Power",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCCBCCCCCCBCBBBBBB21,1776ABBBCCCCCBBBCCCCCCBCCCCCCBCBBBBBBDABBBCCCCCBBBCCCCCCBCCCCCCBCBBBBBBDABBBCCCCCBBBCCCCCCBCCCCCCBCBBBBBBDABBBCCCCCBBBCCCCCCBCCCCCCBCBBBBBBDABBBCCCCCBBBCCCCCCBCCCCCCBCBBBBBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCCBCCCCCCBCBBBBBB21,1776ABBBCCCCCBBBCCCCCCBCCCCCCBCBBBBBBDABBBCCCCCBBBCCCCCCBCCCCCCBCBBBBBBDABBBCCCCCBBBCCCCCCBCCCCCCBCBBBBBBDABBBCCCCCBBBCCCCCCBCCCCCCBCBBBBBBDABBBCCCCCBBBCCCCCCBCCCCCCBCBBBBBB21,4878"
           },
           {
             "uuid": "4D7C6742-8F0B-46BF-B877-2C06F6383131",
             "name": "Content",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCCBBBBCCBBCCCCB21,1776ABBBCCCCCBBBCCCCCBCCBBBBCCBBCCCCBDABBBCCCCCBBBCCCCCBCCBBBBCCBBCCCCBDABBBCCCCCBBBCCCCCBCCBBBBCCBBCCCCBDABBBCCCCCBBBCCCCCBCCBBBBCCBBCCCCB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCCBBBBCCBBCCCCB21,1776ABBBCCCCCBBBCCCCCBCCBBBBCCBBCCCCBDABBBCCCCCBBBCCCCCBCCBBBBCCBBCCCCBDABBBCCCCCBBBCCCCCBCCBBBBCCBBCCCCBDABBBCCCCCBBBCCCCCBCCBBBBCCBBCCCCB21,4878"
           },
           {
             "uuid": "AAA2E229-52FA-4312-9318-45D748A8095F",
             "name": "Play",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBBCCCBCCCCBBBCB21,1776ABBBCCCCCBBBCCCCCBBBCCCBCCCCBBBCBDABBBCCCCCBBBCCCCCBBBCCCBCCCCBBBCBDABBBCCCCCBBBCCCCCBBBCCCBCCCCBBBCB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBBCCCBCCCCBBBCB21,1776ABBBCCCCCBBBCCCCCBBBCCCBCCCCBBBCBDABBBCCCCCBBBCCCCCBBBCCCBCCCCBBBCBDABBBCCCCCBBBCCCCCBBBCCCBCCCCBBBCB21,4878"
           },
           {
             "uuid": "80C2626A-9D2E-4783-AF2B-56F2913AF96B",
             "name": "Channel Up",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21,21,22CCCBBBCCCCCCBCCBCCCBCBBCBBB21,1776ABBBCCCCCBBBCCCCCCBCCBCCCBCBBCBBBEABBBCCCCCBBBCCCCCCBCCBCCCBCBBCBBBEABBBCCCCCBBBCCCCCCBCCBCCCBCBBCBBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21,21,22CCCBBBCCCCCCBCCBCCCBCBBCBBB21,1776ABBBCCCCCBBBCCCCCCBCCBCCCBCBBCBBBEABBBCCCCCBBBCCCCCCBCCBCCCBCBBCBBBEABBBCCCCCBBBCCCCCCBCCBCCCBCBBCBBB21,4878"
           },
           {
             "uuid": "483BBD20-B1CA-4131-8D48-1AAC39856688",
             "name": "Left",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCBCCBBCCBCBBCCB21,1776ABBBCCCCCBBBCCCCCBCBCCBBCCBCBBCCBDABBBCCCCCBBBCCCCCBCBCCBBCCBCBBCCB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCBCCBBCCBCBBCCB21,1776ABBBCCCCCBBBCCCCCBCBCCBBCCBCBBCCBDABBBCCCCCBBBCCCCCBCBCCBBCCBCBBCCB21,4878"
           },
           {
             "uuid": "5E93554C-CF10-4684-8909-792E9E2A4A31",
             "name": "Pre-CH",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBCCBCCCCCBBCBBB21,1776ABBBCCCCCBBBCCCCCBBCCBCCCCCBBCBBBDABBBCCCCCBBBCCCCCBBCCBCCCCCBBCBBBDABBBCCCCCBBBCCCCCBBCCBCCCCCBBCBBBDABBBCCCCCBBBCCCCCBBCCBCCCCCBBCBBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBCCBCCCCCBBCBBB21,1776ABBBCCCCCBBBCCCCCBBCCBCCCCCBBCBBBDABBBCCCCCBBBCCCCCBBCCBCCCCCBBCBBBDABBBCCCCCBBBCCCCCBBCCBCCCCCBBCBBBDABBBCCCCCBBBCCCCCBBCCBCCCCCBBCBBB21,4878"
           },
           {
             "uuid": "E1E0AC0F-7483-4291-8B47-4AB122B32995",
             "name": "P.Size",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCCBBBBBCCBCCCCCBB21,1776ABBBCCCCCBBBCCCCCCBBBBBCCBCCCCCBBDABBBCCCCCBBBCCCCCCBBBBBCCBCCCCCBBDABBBCCCCCBBBCCCCCCBBBBBCCBCCCCCBBDABBBCCCCCBBBCCCCCCBBBBBCCBCCCCCBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCCBBBBBCCBCCCCCBB21,1776ABBBCCCCCBBBCCCCCCBBBBBCCBCCCCCBBDABBBCCCCCBBBCCCCCCBBBBBCCBCCCCCBBDABBBCCCCCBBBCCCCCCBBBBBCCBCCCCCBBDABBBCCCCCBBBCCCCCCBBBBBCCBCCCCCBB21,4878"
           },
           {
             "uuid": "EA70715E-8DCF-44E6-92E3-C9A7D0CD3FCF",
             "name": "Rewind",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCBCCCBCCBCBBBCB21,1776ABBBCCCCCBBBCCCCCBCBCCCBCCBCBBBCBDABBBCCCCCBBBCCCCCBCBCCCBCCBCBBBCBDABBBCCCCCBBBCCCCCBCBCCCBCCBCBBBCBDABBBCCCCCBBBCCCCCBCBCCCBCCBCBBBCB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCBCCCBCCBCBBBCB21,1776ABBBCCCCCBBBCCCCCBCBCCCBCCBCBBBCBDABBBCCCCCBBBCCCCCBCBCCCBCCBCBBBCBDABBBCCCCCBBBCCCCCBCBCCCBCCBCBBBCBDABBBCCCCCBBBCCCCCBCBCCCBCCBCBBBCB21,4878"
           },
           {
             "uuid": "E3D268EA-32DA-4584-B177-22A3241C6B8B",
             "name": "Media.P",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCCCBBCCCBBBCCBBBC21,1776ABBBCCCCCBBBCCCCCCCBBCCCBBBCCBBBCDABBBCCCCCBBBCCCCCCCBBCCCBBBCCBBBCDABBBCCCCCBBBCCCCCCCBBCCCBBBCCBBBCDABBBCCCCCBBBCCCCCCCBBCCCBBBCCBBBCDABBBCCCCCBBBCCCCCCCBBCCCBBBCCBBBCDABBBCCCCCBBBCCCCCCCBBCCCBBBCCBBBC21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCCCBBCCCBBBCCBBBC21,1776ABBBCCCCCBBBCCCCCCCBBCCCBBBCCBBBCDABBBCCCCCBBBCCCCCCCBBCCCBBBCCBBBCDABBBCCCCCBBBCCCCCCCBBCCCBBBCCBBBCDABBBCCCCCBBBCCCCCCCBBCCCBBBCCBBBCDABBBCCCCCBBBCCCCCCCBBCCCBBBCCBBBCDABBBCCCCCBBBCCCCCCCBBCCCBBBCCBBBC21,4878"
           },
           {
             "uuid": "1DE7A0D5-2636-40E0-9066-5CE20693D9F2",
             "name": "HDMI 3",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "172,172,21,64BB21,21CCCCBBBCCCCCCBCCCCBBBCBBBBCC21,1673"
+            "onOffPattern": "172,172,21,64BB21,21CCCCBBBCCCCCCBCCCCBBBCBBBBCC21,1673"
           },
           {
             "uuid": "D6867732-8B2E-44E3-ABF7-4904997FCB00",
             "name": "Power On",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "172,172,21,64BB21,21CCCCBBBCCCCCBCCBBCCBCBBCCBBC21,1673"
+            "onOffPattern": "172,172,21,64BB21,21CCCCBBBCCCCCBCCBBCCBCBBCCBBC21,1673"
           },
           {
             "uuid": "83437072-0A1D-4CFE-9A17-9E98AE605917",
             "name": "Two",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCBCCCCCCBCBBBBB21,1776ABBBCCCCCBBBCCCCCBCBCCCCCCBCBBBBBDABBBCCCCCBBBCCCCCBCBCCCCCCBCBBBBBDABBBCCCCCBBBCCCCCBCBCCCCCCBCBBBBBDABBBCCCCCBBBCCCCCBCBCCCCCCBCBBBBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCBCCCCCCBCBBBBB21,1776ABBBCCCCCBBBCCCCCBCBCCCCCCBCBBBBBDABBBCCCCCBBBCCCCCBCBCCCCCCBCBBBBBDABBBCCCCCBBBCCCCCBCBCCCCCCBCBBBBBDABBBCCCCCBBBCCCCCBCBCCCCCCBCBBBBB21,4878"
           },
           {
             "uuid": "CB28EF5A-D771-407B-BEBA-D00ABCAA7E10",
             "name": "Mute",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBBBCCCCCCCCBBBB21,1776ABBBCCCCCBBBCCCCCBBBBCCCCCC21,22CBBBBDABBBCCCCCBBBCCCCCBBBBCCCCCCCCBBBBDABBBCCCCCBBBCCCCCBBBBCCCCCCCCBBBBDABBBCCCCCBBBCCCCCBBBBCCCCCCCCBBBBDABBBCCCCCBBBCCCCCBBBBCCCCCCCCBBBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBBBCCCCCCCCBBBB21,1776ABBBCCCCCBBBCCCCCBBBBCCCCCC21,22CBBBBDABBBCCCCCBBBCCCCCBBBBCCCCCCCCBBBBDABBBCCCCCBBBCCCCCBBBBCCCCCCCCBBBBDABBBCCCCCBBBCCCCCBBBBCCCCCCCCBBBBDABBBCCCCCBBBCCCCCBBBBCCCCCCCCBBBB21,4878"
           },
           {
             "uuid": "DD6C0295-F52F-4667-8502-D26C503D3799",
             "name": "Dash",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBCCCBCCCCBBBCBB21,1776ABBBCCCCCBBBCCCCCBBCCCBCCCCBBBCBBDABBBCCCCCBBBCCCCCBBCCCBCCCCBBBCBBDABBBCCCCCBBBCCCCCBBCCCBCCCCBBBCBBDABBBCCCCCBBBCCCCCBBCCCBCCCCBBBCBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBCCCBCCCCBBBCBB21,1776ABBBCCCCCBBBCCCCCBBCCCBCCCCBBBCBBDABBBCCCCCBBBCCCCCBBCCCBCCCCBBBCBBDABBBCCCCCBBBCCCCCBBCCCBCCCCBBBCBBDABBBCCCCCBBBCCCCCBBCCCBCCCCBBBCBB21,4878"
           },
           {
             "uuid": "73CC1223-78F5-40CB-BA61-51CA97C78820",
             "name": "B-Green",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCCCBCBCCCBBCBCBBB21,1776ABBBCCCCCBBBCCCCCCCBCBCCCBBCBCBBBDABBBCCCCCBBBCCCCCCCBCBCCCBBCBCBBBDABBBCCCCCBBBCCCCCCCBCBCCCBBCBCBBBDABBBCCCCCBBBCCCCCCCBCBCCCBBCBCBBBDABBBCCCCCBBBCCCCCCCBCBCCCBBCBCBBBDABBBCCCCCBBBCCCCCCCBCBCCCBBCBCBBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCCCBCBCCCBBCBCBBB21,1776ABBBCCCCCBBBCCCCCCCBCBCCCBBCBCBBBDABBBCCCCCBBBCCCCCCCBCBCCCBBCBCBBBDABBBCCCCCBBBCCCCCCCBCBCCCBBCBCBBBDABBBCCCCCBBBCCCCCCCBCBCCCBBCBCBBBDABBBCCCCCBBBCCCCCCCBCBCCCBBCBCBBBDABBBCCCCCBBBCCCCCCCBCBCCCBBCBCBBB21,4878"
           },
           {
             "uuid": "1BA97F29-D589-4AD3-8167-3EF48B0B047E",
             "name": "Volume Down",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBCBCCCCCCBCBBBB21,1776ABBBCCCCCBBBCCCCCBBCBCCCCCCBCBBBBDABBBCCCCCBBBCCCCCBBCBCCCCCCBCBBBBDABBBCCCCCBBBCCCCCBBCBCCCCCCBCBBBBDABBBCCCCCBBBCCCCCBBCBCCCCCCBCBBBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBBCBCCCCCCBCBBBB21,1776ABBBCCCCCBBBCCCCCBBCBCCCCCCBCBBBBDABBBCCCCCBBBCCCCCBBCBCCCCCCBCBBBBDABBBCCCCCBBBCCCCCBBCBCCCCCCBCBBBBDABBBCCCCCBBBCCCCCBBCBCCCCCCBCBBBB21,4878"
           },
           {
             "uuid": "90BE69FC-F140-4F2E-A8FD-4A234E5313E0",
             "name": "Menu",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCCBCBBCCCBCBCCBBB21,1776ABBBCCCCCBBBCCCCCCBCBBCCCBCBCCBBBDABBBCCCCCBBBCCCCCCBCBBCCCBCBCCBBBDABBBCCCCCBBBCCCCCCBCBBCCCBCBCCBBBDABBBCCCCCBBBCCCCCCBCBBCCCBCBCCBBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCCBCBBCCCBCBCCBBB21,1776ABBBCCCCCBBBCCCCCCBCBBCCCBCBCCBBBDABBBCCCCCBBBCCCCCCBCBBCCCBCBCCBBBDABBBCCCCCBBBCCCCCCBCBBCCCBCBCCBBBDABBBCCCCCBBBCCCCCCBCBBCCCBCBCCBBB21,4878"
           },
           {
             "uuid": "66B4EBBC-9797-4EA2-A5FA-10042451B66F",
             "name": "HDMI 2",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "172,172,21,64BB21,21CCCCBBBCCCCCCBBBBBCBBCCCCCBC21,1673"
+            "onOffPattern": "172,172,21,64BB21,21CCCCBBBCCCCCCBBBBBCBBCCCCCBC21,1673"
           },
           {
             "uuid": "0D4CBD46-E85E-44F9-B7DC-7A7D07D2E284",
             "name": "C-Yellow",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCBCBCCCCBCBCBBB21,1776ABBBCCCCCBBBCCCCCBCBCBCCCCBCBCBBBDABBBCCCCCBBBCCCCCBCBCBCCCCBCBCBBBDABBBCCCCCBBBCCCCCBCBCBCCCCBCBCBBBDABBBCCCCCBBBCCCCCBCBCBCCCCBCBCBBBDABBBCCCCCBBBCCCCCBCBCBCCCCBCBCBBBDABBBCCCCCBBBCCCCCBCBCBCCCCBCBCBBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCBCBCBCCCCBCBCBBB21,1776ABBBCCCCCBBBCCCCCBCBCBCCCCBCBCBBBDABBBCCCCCBBBCCCCCBCBCBCCCCBCBCBBBDABBBCCCCCBBBCCCCCBCBCBCCCCBCBCBBBDABBBCCCCCBBBCCCCCBCBCBCCCCBCBCBBBDABBBCCCCCBBBCCCCCBCBCBCCCCBCBCBBBDABBBCCCCCBBBCCCCCBCBCBCCCCBCBCBBB21,4878"
           },
           {
             "uuid": "D7077B0B-FEDB-46A7-BC42-3B047607DAF0",
             "name": "Three",
             "user": 0,
             "code-set.index": "Samsung/Samsung TV",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "171,171,21,64BB21,21CCCCBBBCCCCCCBBCCCCCBCCBBBBB21,1776ABBBCCCCCBBBCCCCCCBBCCCCCBCCBBBBBDABBBCCCCCBBBCCCCCCBBCCCCCBCCBBBBBDABBBCCCCCBBBCCCCCCBBCCCCCBCCBBBBBDABBBCCCCCBBBCCCCCCBBCCCCCBCCBBBBBDABBBCCCCCBBBCCCCCCBBCCCCCBCCBBBBB21,4878"
+            "onOffPattern": "171,171,21,64BB21,21CCCCBBBCCCCCCBBCCCCCBCCBBBBB21,1776ABBBCCCCCBBBCCCCCCBBCCCCCBCCBBBBBDABBBCCCCCBBBCCCCCCBBCCCCCBCCBBBBBDABBBCCCCCBBBCCCCCCBBCCCCCBCCBBBBBDABBBCCCCCBBBCCCCCCBBCCCCCBCCBBBBBDABBBCCCCCBBBCCCCCCBBCCCCCBCCBBBBB21,4878"
           }
         ],
         "devices": [
@@ -621,7 +621,7 @@ Manufacturer objects:
       "DB69F934-E193-4C45-9598-1D5155B8E6E5",
       "18A7C007-4DED-48D6-9A72-FA63640C49B5"
     ],
-    "code-sets": [
+    "codeSets": [
       {
         "uuid": "91E211D3-9A09-4147-B530-0F1CA200C6F7",
         "name": "AV Receiver",
@@ -633,748 +633,748 @@ Manufacturer objects:
             "name": "Triangle",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24B48,24CCBCBCBCCBCBCCBC48,457"
+            "onOffPattern": "96,24,24,24B48,24CCBCBCBCCBCBCCBC48,457"
           },
           {
             "uuid": "20BCD66A-FB7A-4C50-9A61-DF4D1508A1B2",
             "name": "1",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24BBBBBBB48,24BCCCBBCBBC24,601"
+            "onOffPattern": "96,24,24,24BBBBBBB48,24BCCCBBCBBC24,601"
           },
           {
             "uuid": "A5446C1B-B4F0-4EA7-A6F0-8CD2D5411572",
             "name": "X",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24,48,24CCCBCBCBCCBCBCCBC48,432"
+            "onOffPattern": "96,24,24,24,48,24CCCBCBCBCCBCBCCBC48,432"
           },
           {
             "uuid": "75CE6581-EFBE-40FC-8D2C-A908AE618A0F",
             "name": "GREEN",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24BBBB24,24CCBCBBBCCBCCB24,481"
+            "onOffPattern": "96,24,48,24BBBB24,24CCBCBBBCCBCCB24,481"
           },
           {
             "uuid": "5F6D5A79-6507-47F9-9A5C-85522A2F2B7A",
             "name": "Slow/Step Forward",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24,24,24CCCBBCBCBBBCCBCCB24,528"
+            "onOffPattern": "96,24,48,24,24,24CCCBBCBCBBBCCBCCB24,528"
           },
           {
             "uuid": "30215F2F-5CEE-4EFB-A2F8-5F203FCBB83A",
             "name": "2",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24,24,24CCCCCCBCBBBCCBCCB24,576"
+            "onOffPattern": "96,24,48,24,24,24CCCCCCBCBBBCCBCCB24,576"
           },
           {
             "uuid": "76D63C85-215B-4FC2-8762-F51B2F7324D3",
             "name": "9",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24BB48,24BBBBCBCCCBBCBBC24,577"
+            "onOffPattern": "96,24,24,24BB48,24BBBBCBCCCBBCBBC24,577"
           },
           {
             "uuid": "F73C3791-BFE8-4FF1-A57A-549524E1A7C7",
             "name": "Power",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,23,48,24,24,24BCBCCCCCCBBC24,800"
+            "onOffPattern": "96,23,48,24,24,24BCBCCCCCCBBC24,800"
           },
           {
             "uuid": "5B73D2A4-1104-4770-9BB5-D0505D97A01F",
             "name": "Scan Reverse",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24B24,24CBBCCBCBBBCCBCCB24,505"
+            "onOffPattern": "96,24,48,24B24,24CBBCCBCBBBCCBCCB24,505"
           },
           {
             "uuid": "664892B0-58BD-424C-B590-C8F8F0CC4A21",
             "name": "User Macro 11",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "91,23,46,22,23,23BBCBCCBCBBCBCBBCB46,433"
+            "onOffPattern": "91,23,46,22,23,23BBCBCCBCBBCBCBBCB46,433"
           },
           {
             "uuid": "70CB24FF-0298-4486-B97D-2AC78851F963",
             "name": "Angle",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24,24,24BCCBBCBCBBBCCBCCB24,504"
+            "onOffPattern": "96,24,48,24,24,24BCCBBCBCBBBCCBCCB24,504"
           },
           {
             "uuid": "5B1E6933-7ECE-44F1-AA2D-CBD2E9F91260",
             "name": "DVD",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 5,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24,24,24BBBBBCCCCBBC24,790ABCBBBBBCCCCBBCDABCBBBBBCCCCBBC24,4019"
+            "onOffPattern": "96,24,48,24,24,24BBBBBCCCCBBC24,790ABCBBBBBCCCCBBCDABCBBBBBCCCCBBC24,4019"
           },
           {
             "uuid": "C3AC2FA9-AD63-46C2-9853-399F8A8B40BA",
             "name": "MD/Tape",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 5,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24,24,24CBCBBCCCCBBC24,839ABCCBCBBCCCCBBCDABCCBCBBCCCCBBC24,4019"
+            "onOffPattern": "96,24,48,24,24,24CBCBBCCCCBBC24,839ABCCBCBBCCCCBBCDABCCBCBBCCCCBBC24,4019"
           },
           {
             "uuid": "BD4309B9-98EF-4D42-B6A7-D3B866E3678E",
             "name": "User Macro 5",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "91,23,46,22BB23,23CBCCBCBBCBCBBCB46,433"
+            "onOffPattern": "91,23,46,22BB23,23CBCCBCBBCBCBBCB46,433"
           },
           {
             "uuid": "32D7F284-DA9B-4239-84CB-00D326C548C1",
             "name": "Audio",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24B48,24BBCCBCBCCCBBCBBC24,528"
+            "onOffPattern": "96,24,24,24B48,24BBCCBCBCCCBBCBBC24,528"
           },
           {
             "uuid": "71E0B4F6-46FE-4316-8162-16F8670B1133",
             "name": "Return",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24,48,24CCBBBBCBCCCBBCBBC24,529"
+            "onOffPattern": "96,24,24,24,48,24CCBBBBCBCCCBBCBBC24,529"
           },
           {
             "uuid": "21A4D76D-5A7F-4BBF-8AA7-AC057985D34E",
             "name": "Video 1",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 5,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24,48,24BBBCBBBBBCCB24,888ABCBBBCBBBBBCCBDABCBBBCBBBBBCCB24,4019"
+            "onOffPattern": "96,24,24,24,48,24BBBCBBBBBCCB24,888ABCBBBCBBBBBCCBDABCBBBCBBBBBCCB24,4019"
           },
           {
             "uuid": "1F5ADCE8-7DD8-4207-904C-7F3C367E3B71",
             "name": "User Macro 10",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "91,23,23,23B46,22CBCBBCBCCBCBCCBC46,456"
+            "onOffPattern": "91,23,23,23B46,22CBCBBCBCCBCBCCBC46,456"
           },
           {
             "uuid": "55D0B025-D9B2-4A7D-AF41-54B1B9F99CB4",
             "name": "SA-CD/CD",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 5,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24,24,24BCCBCCCCCBBC24,863ABCBCCBCCCCCBBCDABCBCCBCCCCCBBC24,4019"
+            "onOffPattern": "96,24,48,24,24,24BCCBCCCCCBBC24,863ABCBCCBCCCCCBBCDABCBCCBCCCCCBBC24,4019"
           },
           {
             "uuid": "A8BAF01D-09B2-4B28-B4DD-CBABCCAA64BF",
             "name": "User Macro 4",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "91,23,23,23,46,22CBBCBBCBCCBCBCCBC46,456"
+            "onOffPattern": "91,23,23,23,46,22CBBCBBCBCCBCBCCBC46,456"
           },
           {
             "uuid": "DFAA1D4A-6560-4383-A8F9-1113D508E0A8",
             "name": "Circle",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24,24,24BBBCBCBCBBCBCBBCB48,433"
+            "onOffPattern": "96,24,48,24,24,24BBBCBCBCBBCBCBBCB48,433"
           },
           {
             "uuid": "04AA6F4A-CDC0-43FF-A125-0C15454E5611",
             "name": "User Macro 3",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "91,23,46,22,23,23BCCBCCBCBBCBCBBCB46,456"
+            "onOffPattern": "91,23,46,22,23,23BCCBCCBCBBCBCBBCB46,456"
           },
           {
             "uuid": "BD844B4B-1348-4D71-97B0-94AAA4797E17",
             "name": "Top Menu",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24,48,24BCCBBBCBCCCBBCBBC24,529"
+            "onOffPattern": "96,24,24,24,48,24BCCBBBCBCCCBBCBBC24,529"
           },
           {
             "uuid": "4B5533E7-6795-4FF7-A832-11E72AB148E6",
             "name": "User Macro 7",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "91,23,46,22,23,23CBCBCCBCBBCBCBBCB46,456"
+            "onOffPattern": "91,23,46,22,23,23CBCBCCBCBBCBCBBCB46,456"
           },
           {
             "uuid": "F41CA976-5F91-4484-A285-41538CD6C088",
             "name": "User Macro 8",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "91,23,23,23,46,22BCBCBBCBCCBCBCCBC46,456"
+            "onOffPattern": "91,23,23,23,46,22BCBCBBCBCCBCBCCBC46,456"
           },
           {
             "uuid": "66F18455-7397-4A49-808A-12034A90B00B",
             "name": "R3",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24,48,24BBCBCBCBCCBCBCCBC48,481"
+            "onOffPattern": "96,24,24,24,48,24BBCBCBCBCCBCBCCBC48,481"
           },
           {
             "uuid": "6FBA0AA8-2CB2-4F36-B0A5-F97A11EE0F43",
             "name": "Video 3",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 5,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24,48,24BBBBCBBBBCCB24,888ABCBBBBCBBBBCCBDABCBBBBCBBBBCCB24,4019"
+            "onOffPattern": "96,24,24,24,48,24BBBBCBBBBCCB24,888ABCBBBBCBBBBCCBDABCBBBBCBBBBCCB24,4019"
           },
           {
             "uuid": "4289E0A5-5863-4512-A997-1ABF36F93099",
             "name": "Discrete Off",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24,48,24CCBCBBCBCCBCBCCBC48,454"
+            "onOffPattern": "96,24,24,24,48,24CCBCBBCBCCBCBCCBC48,454"
           },
           {
             "uuid": "C6159640-9F17-40CD-B023-D345055A6B12",
             "name": "PS Key",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24,24,24BCBCCCBCBBCBCBBCB48,480"
+            "onOffPattern": "96,24,48,24,24,24BCBCCCBCBBCBCBBCB48,480"
           },
           {
             "uuid": "F366121D-5D8C-4C93-8A13-6972BF6C3157",
             "name": "Slow/Step Reverse",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24BBBB48,24CBCBCCCBBCBBC24,553"
+            "onOffPattern": "96,24,24,24BBBB48,24CBCBCCCBBCBBC24,553"
           },
           {
             "uuid": "7DD80762-2EFB-46E0-9FD4-14E3276C1BDF",
             "name": "TV/SAT",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 5,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24,48,24BCBCCBBBBCCB24,839ABCBCBCCBBBBCCBDABCBCBCCBBBBCCB24,4019"
+            "onOffPattern": "96,24,24,24,48,24BCBCCBBBBCCB24,839ABCBCBCCBBBBCCBDABCBCBCCBBBBCCB24,4019"
           },
           {
             "uuid": "F60A98AB-65A4-4E6D-823A-4E0BE379C40D",
             "name": "Square",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24BBBB24,24BCBCBBCBCBBCB48,409"
+            "onOffPattern": "96,24,48,24BBBB24,24BCBCBBCBCBBCB48,409"
           },
           {
             "uuid": "FA51AB19-8DB1-4C1C-AC53-2F13CA90BB14",
             "name": "Popup Menu",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24B24,24BBCCCBCBBBCCBCCB24,504"
+            "onOffPattern": "96,24,48,24B24,24BBCCCBCBBBCCBCCB24,504"
           },
           {
             "uuid": "33AD0B1A-C85A-4A63-8256-AD3B7E8E2C69",
             "name": "BLUE",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24B48,24CBCBBCBCCCBBCBBC24,529"
+            "onOffPattern": "96,24,24,24B48,24CBCBBCBCCCBBCBBC24,529"
           },
           {
             "uuid": "E7B33A58-27C4-4F02-82D2-E760DD3713B2",
             "name": "Start",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24B24,24CBCBCBCBBCBCBBCB48,456"
+            "onOffPattern": "96,24,48,24B24,24CBCBCBCBBCBCBBCB48,456"
           },
           {
             "uuid": "66C43B7F-C414-4165-B989-00411607ACE8",
             "name": "User Macro 9",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "91,23,46,22B23,23BCBCCBCBBCBCBBCB46,433"
+            "onOffPattern": "91,23,46,22B23,23BCBCCBCBBCBCBBCB46,433"
           },
           {
             "uuid": "D0F1D590-EA99-44D8-B0FF-8DB9BDD9FFFE",
             "name": "Eject",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24,48,24CBCBBBCBCCBCBCCBC48,485"
+            "onOffPattern": "96,24,24,24,48,24CBCBBBCBCCBCBCCBC48,485"
           },
           {
             "uuid": "3C63C16F-47F7-4257-ADA4-EEDDE68557A3",
             "name": "Volume Down",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 5,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24B24,24CBCCCCCCBBC24,863ABBCCBCCCCCCBBCDABBCCBCCCCCCBBC24,4019"
+            "onOffPattern": "96,24,48,24B24,24CBCCCCCCBBC24,863ABBCCBCCCCCCBBCDABBCCBCCCCCCBBC24,4019"
           },
           {
             "uuid": "3FDBE9F7-9524-4F2B-942A-E00EFAEA7178",
             "name": "8",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24BB24,24CCCCBCBBBCCBCCB24,528"
+            "onOffPattern": "96,24,48,24BB24,24CCCCBCBBBCCBCCB24,528"
           },
           {
             "uuid": "92448BF6-ED41-4A4D-8483-BDE0A8345992",
             "name": "L3",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24,24,24CCBCBCBCBBCBCBBCB48,481"
+            "onOffPattern": "96,24,48,24,24,24CCBCBCBCBBCBCBBCB48,481"
           },
           {
             "uuid": "5801ABFF-1EE3-46A7-B7BC-FC7170D2D5DF",
             "name": "Volume Up",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 5,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24,48,24BBCBBBBBBCCB24,888ABCBBCBBBBBBCCBDABCBBCBBBBBBCCB24,4019"
+            "onOffPattern": "96,24,24,24,48,24BBCBBBBBBCCB24,888ABCBBCBBBBBBCCBDABCBBCBBBBBBCCB24,4019"
           },
           {
             "uuid": "31ED29DD-72BC-464F-88D9-CABD1E63A22C",
             "name": "R1",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24B24,24BBCBCBCBBCBCBBCB48,433"
+            "onOffPattern": "96,24,48,24B24,24BBCBCBCBBCBCBBCB48,433"
           },
           {
             "uuid": "ADFA21CF-C8DB-469C-A675-8535596EC761",
             "name": "Discrete On",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24BBB24,24BCCBCBBCBCBBCB48,430"
+            "onOffPattern": "96,24,48,24BBB24,24BCCBCBBCBCBBCB48,430"
           },
           {
             "uuid": "76021CF4-6A89-4C10-B469-5F63ED122EB6",
             "name": "Select",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24BBB48,24BCBCBCCBCBCCBC48,505"
+            "onOffPattern": "96,24,24,24BBB48,24BCBCBCCBCBCCBC48,505"
           },
           {
             "uuid": "613BD908-2BFA-46E2-9114-A619126E2DB5",
             "name": "Subtitle",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24B24,24CCBBCBCBBBCCBCCB24,504"
+            "onOffPattern": "96,24,48,24B24,24CCBBCBCBBBCCBCCB24,504"
           },
           {
             "uuid": "8F2D09FE-1FA1-4015-9DA7-9CED7808980F",
             "name": "User Macro 2",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "91,23,23,23B46,22BBCBBCBCCBCBCCBC46,479"
+            "onOffPattern": "91,23,23,23B46,22BBCBBCBCCBCBCCBC46,479"
           },
           {
             "uuid": "B7AD58D2-AC17-4FE8-AAC2-B0DBE3410761",
             "name": "Enter",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24B24,24BCCCCBCBBBCCBCCB24,529"
+            "onOffPattern": "96,24,48,24B24,24BCCCCBCBBBCCBCCB24,529"
           },
           {
             "uuid": "781151F2-091F-491C-8279-3656F6086303",
             "name": "Mute",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 5,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24B48,24BCBBBBBBCCB24,888ABBCBCBBBBBBCCBDABBCBCBBBBBBCCB24,4019"
+            "onOffPattern": "96,24,24,24B48,24BCBBBBBBCCB24,888ABBCBCBBBBBBCCBDABBCBCBBBBBBCCB24,4019"
           },
           {
             "uuid": "946E1BA4-93B4-422D-AD3E-2B4EB7409EB9",
             "name": "Video 2",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 5,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24,48,24CCCBBBBBBCCB24,839ABCCCCBBBBBBCCBDABCCCCBBBBBBCCB24,4019"
+            "onOffPattern": "96,24,24,24,48,24CCCBBBBBBCCB24,839ABCCCCBBBBBBCCBDABCCCCBBBBBBCCB24,4019"
           },
           {
             "uuid": "28A2756E-9E77-41EE-AB67-2852005BD890",
             "name": "Clear",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24BBB24,24CCCBCBBBCCBCCB24,505"
+            "onOffPattern": "96,24,48,24BBB24,24CCCBCBBBCCBCCB24,505"
           },
           {
             "uuid": "01DDA9B3-09A1-4C7B-B3E1-D66952D0B0B6",
             "name": "User Macro 6",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "91,23,23,23BB46,22BCBBCBCCBCBCCBC46,479"
+            "onOffPattern": "91,23,23,23BB46,22BCBBCBCCBCBCCBC46,479"
           },
           {
             "uuid": "C052F2E5-6A96-4092-A234-E91BA592BF1C",
             "name": "3",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24,48,24BBBBBBCBCCCBBCBBC24,577"
+            "onOffPattern": "96,24,24,24,48,24BBBBBBCBCCCBBCBBC24,577"
           },
           {
             "uuid": "5278FEFE-C6BF-4A00-ABFE-302F0A185578",
             "name": "Display",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24B48,24BCBCBCBCCCBBCBBC24,529"
+            "onOffPattern": "96,24,24,24B48,24BCBCBCBCCCBBCBBC24,529"
           },
           {
             "uuid": "9352167D-3397-415F-8B95-CC3822F4AADF",
             "name": "L1",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24BBBB24,24CCBCBBBCCBCCB24,481"
+            "onOffPattern": "96,24,48,24BBBB24,24CCBCBBBCCBCCB24,481"
           },
           {
             "uuid": "9E26DCA7-FD0C-4CE3-8A9A-E242430F12F7",
             "name": "5",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24B48,24BBBBBCBCCCBBCBBC24,576"
+            "onOffPattern": "96,24,24,24B48,24BBBBBCBCCCBBCBBC24,576"
           },
           {
             "uuid": "F1E91D47-4F81-4B36-AD6A-08DCFFB1E835",
             "name": "Previous",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24BBB48,24CBBCBCCCBBCBBC24,553"
+            "onOffPattern": "96,24,24,24BBB48,24CBBCBCCCBBCBBC24,553"
           },
           {
             "uuid": "DBDD2AEE-3D7C-400C-8C02-23A1854F33C8",
             "name": "RED",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24,24,24BCBBCCBCBBBCCBCCB24,505"
+            "onOffPattern": "96,24,48,24,24,24BCBBCCBCBBBCCBCCB24,505"
           },
           {
             "uuid": "3D768842-ADB7-4545-8FBC-EC94341B9CB1",
             "name": "4",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24B24,24CCCCCBCBBBCCBCCB24,553"
+            "onOffPattern": "96,24,48,24B24,24CCCCCBCBBBCCBCCB24,553"
           },
           {
             "uuid": "EE1806E0-3EA5-4976-9F7C-D80951150A05",
             "name": "6",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24,24,24BCCCCCBCBBBCCBCCB24,553"
+            "onOffPattern": "96,24,48,24,24,24BCCCCCBCBBBCCBCCB24,553"
           },
           {
             "uuid": "3B5CF8B9-1ACC-4F4C-827C-641863D6E498",
             "name": "Source",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 5,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24B24,24BBBBBCCBBBB24,717ABBCBBBBBCCBBBBDABBCBBBBBCCBBBB24,4019"
+            "onOffPattern": "96,24,48,24B24,24BBBBBCCBBBB24,717ABBCBBBBBCCBBBBDABBCBBBBBCCBBBB24,4019"
           },
           {
             "uuid": "38D61765-DD14-44A8-AC7B-3F2EF714A808",
             "name": "Scan Forward",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24B48,24BCCBBCBCCCBBCBBC24,528"
+            "onOffPattern": "96,24,24,24B48,24BCCBBCBCCCBBCBBC24,528"
           },
           {
             "uuid": "90C66F8E-FFA3-4DC8-9057-66230258B43C",
             "name": "7",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24,48,24CBBBBBCBCCCBBCBBC24,553"
+            "onOffPattern": "96,24,24,24,48,24CBBBBBCBCCCBBCBBC24,553"
           },
           {
             "uuid": "1DAD7ABA-E4FF-4EB8-845E-9FFB79392B2A",
             "name": "L2",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24BB48,24CBCBCBCCBCBCCBC48,480"
+            "onOffPattern": "96,24,24,24BB48,24CBCBCBCCBCBCCBC48,480"
           },
           {
             "uuid": "E90E0D51-E087-42DC-853F-EFF79275D728",
             "name": "0",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24,24,24CBCCCCBCBBBCCBCCB24,553"
+            "onOffPattern": "96,24,48,24,24,24CBCCCCBCBBBCCBCCB24,553"
           },
           {
             "uuid": "A2AF60BA-EBE5-4F19-B50C-6E78C7331D75",
             "name": "R2",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,48,24,24,24CBBCBCBCBBCBCBBCB48,456"
+            "onOffPattern": "96,24,48,24,24,24CBBCBCBCBBCBCBBCB48,456"
           },
           {
             "uuid": "66EFFF15-A1CA-40B7-A8C7-5FA9420AF8E7",
             "name": "YELLOW",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24,48,24BCBCBBCBCCCBBCBBC24,529"
+            "onOffPattern": "96,24,24,24,48,24BCBCBBCBCCCBBCBBC24,529"
           },
           {
             "uuid": "C181FC60-76F8-4F4B-974C-A8B54281A61A",
             "name": "User Macro 1",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "91,23,46,22B23,23CCBCCBCBBCBCBBCB46,456"
+            "onOffPattern": "91,23,46,22B23,23CCBCCBCBBCBCBBCB46,456"
           },
           {
             "uuid": "07440D25-F111-419A-A4DE-96974979FA25",
             "name": "Time",
             "user": 0,
             "code-set.index": "Sony/AV Receiver",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24,24,24BB48,24BCBBCBCCCBBCBBC24,552"
+            "onOffPattern": "96,24,24,24BB48,24BCBBCBCCCBBCBBC24,552"
           }
         ]
       },
@@ -1389,528 +1389,528 @@ Manufacturer objects:
             "name": "Vol Down",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "5A7ABF47-9C42-4DDE-BDC3-5F9600DE4B66",
             "name": "Skip Back - Channel/Track Lower",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "3BE12FED-434F-43E1-A171-1D2C33E2F40B",
             "name": "Color Up",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "BD4E7178-5061-4374-92E4-71384C36078B",
             "name": "Text Off",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "C73340AB-8870-4824-A97B-C00C23069FF5",
             "name": "2",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "852B7B33-BFB5-4EE5-82C9-6B21DF220107",
             "name": "20+",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "93955CF7-971E-4F64-B190-C9B1836F39C0",
             "name": "3",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "D1EA3DCB-68F8-4ED0-B80A-50D3C60FDAE2",
             "name": "Sound Scroll",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "086C0F76-6B01-4498-A2D6-700B4B73CDEF",
             "name": "8",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "EF43C7EA-59C9-4B96-9BA3-CB81B108A9FA",
             "name": "Hold",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "77FDBABF-C51A-45E5-8826-895E851653CC",
             "name": "Preset Down",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "DEF66141-1A7E-441F-B856-2D09036EF159",
             "name": "Skip Fwd - Channel/Track Greater",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "8F7E7666-4B8D-4973-B68D-F3AF78285DD8",
             "name": "Mute",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "1C603BD6-51BA-4841-BA2A-CAE2CC6475D3",
             "name": "Brightness Up",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "8432673B-7990-4539-B219-B4FD5F7E8006",
             "name": "Step Down",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "2F8BC628-EF68-4331-A284-2DC26569AE07",
             "name": "Off",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "F7161EB7-17B0-4429-BE9B-FF00385F466D",
             "name": "External 3",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "4753EEC4-2211-4778-B9C4-20BC162E46D0",
             "name": "9",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "79E06020-6B18-4511-8030-3C595BA47970",
             "name": "Expand",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "976515D8-198B-429A-BDCE-7A00EA3C126B",
             "name": "Contrast Down",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "41503BF0-6FCB-4D0B-9098-E58A6E09777F",
             "name": "7",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "5216CF2C-D225-4598-AB64-D4341194C118",
             "name": "On",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "BE6FF2D5-576C-4643-8011-B19183DDDA13",
             "name": "Page Up",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "D7544D62-2A2A-454A-935E-7F9A43B24B05",
             "name": "New Track",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "B525F32F-872E-4746-AB55-4319388985EA",
             "name": "RF",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "775215CD-AE0C-429A-94AE-49FCF23D632A",
             "name": "Mode",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "A3F3F071-A9AE-48BA-A002-D937C252A9A3",
             "name": "Vol Up",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "8A59D2CB-6AB3-4B3E-B437-EEB8E2DF5988",
             "name": "Color Down",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "C46F714D-2D92-4835-A4CA-73A2D1541D7D",
             "name": "AV",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "84461E90-9B64-45DA-967B-CA1427F29CDE",
             "name": "Display",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "23223938-F702-4F59-8F72-179FF4BFBAA2",
             "name": "5",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "253F29FA-3C2D-4A63-AC54-4EF3DEF06D68",
             "name": "1",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "F4A281D5-8577-4996-85B3-16D56C2A2DB4",
             "name": "Brightness Down",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "DA109447-CE6A-4BD5-8E61-3E85B996237A",
             "name": "4",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "96F2D712-5099-4A00-AF0E-3777D1D8555F",
             "name": "-/--/---",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "D3E5E38A-B2DA-4F58-AF2B-468B79463819",
             "name": "Contrast Up",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "36E1635B-577D-4D28-9C8F-9BA89DD21522",
             "name": "Video+/Showview",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "2234F48A-A676-433E-8444-6CB215A9AFA8",
             "name": "Go To",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "F3D77E9D-BDF2-4FA6-9447-ADDCB69B9AF3",
             "name": "External 1",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "40B96E7E-FAF9-4EA1-8A57-AD96348ABEE3",
             "name": "0",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "64E6F4CA-BF3F-4B67-8CE8-5DE8FB53F66C",
             "name": "Text",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "6128F31A-8A05-4C98-AECE-DFC99ED3249B",
             "name": "PAP",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "B93F807D-2979-4650-8BB7-5A2E98280736",
             "name": "External 2",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "F6EA3A74-8084-4BA6-9F04-152296CE638D",
             "name": "Enter/Go",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "DCDA3A29-A505-4C53-A2CB-55F56DAB7F7A",
             "name": "Video Mute",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "1A7F548A-3647-4556-8079-A96564A659C7",
             "name": "6",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "8DF2AE63-871D-4136-A4F8-45AADB3DF562",
             "name": "Time Page",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "678E77A7-43FE-4EFF-B7B0-767F0DB833FA",
             "name": "Input Select",
             "user": 0,
             "code-set.index": "Sony/0037",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           }
         ]
       },
@@ -1925,495 +1925,495 @@ Manufacturer objects:
             "name": "Back / Prior Menu",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "7E7AEB37-0E0C-4CDA-BF1D-86B5D05F6270",
             "name": "Last Play",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "55DBB283-1940-497C-9CB7-7FA77F3F2CCC",
             "name": "Eject Disk",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "1A747446-9833-40E7-839F-93E2CC23EC73",
             "name": "On",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "62B07C15-2EB2-43F1-95E1-59D9AF15E372",
             "name": "Disc Menu",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "F13EBBF0-F6F9-447C-AA44-1167A30D026E",
             "name": "2",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "18307B24-622D-4206-B8F3-FEAE287BE6ED",
             "name": "Shuffle One",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "49620807-4E7B-4EBF-BAD0-E4DA859D72AA",
             "name": "0",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "C07802F0-AB07-4F54-BA23-85C27A27ACD9",
             "name": "9",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "0DD9281C-01EB-4258-A89E-F25D81BBE06F",
             "name": "Tracking Down",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "7DC31C0C-0E9F-4CEB-B05D-D09F7DEFE668",
             "name": "Next Speaker",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "6B8D8DFC-71A0-4A6B-AAB7-3A340454F827",
             "name": "Slow Scan Back",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "36C1BA97-1F69-447B-B51D-89BF11FA1CF6",
             "name": "Repeat",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "5BD415C8-5D86-4D0A-9E7C-57FCDE73F658",
             "name": "4",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "1AAF2110-61DE-4C45-8EA3-1B057B4FDA32",
             "name": "Play",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "A80EE673-8812-4926-A857-6040D703267F",
             "name": "Angle",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "4A807C8B-ED66-4FB3-A088-115BB3D4982F",
             "name": "Pause",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "DE3138BD-67FC-4A24-BDEF-420F115E8629",
             "name": "7",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "6CF4F761-B008-4DF3-A51C-D3F5F2A9D785",
             "name": "Move Right",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "07E5B1A1-505F-4A37-A7F3-816C464C1D60",
             "name": "1",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "AEB5FB9E-55EB-4F56-BD49-A839C6C62B40",
             "name": "Memory",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "31193033-9529-479C-BC4D-349E470C7284",
             "name": "5",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "BE2B87F6-CC0C-45FD-8289-2BC7AFEF2A46",
             "name": "Stop",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "802F162C-5216-4319-AB22-1607E97E9629",
             "name": "Subtitle",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "F6F4B96E-A215-4897-B5FC-CFAAAD20329D",
             "name": "8",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "CE9E7C44-C4BE-4AB7-AE87-D3998950B0D0",
             "name": "Repeat All",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "E0A128EC-D68B-4FEE-8E87-139B114580B1",
             "name": "Previous Program",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "C291A6B0-BB5E-4E22-93DD-484CA72A84E9",
             "name": "Off",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "D1B11188-1E3E-4329-9A57-BCE98001BDFC",
             "name": "Scan Fwd/Fast Fwd",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "01AA502E-E65C-45E0-967F-0B3D189F2206",
             "name": "Size",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "87A8BDC9-C95F-443F-BA63-39C5D638294B",
             "name": "Move Left",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "1C07BEC8-58F8-47DA-A751-8F5ACA377944",
             "name": "Move Up",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "3BCD60DD-0F28-41BC-8B3D-F55628E904AF",
             "name": "Scan Back/Rewind",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "EDD9EDBD-6137-4CA8-8ED5-D657275B8CD8",
             "name": "Skip Fwd - Channel/Track Greater",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "F9667673-18B8-46DB-A445-DB44C115F63E",
             "name": "Move Down",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "63507D80-032B-4B75-805C-05334CCE66F4",
             "name": "PTY",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "422E64C4-07B5-4A15-BEB0-F4BB72D9BDA2",
             "name": "Display",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "DD94D7D7-38F9-4A91-AF0C-CE15DC8D3C2F",
             "name": "3",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "94A5ADB3-B908-4187-B5D7-8014A2DE1FAB",
             "name": "6",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "ED170BC5-F337-44DC-B28A-6FA8B24E2B11",
             "name": "Audio",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "0640C99F-C7B6-45A5-954F-1676F0DDD8CB",
             "name": "Store",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "A4523762-715C-4BF0-B8A5-EA0A8631CCE4",
             "name": "Slow Scan Forward",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "3933045F-85C2-4DC3-8119-8A7E561ED7DA",
             "name": "Skip Back - Channel/Track Lower",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "4B154D7D-D07C-4FE5-AD61-7DD9577A3E3B",
             "name": "Still",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           },
           {
             "uuid": "4D5A7731-F3AA-475C-BFCE-9697518117CB",
             "name": "Enter/Go",
             "user": 0,
             "code-set.index": "Sony/0560",
-            "sets-device-input": 0,
-            "repeat-count": 1,
+            "setsDevice-input": 0,
+            "repeatCount": 1,
             "offset": 1,
             "frequency": 40000,
-            "on-off-pattern": "96,24"
+            "onOffPattern": "96,24"
           }
         ]
       }

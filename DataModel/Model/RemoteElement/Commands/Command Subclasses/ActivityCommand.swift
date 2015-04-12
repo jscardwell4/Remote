@@ -15,18 +15,14 @@ public final class ActivityCommand: Command {
 
   @NSManaged public var activity: Activity?
 
+  override public var indicator: Bool { return true }
+
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
+    var obj = ObjectJSONValue(super.jsonValue)!
 
-    dict["class"] = "activity".jsonValue
-    dict["activity.uuid"] = JSONValue(activity?.uuid)
-    return .Object(dict)
-  }
-
-  /** awakeFromInsert */
-  override public func awakeFromInsert() {
-    super.awakeFromInsert()
-    indicator = true
+    obj["class"] = "activity".jsonValue
+    obj["activity.uuid"] = activity?.uuid.jsonValue
+    return obj.jsonValue
   }
 
   /**

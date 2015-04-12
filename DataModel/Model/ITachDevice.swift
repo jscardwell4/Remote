@@ -83,13 +83,13 @@ public class ITachDevice: NetworkDevice {
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let pcbPN     = String(data["pcb-pn"]) { self.pcbPN = pcbPN }
-    if let pkgLevel  = String(data["pkg-level"]) { self.pkgLevel = pkgLevel }
-    if let sdkClass  = String(data["sdk-class"]) { self.sdkClass = sdkClass }
+    if let pcbPN     = String(data["pcbPN"]) { self.pcbPN = pcbPN }
+    if let pkgLevel  = String(data["pkgLevel"]) { self.pkgLevel = pkgLevel }
+    if let sdkClass  = String(data["sdkClass"]) { self.sdkClass = sdkClass }
     if let make      = String(data["make"]) { self.make = make }
     if let model     = String(data["model"]) { self.model = model }
     if let status    = String(data["status"]) { self.status = status }
-    if let configURL = String(data["config-url"]) { self.configURL = configURL }
+    if let configURL = String(data["configURL"]) { self.configURL = configURL }
     if let revision  = String(data["revision"]) { self.revision = revision }
   }
 
@@ -102,17 +102,17 @@ public class ITachDevice: NetworkDevice {
 
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
-    dict["type"] = "itach"
-    appendValueForKey("pcbPN", toDictionary: &dict)
-    appendValueForKey("pkgLevel", toDictionary: &dict)
-    appendValueForKey("sdkClass", toDictionary: &dict)
-    appendValueForKey("make", toDictionary: &dict)
-    appendValueForKey("model", toDictionary: &dict)
-    appendValueForKey("status", toDictionary: &dict)
-    appendValueForKey("configURL", toDictionary: &dict)
-    appendValueForKey("revision", toDictionary: &dict)
-    return .Object(dict)
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["type"] = "itach"
+    obj["pcbPN"] = pcbPN.jsonValue
+    obj["pkgLevel"] = pkgLevel.jsonValue
+    obj["sdkClass"] = sdkClass.jsonValue
+    obj["make"] = make.jsonValue
+    obj["model"] = model.jsonValue
+    obj["status"] = status.jsonValue
+    obj["configURL"] = configURL.jsonValue
+    obj["revision"] = revision.jsonValue
+    return obj.jsonValue
   }
 
 }

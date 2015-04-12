@@ -1,5 +1,5 @@
 [
-  <@include Manufacturer_Dish.json>/*,
+  <@include Manufacturer_Dish.json>,
   <@include Manufacturer_Sony.json>,
-  <@include Manufacturer_Samsung.json>*/
+  <@include Manufacturer_Samsung.json>
 ]

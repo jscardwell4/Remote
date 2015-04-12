@@ -24,20 +24,7 @@ public class Command: NamedModelObject {
   /** Simple enumeration for specifying execution behavior. */
   public enum Option { case Default, LongPress }
 
-  @NSManaged var primitiveIndicator: NSNumber
-  public var indicator: Bool {
-    get {
-      willAccessValueForKey("indicator")
-      let indicator = primitiveIndicator
-      didAccessValueForKey("indicator")
-      return indicator.boolValue
-    }
-    set {
-      willChangeValueForKey("indicator")
-      primitiveIndicator = newValue
-      didChangeValueForKey("indicator")
-    }
-  }
+  public var indicator: Bool { return false }
 
   /**
   execute:error:

@@ -291,7 +291,7 @@ public final class ButtonGroup: RemoteElement {
 
       if let autohide = Bool(data["autohide"]) { self.autohide = autohide }
 
-      if let commandSetData = ObjectJSONValue(data["command-set"]) {
+      if let commandSetData = ObjectJSONValue(data["commandSet"]) {
         for (mode, jsonValue) in commandSetData {
           if let values = ObjectJSONValue(jsonValue),
             commandSet = CommandSet.importObjectWithData(values, context: moc)
@@ -301,7 +301,7 @@ public final class ButtonGroup: RemoteElement {
         }
       }
 
-      else if let collectionData = ObjectJSONValue(data["command-set-collection"]) {
+      else if let collectionData = ObjectJSONValue(data["commandSet-collection"]) {
         for (mode, jsonValue) in collectionData {
           if let values = ObjectJSONValue(jsonValue),
             commandSetCollection = CommandSetCollection.importObjectWithData(values, context: moc)
@@ -311,9 +311,9 @@ public final class ButtonGroup: RemoteElement {
         }
       }
 
-      labelConstraints = String(data["label-constraints"])
+      labelConstraints = String(data["labelConstraints"])
 
-      if let labelAttributesData = ObjectJSONValue(data["label-attributes"]) {
+      if let labelAttributesData = ObjectJSONValue(data["labelAttributes"]) {
         // FIXME: Need to be able to obtain AnyObject compatible collection for storage
 //        labelAttributes.dictionary = labelAttributesData
       }
@@ -323,7 +323,7 @@ public final class ButtonGroup: RemoteElement {
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
+    var obj = ObjectJSONValue(super.jsonValue)!
 
     var commandSets           : JSONValue.ObjectValue = [:]
     var commandSetCollections : JSONValue.ObjectValue = [:]
@@ -339,12 +339,12 @@ public final class ButtonGroup: RemoteElement {
       if let label = labelForMode(mode) { labels[mode] = JSONValue(label) }
     }
 
-    if commandSetCollections.count > 0 { dict["command-set-collection"] = .Object(commandSetCollections) }
-    if commandSets.count > 0 { dict["command-set"] = .Object(commandSets) }
-    if labels.count > 0 { dict["label"] = .Object(labels) }
-    if let constraints = labelConstraints { dict["label-constraints"] = constraints.jsonValue }
-    if !labelAttributes.dictionary.isEmpty { dict["label-attributes"] = labelAttributes.jsonValue }
-    return .Object(dict)
+    if commandSetCollections.count > 0 { obj["commandSet-collection"] = .Object(commandSetCollections) }
+    if commandSets.count > 0 { obj["commandSet"] = .Object(commandSets) }
+    if labels.count > 0 { obj["label"] = .Object(labels) }
+    if let constraints = labelConstraints { obj["labelConstraints"] = constraints.jsonValue }
+    if !labelAttributes.dictionary.isEmpty { obj["labelAttributes"] = labelAttributes.jsonValue }
+    return obj.jsonValue
   }
 
 }

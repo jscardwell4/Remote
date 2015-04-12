@@ -1,6 +1,6 @@
 {
   "name": "Home",
-  "base-type": "button",
+  "baseType": "button",
   "role": "toolbar",
   "command": {
     "class": "system",
@@ -23,7 +23,7 @@
 },
 {
   "name": "Settings",
-  "base-type": "button",
+  "baseType": "button",
   "role": "toolbar",
   "command": {
     "class": "system",
@@ -46,7 +46,7 @@
 },
 {
   "name": "Edit",
-  "base-type": "button",
+  "baseType": "button",
   "role": "toolbar",
   "command": {
     "class": "system",
@@ -69,7 +69,7 @@
 },
 {
   "name": "Battery Status",
-  "base-type": "button",
+  "baseType": "button",
   "role": "battery-status",
   "icons": {
     "normal": {
@@ -92,7 +92,7 @@
 },
 {
   "name": "Connection Status",
-  "base-type": "button",
+  "baseType": "button",
   "role": "connection-status",
   "icons": {
     "normal": {

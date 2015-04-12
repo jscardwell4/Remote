@@ -38,9 +38,7 @@ public final class JSONStorage: ModelObject, ModelStorage {
   }
 
   override public var jsonValue: JSONValue {
-    if let superValue = ObjectJSONValue(super.jsonValue) {
-      return .Object(superValue.value + dictionary)
-    } else { return .Null }
+    return (ObjectJSONValue(super.jsonValue)! + ObjectJSONValue(dictionary)).jsonValue
   }
 }
 

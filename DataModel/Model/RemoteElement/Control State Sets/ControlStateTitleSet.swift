@@ -118,11 +118,11 @@ public final class ControlStateTitleSet: ControlStateSet {
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
+    var obj = ObjectJSONValue(super.jsonValue)!
     UIControlState.enumerate {
-      if let attributes = self.titleAttributesForState($0) { dict[$0.jsonValue.value as! String] = attributes.jsonValue }
+      if let attributes = self.titleAttributesForState($0) { obj[$0.jsonValue.value as! String] = attributes.jsonValue }
     }
-    return .Object(dict)
+    return obj.jsonValue
   }
 
 }

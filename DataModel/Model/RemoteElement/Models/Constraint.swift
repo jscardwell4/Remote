@@ -368,19 +368,19 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
-    dict["tag"] = tag.jsonValue
-    dict["identifier"] = identifier?.jsonValue
-    dict["first-attribute"] = NSLayoutConstraint.pseudoNameForAttribute(firstAttribute).jsonValue
-    dict["second-attribute"] = NSLayoutConstraint.pseudoNameForAttribute(secondAttribute).jsonValue
-    dict["relation"] = NSLayoutConstraint.pseudoNameForRelation(relation).jsonValue
-    dict["multiplier"] = multiplier.jsonValue
-    dict["constant"] = constant.jsonValue
-    dict["priority"] = priority.jsonValue
-    dict["first-item.uuid"] = firstItem.uuid.jsonValue
-    dict["second-item.uuid"] = secondItem?.uuid.jsonValue
-    dict["owner.uuid"] = owner?.uuid.jsonValue
-    return .Object(dict)
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["tag"] = tag.jsonValue
+    obj["identifier"] = identifier?.jsonValue
+    obj["firstAttribute"] = NSLayoutConstraint.pseudoNameForAttribute(firstAttribute).jsonValue
+    obj["secondAttribute"] = NSLayoutConstraint.pseudoNameForAttribute(secondAttribute).jsonValue
+    obj["relation"] = NSLayoutConstraint.pseudoNameForRelation(relation).jsonValue
+    obj["multiplier"] = multiplier.jsonValue
+    obj["constant"] = constant.jsonValue
+    obj["priority"] = priority.jsonValue
+    obj["first-item.uuid"] = firstItem.uuid.jsonValue
+    obj["second-item.uuid"] = secondItem?.uuid.jsonValue
+    obj["owner.uuid"] = owner?.uuid.jsonValue
+    return obj.jsonValue
   }
 
 }

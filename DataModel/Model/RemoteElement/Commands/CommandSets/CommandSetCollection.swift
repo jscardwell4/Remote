@@ -93,10 +93,10 @@ public final class CommandSetCollection: CommandContainer {
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
+    var obj = ObjectJSONValue(super.jsonValue)!
 
     // TODO: fill in stub
-    return .Object(dict)
+    return obj.jsonValue
   }
 
 

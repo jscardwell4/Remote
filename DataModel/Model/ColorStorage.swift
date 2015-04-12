@@ -33,11 +33,7 @@ public final class ColorStorage: ModelObject, ModelStorage {
   }
 
   override public var jsonValue: JSONValue {
-    if let superValue = ObjectJSONValue(super.jsonValue),
-      value = ObjectJSONValue(JSONValue(dictionary))
-    {
-      return .Object(superValue.value + value.value)
-    } else { return .Null }
+    return (ObjectJSONValue(super.jsonValue)! + ObjectJSONValue(dictionary)).jsonValue
   }
 
 }

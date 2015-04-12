@@ -14,8 +14,7 @@ import MoonKit
 public final class ImageView: ModelObject {
 
   @NSManaged public var color: UIColor?
-  @NSManaged public var image: Image
-  @NSManaged public var imagePath: String
+  @NSManaged public var image: Image?
 
   @NSManaged public var buttonIcon: Button?
   @NSManaged public var buttonImage: Button?
@@ -29,7 +28,7 @@ public final class ImageView: ModelObject {
   @NSManaged public var imageSetSelectedHighlightedDisabled: ControlStateImageSet?
 
 
-  public var rawImage: UIImage? { return image.image }
+  public var rawImage: UIImage? { return image?.image }
 
   public var colorImage: UIImage? {
     if let img = rawImage {
@@ -49,17 +48,14 @@ public final class ImageView: ModelObject {
     super.updateWithData(data)
 
     updateRelationshipFromData(data, forAttribute: "image")
-    if let imagePath = String(data["path"]) { self.imagePath = imagePath }
     if let color = UIColor(data["color"]) { self.color = color }
 
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
-
-    dict["path"] = imagePath.jsonValue
-    if let color = self.color { dict["color"] = color.jsonValue }
-    return .Object(dict)
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["color"] = color?.jsonValue
+    return obj.jsonValue
   }
 
 

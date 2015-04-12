@@ -43,14 +43,14 @@ public final class ControlStateImageSet: ControlStateSet {
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
+    var obj = ObjectJSONValue(super.jsonValue)!
 
     UIControlState.enumerate {
       if let imageView = self[$0.rawValue] as? ImageView {
-        dict[String($0.jsonValue)!] = imageView.jsonValue
+        obj[String($0.jsonValue)!] = imageView.jsonValue
       }
     }
-    return .Object(dict)
+    return obj.jsonValue
   }
 
 

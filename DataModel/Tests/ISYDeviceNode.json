@@ -5,10 +5,10 @@
   "type": "1.58.193.0",
   "enabled": true,
   "pnode": "20 12 40 1",
-  "property-id": "ST",
-  "property-value": 255,
-  "property-uom": "%/on/off",
-  "property-formatted": "On",
+  "propertyID": "ST",
+  "propertyValue": 255,
+  "propertyUOM": "%/on/off",
+  "propertyFormatted": "On",
   "device.uuid": "6BAD3045-DC09-4D29-AEF3-4063D3590BDD",
   "groups": [
     "CD2361AC-84C2-48D6-A0B4-9A0CB7B3A8D0"

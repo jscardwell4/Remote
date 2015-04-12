@@ -490,9 +490,9 @@ extension NSUnderlineStyle: JSONValueInitializable {
       case "double":        self = .StyleDouble
       case "dot":           self = .PatternDot
       case "dash":          self = .PatternDash
-      case "dash-dot":      self = .PatternDashDot
-      case "dash-dot-dot":  self = .PatternDashDotDot
-      case "by-word":       self = .ByWord
+      case "dashDot":      self = .PatternDashDot
+      case "dashDot-dot":  self = .PatternDashDotDot
+      case "byWord":       self = .ByWord
       default:              self = .StyleNone
       }
     } else { return nil }
@@ -526,11 +526,11 @@ extension NSLineBreakMode: JSONValueInitializable {
   public init?(_ jsonValue: JSONValue?) {
     if let string = String(jsonValue) {
       switch string {
-      case "character-wrap":  self = .ByCharWrapping
+      case "characterWrap":  self = .ByCharWrapping
       case "clip":            self = .ByClipping
-      case "truncate-head":   self = .ByTruncatingHead
-      case "truncate-tail":   self = .ByTruncatingTail
-      case "truncate-middle": self = .ByTruncatingMiddle
+      case "truncateHead":   self = .ByTruncatingHead
+      case "truncateTail":   self = .ByTruncatingTail
+      case "truncateMiddle": self = .ByTruncatingMiddle
       default:                self = .ByWordWrapping
       }
     } else { return nil }
@@ -578,9 +578,9 @@ extension NSTextAlignment: EnumerableType {
 
 extension NSShadow: JSONValueConvertible {
   public var jsonValue: JSONValue {
-    var dict: JSONValue.ObjectValue = ["offset": shadowOffset.jsonValue, "radius": shadowBlurRadius.jsonValue]
-    if shadowColor != nil { dict["color"] = (shadowColor as! UIColor).jsonValue }
-    return .Object(dict)
+    var obj = ObjectJSONValue(["offset": shadowOffset.jsonValue, "radius": shadowBlurRadius.jsonValue])
+    if shadowColor != nil { obj["color"] = (shadowColor as! UIColor).jsonValue }
+    return obj.jsonValue
   }
 }
 
@@ -610,7 +610,7 @@ extension TitleAttributes.IconTextOrderSpecification: JSONValueInitializable {
   public init?(_ jsonValue: JSONValue?) {
     if let string = String(jsonValue) {
       switch string {
-      case "text-icon": self = .TextIcon
+      case "textIcon": self = .TextIcon
       default:          self = .IconText
       }
     } else { return nil }
@@ -627,37 +627,37 @@ extension TitleAttributes.IconTextOrderSpecification: EnumerableType {
 extension TitleAttributes {
   public enum PropertyKey: String {
     case Text                   = "text"
-    case IconName               = "icon-name"
+    case IconName               = "iconName"
     case Font                   = "font"
-    case ForegroundColor        = "foreground-color"
-    case BackgroundColor        = "background-color"
+    case ForegroundColor        = "foregroundColor"
+    case BackgroundColor        = "backgroundColor"
     case Ligature               = "ligature"
     case Shadow                 = "shadow"
     case Expansion              = "expansion"
     case Obliqueness            = "obliqueness"
-    case StrikethroughColor     = "strikethrough-color"
-    case UnderlineColor         = "underline-color"
-    case BaselineOffset         = "baseline-offset"
-    case TextEffect             = "text-effect"
-    case StrokeWidth            = "stroke-width"
-    case StrokeFill             = "stroke-fill"
-    case StrokeColor            = "stroke-color"
-    case UnderlineStyle         = "underline-style"
-    case StrikethroughStyle     = "strikethrough-style"
+    case StrikethroughColor     = "strikethroughColor"
+    case UnderlineColor         = "underlineColor"
+    case BaselineOffset         = "baselineOffset"
+    case TextEffect             = "textEffect"
+    case StrokeWidth            = "strokeWidth"
+    case StrokeFill             = "strokeFill"
+    case StrokeColor            = "strokeColor"
+    case UnderlineStyle         = "underlineStyle"
+    case StrikethroughStyle     = "strikethroughStyle"
     case Kern                   = "kern"
     case Alignment              = "alignment"
-    case FirstLineHeadIndent    = "first-line-head-indent"
-    case HeadIndent             = "head-indent"
-    case TailIndent             = "tail-indent"
-    case LineHeightMultiple     = "line-height-multiple"
-    case MaximumLineHeight      = "maximum-line-height"
-    case MinimumLineHeight      = "minimum-line-height"
-    case LineSpacing            = "line-spacing"
-    case ParagraphSpacing       = "paragraph-spacing"
-    case ParagraphSpacingBefore = "paragraph-spacing-before"
-    case HyphenationFactor      = "hyphenation-factor"
-    case LineBreakMode          = "line-break-mode"
-    case IconTextOrder          = "icon-text-order"
+    case FirstLineHeadIndent    = "firstLineHeadIndent"
+    case HeadIndent             = "headIndent"
+    case TailIndent             = "tailIndent"
+    case LineHeightMultiple     = "lineHeightMultiple"
+    case MaximumLineHeight      = "maximumLineHeight"
+    case MinimumLineHeight      = "minimumLineHeight"
+    case LineSpacing            = "lineSpacing"
+    case ParagraphSpacing       = "paragraphSpacing"
+    case ParagraphSpacingBefore = "paragraphSpacingBefore"
+    case HyphenationFactor      = "hyphenationFactor"
+    case LineBreakMode          = "lineBreakMode"
+    case IconTextOrder          = "iconTextOrder"
 
     public var type: JSONValueConvertible.Type {
       switch self {

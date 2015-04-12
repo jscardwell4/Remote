@@ -201,6 +201,7 @@
 		C24E0EBF1AC61E080044248E /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C24E0EBE1AC61E080044248E /* MoonKit.framework */; };
 		C24E0EC01AC61FC30044248E /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C24E0EBE1AC61E080044248E /* MoonKit.framework */; };
 		C24E0EC11AC61FC30044248E /* MoonKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C24E0EBE1AC61E080044248E /* MoonKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C253B2E11AD98D6B00F7E6AF /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = C253B2E01AD98D6B00F7E6AF /* Asset.swift */; };
 		C25B475216FF8D5E0042B59E /* AttributeEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B462F16FF679B0042B59E /* AttributeEditingViewController.m */; };
 		C25B475416FF8D5E0042B59E /* CommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B463416FF679B0042B59E /* CommandEditingViewController.m */; };
 		C25B475516FF8D5E0042B59E /* DelayCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B463616FF679B0042B59E /* DelayCommandEditingViewController.m */; };
@@ -411,8 +412,6 @@
 		C28E98F91AD1A4B000E78711 /* DataModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* DataModel.framework */; };
 		C293C73E1AC25F7700408D35 /* ModelIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C73D1AC25F7700408D35 /* ModelIndex.swift */; };
 		C293C7491AC3164700408D35 /* Bank.h in Headers */ = {isa = PBXBuildFile; fileRef = C293C7481AC3164700408D35 /* Bank.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C293C74F1AC3164700408D35 /* Bank.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C293C7441AC3164700408D35 /* Bank.framework */; };
-		C293C7581AC3164700408D35 /* BankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C7571AC3164700408D35 /* BankTests.swift */; };
 		C293C7751AC318EB00408D35 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C7691AC318EB00408D35 /* Image.swift */; };
 		C293C7761AC318EB00408D35 /* ImageCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C76A1AC318EB00408D35 /* ImageCategory.swift */; };
 		C293C7771AC318EB00408D35 /* IRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C76B1AC318EB00408D35 /* IRCode.swift */; };
@@ -655,20 +654,6 @@
 			remoteGlobalIDString = C215CBFE1ABB102F00E8077E;
 			remoteInfo = DataModel;
 		};
-		C293C7501AC3164700408D35 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C293C7431AC3164700408D35;
-			remoteInfo = Bank;
-		};
-		C293C7521AC3164700408D35 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C26BAEA716DC10FE0093D5B4;
-			remoteInfo = Remote;
-		};
 		C2C3B9201AC5DAC9001DC6CC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
@@ -910,6 +895,7 @@
 		C240DD5D170485F2005CC390 /* IRLearner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRLearner.h; sourceTree = "<group>"; };
 		C240DD5E170485F2005CC390 /* IRLearner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRLearner.m; sourceTree = "<group>"; };
 		C24E0EBE1AC61E080044248E /* MoonKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MoonKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C253B2E01AD98D6B00F7E6AF /* Asset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
 		C25B130219FB4A6500C5630F /* Remote.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Remote.entitlements; sourceTree = "<group>"; };
 		C25B462E16FF679B0042B59E /* AttributeEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttributeEditingViewController.h; sourceTree = "<group>"; };
 		C25B462F16FF679B0042B59E /* AttributeEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttributeEditingViewController.m; sourceTree = "<group>"; };
@@ -1054,7 +1040,6 @@
 		C26C6E6619B8EC9600B346AE /* NetworkDeviceConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceConnection.h; sourceTree = "<group>"; };
 		C26C6E6719B8EC9600B346AE /* NetworkDeviceConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkDeviceConnection.m; sourceTree = "<group>"; };
 		C26C6E6919B8EF6500B346AE /* NetworkDeviceConnection_Subclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceConnection_Subclass.h; sourceTree = "<group>"; };
-		C27370C41AD4697E00434457 /* TitleAttributes_Backup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleAttributes_Backup.swift; sourceTree = "<group>"; };
 		C27BCC681801C16A0002464C /* IntegerKeyboard_0-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_0-Highlighted@2x.png"; sourceTree = "<group>"; };
 		C27BCC691801C16A0002464C /* IntegerKeyboard_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_0.png; sourceTree = "<group>"; };
 		C27BCC6A1801C16A0002464C /* IntegerKeyboard_0@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_0@2x.png"; sourceTree = "<group>"; };
@@ -1092,16 +1077,13 @@
 		C27BCC8A1801C16A0002464C /* IntegerKeyboard_Erase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_Erase.png; sourceTree = "<group>"; };
 		C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Erase@2x.png"; sourceTree = "<group>"; };
 		C285D8691AC4C0E800C527F6 /* DataModelProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataModelProtocols.swift; path = Model/DataModelProtocols.swift; sourceTree = "<group>"; };
-		C28E98F31AD1A4B000E78711 /* DataModelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DataModelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C28E98F31AD1A4B000E78711 /* DataModel Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "DataModel Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C28E98F61AD1A4B000E78711 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C28E98F71AD1A4B000E78711 /* DataModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModelTests.swift; sourceTree = "<group>"; };
 		C293C73D1AC25F7700408D35 /* ModelIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelIndex.swift; sourceTree = "<group>"; };
 		C293C7441AC3164700408D35 /* Bank.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bank.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C293C7471AC3164700408D35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C293C7481AC3164700408D35 /* Bank.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bank.h; sourceTree = "<group>"; };
-		C293C74E1AC3164700408D35 /* BankTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BankTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C293C7561AC3164700408D35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C293C7571AC3164700408D35 /* BankTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankTests.swift; sourceTree = "<group>"; };
 		C293C7691AC318EB00408D35 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		C293C76A1AC318EB00408D35 /* ImageCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCategory.swift; sourceTree = "<group>"; };
 		C293C76B1AC318EB00408D35 /* IRCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IRCode.swift; sourceTree = "<group>"; };
@@ -1346,10 +1328,6 @@
 		C2E9F4F31ABCA395007581F2 /* Activity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		C2E9F4F41ABCA395007581F2 /* ActivityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityController.swift; sourceTree = "<group>"; };
 		C2E9F4F51ABCA395007581F2 /* DictionaryStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryStorage.swift; sourceTree = "<group>"; };
-		C2E9F4F61ABCA395007581F2 /* Font.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
-		C2E9F4F71ABCA395007581F2 /* FontAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontAttributes.swift; sourceTree = "<group>"; };
-		C2E9F4FA1ABCA395007581F2 /* ModelKeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelKeychainWrapper.h; sourceTree = "<group>"; };
-		C2E9F4FB1ABCA395007581F2 /* ModelKeychainWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelKeychainWrapper.m; sourceTree = "<group>"; };
 		C2E9F4FE1ABCA395007581F2 /* ModelObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelObject.swift; sourceTree = "<group>"; };
 		C2E9F4FF1ABCA395007581F2 /* NamedModelObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NamedModelObject.swift; sourceTree = "<group>"; };
 		C2E9F5041ABCA395007581F2 /* ActivityCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityCommand.swift; sourceTree = "<group>"; };
@@ -1469,14 +1447,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C293C74B1AC3164700408D35 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C293C74F1AC3164700408D35 /* Bank.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C2C482C019C9F968002E84A9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1532,6 +1502,8 @@
 		C215CC001ABB102F00E8077E /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
+				C2F4C58C1AC6E95300DB3695 /* App */,
+				C28E98F41AD1A4B000E78711 /* Tests */,
 				C2E9F5471ABCA395007581F2 /* DataManager.swift */,
 				C2E9F4B51ABCA395007581F2 /* CoreData */,
 				C2E9F4F11ABCA395007581F2 /* Model */,
@@ -1664,11 +1636,7 @@
 				C2F940FB19BE5E90007B5CC1 /* iTachClient */,
 				C2C482C419C9F968002E84A9 /* Remote Tests */,
 				C215CC001ABB102F00E8077E /* DataModel */,
-				C28E98F41AD1A4B000E78711 /* DataModelTests */,
-				C2E9F3E81ABC9797007581F2 /* BankApp */,
 				C293C7451AC3164700408D35 /* Bank */,
-				C293C7541AC3164700408D35 /* BankTests */,
-				C2F4C58C1AC6E95300DB3695 /* DataModelApp */,
 				C26BAEAA16DC10FE0093D5B4 /* Frameworks */,
 				C26BAEA916DC10FE0093D5B4 /* Products */,
 			);
@@ -1684,9 +1652,8 @@
 				C215CBFF1ABB102F00E8077E /* DataModel.framework */,
 				C2E9F3E71ABC9797007581F2 /* BankApp.app */,
 				C293C7441AC3164700408D35 /* Bank.framework */,
-				C293C74E1AC3164700408D35 /* BankTests.xctest */,
 				C2F4C58B1AC6E95300DB3695 /* DataModelApp.app */,
-				C28E98F31AD1A4B000E78711 /* DataModelTests.xctest */,
+				C28E98F31AD1A4B000E78711 /* DataModel Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2073,7 +2040,16 @@
 			path = png;
 			sourceTree = "<group>";
 		};
-		C28E98F41AD1A4B000E78711 /* DataModelTests */ = {
+		C28E98F41AD1A4B000E78711 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				C28E98F71AD1A4B000E78711 /* DataModelTests.swift */,
+				C28E98F51AD1A4B000E78711 /* Supporting Files */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		C28E98F51AD1A4B000E78711 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
 				C2CDB8F31AD74BC8006DF88C /* Button.json */,
@@ -2094,15 +2070,6 @@
 				C23F070E1AD5A54F003BD28B /* Preset.json */,
 				C23F070F1AD5A54F003BD28B /* PresetCategory.json */,
 				C23F07101AD5A54F003BD28B /* TitleAttributes.json */,
-				C28E98F71AD1A4B000E78711 /* DataModelTests.swift */,
-				C28E98F51AD1A4B000E78711 /* Supporting Files */,
-			);
-			path = DataModelTests;
-			sourceTree = "<group>";
-		};
-		C28E98F51AD1A4B000E78711 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
 				C28E98F61AD1A4B000E78711 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -2111,6 +2078,7 @@
 		C293C7451AC3164700408D35 /* Bank */ = {
 			isa = PBXGroup;
 			children = (
+				C2E9F3E81ABC9797007581F2 /* App */,
 				C2E9F61F1ABCA7A2007581F2 /* Resources */,
 				C2E9F44B1ABCA395007581F2 /* Source */,
 				C293C7481AC3164700408D35 /* Bank.h */,
@@ -2123,23 +2091,6 @@
 			isa = PBXGroup;
 			children = (
 				C293C7471AC3164700408D35 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		C293C7541AC3164700408D35 /* BankTests */ = {
-			isa = PBXGroup;
-			children = (
-				C293C7571AC3164700408D35 /* BankTests.swift */,
-				C293C7551AC3164700408D35 /* Supporting Files */,
-			);
-			path = BankTests;
-			sourceTree = "<group>";
-		};
-		C293C7551AC3164700408D35 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				C293C7561AC3164700408D35 /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -2275,15 +2226,16 @@
 			path = WSDL;
 			sourceTree = "<group>";
 		};
-		C2E9F3E81ABC9797007581F2 /* BankApp */ = {
+		C2E9F3E81ABC9797007581F2 /* App */ = {
 			isa = PBXGroup;
 			children = (
 				C2E9F3EB1ABC9797007581F2 /* AppDelegate.swift */,
 				C2E9F3F21ABC9797007581F2 /* Images.xcassets */,
 				C2E9F3E91ABC9797007581F2 /* Supporting Files */,
 			);
-			path = BankApp;
-			sourceTree = "<group>";
+			name = App;
+			path = Bank/App;
+			sourceTree = SOURCE_ROOT;
 		};
 		C2E9F3E91ABC9797007581F2 /* Supporting Files */ = {
 			isa = PBXGroup;
@@ -2468,16 +2420,12 @@
 				C293C73D1AC25F7700408D35 /* ModelIndex.swift */,
 				C2E9F4F41ABCA395007581F2 /* ActivityController.swift */,
 				C2E9F4F51ABCA395007581F2 /* DictionaryStorage.swift */,
-				C2E9F4F61ABCA395007581F2 /* Font.swift */,
-				C2E9F4F71ABCA395007581F2 /* FontAttributes.swift */,
-				C2E9F4FA1ABCA395007581F2 /* ModelKeychainWrapper.h */,
-				C2E9F4FB1ABCA395007581F2 /* ModelKeychainWrapper.m */,
 				C2E9F4FE1ABCA395007581F2 /* ModelObject.swift */,
 				C2E9F4FF1ABCA395007581F2 /* NamedModelObject.swift */,
 				C2E9F5001ABCA395007581F2 /* RemoteElement */,
 				C2E9F5421ABCA395007581F2 /* TitleAttributes.swift */,
-				C27370C41AD4697E00434457 /* TitleAttributes_Backup.swift */,
 				C2A0C7521AD8905B008CF88B /* ColorStorage.swift */,
+				C253B2E01AD98D6B00F7E6AF /* Asset.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2594,7 +2542,7 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
-		C2F4C58C1AC6E95300DB3695 /* DataModelApp */ = {
+		C2F4C58C1AC6E95300DB3695 /* App */ = {
 			isa = PBXGroup;
 			children = (
 				C2F4C58F1AC6E95300DB3695 /* AppDelegate.swift */,
@@ -2604,7 +2552,7 @@
 				C2F4C5981AC6E95300DB3695 /* LaunchScreen.xib */,
 				C2F4C58D1AC6E95300DB3695 /* Supporting Files */,
 			);
-			path = DataModelApp;
+			path = App;
 			sourceTree = "<group>";
 		};
 		C2F4C58D1AC6E95300DB3695 /* Supporting Files */ = {
@@ -2698,9 +2646,9 @@
 			productReference = C26BAEA816DC10FE0093D5B4 /* Remote.app */;
 			productType = "com.apple.product-type.application";
 		};
-		C28E98F21AD1A4B000E78711 /* DataModelTests */ = {
+		C28E98F21AD1A4B000E78711 /* DataModel Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C28E98FC1AD1A4B000E78711 /* Build configuration list for PBXNativeTarget "DataModelTests" */;
+			buildConfigurationList = C28E98FC1AD1A4B000E78711 /* Build configuration list for PBXNativeTarget "DataModel Tests" */;
 			buildPhases = (
 				C28E98EF1AD1A4B000E78711 /* Sources */,
 				C28E98F01AD1A4B000E78711 /* Frameworks */,
@@ -2711,9 +2659,9 @@
 			dependencies = (
 				C28E98FB1AD1A4B000E78711 /* PBXTargetDependency */,
 			);
-			name = DataModelTests;
+			name = "DataModel Tests";
 			productName = DataModelTests;
-			productReference = C28E98F31AD1A4B000E78711 /* DataModelTests.xctest */;
+			productReference = C28E98F31AD1A4B000E78711 /* DataModel Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		C293C7431AC3164700408D35 /* Bank */ = {
@@ -2734,25 +2682,6 @@
 			productName = Bank;
 			productReference = C293C7441AC3164700408D35 /* Bank.framework */;
 			productType = "com.apple.product-type.framework";
-		};
-		C293C74D1AC3164700408D35 /* BankTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C293C7621AC3164800408D35 /* Build configuration list for PBXNativeTarget "BankTests" */;
-			buildPhases = (
-				C293C74A1AC3164700408D35 /* Sources */,
-				C293C74B1AC3164700408D35 /* Frameworks */,
-				C293C74C1AC3164700408D35 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				C293C7511AC3164700408D35 /* PBXTargetDependency */,
-				C293C7531AC3164700408D35 /* PBXTargetDependency */,
-			);
-			name = BankTests;
-			productName = BankTests;
-			productReference = C293C74E1AC3164700408D35 /* BankTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		C2C482C219C9F968002E84A9 /* Remote Tests */ = {
 			isa = PBXNativeTarget;
@@ -2875,10 +2804,6 @@
 						CreatedOnToolsVersion = 6.3;
 						DevelopmentTeam = JT6STF4SHA;
 					};
-					C293C74D1AC3164700408D35 = {
-						CreatedOnToolsVersion = 6.3;
-						TestTargetID = C26BAEA716DC10FE0093D5B4;
-					};
 					C2C482C219C9F968002E84A9 = {
 						CreatedOnToolsVersion = 6.0;
 						TestTargetID = C26BAEA716DC10FE0093D5B4;
@@ -2913,9 +2838,8 @@
 				C215CBFE1ABB102F00E8077E /* DataModel */,
 				C2E9F3E61ABC9797007581F2 /* BankApp */,
 				C293C7431AC3164700408D35 /* Bank */,
-				C293C74D1AC3164700408D35 /* BankTests */,
 				C2F4C58A1AC6E95300DB3695 /* DataModelApp */,
-				C28E98F21AD1A4B000E78711 /* DataModelTests */,
+				C28E98F21AD1A4B000E78711 /* DataModel Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -3293,13 +3217,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C293C74C1AC3164700408D35 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C2C482C119C9F968002E84A9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3426,6 +3343,7 @@
 				C2E9F5F91ABCA395007581F2 /* CommandContainer.swift in Sources */,
 				C2E9F60E1ABCA395007581F2 /* Button.swift in Sources */,
 				C2E9F5FD1ABCA395007581F2 /* CommandSet.swift in Sources */,
+				C253B2E11AD98D6B00F7E6AF /* Asset.swift in Sources */,
 				C293C77D1AC318EB00408D35 /* Manufacturer.swift in Sources */,
 				C2E9F5E71ABCA395007581F2 /* PowerCommand.swift in Sources */,
 				C293C7751AC318EB00408D35 /* Image.swift in Sources */,
@@ -3612,14 +3530,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C293C74A1AC3164700408D35 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C293C7581AC3164700408D35 /* BankTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C2C482BF19C9F968002E84A9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3677,16 +3587,6 @@
 			isa = PBXTargetDependency;
 			target = C215CBFE1ABB102F00E8077E /* DataModel */;
 			targetProxy = C28E98FA1AD1A4B000E78711 /* PBXContainerItemProxy */;
-		};
-		C293C7511AC3164700408D35 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C293C7431AC3164700408D35 /* Bank */;
-			targetProxy = C293C7501AC3164700408D35 /* PBXContainerItemProxy */;
-		};
-		C293C7531AC3164700408D35 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C26BAEA716DC10FE0093D5B4 /* Remote */;
-			targetProxy = C293C7521AC3164700408D35 /* PBXContainerItemProxy */;
 		};
 		C2C3B9211AC5DAC9001DC6CC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4491,7 +4391,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = DataModelTests/Info.plist;
+				INFOPLIST_FILE = DataModel/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4531,7 +4431,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = DataModelTests/Info.plist;
+				INFOPLIST_FILE = DataModel/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4571,7 +4471,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = DataModelTests/Info.plist;
+				INFOPLIST_FILE = DataModel/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4611,7 +4511,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = DataModelTests/Info.plist;
+				INFOPLIST_FILE = DataModel/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4833,183 +4733,6 @@
 			};
 			name = Release;
 		};
-		C293C7631AC3164800408D35 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BankTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Remote.app/Remote";
-			};
-			name = Debug;
-		};
-		C293C7641AC3164800408D35 /* Info */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BankTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Remote.app/Remote";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Info;
-		};
-		C293C7651AC3164800408D35 /* Verbose */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BankTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Remote.app/Remote";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Verbose;
-		};
-		C293C7661AC3164800408D35 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BankTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Remote.app/Remote";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		C2C482CB19C9F968002E84A9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5220,7 +4943,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BankApp/Info.plist;
+				INFOPLIST_FILE = Bank/App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -5265,7 +4988,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BankApp/Info.plist;
+				INFOPLIST_FILE = Bank/App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -5309,7 +5032,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BankApp/Info.plist;
+				INFOPLIST_FILE = Bank/App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -5353,7 +5076,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BankApp/Info.plist;
+				INFOPLIST_FILE = Bank/App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -5400,7 +5123,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = DataModelApp/Info.plist;
+				INFOPLIST_FILE = DataModel/App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5440,7 +5163,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = DataModelApp/Info.plist;
+				INFOPLIST_FILE = DataModel/App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5480,7 +5203,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = DataModelApp/Info.plist;
+				INFOPLIST_FILE = DataModel/App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5520,7 +5243,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = DataModelApp/Info.plist;
+				INFOPLIST_FILE = DataModel/App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5654,7 +5377,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C28E98FC1AD1A4B000E78711 /* Build configuration list for PBXNativeTarget "DataModelTests" */ = {
+		C28E98FC1AD1A4B000E78711 /* Build configuration list for PBXNativeTarget "DataModel Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C28E98FD1AD1A4B000E78711 /* Debug */,
@@ -5672,17 +5395,6 @@
 				C293C75F1AC3164800408D35 /* Info */,
 				C293C7601AC3164800408D35 /* Verbose */,
 				C293C7611AC3164800408D35 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C293C7621AC3164800408D35 /* Build configuration list for PBXNativeTarget "BankTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C293C7631AC3164800408D35 /* Debug */,
-				C293C7641AC3164800408D35 /* Info */,
-				C293C7651AC3164800408D35 /* Verbose */,
-				C293C7661AC3164800408D35 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

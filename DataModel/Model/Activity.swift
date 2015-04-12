@@ -91,7 +91,6 @@ public final class Activity: NamedModelObject {
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-
     updateRelationshipFromData(data, forAttribute: "remote")
     updateRelationshipFromData(data, forAttribute: "launchMacro")
     updateRelationshipFromData(data, forAttribute: "haltMacro")
@@ -99,12 +98,11 @@ public final class Activity: NamedModelObject {
 
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
-
-    dict["remote.uuid"] = JSONValue(remote?.uuid)
-    dict["launch-macro"] = launchMacro?.jsonValue
-    dict["halt-macro"] = haltMacro?.jsonValue
-    return .Object(dict)
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["remote.uuid"] = remote?.uuid.jsonValue
+    obj["launchMacro"] = launchMacro?.jsonValue
+    obj["haltMacro"] = haltMacro?.jsonValue
+    return obj.jsonValue
   }
 
   /**

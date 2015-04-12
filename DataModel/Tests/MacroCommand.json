@@ -1,0 +1,1 @@
+{"class": "macro", "commands": [<@include SendIRCommand.json>, <@include PowerCommand.json>, <@include DelayCommand.json> ] }

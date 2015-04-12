@@ -20,11 +20,12 @@ public final class SendIRCommand: SendCommand {
 
   @NSManaged public var code: IRCode
 
+  public var port: Int16 { return componentDevice?.port ?? 0 }
   public var componentDevice: ComponentDevice? { return code.device }
   public var networkDevice: NetworkDevice? { return componentDevice?.networkDevice }
 
   public var commandString: String {
-    return "sendir,1:\(componentDevice?.port ?? 0),<tag>,\(code.frequency),\(code.repeatCount),\(code.offset),\(code.onOffPattern)"
+    return "sendir,1:\(port),<tag>,\(code.frequency),\(code.repeatCount),\(code.offset),\(code.onOffPattern)"
   }
 
   /**
@@ -34,15 +35,15 @@ public final class SendIRCommand: SendCommand {
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    
+  
     updateRelationshipFromData(data, forAttribute: "code")
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
-    dict["class"] = "sendir"
-    dict["code.index"] = code.index.jsonValue
-    return .Object(dict)
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["class"] = "sendir".jsonValue
+    obj["code.index"] = code.index.jsonValue
+    return obj.jsonValue
   }
 
 }

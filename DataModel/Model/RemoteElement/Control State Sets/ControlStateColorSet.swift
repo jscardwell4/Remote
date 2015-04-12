@@ -39,14 +39,14 @@ public final class ControlStateColorSet: ControlStateSet {
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
+    var obj = ObjectJSONValue(super.jsonValue)!
 
     UIControlState.enumerate {
       if let color = self[$0.rawValue] as? UIColor {
-        dict[$0.jsonValue.value as! String] = color.jsonValue
+        obj[$0.jsonValue.value as! String] = color.jsonValue
       }
     }
-    return .Object(dict)
+    return obj.jsonValue
   }
 
 

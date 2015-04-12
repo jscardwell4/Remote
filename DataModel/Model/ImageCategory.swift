@@ -33,12 +33,11 @@ final public class ImageCategory: EditableModelObject {
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
-
-    appendValueForKeyPath("parentCategory.index", forKey: "category.index", toDictionary: &dict)
-    appendValueForKey("images", toDictionary: &dict)
-    appendValueForKey("childCategories", forKey: "subcategories", toDictionary: &dict)
-    return .Object(dict)
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["category.index"] = parentCategory?.index.jsonValue
+    obj["images"] = JSONValue(images)
+    obj["subcategories"] = JSONValue(childCategories)
+    return obj.jsonValue
   }
 
   /**

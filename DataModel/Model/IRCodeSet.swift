@@ -51,13 +51,11 @@ final public class IRCodeSet: EditableModelObject {
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
-
-    appendValue(manufacturer.index.rawValue, forKey: "manufacturer.index", ifNotDefault: false, toDictionary: &dict)
-    appendValueForKey("codes", toDictionary: &dict)
-    appendValueForKeyPath("devices.uuid", forKey: "devices", toDictionary: &dict)
-    
-    return .Object(dict)
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["manufacturer.index"] = manufacturer.index.jsonValue
+    obj["codes"] = JSONValue(codes)
+    obj["devices.uuid"] = .Array(map(devices, {$0.uuid.jsonValue}))
+    return obj.jsonValue
   }
 
   /**

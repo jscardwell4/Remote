@@ -81,16 +81,15 @@ public final class CommandSet: CommandContainer {
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
-
-    dict["type"] = type.jsonValue
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["type"] = type.jsonValue
     containerIndex.enumerateKeysAndObjectsUsingBlock { (key, uri, _) -> Void in
       if let command = self.managedObjectContext?.objectForURI(uri as! NSURL) as? Command {
         // TODO: This looks atrocious
-        dict[RemoteElement.Role(rawValue: (key as! NSNumber).integerValue).jsonValue.value as! String] = command.jsonValue
+        obj[RemoteElement.Role(rawValue: (key as! NSNumber).integerValue).jsonValue.value as! String] = command.jsonValue
       }
     }
-    return .Object(dict)
+    return obj.jsonValue
   }
 
 

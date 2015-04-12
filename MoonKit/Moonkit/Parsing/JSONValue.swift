@@ -373,11 +373,15 @@ public class WrappedJSONValue: NSCoding {
 
 public struct ObjectJSONValue: JSONValueConvertible, JSONValueInitializable {
   public var jsonValue: JSONValue { return .Object(value) }
-  public let value: JSONValue.ObjectValue
+  public private(set) var value: JSONValue.ObjectValue
   public var count: Int { return value.count }
   public init(_ value: JSONValue.ObjectValue) { self.value = value }
+  public init<J:JSONValueConvertible>(_ value: OrderedDictionary<String, J>) { self.value = value.map({$1.jsonValue}) }
+  public init(_ value: [String:JSONValue]) { self.value = OrderedDictionary(value) }
+  public init<J:JSONValueConvertible>(_ value: [String:J]) { self.value = OrderedDictionary(value).map({$1.jsonValue}) }
+
   public init?(_ v: JSONValue?) { switch v ?? .Null { case .Object(let o): value = o; default: return nil } }
-  public subscript(key: String) -> JSONValue? { return value[key] }
+  public subscript(key: String) -> JSONValue? { get { return value[key] } set { value[key] = newValue } }
   public var keys: LazyForwardCollection<[String]> { return value.keys }
   public var values: LazyForwardCollection<MapCollectionView<[String], JSONValue>> { return value.values }
   public func filter(includeElement: (String, JSONValue) -> Bool) -> ObjectJSONValue {
@@ -410,14 +414,16 @@ public struct ObjectJSONValue: JSONValueConvertible, JSONValueInitializable {
     return true
   }
 
+  public mutating func extend(other: ObjectJSONValue) { value.extend(other.value) }
 }
+
 extension ObjectJSONValue: CollectionType {
   public typealias Index = JSONValue.ObjectValue.Index
   public typealias Generator = JSONValue.ObjectValue.Generator
   public var startIndex: Index { return value.startIndex }
   public var endIndex: Index { return value.endIndex }
   public func generate() -> Generator { return value.generate() }
-  public subscript(idx: Index) -> Generator.Element { return value[idx] }
+  public subscript(idx: Index) -> Generator.Element { get { return value[idx] } set { value[idx] = newValue } }
 }
 
 extension ObjectJSONValue: Printable, DebugPrintable {
@@ -425,11 +431,23 @@ extension ObjectJSONValue: Printable, DebugPrintable {
   public var debugDescription: String { return "MoonKit.ObjectJSONValue - value: \(description)" }
 }
 
+public func +(var lhs: ObjectJSONValue, rhs: ObjectJSONValue) -> ObjectJSONValue { lhs.extend(rhs); return lhs }
+public func +=(inout lhs: ObjectJSONValue, rhs: ObjectJSONValue) { lhs.extend(rhs) } 
+public func +(var lhs: ObjectJSONValue, rhs: JSONValue) -> ObjectJSONValue { if let o = ObjectJSONValue(rhs) { lhs.extend(o) }; return lhs }
+public func +=(inout lhs: ObjectJSONValue, rhs: JSONValue) { if let o = ObjectJSONValue(rhs) { lhs.extend(o) } }
+public func +(var lhs: ObjectJSONValue, rhs: JSONValue.ObjectValue) -> ObjectJSONValue { lhs.value.extend(rhs); return lhs }
+public func +=(inout lhs: ObjectJSONValue, rhs: JSONValue.ObjectValue) { lhs.value.extend(rhs) }
+public func +<J:JSONValueConvertible>(var lhs: ObjectJSONValue, rhs: (String, J)) -> ObjectJSONValue { lhs[rhs.0] = rhs.1.jsonValue; return lhs }
+public func +=<J:JSONValueConvertible>(inout lhs: ObjectJSONValue, rhs: (String, J)) { lhs[rhs.0] = rhs.1.jsonValue }
+public func +(var lhs: ObjectJSONValue, rhs: (String, JSONValue)) -> ObjectJSONValue { lhs[rhs.0] = rhs.1; return lhs }
+public func +=(inout lhs: ObjectJSONValue, rhs: (String, JSONValue)) { lhs[rhs.0] = rhs.1 }
+
 public struct ArrayJSONValue: JSONValueConvertible, JSONValueInitializable {
-  public let value: [JSONValue]
+  public private(set) var value: [JSONValue]
   public var jsonValue: JSONValue { return .Array(value) }
   public var count: Int { return value.count }
   public init(_ value: [JSONValue]) { self.value = value }
+  public init<J:JSONValueConvertible>(_ value: [J]) { self.value = value.map({$0.jsonValue}) }
   public init?(_ v: JSONValue?) { switch v ?? .Null { case .Array(let a): value = a; default: return nil } }
   public func filter(includeElement: (JSONValue) -> Bool) -> ArrayJSONValue {
     return ArrayJSONValue(value.filter(includeElement))
@@ -452,6 +470,7 @@ public struct ArrayJSONValue: JSONValueConvertible, JSONValueInitializable {
 
     return true
   }
+  public mutating func extend(other: ArrayJSONValue) { value.extend(other.value) }
 }
 extension ArrayJSONValue: CollectionType {
   public typealias Index = JSONValue.ArrayValue.Index
@@ -459,13 +478,22 @@ extension ArrayJSONValue: CollectionType {
   public var startIndex: Index { return value.startIndex }
   public var endIndex: Index { return value.endIndex }
   public func generate() -> Generator { return value.generate() }
-  public subscript(idx: Index) -> Generator.Element { return value[idx] }
+  public subscript(idx: Index) -> Generator.Element { get { return value[idx] } set { value[idx] = newValue } }
 }
 
 extension ArrayJSONValue: Printable, DebugPrintable {
   public var description: String { return value.description }
   public var debugDescription: String { return "MoonKit.ArrayJSONValue - value: \(description)" }
 }
+
+public func +(var lhs: ArrayJSONValue, rhs: ArrayJSONValue) -> ArrayJSONValue { lhs.extend(rhs); return lhs }
+public func +=(inout lhs: ArrayJSONValue, rhs: ArrayJSONValue) { lhs.extend(rhs) }
+public func +(var lhs: ArrayJSONValue, rhs: JSONValue) -> ArrayJSONValue { if let a = ArrayJSONValue(rhs) { lhs.extend(a) }; return lhs }
+public func +=(inout lhs: ArrayJSONValue, rhs: JSONValue) { if let a = ArrayJSONValue(rhs) { lhs.extend(a) } }
+public func +(var lhs: ArrayJSONValue, rhs: JSONValue.ArrayValue) -> ArrayJSONValue { lhs.value.extend(rhs); return lhs }
+public func +=(inout lhs: ArrayJSONValue, rhs: JSONValue.ArrayValue) { lhs.value.extend(rhs) }
+public func +<J:JSONValueConvertible>(var lhs: ArrayJSONValue, rhs: J) -> ArrayJSONValue { lhs.value.append(rhs.jsonValue); return lhs }
+public func +=<J:JSONValueConvertible>(inout lhs: ArrayJSONValue, rhs: J) { lhs.value.append(rhs.jsonValue) }
 
 
 // MARK: - Type extensions

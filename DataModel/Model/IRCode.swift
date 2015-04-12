@@ -12,7 +12,7 @@ import MoonKit
 
 @objc(IRCode)
 final public class IRCode: EditableModelObject {
-  
+
   @NSManaged public var frequency: Int64
   @NSManaged public var offset: Int16
   @NSManaged public var onOffPattern: String?
@@ -105,7 +105,7 @@ final public class IRCode: EditableModelObject {
     if let frequency = Int64(data["frequency"]) { self.frequency = frequency }
     if let offset = Int16(data["offset"]) { self.offset = offset }
     if let repeatCount = Int16(data["repeatCount"]) { self.repeatCount = repeatCount }
-    if let onOffPattern = String(data["on-off-pattern"]) { self.onOffPattern = onOffPattern }
+    if let onOffPattern = String(data["onOffPattern"]) { self.onOffPattern = onOffPattern }
   }
 
   /**
@@ -134,20 +134,16 @@ final public class IRCode: EditableModelObject {
   }
 
   override public var jsonValue: JSONValue {
-
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
-
-    appendValueForKeyPath("device.uuid", forKey: "device", toDictionary: &dict)
-    appendValue(codeSet.index.rawValue, forKey: "code-set.index", ifNotDefault: false, toDictionary: &dict)
-    appendValueForKey("setsDeviceInput", toDictionary: &dict)
-    appendValueForKey("repeatCount", toDictionary: &dict)
-
-    appendValueForKey("offset", toDictionary: &dict)
-    appendValueForKey("frequency", toDictionary: &dict)
-
-    dict["on-off-pattern"] = JSONValue(onOffPattern)
-    dict["pronto-hex"] = JSONValue(prontoHex)
-    return .Object(dict)
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["device.index"] = device?.index.jsonValue
+    obj["codeSet.index"] = codeSet.index.jsonValue
+    obj["setsDeviceInput"] = setsDeviceInput.jsonValue
+    obj["repeatCount"] = repeatCount.jsonValue
+    obj["offset"] = offset.jsonValue
+    obj["frequency"] = frequency.jsonValue
+    obj["onOffPattern"] = onOffPattern?.jsonValue
+    obj["prontoHex"] = prontoHex?.jsonValue
+    return obj.jsonValue
   }
 }
 
@@ -171,5 +167,5 @@ extension IRCode: PathIndexedModel {
       return nil
     }
   }
-  
+
 }

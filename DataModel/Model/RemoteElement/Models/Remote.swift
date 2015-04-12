@@ -97,7 +97,7 @@ public final class Remote: RemoteElement {
 
     if let moc = managedObjectContext {
 
-      if let topBarHidden = Bool(data["top-bar-hidden"]) { self.topBarHidden = topBarHidden }
+      if let topBarHidden = Bool(data["topBar-hidden"]) { self.topBarHidden = topBarHidden }
 
       if let panels = ObjectJSONValue(data["panels"] ?? .Null) {
         for (key, json) in panels {
@@ -117,7 +117,7 @@ public final class Remote: RemoteElement {
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
+    var obj = ObjectJSONValue(super.jsonValue)!
 
     var panels: JSONValue.ObjectValue = [:]
 
@@ -128,8 +128,8 @@ public final class Remote: RemoteElement {
       }
     }
 
-    if panels.count > 0 { dict["panels"] = .Object(panels) }
-    return .Object(dict)
+    if panels.count > 0 { obj["panels"] = .Object(panels) }
+    return obj.jsonValue
   }
 
 }

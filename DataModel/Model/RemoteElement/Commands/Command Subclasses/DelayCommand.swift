@@ -29,11 +29,11 @@ public final class DelayCommand: Command {
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
+    var obj = ObjectJSONValue(super.jsonValue)!
 
-    dict["class"] = "delay"
-    appendValueForKey("duration", toDictionary: &dict)
-    return .Object(dict)
+    obj["class"] = "delay"
+    obj["duration"] = duration.jsonValue
+    return obj.jsonValue
   }
 
   override var operation: CommandOperation { return DelayCommandOperation(command: self) }

@@ -47,7 +47,12 @@
 		<key>DataModelTests.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>15</integer>
+			<integer>13</integer>
+		</dict>
+		<key>DataModelTests_Interdependent.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>14</integer>
 		</dict>
 		<key>ISYClient.xcscheme</key>
 		<dict>
@@ -99,6 +104,11 @@
 			<true/>
 		</dict>
 		<key>C215CC081ABB102F00E8077E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C253B2E51AD9D12800F7E6AF</key>
 		<dict>
 			<key>primary</key>
 			<true/>

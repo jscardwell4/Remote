@@ -18,22 +18,10 @@ import MoonKit
 public final class PowerCommand: Command {
 
   @NSManaged public var device: ComponentDevice
-  @NSManaged var primitiveState: NSNumber
-  public var state: State {
-    get {
-      willAccessValueForKey("state")
-      let state = primitiveState
-      didAccessValueForKey("state")
-      return state.boolValue ? .On : .Off
-    }
-    set {
-      willChangeValueForKey("state")
-      primitiveState = newValue == .On ? true : false
-      didChangeValueForKey("state")
-    }
-  }
 
-  @objc public enum State: Int { case On = 1, Off = 0 }
+  public typealias State = Bool
+  @NSManaged public var state: State
+
 
   /**
   updateWithData:
@@ -42,31 +30,17 @@ public final class PowerCommand: Command {
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let stateJSON = String(data["state"]) { state = State(jsonValue: stateJSON.jsonValue) }
+    if let stateJSON = String(data["state"]) { state = stateJSON ~= "on" ? true : false }
     updateRelationshipFromData(data, forAttribute: "device")
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
-
-    dict["class"] = "power"
-    dict["device.uuid"] = .String(device.uuid)
-    dict["state"] = state.jsonValue
-    return .Object(dict)
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["class"] = "power"
+    obj["device.index"] = device.index.jsonValue
+    obj["state"] = (state ? "on" : "off").jsonValue
+    return obj.jsonValue
   }
 
-  override var operation: CommandOperation {
-    return (state == .On ? device.onCommand?.operation : device.offCommand?.operation)!
-  }
-
-}
-
-extension PowerCommand.State: JSONValueConvertible {
-  public var jsonValue: JSONValue { return rawValue == 1 ? "on" : "off" }
-  public init(jsonValue: JSONValue) {
-    switch jsonValue.value as? String ?? "" {
-      case "on": self = .On
-      default: self = .Off
-    }
-  }
+  override var operation: CommandOperation { return (state ? device.onCommand?.operation : device.offCommand?.operation)! } 
 }

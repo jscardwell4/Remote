@@ -34,20 +34,20 @@ public final class SwitchCommand: Command {
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
+    var obj = ObjectJSONValue(super.jsonValue)!
 
-    dict["class"] = "switch"
-    appendValueForKey("type", toDictionary: &dict)
+    obj["class"] = "switch"
+    obj["type"] = type.jsonValue
     switch type {
       case .Remote:
         if let targetRemote = Remote.objectWithUUID(target, context: managedObjectContext!) {
-          dict["target"] = target.jsonValue
+          obj["target"] = target.jsonValue
         }
       case .Mode:
-        dict["target"] = target.jsonValue
+        obj["target"] = target.jsonValue
       default: break
     }
-    return .Object(dict)
+    return obj.jsonValue
   }
 
   /**

@@ -22,11 +22,10 @@ public final class HTTPCommand: SendCommand {
   @NSManaged public var url: NSURL
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
-
-    dict["class"] = "http"
-    dict["url"] = JSONValue(url.absoluteString)
-    return .Object(dict)
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["class"] = "http"
+    obj["url"] = url.absoluteString?.jsonValue
+    return obj.jsonValue
   }
 
   /**

@@ -1,0 +1,9 @@
+{
+  "normal": "red",
+  "highlighted": "green",
+  "disabled": "#444444",
+  "selected": "#FFAA00",
+  "selectedDisabled": "#FFAA0088",
+  "highlightedSelectedDisabled": "green@20%",
+  "highlightedDisabled": "255, 255, 255, 255"
+}

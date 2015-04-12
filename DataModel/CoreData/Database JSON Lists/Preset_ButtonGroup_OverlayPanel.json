@@ -1,6 +1,6 @@
 {
   "name": "Overlay Panel",
-  "base-type": "button-group",
+  "baseType": "button-group",
   "role": "panel",
   "constraints": [
     "$0.width = 150",
@@ -13,137 +13,137 @@
     "$7.height = $1.height :: $7.left = $0.left + 4 :: $7.right = $0.right - 4 :: $7.top = $6.bottom + 4",
     "$8.bottom = $0.bottom - 4 :: $8.height = $1.height :: $8.left = $0.left + 4 :: $8.right = $0.right - 4 :: $8.top = $7.bottom + 4"
   ],
-  "background-color": "white@75%",
+  "backgroundColor": "white@75%",
   "subelements": [
     {
-      "base-type": "button",
+      "baseType": "button",
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@18",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": "Button 1"
         }
       },
       "background-colors.normal": "#060606FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "titleEdge-insets": "{20, 20, 20, 20}"
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@18",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": "Button 2"
         }
       },
       "background-colors.normal": "#060606FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "titleEdge-insets": "{20, 20, 20, 20}"
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@18",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": "Button 3"
         }
       },
       "background-colors.normal": "#060606FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "titleEdge-insets": "{20, 20, 20, 20}"
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@18",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": "Button 4"
         }
       },
       "background-colors.normal": "#060606FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "titleEdge-insets": "{20, 20, 20, 20}"
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@18",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": "Button 5"
         }
       },
       "background-colors.normal": "#060606FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "titleEdge-insets": "{20, 20, 20, 20}"
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@18",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": "Button 6"
         }
       },
       "background-colors.normal": "#060606FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "titleEdge-insets": "{20, 20, 20, 20}"
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@18",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": "Button 7"
         }
       },
       "background-colors.normal": "#060606FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "titleEdge-insets": "{20, 20, 20, 20}"
     },
     {
       "uuid": "E205BA81-90BD-4943-B2F5-6230AD2D95E9",
       "role": "tuck",
       "titles.normal": {
         "font": "FontAwesome@24",
-        "foreground-color": "gray@75%",
-        "text-effect": "letter-press",
-        "icon-name": "chevron-left"
+        "foregroundColor": "gray@75%",
+        "textEffect": "letter-press",
+        "iconName": "chevron-left"
       },
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "titleEdge-insets": "{20, 20, 20, 20}"
     }
   ]
 }

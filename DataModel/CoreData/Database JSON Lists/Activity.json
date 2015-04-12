@@ -2,7 +2,7 @@
   {
     "name": "Dish Hopper Activity",
     "remote.index": "Dish%20Hopper%20Activity",
-    "launch-macro": {
+    "launchMacro": {
       "class": "macro",
       "commands": [
         {"class": "sendir", "code.index": "Sony/AV%20Receiver/TV%2FSAT"},
@@ -11,7 +11,7 @@
         {"class": "sendir", "code.index": "Samsung/Samsung%20TV/HDMI%204"}
       ]
     },
-    "halt-macro": {
+    "haltMacro": {
       "class": "macro",
       "commands": [
         {"class": "power", "device.index": "Samsung%20TV", "state": "off"},
@@ -22,7 +22,7 @@
   {
     "name": "Playstation Activity",
     "remote.index": "Playstation%20Activity",
-    "launch-macro": {
+    "launchMacro": {
       "class": "macro",
       "commands": [
         {"class": "sendir", "code.index": "Sony/AV%20Receiver/Video%202"},
@@ -32,7 +32,7 @@
         {"class": "power", "device.index": "PS3", "state": "on"}
       ]
     },
-    "halt-macro": {
+    "haltMacro": {
       "class": "macro",
       "commands": [
         {"class": "power", "device.index": "Samsung%20TV", "state": "off"},
@@ -44,18 +44,18 @@
   {
     "name": "Sonos Activity",
     "remote.index": "Sonos Activity",
-    "launch-macro": {
+    "launchMacro": {
       "class": "macro",
       "commands": [{"class": "sendir", "code.index": "Sony/AV%20Receiver/MD%2FTape"}]
     },
-    "halt-macro": {
+    "haltMacro": {
       "class": "macro",
       "commands": [{"class": "power", "device.index": "AV%20Receiver", "state": "off"}]
     }
   },
   {
     "name": " TV Activity",
-    "launch-macro": {
+    "launchMacro": {
       "class": "macro",
       "commands": [
         {"class": "sendir", "code.index": "Sony/AV%20Receiver/DVD"},
@@ -64,7 +64,7 @@
         {"class": "sendir", "code.index": "Samsung/Samsung%20TV/HDMI%202"}
       ]
     },
-    "halt-macro": {
+    "haltMacro": {
       "class": "macro",
       "commands": [
         {"class": "power", "device.index": "Samsung%20TV", "state": "off"},

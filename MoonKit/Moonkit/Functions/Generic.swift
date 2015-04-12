@@ -30,6 +30,22 @@ public func disperse4<S:SequenceType,T where S.Generator.Element == T>(s: S) -> 
   return (array[0], array[1], array[2], array[3])
 }
 
+public func unzip<S0:SequenceType, S1:SequenceType, E0, E1 where E0 == S0.Generator.Element, E1 == S1.Generator.Element>(z: Zip2<S0, S1>) -> ([E0], [E1]) {
+  return reduce(z, ([], []), { (var result: ([E0], [E1]), p: (E0, E1)) -> ([E0], [E1]) in
+    result.0.append(p.0)
+    result.1.append(p.1)
+    return result
+  })
+}
+
+public func unzip<E0, E1, S:SequenceType where S.Generator.Element == (E0, E1)>(s: S) -> ([E0], [E1]) {
+  return reduce(s, ([], []), { (var result: ([E0], [E1]), p: (E0, E1)) -> ([E0], [E1]) in
+    result.0.append(p.0)
+    result.1.append(p.1)
+    return result
+  })
+}
+
 public func typeCast<T,U>(t: T, u: U.Type) -> U? { return t as? U }
 public func typeCast<T,U>(t: T?, u: U.Type) -> U? { return t != nil ? typeCast(t!, u) : nil }
 

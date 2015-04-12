@@ -13,8 +13,8 @@
       "bottomToolbar.right = self.right"
     ]
   },
-  "background-color.default": "black",
-  "background-image.default.path": "Backgrounds/Pro Dots",
+  "backgroundColor.default": "black",
+  "backgroundImage.default.path": "Backgrounds/Pro Dots",
   "subelements": [
     {
       "uuid": "F358CB82-496C-446D-8833-D4373777D23E",
@@ -61,16 +61,16 @@
           "titles.default": {
             "normal": {
               "font": "Helvetica Neue@20",
-              "foreground-color": "white",
-              "stroke-color": "white@50%",
-              "stroke-width": -2,
+              "foregroundColor": "white",
+              "strokeColor": "white@50%",
+              "strokeWidth": -2,
               "alignment": "center",
               "text": "Dish"
             },
             "highlighted.foreground-color": "#00AFFFFF"
           },
-          "background-colors.default.normal": "#060606FF",
-          "title-edge-insets": "{20, 20, 20, 20}"
+          "backgroundColors.default.normal": "#060606FF",
+          "titleEdgeInsets": "{20, 20, 20, 20}"
         }
       ]
     },
@@ -96,7 +96,7 @@
           "lightsOn.top = bottomToolbar.top"
         ]
       },
-      "background-color.default": "gray@50%",
+      "backgroundColor.default": "gray@50%",
       "subelements": [
         {
           "uuid": "65E065E6-2976-4726-99E4-9D4D932804E4",

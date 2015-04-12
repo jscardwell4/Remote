@@ -435,7 +435,7 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
     if let relationshipDescription = entity.relationshipsByName[attribute] as? NSRelationshipDescription,
       relatedTypeName = relationshipDescription.destinationEntity?.managedObjectClassName,
       relatedType = NSClassFromString(relatedTypeName) as? ModelObject.Type,
-      relatedObjectData = ObjectJSONValue(data[lookupKey ?? attribute.dashcaseString]),
+      relatedObjectData = ObjectJSONValue(data[lookupKey ?? attribute]),
       moc = managedObjectContext
     {
       return relatedType.objectWithData(relatedObjectData, context: moc) as? T
@@ -455,7 +455,7 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
     // Retrieve the relationship description
     if let relationshipDescription = entity.relationshipsByName[attribute] as? NSRelationshipDescription {
       // Obtain relationship data
-      let key = lookupKey ?? attribute.dashcaseString
+      let key = lookupKey ?? attribute
       if let relationshipData = ObjectJSONValue(data[key] ?? .Null) where !relationshipDescription.toMany {
         return updateRelationship(relationshipDescription, withData: relationshipData)
       } else if let relationshipData = ArrayJSONValue(data[key] ?? .Null) where relationshipDescription.toMany {
@@ -542,17 +542,17 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
 
 
   /**
-  appendValueForKey:forKey:ifNotDefault:inDictionary:
+  appendValueForKey:forKey:ifNotDefault:toObject:
 
   :param: key String
   :param: forKey String? = nil
   :param: nonDefault Bool = true
-  :param: dictionary MSDictionary
+  :param: object ObjectJSONValue
   */
   public func appendValueForKey(key: String,
                   forKey: String? = nil,
             ifNotDefault nonDefault: Bool = false,
-            inout toDictionary dictionary: JSONValue.ObjectValue)
+            inout toObject object: ObjectJSONValue)
   {
     let value: Any?
     if let attributeDescription = entity.attributesByName[key] as? NSAttributeDescription
@@ -563,59 +563,55 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
     appendValue(value,
          forKey: forKey ?? key,
    ifNotDefault: nonDefault,
-   toDictionary: &dictionary)
+       toObject: &object)
   }
 
   /**
-  appendValueForKeyPath:forKey:inDictionary:
+  appendValueForKeyPath:forKey:ifNotDefault:toObject:
 
   :param: keypath String
   :param: key String
-  :param: dictionary MSDictionary
+  :param: object ObjectJSONValue
   */
   public func appendValueForKeyPath(keypath: String,
                              forKey key: String? = nil,
             ifNotDefault nonDefault: Bool = false,
-                 inout toDictionary dictionary: JSONValue.ObjectValue)
+                 inout toObject object: ObjectJSONValue)
   {
     appendValue(valueForKeyPath(keypath),
          forKey: key ?? keypath,
    ifNotDefault: nonDefault,
-   toDictionary: &dictionary)
+       toObject: &object)
   }
 
   /**
-  appendValueForKeyPath:forKey:inDictionary:
+  appendValue:forKey:ifNotDefault:toObject:
 
   :param: keypath String
   :param: key String
-  :param: dictionary MSDictionary
+  :param: object ObjectJSONValue
   */
   public func appendValue(value: Any?,
                    forKey key: String,
              ifNotDefault nonDefault: Bool = false,
-       inout toDictionary dictionary: JSONValue.ObjectValue)
+       inout toObject object: ObjectJSONValue)
   {
     if !(nonDefault && hasDefaultValue(key)) {
       if let convertibleValue = value as? JSONValueConvertible {
-        dictionary[key.dashcaseString] = convertibleValue.jsonValue
+        object[key] = convertibleValue.jsonValue
       } else if let convertibleValues = value as? [JSONValueConvertible] {
-        dictionary[key.dashcaseString] = .Array(convertibleValues.map({$0.jsonValue}))
+        object[key] = .Array(convertibleValues.map({$0.jsonValue}))
       } else if let convertibleValues = value as? Set<ModelObject> {
-        dictionary[key.dashcaseString] = .Array(Array(convertibleValues).map({$0.jsonValue}))
+        object[key] = .Array(Array(convertibleValues).map({$0.jsonValue}))
       } else {
-        dictionary[key.dashcaseString] = JSONValue(value)
+        object[key] = JSONValue(value)
       }
 
     }
   }
 
-  public var jsonValue: JSONValue {
-    var dict: JSONValue.ObjectValue = [:]
-    dict["uuid"] = uuid.jsonValue
-    return .Object(dict)
-  }
-
+  public var jsonValue: JSONValue { return .Object(["uuid": uuid.jsonValue] as OrderedDictionary) }
+  
   override public var description: String {
     return "\(className):\n\t" + "\n\t".join(
       "entity = \(entityName)",

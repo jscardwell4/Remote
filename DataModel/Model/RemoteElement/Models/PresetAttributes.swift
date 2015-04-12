@@ -31,8 +31,8 @@ public final class PresetAttributes {
   public init(storage: DictionaryStorage) { self.storage = storage; self.context = storage.managedObjectContext }
 
   public var baseType: RemoteElement.BaseType {
-    get { return RemoteElement.BaseType(jsonValue: (storage["base-type"] as? String ?? "undefined").jsonValue) }
-    set { storage["base-type"] = newValue.jsonValue.anyObjectValue }
+    get { return RemoteElement.BaseType(jsonValue: (storage["baseType"] as? String ?? "undefined").jsonValue) }
+    set { storage["baseType"] = newValue.jsonValue.anyObjectValue }
   }
 
   public var role: RemoteElement.Role {
@@ -56,17 +56,17 @@ public final class PresetAttributes {
         return Image.objectWithIndex(PathIndex(path)!, context: moc)
       } else { return nil }
     }
-    set { storage["background-image"] = newValue }
+    set { storage["backgroundImage"] = newValue }
   }
 
   public var backgroundImageAlpha: NSNumber? {
-    get { return storage["background-image-alpha"] as? NSNumber }
-    set { storage["background-image-alpha"] = newValue }
+    get { return storage["backgroundImage-alpha"] as? NSNumber }
+    set { storage["backgroundImage-alpha"] = newValue }
   }
 
   public var backgroundColor: UIColor? {
-    get { return UIColor(string: storage["background-color"] as? String ?? "") }
-    set { storage["background-color"] = newValue?.string }
+    get { return UIColor(string: storage["backgroundColor"] as? String ?? "") }
+    set { storage["backgroundColor"] = newValue?.string }
   }
 
   public var subelements: [PresetAttributes]? {
@@ -90,8 +90,8 @@ public final class PresetAttributes {
 
 
   public var topBarHidden: Bool? {
-    get { return (storage["top-bar-hidden"] as? NSNumber)?.boolValue }
-    set { storage["top-bar-hidden"] = newValue }
+    get { return (storage["topBar-hidden"] as? NSNumber)?.boolValue }
+    set { storage["topBar-hidden"] = newValue }
   }
 
   // panels?
@@ -112,18 +112,18 @@ public final class PresetAttributes {
   }
 
   public var labelAttributes: [String:AnyObject]? {
-    get { return storage["label-attributes"] as? [String:AnyObject] }
-    set { storage["label-attributes"] = newValue }
+    get { return storage["labelAttributes"] as? [String:AnyObject] }
+    set { storage["labelAttributes"] = newValue }
   }
 
   public var labelConstraints: String? {
-    get { return storage["label-constraints"] as? String }
-    set { storage["label-constraints"] = newValue }
+    get { return storage["labelConstraints"] as? String }
+    set { storage["labelConstraints"] = newValue }
   }
 
   public var panelAssignment: ButtonGroup.PanelAssignment? {
-    get { return ButtonGroup.PanelAssignment(jsonValue: (storage["panel-assignment"] as? String ?? "").jsonValue) }
-    set { storage["panel-assignment"] = newValue?.jsonValue.anyObjectValue }
+    get { return ButtonGroup.PanelAssignment(jsonValue: (storage["panelAssignment"] as? String ?? "").jsonValue) }
+    set { storage["panelAssignment"] = newValue?.jsonValue.anyObjectValue }
   }
 
   /// MARK: - Button attributes
@@ -150,23 +150,23 @@ public final class PresetAttributes {
 
   /** backgroundColors data stored in format ["state":"color"] */
   public var backgroundColors: [String:AnyObject]? {
-    get { return storage["background-colors"] as? [String:AnyObject] }
-    set { storage["background-colors"] = newValue }
+    get { return storage["backgroundColors"] as? [String:AnyObject] }
+    set { storage["backgroundColors"] = newValue }
   }
 
   public var titleEdgeInsets: UIEdgeInsets? {
-    get { return (storage["title-edge-insets"] as? NSValue)?.UIEdgeInsetsValue() }
-    set { storage["title-edge-insets"] = newValue == nil ? nil : NSValue(UIEdgeInsets: newValue!) }
+    get { return (storage["titleEdge-insets"] as? NSValue)?.UIEdgeInsetsValue() }
+    set { storage["titleEdge-insets"] = newValue == nil ? nil : NSValue(UIEdgeInsets: newValue!) }
   }
 
   public var contentEdgeInsets: UIEdgeInsets? {
-    get { return (storage["content-edge-insets"] as? NSValue)?.UIEdgeInsetsValue() }
+    get { return (storage["contentEdge-insets"] as? NSValue)?.UIEdgeInsetsValue() }
     set { storage["contentEdgeInsets"] = newValue == nil ? nil : NSValue(UIEdgeInsets: newValue!) }
   }
 
   public var imageEdgeInsets: UIEdgeInsets? {
-    get { return (storage["image-edge-insets"] as? NSValue)?.UIEdgeInsetsValue() }
-    set { storage["image-edge-insets"] = newValue == nil ? nil : NSValue(UIEdgeInsets: newValue!) }
+    get { return (storage["imageEdge-insets"] as? NSValue)?.UIEdgeInsetsValue() }
+    set { storage["imageEdge-insets"] = newValue == nil ? nil : NSValue(UIEdgeInsets: newValue!) }
   }
 
   public var command: [String:String]? {

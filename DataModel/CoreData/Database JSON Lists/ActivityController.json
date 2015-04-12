@@ -1,7 +1,7 @@
 {
   "uuid": "01844614-744C-4664-BF8F-ABF948CE5996",
   "home-remote.uuid": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD", // Home Screen
-  "top-toolbar": {
+  "topToolbar": {
     "uuid": "648C5ADA-F9E0-41BF-948A-6E980C657F97",
     "name": "Top Toolbar",
     "role": "toolbar",

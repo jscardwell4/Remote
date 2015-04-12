@@ -1,8 +1,8 @@
 [
   {
     "name": "Dish Hopper",
-    "always-on": true,
-    "code-set.index": "Dish/Dish",
+    "alwaysOn": true,
+    "codeSet.index": "Dish/Dish",
     "manufacturer.index": "Dish"
   },
   {
@@ -13,9 +13,9 @@
   {
     "name": "AV Receiver",
     "port": 2,
-    "input-powers-on": true,
-    "code-set.index": "Sony/AV%20Receiver",
-    "off-command": {
+    "inputPowersOn": true,
+    "codeSet.index": "Sony/AV%20Receiver",
+    "offCommand": {
       "class": "sendir",
       "code.index": "Sony/AV%20Receiver/Power"
     },
@@ -24,12 +24,12 @@
   {
     "name": "Samsung TV",
     "port": 3,
-    "code-set.index": "Samsung/Samsung%20TV",
-    "on-command": {
+    "codeSet.index": "Samsung/Samsung%20TV",
+    "onCommand": {
       "class": "sendir",
       "code.index": "Samsung/Samsung%20TV/Power%20On"
     },
-    "off-command": {
+    "offCommand": {
       "class": "sendir",
       "code.index": "Samsung/Samsung%20TV/Power%20Off"
     },

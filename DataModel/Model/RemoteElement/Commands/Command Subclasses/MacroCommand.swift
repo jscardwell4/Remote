@@ -23,11 +23,7 @@ public final class MacroCommand: Command {
 
   override var operation: CommandOperation { return MacroCommandOperation(command: self) }
 
-  /** awakeFromInsert */
-  override public func awakeFromInsert() {
-    super.awakeFromInsert()
-    indicator = true
-  }
+  override public var indicator: Bool { return true }
 
   public subscript(index: Int) -> Command {
     get {
@@ -110,11 +106,10 @@ public final class MacroCommand: Command {
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
-
-    dict["class"] = "macro"
-    appendValueForKey("commands", toDictionary: &dict)
-    return .Object(dict)
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["class"] = "macro"
+    obj["commands"] = JSONValue(commands)
+    return obj.jsonValue
   }
 
 

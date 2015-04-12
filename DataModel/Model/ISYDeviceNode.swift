@@ -32,26 +32,26 @@ public class ISYDeviceNode: NamedModelObject {
     if let type = String(data["type"]) { self.type = type }
     if let enabled = Bool(data["enabled"]) { self.enabled = enabled }
     if let pnode = String(data["pnode"]) { self.pnode = pnode }
-    if let propertyFormatted = String(data["property-formatted"]) { self.propertyFormatted = propertyFormatted }
-    if let propertyID = String(data["property-id"]) { self.propertyID = propertyID }
-    if let propertyUOM = String(data["property-uom"]) { self.propertyUOM = propertyUOM }
-    if let propertyValue = Int16(data["property-value"]) { self.propertyValue = propertyValue }
+    if let propertyFormatted = String(data["propertyFormatted"]) { self.propertyFormatted = propertyFormatted }
+    if let propertyID = String(data["propertyID"]) { self.propertyID = propertyID }
+    if let propertyUOM = String(data["propertyUOM"]) { self.propertyUOM = propertyUOM }
+    if let propertyValue = Int16(data["propertyValue"]) { self.propertyValue = propertyValue }
     updateRelationshipFromData(data, forAttribute: "groups")
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
-    appendValueForKey("flag", toDictionary: &dict)
-    appendValueForKey("address", toDictionary: &dict)
-    appendValueForKey("type", toDictionary: &dict)
-    appendValueForKey("enabled", toDictionary: &dict)
-    appendValueForKey("pnode", toDictionary: &dict)
-    appendValueForKey("propertyFormatted", toDictionary: &dict)
-    appendValueForKey("propertyID", toDictionary: &dict)
-    appendValueForKey("propertyUOM", toDictionary: &dict)
-    appendValueForKey("propertyValue", toDictionary: &dict)
-    appendValueForKeyPath("groups.uuid", forKey: "groups", toDictionary: &dict)
-    return .Object(dict)
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["flag"] = flag.jsonValue
+    obj["address"] = address.jsonValue
+    obj["type"] = type.jsonValue
+    obj["enabled"] = enabled.jsonValue
+    obj["pnode"] = pnode.jsonValue
+    obj["propertyFormatted"] = propertyFormatted.jsonValue
+    obj["propertyID"] = propertyID.jsonValue
+    obj["propertyUOM"] = propertyUOM.jsonValue
+    obj["propertyValue"] = propertyValue.jsonValue
+    obj["groups.uuid"] = JSONValue(groups)
+    return obj.jsonValue
   }
 
 }

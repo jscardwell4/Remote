@@ -217,6 +217,10 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
     return dictionary.updateValue(value, forKey: key)
   }
 
+  public mutating func extend<S: SequenceType where S.Generator.Element == (Key, Value)>(s: S) {
+    for (k, v) in s { self[k] = v }
+  }
+
   /**
   removeAtIndex:
 
@@ -474,13 +478,18 @@ public struct OrderedDictionaryGenerator<Key : Hashable, Value> : GeneratorType 
 
 // MARK: - Operations
 
-public func +<K, V>(lhs: OrderedDictionary<K, V>, rhs: OrderedDictionary<K,V>) -> OrderedDictionary<K, V> {
-  let keys: [K] = lhs._keys + rhs._keys
-  let values: [V] = Array(lhs.values) + Array(rhs.values)
-  return OrderedDictionary<K,V>(keys: keys, values: values)
+//public func +<K, V>(lhs: OrderedDictionary<K, V>, rhs: OrderedDictionary<K,V>) -> OrderedDictionary<K, V> {
+//  let keys: [K] = lhs._keys + rhs._keys
+//  let values: [V] = Array(lhs.values) + Array(rhs.values)
+//  return OrderedDictionary<K,V>(keys: keys, values: values)
+//}
+
+public func +<K, V, S:SequenceType where S.Generator.Element == (K, V)>(var lhs: OrderedDictionary<K, V>, rhs: S) -> OrderedDictionary<K,V> {
+  for (k, v) in rhs { lhs[k] = v }
+  return lhs
 }
 
-public func +=<K, V>(inout lhs: OrderedDictionary<K, V>, rhs: OrderedDictionary<K, V>) {
+public func +=<K, V, S:SequenceType where S.Generator.Element == (K, V)>(inout lhs: OrderedDictionary<K, V>, rhs: S) {
   lhs = lhs + rhs
 }
 
@@ -489,6 +498,15 @@ public func -<K, V>(var lhs: OrderedDictionary<K, V>, rhs: K) -> OrderedDictiona
   return lhs
 }
 
+public func -<K, V>(var lhs: OrderedDictionary<K, V>, rhs: [K]) -> OrderedDictionary<K, V> {
+  lhs.removeValuesForKeys(rhs)
+  return lhs
+}
+
 public func -=<K, V>(inout lhs: OrderedDictionary<K, V>, rhs: K) {
   lhs.removeValueForKey(rhs)
+}
+
+public func -=<K, V>(inout lhs: OrderedDictionary<K, V>, rhs: [K]) {
+  lhs.removeValuesForKeys(rhs)
 }

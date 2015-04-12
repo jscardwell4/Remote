@@ -36,11 +36,10 @@ final public class Manufacturer: EditableModelObject {
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
-
-    appendValueForKeyPath("devices.index",   forKey: "devices", toDictionary: &dict)
-    appendValueForKey("codeSets", toDictionary: &dict)
-    return .Object(dict)
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["devices.index"] = .Array(map(devices, {$0.index.jsonValue}))
+    obj["codeSets"] = JSONValue(codeSets)
+    return obj.jsonValue
   }
 
   /**

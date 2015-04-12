@@ -1,7 +1,7 @@
   {
     "name": "Dish Hopper Activity",
     "remote.index": "Dish%20Hopper%20Activity",
-    "launch-macro": {
+    "launchMacro": {
       "class": "macro",
       "commands": [
         {"class": "sendir", "code.index": "Sony/AV%20Receiver/TV%2FSAT"},
@@ -10,7 +10,7 @@
         {"class": "sendir", "code.index": "Samsung/Samsung%20TV/HDMI%204"}
       ]
     },
-    "halt-macro": {
+    "haltMacro": {
       "class": "macro",
       "commands": [
         {"class": "power", "device.index": "Samsung%20TV", "state": "off"},

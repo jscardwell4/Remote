@@ -1,0 +1,25 @@
+{
+  "CH": <@include CommandSet.json>,
+  "PAGE": {
+    "type": "rocker",
+    "top": {
+      "class": "sendir",
+      "code.index": "Dish/Dish/Page%20Up"
+    },
+    "bottom": {
+      "class": "sendir",
+      "code.index": "Dish/Dish/Page%20Down"
+    }
+  },
+  "VOL": {
+    "type": "rocker",
+    "top": {
+      "class": "sendir",
+      "code.index": "Sony/AV%20Receiver/Volume%20Up"
+    },
+    "bottom": {
+      "class": "sendir",
+      "code.index": "Sony/AV%20Receiver/Volume%20Down"
+    }
+  }
+}

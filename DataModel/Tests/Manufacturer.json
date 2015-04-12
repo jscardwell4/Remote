@@ -1,6 +1,6 @@
 {
   "name": "Dish",
-  "code-sets": [
+  "codeSets": [
     <@include IRCodeSet.json>
   ]
 }

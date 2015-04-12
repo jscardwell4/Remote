@@ -16,9 +16,9 @@
     "default": {
       "normal": {
         "font": "Helvetica Neue@20",
-        "foreground-color": "white",
-        "stroke-color": "white@50%",
-        "stroke-width": -2,
+        "foregroundColor": "white",
+        "strokeColor": "white@50%",
+        "strokeWidth": -2,
         "alignment": "center",
         "text": "Guide"
       },
@@ -27,15 +27,15 @@
     "tv": {
       "normal": {
         "font": "Helvetica Neue@20",
-        "foreground-color": "white",
-        "stroke-color": "white@50%",
-        "stroke-width": -2,
+        "foregroundColor": "white",
+        "strokeColor": "white@50%",
+        "strokeWidth": -2,
         "alignment": "center",
         "text": "Tools"
       },
       "highlighted.foreground-color": "#00AFFFFF"
     }
   },
-  "background-colors.default.normal": "#060606FF",
-  "title-edge-insets": "{20, 20, 20, 20}"
+  "backgroundColors.default.normal": "#060606FF",
+  "titleEdge-insets": "{20, 20, 20, 20}"
 }

@@ -1,7 +1,7 @@
 {
   "name": "Toolbar",
-  "base-type": "button-group",
+  "baseType": "button-group",
   "role": "toolbar",
   "shape": "rectangle",
-  "background-color": "gray@50%"
+  "backgroundColor": "gray@50%"
 }

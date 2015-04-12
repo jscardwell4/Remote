@@ -49,11 +49,10 @@ public final class SystemCommand: Command {
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
-
-    dict["class"] = "system"
-    appendValueForKey("type", toDictionary: &dict)
-    return .Object(dict)
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["class"] = "system".jsonValue
+    obj["type"] = type.jsonValue
+    return obj.jsonValue
   }
 
   override var operation: CommandOperation { return SystemCommandOperation(command: self) }
@@ -73,11 +72,11 @@ extension SystemCommand.SystemCommandType: JSONValueConvertible {
 
   public init(jsonValue: JSONValue) {
     switch jsonValue.value as? String ?? "" {
-      case "proximity-sensor": self = .ProximitySensor
-      case "url-request":      self = .URLRequest
-      case "launch-screen":    self = .LaunchScreen
-      case "open-settings":    self = .OpenSettings
-      case "open-editor":      self = .OpenEditor
+      case "proximitySensor": self = .ProximitySensor
+      case "urlRequest":      self = .URLRequest
+      case "launchScreen":    self = .LaunchScreen
+      case "openSettings":    self = .OpenSettings
+      case "openEditor":      self = .OpenEditor
       default:                 self = .Undefined
     }
   }

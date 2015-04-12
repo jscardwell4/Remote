@@ -24,18 +24,17 @@ final public class PresetCategory: EditableModelObject {
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-
     updateRelationshipFromData(data, forAttribute: "parentCategory", lookupKey: "category")
     updateRelationshipFromData(data, forAttribute: "presets")
     updateRelationshipFromData(data, forAttribute: "childCategories", lookupKey: "subcategories")
   }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
-
-    //TODO: Fill in stub
-    
-    return .Object(dict)
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["category.index"] = parentCategory?.index.jsonValue
+    obj["presets"] = JSONValue(presets)
+    obj["subcategories"] = JSONValue(childCategories)
+    return obj.jsonValue
   }
 
 

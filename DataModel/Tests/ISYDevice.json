@@ -1,0 +1,20 @@
+{
+  "uuid": "6BAD3045-DC09-4D29-AEF3-4063D3590BDD",
+  "name": "ISYDevice1",
+  "uniqueIdentifier": "uuid:00:21:b9:01:f2:b6",
+  "type": "isy",
+  "modelNumber": "1120",
+  "modelName": "ISY 994i 256",
+  "modelDescription": "X_Insteon_Lighting_Device:1",
+  "manufacturerURL": "http://www.universal-devices.com",
+  "manufacturer": "Universal Devices Inc.",
+  "friendlyName": "ISY",
+  "deviceType": "urn:udi-com:device:X_Insteon_Lighting_Device:1",
+  "baseURL": "http://192.168.1.9",
+  "nodes": [
+    <@include ISYDeviceNode.json>
+  ],
+  "groups": [
+    <@include ISYDeviceGroup.json>
+  ]
+}

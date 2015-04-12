@@ -13,35 +13,17 @@ import MoonKit
 @objc(Image)
 final public class Image: EditableModelObject {
 
-  // TODO: Consider adding absolute file path as an attribute
+  @NSManaged public var asset: Asset?
 
-  public var assetName: String {
-    get {
-      var assetName: String!
-      willAccessValueForKey("assetName")
-      assetName = primitiveValueForKey("assetName") as? String
-      didAccessValueForKey("assetName")
-      return assetName
-    }
-    set {
-//      let img: UIImage? = UIImage(named: newValue)
-//      if img != nil {
-        willChangeValueForKey("assetName")
-        setPrimitiveValue(newValue, forKey: "assetName")
-        didChangeValueForKey("assetName")
-//        size = img!.size
-//      }
-    }
-
-  }
   @NSManaged public var leftCap: Int32
+  @NSManaged public var topCap: Int32
+
   public var size: CGSize {
     get {
-      var sizeValue: NSValue?
       willAccessValueForKey("size")
-      sizeValue = primitiveValueForKey("size") as? NSValue
+      let size = (primitiveValueForKey("size") as! NSValue).CGSizeValue()
       didAccessValueForKey("size")
-      return sizeValue?.CGSizeValue() ?? CGSize.zeroSize
+      return size
     }
     set {
       willChangeValueForKey("size")
@@ -50,7 +32,6 @@ final public class Image: EditableModelObject {
     }
   }
 
-  @NSManaged public var topCap: Int32
   @NSManaged public var remoteElements: Set<RemoteElement>
   @NSManaged public var views: Set<ImageView>
 
@@ -75,30 +56,26 @@ final public class Image: EditableModelObject {
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
     updateRelationshipFromData(data, forAttribute: "imageCategory", lookupKey: "category")
-
-    if let assetName = String(data["asset-name"]) { self.assetName = assetName }
-    if let leftCap = Int32(data["left-cap"]) { self.leftCap = leftCap }
-    if let topCap = Int32(data["top-cap"]) { self.topCap = topCap }
+    updateRelationshipFromData(data, forAttribute: "asset")
+    if let leftCap = Int32(data["leftCap"]) { self.leftCap = leftCap }
+    if let topCap = Int32(data["topCap"]) { self.topCap = topCap }
   }
   // FIXME: Move UIImage retrieval to bank module?
-  public var image: UIImage? { return UIImage(named: assetName) }
+  public var image: UIImage? { return UIImage(contentsOfFile: asset?.location ?? "") }
   public var templateImage: UIImage? { return image?.imageWithRenderingMode(.AlwaysTemplate) }
-  override public var commentedUUID: String {
-    var uuidCopy: NSString = uuid
-    uuidCopy.comment = " // \(assetName)"
-    return uuidCopy as String
-  }
 
   override public var jsonValue: JSONValue {
-    var dict = super.jsonValue.value as! JSONValue.ObjectValue
-    appendValueForKeyPath("imageCategory.index", forKey: "category.index", toDictionary: &dict)
-    dict["asset-name"] = assetName.jsonValue
-    appendValueForKey("leftCap", toDictionary: &dict)
-    appendValueForKey("topCap", toDictionary: &dict)
-    return .Object(dict)
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["category.index"] = imageCategory.index.jsonValue
+    obj["asset"] = asset?.jsonValue
+    obj["leftCap"] = leftCap.jsonValue
+    obj["topCap"] = topCap.jsonValue
+    return obj.jsonValue
   }
 
-  public var stretchableImage: UIImage? { return image?.stretchableImageWithLeftCapWidth(Int(leftCap), topCapHeight: Int(topCap)) }
+  public var stretchableImage: UIImage? {
+    return image?.stretchableImageWithLeftCapWidth(Int(leftCap), topCapHeight: Int(topCap))
+  }
 
   public var preview: UIImage { return image ?? UIImage() }
   public var thumbnail: UIImage { return preview }
@@ -118,7 +95,7 @@ final public class Image: EditableModelObject {
 
   override public var description: String {
     return "\(super.description)\n\t" + "\n\t".join(
-      "asset name = \(assetName)",
+      "asset = \(toString(asset))",
       "left cap = \(leftCap)",
       "top cap = \(topCap)",
       "category = \(imageCategory.index)"
