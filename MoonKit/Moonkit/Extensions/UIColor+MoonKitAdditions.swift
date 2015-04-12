@@ -135,7 +135,7 @@ extension UIColor {
   public var string: String? {
     if let name = colorName {
       let a = alpha ?? 1.0
-      return a == 1.0 ? name : "\(name)@\(a * 100.0)%"
+      return a == 1.0 ? name : "\(name)@\(Int(a * 100.0))%"
     } else if rgba != nil {
       return rgbaHexString
     } else {

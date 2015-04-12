@@ -39,3 +39,10 @@ let actualData = ObjectJSONValue(actualJSON)
 let expectedData = ObjectJSONValue(expectedJSON?.inflatedValue)?.filter({(k, _) in ["device", "groups"] ∌ k})
 
 actualData?.contains(expectedData!)
+
+let x: Int? = 4
+var a = [1, 2, 3]
+
+x ?> a.append
+a
+

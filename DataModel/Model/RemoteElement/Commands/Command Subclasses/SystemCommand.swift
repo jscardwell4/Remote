@@ -72,12 +72,12 @@ extension SystemCommand.SystemCommandType: JSONValueConvertible {
 
   public init(jsonValue: JSONValue) {
     switch jsonValue.value as? String ?? "" {
-      case "proximitySensor": self = .ProximitySensor
-      case "urlRequest":      self = .URLRequest
-      case "launchScreen":    self = .LaunchScreen
-      case "openSettings":    self = .OpenSettings
-      case "openEditor":      self = .OpenEditor
-      default:                 self = .Undefined
+      case String(SystemCommand.SystemCommandType.ProximitySensor.jsonValue)!: self = .ProximitySensor
+      case String(SystemCommand.SystemCommandType.URLRequest.jsonValue)!:      self = .URLRequest
+      case String(SystemCommand.SystemCommandType.LaunchScreen.jsonValue)!:    self = .LaunchScreen
+      case String(SystemCommand.SystemCommandType.OpenSettings.jsonValue)!:    self = .OpenSettings
+      case String(SystemCommand.SystemCommandType.OpenEditor.jsonValue)!:      self = .OpenEditor
+      default:                                                                 self = .Undefined
     }
   }
 }

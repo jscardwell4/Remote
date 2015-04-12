@@ -198,6 +198,23 @@
 		C23F071E1AD5A54F003BD28B /* PresetCategory.json in Resources */ = {isa = PBXBuildFile; fileRef = C23F070F1AD5A54F003BD28B /* PresetCategory.json */; };
 		C23F071F1AD5A54F003BD28B /* TitleAttributes.json in Resources */ = {isa = PBXBuildFile; fileRef = C23F07101AD5A54F003BD28B /* TitleAttributes.json */; };
 		C240DD5F170485F2005CC390 /* IRLearner.m in Sources */ = {isa = PBXBuildFile; fileRef = C240DD5E170485F2005CC390 /* IRLearner.m */; };
+		C24A22711ADABB540065E7EA /* ActivityCommand.json in Resources */ = {isa = PBXBuildFile; fileRef = C24A22621ADABB540065E7EA /* ActivityCommand.json */; };
+		C24A22721ADABB540065E7EA /* CommandSet.json in Resources */ = {isa = PBXBuildFile; fileRef = C24A22631ADABB540065E7EA /* CommandSet.json */; };
+		C24A22731ADABB540065E7EA /* CommandSetCollection.json in Resources */ = {isa = PBXBuildFile; fileRef = C24A22641ADABB540065E7EA /* CommandSetCollection.json */; };
+		C24A22741ADABB540065E7EA /* Constraint.json in Resources */ = {isa = PBXBuildFile; fileRef = C24A22651ADABB540065E7EA /* Constraint.json */; };
+		C24A22751ADABB540065E7EA /* ControlStateColorSet.json in Resources */ = {isa = PBXBuildFile; fileRef = C24A22661ADABB540065E7EA /* ControlStateColorSet.json */; };
+		C24A22761ADABB540065E7EA /* ControlStateImageSet.json in Resources */ = {isa = PBXBuildFile; fileRef = C24A22671ADABB540065E7EA /* ControlStateImageSet.json */; };
+		C24A22771ADABB540065E7EA /* ControlStateTitleSet.json in Resources */ = {isa = PBXBuildFile; fileRef = C24A22681ADABB540065E7EA /* ControlStateTitleSet.json */; };
+		C24A22781ADABB540065E7EA /* DelayCommand.json in Resources */ = {isa = PBXBuildFile; fileRef = C24A22691ADABB540065E7EA /* DelayCommand.json */; };
+		C24A22791ADABB540065E7EA /* HTTPCommand.json in Resources */ = {isa = PBXBuildFile; fileRef = C24A226A1ADABB540065E7EA /* HTTPCommand.json */; };
+		C24A227A1ADABB540065E7EA /* ImageView.json in Resources */ = {isa = PBXBuildFile; fileRef = C24A226B1ADABB540065E7EA /* ImageView.json */; };
+		C24A227B1ADABB540065E7EA /* MacroCommand.json in Resources */ = {isa = PBXBuildFile; fileRef = C24A226C1ADABB540065E7EA /* MacroCommand.json */; };
+		C24A227C1ADABB540065E7EA /* PowerCommand.json in Resources */ = {isa = PBXBuildFile; fileRef = C24A226D1ADABB540065E7EA /* PowerCommand.json */; };
+		C24A227D1ADABB540065E7EA /* SendIRCommand.json in Resources */ = {isa = PBXBuildFile; fileRef = C24A226E1ADABB540065E7EA /* SendIRCommand.json */; };
+		C24A227E1ADABB540065E7EA /* SwitchCommand.json in Resources */ = {isa = PBXBuildFile; fileRef = C24A226F1ADABB540065E7EA /* SwitchCommand.json */; };
+		C24A227F1ADABB540065E7EA /* SystemCommand.json in Resources */ = {isa = PBXBuildFile; fileRef = C24A22701ADABB540065E7EA /* SystemCommand.json */; };
+		C24A22891ADB04A10065E7EA /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C24A22881ADB04A10065E7EA /* Nimble.framework */; };
+		C24A228B1ADB04A30065E7EA /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C24A228A1ADB04A30065E7EA /* Quick.framework */; };
 		C24E0EBF1AC61E080044248E /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C24E0EBE1AC61E080044248E /* MoonKit.framework */; };
 		C24E0EC01AC61FC30044248E /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C24E0EBE1AC61E080044248E /* MoonKit.framework */; };
 		C24E0EC11AC61FC30044248E /* MoonKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C24E0EBE1AC61E080044248E /* MoonKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -894,6 +911,23 @@
 		C23F07101AD5A54F003BD28B /* TitleAttributes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TitleAttributes.json; sourceTree = "<group>"; };
 		C240DD5D170485F2005CC390 /* IRLearner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRLearner.h; sourceTree = "<group>"; };
 		C240DD5E170485F2005CC390 /* IRLearner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRLearner.m; sourceTree = "<group>"; };
+		C24A22621ADABB540065E7EA /* ActivityCommand.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ActivityCommand.json; sourceTree = "<group>"; };
+		C24A22631ADABB540065E7EA /* CommandSet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CommandSet.json; sourceTree = "<group>"; };
+		C24A22641ADABB540065E7EA /* CommandSetCollection.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CommandSetCollection.json; sourceTree = "<group>"; };
+		C24A22651ADABB540065E7EA /* Constraint.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Constraint.json; sourceTree = "<group>"; };
+		C24A22661ADABB540065E7EA /* ControlStateColorSet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ControlStateColorSet.json; sourceTree = "<group>"; };
+		C24A22671ADABB540065E7EA /* ControlStateImageSet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ControlStateImageSet.json; sourceTree = "<group>"; };
+		C24A22681ADABB540065E7EA /* ControlStateTitleSet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ControlStateTitleSet.json; sourceTree = "<group>"; };
+		C24A22691ADABB540065E7EA /* DelayCommand.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DelayCommand.json; sourceTree = "<group>"; };
+		C24A226A1ADABB540065E7EA /* HTTPCommand.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = HTTPCommand.json; sourceTree = "<group>"; };
+		C24A226B1ADABB540065E7EA /* ImageView.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ImageView.json; sourceTree = "<group>"; };
+		C24A226C1ADABB540065E7EA /* MacroCommand.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MacroCommand.json; sourceTree = "<group>"; };
+		C24A226D1ADABB540065E7EA /* PowerCommand.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PowerCommand.json; sourceTree = "<group>"; };
+		C24A226E1ADABB540065E7EA /* SendIRCommand.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SendIRCommand.json; sourceTree = "<group>"; };
+		C24A226F1ADABB540065E7EA /* SwitchCommand.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SwitchCommand.json; sourceTree = "<group>"; };
+		C24A22701ADABB540065E7EA /* SystemCommand.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SystemCommand.json; sourceTree = "<group>"; };
+		C24A22881ADB04A10065E7EA /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
+		C24A228A1ADB04A30065E7EA /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
 		C24E0EBE1AC61E080044248E /* MoonKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MoonKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C253B2E01AD98D6B00F7E6AF /* Asset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
 		C25B130219FB4A6500C5630F /* Remote.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Remote.entitlements; sourceTree = "<group>"; };
@@ -1420,6 +1454,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2EDDDA91AC630AF00DAB1B5 /* MoonKit.framework in Frameworks */,
+				C24A22891ADB04A10065E7EA /* Nimble.framework in Frameworks */,
+				C24A228B1ADB04A30065E7EA /* Quick.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1661,6 +1697,8 @@
 		C26BAEAA16DC10FE0093D5B4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C24A228A1ADB04A30065E7EA /* Quick.framework */,
+				C24A22881ADB04A10065E7EA /* Nimble.framework */,
 				C24E0EBE1AC61E080044248E /* MoonKit.framework */,
 				C2CA76D919BA34A500ACCD76 /* libicucore.dylib */,
 				C2CA766519BA099000ACCD76 /* Foundation.framework */,
@@ -2052,6 +2090,21 @@
 		C28E98F51AD1A4B000E78711 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C24A22621ADABB540065E7EA /* ActivityCommand.json */,
+				C24A22631ADABB540065E7EA /* CommandSet.json */,
+				C24A22641ADABB540065E7EA /* CommandSetCollection.json */,
+				C24A22651ADABB540065E7EA /* Constraint.json */,
+				C24A22661ADABB540065E7EA /* ControlStateColorSet.json */,
+				C24A22671ADABB540065E7EA /* ControlStateImageSet.json */,
+				C24A22681ADABB540065E7EA /* ControlStateTitleSet.json */,
+				C24A22691ADABB540065E7EA /* DelayCommand.json */,
+				C24A226A1ADABB540065E7EA /* HTTPCommand.json */,
+				C24A226B1ADABB540065E7EA /* ImageView.json */,
+				C24A226C1ADABB540065E7EA /* MacroCommand.json */,
+				C24A226D1ADABB540065E7EA /* PowerCommand.json */,
+				C24A226E1ADABB540065E7EA /* SendIRCommand.json */,
+				C24A226F1ADABB540065E7EA /* SwitchCommand.json */,
+				C24A22701ADABB540065E7EA /* SystemCommand.json */,
 				C2CDB8F31AD74BC8006DF88C /* Button.json */,
 				C2CDB8F41AD74BC8006DF88C /* ButtonGroup.json */,
 				C2CDB8F51AD74BC8006DF88C /* Remote.json */,
@@ -2618,6 +2671,7 @@
 				C215CBFB1ABB102F00E8077E /* Frameworks */,
 				C215CBFC1ABB102F00E8077E /* Headers */,
 				C215CBFD1ABB102F00E8077E /* Resources */,
+				C24A228D1ADB06890065E7EA /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3167,11 +3221,26 @@
 			files = (
 				C23F07121AD5A54F003BD28B /* ActivityController.json in Resources */,
 				C23F07191AD5A54F003BD28B /* ISYDeviceGroup.json in Resources */,
+				C24A22721ADABB540065E7EA /* CommandSet.json in Resources */,
 				C23F07141AD5A54F003BD28B /* Image.json in Resources */,
+				C24A22741ADABB540065E7EA /* Constraint.json in Resources */,
+				C24A22731ADABB540065E7EA /* CommandSetCollection.json in Resources */,
+				C24A227B1ADABB540065E7EA /* MacroCommand.json in Resources */,
+				C24A22791ADABB540065E7EA /* HTTPCommand.json in Resources */,
+				C24A22771ADABB540065E7EA /* ControlStateTitleSet.json in Resources */,
+				C24A22781ADABB540065E7EA /* DelayCommand.json in Resources */,
 				C23F071B1AD5A54F003BD28B /* ITachDevice.json in Resources */,
+				C24A227E1ADABB540065E7EA /* SwitchCommand.json in Resources */,
+				C24A227C1ADABB540065E7EA /* PowerCommand.json in Resources */,
 				C23F071E1AD5A54F003BD28B /* PresetCategory.json in Resources */,
+				C24A227F1ADABB540065E7EA /* SystemCommand.json in Resources */,
+				C24A22751ADABB540065E7EA /* ControlStateColorSet.json in Resources */,
 				C2CDB8F81AD74BC8006DF88C /* Remote.json in Resources */,
+				C24A227D1ADABB540065E7EA /* SendIRCommand.json in Resources */,
+				C24A22761ADABB540065E7EA /* ControlStateImageSet.json in Resources */,
+				C24A22711ADABB540065E7EA /* ActivityCommand.json in Resources */,
 				C23F071A1AD5A54F003BD28B /* ISYDeviceNode.json in Resources */,
+				C24A227A1ADABB540065E7EA /* ImageView.json in Resources */,
 				C23F07111AD5A54F003BD28B /* Activity.json in Resources */,
 				C23F07181AD5A54F003BD28B /* ISYDevice.json in Resources */,
 				C23F07161AD5A54F003BD28B /* IRCode.json in Resources */,
@@ -3323,6 +3392,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C24A228D1ADB06890065E7EA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Quick.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Nimble.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C215CBFA1ABB102F00E8077E /* Sources */ = {
@@ -3696,7 +3783,10 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -3755,7 +3845,10 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3809,7 +3902,10 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3863,7 +3959,10 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -4375,6 +4474,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -4422,6 +4522,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -4462,6 +4563,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -4502,6 +4604,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;

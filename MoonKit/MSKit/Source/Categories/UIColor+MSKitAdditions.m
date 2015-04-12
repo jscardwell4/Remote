@@ -152,7 +152,12 @@ NSString *NSStringFromCGColorSpaceModel(CGColorSpaceModel model) {
   else if ([string characterAtIndex:0] == '#')
     string = [string substringFromIndex:1];
 
-  return [UIColor colorWithRGBHex:(uint32_t)[string intValue]];
+  NSScanner * scanner = [NSScanner scannerWithString:string];
+  uint32_t hexValue = 0;
+  if ([scanner scanHexInt:&hexValue])
+    return [UIColor colorWithRGBHex:hexValue];
+  else
+    return nil;
 }
 
 + (UIColor *)colorWithRGBAHexString:(NSString *)string {
@@ -164,9 +169,10 @@ NSString *NSStringFromCGColorSpaceModel(CGColorSpaceModel model) {
 
   NSScanner * scanner = [NSScanner scannerWithString:string];
   uint32_t    hexValue;
-  [scanner scanHexInt:&hexValue];
-
-  return [UIColor colorWithRGBAHex:hexValue];
+  if ([scanner scanHexInt:&hexValue])
+    return [UIColor colorWithRGBAHex:hexValue];
+  else
+    return nil;
 }
 
 + (UIColor *)colorWithName:(NSString *)name {

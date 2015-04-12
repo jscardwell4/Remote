@@ -31,8 +31,7 @@ public final class ControlStateColorSet: ControlStateSet {
     super.updateWithData(data)
 
     for (stateKey, colorJSON) in data {
-      if let state = UIControlState(controlStateSetProperty: stateKey.camelcaseString), color = UIColor(colorJSON)
-      {
+      if let state = UIControlState(controlStateSetProperty: stateKey), color = UIColor(colorJSON) {
         self[state.rawValue] = color
       }
     }
@@ -43,7 +42,7 @@ public final class ControlStateColorSet: ControlStateSet {
 
     UIControlState.enumerate {
       if let color = self[$0.rawValue] as? UIColor {
-        obj[$0.jsonValue.value as! String] = color.jsonValue
+        obj[String($0.jsonValue)!] = color.jsonValue
       }
     }
     return obj.jsonValue

@@ -38,15 +38,7 @@ public final class SwitchCommand: Command {
 
     obj["class"] = "switch"
     obj["type"] = type.jsonValue
-    switch type {
-      case .Remote:
-        if let targetRemote = Remote.objectWithUUID(target, context: managedObjectContext!) {
-          obj["target"] = target.jsonValue
-        }
-      case .Mode:
-        obj["target"] = target.jsonValue
-      default: break
-    }
+    obj["target"] = target.jsonValue
     return obj.jsonValue
   }
 
@@ -57,7 +49,7 @@ public final class SwitchCommand: Command {
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let typeJSON = String(data["type"]) { self.type = SwitchType(jsonValue: typeJSON.jsonValue) }
+    if let type = SwitchType(data["type"]) { self.type = type }
     if let target = String(data["target"]) { self.target = target }
   }
 
@@ -74,12 +66,16 @@ extension SwitchCommand.SwitchType: JSONValueConvertible {
       case .Mode:      return "mode"
     }
   }
+}
 
-  public init(jsonValue: JSONValue) {
-    switch jsonValue.value as? String ?? "" {
-      case SwitchCommand.SwitchType.Remote.jsonValue.value as! String: self = .Remote
-      case SwitchCommand.SwitchType.Mode.jsonValue.value as! String:   self = .Mode
-      default:                                                         self = .Undefined
-    }
+extension SwitchCommand.SwitchType: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue?) {
+    if let string = String(jsonValue) {
+      switch string {
+        case String(SwitchCommand.SwitchType.Remote.jsonValue)!: self = .Remote
+        case String(SwitchCommand.SwitchType.Mode.jsonValue)!:   self = .Mode
+        default:                                                 self = .Undefined
+      }
+    } else { return nil }
   }
 }

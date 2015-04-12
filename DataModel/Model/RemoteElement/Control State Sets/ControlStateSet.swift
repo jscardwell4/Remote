@@ -19,13 +19,15 @@ extension UIControlState: JSONValueConvertible {
     if self & UIControlState.Selected    != nil { flags.append("selected")    }
     if self & UIControlState.Disabled    != nil { flags.append("disabled")    }
     if flags.count == 0 { flags.append("normal") }
-    return " ".join(flags).jsonValue
+    var s = flags.removeAtIndex(0)
+    s += "".join(flags.map({$0.capitalizedString}))
+    return s.jsonValue
   }
 }
 
 extension UIControlState: JSONValueInitializable {
   public init?(_ jsonValue: JSONValue?) {
-    let flags = " ".split(String(jsonValue) ?? "")
+    let flags = "-".split(String(jsonValue)?.dashcaseString ?? "")
     if !contains(1...3, flags.count) { return nil }
     var state = UIControlState.Normal
     for flag in flags {
@@ -44,9 +46,14 @@ extension UIControlState: JSONValueInitializable {
 /** Add type enumeration to `UIControlState` */
 extension UIControlState: EnumerableType {
   public static var all: [UIControlState] {
-    return [.Normal, .Highlighted, .Selected, .Disabled,
-      .Highlighted | .Selected, .Highlighted | .Disabled,
-      .Highlighted | .Selected | .Disabled]
+    return [.Normal,
+            .Highlighted,
+            .Selected,
+            .Disabled,
+            .Selected | .Disabled,
+            .Highlighted | .Selected,
+            .Highlighted | .Disabled,
+            .Highlighted | .Selected | .Disabled]
   }
   public static func enumerate(block: (UIControlState) -> Void) { apply(all, block) }
 }

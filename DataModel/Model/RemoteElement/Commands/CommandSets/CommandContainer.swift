@@ -13,7 +13,19 @@ import MoonKit
 @objc(CommandContainer)
 public class CommandContainer: NamedModelObject {
 
-  @NSManaged public var containerIndex: MSDictionary
+  var containerIndex: OrderedDictionary<String, NSURL> {
+    get {
+      willAccessValueForKey("containerIndex")
+      let containerIndex = primitiveValueForKey("containerIndex") as! OrderedDictionary<String, NSURL>
+      didAccessValueForKey("containerIndex")
+      return containerIndex
+    }
+    set {
+      willChangeValueForKey("containerIndex")
+      setPrimitiveValue(newValue, forKey: "containerIndex")
+      didChangeValueForKey("containerIndex")
+    }
+  }
   @NSManaged public var buttonGroup: ButtonGroup?
 
   public var count: Int { return containerIndex.count }

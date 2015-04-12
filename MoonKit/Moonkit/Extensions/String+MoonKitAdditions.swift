@@ -82,6 +82,10 @@ public extension String {
     }
   }
 
+  public var isQuoted: Bool { return hasPrefix("\"") && hasSuffix("\"") }
+  public var quoted: String { return isQuoted ? self : "\"\(self)\"" }
+  public var unquoted: String { return isQuoted ? self[1..<length - 1] : self }
+
   public var isCamelcase: Bool { return ~/"^\\p{Ll}+(\\p{Lu}+\\p{Ll}*)*$" ~= self }
   public var isDashcase: Bool { return ~/"^\\p{Ll}+(-\\p{Ll}*)*$" ~= self }
   public var isTitlecase: Bool { return ~/"^\\p{Lu}\\p{Ll}*(\\P{L}+\\p{Lu}\\p{Ll}*)*$" ~= self }

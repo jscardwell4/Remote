@@ -36,9 +36,9 @@ public final class CommandSet: CommandContainer {
       primitiveType = newValue.rawValue
       didChangeValueForKey("type")
       if let sharedKeys = CommandSet.sharedKeysByType[newValue] {
-        containerIndex = MSDictionary(sharedKeys: Array(map(sharedKeys){$0.rawValue}))
+        containerIndex = MSDictionary(sharedKeys: Array(map(sharedKeys){$0.rawValue})) as! OrderedDictionary<String, NSURL>
       } else {
-        containerIndex = MSDictionary()
+        containerIndex = [:]
       }
     }
   }
@@ -50,9 +50,21 @@ public final class CommandSet: CommandContainer {
 
   :returns: Command?
   */
-  public subscript(key: RemoteElement.Role) -> Command? {
-    get { return containerIndex[key.rawValue] as? Command }
-    set { containerIndex[key.rawValue] = newValue }
+  public subscript(role: RemoteElement.Role) -> Command? {
+    get { return self[String(role.jsonValue)!]}
+    set { self[String(role.jsonValue)!] = newValue }
+  }
+
+  /**
+  subscript:
+
+  :param: key String
+
+  :returns: Command?
+  */
+  public subscript(key: String) -> Command? {
+    get { return (containerIndex[key] <?> managedObjectContext!.objectForURI) as? Command }
+    set { containerIndex[key] = newValue?.permanentURI() }
   }
 
   /**
@@ -70,8 +82,8 @@ public final class CommandSet: CommandContainer {
         self.type = type
         for (roleJSON, jsonValue) in data {
           if let role = RemoteElement.Role(roleJSON.jsonValue),
-            roleData = ObjectJSONValue(jsonValue),
-            command = Command.importObjectWithData(roleData, context: moc)
+            commandData = ObjectJSONValue(jsonValue),
+            command = Command.importObjectWithData(commandData, context: moc)
           {
               self[role] = command
           }
@@ -83,12 +95,7 @@ public final class CommandSet: CommandContainer {
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
     obj["type"] = type.jsonValue
-    containerIndex.enumerateKeysAndObjectsUsingBlock { (key, uri, _) -> Void in
-      if let command = self.managedObjectContext?.objectForURI(uri as! NSURL) as? Command {
-        // TODO: This looks atrocious
-        obj[RemoteElement.Role(rawValue: (key as! NSNumber).integerValue).jsonValue.value as! String] = command.jsonValue
-      }
-    }
+    obj += containerIndex.compressedMap({k, _ in self[k]?.jsonValue})
     return obj.jsonValue
   }
 

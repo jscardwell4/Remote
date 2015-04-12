@@ -16,9 +16,21 @@ import MoonKit
 @objc(MacroCommand)
 public final class MacroCommand: Command {
 
-  @NSManaged public var commands: NSOrderedSet?
+  public var commands: OrderedSet<Command> {
+    get {
+      willAccessValueForKey("commands")
+      let commands = primitiveValueForKey("commands") as? OrderedSet<Command>
+      didAccessValueForKey("commands")
+      return commands ?? []
+    }
+    set {
+      willChangeValueForKey("commands")
+      setPrimitiveValue(newValue as NSOrderedSet, forKey: "commands")
+      didChangeValueForKey("commands")
+    }
+  }
 
-  public var count: Int { return commands?.count ?? 0 }
+  public var count: Int { return commands.count }
   public let queue = NSOperationQueue(name: "com.moondeerstudios.macro")
 
   override var operation: CommandOperation { return MacroCommandOperation(command: self) }
@@ -27,11 +39,11 @@ public final class MacroCommand: Command {
 
   public subscript(index: Int) -> Command {
     get {
-      precondition(commands != nil && index >= 0 && index < commands!.count, "index out of bounds")
-      return commands?[index] as! Command
+      precondition(0..<commands.count ~= index, "index out of bounds")
+      return commands[index]
     }
     set {
-      precondition(commands != nil && index >= 0 && index < commands!.count, "index out of bounds")
+      precondition(0..<commands.count ~= index, "index out of bounds")
       mutableOrderedSetValueForKey("commands").insertObject(newValue, atIndex: index)
     }
   }
@@ -42,7 +54,7 @@ public final class MacroCommand: Command {
   :param: completion Optional block to invoke after command execution completes
   */
   override public func execute(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
-    if let commands = self.commands?.array as? [Command] {
+    if commands.count > 0 {
       let operations = commands.map {$0.operation}
       var precedingOperation: CommandOperation?
       for operation in operations {
@@ -53,12 +65,12 @@ public final class MacroCommand: Command {
         MSLogDebug("command dispatch complete")
         let success = operations.filter{$0.success == false}.count > 0
         var error: NSError?
-        let errors = operations.map{$0.error}.filter{$0 != nil}.map{$0!}
+        let errors = compressedMap(operations, {$0.error})
         if errors.count == 1 { error = errors.last }
         else if errors.count > 1 { error = NSError(domain: "MacroCommandExecution", code: -1, underlyingErrors: errors) }
         completion?(success: success, error: error)
       }
-      queue.addOperations(operations, waitUntilFinished: false)
+      queue.addOperations((operations as NSOrderedSet).array, waitUntilFinished: false)
     } else { completion?(success: true, error: nil) }
   }
 
@@ -81,8 +93,8 @@ public final class MacroCommand: Command {
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
-    if let commandsData = ArrayJSONValue(data["commands"] ?? .Null) {
-      var commands: [Command] = []
+    if let commandsData = ArrayJSONValue(data["commands"]) {
+      var commands: OrderedSet<Command> = []
       for commandData in compressedMap(commandsData, {ObjectJSONValue($0)}) {
         if let commandClassNameJSON = String(commandData.value["class"]), let moc = managedObjectContext {
           let command: Command?
@@ -100,7 +112,7 @@ public final class MacroCommand: Command {
           if command != nil { commands.append(command!) }
         }
       }
-      self.commands = NSOrderedSet(array: commands)
+      self.commands = commands
     }
 
   }
@@ -108,7 +120,7 @@ public final class MacroCommand: Command {
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
     obj["class"] = "macro"
-    obj["commands"] = JSONValue(commands)
+    obj["commands"] = .Array(map(commands, {$0.jsonValue}))
     return obj.jsonValue
   }
 
