@@ -1,5 +1,5 @@
 //
-//  NSLayoutPseudoConstraint.swift
+//  PseudoConstraint.swift
 //  MSKit
 //
 //  Created by Jason Cardwell on 11/25/14.
@@ -9,12 +9,12 @@
 import Foundation
 import UIKit
 
-public struct NSLayoutPseudoConstraint: Equatable, Printable, DebugPrintable {
+public struct PseudoConstraint {
   public var firstItem: String = ""
   public var firstAttribute: String = ""
   public var relation: String = "="
   public var secondItem: String?
-  public var secondAttribute: String = ""
+  public var secondAttribute: String?
   public var constant: String?
   public var multiplier: String?
   public var priority: String?
@@ -24,7 +24,7 @@ public struct NSLayoutPseudoConstraint: Equatable, Printable, DebugPrintable {
   public var multiplierValue: CGFloat? { return multiplier == nil ? nil : CGFloat((multiplier! as NSString).floatValue) }
   public var priorityValue: Float? { return priority == nil ? nil : (priority! as NSString).floatValue }
 
-  public var expanded: [NSLayoutPseudoConstraint] {
+  public var expanded: [PseudoConstraint] {
     switch (firstAttribute, secondAttribute) {
       case let (first, second) where first == second && first == "center":
         var centerX = self; centerX.firstAttribute = "centerX"; centerX.secondAttribute = "centerX"
@@ -41,31 +41,6 @@ public struct NSLayoutPseudoConstraint: Equatable, Printable, DebugPrintable {
 
   public var expandable: Bool { return firstAttribute == secondAttribute && (["center", "size"] ∋ firstAttribute) }
 
-  public var description: String {
-    var s = ""
-    if identifier != nil { s += "'\(identifier!)' " }
-    s += "\(firstItem).\(firstAttribute) \(relation)"
-    if secondItem != nil && !secondAttribute.isEmpty {
-      s += " \(secondItem!).\(secondAttribute)"
-      if multiplier != nil && multiplierValue! != 1.0 { s += " * \(multiplier!)" }
-    }
-    if constant != nil && constantValue! != 0.0 { s += " \(constant![0]) \(constant![1..<constant!.characterCount])" }
-    if priority != nil && priorityValue! != 1000.0 { s += " @\(priority!)" }
-    return s
-  }
-
-  public var debugDescription: String {
-    return "\n".join(description,
-      "firstItem: \(firstItem)",
-      "secondItem: \(secondItem)",
-      "firstAttribute: \(firstAttribute)",
-      "secondAttribute: \(secondAttribute)",
-      "multiplier: \(multiplier)",
-      "constant: \(constant)",
-      "identifier: \(identifier)",
-      "priority: \(priority)")
-  }
-
   /** init */
   public init() {}
 
@@ -74,22 +49,19 @@ public struct NSLayoutPseudoConstraint: Equatable, Printable, DebugPrintable {
 
   :param: format String
   */
-  public init?(format: String) {
+  public init?(_ format: String) {
     firstItem = ""
     firstAttribute = ""
     relation = ""
-    secondAttribute = ""
 
     let name = "([\\p{L}$_][\\w]*)"
-    let attributes = "|".join(
-      "(?:left|right|leading|trailing)(?:Margin)?",
-      "(?:top|bottom)(?:Margin)?",
-      "width",
-      "height",
-      "size",
-      "(?:center[XY]?)(?:WithinMargins)?",
-      "(?:firstB|b)aseline"
-    )
+    let attributes = "|".join("(?:left|right|leading|trailing)(?:Margin)?",
+                              "(?:top|bottom)(?:Margin)?",
+                              "width",
+                              "height",
+                              "size",
+                              "(?:center[XY]?)(?:WithinMargins)?",
+                              "(?:firstB|b)aseline")
     let attribute = "(\(attributes))"
     let item = "\(name)\\.\(attribute)"
     let number = "((?:[-+] *)?\\p{N}+(?:\\.\\p{N}+)?)"
@@ -143,42 +115,42 @@ public struct NSLayoutPseudoConstraint: Equatable, Printable, DebugPrintable {
 
   :param: format String
 
-  :returns: [NSLayoutPseudoConstraint]
+  :returns: [PseudoConstraint]
   */
-  public static func pseudoConstraintsByParsingFormat(format: String) -> [NSLayoutPseudoConstraint] {
-    return flattened( compressedMap(NSLayoutConstraint.splitFormat(format).filter{!$0.isEmpty},
-                                    {NSLayoutPseudoConstraint(format: $0)?.expanded}))
+  public static func pseudoConstraintsByParsingFormat(format: String) -> [PseudoConstraint] {
+    return flattenedCompressedMap(NSLayoutConstraint.splitFormat(format), {PseudoConstraint($0)?.expanded})
   }
 
 }
 
-extension NSLayoutPseudoConstraint: StringLiteralConvertible {
+extension PseudoConstraint: Equatable {}
+public func ==(lhs: PseudoConstraint, rhs: PseudoConstraint) -> Bool { return lhs.description == rhs.description }
 
-  /**
-  init:
-
-  :param: value StringLiteralType
-  */
-  public init(unicodeScalarLiteral value: StringLiteralType) {
-    self = NSLayoutPseudoConstraint(format: "\(value)") ?? NSLayoutPseudoConstraint()
+extension PseudoConstraint: Printable {
+  public var description: String {
+    var s = ""
+    if let i = identifier { s += "'\(i)' " }
+    s += "\(firstItem).\(firstAttribute) \(relation)"
+    if let s2 = secondItem, a2 = secondAttribute {
+      s += " \(s2).\(a2)"
+      if let m = multiplier where multiplierValue != 1.0 { s += " * \(m)" }
+    }
+    if let c = constant where constantValue != 0.0 { s += " \(c[0]) \(c[1..<c.length])" }
+    if let p = priority where priorityValue != 1000.0 { s += " @\(p)" }
+    return s
   }
+}
 
-  /**
-  init:
-
-  :param: value StringLiteralType
-  */
-  public init(extendedGraphemeClusterLiteral value: StringLiteralType) {
-    self = NSLayoutPseudoConstraint(format: value) ?? NSLayoutPseudoConstraint()
+extension PseudoConstraint: DebugPrintable {
+  public var debugDescription: String {
+    return "\n".join(description,
+      "firstItem: \(firstItem)",
+      "secondItem: \(secondItem)",
+      "firstAttribute: \(firstAttribute)",
+      "secondAttribute: \(secondAttribute)",
+      "multiplier: \(multiplier)",
+      "constant: \(constant)",
+      "identifier: \(identifier)",
+      "priority: \(priority)")
   }
-
-  /**
-  init:
-
-  :param: value StringLiteralType
-  */
-  public init(stringLiteral value: StringLiteralType) {
-    self = NSLayoutPseudoConstraint(format: value) ?? NSLayoutPseudoConstraint()
-  }
-
 }

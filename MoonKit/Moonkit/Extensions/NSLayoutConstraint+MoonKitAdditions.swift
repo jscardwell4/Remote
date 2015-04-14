@@ -19,7 +19,7 @@ extension NSLayoutConstraint {
   :returns: [String]
   */
   public class func splitFormat(format: String) -> [String] {
-    return split(format.stringByReplacingMatchesForRegEx(~/"\\s*⏎\\s*|\\s*::\\s*|\\s*;\\s*", withTemplate: "\n")){$0 == "\n"}
+    return "\n".split(format.sub("::", "\n").sub("[⏎;]", "\n").sub("  +", " ")).filter(invert(isEmpty))
   }
 
   /**
@@ -37,27 +37,16 @@ extension NSLayoutConstraint {
                                        metrics: [String:AnyObject] = [:],
                                          views: [String:AnyObject] = [:]) -> [NSLayoutConstraint]
   {
-    let formatStrings = splitFormat(format).filter{!$0.isEmpty}
-
-    var standardFormat: [String] = []
-    var extendedFormat: [NSLayoutPseudoConstraint] = []
-
-    for string in formatStrings {
-      if let pseudoConstraint = NSLayoutPseudoConstraint(format: string) {
-        extendedFormat.extend(pseudoConstraint.expanded)
-      } else {
-        standardFormat.append(string)
-      }
-    }
-
     var constraints: [NSLayoutConstraint] = []
-    for f in standardFormat {
-      let c = constraintsWithVisualFormat(f, options: options, metrics: metrics, views: views) as! [NSLayoutConstraint]
-      constraints.extend(c)
-    }
-    for p in extendedFormat {
-      if let c = constraintFromNSLayoutPseudoConstraint(p, metrics: metrics, views: views) {
-        constraints.append(c)
+
+    for string in splitFormat(format) {
+      if let pseudoConstraint = PseudoConstraint(string),
+        constraint = constraintFromPseudoConstraint(pseudoConstraint, metrics: metrics, views: views)
+      {
+          constraints.append(constraint)
+      } else {
+        let c = constraintsWithVisualFormat(string, options: options, metrics: metrics, views: views) as! [NSLayoutConstraint]
+        constraints.extend(c)
       }
     }
 
@@ -66,16 +55,16 @@ extension NSLayoutConstraint {
 
 
   /**
-  constraintFromNSLayoutPseudoConstraint:options:metrics:views:
+  constraintFromPseudoConstraint:options:metrics:views:
 
-  :param: pseudoConstraint NSLayoutPseudoConstraint
+  :param: pseudoConstraint PseudoConstraint
   :param: options NSLayoutFormatOptions = nil
   :param: metrics [String AnyObject]? = nil
   :param: views [String AnyObject]? = nil
 
   :returns: NSLayoutConstraint?
   */
-  public class func constraintFromNSLayoutPseudoConstraint(pseudoConstraint: NSLayoutPseudoConstraint,
+  public class func constraintFromPseudoConstraint(pseudoConstraint: PseudoConstraint,
                                            metrics: [String:AnyObject] = [:],
                                              views: [String:AnyObject]) -> NSLayoutConstraint?
   {
@@ -84,7 +73,7 @@ extension NSLayoutConstraint {
       if firstAttribute != NSLayoutAttribute.NotAnAttribute {
         let relation = NSLayoutRelation(pseudoName: pseudoConstraint.relation)
         var secondItem: AnyObject?
-        let secondAttribute = NSLayoutAttribute(pseudoName: pseudoConstraint.secondAttribute)
+        let secondAttribute = NSLayoutAttribute(pseudoName: pseudoConstraint.secondAttribute ?? "")
         var multiplier: CGFloat = 1.0
         var constant: CGFloat = 0.0
         if pseudoConstraint.secondItem != nil { secondItem = views[pseudoConstraint.secondItem!] }
@@ -202,16 +191,4 @@ extension NSLayoutRelation {
       default:  self = .Equal
     }
   }
-}
-
-/**
-subscript:rhs:
-
-:param: lhs NSLayoutConstraint.NSLayoutPseudoConstraint
-:param: rhs NSLayoutConstraint.NSLayoutPseudoConstraint
-
-:returns: Bool
-*/
-public func ==(lhs: NSLayoutPseudoConstraint, rhs: NSLayoutPseudoConstraint) -> Bool {
-  return lhs.description == rhs.description
 }

@@ -35,7 +35,7 @@ public final class CommandSetCollection: CommandContainer {
   :returns: CommandSet?
   */
   public subscript(label: String) -> CommandSet? {
-    get { return (containerIndex[label] <?> managedObjectContext!.objectForURI) as? CommandSet }
+    get { return (containerIndex[label] ?>> managedObjectContext!.objectForURI) as? CommandSet }
     set { containerIndex[label] = newValue?.permanentURI() }
   }
 

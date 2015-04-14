@@ -100,7 +100,7 @@ public final class ConstraintManager: NSObject {
     remoteElement.managedObjectContext?.performBlockAndWait {
       [unowned self] () -> Void in
 
-      let pseudoConstraints = NSLayoutPseudoConstraint.pseudoConstraintsByParsingFormat(format)
+      let pseudoConstraints = PseudoConstraint.pseudoConstraintsByParsingFormat(format)
 
       if self.remoteElement.ownedConstraints.count > 0 {
         self.remoteElement.managedObjectContext?.deleteObjects(self.remoteElement.constraints as Set<NSObject>)

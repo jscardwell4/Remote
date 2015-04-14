@@ -215,7 +215,7 @@ import MoonKit
             defaultValue: AnyObject? = nil,
                 userInfo: [NSObject:AnyObject]? = nil)
     {
-      for attribute in attributes.map({entity.attributesByName[$0] as? NSAttributeDescription})‽ {
+      for attribute in compressedMap(attributes, {entity.attributesByName[$0] as? NSAttributeDescription}) {
         if valueClassName != nil { attribute.attributeValueClassName = valueClassName }
         if defaultValue != nil { attribute.defaultValue = defaultValue }
         if userInfo != nil { var info = attribute.userInfo ?? [:]; extend(&info, userInfo!); attribute.userInfo = info }

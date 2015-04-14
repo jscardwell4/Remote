@@ -63,7 +63,7 @@ public final class CommandSet: CommandContainer {
   :returns: Command?
   */
   public subscript(key: String) -> Command? {
-    get { return (containerIndex[key] <?> managedObjectContext!.objectForURI) as? Command }
+    get { return (containerIndex[key] ?>> managedObjectContext!.objectForURI) as? Command }
     set { containerIndex[key] = newValue?.permanentURI() }
   }
 

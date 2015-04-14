@@ -14,8 +14,8 @@ import MoonKit
 @objc(Constraint)
 public final class Constraint: ModelObject, Printable, DebugPrintable {
 
-  public var pseudoConstraint: NSLayoutPseudoConstraint {
-    var pseudo = NSLayoutPseudoConstraint()
+  public var pseudoConstraint: PseudoConstraint {
+    var pseudo = PseudoConstraint()
     pseudo.firstItem = firstItem.identifier
     pseudo.firstAttribute = firstAttribute.pseudoName
     pseudo.relation = relation.pseudoName
@@ -207,18 +207,18 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
   /**
   constraintFromPseudoConstraint:
 
-  :param: pseudo NSLayoutPseudoConstraint
+  :param: pseudo PseudoConstraint
 
   :returns: Constraint?
   */
-  public class func constraintFromPseudoConstraint(pseudo: NSLayoutPseudoConstraint,
+  public class func constraintFromPseudoConstraint(pseudo: PseudoConstraint,
                               usingDirectory directory: OrderedDictionary<String, RemoteElement>) -> Constraint?
   {
     var constraint: Constraint?
     if let firstElement = elementFromDirectory(directory, forString: pseudo.firstItem) {
       var secondElement: RemoteElement?
       if pseudo.secondItem != nil { secondElement = elementFromDirectory(directory, forString: pseudo.secondItem!) }
-      let secondAttribute = NSLayoutAttribute(pseudoName: pseudo.secondAttribute)
+      let secondAttribute = NSLayoutAttribute(pseudoName: pseudo.secondAttribute ?? "")
       if secondAttribute == .NotAnAttribute || secondElement != nil {
         let firstAttribute = NSLayoutAttribute(pseudoName: pseudo.firstAttribute)
         let relation = NSLayoutRelation(pseudoName: pseudo.relation)
@@ -325,7 +325,7 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
   */
   public class func constraintFromFormat(format: String, index: [String:String], context: NSManagedObjectContext) -> Constraint? {
     var constraint: Constraint?
-    if let pseudo = NSLayoutPseudoConstraint(format: format) {
+    if let pseudo = PseudoConstraint(format: format) {
       let firstItemIndex = pseudo.firstItem
       if let firstItemUUID = index[firstItemIndex],
         firstItem = RemoteElement.objectWithValue(firstItemUUID, forAttribute: "uuid", context: context)

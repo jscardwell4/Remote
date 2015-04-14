@@ -15,13 +15,13 @@ func takesAndReturnsAnInt(i: Int) -> Int? {
 var anI: Int? = 4
 
 flatMap(anI, takesAndReturnsAnInt)
-anI <?> takesAndReturnsAnInt
-anI ?> takesAnInt
+anI ?>> takesAndReturnsAnInt
+anI ?>> takesAnInt
 anI = nil
 
 flatMap(anI, takesAndReturnsAnInt)
-anI <?> takesAndReturnsAnInt
-anI ?> takesAnInt
+anI ?>> takesAndReturnsAnInt
+anI ?>> takesAnInt
 
 typealias T = Int
 typealias U = Int
@@ -43,6 +43,28 @@ actualData?.contains(expectedData!)
 let x: Int? = 4
 var a = [1, 2, 3]
 
-x ?> a.append
+x ?>> a.append
 a
 
+println()
+let unflat1 = [ [1, 2], [3, [4, [5, 6, 7, [8, 9] ] ] ] ]
+println("unflat1 = \(unflat1)")
+let unflatFlattened1: [Int] = flattened(unflat1)
+println("unflatFlattened1 = \(unflatFlattened1)")
+
+let unflat2 = [ [1, "two"], [3, ["four", [5, 6, 7, [8, 9] ] ] ] ]
+println()
+println("unflat2 = \(unflat2)")
+let unflatFlattened2Any: [Any] = flattened(unflat2)
+println("unflatFlattened2Any = \(unflatFlattened2Any)")
+let unflatFlattened2Int: [Int] = flattened(unflat2)
+println("unflatFlattened2Int = \(unflatFlattened2Int)")
+let unflatFlattened2String: [String] = flattened(unflat2)
+println("unflatFlattened2String = \(unflatFlattened2String)")
+println()
+let s = "I am a String"
+let matchesSpace: Character -> Bool = {$0 == " "}
+let spaceSeparated = split(Array(s.generate()), isSeparator:matchesSpace).map({String($0)})
+println("spaceSeparated = \(spaceSeparated)")
+let anyButSpaceSeparated = split(Array(s.generate()), isSeparator: invert(matchesSpace)).map({String($0)})
+println("anyButSpaceSeparated = \(anyButSpaceSeparated)")
