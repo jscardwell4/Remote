@@ -58,23 +58,8 @@ public class RemoteElement: NamedModelObject {
   public var identifier: String { return "_" + filter(uuid){$0 != "-"} }
 
   @NSManaged public var constraints: Set<Constraint>
-  public var ownedConstraints: [Constraint] {
-    get { return Array(constraints) }
-    set { constraints = Set(newValue) }
-  }
-
   @NSManaged public var firstItemConstraints: Set<Constraint>
-  public var firstOrderConstraints: [Constraint] {
-    get { return Array(firstItemConstraints) }
-    set { firstItemConstraints = Set(newValue) }
-  }
-
   @NSManaged public var secondItemConstraints: Set<Constraint>
-  public var secondOrderConstraints: [Constraint] {
-    get { return Array(secondItemConstraints) }
-    set { secondItemConstraints = Set(newValue) }
-  }
-
   @NSManaged public var backgroundImageAlpha: Float
   @NSManaged public var backgroundColor: UIColor?
   @NSManaged public var backgroundImage: ImageView?
@@ -116,62 +101,58 @@ public class RemoteElement: NamedModelObject {
     }
   }
 
-  @NSManaged var primitiveRole: NSNumber
   public var role: Role {
     get {
       willAccessValueForKey("role")
-      let role = Role(rawValue: primitiveRole.integerValue)
+      let role = (primitiveValueForKey("role")  as! NSNumber).shortValue
       didAccessValueForKey("role")
-      return role
+      return Role(rawValue: role)
     }
     set {
       willChangeValueForKey("role")
-      primitiveRole = newValue.rawValue
+      setPrimitiveValue(NSNumber(short: newValue.rawValue), forKey: "role")
       didChangeValueForKey("role")
     }
   }
 
-  @NSManaged var primitiveShape: NSNumber
   public var shape: Shape {
     get {
       willAccessValueForKey("shape")
-      let shape = Shape(rawValue: primitiveShape.integerValue)
+      let shape = (primitiveValueForKey("shape")  as! NSNumber).shortValue
       didAccessValueForKey("shape")
-      return shape ?? .Undefined
+      return Shape(rawValue: shape)
     }
     set {
       willChangeValueForKey("shape")
-      primitiveShape = newValue.rawValue
+      setPrimitiveValue(NSNumber(short: newValue.rawValue), forKey: "shape")
       didChangeValueForKey("shape")
     }
   }
 
-  @NSManaged var primitiveStyle: NSNumber
   public var style: Style {
     get {
       willAccessValueForKey("style")
-      let style = Style(rawValue: primitiveStyle.integerValue)
+      let style = (primitiveValueForKey("style")  as! NSNumber).shortValue
       didAccessValueForKey("style")
-      return style
+      return Style(rawValue: style)
     }
     set {
       willChangeValueForKey("style")
-      primitiveStyle = newValue.rawValue
+      setPrimitiveValue(NSNumber(short: newValue.rawValue), forKey: "style")
       didChangeValueForKey("style")
     }
   }
 
-  @NSManaged var primitiveConfigurations: NSMutableDictionary
   public var configurations: [String:[String:AnyObject]] {
     get {
       willAccessValueForKey("configurations")
-      let configurations = (primitiveConfigurations as NSDictionary) as? [String:[String:AnyObject]]
+      let configurations = primitiveValueForKey("configurations") as? [String:[String:AnyObject]]
       didAccessValueForKey("configurations")
       return configurations ?? [:]
     }
     set {
       willChangeValueForKey("configurations")
-      primitiveConfigurations = NSMutableDictionary(dictionary: newValue)
+      setPrimitiveValue(newValue, forKey: "configurations")
       didChangeValueForKey("configurations")
     }
   }
@@ -187,7 +168,9 @@ public class RemoteElement: NamedModelObject {
   /** prepareForDeletion */
   override public func prepareForDeletion() {
     if let moc = managedObjectContext {
-      apply(flattened(Array(configurations.values).map{Array($0.values).filter{$0 is NSURL}})){moc.deleteObject($0 as! NSManagedObject)}
+      let uris: [NSURL] = flattened(configurations.values)
+      let objects = compressedMap(uris, {moc.objectForURI($0) as? NSManagedObject})
+      moc.deleteObjects(Set(objects))
       moc.processPendingChanges()
     }
   }
@@ -262,7 +245,7 @@ public class RemoteElement: NamedModelObject {
       }
 
       if let constraintsJSON = ObjectJSONValue(data["constraints"]) {
-        ownedConstraints = Constraint.importObjectsWithData(constraintsJSON, context: moc) as! [Constraint]
+        constraints = Set(Constraint.importObjectsWithData(constraintsJSON, context: moc) as! [Constraint])
       }
 
     }
@@ -300,7 +283,7 @@ public class RemoteElement: NamedModelObject {
 
     if constraints.count > 0 {
 
-      let firstItemUUIDs = OrderedSet<String>(map(constraints){$0.firstItem.uuid})
+      let firstItemUUIDs = OrderedSet<String>(compressedMap(constraints){$0.firstItem?.uuid})
       let secondItemUUIDs = OrderedSet<String>(compressedMap(constraints){$0.secondItem?.uuid})
       var uuidIndex: JSONValue.ObjectValue = [name.camelCase(): uuid.jsonValue]
       for uuid in (firstItemUUIDs + secondItemUUIDs ∖ Set([self.uuid])) {
@@ -576,9 +559,9 @@ public class RemoteElement: NamedModelObject {
   }
 
 
-  public enum Shape: Int {
+  public enum Shape: Int16 {
     case Undefined, RoundedRectangle, Oval, Rectangle, Triangle, Diamond
-    public init(rawValue: Int) {
+    public init(rawValue: Int16) {
       switch rawValue {
         case 1: self = .RoundedRectangle
         case 2: self = .Oval
@@ -595,8 +578,8 @@ public class RemoteElement: NamedModelObject {
 
   public struct Style: RawOptionSetType {
 
-    private(set) public var rawValue: Int
-    public init(rawValue: Int) { self.rawValue = rawValue & 0b0011_1111 }
+    private(set) public var rawValue: Int16
+    public init(rawValue: Int16) { self.rawValue = rawValue & 0b0011_1111 }
     public init(nilLiteral:()) { rawValue = 0 }
     public static var allZeros:       Style { return Style.None }
     public static var None:           Style = Style(rawValue: 0b0000_0000)
@@ -613,8 +596,8 @@ public class RemoteElement: NamedModelObject {
 
   public struct Role: RawOptionSetType {
 
-    private(set) public var rawValue: Int
-    public init(rawValue: Int) { self.rawValue = rawValue & 0b1111_1111 }
+    private(set) public var rawValue: Int16
+    public init(rawValue: Int16) { self.rawValue = rawValue & 0b1111_1111 }
     public init(nilLiteral:()) { rawValue = 0 }
     public static var allZeros: Role { return Role.Undefined }
 
@@ -806,7 +789,7 @@ extension RemoteElement.Style: JSONValueInitializable {
 }
 
 extension RemoteElement.Role: Hashable {
-  public var hashValue: Int { return rawValue }
+  public var hashValue: Int { return Int(rawValue) }
 }
 
 extension RemoteElement.Role: Printable {

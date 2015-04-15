@@ -83,6 +83,8 @@ public func >>><T, U, V>(lhs: (T, U), rhs: (T, U) -> V) -> V { return rhs(lhs) }
 /** Operator for monadic bind */
 public func ?>><T, U>(lhs: T?, rhs: T -> U?) -> U? { return flatMap(lhs, rhs) }
 public func ?>><T>(lhs: T?, rhs: T -> Void) { if let x = lhs { rhs(x) } }
-public func ?>><T, U>(lhs: T?, rhs: U) -> (T, U)? { if let x = lhs { return (x, rhs) } else { return nil } }
-public func ?>><T, U, V>(lhs: (T, U)?, rhs: (T, U) -> V) -> V? { if let x = lhs { return rhs(x) } else { return nil } }
+
+/** Accumulating args */
+public func >?><T, U>(lhs: T?, rhs: U) -> (T, U)? { if let x = lhs { return (x, rhs) } else { return nil } }
+public func >?><T, U, V>(lhs: (T, U)?, rhs: (T, U) -> V) -> V? { if let x = lhs { return rhs(x) } else { return nil } }
 

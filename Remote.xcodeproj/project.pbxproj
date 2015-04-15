@@ -1350,7 +1350,7 @@
 		C2E9F4E41ABCA395007581F2 /* Remote.base 19.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 19.xcdatamodel"; sourceTree = "<group>"; };
 		C2E9F4E51ABCA395007581F2 /* Remote.base 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 2.xcdatamodel"; sourceTree = "<group>"; };
 		C2E9F4E61ABCA395007581F2 /* Remote.base 20.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 20.xcdatamodel"; sourceTree = "<group>"; };
-		C2E9F4E71ABCA395007581F2 /* Remote.base 21.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 21.xcdatamodel"; sourceTree = "<group>"; };
+		C2E9F4E71ABCA395007581F2 /* Remote.version1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.version1.xcdatamodel"; sourceTree = "<group>"; };
 		C2E9F4E81ABCA395007581F2 /* Remote.base 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 3.xcdatamodel"; sourceTree = "<group>"; };
 		C2E9F4E91ABCA395007581F2 /* Remote.base 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 4.xcdatamodel"; sourceTree = "<group>"; };
 		C2E9F4EA1ABCA395007581F2 /* Remote.base 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Remote.base 5.xcdatamodel"; sourceTree = "<group>"; };
@@ -5563,29 +5563,9 @@
 		C2E9F4DA1ABCA395007581F2 /* Remote.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				C2E9F4DB1ABCA395007581F2 /* Remote.base 10.xcdatamodel */,
-				C2E9F4DC1ABCA395007581F2 /* Remote.base 11.xcdatamodel */,
-				C2E9F4DD1ABCA395007581F2 /* Remote.base 12.xcdatamodel */,
-				C2E9F4DE1ABCA395007581F2 /* Remote.base 13.xcdatamodel */,
-				C2E9F4DF1ABCA395007581F2 /* Remote.base 14.xcdatamodel */,
-				C2E9F4E01ABCA395007581F2 /* Remote.base 15.xcdatamodel */,
-				C2E9F4E11ABCA395007581F2 /* Remote.base 16.xcdatamodel */,
-				C2E9F4E21ABCA395007581F2 /* Remote.base 17.xcdatamodel */,
-				C2E9F4E31ABCA395007581F2 /* Remote.base 18.xcdatamodel */,
-				C2E9F4E41ABCA395007581F2 /* Remote.base 19.xcdatamodel */,
-				C2E9F4E51ABCA395007581F2 /* Remote.base 2.xcdatamodel */,
-				C2E9F4E61ABCA395007581F2 /* Remote.base 20.xcdatamodel */,
-				C2E9F4E71ABCA395007581F2 /* Remote.base 21.xcdatamodel */,
-				C2E9F4E81ABCA395007581F2 /* Remote.base 3.xcdatamodel */,
-				C2E9F4E91ABCA395007581F2 /* Remote.base 4.xcdatamodel */,
-				C2E9F4EA1ABCA395007581F2 /* Remote.base 5.xcdatamodel */,
-				C2E9F4EB1ABCA395007581F2 /* Remote.base 6.xcdatamodel */,
-				C2E9F4EC1ABCA395007581F2 /* Remote.base 7.xcdatamodel */,
-				C2E9F4ED1ABCA395007581F2 /* Remote.base 8.xcdatamodel */,
-				C2E9F4EE1ABCA395007581F2 /* Remote.base 9.xcdatamodel */,
-				C2E9F4EF1ABCA395007581F2 /* Remote.base.xcdatamodel */,
+				C2E9F4E71ABCA395007581F2 /* Remote.version1.xcdatamodel */,
 			);
-			currentVersion = C2E9F4E71ABCA395007581F2 /* Remote.base 21.xcdatamodel */;
+			currentVersion = C2E9F4E71ABCA395007581F2 /* Remote.version1.xcdatamodel */;
 			path = Remote.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

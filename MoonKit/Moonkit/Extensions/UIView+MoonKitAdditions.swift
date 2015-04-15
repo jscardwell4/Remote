@@ -66,7 +66,7 @@ public extension UIView {
     var dict: [String:AnyObject] = views ?? [:]
     dict["self"] = self
 
-    let constraints = NSLayoutConstraint.constraintsByParsingString(format, views: dict) as! [NSLayoutConstraint]
+    let constraints = NSLayoutConstraint.constraintsByParsingFormat(format, views: dict)
     apply(constraints){$0.identifier = identifier}
     addConstraints(constraints)
     return constraints

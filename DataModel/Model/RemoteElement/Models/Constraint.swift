@@ -14,120 +14,72 @@ import MoonKit
 @objc(Constraint)
 public final class Constraint: ModelObject, Printable, DebugPrintable {
 
-  public var pseudoConstraint: PseudoConstraint {
-    var pseudo = PseudoConstraint()
-    pseudo.firstItem = firstItem.identifier
-    pseudo.firstAttribute = firstAttribute.pseudoName
-    pseudo.relation = relation.pseudoName
-    pseudo.secondItem = secondItem?.identifier
-    pseudo.secondAttribute = secondAttribute.pseudoName
-    pseudo.multiplier = "\(multiplier)"
-    pseudo.constant = (constant < 0.0 ? "-" : "+") + "\(abs(constant))"
-    pseudo.priority = "\(priority)"
-    pseudo.identifier = identifier
-    return pseudo
-  }
-
   @NSManaged public var identifier: String?
+  @NSManaged public var tag: Int
+  @NSManaged public var multiplier: Float
+  @NSManaged public var constant: Float
+  @NSManaged public var firstItem: RemoteElement?
+  @NSManaged public var secondItem: RemoteElement?
+  @NSManaged public var firstItemIdentifier: String?
+  @NSManaged public var secondItemIdentifier: String?
+  @NSManaged public var owner: RemoteElement?
+  @NSManaged public var priority: UILayoutPriority
 
-  @NSManaged var primitiveTag: NSNumber
-  public var tag: Int {
-    get { willAccessValueForKey("tag"); let tag = primitiveTag.integerValue; didAccessValueForKey("tag"); return tag }
-    set { willChangeValueForKey("tag"); primitiveTag = newValue; didChangeValueForKey("tag") }
-  }
 
-  @NSManaged var primitiveFirstAttribute: NSNumber
+  public var valid: Bool { return firstItem != nil || firstItemIdentifier != nil }
+
   public var firstAttribute: NSLayoutAttribute {
     get {
       willAccessValueForKey("firstAttribute")
-      let attribute = NSLayoutAttribute(rawValue: primitiveFirstAttribute.integerValue)
+      let attribute = primitiveValueForKey("firstAttribute") as! Int
       didAccessValueForKey("firstAttribute")
-      return attribute ?? .NotAnAttribute
+      return NSLayoutAttribute(rawValue: attribute)!
     }
     set {
       willChangeValueForKey("firstAttribute")
-      primitiveFirstAttribute = newValue.rawValue
+      setPrimitiveValue(newValue.rawValue, forKey: "firstAttribute")
       didChangeValueForKey("firstAttribute")
     }
   }
 
-  @NSManaged var primitiveSecondAttribute: NSNumber
   public var secondAttribute: NSLayoutAttribute {
     get {
       willAccessValueForKey("secondAttribute")
-      let attribute = NSLayoutAttribute(rawValue: primitiveSecondAttribute.integerValue)
+      let attribute = primitiveValueForKey("secondAttribute") as! Int
       didAccessValueForKey("secondAttribute")
-      return attribute ?? .NotAnAttribute
+      return NSLayoutAttribute(rawValue: attribute)!
     }
     set {
       willChangeValueForKey("secondAttribute")
-      primitiveSecondAttribute = newValue.rawValue
+      setPrimitiveValue(newValue.rawValue, forKey: "secondAttribute")
       didChangeValueForKey("secondAttribute")
     }
   }
 
-  @NSManaged var primitiveRelation: NSNumber
   public var relation: NSLayoutRelation {
     get {
       willAccessValueForKey("relation")
-      let relation = NSLayoutRelation(rawValue: primitiveRelation.integerValue)
+      let relation = primitiveValueForKey("relation") as! Int
       didAccessValueForKey("relation")
-      return relation ?? .Equal
+      return NSLayoutRelation(rawValue: relation)!
     }
     set {
       willChangeValueForKey("relation")
-      primitiveRelation = newValue.rawValue
+      setPrimitiveValue(newValue.rawValue, forKey: "relation")
       didChangeValueForKey("relation")
     }
   }
 
-  @NSManaged var primitiveMultiplier: NSNumber
-  public var multiplier: CGFloat {
-    get {
-      willAccessValueForKey("multiplier")
-      let multiplier = CGFloat(primitiveMultiplier.doubleValue)
-      didAccessValueForKey("multiplier")
-      return multiplier
-    }
-    set {
-      willChangeValueForKey("multiplier")
-      primitiveMultiplier = Double(newValue)
-      didChangeValueForKey("multiplier")
-    }
-  }
-
-  @NSManaged var primitiveConstant: NSNumber
-  public var constant: CGFloat {
-    get {
-      willAccessValueForKey("constant")
-      let constant = CGFloat(primitiveConstant.doubleValue)
-      didAccessValueForKey("constant")
-      return constant
-    }
-    set {
-      willChangeValueForKey("constant")
-      primitiveConstant = Double(newValue)
-      didChangeValueForKey("constant")
-    }
-  }
-
-  @NSManaged public var firstItem: RemoteElement!
-  @NSManaged public var secondItem: RemoteElement?
-  @NSManaged public var owner: RemoteElement?
-
-  @NSManaged var primitivePriority: NSNumber!
-  public var priority: UILayoutPriority {
-    get {
-      willAccessValueForKey("priority")
-      let priority = primitivePriority.floatValue
-      didAccessValueForKey("priority")
-      return priority
-    }
-    set {
-      willChangeValueForKey("priority")
-      primitivePriority = newValue
-      didChangeValueForKey("priority")
-    }
+  public var pseudoConstraint: PseudoConstraint {
+    return PseudoConstraint(item: firstItem?.identifier ?? firstItemIdentifier ?? "firstElement",
+      attribute: PseudoConstraint.Attribute(firstAttribute),
+      relatedBy: PseudoConstraint.Relation(relation),
+      toItem: secondItem?.identifier ?? secondItemIdentifier,
+      attribute: PseudoConstraint.Attribute(secondAttribute),
+      multiplier: multiplier,
+      constant: constant,
+      priority: priority,
+      identifier: identifier)
   }
 
   /**
@@ -142,15 +94,14 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
   :param: constant CGFloat
   */
   public convenience init(item firstItem: RemoteElement,
-                   attribute firstAttribute: NSLayoutAttribute,
-                   relatedBy relation: NSLayoutRelation,
-                   toItem seconditem: RemoteElement?,
-                   attribute secondAttribute: NSLayoutAttribute,
-                   multiplier: CGFloat,
-                   constant: CGFloat)
+                         attribute firstAttribute: NSLayoutAttribute,
+                         relatedBy relation: NSLayoutRelation = NSLayoutRelation.Equal,
+                         toItem seconditem: RemoteElement? = nil,
+                         attribute secondAttribute: NSLayoutAttribute = NSLayoutAttribute.NotAnAttribute,
+                         multiplier: Float = 1.0,
+                         constant: Float = 0.0)
   {
-    assert(firstItem.managedObjectContext != nil)
-    self.init(context: firstItem.managedObjectContext!)
+    self.init(context: firstItem.managedObjectContext)
     self.firstItem = firstItem
     self.firstAttribute = firstAttribute
     self.relation = relation
@@ -167,20 +118,20 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
   */
   public class func constraintWithValues(values: [String:AnyObject]) -> Constraint? {
     let firstItem = values["firstItem"] as? RemoteElement
-    let firstAttribute = values["firstAttribute"] as? NSNumber
-    let relation = values["relation"] as? NSNumber
+    let firstAttribute = values["firstAttribute"] as? Int
+    let relation = values["relation"] as? Int
     let secondItem = values["secondItem"] as? RemoteElement
-    let secondAttribute = values["secondAttribute"] as? NSNumber
-    let multiplier = values["multiplier"] as? NSNumber
-    let constant = values["constant"] as? NSNumber
+    let secondAttribute = values["secondAttribute"] as? Int
+    let multiplier = values["multiplier"] as? Float
+    let constant = values["constant"] as? Float
     if firstItem == nil || firstAttribute == nil || relation == nil || secondAttribute == nil { return nil }
     else { return Constraint(item: firstItem!,
-                             attribute: NSLayoutAttribute(rawValue: firstAttribute!.integerValue)!,
-                             relatedBy: NSLayoutRelation(rawValue: relation!.integerValue)!,
+                             attribute: NSLayoutAttribute(rawValue: firstAttribute!)!,
+                             relatedBy: NSLayoutRelation(rawValue: relation!)!,
                              toItem: secondItem,
-                             attribute: NSLayoutAttribute(rawValue: secondAttribute!.integerValue)!,
-                             multiplier: CGFloat(multiplier?.doubleValue ?? 1.0),
-                             constant: CGFloat(constant?.doubleValue ?? 0.0)) }
+                             attribute: NSLayoutAttribute(rawValue: secondAttribute!)!,
+                             multiplier: multiplier ?? 1.0,
+                             constant: constant ?? 0.0) }
   }
 
   /**
@@ -215,27 +166,18 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
                               usingDirectory directory: OrderedDictionary<String, RemoteElement>) -> Constraint?
   {
     var constraint: Constraint?
-    if let firstElement = elementFromDirectory(directory, forString: pseudo.firstItem) {
+    if pseudo.valid, let firstElement = elementFromDirectory(directory, forString: pseudo.firstItem) {
       var secondElement: RemoteElement?
       if pseudo.secondItem != nil { secondElement = elementFromDirectory(directory, forString: pseudo.secondItem!) }
-      let secondAttribute = NSLayoutAttribute(pseudoName: pseudo.secondAttribute ?? "")
-      if secondAttribute == .NotAnAttribute || secondElement != nil {
-        let firstAttribute = NSLayoutAttribute(pseudoName: pseudo.firstAttribute)
-        let relation = NSLayoutRelation(pseudoName: pseudo.relation)
-        var multiplier: CGFloat = 1.0
-        if let m = pseudo.multiplier { multiplier = CGFloat((m as NSString).floatValue) }
-        var constant: CGFloat = 0.0
-        if let c = pseudo.constant { constant = CGFloat((c as NSString).floatValue) }
+      if pseudo.secondAttribute == .NotAnAttribute || secondElement != nil {
         constraint = Constraint(item: firstElement,
-                                attribute: firstAttribute,
-                                relatedBy: relation,
+                                attribute: pseudo.firstAttribute.NSLayoutAttributeValue,
+                                relatedBy: pseudo.relation.NSLayoutRelationValue,
                                 toItem: secondElement,
-                                attribute: secondAttribute,
-                                multiplier: multiplier,
-                                constant: constant)
-        var priority: Float = 1000.0
-        if let p = pseudo.priority { priority = (p as NSString).floatValue }
-        constraint?.priority = priority
+                                attribute: pseudo.secondAttribute.NSLayoutAttributeValue,
+                                multiplier: pseudo.multiplier,
+                                constant: pseudo.constant)
+        constraint?.priority = pseudo.priority
         constraint?.identifier = pseudo.identifier
       }
     }
@@ -243,24 +185,27 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
     return constraint
   }
 
-  public var manager: ConstraintManager { return firstItem.constraintManager }
+  public var manager: ConstraintManager? { return firstItem?.constraintManager }
 
   public var staticConstraint: Bool { return secondItem == nil }
 
   override public var description: String {
     var pseudo = pseudoConstraint
-    pseudo.firstItem = firstItem.name.camelCase()
-    pseudo.secondItem = secondItem?.name.camelCase()
+    pseudo.firstItem = firstItem?.name.camelcaseString ?? firstItemIdentifier ?? "firstElement"
+    pseudo.secondItem = secondItem?.name.camelcaseString ?? secondItemIdentifier ?? "secondElement"
     return pseudo.description
   }
 
   override public var debugDescription: String {
     return "\(super.description)\n\t" + "\n\t".join(
       description,
-      "first item = \(firstItem.index)",
+      "first item = \(toString(firstItem?.index))",
       "second item = \(toString(secondItem?.index))",
-      "first attribute = \(firstAttribute)",
-      "second attribute = \(secondAttribute)",
+      "first item identifier = \(toString(firstItemIdentifier))",
+      "second item identifier = \(toString(secondItemIdentifier))",
+      "first attribute = \(PseudoConstraint.Attribute(firstAttribute).rawValue)",
+      "second attribute = \(PseudoConstraint.Attribute(secondAttribute).rawValue)",
+      "relation = \(PseudoConstraint.Relation(relation).rawValue)",
       "multiplier = \(multiplier)",
       "constant = \(constant)",
       "identifier = \(identifier)",
@@ -279,33 +224,33 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
   public func hasAttributeValues(values: [String:AnyObject]) -> Bool {
     if let item: AnyObject = values["firstItem"] {
       if item is RemoteElement && (item as! RemoteElement) != firstItem { return false }
-      else if item is String && (item as! String) != firstItem.uuid { return false }
+      else if item is String && (item as! String) != firstItem?.uuid { return false }
     }
     if let identifier = values["identifier"] as? String {
       if self.identifier == nil || self.identifier! != identifier { return false }
     }
-    if let attribute = values["firstAttribute"] as? NSNumber {
-      if attribute.integerValue != firstAttribute.rawValue { return false }
+    if let attribute = values["firstAttribute"] as? Int {
+      if attribute != firstAttribute.rawValue { return false }
     }
-    if let relatedBy = values["relation"] as? NSNumber {
-      if relatedBy.integerValue != relation.rawValue { return false }
+    if let relatedBy = values["relation"] as? Int {
+      if relatedBy != relation.rawValue { return false }
     }
-    if let attribute = values["secondAttribute"] as? NSNumber {
-      if attribute.integerValue != secondAttribute.rawValue { return false }
+    if let attribute = values["secondAttribute"] as? Int {
+      if attribute != secondAttribute.rawValue { return false }
     }
     if let item: AnyObject = values["secondItem"] {
       if secondItem == nil { return false }
       else if item is RemoteElement && (item as! RemoteElement) != secondItem! { return false }
       else if item is String && (item as! String) != secondItem!.uuid { return false }
     }
-    if let m = values["multiplier"] as? NSNumber {
-      if m.doubleValue != Double(multiplier) { return false }
+    if let m = values["multiplier"] as? Float {
+      if m != multiplier { return false }
     }
-    if let c = values["constant"] as? NSNumber {
-      if c.doubleValue != Double(constant) { return false }
+    if let c = values["constant"] as? Float {
+      if c != constant { return false }
     }
-    if let p = values["priority"] as? NSNumber {
-      if p.floatValue != Float(priority) { return false }
+    if let p = values["priority"] as? UILayoutPriority {
+      if p != priority { return false }
     }
     if let o: AnyObject = values["owner"] {
       if owner == nil { return false }
@@ -323,9 +268,9 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
 
   :returns: Constraint?
   */
-  public class func constraintFromFormat(format: String, index: [String:String], context: NSManagedObjectContext) -> Constraint? {
+  public class func constraintFromFormat(format: String, withIndex index: [String:String], context: NSManagedObjectContext) -> Constraint? {
     var constraint: Constraint?
-    if let pseudo = PseudoConstraint(format: format) {
+    if let pseudo = PseudoConstraint(format) {
       let firstItemIndex = pseudo.firstItem
       if let firstItemUUID = index[firstItemIndex],
         firstItem = RemoteElement.objectWithValue(firstItemUUID, forAttribute: "uuid", context: context)
@@ -347,6 +292,32 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
   }
 
   /**
+  constraintFromFormat:context:
+
+  :param: format String
+  :param: context NSManagedObjectContext
+
+  :returns: Constraint?
+  */
+  public class func constraintFromFormat(format: String, context: NSManagedObjectContext) -> Constraint? {
+    var constraint: Constraint?
+    if let pseudo = PseudoConstraint(format) {
+      constraint = Constraint(context: context)
+      constraint?.firstItemIdentifier = pseudo.firstItem
+      constraint?.firstAttribute = pseudo.firstAttribute.NSLayoutAttributeValue
+      constraint?.relation = pseudo.relation.NSLayoutRelationValue
+      constraint?.secondItemIdentifier = pseudo.secondItem
+      constraint?.secondAttribute = pseudo.secondAttribute.NSLayoutAttributeValue
+      constraint?.multiplier = pseudo.multiplier
+      constraint?.constant = pseudo.constant
+      constraint?.priority = pseudo.priority
+      constraint?.identifier = pseudo.identifier
+    }
+    return constraint
+  }
+
+
+  /**
   importObjectsWithData:context:
 
   :param: data AnyObject?
@@ -362,22 +333,35 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
       if let formatData = ArrayJSONValue(data["format"]) { formatStrings = compressedMap(formatData.value, {String($0)}) }
       else if let formatString = String(data["format"]) { formatStrings = [formatString] }
       else { formatStrings = [] }
-      return compressedMap(formatStrings, {self.constraintFromFormat($0, index: convertedIndex, context: context)})
+      return compressedMap(formatStrings, {self.constraintFromFormat($0, withIndex: convertedIndex, context: context)})
     }
     return []
+  }
+
+  /**
+  importObjectsWithData:context:
+
+  :param: data ArrayJSONValue
+  :param: context NSManagedObjectContext
+
+  :returns: [Constraint]
+  */
+  override public class func importObjectsWithData(data: ArrayJSONValue, context: NSManagedObjectContext) -> [ModelObject] {
+    return compressedMap(flatMap(data.compressedMap({String($0)}), {NSLayoutConstraint.splitFormat($0)}),
+                         {self.constraintFromFormat($0, context: context)})
   }
 
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
     obj["tag"] = tag.jsonValue
     obj["identifier"] = identifier?.jsonValue
-    obj["firstAttribute"] = NSLayoutConstraint.pseudoNameForAttribute(firstAttribute).jsonValue
-    obj["secondAttribute"] = NSLayoutConstraint.pseudoNameForAttribute(secondAttribute).jsonValue
-    obj["relation"] = NSLayoutConstraint.pseudoNameForRelation(relation).jsonValue
+    obj["firstAttribute"] = PseudoConstraint.Attribute(firstAttribute).rawValue.jsonValue
+    obj["secondAttribute"] = PseudoConstraint.Attribute(secondAttribute).rawValue.jsonValue
+    obj["relation"] = PseudoConstraint.Relation(relation).rawValue.jsonValue
     obj["multiplier"] = multiplier.jsonValue
     obj["constant"] = constant.jsonValue
     obj["priority"] = priority.jsonValue
-    obj["first-item.uuid"] = firstItem.uuid.jsonValue
+    obj["first-item.uuid"] = firstItem?.uuid.jsonValue
     obj["second-item.uuid"] = secondItem?.uuid.jsonValue
     obj["owner.uuid"] = owner?.uuid.jsonValue
     return obj.jsonValue

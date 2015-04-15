@@ -68,3 +68,9 @@ let spaceSeparated = split(Array(s.generate()), isSeparator:matchesSpace).map({S
 println("spaceSeparated = \(spaceSeparated)")
 let anyButSpaceSeparated = split(Array(s.generate()), isSeparator: invert(matchesSpace)).map({String($0)})
 println("anyButSpaceSeparated = \(anyButSpaceSeparated)")
+
+println()
+let format = "$1.bottom = self.bottom"
+let pseudo = PseudoConstraint(format)
+println(pseudo!.description)
+println(pseudo!.debugDescription)

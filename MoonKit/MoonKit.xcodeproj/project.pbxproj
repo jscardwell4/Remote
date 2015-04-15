@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C201F73B1A2539E7004600BC /* NSLayoutPseudoConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C201F73A1A2539E7004600BC /* NSLayoutPseudoConstraint.swift */; };
+		C201F73B1A2539E7004600BC /* PseudoConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C201F73A1A2539E7004600BC /* PseudoConstraint.swift */; };
 		C2037B7119D0D339001F6AD9 /* MSKitGeometryFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2037B7019D0D339001F6AD9 /* MSKitGeometryFunctions.m */; };
 		C205852B1A1BA22A00212759 /* LongPressGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C205852A1A1BA22A00212759 /* LongPressGesture.swift */; };
 		C205852D1A1BEC2000212759 /* BlockActionGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C205852C1A1BEC2000212759 /* BlockActionGesture.swift */; };
@@ -37,7 +37,6 @@
 		C2358F3619C78E0C00920F8D /* NSFetchedResultsController+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888418138CF700555D63 /* NSFetchedResultsController+MSKitAdditions.m */; };
 		C2358F3719C78E0C00920F8D /* NSFetchRequest+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888618138CF700555D63 /* NSFetchRequest+MSKitAdditions.m */; };
 		C2358F3819C78E0C00920F8D /* NSHashTable+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888818138CF700555D63 /* NSHashTable+MSKitAdditions.m */; };
-		C2358F3919C78E0C00920F8D /* NSLayoutConstraint+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888A18138CF700555D63 /* NSLayoutConstraint+MSKitAdditions.m */; };
 		C2358F3A19C78E0C00920F8D /* NSManagedObject+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888C18138CF700555D63 /* NSManagedObject+MSKitAdditions.m */; };
 		C2358F3B19C78E0C00920F8D /* NSManagedObjectContext+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE888E18138CF700555D63 /* NSManagedObjectContext+MSKitAdditions.m */; };
 		C2358F3C19C78E0C00920F8D /* NSMapTable+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE889018138CF700555D63 /* NSMapTable+MSKitAdditions.m */; };
@@ -120,7 +119,6 @@
 		C2358F8E19C78E3F00920F8D /* NSFetchedResultsController+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888318138CF700555D63 /* NSFetchedResultsController+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358F8F19C78E3F00920F8D /* NSFetchRequest+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888518138CF700555D63 /* NSFetchRequest+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358F9019C78E3F00920F8D /* NSHashTable+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888718138CF700555D63 /* NSHashTable+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2358F9119C78E3F00920F8D /* NSLayoutConstraint+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888918138CF700555D63 /* NSLayoutConstraint+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358F9219C78E3F00920F8D /* NSManagedObject+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888B18138CF700555D63 /* NSManagedObject+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358F9319C78E3F00920F8D /* NSManagedObjectContext+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888D18138CF700555D63 /* NSManagedObjectContext+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358F9419C78E3F00920F8D /* NSMapTable+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE888F18138CF700555D63 /* NSMapTable+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -290,7 +288,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		C201F73A1A2539E7004600BC /* NSLayoutPseudoConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSLayoutPseudoConstraint.swift; sourceTree = "<group>"; };
+		C201F73A1A2539E7004600BC /* PseudoConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PseudoConstraint.swift; sourceTree = "<group>"; };
 		C2037B7019D0D339001F6AD9 /* MSKitGeometryFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSKitGeometryFunctions.m; sourceTree = "<group>"; };
 		C205852A1A1BA22A00212759 /* LongPressGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LongPressGesture.swift; sourceTree = "<group>"; };
 		C205852C1A1BEC2000212759 /* BlockActionGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockActionGesture.swift; sourceTree = "<group>"; };
@@ -754,7 +752,7 @@
 				C25E63DD19FEC06A00F54626 /* GestureManager.swift */,
 				C2F01E331A03EDD9007F6966 /* ToggleImageBarButtonItem.swift */,
 				C205852A1A1BA22A00212759 /* LongPressGesture.swift */,
-				C201F73A1A2539E7004600BC /* NSLayoutPseudoConstraint.swift */,
+				C201F73A1A2539E7004600BC /* PseudoConstraint.swift */,
 				C2CEFF211A30F34400F3BE24 /* Label.swift */,
 				C2CEFF251A3121F100F3BE24 /* TextField.swift */,
 				C2CEFF291A32807E00F3BE24 /* TextInputView.swift */,
@@ -1145,7 +1143,6 @@
 				C2358F8E19C78E3F00920F8D /* NSFetchedResultsController+MSKitAdditions.h in Headers */,
 				C2358F8F19C78E3F00920F8D /* NSFetchRequest+MSKitAdditions.h in Headers */,
 				C2358F9019C78E3F00920F8D /* NSHashTable+MSKitAdditions.h in Headers */,
-				C2358F9119C78E3F00920F8D /* NSLayoutConstraint+MSKitAdditions.h in Headers */,
 				C2358F9219C78E3F00920F8D /* NSManagedObject+MSKitAdditions.h in Headers */,
 				C2358F9319C78E3F00920F8D /* NSManagedObjectContext+MSKitAdditions.h in Headers */,
 				C2358F9419C78E3F00920F8D /* NSMapTable+MSKitAdditions.h in Headers */,
@@ -1419,7 +1416,6 @@
 				C28E50941A13CA6400DF3206 /* BlockBarButtonItem.swift in Sources */,
 				C2CEFF281A32236B00F3BE24 /* HexIntegerInputView.swift in Sources */,
 				C2064FFA1A13C05900342FDE /* Operators.swift in Sources */,
-				C2358F3919C78E0C00920F8D /* NSLayoutConstraint+MSKitAdditions.m in Sources */,
 				C2358F3A19C78E0C00920F8D /* NSManagedObject+MSKitAdditions.m in Sources */,
 				C2064FFE1A13C71700342FDE /* UIView+MoonKitAdditions.swift in Sources */,
 				C2358F3B19C78E0C00920F8D /* NSManagedObjectContext+MSKitAdditions.m in Sources */,
@@ -1480,7 +1476,7 @@
 				C2358F5819C78E0C00920F8D /* MSPickerInputViewController.m in Sources */,
 				C24A22951ADB45340065E7EA /* RawOptionSetFunctions.swift in Sources */,
 				C2C4B72C1AA951D700912951 /* NSManagedObject+MoonKitAdditions.swift in Sources */,
-				C201F73B1A2539E7004600BC /* NSLayoutPseudoConstraint.swift in Sources */,
+				C201F73B1A2539E7004600BC /* PseudoConstraint.swift in Sources */,
 				C2358F5919C78E0C00920F8D /* MSBarButtonItem.m in Sources */,
 				C28E50931A13CA5000DF3206 /* MSButton.swift in Sources */,
 				C2064FFF1A13C71D00342FDE /* NSLayoutConstraint+MoonKitAdditions.swift in Sources */,

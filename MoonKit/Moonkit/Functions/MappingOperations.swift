@@ -41,7 +41,7 @@ compressedMap:transform:
 :returns: [U]
 */
 public func compressedMap<S:SequenceType, T, U where S.Generator.Element == T>(source: S, transform: (T) -> U?) -> [U] {
-  return source >>> transform >>> map >>> compressed
+  return map(source, transform) >>> compressed
 }
 
 /**
@@ -53,7 +53,7 @@ compressedMap:transform:
 :returns: [U]?
 */
 public func compressedMap<S:SequenceType, T, U where S.Generator.Element == T>(source: S?, transform: (T) -> U?) -> [U]? {
-  return source ?>> transform ?>> compressedMap
+  return source >?> transform >?> compressedMap
 }
 
 // MARK: - Uniqueing

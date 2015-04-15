@@ -113,12 +113,12 @@
 - (UIImage *)snapshot;
 - (UIImage *)blurredSnapshot;
 
-- (NSArray *)constrainWithFormat:(NSString *)format identifier:(NSString *)identifier;
-- (NSArray *)constrainWithFormat:(NSString *)format nametag:(NSString *)nametag;
-- (NSArray *)constrainWithFormat:(NSString *)format; // Use 'self' as identifier to avoid issues with dictionary for views
-- (NSArray *)constrainWithFormat:(NSString *)format views:(NSDictionary *)views; // Adds self to `views`
-- (NSArray *)constrainWithFormat:(NSString *)format views:(NSDictionary *)views nametag:(NSString *)nametag;
-- (NSArray *)constrainWithFormat:(NSString *)format views:(NSDictionary *)views identifier:(NSString *)identifier;
+//- (NSArray *)constrainWithFormat:(NSString *)format identifier:(NSString *)identifier;
+//- (NSArray *)constrainWithFormat:(NSString *)format nametag:(NSString *)nametag;
+//- (NSArray *)constrainWithFormat:(NSString *)format; // Use 'self' as identifier to avoid issues with dictionary for views
+//- (NSArray *)constrainWithFormat:(NSString *)format views:(NSDictionary *)views; // Adds self to `views`
+//- (NSArray *)constrainWithFormat:(NSString *)format views:(NSDictionary *)views nametag:(NSString *)nametag;
+//- (NSArray *)constrainWithFormat:(NSString *)format views:(NSDictionary *)views identifier:(NSString *)identifier;
 
 // - (NSArray *)constrainToSize:(CGSize)size;
 // - (NSArray *)constrainToSize:(CGSize)size identifier:(NSString *)identifier;
@@ -150,5 +150,5 @@
 
 @interface UIView (Debugger)
 - (NSString *)recursiveDescription;
-- (NSString *)prettyConstraintsDescription;
+//- (NSString *)prettyConstraintsDescription;
 @end

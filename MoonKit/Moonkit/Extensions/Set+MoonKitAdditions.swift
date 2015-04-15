@@ -31,9 +31,20 @@ public func ⊉<S:SequenceType, T where S.Generator.Element == T>(lhs: Set<T>, r
 
 // union
 public func ∪<S:SequenceType, T where S.Generator.Element == T>(lhs: Set<T>, rhs: S) -> Set<T> { return lhs.union(rhs) }
+public func ∪=<S:SequenceType, T where S.Generator.Element == T>(inout lhs: Set<T>, rhs: S) { lhs.unionInPlace(rhs) }
 
 // minus
 public func ∖<S:SequenceType, T where S.Generator.Element == T>(lhs: Set<T>, rhs: S) -> Set<T> { return lhs.subtract(rhs) }
+public func ∖=<S:SequenceType, T where S.Generator.Element == T>(inout lhs: Set<T>, rhs: S) { lhs.subtractInPlace(rhs) }
 
 // intersect
 public func ∩<S:SequenceType, T where S.Generator.Element == T>(lhs: Set<T>, rhs: S) -> Set<T> { return lhs.intersect(rhs) }
+public func ∩=<S:SequenceType, T where S.Generator.Element == T>(inout lhs: Set<T>, rhs: S) { lhs.intersectInPlace(rhs) }
+
+// xor
+public func ∆<S:SequenceType, T where S.Generator.Element == T>(lhs: Set<T>, rhs: S) -> Set<T> { return lhs.exclusiveOr(rhs) }
+public func ∆=<S:SequenceType, T where S.Generator.Element == T>(inout lhs: Set<T>, rhs: S) { lhs.exclusiveOrInPlace(rhs) }
+
+public func filter<T>(source: Set<T>, includeElement: (T) -> Bool) -> Set<T> {
+  return Set(filter(Array(source), includeElement))
+}

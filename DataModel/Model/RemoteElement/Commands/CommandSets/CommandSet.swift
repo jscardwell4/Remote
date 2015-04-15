@@ -22,21 +22,20 @@ public final class CommandSet: CommandContainer {
     .Rocker: Set<RemoteElement.Role>([.Top, .Bottom])
   ]
 
-  @objc public enum CommandSetType: Int { case Unspecified, Dpad, Transport, Numberpad, Rocker }
-  @NSManaged var primitiveType: NSNumber
+  @objc public enum CommandSetType: Int16 { case Unspecified, Dpad, Transport, Numberpad, Rocker }
   public var type: CommandSetType {
     get {
       willAccessValueForKey("type")
-      let type = primitiveType
+      let type = (primitiveValueForKey("type")  as! NSNumber).shortValue
       didAccessValueForKey("type")
-      return CommandSetType(rawValue: type.integerValue) ?? .Unspecified
+      return CommandSetType(rawValue: type)!
     }
     set {
       willChangeValueForKey("type")
-      primitiveType = newValue.rawValue
+      setPrimitiveValue(NSNumber(short: newValue.rawValue), forKey: "type")
       didChangeValueForKey("type")
       if let sharedKeys = CommandSet.sharedKeysByType[newValue] {
-        containerIndex = MSDictionary(sharedKeys: Array(map(sharedKeys){$0.rawValue})) as! OrderedDictionary<String, NSURL>
+        containerIndex = MSDictionary(sharedKeys: map(sharedKeys){Int($0.rawValue)}) as! OrderedDictionary<String, NSURL>
       } else {
         containerIndex = [:]
       }
