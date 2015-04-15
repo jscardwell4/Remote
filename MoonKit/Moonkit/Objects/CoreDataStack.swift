@@ -23,15 +23,16 @@ public class CoreDataStack {
   :param: persistentStoreURL NSURL
   :param: options [NSObject:AnyObject]? = nil
   */
-  public init?(managedObjectModel: NSManagedObjectModel, persistentStoreURL: NSURL, options: [NSObject:AnyObject]? = nil) {
+  public init?(managedObjectModel: NSManagedObjectModel, persistentStoreURL: NSURL?, options: [NSObject:AnyObject]? = nil) {
     self.managedObjectModel = managedObjectModel
     persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
     rootContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
     rootContext.persistentStoreCoordinator = persistentStoreCoordinator
     rootContext.nametag = "root"
 
+    let storeType = persistentStoreURL == nil ? NSInMemoryStoreType : NSSQLiteStoreType
     var error: NSError?
-    if let store = persistentStoreCoordinator.addPersistentStoreWithType(NSSQLiteStoreType,
+    if let store = persistentStoreCoordinator.addPersistentStoreWithType(storeType,
                                                            configuration: nil,
                                                                      URL: persistentStoreURL,
                                                                  options: options,
@@ -55,6 +56,16 @@ public class CoreDataStack {
     return context
   }
 
+  /**
+  isolatedContext
+
+  :returns: NSManagedObjectContext
+  */
+  public func isolatedContext() -> NSManagedObjectContext {
+    let context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+    context.persistentStoreCoordinator = persistentStoreCoordinator
+    return context
+  }
   /**
   privateContext
 

@@ -66,11 +66,11 @@ import MoonKit
 
 
   /** The core data stack, if this is nil we may as well shutdown */
-  public static let stack: CoreDataStack = {
+  private static let stack: CoreDataStack = {
     if let modelURL = dataModelBundle.URLForResource(DataManager.resourceBaseName, withExtension: "momd"),
       mom = NSManagedObjectModel(contentsOfURL: modelURL),
       stack = CoreDataStack(managedObjectModel: DataManager.augmentModel(mom),
-                            persistentStoreURL: databaseStoreURL,
+                            persistentStoreURL: dataFlag.test ? nil : databaseStoreURL,
                             options: [NSMigratePersistentStoresAutomaticallyOption: true,
                                       NSInferMappingModelAutomaticallyOption: true])
     {
@@ -85,13 +85,20 @@ import MoonKit
   static public let dataFlag: DataFlag = DataFlag()
   static public let modelFlags: [ModelFlag] = ModelFlag.all
 
-
+  static public var managedObjectModel: NSManagedObjectModel { return stack.managedObjectModel }
   /**
   Creates a new main queue context as a child of the `rootContext` (via `stack`)
 
   :returns: NSManagedObjectContext
   */
   public class func mainContext() -> NSManagedObjectContext { return stack.mainContext() }
+
+  /**
+  isolatedContext
+
+  :returns: NSManagedObjectContext
+  */
+  public class func isolatedContext() -> NSManagedObjectContext { return stack.isolatedContext() }
 
   /** The primary, private-queue managed object context maintained by `stack`.  */
   public class var rootContext: NSManagedObjectContext { return stack.rootContext }
@@ -366,6 +373,7 @@ import MoonKit
     case Copy
     case Load
     case Remove
+    case Test
     case LoadFile (String)
     case Dump
     case Log ([LogValue])
@@ -383,6 +391,7 @@ import MoonKit
       switch self {
         case .Copy:            return "copy"
         case .Remove:          return "remove"
+        case .Test:            return "test"
         case .Load, .LoadFile: return "load"
         case .Dump:            return "dump"
         case .Log:             return "log"
@@ -409,6 +418,8 @@ import MoonKit
           self = Marker.Load
         case "remove":
           self = Marker.Remove
+        case "test":
+          self = Marker.Test
         case "dump":
           self = Marker.Dump
         case ~/"load=.+":
@@ -422,7 +433,7 @@ import MoonKit
 
     public var description: String {
       switch self {
-        case .Copy, .Load, .Dump, .Remove: return key
+        case .Copy, .Load, .Dump, .Remove, .Test: return key
         case .Log(let values): return "\(key): " + ", ".join(values.map({$0.rawValue}))
         case .LoadFile(let file): return "\(key): \(file)"
       }
@@ -436,6 +447,7 @@ import MoonKit
     let load: Bool
     let dump: Bool
     let remove: Bool
+    let test: Bool
     let copy: Bool
     let logModel: Bool
 
@@ -450,17 +462,19 @@ import MoonKit
         logModel =  markers ∋ .Log([.Model])
         copy = markers ∋ .Copy
         remove =  markers ∋ .Remove
+        test = markers ∋ .Test
       } else {
         load = false
         dump = false
         logModel = false
         copy = false
         remove = false
+        test = false
       }
     }
 
     public var description: String {
-      return "database operations:\n\tload: \(load)\n\tdump: \(dump)\n\tremove: \(remove)\n\tlog model: \(logModel)"
+      return "database operations:\n\tload: \(load)\n\tdump: \(dump)\n\tremove: \(remove)\n\ttest: \(test)\n\tlog model: \(logModel)"
     }
   }
 

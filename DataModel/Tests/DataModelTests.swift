@@ -14,7 +14,7 @@ import MoonKit
 
 class DataModelTests: XCTestCase {
 
-  let context = DataManager.rootContext
+  var context: NSManagedObjectContext!
 
   override class func initialize() {
     super.initialize()
@@ -24,10 +24,15 @@ class DataModelTests: XCTestCase {
     }
   }
 
-  override func tearDown() {
-    super.tearDown()
-    context.reset()
+  override func setUp() {
+    super.setUp()
+    context = DataManager.isolatedContext()
   }
+
+//  override func tearDown() {
+//    super.tearDown()
+//    context.reset()
+//  }
 
   func assertJSONEquality(data: ObjectJSONValue,
               forObject object: JSONValueConvertible?,
@@ -441,14 +446,14 @@ class InterdependentDataModelTests: DataModelTests {
   func testLoadManufacturersFromFile() {
     let expectation = expectationWithDescription("load manufacturers")
     DataManager.loadDataFromFile("Manufacturer_Test",
-      type: Manufacturer.self,
-      context: context,
-      completion: {(success: Bool, error: NSError?) -> Void in
-        XCTAssertTrue(success, "loading data from file triggered an error")
-        DataManager.saveRootContext(completion: { (success: Bool, error: NSError?) -> Void in
-          XCTAssertTrue(success, "saving context triggered an error")
-          expectation.fulfill()
-        })
+                            type: Manufacturer.self,
+                         context: context,
+                      completion: {(success: Bool, error: NSError?) -> Void in
+                        XCTAssertTrue(success, "loading data from file triggered an error")
+                        DataManager.saveRootContext(completion: { (success: Bool, error: NSError?) -> Void in
+                          XCTAssertTrue(success, "saving context triggered an error")
+                          expectation.fulfill()
+                        })
     })
     waitForExpectationsWithTimeout(10, handler: {(error: NSError?) -> Void in _ = MSHandleError(error)})
     let manufacturers = Manufacturer.objectsInContext(context) as! [Manufacturer]
@@ -462,6 +467,101 @@ class InterdependentDataModelTests: DataModelTests {
     if codeSet != nil {
       XCTAssertEqual(codeSet!.codes.count, 47, "unexpected count for code set's codes array")
     }
+  }
+
+  func testLoadComponentDevicesFromFile() {
+    let expectation = expectationWithDescription("load component devices")
+    DataManager.loadDataFromFile("ComponentDevice",
+                            type: ComponentDevice.self,
+                         context: context,
+                      completion: {(success: Bool, error: NSError?) -> Void in
+                        XCTAssertTrue(success, "loading data from file triggered an error")
+                        DataManager.saveRootContext(completion: { (success: Bool, error: NSError?) -> Void in
+                          XCTAssertTrue(success, "saving context triggered an error")
+                          expectation.fulfill()
+                        })
+    })
+    waitForExpectationsWithTimeout(10, handler: {(error: NSError?) -> Void in _ = MSHandleError(error)})
+    let componentDevices = ComponentDevice.objectsInContext(context) as! [ComponentDevice]
+    XCTAssertEqual(componentDevices.count, 4, "where are the component device objects?")
+    let componentDeviceIndex = OrderedDictionary(keys: componentDevices.map({$0.name}), values: componentDevices)
+    XCTAssertEqual(Set(componentDevices.map({$0.name})), Set(["Dish Hopper", "PS3", "AV Receiver", "Samsung TV"]),
+                   "unexpected component device names")
+  }
+
+  func testLoadImagesFromFile() {
+    let expectation = expectationWithDescription("load images")
+    DataManager.loadDataFromFile("Glyphish",
+                            type: ImageCategory.self,
+                         context: context,
+                      completion: {(success: Bool, error: NSError?) -> Void in
+                        XCTAssertTrue(success, "loading data from file triggered an error")
+                        DataManager.saveRootContext(completion: { (success: Bool, error: NSError?) -> Void in
+                          XCTAssertTrue(success, "saving context triggered an error")
+                          expectation.fulfill()
+                        })
+    })
+    waitForExpectationsWithTimeout(10, handler: {(error: NSError?) -> Void in _ = MSHandleError(error)})
+    let imageCategories = ImageCategory.objectsInContext(context) as! [ImageCategory]
+    XCTAssertGreaterThan(imageCategories.count, 19, "where are the image category objects?")
+  }
+
+  func testLoadNetworkDevicesFromFile() {
+    let expectation = expectationWithDescription("load network devices")
+    DataManager.loadDataFromFile("NetworkDevice",
+                            type: NetworkDevice.self,
+                         context: context,
+                      completion: {(success: Bool, error: NSError?) -> Void in
+                        XCTAssertTrue(success, "loading data from file triggered an error")
+                        DataManager.saveRootContext(completion: { (success: Bool, error: NSError?) -> Void in
+                          XCTAssertTrue(success, "saving context triggered an error")
+                          expectation.fulfill()
+                        })
+    })
+    waitForExpectationsWithTimeout(10, handler: {(error: NSError?) -> Void in _ = MSHandleError(error)})
+    let networkDevices = NetworkDevice.objectsInContext(context) as! [NetworkDevice]
+    XCTAssertEqual(networkDevices.count, 2, "where are the network device objects?")
+    let networkDeviceIndex = OrderedDictionary(keys: networkDevices.map({$0.name}), values: networkDevices)
+    XCTAssertEqual(Set(networkDevices.map({$0.name})), Set(["GlobalCache-iTachIP2IR", "ISYDevice1"]),
+                   "unexpected network device names")
+  }
+
+  func testLoadActivitiesFromFile() {
+    let expectation = expectationWithDescription("load activities")
+    DataManager.loadDataFromFile("Activity",
+                            type: Activity.self,
+                         context: context,
+                      completion: {(success: Bool, error: NSError?) -> Void in
+                        XCTAssertTrue(success, "loading data from file triggered an error")
+                        DataManager.saveRootContext(completion: { (success: Bool, error: NSError?) -> Void in
+                          XCTAssertTrue(success, "saving context triggered an error")
+                          expectation.fulfill()
+                        })
+    })
+    waitForExpectationsWithTimeout(10, handler: {(error: NSError?) -> Void in _ = MSHandleError(error)})
+    let activities = Activity.objectsInContext(context) as! [Activity]
+    XCTAssertTrue(activities.count == 4, "where are the activity objects?")
+    let activityIndex = OrderedDictionary(keys: activities.map({$0.name}), values: activities)
+    XCTAssertEqual(Set(activities.map({$0.name})),
+                   Set(["Dish Hopper Activity", "Playstation Activity", "Sonos Activity", " TV Activity"]),
+                   "unexpected network device names")
+  }
+
+  func testLoadPresetsFromFile() {
+    let expectation = expectationWithDescription("load presets")
+    DataManager.loadDataFromFile("Preset",
+                            type: PresetCategory.self,
+                         context: context,
+                      completion: {(success: Bool, error: NSError?) -> Void in
+                        XCTAssertTrue(success, "loading data from file triggered an error")
+                        DataManager.saveRootContext(completion: { (success: Bool, error: NSError?) -> Void in
+                          XCTAssertTrue(success, "saving context triggered an error")
+                          expectation.fulfill()
+                        })
+    })
+    waitForExpectationsWithTimeout(10, handler: {(error: NSError?) -> Void in _ = MSHandleError(error)})
+    let presetCategories = PresetCategory.objectsInContext(context) as! [PresetCategory]
+    XCTAssertEqual(presetCategories.count, 7, "where are the preset category objects?")
   }
 
 }
