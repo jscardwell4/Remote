@@ -12,9 +12,9 @@
   "deviceType": "urn:udi-com:device:X_Insteon_Lighting_Device:1",
   "baseURL": "http://192.168.1.9",
   "nodes": [
-    <@include ISYDeviceNode.json>
+    <@include ISYDeviceNode_Simple.json>
   ],
   "groups": [
-    <@include ISYDeviceGroup.json>
+    <@include ISYDeviceGroup_Simple.json>
   ]
 }

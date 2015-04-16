@@ -1,5 +1,5 @@
 {
-  "CH": <@include CommandSet.json>,
+  "CH": <@include CommandSet_Simple.json>,
   "PAGE": {
     "type": "rocker",
     "top": {

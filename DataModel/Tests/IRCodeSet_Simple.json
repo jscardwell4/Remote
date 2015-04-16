@@ -2,6 +2,6 @@
   "name": "Dish",
   "user": true,
   "codes": [
-    <@include IRCode.json>
+    <@include IRCode_Simple.json>
   ]
 }

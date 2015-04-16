@@ -1,0 +1,73 @@
+[
+  {
+    "name": "Dish Hopper Activity",
+    "remote.index": "Dish%20Hopper%20Activity",
+    "launchMacro": {
+      "class": "macro",
+      "commands": [
+        {"class": "sendir", "code.index": "Sony/AV%20Receiver/TV%2FSAT"},
+        {"class": "power", "device.index": "Samsung%20TV", "state": "on"},
+        {"class": "delay", "duration": 1 },
+        {"class": "sendir", "code.index": "Samsung/Samsung%20TV/HDMI%204"}
+      ]
+    },
+    "haltMacro": {
+      "class": "macro",
+      "commands": [
+        {"class": "power", "device.index": "Samsung%20TV", "state": "off"},
+        {"class": "power", "device.index": "AV%20Receiver", "state": "off"}
+      ]
+    }
+  },
+  {
+    "name": "Playstation Activity",
+    "launchMacro": {
+      "class": "macro",
+      "commands": [
+        {"class": "sendir", "code.index": "Sony/AV%20Receiver/Video%202"},
+        {"class": "power", "device.index": "Samsung%20TV", "state": "on"},
+        {"class": "delay", "duration": 1 },
+        {"class": "sendir", "code.index": "Samsung/Samsung%20TV/HDMI%203"},
+        {"class": "power", "device.index": "PS3", "state": "on"}
+      ]
+    },
+    "haltMacro": {
+      "class": "macro",
+      "commands": [
+        {"class": "power", "device.index": "Samsung%20TV", "state": "off"},
+        {"class": "power", "device.index": "PS3", "state": "off"},
+        {"class": "power", "device.index": "AV%20Receiver", "state": "off"}
+      ]
+    }
+  },
+  {
+    "name": "Sonos Activity",
+    "launchMacro": {
+      "class": "macro",
+      "commands": [{"class": "sendir", "code.index": "Sony/AV%20Receiver/MD%2FTape"}]
+    },
+    "haltMacro": {
+      "class": "macro",
+      "commands": [{"class": "power", "device.index": "AV%20Receiver", "state": "off"}]
+    }
+  },
+  {
+    "name": " TV Activity",
+    "launchMacro": {
+      "class": "macro",
+      "commands": [
+        {"class": "sendir", "code.index": "Sony/AV%20Receiver/DVD"},
+        {"class": "power", "device.index": "Samsung%20TV", "state": "on"},
+        {"class": "delay", "duration": 1 },
+        {"class": "sendir", "code.index": "Samsung/Samsung%20TV/HDMI%202"}
+      ]
+    },
+    "haltMacro": {
+      "class": "macro",
+      "commands": [
+        {"class": "power", "device.index": "Samsung%20TV", "state": "off"},
+        {"class": "power", "device.index": "AV%20Receiver", "state": "off"}
+      ]
+    }
+  }
+]

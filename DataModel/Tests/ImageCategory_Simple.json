@@ -1,6 +1,6 @@
 {
   "name": "Backgrounds",
   "images": [
-    <@include Image.json>
+    <@include Image_Simple.json>
   ]
 }

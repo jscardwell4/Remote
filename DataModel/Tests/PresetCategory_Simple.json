@@ -1,6 +1,6 @@
 {
     "name": "Button Group",
     "presets": [
-      <@include Preset.json>
+      <@include Preset_Simple.json>
     ]
   }

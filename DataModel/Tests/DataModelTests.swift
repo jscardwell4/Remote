@@ -66,6 +66,7 @@ class DataModelTests: XCTestCase {
 
 }
 
+// Currently uses test bundle resource files *_Simple.json
 class IsolatedDataModelTests: DataModelTests {
 
   static let testJSON: [String:JSONValue] = {
@@ -82,7 +83,7 @@ class IsolatedDataModelTests: DataModelTests {
                 "ControlStateTitleSet", "ImageView", "Constraint"]
       {
         var error: NSError?
-        if let filePath = bundle.pathForResource(s, ofType: "json"),
+        if let filePath = bundle.pathForResource(s + "_Simple", ofType: "json"),
         json = JSONSerialization.objectByParsingFile(filePath, options: .InflateKeypaths, error: &error)
         where !MSHandleError(error)
         {
@@ -437,6 +438,7 @@ class IsolatedDataModelTests: DataModelTests {
 
 }
 
+// Currently uses DataModel bundle files
 class InterdependentDataModelTests: DataModelTests {
 
   func expectFileLoad(name: String, type: ModelObject.Type) {

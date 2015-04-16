@@ -14,6 +14,7 @@ import MoonKit
 import Quick
 import Nimble
 
+// TODO: Convert to use test bundle resource files from 'Loaded' group
 class DataModel_LoadedTests: QuickSpec {
 
   static let context = DataManager.isolatedContext()

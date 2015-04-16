@@ -1,5 +1,5 @@
 {
-  "normal": <@include ImageView.json>,
+  "normal": <@include ImageView_Simple.json>,
   "highlighted": {
     "image.index": "Icons/Glyphish%206/Gray/Home",
     "color": "#00AFFFFF"
