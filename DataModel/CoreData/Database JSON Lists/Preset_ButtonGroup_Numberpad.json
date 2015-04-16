@@ -34,10 +34,10 @@
           "alignment": "center",
           "text": 1
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -53,10 +53,10 @@
           "alignment": "center",
           "text": 2
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -72,10 +72,10 @@
           "alignment": "center",
           "text": 3
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -91,10 +91,10 @@
           "alignment": "center",
           "text": 4
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -110,10 +110,10 @@
           "alignment": "center",
           "text": 5
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -129,10 +129,10 @@
           "alignment": "center",
           "text": 6
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -148,10 +148,10 @@
           "alignment": "center",
           "text": 7
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -167,10 +167,10 @@
           "alignment": "center",
           "text": 8
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -186,10 +186,10 @@
           "alignment": "center",
           "text": 9
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -205,10 +205,10 @@
           "alignment": "center",
           "text": 0
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -224,10 +224,10 @@
           "alignment": "center",
           "text": "Exit"
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -243,10 +243,10 @@
           "alignment": "center",
           "text": "Enter"
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -257,7 +257,7 @@
         "textEffect": "letter-press",
         "iconName": "chevron-up"
       },
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     }
   ]
 }

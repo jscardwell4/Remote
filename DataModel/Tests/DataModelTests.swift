@@ -11,6 +11,7 @@ import XCTest
 import CoreData
 import DataModel
 import MoonKit
+import Nimble
 
 class DataModelTests: XCTestCase {
 
@@ -28,11 +29,6 @@ class DataModelTests: XCTestCase {
     super.setUp()
     context = DataManager.isolatedContext()
   }
-
-//  override func tearDown() {
-//    super.tearDown()
-//    context.reset()
-//  }
 
   func assertJSONEquality(data: ObjectJSONValue,
               forObject object: JSONValueConvertible?,
@@ -408,9 +404,9 @@ class IsolatedDataModelTests: DataModelTests {
     if let data = ObjectJSONValue(self.dynamicType.testJSON["ControlStateImageSet"]) {
       if let controlStateImageSet = ControlStateImageSet(data: data, context: context) {
         assertJSONEquality(data, forObject: controlStateImageSet, excludingKeys: ["normal", "highlighted", "disabled"])
-        XCTAssert(controlStateImageSet.normal != nil, "missing value for 'normal' state")
-        XCTAssert(controlStateImageSet.highlighted != nil, "missing value for 'highlighted' state")
-        XCTAssert(controlStateImageSet.disabled != nil, "missing value for 'disabled' state")
+        expect(controlStateImageSet.normal).toNot(beNil())
+        expect(controlStateImageSet.highlighted).toNot(beNil())
+        expect(controlStateImageSet.disabled).toNot(beNil())
       } else { XCTFail("failed to create controlStateImageSet") }
     } else { XCTFail("could not retrieve test json for `ControlStateImageSet`") }
   }
@@ -434,7 +430,7 @@ class IsolatedDataModelTests: DataModelTests {
   func testConstraint() {
     if let data = ArrayJSONValue(self.dynamicType.testJSON["Constraint"]) {
       let constraints = Constraint.importObjectsWithData(data, context: context)
-      XCTAssert(constraints.count > 0, "failed to create constraint objects")
+      expect(constraints.count).to(beGreaterThan(0))
     } else { XCTFail("could not retrieve test json for `Constraint`") }
   }
 
@@ -443,10 +439,10 @@ class IsolatedDataModelTests: DataModelTests {
 
 class InterdependentDataModelTests: DataModelTests {
 
-  func testLoadManufacturersFromFile() {
-    let expectation = expectationWithDescription("load manufacturers")
-    DataManager.loadDataFromFile("Manufacturer_Test",
-                            type: Manufacturer.self,
+  func expectFileLoad(name: String, type: ModelObject.Type) {
+    let expectation = expectationWithDescription("load \(name)")
+    DataManager.loadDataFromFile(name,
+                            type: type,
                          context: context,
                       completion: {(success: Bool, error: NSError?) -> Void in
                         XCTAssertTrue(success, "loading data from file triggered an error")
@@ -456,112 +452,80 @@ class InterdependentDataModelTests: DataModelTests {
                         })
     })
     waitForExpectationsWithTimeout(10, handler: {(error: NSError?) -> Void in _ = MSHandleError(error)})
+  }
+
+  func testLoadManufacturersFromFile() {
+    expectFileLoad("Manufacturer_Test", type: Manufacturer.self)
     let manufacturers = Manufacturer.objectsInContext(context) as! [Manufacturer]
-    XCTAssertTrue(manufacturers.count == 3, "where are the manufacturer objects?")
-    let manufacturerIndex = OrderedDictionary(keys: manufacturers.map({$0.name}), values: manufacturers)
-    XCTAssertEqual(Set(manufacturers.map({$0.name})), Set(["Dish", "Sony", "Samsung"]), "unexpected manufacturer names")
-    let codeSets = manufacturers[0].codeSets
-    XCTAssertEqual(Set(manufacturerIndex.values.array.map({$0.codeSets.count})), Set([1, 3]), "missing or surplus number of code sets")
+    expect(manufacturers.count).to(equal(3))
+    expect(manufacturers.map{$0.name}).to(contain("Dish", "Sony", "Samsung"))
+    expect(manufacturers.map{$0.codeSets.count}).to(contain(1, 3))
     let codeSet = IRCodeSet.objectMatchingPredicate(∀"manufacturer.name == 'Dish'", context: context)
-    XCTAssertNotNil(codeSet, "where is the code set?")
-    if codeSet != nil {
-      XCTAssertEqual(codeSet!.codes.count, 47, "unexpected count for code set's codes array")
-    }
+    expect(codeSet).toNot(beNil())
+    expect(codeSet?.codes.count).to(equal(47))
   }
 
   func testLoadComponentDevicesFromFile() {
-    let expectation = expectationWithDescription("load component devices")
-    DataManager.loadDataFromFile("ComponentDevice",
-                            type: ComponentDevice.self,
-                         context: context,
-                      completion: {(success: Bool, error: NSError?) -> Void in
-                        XCTAssertTrue(success, "loading data from file triggered an error")
-                        DataManager.saveRootContext(completion: { (success: Bool, error: NSError?) -> Void in
-                          XCTAssertTrue(success, "saving context triggered an error")
-                          expectation.fulfill()
-                        })
-    })
-    waitForExpectationsWithTimeout(10, handler: {(error: NSError?) -> Void in _ = MSHandleError(error)})
+    expectFileLoad("ComponentDevice", type: ComponentDevice.self)
     let componentDevices = ComponentDevice.objectsInContext(context) as! [ComponentDevice]
-    XCTAssertEqual(componentDevices.count, 4, "where are the component device objects?")
-    let componentDeviceIndex = OrderedDictionary(keys: componentDevices.map({$0.name}), values: componentDevices)
-    XCTAssertEqual(Set(componentDevices.map({$0.name})), Set(["Dish Hopper", "PS3", "AV Receiver", "Samsung TV"]),
-                   "unexpected component device names")
+    expect(componentDevices.count).to(equal(4))
+    expect(componentDevices.map{$0.name}).to(contain("Dish Hopper", "PS3", "AV Receiver", "Samsung TV"))
   }
 
   func testLoadImagesFromFile() {
-    let expectation = expectationWithDescription("load images")
-    DataManager.loadDataFromFile("Glyphish",
-                            type: ImageCategory.self,
-                         context: context,
-                      completion: {(success: Bool, error: NSError?) -> Void in
-                        XCTAssertTrue(success, "loading data from file triggered an error")
-                        DataManager.saveRootContext(completion: { (success: Bool, error: NSError?) -> Void in
-                          XCTAssertTrue(success, "saving context triggered an error")
-                          expectation.fulfill()
-                        })
-    })
-    waitForExpectationsWithTimeout(10, handler: {(error: NSError?) -> Void in _ = MSHandleError(error)})
+    expectFileLoad("Glyphish", type: ImageCategory.self)
     let imageCategories = ImageCategory.objectsInContext(context) as! [ImageCategory]
-    XCTAssertGreaterThan(imageCategories.count, 19, "where are the image category objects?")
+    expect(imageCategories.count).to(beGreaterThanOrEqualTo(19))
   }
 
   func testLoadNetworkDevicesFromFile() {
-    let expectation = expectationWithDescription("load network devices")
-    DataManager.loadDataFromFile("NetworkDevice",
-                            type: NetworkDevice.self,
-                         context: context,
-                      completion: {(success: Bool, error: NSError?) -> Void in
-                        XCTAssertTrue(success, "loading data from file triggered an error")
-                        DataManager.saveRootContext(completion: { (success: Bool, error: NSError?) -> Void in
-                          XCTAssertTrue(success, "saving context triggered an error")
-                          expectation.fulfill()
-                        })
-    })
-    waitForExpectationsWithTimeout(10, handler: {(error: NSError?) -> Void in _ = MSHandleError(error)})
+    expectFileLoad("NetworkDevice", type: NetworkDevice.self)
     let networkDevices = NetworkDevice.objectsInContext(context) as! [NetworkDevice]
-    XCTAssertEqual(networkDevices.count, 2, "where are the network device objects?")
-    let networkDeviceIndex = OrderedDictionary(keys: networkDevices.map({$0.name}), values: networkDevices)
-    XCTAssertEqual(Set(networkDevices.map({$0.name})), Set(["GlobalCache-iTachIP2IR", "ISYDevice1"]),
-                   "unexpected network device names")
+    expect(networkDevices.count).to(equal(2))
+    expect(networkDevices.map{$0.name}).to(contain("GlobalCache-iTachIP2IR", "ISYDevice1"))
   }
 
   func testLoadActivitiesFromFile() {
-    let expectation = expectationWithDescription("load activities")
-    DataManager.loadDataFromFile("Activity",
-                            type: Activity.self,
-                         context: context,
-                      completion: {(success: Bool, error: NSError?) -> Void in
-                        XCTAssertTrue(success, "loading data from file triggered an error")
-                        DataManager.saveRootContext(completion: { (success: Bool, error: NSError?) -> Void in
-                          XCTAssertTrue(success, "saving context triggered an error")
-                          expectation.fulfill()
-                        })
-    })
-    waitForExpectationsWithTimeout(10, handler: {(error: NSError?) -> Void in _ = MSHandleError(error)})
+    expectFileLoad("Activity", type: Activity.self)
     let activities = Activity.objectsInContext(context) as! [Activity]
-    XCTAssertTrue(activities.count == 4, "where are the activity objects?")
-    let activityIndex = OrderedDictionary(keys: activities.map({$0.name}), values: activities)
-    XCTAssertEqual(Set(activities.map({$0.name})),
-                   Set(["Dish Hopper Activity", "Playstation Activity", "Sonos Activity", " TV Activity"]),
-                   "unexpected network device names")
+    expect(activities.count).to(equal(4))
+    expect(activities.map{$0.name}).to(contain("Dish Hopper Activity", "Playstation Activity", "Sonos Activity", " TV Activity"))
   }
 
   func testLoadPresetsFromFile() {
-    let expectation = expectationWithDescription("load presets")
-    DataManager.loadDataFromFile("Preset",
-                            type: PresetCategory.self,
-                         context: context,
-                      completion: {(success: Bool, error: NSError?) -> Void in
-                        XCTAssertTrue(success, "loading data from file triggered an error")
-                        DataManager.saveRootContext(completion: { (success: Bool, error: NSError?) -> Void in
-                          XCTAssertTrue(success, "saving context triggered an error")
-                          expectation.fulfill()
-                        })
-    })
-    waitForExpectationsWithTimeout(10, handler: {(error: NSError?) -> Void in _ = MSHandleError(error)})
+    expectFileLoad("Preset", type: PresetCategory.self)
     let presetCategories = PresetCategory.objectsInContext(context) as! [PresetCategory]
-    XCTAssertEqual(presetCategories.count, 7, "where are the preset category objects?")
+    expect(presetCategories.count).to(equal(7))
   }
 
+  func testLoadRemotesFromFile() {
+    expectFileLoad("Remote_Demo", type: Remote.self)
+    let remotes = Remote.objectsInContext(context) as! [Remote]
+    expect(remotes.count).to(equal(2))
+  }
+
+  func testLoadActivityControllerFromFile() {
+    expectFileLoad("ActivityController", type: ActivityController.self)
+    let activityController = ActivityController.objectsInContext(context) as! [ActivityController]
+    expect(activityController.count).to(equal(1))
+  }
+
+  func testLoadAllFiles() {
+    expectFileLoad("Manufacturer_Test", type: Manufacturer.self)
+    expectFileLoad("ComponentDevice", type: ComponentDevice.self)
+    expectFileLoad("Glyphish", type: ImageCategory.self)
+    expectFileLoad("NetworkDevice", type: NetworkDevice.self)
+    expectFileLoad("Activity", type: Activity.self)
+    expectFileLoad("Preset", type: PresetCategory.self)
+    expectFileLoad("Remote_Demo", type: Remote.self)
+    expectFileLoad("ActivityController", type: ActivityController.self)
+    DataManager.dumpJSONForModelType(Manufacturer.self, context: context)
+    DataManager.dumpJSONForModelType(ComponentDevice.self, context: context)
+    DataManager.dumpJSONForModelType(ImageCategory.self, context: context)
+    DataManager.dumpJSONForModelType(NetworkDevice.self, context: context)
+    DataManager.dumpJSONForModelType(Activity.self, context: context)
+    DataManager.dumpJSONForModelType(PresetCategory.self, context: context)
+    DataManager.dumpJSONForModelType(Remote.self, context: context)
+    DataManager.dumpJSONForModelType(ActivityController.self, context: context)
+  }
 }

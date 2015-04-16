@@ -27,9 +27,9 @@
           "alignment": "center",
           "text": "OK"
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",

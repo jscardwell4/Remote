@@ -29,8 +29,8 @@
           "text": "Button 1"
         }
       },
-      "background-colors.normal": "#060606FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#060606FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -46,8 +46,8 @@
           "text": "Button 2"
         }
       },
-      "background-colors.normal": "#060606FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#060606FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -63,8 +63,8 @@
           "text": "Button 3"
         }
       },
-      "background-colors.normal": "#060606FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#060606FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -80,8 +80,8 @@
           "text": "Button 4"
         }
       },
-      "background-colors.normal": "#060606FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#060606FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -97,8 +97,8 @@
           "text": "Button 5"
         }
       },
-      "background-colors.normal": "#060606FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#060606FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -114,8 +114,8 @@
           "text": "Button 6"
         }
       },
-      "background-colors.normal": "#060606FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#060606FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -131,8 +131,8 @@
           "text": "Button 7"
         }
       },
-      "background-colors.normal": "#060606FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#060606FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "uuid": "E205BA81-90BD-4943-B2F5-6230AD2D95E9",
@@ -143,7 +143,7 @@
         "textEffect": "letter-press",
         "iconName": "chevron-left"
       },
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     }
   ]
 }

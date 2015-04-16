@@ -4,7 +4,7 @@
   "shape": "oval",
   "style": "gloss1",
   "constraints": "$0.height = $0.width :: $0.width = 50",
-  "background-colors.normal": "#666666FF"
+  "backgroundColors.normal": "#666666FF"
 },
 {
   "name": "Round (Medium)",
@@ -12,7 +12,7 @@
   "shape": "oval",
   "style": "gloss1",
   "constraints": "$0.height = $0.width :: $0.width = 75",
-  "background-colors.normal": "#666666FF"
+  "backgroundColors.normal": "#666666FF"
 },
 {
   "name": "Round (Large)",
@@ -20,5 +20,5 @@
   "shape": "oval",
   "style": "gloss1",
   "constraints": "$0.height = $0.width :: $0.width = 100",
-  "background-colors.normal": "#666666FF"
+  "backgroundColors.normal": "#666666FF"
 }

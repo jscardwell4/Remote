@@ -30,11 +30,11 @@
           "alignment": "center",
           "iconName": "play"
         },
-        "disabled.foreground-color": "#7F7F7FFF",
-        "highlighted.foreground-color": "#00AFFFFF"
+        "disabled.foregroundColor": "#7F7F7FFF",
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#060606FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#060606FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -50,11 +50,11 @@
           "alignment": "center",
           "iconName": "pause"
         },
-        "disabled.foreground-color": "#7F7F7FFF",
-        "highlighted.foreground-color": "#00AFFFFF"
+        "disabled.foregroundColor": "#7F7F7FFF",
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#060606FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#060606FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -70,11 +70,11 @@
           "alignment": "center",
           "iconName": "backward"
         },
-        "disabled.foreground-color": "#7F7F7FFF",
-        "highlighted.foreground-color": "#00AFFFFF"
+        "disabled.foregroundColor": "#7F7F7FFF",
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#060606FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#060606FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -90,11 +90,11 @@
           "alignment": "center",
           "iconName": "fast-forward"
         },
-        "disabled.foreground-color": "#7F7F7FFF",
-        "highlighted.foreground-color": "#00AFFFFF"
+        "disabled.foregroundColor": "#7F7F7FFF",
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#060606FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#060606FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -110,11 +110,11 @@
           "alignment": "center",
           "iconName": "stop"
         },
-        "disabled.foreground-color": "#7F7F7FFF",
-        "highlighted.foreground-color": "#00AFFFFF"
+        "disabled.foregroundColor": "#7F7F7FFF",
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#060606FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#060606FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -130,11 +130,11 @@
           "alignment": "center",
           "iconName": "step-backward"
         },
-        "disabled.foreground-color": "#7F7F7FFF",
-        "highlighted.foreground-color": "#00AFFFFF"
+        "disabled.foregroundColor": "#7F7F7FFF",
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#060606FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#060606FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -145,7 +145,7 @@
         "textEffect": "letter-press",
         "iconName": "chevron-down"
       },
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -161,11 +161,11 @@
           "alignment": "center",
           "iconName": "step-forward"
         },
-        "disabled.foreground-color": "#7F7F7FFF",
-        "highlighted.foreground-color": "#00AFFFFF"
+        "disabled.foregroundColor": "#7F7F7FFF",
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#060606FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#060606FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "baseType": "button",
@@ -181,11 +181,11 @@
           "alignment": "center",
           "iconName": "circle"
         },
-        "disabled.foreground-color": "#7F7F7FFF",
-        "highlighted.foreground-color": "#00AFFFFF"
+        "disabled.foregroundColor": "#7F7F7FFF",
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#060606FF",
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#060606FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     }
   ]
 }

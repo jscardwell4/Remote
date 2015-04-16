@@ -24,10 +24,10 @@
           "alignment": "center",
           "text": "Default"
         },
-        "selected.foreground-color": "yellow",
-        "highlighted.foreground-color": "yellow"
+        "selected.foregroundColor": "yellow",
+        "highlighted.foregroundColor": "yellow"
       },
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
       "key": "other",
@@ -42,10 +42,10 @@
           "alignment": "center",
           "text": "Other"
         },
-        "selected.foreground-color": "yellow",
-        "highlighted.foreground-color": "yellow"
+        "selected.foregroundColor": "yellow",
+        "highlighted.foregroundColor": "yellow"
       },
-      "titleEdge-insets": "{20, 20, 20, 20}"
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     }
   ]
 }

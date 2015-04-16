@@ -3,7 +3,7 @@
     "uuid": "F668F0D5-80E4-46A4-A703-EF5A1601C645",
     "name": "Dish Hopper Activity",
     "key": "activity1",
-    "topBar-hidden": true,
+    "topBarHidden": true,
     "constraints": {
       "index": {
         "dishHopperActivity": "F668F0D5-80E4-46A4-A703-EF5A1601C645",
@@ -41,8 +41,8 @@
         "selectionPanel.right = dishHopperActivity.right @998"
       ]
     },
-    "background-color.default": "black",
-    "background-image.default.path": "Backgrounds/Pro Dots",
+    "backgroundColor.default": "black",
+    "backgroundImage.default.path": "Backgrounds/Pro Dots",
     "subelements": [
       {
         "uuid": "B9A5F86F-ED62-49E9-B6D4-AE1093D02202",
@@ -80,11 +80,11 @@
             "commands": {
               "default": {
                 "class": "sendir",
-                "code.uuid": "CC3DAB57-1897-44CB-AA05-6B48CBE96A6D"
+                "code.index": "Dish/Dish/Guide"
               },
               "tv": {
                 "class": "sendir",
-                "code.uuid": "A32C02D7-6CE0-46C0-8469-8F074C6D96E5"
+                "code.index": "Samsung/Samsung%20TV/Tools"
               }
             },
             "titles": {
@@ -97,7 +97,7 @@
                   "alignment": "center",
                   "text": "Guide"
                 },
-                "highlighted.foreground-color": "#00AFFFFF"
+                "highlighted.foregroundColor": "#00AFFFFF"
               },
               "tv": {
                 "normal": {
@@ -108,11 +108,11 @@
                   "alignment": "center",
                   "text": "Tools"
                 },
-                "highlighted.foreground-color": "#00AFFFFF"
+                "highlighted.foregroundColor": "#00AFFFFF"
               }
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "6EB0A6D1-992C-4F1D-816B-83E75187FCEB",
@@ -122,11 +122,11 @@
             "commands": {
               "default": {
                 "class": "sendir",
-                "code.uuid": "A4A417A0-F5AA-45E4-839E-F0727EC81A3F"
+                "code.index": "Dish/Dish/DVR"
               },
               "tv": {
                 "class": "sendir",
-                "code.uuid": "31E6CBAC-BA05-42DD-827D-45496EBDC78B"
+                "code.index": "Samsung/Samsung%20TV/Internet@TV"
               }
             },
             "titles": {
@@ -139,7 +139,7 @@
                   "alignment": "center",
                   "text": "DVR"
                 },
-                "highlighted.foreground-color": "#00AFFFFF"
+                "highlighted.foregroundColor": "#00AFFFFF"
               },
               "tv": {
                 "normal": {
@@ -150,11 +150,11 @@
                   "alignment": "center",
                   "text": "Internet@TV"
                 },
-                "highlighted.foreground-color": "#00AFFFFF"
+                "highlighted.foregroundColor": "#00AFFFFF"
               }
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "2E48E207-00B8-481A-A57E-4FA84B51A02C",
@@ -164,11 +164,11 @@
             "commands": {
               "default": {
                 "class": "sendir",
-                "code.uuid": "456D6184-88CF-473C-BF42-16ABF13D1F10"
+                "code.index": "Dish/Dish/Info"
               },
               "tv": {
                 "class": "sendir",
-                "code.uuid": "30B1392A-7827-48AB-81DE-CA17439BC738"
+                "code.index": "Samsung/Samsung%20TV/Info"
               }
             },
             "titles.default": {
@@ -180,10 +180,10 @@
                 "alignment": "center",
                 "text": "Info"
               },
-              "highlighted.foreground-color": "#00AFFFFF"
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           }
         ]
       },
@@ -212,7 +212,7 @@
             "dVRActivityRocker.width = 70"
           ]
         },
-        "background-color.default": "black",
+        "backgroundColor.default": "black",
         "subelements": [
           {
             "uuid": "91C3F776-6FB3-438F-9657-758A007CC23E",
@@ -253,38 +253,38 @@
             }
           }
         ],
-        "command-set-collection.default": {
+        "commandSetCollection.default": {
           "CH": {
             "type": "rocker",
             "top": {
               "class": "sendir",
-              "code.uuid": "11B0541B-5C94-49A0-853A-D8C94A76998B"
+              "code.index": "Dish/Dish/Channel%20Up"
             },
             "bottom": {
               "class": "sendir",
-              "code.uuid": "034EC537-9817-45BE-A66E-E58C7EC3AEF9"
+              "code.index": "Dish/Dish/Channel%20Down"
             }
           },
           "PAGE": {
             "type": "rocker",
             "top": {
               "class": "sendir",
-              "code.uuid": "8F9E00ED-FAFA-40B3-A1FA-01B0DF073A75"
+              "code.index": "Dish/Dish/Page%20Up"
             },
             "bottom": {
               "class": "sendir",
-              "code.uuid": "8A77DAEA-8B71-4525-917F-916AA636AEBA"
+              "code.index": "Dish/Dish/Page%20Down"
             }
           },
           "VOL": {
             "type": "rocker",
             "top": {
               "class": "sendir",
-              "code.uuid": "DFBB376D-E061-448C-922C-32B20F69D11C"
+              "code.index": "Sony/AV%20Receiver/Volume%20Up"
             },
             "bottom": {
               "class": "sendir",
-              "code.uuid": "C27992CE-912E-4D75-8938-AE80A0C2F9F0"
+              "code.index": "Sony/AV%20Receiver/Volume%20Down"
             }
           }
         },
@@ -335,7 +335,7 @@
             "dVRActivityDPad.width = dVRActivityDPad.height"
           ]
         },
-        "background-color.default": "black",
+        "backgroundColor.default": "black",
         "subelements": [
           {
             "uuid": "83B25E99-F70E-45DF-9831-FCBE2C34F6ED",
@@ -354,9 +354,9 @@
                 "alignment": "center",
                 "text": "OK"
               },
-              "highlighted.foreground-color": "#00AFFFFF"
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "DAAF0866-265A-41C8-AA68-CAFF633E1190",
@@ -439,23 +439,23 @@
           "type": "dpad",
           "up": {
             "class": "sendir",
-            "code.uuid": "1C8D165D-4BCD-4CC7-B89F-8FAF9047B0A5"
+            "code.index": "Dish/Dish/Up"
           },
           "down": {
             "class": "sendir",
-            "code.uuid": "EE477ADE-805D-46BF-958E-711561A0E621"
+            "code.index": "Dish/Dish/Down"
           },
           "left": {
             "class": "sendir",
-            "code.uuid": "7CB204B0-2837-4612-BF3D-6638D8B3D93B"
+            "code.index": "Dish/Dish/Left"
           },
           "right": {
             "class": "sendir",
-            "code.uuid": "0BBC99B9-E435-490E-ACE7-DF53DDD4E2F7"
+            "code.index": "Dish/Dish/Right"
           },
           "center": {
             "class": "sendir",
-            "code.uuid": "E551D890-CFC0-4000-BE8C-06873C8AECDB"
+            "code.index": "Dish/Dish/OK"
           }
         }
       },
@@ -509,7 +509,7 @@
                 "color": "#7F7F7FFF"
               }
             },
-            "background-colors.default.normal": "#060606FF"
+            "backgroundColors.default.normal": "#060606FF"
           },
           {
             "uuid": "A60C6C80-513A-47EC-A720-0D9A28E18D94",
@@ -538,7 +538,7 @@
                 "color": "#7F7F7FFF"
               }
             },
-            "background-colors.default.normal": "#060606FF"
+            "backgroundColors.default.normal": "#060606FF"
           }
         ]
       },
@@ -618,7 +618,7 @@
             "tuck.right = dVRActivityNumberPad.right"
           ]
         },
-        "background-color.default": "white@75%",
+        "backgroundColor.default": "white@75%",
         "subelements": [
           {
             "uuid": "4A9A5126-CCDD-4282-9D6E-581EB1A7768D",
@@ -635,10 +635,10 @@
                 "alignment": "center",
                 "text": 1
               },
-              "highlighted.foreground-color": "#00AFFFFF"
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "FD25B8D7-B6A3-46F5-A14D-BA66EC9B6624",
@@ -655,10 +655,10 @@
                 "alignment": "center",
                 "text": 2
               },
-              "highlighted.foreground-color": "#00AFFFFF"
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "26D4A4EA-AD0A-4A4F-8F19-AD2EBDF2B4DD",
@@ -675,10 +675,10 @@
                 "alignment": "center",
                 "text": 3
               },
-              "highlighted.foreground-color": "#00AFFFFF"
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "F7E72BB6-7C56-4D71-8B09-4FE29EF76EB6",
@@ -695,10 +695,10 @@
                 "alignment": "center",
                 "text": 4
               },
-              "highlighted.foreground-color": "#00AFFFFF"
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "FD56CF91-26C4-47A2-9052-7D3504C85F59",
@@ -715,10 +715,10 @@
                 "alignment": "center",
                 "text": 5
               },
-              "highlighted.foreground-color": "#00AFFFFF"
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "A9A11EB5-341F-42BB-A482-D81EED4D6436",
@@ -735,10 +735,10 @@
                 "alignment": "center",
                 "text": 6
               },
-              "highlighted.foreground-color": "#00AFFFFF"
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "8C750F21-4D8D-4F5A-8E1B-0B9294AF2A7C",
@@ -755,10 +755,10 @@
                 "alignment": "center",
                 "text": 7
               },
-              "highlighted.foreground-color": "#00AFFFFF"
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "789737C2-D0D7-401B-B079-D305C65DA5F9",
@@ -775,10 +775,10 @@
                 "alignment": "center",
                 "text": 8
               },
-              "highlighted.foreground-color": "#00AFFFFF"
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "2F310C3B-37A8-4AE0-B652-21160A3DBB00",
@@ -795,10 +795,10 @@
                 "alignment": "center",
                 "text": 9
               },
-              "highlighted.foreground-color": "#00AFFFFF"
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "07B126DA-A7BE-4B1C-ACD1-5DD5F551DDF7",
@@ -815,10 +815,10 @@
                 "alignment": "center",
                 "text": 0
               },
-              "highlighted.foreground-color": "#00AFFFFF"
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "6F2F49AE-EC61-404B-A544-468A8D9EB74A",
@@ -835,10 +835,10 @@
                 "alignment": "center",
                 "text": "Exit"
               },
-              "highlighted.foreground-color": "#00AFFFFF"
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "D7E718BE-7E0D-4C19-8A75-625C8C5445A1",
@@ -855,10 +855,10 @@
                 "alignment": "center",
                 "text": "Enter"
               },
-              "highlighted.foreground-color": "#00AFFFFF"
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "E9D65885-43D4-4DFA-A3A6-C4ADCF70D94A",
@@ -870,58 +870,58 @@
               "textEffect": "letter-press",
               "iconName": "chevron-up"
             },
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           }
         ],
         "command-set.default": {
           "type": "numberpad",
           "one": {
             "class": "sendir",
-            "code.uuid": "0313E4A0-996F-4968-8DAB-0C799BD4D2A6"
+            "code.index": "Dish/Dish/One"
           },
           "two": {
             "class": "sendir",
-            "code.uuid": "1B86BE5A-F8D6-4798-895A-B881E6E623D1"
+            "code.index": "Dish/Dish/Two"
           },
           "three": {
             "class": "sendir",
-            "code.uuid": "266FC2EF-2EDB-4A41-A42D-2BC1129DFECA"
+            "code.index": "Dish/Dish/Three"
           },
           "four": {
             "class": "sendir",
-            "code.uuid": "4D24C204-E3FC-4473-A438-38E5B6EE3FE6"
+            "code.index": "Dish/Dish/Four"
           },
           "five": {
             "class": "sendir",
-            "code.uuid": "40BCAC68-BC65-4AD4-A5F9-39A541AEF71E"
+            "code.index": "Dish/Dish/Five"
           },
           "six": {
             "class": "sendir",
-            "code.uuid": "E57C7D62-3597-45B0-9B80-45F5559F7C18"
+            "code.index": "Dish/Dish/Six"
           },
           "seven": {
             "class": "sendir",
-            "code.uuid": "B9007475-33AA-4CD7-87E7-3EEF413486FD"
+            "code.index": "Dish/Dish/Seven"
           },
           "eight": {
             "class": "sendir",
-            "code.uuid": "E6195194-F7FE-42C2-962A-13A6AA6858E0"
+            "code.index": "Dish/Dish/Eight"
           },
           "nine": {
             "class": "sendir",
-            "code.uuid": "019887BD-C57E-4CBD-A8C0-62C1167601D9"
+            "code.index": "Dish/Dish/Nine"
           },
           "zero": {
             "class": "sendir",
-            "code.uuid": "4D359D0D-BBE0-4BF5-85D3-9BF2CD338563"
+            "code.index": "Dish/Dish/Zero"
           },
           "aux1": {
             "class": "sendir",
-            "code.uuid": "60500AB6-9450-4BEA-86AD-CDB74E90A768"
+            "code.index": "Dish/Dish/Exit"
           },
           "aux2": {
             "class": "sendir",
-            "code.uuid": "E551D890-CFC0-4000-BE8C-06873C8AECDB"
+            "code.index": "Dish/Dish/Enter"
           }
         }
       },
@@ -982,7 +982,7 @@
             "tuck.top = buttonPause.bottom"
           ]
         },
-        "background-color.default": "white@75%",
+        "backgroundColor.default": "white@75%",
         "subelements": [
           {
             "uuid": "DF2C7FAF-D979-427E-8626-2411E79F59F1",
@@ -999,11 +999,11 @@
                 "alignment": "center",
                 "iconName": "play"
               },
-              "disabled.foreground-color": "#7F7F7FFF",
-              "highlighted.foreground-color": "#00AFFFFF"
+              "disabled.foregroundColor": "#7F7F7FFF",
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "7754F230-C17E-4333-AD7F-202A34AB71E1",
@@ -1020,11 +1020,11 @@
                 "alignment": "center",
                 "iconName": "pause"
               },
-              "disabled.foreground-color": "#7F7F7FFF",
-              "highlighted.foreground-color": "#00AFFFFF"
+              "disabled.foregroundColor": "#7F7F7FFF",
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "D4F04A8A-C2CA-4235-8C6E-080AD7DA5A3B",
@@ -1041,11 +1041,11 @@
                 "alignment": "center",
                 "iconName": "backward"
               },
-              "disabled.foreground-color": "#7F7F7FFF",
-              "highlighted.foreground-color": "#00AFFFFF"
+              "disabled.foregroundColor": "#7F7F7FFF",
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "804894ED-2BA4-467D-A7E2-43E45ECC946B",
@@ -1062,11 +1062,11 @@
                 "alignment": "center",
                 "iconName": "fast-forward"
               },
-              "disabled.foreground-color": "#7F7F7FFF",
-              "highlighted.foreground-color": "#00AFFFFF"
+              "disabled.foregroundColor": "#7F7F7FFF",
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "5996C324-C978-4AE8-97BA-4F5468CCDEFB",
@@ -1083,11 +1083,11 @@
                 "alignment": "center",
                 "iconName": "stop"
               },
-              "disabled.foreground-color": "#7F7F7FFF",
-              "highlighted.foreground-color": "#00AFFFFF"
+              "disabled.foregroundColor": "#7F7F7FFF",
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "4BD189E1-996D-4667-B1C0-80C43BC27445",
@@ -1104,11 +1104,11 @@
                 "alignment": "center",
                 "iconName": "step-backward"
               },
-              "disabled.foreground-color": "#7F7F7FFF",
-              "highlighted.foreground-color": "#00AFFFFF"
+              "disabled.foregroundColor": "#7F7F7FFF",
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "051E7613-FE45-47CE-AE8A-F50B776348AC",
@@ -1120,7 +1120,7 @@
               "textEffect": "letter-press",
               "iconName": "chevron-down"
             },
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "08FF87FF-685F-4A56-A40C-BF954852152B",
@@ -1137,11 +1137,11 @@
                 "alignment": "center",
                 "iconName": "step-forward"
               },
-              "disabled.foreground-color": "#7F7F7FFF",
-              "highlighted.foreground-color": "#00AFFFFF"
+              "disabled.foregroundColor": "#7F7F7FFF",
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "FC1F0B10-D228-48E5-940E-997D6DD3ED67",
@@ -1158,46 +1158,46 @@
                 "alignment": "center",
                 "iconName": "circle"
               },
-              "disabled.foreground-color": "#7F7F7FFF",
-              "highlighted.foreground-color": "#00AFFFFF"
+              "disabled.foregroundColor": "#7F7F7FFF",
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           }
         ],
-        "command-set.default": {
+        "commandSet.default": {
           "type": "transport",
           "record": {
             "class": "sendir",
-            "code.uuid": "C613F7A8-5089-4440-B427-C121165DE70C"
+            "code.index": "Dish/Dish/Record"
           },
           "play": {
             "class": "sendir",
-            "code.uuid": "7EE63EAB-1054-4DF7-A66B-9E51816AB8D0"
+            "code.index": "Dish/Dish/Play"
           },
           "pause": {
             "class": "sendir",
-            "code.uuid": "5AA092F8-2D93-437F-B3D0-4006E52DC371"
+            "code.index": "Dish/Dish/Pause"
           },
           "stop": {
             "class": "sendir",
-            "code.uuid": "4376CED6-A57A-4930-B3A7-1A234B86291D"
+            "code.index": "Dish/Dish/Stop"
           },
           "skip": {
             "class": "sendir",
-            "code.uuid": "4DDE9552-4EE5-492E-98F4-8EF6600CED85"
+            "code.index": "Dish/Dish/Next"
           },
           "replay": {
             "class": "sendir",
-            "code.uuid": "FEA29DF1-DA83-4775-9C73-85291A51961C"
+            "code.index": "Dish/Dish/Last"
           },
           "rewind": {
             "class": "sendir",
-            "code.uuid": "3A8A1370-8842-42C7-9FB3-F01BDCCA9475"
+            "code.index": "Dish/Dish/Rewind"
           },
           "fastForward": {
             "class": "sendir",
-            "code.uuid": "502E0C1F-9524-4271-893C-089A45FF4BCF"
+            "code.index": "Dish/Dish/Fast%20Forward"
           }
         }
       },
@@ -1226,7 +1226,7 @@
             "selectionPanel.width = 150"
           ]
         },
-        "background-color.default": "white@75%",
+        "backgroundColor.default": "white@75%",
         "subelements": [
           {
             "uuid": "60FBB7D9-D48A-42E5-A6FD-B47FC13EC23F",
@@ -1242,10 +1242,10 @@
                 "alignment": "center",
                 "text": "STB"
               },
-              "selected.foreground-color": "yellow",
-              "highlighted.foreground-color": "yellow"
+              "selected.foregroundColor": "yellow",
+              "highlighted.foregroundColor": "yellow"
             },
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "DDF69EC8-CE1A-45A0-8721-CD91DBEA2135",
@@ -1261,10 +1261,10 @@
                 "alignment": "center",
                 "text": "TV"
               },
-              "selected.foreground-color": "yellow",
-              "highlighted.foreground-color": "yellow"
+              "selected.foregroundColor": "yellow",
+              "highlighted.foregroundColor": "yellow"
             },
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           }
         ]
       },
@@ -1320,7 +1320,7 @@
             "tVAudioInput.top = dVRAudioInput.bottom + 4"
           ]
         },
-        "background-color.default": "white@75%",
+        "backgroundColor.default": "white@75%",
         "subelements": [
           {
             "uuid": "93A20B92-6A22-4DEC-802A-D735A1EBA583",
@@ -1330,11 +1330,11 @@
             "commands": {
               "default": {
                 "class": "sendir",
-                "code.uuid": "B665AE8E-B376-476E-AED5-471294F06ABB"
+                "code.index": "Dish/Dish/On%20Demand"
               },
               "tv": {
                 "class": "sendir",
-                "code.uuid": "F39821FE-3AA2-44B9-84C5-BBC275C4623F"
+                "code.index": "Samsung/Samsung%20TV/Source"
               }
             },
             "titles": {
@@ -1359,8 +1359,8 @@
                 }
               }
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "84B5AAD7-F716-49E4-B2DC-F9654CD5EA83",
@@ -1370,11 +1370,11 @@
             "commands": {
               "default": {
                 "class": "sendir",
-                "code.uuid": "C2DDF628-8E2B-40C3-B1E2-6DA3AA65E191"
+                "code.index": "Dish/Dish/Menu"
               },
               "tv": {
                 "class": "sendir",
-                "code.uuid": "C2DDF628-8E2B-40C3-B1E2-6DA3AA65E191"
+                "code.index": "Samsung/Samsung%20TV/Menu"
               }
             },
             "titles.default.normal": {
@@ -1385,8 +1385,8 @@
               "alignment": "center",
               "text": "Menu"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "1490C210-7F20-4276-810D-232396713B76",
@@ -1396,11 +1396,11 @@
             "commands": {
               "default": {
                 "class": "sendir",
-                "code.uuid": "C7CA9E3E-D0A5-42D2-95C7-5F24CC27A565"
+                "code.index": "Dish/Dish/Last"
               },
               "tv": {
                 "class": "sendir",
-                "code.uuid": "C7CA9E3E-D0A5-42D2-95C7-5F24CC27A565"
+                "code.index": "Samsung/Samsung%20TV/Return"
               }
             },
             "titles": {
@@ -1425,8 +1425,8 @@
                 }
               }
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "5EBDC469-0E9E-4720-A65E-86F6EF652635",
@@ -1436,11 +1436,11 @@
             "commands": {
               "default": {
                 "class": "sendir",
-                "code.uuid": "3140A2C4-3795-497D-8660-3D1B87267648"
+                "code.index": "Dish/Dish/Exit"
               },
               "tv": {
                 "class": "sendir",
-                "code.uuid": "3140A2C4-3795-497D-8660-3D1B87267648"
+                "code.index": "Samsung/Samsung%20TV/Exit"
               }
             },
             "titles.default.normal": {
@@ -1451,8 +1451,8 @@
               "alignment": "center",
               "text": "Exit"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "447B0C03-6390-47B3-8F66-FA58E79AAE81",
@@ -1461,7 +1461,7 @@
             "style": "gloss2",
             "commands.default": {
               "class": "sendir",
-              "code.uuid": "DB4BE36E-6E24-4331-A3BA-616F1AEA0883"
+              "code.index": "Sony/AV%20Receiver/TV%2FSAT"
             },
             "titles.default.normal": {
               "font": "Helvetica Neue@18",
@@ -1471,8 +1471,8 @@
               "alignment": "center",
               "text": "DVR Audio"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "CA88D652-A7F3-4EBE-ABC0-E559CE6AF337",
@@ -1481,7 +1481,7 @@
             "style": "gloss2",
             "commands.default": {
               "class": "sendir",
-              "code.uuid": "076B62D3-50D1-4112-A6FE-F540A366D9E9"
+              "code.index": "Sony/AV%20Receiver/Video%201"
             },
             "titles.default.normal": {
               "font": "Helvetica Neue@18",
@@ -1491,8 +1491,8 @@
               "alignment": "center",
               "text": "TV Audio"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "66E58C75-BC33-4E25-A4AE-876E37FA991E",
@@ -1501,7 +1501,7 @@
             "style": "gloss2",
             "commands.default": {
               "class": "sendir",
-              "code.uuid": "DE4E3022-06CB-451F-B19C-CB8F26A84619"
+              "code.index": "Sony/AV%20Receiver/Mute"
             },
             "titles.default.normal": {
               "font": "Helvetica Neue@18",
@@ -1511,8 +1511,8 @@
               "alignment": "center",
               "text": "Mute"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "E205BA81-90BD-4943-B2F5-6230AD2D95E9",
@@ -1524,7 +1524,7 @@
               "textEffect": "letter-press",
               "iconName": "chevron-left"
             },
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           }
         ]
       }
@@ -1553,8 +1553,8 @@
         "bottomToolbar.right = homeScreen.right"
       ]
     },
-    "background-color.default": "black",
-    "background-image.default.path": "Backgrounds/Pro Dots",
+    "backgroundColor.default": "black",
+    "backgroundImage.default.path": "Backgrounds/Pro Dots",
     "subelements": [
       {
         "uuid": "F358CB82-496C-446D-8833-D4373777D23E",
@@ -1608,10 +1608,10 @@
                 "alignment": "center",
                 "text": "Dish"
               },
-              "highlighted.foreground-color": "#00AFFFFF"
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "DB1C794B-A3BB-4C9E-91EC-88A1D3FB401A",
@@ -1631,10 +1631,10 @@
                 "alignment": "center",
                 "text": "Playstation"
               },
-              "highlighted.foreground-color": "#00AFFFFF"
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "58A7D2DB-9635-486A-9336-43D6292674BA",
@@ -1654,10 +1654,10 @@
                 "alignment": "center",
                 "text": " TV"
               },
-              "highlighted.foreground-color": "#00AFFFFF"
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "19F3F351-AB2B-435D-A31A-ECB703DDE993",
@@ -1677,10 +1677,10 @@
                 "alignment": "center",
                 "text": "Sonos"
               },
-              "highlighted.foreground-color": "#00AFFFFF"
+              "highlighted.foregroundColor": "#00AFFFFF"
             },
-            "background-colors.default.normal": "#060606FF",
-            "titleEdge-insets": "{20, 20, 20, 20}"
+            "backgroundColors.default.normal": "#060606FF",
+            "titleEdgeInsets": "{20, 20, 20, 20}"
           }
         ]
       },
@@ -1706,7 +1706,7 @@
             "lightsOn.top = bottomToolbar.top"
           ]
         },
-        "background-color.default": "gray@50%",
+        "backgroundColor.default": "gray@50%",
         "subelements": [
           {
             "uuid": "65E065E6-2976-4726-99E4-9D4D932804E4",

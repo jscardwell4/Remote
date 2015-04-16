@@ -1,6 +1,6 @@
 {
   "uuid": "01844614-744C-4664-BF8F-ABF948CE5996",
-  "home-remote.uuid": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD", // Home Screen
+  "homeRemote.uuid": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD", // Home Screen
   "topToolbar": {
     "uuid": "648C5ADA-F9E0-41BF-948A-6E980C657F97",
     "name": "Top Toolbar",
@@ -32,7 +32,7 @@
         "settingsButton.width = homeButton.width"
       ]
     },
-    "background-color.default": "gray@50%",
+    "backgroundColor.default": "gray@50%",
     "subelements": [
       {
         "uuid": "FA623A4E-AA5D-4796-B606-359A8909ABF9",
@@ -48,15 +48,15 @@
         },
         "icons.default": {
           "normal": {
-            "path": "Icons/Glyphish 6/Large/Normal/Home",
+            "imagePath": "Icons/Glyphish%206/Large/Normal/Home",
             "color": "white"
           },
           "highlighted": {
-            "path": "Icons/Glyphish 6/Large/Normal/Home",
+            "imagePath": "Icons/Glyphish%206/Large/Normal/Home",
             "color":  "#00AFFFFF"
           },
           "disabled": {
-            "path": "Icons/Glyphish 6/Large/Normal/Home",
+            "imagePath": "Icons/Glyphish%206/Large/Normal/Home",
             "color": "#7F7F7FFF"
           }
         }
@@ -71,15 +71,15 @@
         },
         "icons.default": {
           "normal": {
-            "path": "Icons/Glyphish 6/Large/Normal/Gear",
+            "imagePath": "Icons/Glyphish%206/Large/Normal/Gear",
             "color": "white"
           },
           "highlighted": {
-            "path": "Icons/Glyphish 6/Large/Normal/Gear",
+            "imagePath": "Icons/Glyphish%206/Large/Normal/Gear",
             "color":  "#00AFFFFF"
           },
           "disabled": {
-            "path": "Icons/Glyphish 6/Large/Normal/Gear",
+            "imagePath": "Icons/Glyphish%206/Large/Normal/Gear",
             "color": "#7F7F7FFF"
           }
         }
@@ -94,15 +94,15 @@
         },
         "icons.default": {
           "normal": {
-            "path": "Icons/Glyphish 6/Large/Normal/Pencil",
+            "imagePath": "Icons/Glyphish%206/Large/Normal/Pencil",
             "color": "white"
           },
           "highlighted": {
-            "path": "Icons/Glyphish 6/Large/Normal/Pencil",
+            "imagePath": "Icons/Glyphish%206/Large/Normal/Pencil",
             "color":  "#00AFFFFF"
           },
           "disabled": {
-            "path": "Icons/Glyphish 6/Large/Normal/Pencil",
+            "imagePath": "Icons/Glyphish%206/Large/Normal/Pencil",
             "color": "#7F7F7FFF"
           }
         }
@@ -113,19 +113,19 @@
         "role": "battery-status",
         "icons.default": {
           "normal": {
-            "path": "Icons/Glyphish 7/Large/Normal/Battery",
+            "imagePath": "Icons/Glyphish%207/Large/Normal/Battery",
             "color": "white"
           },
           "highlighted": {
-            "path": "Icons/Glyphish 7/Large/Normal/Battery",
+            "imagePath": "Icons/Glyphish%207/Large/Normal/Battery",
             "color":  "#00AFFFFF"
           },
           "disabled": {
-            "path": "Icons/Glyphish 6/Large/Normal/Lighting Bolt",
+            "imagePath": "Icons/Glyphish%206/Large/Normal/Lighting%20Bolt",
             "color": "#7F7F7FFF"
           },
           "selected": {
-            "path": "Icons/Glyphish 4/Power Plug",
+            "imagePath": "Icons/Glyphish%204/Power%20Plug",
             "color": "white"
           }
         }
@@ -136,15 +136,15 @@
         "role": "connection-status",
         "icons.default": {
           "normal": {
-            "path": "Icons/Glyphish 7/Large/Normal/Wifi Signal",
+            "imagePath": "Icons/Glyphish%207/Large/Normal/Wifi%20Signal",
             "color": "white"
           },
           "highlighted": {
-            "path": "Icons/Glyphish 7/Large/Normal/Wifi Signal",
+            "imagePath": "Icons/Glyphish%207/Large/Normal/Wifi%20Signal",
             "color":  "#00AFFFFF"
           },
           "disabled": {
-            "path": "Icons/Glyphish 7/Large/Normal/Wifi Signal",
+            "imagePath": "Icons/Glyphish%207/Large/Normal/Wifi%20Signal",
             "color": "#7F7F7FFF"
           }
         }

@@ -182,6 +182,9 @@
 		C2381FA119A7EE3B00135DAB /* WoodPlanks-640x1136-iPhone5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2381EB019A7EE3B00135DAB /* WoodPlanks-640x1136-iPhone5.jpg */; };
 		C2381FA219A7EE3B00135DAB /* WoodPlanks-1024x768-iPad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2381EB119A7EE3B00135DAB /* WoodPlanks-1024x768-iPad.jpg */; };
 		C2381FA319A7EE3B00135DAB /* WoodPlanks-2048x1536-iPad@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2381EB219A7EE3B00135DAB /* WoodPlanks-2048x1536-iPad@2x.jpg */; };
+		C23E73611ADE983700867028 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C23E73601ADE983700867028 /* Nimble.framework */; };
+		C23E73631ADEB0A600867028 /* DataModel_LoadedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23E73621ADEB0A600867028 /* DataModel_LoadedTests.swift */; };
+		C23E73651ADEB23700867028 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C23E73641ADEB23700867028 /* Quick.framework */; };
 		C23F07111AD5A54F003BD28B /* Activity.json in Resources */ = {isa = PBXBuildFile; fileRef = C23F07021AD5A54F003BD28B /* Activity.json */; };
 		C23F07121AD5A54F003BD28B /* ActivityController.json in Resources */ = {isa = PBXBuildFile; fileRef = C23F07031AD5A54F003BD28B /* ActivityController.json */; };
 		C23F07131AD5A54F003BD28B /* ComponentDevice.json in Resources */ = {isa = PBXBuildFile; fileRef = C23F07041AD5A54F003BD28B /* ComponentDevice.json */; };
@@ -213,8 +216,6 @@
 		C24A227D1ADABB540065E7EA /* SendIRCommand.json in Resources */ = {isa = PBXBuildFile; fileRef = C24A226E1ADABB540065E7EA /* SendIRCommand.json */; };
 		C24A227E1ADABB540065E7EA /* SwitchCommand.json in Resources */ = {isa = PBXBuildFile; fileRef = C24A226F1ADABB540065E7EA /* SwitchCommand.json */; };
 		C24A227F1ADABB540065E7EA /* SystemCommand.json in Resources */ = {isa = PBXBuildFile; fileRef = C24A22701ADABB540065E7EA /* SystemCommand.json */; };
-		C24A22891ADB04A10065E7EA /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C24A22881ADB04A10065E7EA /* Nimble.framework */; };
-		C24A228B1ADB04A30065E7EA /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C24A228A1ADB04A30065E7EA /* Quick.framework */; };
 		C24E0EBF1AC61E080044248E /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C24E0EBE1AC61E080044248E /* MoonKit.framework */; };
 		C24E0EC01AC61FC30044248E /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C24E0EBE1AC61E080044248E /* MoonKit.framework */; };
 		C24E0EC11AC61FC30044248E /* MoonKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C24E0EBE1AC61E080044248E /* MoonKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -894,6 +895,9 @@
 		C2381EB019A7EE3B00135DAB /* WoodPlanks-640x1136-iPhone5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "WoodPlanks-640x1136-iPhone5.jpg"; sourceTree = "<group>"; };
 		C2381EB119A7EE3B00135DAB /* WoodPlanks-1024x768-iPad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "WoodPlanks-1024x768-iPad.jpg"; sourceTree = "<group>"; };
 		C2381EB219A7EE3B00135DAB /* WoodPlanks-2048x1536-iPad@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "WoodPlanks-2048x1536-iPad@2x.jpg"; sourceTree = "<group>"; };
+		C23E73601ADE983700867028 /* Nimble.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = Nimble.framework; path = "../Debug-iphonesimulator/Nimble.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C23E73621ADEB0A600867028 /* DataModel_LoadedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModel_LoadedTests.swift; sourceTree = "<group>"; };
+		C23E73641ADEB23700867028 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = "../Debug-iphonesimulator/Quick.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C23F07021AD5A54F003BD28B /* Activity.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Activity.json; sourceTree = "<group>"; };
 		C23F07031AD5A54F003BD28B /* ActivityController.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ActivityController.json; sourceTree = "<group>"; };
 		C23F07041AD5A54F003BD28B /* ComponentDevice.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ComponentDevice.json; sourceTree = "<group>"; };
@@ -926,8 +930,6 @@
 		C24A226E1ADABB540065E7EA /* SendIRCommand.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SendIRCommand.json; sourceTree = "<group>"; };
 		C24A226F1ADABB540065E7EA /* SwitchCommand.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SwitchCommand.json; sourceTree = "<group>"; };
 		C24A22701ADABB540065E7EA /* SystemCommand.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SystemCommand.json; sourceTree = "<group>"; };
-		C24A22881ADB04A10065E7EA /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
-		C24A228A1ADB04A30065E7EA /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
 		C24E0EBE1AC61E080044248E /* MoonKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MoonKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C253B2E01AD98D6B00F7E6AF /* Asset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
 		C25B130219FB4A6500C5630F /* Remote.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Remote.entitlements; sourceTree = "<group>"; };
@@ -1434,8 +1436,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2EDDDA91AC630AF00DAB1B5 /* MoonKit.framework in Frameworks */,
-				C24A22891ADB04A10065E7EA /* Nimble.framework in Frameworks */,
-				C24A228B1ADB04A30065E7EA /* Quick.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1452,6 +1452,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C23E73651ADEB23700867028 /* Quick.framework in Frameworks */,
+				C23E73611ADE983700867028 /* Nimble.framework in Frameworks */,
 				C28E98F91AD1A4B000E78711 /* DataModel.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1677,8 +1679,8 @@
 		C26BAEAA16DC10FE0093D5B4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C24A228A1ADB04A30065E7EA /* Quick.framework */,
-				C24A22881ADB04A10065E7EA /* Nimble.framework */,
+				C23E73641ADEB23700867028 /* Quick.framework */,
+				C23E73601ADE983700867028 /* Nimble.framework */,
 				C24E0EBE1AC61E080044248E /* MoonKit.framework */,
 				C2CA76D919BA34A500ACCD76 /* libicucore.dylib */,
 				C2CA766519BA099000ACCD76 /* Foundation.framework */,
@@ -2063,6 +2065,7 @@
 			children = (
 				C28E98F71AD1A4B000E78711 /* DataModelTests.swift */,
 				C28E98F51AD1A4B000E78711 /* Supporting Files */,
+				C23E73621ADEB0A600867028 /* DataModel_LoadedTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -2651,7 +2654,6 @@
 				C215CBFB1ABB102F00E8077E /* Frameworks */,
 				C215CBFC1ABB102F00E8077E /* Headers */,
 				C215CBFD1ABB102F00E8077E /* Resources */,
-				C24A228D1ADB06890065E7EA /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3373,24 +3375,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		C24A228D1ADB06890065E7EA /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/Quick.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Nimble.framework",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		C215CBFA1ABB102F00E8077E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -3519,6 +3503,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C23E73631ADEB0A600867028 /* DataModel_LoadedTests.swift in Sources */,
 				C28E98F81AD1A4B000E78711 /* DataModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3763,10 +3748,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -3825,10 +3807,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3882,10 +3861,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3939,10 +3915,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -4454,7 +4427,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -4502,7 +4474,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -4543,7 +4514,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -4584,7 +4554,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;

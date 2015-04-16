@@ -12,7 +12,7 @@ import MoonKit
 
 @objc public final class DataManager {
 
-  private static let dataModelBundle = NSBundle(forClass: DataManager.self)
+  // MARK: - Setup
 
   /** initialize */
   class func initialize() {
@@ -31,7 +31,18 @@ import MoonKit
     } else if dataFlag.dump { dumpData() }
   }
 
-  /** URL for the user's persistent store */
+  /** Stores a reference to the `DataModel` bundle */
+  private static let dataModelBundle = NSBundle(forClass: DataManager.self)
+
+  /** Database operation flags parsed from command line */
+  static public let dataFlag: DataFlag = DataFlag()
+
+  /** Model flags parsed from command line */
+  static public let modelFlags: [ModelFlag] = ModelFlag.all
+
+  // MARK: - Stack
+
+   /** URL for the user's persistent store */
   public static let databaseStoreURL: NSURL = {
     let fileManager = NSFileManager.defaultManager()
     var error: NSError?
@@ -57,8 +68,8 @@ import MoonKit
     fatalError("aborting")
   }()
 
-  /** URL for the preloaded persistent store located in the bundle */
-  public static let databaseBundleURL: NSURL = {
+ /** URL for the preloaded persistent store located in the bundle */
+  private static let databaseBundleURL: NSURL = {
     if let url = dataModelBundle.URLForResource(DataManager.resourceBaseName, withExtension: "sqlite") {
       return url
     } else { fatalError("Unable to locate database bundle resource") }
@@ -70,7 +81,7 @@ import MoonKit
     if let modelURL = dataModelBundle.URLForResource(DataManager.resourceBaseName, withExtension: "momd"),
       mom = NSManagedObjectModel(contentsOfURL: modelURL),
       stack = CoreDataStack(managedObjectModel: DataManager.augmentModel(mom),
-                            persistentStoreURL: dataFlag.test ? nil : databaseStoreURL,
+                            persistentStoreURL: dataFlag.inMemory ? nil : databaseStoreURL,
                             options: [NSMigratePersistentStoresAutomaticallyOption: true,
                                       NSInferMappingModelAutomaticallyOption: true])
     {
@@ -82,8 +93,6 @@ import MoonKit
   }()
 
   static private let resourceBaseName = "Remote"
-  static public let dataFlag: DataFlag = DataFlag()
-  static public let modelFlags: [ModelFlag] = ModelFlag.all
 
   static public var managedObjectModel: NSManagedObjectModel { return stack.managedObjectModel }
   /**
@@ -259,121 +268,17 @@ import MoonKit
 
     }
 
-//    let entities = augmentedModel.entitiesByName as! [String:NSEntityDescription]
-
-//    let componentDevice      = entities["ComponentDevice"]!
-//    let manufacturer         = entities["Manufacturer"]!
-//    let imageCategory        = entities["ImageCategory"]!
-//    let presetCategory       = entities["PresetCategory"]!
-//    let iRCodeSet            = entities["IRCodeSet"]!
-//    let image                = entities["Image"]!
-//    let remoteElement        = entities["RemoteElement"]!
-//    let remote               = entities["Remote"]!
-//    let buttonGroup          = entities["ButtonGroup"]!
-//    let button               = entities["Button"]!
-//    let preset               = entities["Preset"]!
-//    let dictionaryStorage    = entities["DictionaryStorage"]!
-//    let jsonStorage          = entities["JSONStorage"]!
-//    let commandContainer     = entities["CommandContainer"]!
-//    let commandSet           = entities["CommandSet"]!
-//    let commandSetCollection = entities["CommandSetCollection"]!
-//    let hTTPCommand          = entities["HTTPCommand"]!
-//    let controlStateColorSet = entities["ControlStateColorSet"]!
-//    let imageView            = entities["ImageView"]!
-//    let activityCommand      = entities["ActivityCommand"]!
-//    let newtorkDevice        = entities["NetworkDevice"]!
-
-    // set `user` default value
-
-    // indicator attribute on activity commands
-//    overrideDefaultValueOfAttribute("indicator", forSubentity: activityCommand, withValue: true)
-
-    // create some default sets
-//    modifyAttribute("devices", forEntities: [manufacturer, iRCodeSet], defaultValue: NSSet())
-//    modifyAttribute("childCategories", forEntities: [imageCategory, presetCategory], defaultValue: NSSet())
-//    modifyAttribute("codeSets", forEntities: [manufacturer], defaultValue: NSSet())
-//    modifyAttribute("codes", forEntities: [iRCodeSet], defaultValue: NSSet())
-//    modifyAttribute("images", forEntities: [imageCategory], defaultValue: NSSet())
-//    modifyAttribute("presets", forEntities: [presetCategory], defaultValue: NSSet())
-//    modifyAttribute("componentDevices", forEntities: [newtorkDevice], defaultValue: NSSet())
-
-    // size attributes on images
-//    modifyAttribute("size",
-//        forEntities: [image],
-//     valueClassName: "NSValue",
-//       defaultValue: NSValue(CGSize: CGSize.zeroSize))
-
-
-    // background color attributes on remote elements
-//    modifyAttribute("backgroundColor",
-//        forEntities: [remoteElement, remote, buttonGroup, button],
-//     valueClassName: "UIColor",
-//       defaultValue: UIColor.clearColor())
-
-    // edge insets attributes on buttons
-//    modifyAttributes(["titleEdgeInsets", "contentEdgeInsets", "imageEdgeInsets"],
-//           forEntity: button,
-//      valueClassName: "NSValue",
-//        defaultValue: NSValue(UIEdgeInsets: UIEdgeInsets.zeroInsets))
-
-    // configurations attribute on remote elements
-//    modifyAttribute("configurations",
-//        forEntities: [remoteElement, remote, buttonGroup, button],
-//     valueClassName: "NSDictionary",
-//       defaultValue: NSDictionary())
-
-    // panels for RERemote
-//    modifyAttribute("panels", forEntities: [remote], valueClassName: "NSDictionary", defaultValue: NSDictionary())
-
-//     modifyAttribute("title", forEntities: [button], valueClassName: "NSAttributedString")
-
-//    modifyAttribute("dictionary",
-//      forEntities: [dictionaryStorage, jsonStorage],
-//   valueClassName: "MSDictionary",
-//     defaultValue: MSDictionary())
-
-    // containerIndex attribute on command containers
-//    modifyAttribute("containerIndex",
-//        forEntities: [commandContainer, commandSet, commandSetCollection],
-//     valueClassName: "MSDictionary",
-//       defaultValue: MSDictionary())
-
-    // url attribute on http command
-//    modifyAttribute("url",
-//        forEntities: [hTTPCommand],
-//     valueClassName: "NSURL",
-//       defaultValue: NSURL(string: "http://about:blank"))
-
-    // color attributes on control state color set
-//    modifyAttributes(["disabled",
-//                      "selectedDisabled",
-//                      "highlighted",
-//                      "highlightedDisabled",
-//                      "highlightedSelected",
-//                      "normal",
-//                      "selected",
-//                      "highlightedSelectedDisabled"],
-//           forEntity: controlStateColorSet,
-//      valueClassName: "UIColor")
-
-    // color attribute on image view
-//    modifyAttribute("color", forEntities: [imageView], valueClassName: "UIColor")
-
     return augmentedModel
   }
 
-  /**
-  Type for parsing database-related arguments passed to application
-
-  :example: -manufacturers load=Manufacturer_Test,dump,log=parsed-imported
-  */
+  // MARK: - Marker type
 
   /** The type of action marked by a flag */
   public enum Marker: Printable, Equatable {
     case Copy
     case Load
     case Remove
-    case Test
+    case InMemory
     case LoadFile (String)
     case Dump
     case Log ([LogValue])
@@ -391,7 +296,7 @@ import MoonKit
       switch self {
         case .Copy:            return "copy"
         case .Remove:          return "remove"
-        case .Test:            return "test"
+        case .InMemory:        return "inMemory"
         case .Load, .LoadFile: return "load"
         case .Dump:            return "dump"
         case .Log:             return "log"
@@ -418,8 +323,8 @@ import MoonKit
           self = Marker.Load
         case "remove":
           self = Marker.Remove
-        case "test":
-          self = Marker.Test
+        case "inMemory":
+          self = Marker.InMemory
         case "dump":
           self = Marker.Dump
         case ~/"load=.+":
@@ -433,21 +338,23 @@ import MoonKit
 
     public var description: String {
       switch self {
-        case .Copy, .Load, .Dump, .Remove, .Test: return key
+        case .Copy, .Load, .Dump, .Remove, .InMemory: return key
         case .Log(let values): return "\(key): " + ", ".join(values.map({$0.rawValue}))
         case .LoadFile(let file): return "\(key): \(file)"
       }
     }
   }
 
-  /** 
+  // MARK: - DataFlag type
+
+  /**
   Type for parsing database operations command line arguments
   */
   public struct DataFlag: Printable {
     let load: Bool
     let dump: Bool
     let remove: Bool
-    let test: Bool
+    let inMemory: Bool
     let copy: Bool
     let logModel: Bool
 
@@ -462,22 +369,23 @@ import MoonKit
         logModel =  markers ∋ .Log([.Model])
         copy = markers ∋ .Copy
         remove =  markers ∋ .Remove
-        test = markers ∋ .Test
+        inMemory = markers ∋ .InMemory
       } else {
         load = false
         dump = false
         logModel = false
         copy = false
         remove = false
-        test = false
+        inMemory = false
       }
     }
 
     public var description: String {
-      return "database operations:\n\tload: \(load)\n\tdump: \(dump)\n\tremove: \(remove)\n\ttest: \(test)\n\tlog model: \(logModel)"
+      return "database operations:\n\tload: \(load)\n\tdump: \(dump)\n\tremove: \(remove)\n\tinMemory: \(inMemory)\n\tlog model: \(logModel)"
     }
   }
 
+  // MARK: - ModelFlag type
 
   /** Flags used as the base of a supported command line argument whose value should resolve into a valid `Marker` */
   public enum ModelFlag: String, EnumerableType, Printable {
@@ -534,18 +442,21 @@ import MoonKit
     public var description: String { return "\(rawValue):\n\t" + "\n\t".join(markers.map({$0.description})) }
   }
 
+  // MARK: - Data operations
+
   /**
   Load data from files parsed from command line arguments and save the root context
 
   :param: completion ((Bool, NSError?) -> Void)? = nil
   */
-  class func loadData(completion: ((Bool, NSError?) -> Void)? = nil) {
+  private class func loadData(completion: ((Bool, NSError?) -> Void)? = nil) {
 
     // TODO: Check if this is broken due to race condition/asynchronous calls
     rootContext.performBlock {[rootContext = self.rootContext] in
 
       self.modelFlags ➤ {
         var fileName: String?
+        var logFlags = LogFlags.Default
         var logFile = false
         var logParsed = false
         var logImported = false
@@ -555,9 +466,9 @@ import MoonKit
             case .Remove: removeExisting = true
             case .LoadFile(let f): fileName = f
             case .Log(let values):
-              logParsed = values ∋ .Parsed
-              logImported = values ∋ .Imported
-              logFile = values ∋ .File
+              if values ∋ .Parsed { logFlags |= LogFlags.Parsed }
+              if values ∋ .Imported { logFlags |= LogFlags.Imported }
+              if values ∋ .File { logFlags |= LogFlags.File }
           default: break
           }
         }
@@ -566,9 +477,7 @@ import MoonKit
           self.loadDataFromFile(fileName!,
                            type: $0.modelType,
                         context: rootContext,
-                        logFile: logFile,
-                      logParsed: logParsed,
-                    logImported: logImported)
+                        logFlags: logFlags)
         }
       }
     }
@@ -597,7 +506,7 @@ import MoonKit
   }
 
   /** dumpData */
-  class func dumpData(completion: ((Void) -> Void)? = nil ) {
+  private class func dumpData(completion: ((Void) -> Void)? = nil ) {
     rootContext.performBlock {
 
       self.modelFlags ➤ {
@@ -619,17 +528,29 @@ import MoonKit
 
   :param: modelType ModelObject.Type
   */
-  public class func dumpJSONForModelType(modelType: ModelObject.Type) {
+  public class func dumpJSONForModelType(modelType: ModelObject.Type, context: NSManagedObjectContext = rootContext) {
     let className = (modelType.self as AnyObject).className
     let objects: [ModelObject]
     switch className {
     case "ImageCategory", "PresetCategory":
-      objects = modelType.objectsMatchingPredicate(∀"parentCategory = NULL", context: rootContext)
+      objects = modelType.objectsMatchingPredicate(∀"parentCategory = NULL", context: context)
     default:
-      objects = modelType.objectsInContext(rootContext)
+      objects = modelType.objectsInContext(context)
     }
+    if objects.isEmpty { MSLogWarn("fetch turned up empty for '\(modelType)'") }
     let json: JSONValue = .Array(objects.map({$0.jsonValue}))
-    MSLogDebug("\(className) objects: \n\(json)\n")
+    MSLogDebug("\(className) objects: \n\(json.prettyRawValue)\n")
+  }
+
+  public struct LogFlags: RawOptionSetType {
+    private(set) public var rawValue: Int
+    public init(rawValue: Int) { self.rawValue = rawValue }
+    public init(nilLiteral: ()) { rawValue = 0 }
+    public static var allZeros: LogFlags { return LogFlags.Default }
+    public static var Default: LogFlags = LogFlags(rawValue: 0b0000)
+    public static var File: LogFlags = LogFlags(rawValue: 0b0001)
+    public static var Parsed: LogFlags = LogFlags(rawValue: 0b0010)
+    public static var Imported: LogFlags = LogFlags(rawValue: 0b0100)
   }
 
   /**
@@ -646,9 +567,7 @@ import MoonKit
   public class func loadDataFromFile<T:ModelObject>(file: String,
                                                 type: T.Type,
                                              context: NSManagedObjectContext,
-                                             logFile: Bool = false,
-                                           logParsed: Bool = false,
-                                         logImported: Bool = false,
+                                             logFlags: LogFlags = .Default,
                                           completion: ((Bool, NSError?) -> Void)? = nil)
   {
     MSLogDebug("parsing file '\(file).json'")
@@ -659,18 +578,18 @@ import MoonKit
         json = JSONSerialization.objectByParsingFile(filePath, options: .InflateKeypaths, error: &error)
         where MSHandleError(error) == false
       {
-        if logFile {
+        if isOptionSet(LogFlags.File, logFlags) {
           MSLogDebug("content of file to parse:\n" + (String(contentsOfFile: filePath,
                                                              encoding: NSUTF8StringEncoding,
                                                                 error: nil) ?? "")) }
 
-        if logParsed { MSLogDebug("json objects from parsed file:\n\(json)") }
+        if isOptionSet(LogFlags.Parsed, logFlags) { MSLogDebug("json objects from parsed file:\n\(json)") }
 
         if let data = ObjectJSONValue(json), importedObject = type(data: data, context: context) {
 
           MSLogDebug("imported \(type.className()) from file '\(file).json'")
 
-          if logImported { MSLogDebug("json output for imported object:\n\(importedObject.jsonValue)") }
+          if isOptionSet(LogFlags.Imported, logFlags) { MSLogDebug("json output for imported object:\n\(importedObject.jsonValue)") }
 
         } else if let data = ArrayJSONValue(json) {
 
@@ -678,7 +597,7 @@ import MoonKit
 
           MSLogDebug("\(importedObjects.count) \(type.className()) objects imported from file '\(file).json'")
 
-          if logImported { MSLogDebug("json output for imported object:\n\(JSONValue.Array((importedObjects as [ModelObject]).map({$0.jsonValue})).prettyRawValue)") }
+          if isOptionSet(LogFlags.Imported, logFlags) { MSLogDebug("json output for imported object:\n\(JSONValue.Array((importedObjects as [ModelObject]).map({$0.jsonValue})).prettyRawValue)") }
 
         } else { MSLogError("file content must resolve into [String:AnyObject] or [[String:AnyObject]]") }
 
