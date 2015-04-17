@@ -29,6 +29,59 @@
 		C21493BF1A35285A00D274A2 /* ColorSwatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21493BE1A35285A00D274A2 /* ColorSwatch.swift */; };
 		C21493C11A35302200D274A2 /* ColorInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21493C01A35302200D274A2 /* ColorInputView.swift */; };
 		C21D7AE41AA60E3F000DE8A3 /* NSError+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21D7AE31AA60E3F000DE8A3 /* NSError+MoonKitAdditions.swift */; };
+		C2204D9C1AE1A0670079B731 /* JSONIncludeDirective.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2204D9B1AE1A0670079B731 /* JSONIncludeDirective.swift */; };
+		C22733F11AE1539E00641CC3 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28E35B91A451E3800438CCF /* CoreDataStack.swift */; };
+		C22733F21AE1539E00641CC3 /* RegularExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B9B4091AC1C499005BA67C /* RegularExpression.swift */; };
+		C22733F41AE153AE00641CC3 /* MoonFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592DC19C8E04200920F8D /* MoonFunctions.swift */; };
+		C22733F51AE153C900641CC3 /* BitArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592DE19C8E04200920F8D /* BitArray.swift */; };
+		C22733F61AE153CD00641CC3 /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592DF19C8E04200920F8D /* OrderedDictionary.swift */; };
+		C22733F71AE153D200641CC3 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63E01A00427100F54626 /* OrderedSet.swift */; };
+		C22733F81AE153FF00641CC3 /* NSManagedObjectModel+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BE96E71A467E85007599B2 /* NSManagedObjectModel+MoonKitAdditions.swift */; };
+		C22733F91AE153FF00641CC3 /* NSAttributedString+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F39D2E1A3A6D5A0024EE94 /* NSAttributedString+MoonKitAdditions.swift */; };
+		C22733FA1AE153FF00641CC3 /* NSCharacterSet+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C482E619CA2985002E84A9 /* NSCharacterSet+MoonKitAdditions.swift */; };
+		C22733FB1AE153FF00641CC3 /* NSScanner+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C482E819CA2997002E84A9 /* NSScanner+MoonKitAdditions.swift */; };
+		C22733FC1AE153FF00641CC3 /* MSDictionary+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A7CA9619CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift */; };
+		C22733FD1AE153FF00641CC3 /* NSLayoutConstraint+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21F931A19E4AA4700E9FF2D /* NSLayoutConstraint+MoonKitAdditions.swift */; };
+		C22733FE1AE153FF00641CC3 /* NSManagedObject+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C4B72B1AA951D700912951 /* NSManagedObject+MoonKitAdditions.swift */; };
+		C22733FF1AE153FF00641CC3 /* Bool+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24E0EB81AC6141B0044248E /* Bool+MoonKitAdditions.swift */; };
+		C22734001AE153FF00641CC3 /* Set+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24416321ACB16F8007EDEFE /* Set+MoonKitAdditions.swift */; };
+		C22734011AE153FF00641CC3 /* NSNumber+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28E98ED1AD196B800E78711 /* NSNumber+MoonKitAdditions.swift */; };
+		C22734031AE1540700641CC3 /* SequenceManipulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24A228E1ADB3AA60065E7EA /* SequenceManipulation.swift */; };
+		C22734041AE1540700641CC3 /* MappingOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24A22901ADB3B3C0065E7EA /* MappingOperations.swift */; };
+		C22734051AE1540700641CC3 /* SetOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24A22921ADB43620065E7EA /* SetOperations.swift */; };
+		C22734061AE1540700641CC3 /* RawOptionSetFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24A22941ADB45340065E7EA /* RawOptionSetFunctions.swift */; };
+		C22734071AE1540700641CC3 /* CollectionManipulations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24A22961ADB47590065E7EA /* CollectionManipulations.swift */; };
+		C22734081AE1540700641CC3 /* FunctionManipulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24A22981ADB4C1E0065E7EA /* FunctionManipulation.swift */; };
+		C22734091AE1541000641CC3 /* FontAwesomeIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592F019C8E04200920F8D /* FontAwesomeIcon.swift */; };
+		C227340A1AE1541900641CC3 /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A70E3A1ACC53D0009C2CF7 /* JSONValue.swift */; };
+		C227340B1AE1541900641CC3 /* JSONParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E936FF1ACE04D4003EB3E8 /* JSONParser.swift */; };
+		C227340C1AE1541900641CC3 /* JSONSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E937031ACF0736003EB3E8 /* JSONSerialization.swift */; };
+		C227340D1AE1541900641CC3 /* ArrayJSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24A22801ADAEC000065E7EA /* ArrayJSONValue.swift */; };
+		C227340E1AE1541900641CC3 /* ObjectJSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24A22821ADAEC0F0065E7EA /* ObjectJSONValue.swift */; };
+		C227340F1AE1541900641CC3 /* JSONValueRelatedExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24A22841ADAEC290065E7EA /* JSONValueRelatedExtensions.swift */; };
+		C22734101AE1541900641CC3 /* BoxedJSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24A22861ADAF0300065E7EA /* BoxedJSONValue.swift */; };
+		C22734121AE1549F00641CC3 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C22734111AE1549F00641CC3 /* CocoaLumberjack.framework */; };
+		C22734401AE15CEE00641CC3 /* BackgroundColor_Dark_Normal.json in Resources */ = {isa = PBXBuildFile; fileRef = C227342B1AE15CEE00641CC3 /* BackgroundColor_Dark_Normal.json */; };
+		C22734411AE15CEE00641CC3 /* BackgroundColor_Default.json in Resources */ = {isa = PBXBuildFile; fileRef = C227342C1AE15CEE00641CC3 /* BackgroundColor_Default.json */; };
+		C22734421AE15CEE00641CC3 /* ForegroundColor_Disabled.json in Resources */ = {isa = PBXBuildFile; fileRef = C227342D1AE15CEE00641CC3 /* ForegroundColor_Disabled.json */; };
+		C22734431AE15CEE00641CC3 /* ForegroundColor_Highlighted.json in Resources */ = {isa = PBXBuildFile; fileRef = C227342E1AE15CEE00641CC3 /* ForegroundColor_Highlighted.json */; };
+		C22734441AE15CEE00641CC3 /* ForegroundColor_Normal.json in Resources */ = {isa = PBXBuildFile; fileRef = C227342F1AE15CEE00641CC3 /* ForegroundColor_Normal.json */; };
+		C22734451AE15CEE00641CC3 /* Preset_Button_Rectangular.json in Resources */ = {isa = PBXBuildFile; fileRef = C22734301AE15CEE00641CC3 /* Preset_Button_Rectangular.json */; };
+		C22734461AE15CEE00641CC3 /* Preset_Button_Round.json in Resources */ = {isa = PBXBuildFile; fileRef = C22734311AE15CEE00641CC3 /* Preset_Button_Round.json */; };
+		C22734471AE15CEE00641CC3 /* Preset_Button_Roundish.json in Resources */ = {isa = PBXBuildFile; fileRef = C22734321AE15CEE00641CC3 /* Preset_Button_Roundish.json */; };
+		C22734481AE15CEE00641CC3 /* Preset_Button_Toolbar.json in Resources */ = {isa = PBXBuildFile; fileRef = C22734331AE15CEE00641CC3 /* Preset_Button_Toolbar.json */; };
+		C22734491AE15CEE00641CC3 /* Preset_ButtonGroup_1x3.json in Resources */ = {isa = PBXBuildFile; fileRef = C22734341AE15CEE00641CC3 /* Preset_ButtonGroup_1x3.json */; };
+		C227344A1AE15CEE00641CC3 /* Preset_ButtonGroup_Dpad.json in Resources */ = {isa = PBXBuildFile; fileRef = C22734351AE15CEE00641CC3 /* Preset_ButtonGroup_Dpad.json */; };
+		C227344B1AE15CEE00641CC3 /* Preset_ButtonGroup_ModeSelectionPanel.json in Resources */ = {isa = PBXBuildFile; fileRef = C22734361AE15CEE00641CC3 /* Preset_ButtonGroup_ModeSelectionPanel.json */; };
+		C227344C1AE15CEE00641CC3 /* Preset_ButtonGroup_Numberpad.json in Resources */ = {isa = PBXBuildFile; fileRef = C22734371AE15CEE00641CC3 /* Preset_ButtonGroup_Numberpad.json */; };
+		C227344D1AE15CEE00641CC3 /* Preset_ButtonGroup_OverlayPanel.json in Resources */ = {isa = PBXBuildFile; fileRef = C22734381AE15CEE00641CC3 /* Preset_ButtonGroup_OverlayPanel.json */; };
+		C227344E1AE15CEE00641CC3 /* Preset_ButtonGroup_Rocker.json in Resources */ = {isa = PBXBuildFile; fileRef = C22734391AE15CEE00641CC3 /* Preset_ButtonGroup_Rocker.json */; };
+		C227344F1AE15CEE00641CC3 /* Preset_ButtonGroup_Toolbar.json in Resources */ = {isa = PBXBuildFile; fileRef = C227343A1AE15CEE00641CC3 /* Preset_ButtonGroup_Toolbar.json */; };
+		C22734501AE15CEE00641CC3 /* Preset_ButtonGroup_Transport.json in Resources */ = {isa = PBXBuildFile; fileRef = C227343B1AE15CEE00641CC3 /* Preset_ButtonGroup_Transport.json */; };
+		C22734511AE15CEE00641CC3 /* Preset.json in Resources */ = {isa = PBXBuildFile; fileRef = C227343C1AE15CEE00641CC3 /* Preset.json */; };
+		C22734521AE15CEE00641CC3 /* TitleAttributes_Default_Icon.json in Resources */ = {isa = PBXBuildFile; fileRef = C227343D1AE15CEE00641CC3 /* TitleAttributes_Default_Icon.json */; };
+		C22734531AE15CEE00641CC3 /* TitleAttributes_Default_Text.json in Resources */ = {isa = PBXBuildFile; fileRef = C227343E1AE15CEE00641CC3 /* TitleAttributes_Default_Text.json */; };
+		C22734541AE15CEE00641CC3 /* TitleEdgeInsets_Default.json in Resources */ = {isa = PBXBuildFile; fileRef = C227343F1AE15CEE00641CC3 /* TitleEdgeInsets_Default.json */; };
 		C2358F1B19C78D6D00920F8D /* MoonKit.h in Headers */ = {isa = PBXBuildFile; fileRef = C2358F1A19C78D6D00920F8D /* MoonKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358F3219C78E0C00920F8D /* CALayer+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE887A18138CF700555D63 /* CALayer+MSKitAdditions.m */; };
 		C2358F3319C78E0C00920F8D /* NSArray+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE887E18138CF700555D63 /* NSArray+MSKitAdditions.m */; };
@@ -303,9 +356,33 @@
 		C217E47D19E860DE00B36983 /* IntegerInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntegerInputView.swift; sourceTree = "<group>"; };
 		C21D7AE31AA60E3F000DE8A3 /* NSError+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSError+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C21F931A19E4AA4700E9FF2D /* NSLayoutConstraint+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+MoonKitAdditions.swift"; sourceTree = "<group>"; };
+		C2204D9B1AE1A0670079B731 /* JSONIncludeDirective.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONIncludeDirective.swift; sourceTree = "<group>"; };
 		C222480619B781FD0093B07C /* MSXMLParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSXMLParserDelegate.h; sourceTree = "<group>"; };
 		C222480719B781FD0093B07C /* MSXMLParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSXMLParserDelegate.m; sourceTree = "<group>"; };
 		C225879919F9EF4C006D8B1D /* PanGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanGesture.swift; sourceTree = "<group>"; };
+		C22734111AE1549F00641CC3 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = "../GitHub/CocoaLumberjack/Framework/Desktop/build/Debug-iphoneos/CocoaLumberjack.framework"; sourceTree = "<group>"; };
+		C227342B1AE15CEE00641CC3 /* BackgroundColor_Dark_Normal.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundColor_Dark_Normal.json; sourceTree = "<group>"; };
+		C227342C1AE15CEE00641CC3 /* BackgroundColor_Default.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundColor_Default.json; sourceTree = "<group>"; };
+		C227342D1AE15CEE00641CC3 /* ForegroundColor_Disabled.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ForegroundColor_Disabled.json; sourceTree = "<group>"; };
+		C227342E1AE15CEE00641CC3 /* ForegroundColor_Highlighted.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ForegroundColor_Highlighted.json; sourceTree = "<group>"; };
+		C227342F1AE15CEE00641CC3 /* ForegroundColor_Normal.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ForegroundColor_Normal.json; sourceTree = "<group>"; };
+		C22734301AE15CEE00641CC3 /* Preset_Button_Rectangular.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_Button_Rectangular.json; sourceTree = "<group>"; };
+		C22734311AE15CEE00641CC3 /* Preset_Button_Round.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_Button_Round.json; sourceTree = "<group>"; };
+		C22734321AE15CEE00641CC3 /* Preset_Button_Roundish.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_Button_Roundish.json; sourceTree = "<group>"; };
+		C22734331AE15CEE00641CC3 /* Preset_Button_Toolbar.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_Button_Toolbar.json; sourceTree = "<group>"; };
+		C22734341AE15CEE00641CC3 /* Preset_ButtonGroup_1x3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_1x3.json; sourceTree = "<group>"; };
+		C22734351AE15CEE00641CC3 /* Preset_ButtonGroup_Dpad.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_Dpad.json; sourceTree = "<group>"; };
+		C22734361AE15CEE00641CC3 /* Preset_ButtonGroup_ModeSelectionPanel.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_ModeSelectionPanel.json; sourceTree = "<group>"; };
+		C22734371AE15CEE00641CC3 /* Preset_ButtonGroup_Numberpad.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_Numberpad.json; sourceTree = "<group>"; };
+		C22734381AE15CEE00641CC3 /* Preset_ButtonGroup_OverlayPanel.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_OverlayPanel.json; sourceTree = "<group>"; };
+		C22734391AE15CEE00641CC3 /* Preset_ButtonGroup_Rocker.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_Rocker.json; sourceTree = "<group>"; };
+		C227343A1AE15CEE00641CC3 /* Preset_ButtonGroup_Toolbar.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_Toolbar.json; sourceTree = "<group>"; };
+		C227343B1AE15CEE00641CC3 /* Preset_ButtonGroup_Transport.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_Transport.json; sourceTree = "<group>"; };
+		C227343C1AE15CEE00641CC3 /* Preset.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset.json; sourceTree = "<group>"; };
+		C227343D1AE15CEE00641CC3 /* TitleAttributes_Default_Icon.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TitleAttributes_Default_Icon.json; sourceTree = "<group>"; };
+		C227343E1AE15CEE00641CC3 /* TitleAttributes_Default_Text.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TitleAttributes_Default_Text.json; sourceTree = "<group>"; };
+		C227343F1AE15CEE00641CC3 /* TitleEdgeInsets_Default.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TitleEdgeInsets_Default.json; sourceTree = "<group>"; };
+		C22734571AE1622E00641CC3 /* JSON.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = JSON.playground; path = Moonkit/JSON.playground; sourceTree = "<group>"; };
 		C2358F1619C78D6D00920F8D /* MoonKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoonKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2358F1919C78D6D00920F8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2358F1A19C78D6D00920F8D /* MoonKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoonKit.h; sourceTree = "<group>"; };
@@ -352,7 +429,6 @@
 		C27828421814629700FC8D54 /* MSJSONSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSJSONSerialization.m; sourceTree = "<group>"; };
 		C28447101A3E051F005338AB /* LabeledCheckbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabeledCheckbox.swift; sourceTree = "<group>"; };
 		C284EA5B1A1EAD6700B07BA8 /* TouchTrackingGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchTrackingGesture.swift; sourceTree = "<group>"; };
-		C284EA601A1ED27E00B07BA8 /* OrderedSet_ObjectiveCBridgeable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedSet_ObjectiveCBridgeable.swift; sourceTree = "<group>"; };
 		C285D8231AC44D3500C527F6 /* MoonKitLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoonKitLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C285D8261AC44E0300C527F6 /* MoonKitLite-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MoonKitLite-Info.plist"; sourceTree = "<group>"; };
 		C285D8271AC44E5500C527F6 /* MoonKitLite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoonKitLite.h; sourceTree = "<group>"; };
@@ -370,7 +446,6 @@
 		C2A70E441ACD8EBA009C2CF7 /* MoonKit_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonKit_Tests.swift; sourceTree = "<group>"; };
 		C2A70E4C1ACD8F95009C2CF7 /* example1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = example1.json; sourceTree = "<group>"; };
 		C2A7CA9619CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSDictionary+MoonKitAdditions.swift"; sourceTree = "<group>"; };
-		C2B84B091A27890A000D699C /* Set.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Set.swift; sourceTree = "<group>"; };
 		C2B9B4091AC1C499005BA67C /* RegularExpression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegularExpression.swift; sourceTree = "<group>"; };
 		C2BE96E71A467E85007599B2 /* NSManagedObjectModel+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectModel+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C2C3B91E1AC5DA7D001DC6CC /* CocoaLumberjack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -578,6 +653,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C22734121AE1549F00641CC3 /* CocoaLumberjack.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -634,12 +710,10 @@
 		C23592DD19C8E04200920F8D /* Data Structures */ = {
 			isa = PBXGroup;
 			children = (
-				C2B84B091A27890A000D699C /* Set.swift */,
 				C23592DE19C8E04200920F8D /* BitArray.swift */,
 				C23592DF19C8E04200920F8D /* OrderedDictionary.swift */,
 				C2C482E419CA0225002E84A9 /* Stack.swift */,
 				C25E63E01A00427100F54626 /* OrderedSet.swift */,
-				C284EA601A1ED27E00B07BA8 /* OrderedSet_ObjectiveCBridgeable.swift */,
 			);
 			path = "Data Structures";
 			sourceTree = "<group>";
@@ -653,6 +727,8 @@
 				C2F39D2E1A3A6D5A0024EE94 /* NSAttributedString+MoonKitAdditions.swift */,
 				C27372841A1FC0750079624D /* UIColor+MoonKitAdditions.swift */,
 				C23592E919C8E04200920F8D /* String+MoonKitAdditions.swift */,
+				C24E0EB81AC6141B0044248E /* Bool+MoonKitAdditions.swift */,
+				C24416321ACB16F8007EDEFE /* Set+MoonKitAdditions.swift */,
 				C23592EB19C8E04200920F8D /* UIFont+MoonKitAdditions.swift */,
 				C2C482E619CA2985002E84A9 /* NSCharacterSet+MoonKitAdditions.swift */,
 				C2C482E819CA2997002E84A9 /* NSScanner+MoonKitAdditions.swift */,
@@ -664,8 +740,6 @@
 				C2F8C3161A362606004229FE /* UIResponder+MoonKitAdditions.swift */,
 				C21D7AE31AA60E3F000DE8A3 /* NSError+MoonKitAdditions.swift */,
 				C2C4B72B1AA951D700912951 /* NSManagedObject+MoonKitAdditions.swift */,
-				C24E0EB81AC6141B0044248E /* Bool+MoonKitAdditions.swift */,
-				C24416321ACB16F8007EDEFE /* Set+MoonKitAdditions.swift */,
 				C28E98ED1AD196B800E78711 /* NSNumber+MoonKitAdditions.swift */,
 			);
 			path = Extensions;
@@ -706,6 +780,7 @@
 				C24A22821ADAEC0F0065E7EA /* ObjectJSONValue.swift */,
 				C24A22841ADAEC290065E7EA /* JSONValueRelatedExtensions.swift */,
 				C24A22861ADAF0300065E7EA /* BoxedJSONValue.swift */,
+				C2204D9B1AE1A0670079B731 /* JSONIncludeDirective.swift */,
 			);
 			path = Parsing;
 			sourceTree = "<group>";
@@ -783,6 +858,27 @@
 		C2A70E411ACD8EBA009C2CF7 /* MoonKit Tests */ = {
 			isa = PBXGroup;
 			children = (
+				C227342B1AE15CEE00641CC3 /* BackgroundColor_Dark_Normal.json */,
+				C227342C1AE15CEE00641CC3 /* BackgroundColor_Default.json */,
+				C227342D1AE15CEE00641CC3 /* ForegroundColor_Disabled.json */,
+				C227342E1AE15CEE00641CC3 /* ForegroundColor_Highlighted.json */,
+				C227342F1AE15CEE00641CC3 /* ForegroundColor_Normal.json */,
+				C22734301AE15CEE00641CC3 /* Preset_Button_Rectangular.json */,
+				C22734311AE15CEE00641CC3 /* Preset_Button_Round.json */,
+				C22734321AE15CEE00641CC3 /* Preset_Button_Roundish.json */,
+				C22734331AE15CEE00641CC3 /* Preset_Button_Toolbar.json */,
+				C22734341AE15CEE00641CC3 /* Preset_ButtonGroup_1x3.json */,
+				C22734351AE15CEE00641CC3 /* Preset_ButtonGroup_Dpad.json */,
+				C22734361AE15CEE00641CC3 /* Preset_ButtonGroup_ModeSelectionPanel.json */,
+				C22734371AE15CEE00641CC3 /* Preset_ButtonGroup_Numberpad.json */,
+				C22734381AE15CEE00641CC3 /* Preset_ButtonGroup_OverlayPanel.json */,
+				C22734391AE15CEE00641CC3 /* Preset_ButtonGroup_Rocker.json */,
+				C227343A1AE15CEE00641CC3 /* Preset_ButtonGroup_Toolbar.json */,
+				C227343B1AE15CEE00641CC3 /* Preset_ButtonGroup_Transport.json */,
+				C227343C1AE15CEE00641CC3 /* Preset.json */,
+				C227343D1AE15CEE00641CC3 /* TitleAttributes_Default_Icon.json */,
+				C227343E1AE15CEE00641CC3 /* TitleAttributes_Default_Text.json */,
+				C227343F1AE15CEE00641CC3 /* TitleEdgeInsets_Default.json */,
 				C2A70E441ACD8EBA009C2CF7 /* MoonKit_Tests.swift */,
 				C2A70E421ACD8EBA009C2CF7 /* Supporting Files */,
 				C2A70E4C1ACD8F95009C2CF7 /* example1.json */,
@@ -806,6 +902,7 @@
 		C2CE884518138C4900555D63 = {
 			isa = PBXGroup;
 			children = (
+				C22734571AE1622E00641CC3 /* JSON.playground */,
 				C2A46E651AD703E70030E3CC /* MoonKit.playground */,
 				C285D8251AC44E0300C527F6 /* MoonKitLite */,
 				C29C22E51A3A4CBF00B0101F /* Resources */,
@@ -832,6 +929,7 @@
 		C2CE885018138C4900555D63 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C22734111AE1549F00641CC3 /* CocoaLumberjack.framework */,
 				C2C3B91E1AC5DA7D001DC6CC /* CocoaLumberjack.framework */,
 				C2F9414019BE7D01007B5CC1 /* CocoaAsyncSocket */,
 			);
@@ -1388,12 +1486,33 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C227344D1AE15CEE00641CC3 /* Preset_ButtonGroup_OverlayPanel.json in Resources */,
+				C227344E1AE15CEE00641CC3 /* Preset_ButtonGroup_Rocker.json in Resources */,
+				C22734431AE15CEE00641CC3 /* ForegroundColor_Highlighted.json in Resources */,
+				C22734461AE15CEE00641CC3 /* Preset_Button_Round.json in Resources */,
+				C22734481AE15CEE00641CC3 /* Preset_Button_Toolbar.json in Resources */,
+				C22734401AE15CEE00641CC3 /* BackgroundColor_Dark_Normal.json in Resources */,
+				C22734501AE15CEE00641CC3 /* Preset_ButtonGroup_Transport.json in Resources */,
 				C2CE82771AD08D8F00406CE7 /* example3.json in Resources */,
+				C22734421AE15CEE00641CC3 /* ForegroundColor_Disabled.json in Resources */,
+				C227344F1AE15CEE00641CC3 /* Preset_ButtonGroup_Toolbar.json in Resources */,
 				C23F07211AD5AABA003BD28B /* example4.json in Resources */,
+				C22734471AE15CEE00641CC3 /* Preset_Button_Roundish.json in Resources */,
+				C22734521AE15CEE00641CC3 /* TitleAttributes_Default_Icon.json in Resources */,
 				C23F07231AD5ACCC003BD28B /* example5.json in Resources */,
+				C22734491AE15CEE00641CC3 /* Preset_ButtonGroup_1x3.json in Resources */,
+				C22734511AE15CEE00641CC3 /* Preset.json in Resources */,
+				C22734441AE15CEE00641CC3 /* ForegroundColor_Normal.json in Resources */,
+				C22734451AE15CEE00641CC3 /* Preset_Button_Rectangular.json in Resources */,
+				C227344A1AE15CEE00641CC3 /* Preset_ButtonGroup_Dpad.json in Resources */,
+				C227344C1AE15CEE00641CC3 /* Preset_ButtonGroup_Numberpad.json in Resources */,
 				C2CDB8FA1AD77617006DF88C /* example6.json in Resources */,
+				C22734541AE15CEE00641CC3 /* TitleEdgeInsets_Default.json in Resources */,
 				C2A70E4D1ACD8F95009C2CF7 /* example1.json in Resources */,
+				C22734531AE15CEE00641CC3 /* TitleAttributes_Default_Text.json in Resources */,
+				C227344B1AE15CEE00641CC3 /* Preset_ButtonGroup_ModeSelectionPanel.json in Resources */,
 				C2CE82751AD07D0400406CE7 /* example2.json in Resources */,
+				C22734411AE15CEE00641CC3 /* BackgroundColor_Default.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1476,6 +1595,7 @@
 				C2358F5819C78E0C00920F8D /* MSPickerInputViewController.m in Sources */,
 				C24A22951ADB45340065E7EA /* RawOptionSetFunctions.swift in Sources */,
 				C2C4B72C1AA951D700912951 /* NSManagedObject+MoonKitAdditions.swift in Sources */,
+				C2204D9C1AE1A0670079B731 /* JSONIncludeDirective.swift in Sources */,
 				C201F73B1A2539E7004600BC /* PseudoConstraint.swift in Sources */,
 				C2358F5919C78E0C00920F8D /* MSBarButtonItem.m in Sources */,
 				C28E50931A13CA5000DF3206 /* MSButton.swift in Sources */,
@@ -1568,14 +1688,44 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C22733F21AE1539E00641CC3 /* RegularExpression.swift in Sources */,
+				C22734091AE1541000641CC3 /* FontAwesomeIcon.swift in Sources */,
 				C256F0971ABE0010005B7CB3 /* Protocols.swift in Sources */,
+				C22734101AE1541900641CC3 /* BoxedJSONValue.swift in Sources */,
+				C22733F61AE153CD00641CC3 /* OrderedDictionary.swift in Sources */,
+				C227340F1AE1541900641CC3 /* JSONValueRelatedExtensions.swift in Sources */,
+				C22733F41AE153AE00641CC3 /* MoonFunctions.swift in Sources */,
+				C22733F51AE153C900641CC3 /* BitArray.swift in Sources */,
+				C22733F81AE153FF00641CC3 /* NSManagedObjectModel+MoonKitAdditions.swift in Sources */,
+				C22734041AE1540700641CC3 /* MappingOperations.swift in Sources */,
+				C22733FC1AE153FF00641CC3 /* MSDictionary+MoonKitAdditions.swift in Sources */,
 				C256F09A1ABE0041005B7CB3 /* Array+MoonKitAdditions.swift in Sources */,
+				C227340B1AE1541900641CC3 /* JSONParser.swift in Sources */,
+				C22734001AE153FF00641CC3 /* Set+MoonKitAdditions.swift in Sources */,
+				C22734051AE1540700641CC3 /* SetOperations.swift in Sources */,
+				C227340E1AE1541900641CC3 /* ObjectJSONValue.swift in Sources */,
+				C227340C1AE1541900641CC3 /* JSONSerialization.swift in Sources */,
 				C256F0981ABE0028005B7CB3 /* Generic.swift in Sources */,
+				C22733FF1AE153FF00641CC3 /* Bool+MoonKitAdditions.swift in Sources */,
+				C227340A1AE1541900641CC3 /* JSONValue.swift in Sources */,
+				C22733FB1AE153FF00641CC3 /* NSScanner+MoonKitAdditions.swift in Sources */,
+				C22733F11AE1539E00641CC3 /* CoreDataStack.swift in Sources */,
+				C22733FD1AE153FF00641CC3 /* NSLayoutConstraint+MoonKitAdditions.swift in Sources */,
+				C227340D1AE1541900641CC3 /* ArrayJSONValue.swift in Sources */,
+				C22733F71AE153D200641CC3 /* OrderedSet.swift in Sources */,
+				C22734071AE1540700641CC3 /* CollectionManipulations.swift in Sources */,
 				C256F0991ABE0039005B7CB3 /* Operators.swift in Sources */,
 				C256F09E1ABE0089005B7CB3 /* Stack.swift in Sources */,
 				C256F09D1ABE005F005B7CB3 /* NSError+MoonKitAdditions.swift in Sources */,
 				C256F09C1ABE0052005B7CB3 /* String+MoonKitAdditions.swift in Sources */,
 				C256F09B1ABE0049005B7CB3 /* Dictionary+MoonKitAdditions.swift in Sources */,
+				C22734031AE1540700641CC3 /* SequenceManipulation.swift in Sources */,
+				C22733FA1AE153FF00641CC3 /* NSCharacterSet+MoonKitAdditions.swift in Sources */,
+				C22734061AE1540700641CC3 /* RawOptionSetFunctions.swift in Sources */,
+				C22733F91AE153FF00641CC3 /* NSAttributedString+MoonKitAdditions.swift in Sources */,
+				C22734081AE1540700641CC3 /* FunctionManipulation.swift in Sources */,
+				C22733FE1AE153FF00641CC3 /* NSManagedObject+MoonKitAdditions.swift in Sources */,
+				C22734011AE153FF00641CC3 /* NSNumber+MoonKitAdditions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1741,6 +1891,10 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/Moondeer/Projects/MSRemote/Remote/GitHub/CocoaLumberjack/Framework/Desktop/build/Debug-iphoneos",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1798,6 +1952,10 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/Moondeer/Projects/MSRemote/Remote/GitHub/CocoaLumberjack/Framework/Desktop/build/Debug-iphoneos",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;

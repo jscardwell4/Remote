@@ -89,11 +89,11 @@
             },
             "titles": {
               "default": {
-                "normal": <@include TitleAttributes_Default_Text,TEXT=Guide,SIZE=20>,
+                "normal": <@include TitleAttributes_Default_Text.json,TEXT=Guide,SIZE=20>,
                 "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
               },
               "tv": {
-                "normal": <@include TitleAttributes_Default_Text,TEXT=Tools,SIZE=20>,
+                "normal": <@include TitleAttributes_Default_Text.json,TEXT=Tools,SIZE=20>,
                 "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
               }
             },
@@ -117,11 +117,11 @@
             },
             "titles": {
               "default": {
-                "normal": <@include TitleAttributes_Default_Text,TEXT=DVR,SIZE=20>,
+                "normal": <@include TitleAttributes_Default_Text.json,TEXT=DVR,SIZE=20>,
                 "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
               },
               "tv": {
-                "normal": <@include TitleAttributes_Default_Text,TEXT=Internet@TV,SIZE=20>,
+                "normal": <@include TitleAttributes_Default_Text.json,TEXT=Internet@TV,SIZE=20>,
                 "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
               }
             },
@@ -144,7 +144,7 @@
               }
             },
             "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text,TEXT=Info,SIZE=20>,
+              "normal": <@include TitleAttributes_Default_Text.json,TEXT=Info,SIZE=20>,
               "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
             },
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -311,7 +311,7 @@
               "format": "buttonCenter.height = buttonCenter.width"
             },
             "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text,TEXT=OK,SIZE=28>,
+              "normal": <@include TitleAttributes_Default_Text.json,TEXT=OK,SIZE=28>,
               "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
             },
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
@@ -585,7 +585,7 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text,TEXT=1,SIZE=32>,
+              "normal": <@include TitleAttributes_Default_Text.json,TEXT=1,SIZE=32>,
               "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
             },
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -598,7 +598,7 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text,TEXT=2,SIZE=32>,
+              "normal": <@include TitleAttributes_Default_Text.json,TEXT=2,SIZE=32>,
               "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
             },
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -611,7 +611,7 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text,TEXT=3,SIZE=32>,
+              "normal": <@include TitleAttributes_Default_Text.json,TEXT=3,SIZE=32>,
               "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
             },
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -624,7 +624,7 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text,TEXT=4,SIZE=32>,
+              "normal": <@include TitleAttributes_Default_Text.json,TEXT=4,SIZE=32>,
               "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
             },
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -637,7 +637,7 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text,TEXT=5,SIZE=32>,
+              "normal": <@include TitleAttributes_Default_Text.json,TEXT=5,SIZE=32>,
               "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
             },
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -650,7 +650,7 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text,TEXT=6,SIZE=32>,
+              "normal": <@include TitleAttributes_Default_Text.json,TEXT=6,SIZE=32>,
               "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
             },
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -663,7 +663,7 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text,TEXT=7,SIZE=32>,
+              "normal": <@include TitleAttributes_Default_Text.json,TEXT=7,SIZE=32>,
               "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
             },
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -676,7 +676,7 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text,TEXT=8,SIZE=32>,
+              "normal": <@include TitleAttributes_Default_Text.json,TEXT=8,SIZE=32>,
               "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
             },
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -689,7 +689,7 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text,TEXT=9,SIZE=32>,
+              "normal": <@include TitleAttributes_Default_Text.json,TEXT=9,SIZE=32>,
               "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
             },
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -702,7 +702,7 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text,TEXT=0,SIZE=32>,
+              "normal": <@include TitleAttributes_Default_Text.json,TEXT=0,SIZE=32>,
               "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
             },
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -715,7 +715,7 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text,TEXT=Exit,SIZE=20>,
+              "normal": <@include TitleAttributes_Default_Text.json,TEXT=Exit,SIZE=20>,
               "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
             },
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -728,7 +728,7 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text,TEXT=Enter,SIZE=20>,
+              "normal": <@include TitleAttributes_Default_Text.json,TEXT=Enter,SIZE=20>,
               "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
             },
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -1052,7 +1052,7 @@
             "key": "default",
             "role": "selection-panel",
             "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text,TEXT=STB,SIZE=32>,
+              "normal": <@include TitleAttributes_Default_Text.json,TEXT=STB,SIZE=32>,
               "selected.foregroundColor": "yellow",
               "highlighted.foregroundColor": "yellow"
             },
@@ -1064,7 +1064,7 @@
             "key": "tv",
             "role": "selection-panel",
             "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text,TEXT=TV,SIZE=32>,
+              "normal": <@include TitleAttributes_Default_Text.json,TEXT=TV,SIZE=32>,
               "selected.foregroundColor": "yellow",
               "highlighted.foregroundColor": "yellow"
             },
@@ -1143,10 +1143,10 @@
             },
             "titles": {
               "default": {
-                "normal": <@include TitleAttributes_Default_Text,TEXT=On Demand,SIZE=18>
+                "normal": <@include TitleAttributes_Default_Text.json,TEXT=On Demand,SIZE=18>
               },
               "tv": {
-                "normal": <@include TitleAttributes_Default_Text,TEXT=Source,SIZE=18>
+                "normal": <@include TitleAttributes_Default_Text.json,TEXT=Source,SIZE=18>
               }
             },
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -1167,7 +1167,7 @@
                 "code.index": "Samsung/Samsung%20TV/Menu"
               }
             },
-            "titles.default.normal": <@include TitleAttributes_Default_Text,TEXT=Menu,SIZE=18>,
+            "titles.default.normal": <@include TitleAttributes_Default_Text.json,TEXT=Menu,SIZE=18>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -1188,10 +1188,10 @@
             },
             "titles": {
               "default": {
-                "normal": <@include TitleAttributes_Default_Text,TEXT=Last,SIZE=18>
+                "normal": <@include TitleAttributes_Default_Text.json,TEXT=Last,SIZE=18>
               },
               "tv": {
-                "normal": <@include TitleAttributes_Default_Text,TEXT=Return,SIZE=18>
+                "normal": <@include TitleAttributes_Default_Text.json,TEXT=Return,SIZE=18>
               }
             },
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -1212,7 +1212,7 @@
                 "code.index": "Samsung/Samsung%20TV/Exit"
               }
             },
-            "titles.default.normal": <@include TitleAttributes_Default_Text,TEXT=Exit,SIZE=18>,
+            "titles.default.normal": <@include TitleAttributes_Default_Text.json,TEXT=Exit,SIZE=18>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -1225,7 +1225,7 @@
               "class": "sendir",
               "code.index": "Sony/AV%20Receiver/TV%2FSAT"
             },
-            "titles.default.normal": <@include TitleAttributes_Default_Text,TEXT=DVR Audio,SIZE=18>,
+            "titles.default.normal": <@include TitleAttributes_Default_Text.json,TEXT=DVR Audio,SIZE=18>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -1238,7 +1238,7 @@
               "class": "sendir",
               "code.index": "Sony/AV%20Receiver/Video%201"
             },
-            "titles.default.normal": <@include TitleAttributes_Default_Text,TEXT=TV Audio,SIZE=18>,
+            "titles.default.normal": <@include TitleAttributes_Default_Text.json,TEXT=TV Audio,SIZE=18>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -1251,7 +1251,7 @@
               "class": "sendir",
               "code.index": "Sony/AV%20Receiver/Mute"
             },
-            "titles.default.normal": <@include TitleAttributes_Default_Text,TEXT=Mute,SIZE=18>,
+            "titles.default.normal": <@include TitleAttributes_Default_Text.json,TEXT=Mute,SIZE=18>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -1341,7 +1341,7 @@
               "target": "F668F0D5-80E4-46A4-A703-EF5A1601C645"
             },
             "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text,TEXT=Dish,SIZE=20>,
+              "normal": <@include TitleAttributes_Default_Text.json,TEXT=Dish,SIZE=20>,
               "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
             },
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -1357,7 +1357,7 @@
               "format": "playstation.height = playstation.width"
             },
             "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text,TEXT=Playstation,SIZE=20>,
+              "normal": <@include TitleAttributes_Default_Text.json,TEXT=Playstation,SIZE=20>,
               "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
             },
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -1373,7 +1373,7 @@
               "format": "appleTV.height = appleTV.width"
             },
             "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text,TEXT= TV,SIZE=20>,
+              "normal": <@include TitleAttributes_Default_Text.json,TEXT= TV,SIZE=20>,
               "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
             },
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -1389,7 +1389,7 @@
               "format": "sonos.height = sonos.width"
             },
             "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text,TEXT=Sonos,SIZE=20>,
+              "normal": <@include TitleAttributes_Default_Text.json,TEXT=Sonos,SIZE=20>,
               "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
             },
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,

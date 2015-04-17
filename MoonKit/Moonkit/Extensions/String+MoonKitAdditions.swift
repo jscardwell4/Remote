@@ -466,6 +466,33 @@ public extension String {
   }
 
   /**
+  matchAll:
+
+  :param: regex RegularExpression
+
+  :returns: [[String?]]
+  */
+  public func matchAll(regex: RegularExpression) -> [[String?]] {
+    var result: [[String?]] = []
+    if let matches = regex.regex?.matchesInString(self, options: nil, range: NSRange(0..<length)) as? [NSTextCheckingResult],
+      captureCount = regex.regex?.numberOfCaptureGroups
+    {
+      for match in matches {
+        var matchCaptures: [String?] = []
+        for i in 1...captureCount {
+          let range = match.rangeAtIndex(i)
+          let substring: String? = range.location == NSNotFound ? nil : self[range]
+          matchCaptures.append(substring)
+        }
+        result.append(matchCaptures)
+      }
+    }
+
+    return result
+  }
+
+
+  /**
   indexRangeFromIntRange:
 
   :param: range Range<Int>

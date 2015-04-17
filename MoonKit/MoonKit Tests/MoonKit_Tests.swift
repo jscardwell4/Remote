@@ -243,6 +243,22 @@ class MoonKit_Tests: XCTestCase {
     } else { XCTFail("file parse failed to create an object") }
   }
 
+  func testJSONSerialization_DirectiveParsingPerformance() {
+    if let bundlePath = NSUserDefaults.standardUserDefaults().stringForKey("XCTestedBundlePath"),
+      bundle = NSBundle(path: bundlePath),
+      filePath = bundle.pathForResource("Preset", ofType: "json")
+    {
+      var error: NSError?
+      var string: String?
+      measureBlock {
+        string = JSONSerialization.stringByParsingDirectivesForFile(filePath, options: .InflateKeypaths, error: &error)
+      }
+      XCTAssertFalse(MSHandleError(error))
+      XCTAssertNotNil(string)
+      MSLogDebug("result with directives parsed…\n\(string)")
+    } else { XCTFail("could not get file path for 'Preset.json'") }
+  }
+
   func testJSONParser() {
 
     func parserTest(string: String, allowFragment: Bool, ignoreExcess: Bool, expectToFail: Bool) {

@@ -11,102 +11,34 @@ import Foundation
 public class JSONSerialization {
 
   /**
-  JSONFromObject:options:
+  objectByParsingDirectivesForFile:options:error:
 
-  :param: object AnyObject
-  :param: options WriteOptions = .None
+  :param: filePath String
+  :param: options ReadOptions = .None
+  :param: error NSErrorPointer = nil
 
-  :returns: String
+  :returns: JSONValue?
   */
-/*
-  public class func JSONFromObject(object: AnyObject?, options: WriteOptions = .None) -> String? {
-    // TODO: Add options support
+  public class func stringByParsingDirectivesForFile(filePath: String,
+                                             options: ReadOptions = .None,
+                                               error: NSErrorPointer = nil) -> String?
+  {
+    var localError: NSError?      // So we can intercept errors before passing them along to caller
 
-    var json: String?
-    var weakStringFromObject: ((AnyObject, Int) -> String)?
-
-    let stringFromObject: (AnyObject, Int) -> String =
-    {(object, depth) in
-
-      let indent = " " * (depth * 4)
-      var string = indent
-
-      if let array = object as? NSArray {
-
-        string += "["
-        if let comment = array.comment { string += " \(comment)" }
-
-        let objectCount = array.count
-
-        for var i = 0; i < objectCount; i++ {
-
-          var valueString = weakStringFromObject!(array[i], depth + 1).stringByTrimmingTrailingWhitespace()
-          string += "\n\(valueString)"
-
-          if i + 1 < objectCount { string += "," }
-          if let comment = (array[i] as! NSObject).comment { string += comment }
-
-        }
-
-        if objectCount > 0 { string += "\n\(indent)" }
-
-        string += "]"
-
-      }
-
-      else if let dict = object as? NSDictionary {
-
-        string += "{"
-
-
-        if let comment = dict.comment { string += comment }
-
-        let keys = dict.allKeys
-        let keyCount = keys.count
-
-        for var i = 0; i < keyCount; i++ {
-
-          let key: AnyObject = keys[i]
-          let value: AnyObject = dict[key as! NSCopying]!
-          let keyString = weakStringFromObject!(key, depth + 1)
-          let valueString = weakStringFromObject!(value, depth + 1).stringByTrimmingWhitespace()
-
-          string += "\n\(keyString): \(valueString)"
-
-          if i + 1 < keyCount { string += "," }
-
-          if let comment = (value as! NSObject).comment { string += comment }
-
-        }
-
-        if keyCount > 0 { string += "\n\(indent)" }
-
-        string += "}"
-
-      }
-
-      else if let number = object as? NSNumber {
-        if number === kCFBooleanFalse || number === kCFBooleanTrue { string += number.boolValue ? "true" : "false" }
-        else { string += "\(number)" }
-      }
-
-      else if let nullObject = object as? NSNull { string += "null" }
-
-      else if let stringObject = object as? NSString { string += "\"\(stringObject.stringByEscapingControlCharacters())\"" }
-
-      return string
-
+    // Get the contents of the file to parse
+    if var string = String(contentsOfFile: filePath, encoding: NSUTF8StringEncoding, error: &localError)
+      where !handledError(localError, errorCode: NSFileReadUnknownError, error: error)
+    {
+      // Look for include entries in the file-loaded string
+      let directory = filePath.stringByDeletingLastPathComponent
+      let result = JSONIncludeDirective.stringByParsingDirectivesInString(string, directory: directory)
+      if JSONIncludeDirective.cacheSize > 100 { JSONIncludeDirective.emptyCache() }
+      return result
     }
 
-    weakStringFromObject = stringFromObject
-
-    if let obj: AnyObject = object where NSJSONSerialization.isValidJSONObject(obj) { json = stringFromObject(obj, 0) }
-    json?.extend("\n")
-
-    return json
-
+    return nil
   }
-*/
+
 
   /**
   objectByParsingString:options:error:
@@ -134,6 +66,24 @@ public class JSONSerialization {
     return object
   }
 
+  /**
+  handledError:errorCode:error:
+
+  :param: localError NSError?
+  :param: errorCode Int
+  :param: error NSErrorPointer
+
+  :returns: Bool
+  */
+  private class func handledError(localError: NSError?, errorCode: Int, error: NSErrorPointer) -> Bool {
+    if localError == nil { return false }
+    if error != nil {
+      error.memory = NSError(domain: "MSJSONSerializationErrorDomain",
+        code: errorCode,
+        underlyingErrors: [localError!])
+    }
+    return true
+  }
 
   /**
   This method calls `objectByParsingString:options:error` with the content of the specified file after attempting to replace
@@ -146,105 +96,13 @@ public class JSONSerialization {
   :returns: JSONValue?
   */
   public class func objectByParsingFile(filePath: String, options: ReadOptions = .None, error: NSErrorPointer = nil) -> JSONValue? {
-
     var localError: NSError?      // So we can intercept errors before passing them along to caller
 
-    // Create a block for wrapping an underlying error
-    let handledError: (Int) -> Bool = {
-      if localError == nil { return false }
-      if error != nil {
-        error.memory = NSError(domain: "MSJSONSerializationErrorDomain",
-                               code: $0,
-                               underlyingErrors: [localError!])
-      }
-      return true
-    }
-
-    // Get the contents of the file to parse
-    if var string = String(contentsOfFile: filePath, encoding: NSUTF8StringEncoding, error: &localError)
-      where !handledError(NSFileReadUnknownError)
+    if let string = stringByParsingDirectivesForFile(filePath, options: options, error: error)
+      where !handledError(localError, errorCode: NSFileReadUnknownError, error: error)
     {
-      // Look for include entries in the file-loaded string
-      let directory = filePath.stringByDeletingLastPathComponent
-      while parseIncludeDirectives(&string, directory: directory, error: &localError) > 0 { continue }
-
-      return handledError(NSFileReadUnknownError) ? nil : objectByParsingString(string, options: options, error: error)
-
-    }
-
-    return nil
-
-  }
-
-  private struct IncludeDirective {
-    let fileName: String
-    let placeholderValues: [String:String]
-    init?(_ string: String) {
-      if let capturedString = "<@include\\s+([^>]+)>" /~ (string, 1) {
-        var components = ",".split(capturedString)
-        if components.count > 0 {
-          let f = components.removeAtIndex(0)
-          fileName = f.hasSuffix(".json") ? f : f + ".json"
-          placeholderValues = Dictionary(components.compressedMap({let kv = "=".split($0); return kv.count == 2 ? disperse2(kv) : nil}))
-        } else {
-          fileName = ""
-          placeholderValues = [:]
-          return nil
-        }
-      } else {
-        fileName = ""
-        placeholderValues = [:]
-        return nil
-      }
-    }
-  }
-
-  private static var includeCache: [String:String] = [:]
-
-  /**
-  Look for "<@include FileName.json>" directives in the specified string and attempt to replace with file's content
-
-  :param: string String
-  :param: directory String
-  :param: error NSErrorPointer
-
-  :returns: Int The number of directives replaced or -1 if a replacement fails
-  */
-  private static func parseIncludeDirectives(inout string: String, directory: String, error: NSErrorPointer) -> Int {
-    let includePattern = ~/"<@include ([^>]+)>"
-    var offset = 0 // Holds the over/under from making substitutions in string
-    var includeCount = 0
-
-    // Iterate through matches for pattern
-    for range in compressed(string.rangesForCapture(0, byMatching: includePattern)) {
-
-      includeCount++
-
-      let adjustedRange = range + offset
-
-      if let directive = IncludeDirective(string[adjustedRange]) {
-        var text: String?
-        if let t = includeCache[directive.fileName] { text = t }
-        else if let t = String(contentsOfFile: "\(directory)/\(directive.fileName)", encoding: NSUTF8StringEncoding, error: error) {
-          includeCache[directive.fileName] = t
-          text = t
-        }
-
-        if text != nil {
-          for (placeholder, value) in directive.placeholderValues {
-            text = text!.stringByReplacingOccurrencesOfString("<#\(placeholder)#>", withString: value)
-          }
-
-          // Replace include directive with the text
-          let prefix = string[0..<adjustedRange.startIndex]
-          let suffix = string[adjustedRange.endIndex..<string.length]
-          string = prefix + text! + suffix
-          offset += text!.length - count(range) // Update `offset`
-
-        } else { return -1 }
-      } else { return -1 }
-    }
-    return includeCount
+      return objectByParsingString(string, options: options, error: error)
+    } else { return nil }
   }
 
 }
