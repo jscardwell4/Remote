@@ -114,7 +114,7 @@ final public class Preset: EditableModelObject {
   public var backgroundImage: Image? {
     get {
       if let moc = managedObjectContext, path = String(storage["backgroundImage"]) {
-        return Image.objectWithIndex(PathIndex(path)!, context: moc)
+        return Image.objectWithIndex(ModelIndex(path), context: moc)
       } else { return nil }
     }
     set { storage["backgroundImage"] = newValue?.index.jsonValue }
@@ -230,22 +230,6 @@ final public class Preset: EditableModelObject {
     set { storage["command"] = newValue }
   }
 
-  /**
-  objectWithIndex:context:
-
-  :param: index PathIndex
-  :param: context NSManagedObjectContext
-
-  :returns: Image?
-  */
-  @objc(objectWithPathIndex:context:)
-  public override class func objectWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Preset? {
-    if let object = modelWithIndex(index, context: context) {
-      MSLogDebug("located preset with name '\(object.name)'")
-      return object
-    } else { return nil }
-  }
-
   // MARK: Printable
 
   override public var description: String {
@@ -326,10 +310,7 @@ final public class Preset: EditableModelObject {
     return description
   }
 
-}
-
-extension Preset: PathIndexedModel {
-  public var pathIndex: PathIndex { return presetCategory.pathIndex + indexedName }
+  public override var pathIndex: PathIndex { return presetCategory.pathIndex + indexedName }
 
   /**
   modelWithIndex:context:
@@ -339,9 +320,9 @@ extension Preset: PathIndexedModel {
 
   :returns: Preset?
   */
-  public static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Preset? {
+  public override static func modelWithIndex(var index: PathIndex, context: NSManagedObjectContext) -> Preset? {
     if index.count < 1 { return nil }
-    let presetName = index.removeLast()
+    let presetName = index.removeLast().pathDecoded
     if let presetCategory = PresetCategory.modelWithIndex(index, context: context) {
       return findFirst(presetCategory.presets, {$0.name == presetName})
     } else { return nil }

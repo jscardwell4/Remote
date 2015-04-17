@@ -40,19 +40,6 @@ final public class ImageCategory: EditableModelObject {
     return obj.jsonValue
   }
 
-  /**
-  objectWithIndex:context:
-
-  :param: index PathIndex
-  :param: context NSManagedObjectContext
-
-  :returns: Image?
-  */
-  @objc(objectWithPathIndex:context:)
-  public override class func objectWithIndex(index: PathIndex, context: NSManagedObjectContext) -> ImageCategory? {
-    return modelWithIndex(index, context: context)
-  }
-
   override public var description: String {
     let description = "\(super.description)\n\t" + "\n\t".join(
       "image count = \(images.count)",
@@ -61,10 +48,7 @@ final public class ImageCategory: EditableModelObject {
     )
     return description
   }
-}
-
-extension ImageCategory: PathIndexedModel {
-  public var pathIndex: PathIndex { return parentCategory != nil ? parentCategory!.pathIndex + indexedName : PathIndex(indexedName)! }
+  public override var pathIndex: PathIndex { return parentCategory?.pathIndex + indexedName }
 
   /**
   modelWithIndex:context:
@@ -74,7 +58,7 @@ extension ImageCategory: PathIndexedModel {
 
   :returns: ImageCategory?
   */
-  public static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> ImageCategory? {
+  public override static func modelWithIndex(var index: PathIndex, context: NSManagedObjectContext) -> ImageCategory? {
     if index.isEmpty { return nil }
     else if index.count == 1 {
       return objectMatchingPredicate(∀"parentCategory == NULL && name == '\(index.rawValue.pathDecoded)'", context: context)
@@ -96,7 +80,7 @@ extension ImageCategory: NestingModelCollection {
 extension ImageCategory: DefaultingModelCollection {
   public static func defaultCollectionInContext(context: NSManagedObjectContext) -> ImageCategory {
     let categoryName = "Uncategorized"
-    if let category = modelWithIndex(PathIndex(categoryName)!, context: context) { return category }
+    if let category = modelWithIndex(PathIndex(categoryName), context: context) { return category }
     else {
       let category = self(context: context)
       category.name = categoryName

@@ -42,14 +42,9 @@ public class LogManager {
 
 
 
-  private struct LogManagerGlobals {
+  public static var logLevel: LogLevel = .Debug
 
-    static var logLevel: LogLevel = .Debug
-    static var registeredLogLevels: [String:LogLevel] = [:]
-
-  }
-
-  public class var logLevel: LogLevel { get { return LogManagerGlobals.logLevel } set { LogManagerGlobals.logLevel = newValue } }
+  static var registeredLogLevels: [String:LogLevel] = [:]
 
   /**
   logLevelForFile:
@@ -59,7 +54,7 @@ public class LogManager {
   :returns: LogLevel
   */
   public class func logLevelForFile(file: String) -> LogManager.LogLevel {
-    return LogManagerGlobals.registeredLogLevels[file] ?? LogManagerGlobals.logLevel
+    return registeredLogLevels[file] ?? logLevel
   }
 
   /**
@@ -69,7 +64,7 @@ public class LogManager {
   :param: file String = __FILE__
   */
   public class func setLogLevel(level: LogManager.LogLevel, forFile file: String = __FILE__) {
-    LogManagerGlobals.registeredLogLevels[file] = level
+    registeredLogLevels[file] = level
   }
 
 }

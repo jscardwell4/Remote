@@ -58,19 +58,6 @@ final public class IRCodeSet: EditableModelObject {
     return obj.jsonValue
   }
 
-  /**
-  objectWithIndex:context:
-
-  :param: index PathIndex
-  :param: context NSManagedObjectContext
-
-  :returns: Image?
-  */
-  @objc(objectWithPathIndex:context:)
-  public override class func objectWithIndex(index: PathIndex, context: NSManagedObjectContext) -> IRCodeSet? {
-    return modelWithIndex(index, context: context)
-  }
-
   override public var description: String {
     return "\(super.description)\n\t" + "\n\t".join(
       "manufacturer = \(manufacturer.index)",
@@ -79,10 +66,7 @@ final public class IRCodeSet: EditableModelObject {
     )
   }
 
-}
-
-extension IRCodeSet: PathIndexedModel {
-  public var pathIndex: PathIndex { return manufacturer.pathIndex + indexedName }
+  public override var pathIndex: PathIndex { return manufacturer.pathIndex + indexedName }
 
   /**
   modelWithIndex:context:
@@ -92,7 +76,7 @@ extension IRCodeSet: PathIndexedModel {
 
   :returns: IRCodeSet?
   */
-  public static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> IRCodeSet? {
+  public override static func modelWithIndex(var index: PathIndex, context: NSManagedObjectContext) -> IRCodeSet? {
     if index.count != 2 { return nil }
     else {
       let codeSetName = index.removeLast().pathDecoded
@@ -109,7 +93,7 @@ extension IRCodeSet: ModelCollection {
 extension IRCodeSet: DefaultingModelCollection {
   public static func defaultCollectionInContext(context: NSManagedObjectContext) -> IRCodeSet {
     let name = "Unspecified"
-    if let codeSet = modelWithIndex(PathIndex("\(name)/\(name)")!, context: context) {
+    if let codeSet = modelWithIndex(PathIndex("\(name)/\(name)"), context: context) {
       return codeSet
     } else {
       var codeSet = self(context: context)

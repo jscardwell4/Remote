@@ -176,6 +176,31 @@ public class JSONSerialization {
 
   }
 
+  private struct IncludeDirective {
+    let fileName: String
+    let placeholderValues: [String:String]
+    init?(_ string: String) {
+      if let capturedString = "<@include\\s+([^>]+)>" /~ (string, 1) {
+        var components = ",".split(capturedString)
+        if components.count > 0 {
+          let f = components.removeAtIndex(0)
+          fileName = f.hasSuffix(".json") ? f : f + ".json"
+          placeholderValues = Dictionary(components.compressedMap({let kv = "=".split($0); return kv.count == 2 ? disperse2(kv) : nil}))
+        } else {
+          fileName = ""
+          placeholderValues = [:]
+          return nil
+        }
+      } else {
+        fileName = ""
+        placeholderValues = [:]
+        return nil
+      }
+    }
+  }
+
+  private static var includeCache: [String:String] = [:]
+
   /**
   Look for "<@include FileName.json>" directives in the specified string and attempt to replace with file's content
 
@@ -197,16 +222,26 @@ public class JSONSerialization {
 
       let adjustedRange = range + offset
 
-      // Get the name of the file to include
-      if let file = String(Array(string)[adjustedRange]).substringForCapture(1, inFirstMatchFor:includePattern),
-        text = String(contentsOfFile: "\(directory)/\(file)", encoding: NSUTF8StringEncoding, error: error)
-      {
-        // Replace include directive with the text
-        let prefix = string[0..<adjustedRange.startIndex]
-        let suffix = string[adjustedRange.endIndex..<string.length]
-        string = prefix + text + suffix
-        offset += text.length - count(range) // Update `offset`
+      if let directive = IncludeDirective(string[adjustedRange]) {
+        var text: String?
+        if let t = includeCache[directive.fileName] { text = t }
+        else if let t = String(contentsOfFile: "\(directory)/\(directive.fileName)", encoding: NSUTF8StringEncoding, error: error) {
+          includeCache[directive.fileName] = t
+          text = t
+        }
 
+        if text != nil {
+          for (placeholder, value) in directive.placeholderValues {
+            text = text!.stringByReplacingOccurrencesOfString("<#\(placeholder)#>", withString: value)
+          }
+
+          // Replace include directive with the text
+          let prefix = string[0..<adjustedRange.startIndex]
+          let suffix = string[adjustedRange.endIndex..<string.length]
+          string = prefix + text! + suffix
+          offset += text!.length - count(range) // Update `offset`
+
+        } else { return -1 }
       } else { return -1 }
     }
     return includeCount

@@ -12,7 +12,7 @@ import CoreData
 import MoonKit
 
 @objc(Activity)
-public final class Activity: NamedModelObject {
+public final class Activity: IndexedModelObject {
 
   @NSManaged public var launchMacro: MacroCommand?
   @NSManaged public var haltMacro: MacroCommand?
@@ -105,24 +105,4 @@ public final class Activity: NamedModelObject {
     return obj.jsonValue
   }
 
-  /**
-  objectWithIndex:context:
-
-  :param: index PathIndex
-  :param: context NSManagedObjectContext
-
-  :returns: Activity?
-  */
-  @objc(objectWithPathIndex:context:)
-  override public class func objectWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Activity? {
-    return modelWithIndex(index, context: context)
-  }
-
-}
-
-extension Activity: PathIndexedModel {
-  public var pathIndex: PathIndex { return PathIndex(indexedName)! }
-  public static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Activity? {
-    return objectWithValue(index.rawValue.pathDecoded, forAttribute: "name", context: context)
-  }
 }

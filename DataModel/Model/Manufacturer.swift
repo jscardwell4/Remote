@@ -42,41 +42,11 @@ final public class Manufacturer: EditableModelObject {
     return obj.jsonValue
   }
 
-  /**
-  objectWithIndex:context:
-
-  :param: index PathIndex
-  :param: context NSManagedObjectContext
-
-  :returns: Image?
-  */
-  @objc(objectWithPathIndex:context:)
-  public override class func objectWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Manufacturer? {
-    return modelWithIndex(index, context: context)
-  }
-
   override public var description: String {
     return "\(super.description)\n\t" + "\n\t".join(
       "code sets = [" + ", ".join(map(codeSets, {$0.name})) + "]",
       "devices = [" + ", ".join(map(devices, {$0.name})) + "]"
     )
-  }
-
-}
-
-extension Manufacturer: PathIndexedModel {
-  public var pathIndex: PathIndex { return PathIndex(indexedName)! }
-
-  /**
-  modelWithIndex:context:
-
-  :param: index PathIndex
-  :param: context NSManagedObjectContext
-
-  :returns: Self?
-  */
-  public static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Self? {
-    return index.count == 1 ? objectWithValue(index.rawValue.pathDecoded, forAttribute: "name", context: context) : nil
   }
   
 }
@@ -88,7 +58,7 @@ extension Manufacturer: NestingModelCollection {
 extension Manufacturer: DefaultingModelCollection {
   public static func defaultCollectionInContext(context: NSManagedObjectContext) -> Manufacturer {
     let name = "Unspecified"
-    if let manufacturer = modelWithIndex(PathIndex(name)!, context: context) {
+    if let manufacturer = modelWithIndex(PathIndex(name), context: context) {
       return manufacturer
     } else {
       var manufacturer = self(context: context)

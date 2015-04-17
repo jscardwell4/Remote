@@ -37,6 +37,8 @@
 		C20D2F401AE012AE00D0007B /* TitleAttributes_Default_Icon.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F241AE012AE00D0007B /* TitleAttributes_Default_Icon.json */; };
 		C20D2F411AE012AE00D0007B /* TitleAttributes_Default_Text.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F251AE012AE00D0007B /* TitleAttributes_Default_Text.json */; };
 		C20D2F421AE012AE00D0007B /* TitleEdgeInsets_Default.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F261AE012AE00D0007B /* TitleEdgeInsets_Default.json */; };
+		C20D2F441AE0798400D0007B /* ModelIndexStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D2F431AE0798400D0007B /* ModelIndexStruct.swift */; };
+		C20D2F461AE0858800D0007B /* IndexedModelObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D2F451AE0858800D0007B /* IndexedModelObject.swift */; };
 		C215CC041ABB102F00E8077E /* DataModel.h in Headers */ = {isa = PBXBuildFile; fileRef = C215CC031ABB102F00E8077E /* DataModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */; };
 		C21C43041A80015E004F8DA8 /* MainMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21C43031A80015E004F8DA8 /* MainMenuController.swift */; };
@@ -456,7 +458,6 @@
 		C285D86A1AC4C0E800C527F6 /* DataModelProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C285D8691AC4C0E800C527F6 /* DataModelProtocols.swift */; };
 		C28E98F81AD1A4B000E78711 /* DataModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28E98F71AD1A4B000E78711 /* DataModelTests.swift */; };
 		C28E98F91AD1A4B000E78711 /* DataModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* DataModel.framework */; };
-		C293C73E1AC25F7700408D35 /* ModelIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C73D1AC25F7700408D35 /* ModelIndex.swift */; };
 		C293C7491AC3164700408D35 /* Bank.h in Headers */ = {isa = PBXBuildFile; fileRef = C293C7481AC3164700408D35 /* Bank.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C293C7751AC318EB00408D35 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C7691AC318EB00408D35 /* Image.swift */; };
 		C293C7761AC318EB00408D35 /* ImageCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C76A1AC318EB00408D35 /* ImageCategory.swift */; };
@@ -804,6 +805,8 @@
 		C20D2F241AE012AE00D0007B /* TitleAttributes_Default_Icon.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TitleAttributes_Default_Icon.json; sourceTree = "<group>"; };
 		C20D2F251AE012AE00D0007B /* TitleAttributes_Default_Text.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TitleAttributes_Default_Text.json; sourceTree = "<group>"; };
 		C20D2F261AE012AE00D0007B /* TitleEdgeInsets_Default.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TitleEdgeInsets_Default.json; sourceTree = "<group>"; };
+		C20D2F431AE0798400D0007B /* ModelIndexStruct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelIndexStruct.swift; sourceTree = "<group>"; };
+		C20D2F451AE0858800D0007B /* IndexedModelObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedModelObject.swift; sourceTree = "<group>"; };
 		C215CBFF1ABB102F00E8077E /* DataModel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataModel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C215CC021ABB102F00E8077E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C215CC031ABB102F00E8077E /* DataModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataModel.h; sourceTree = "<group>"; };
@@ -2546,6 +2549,7 @@
 				C2E9F4561ABCA395007581F2 /* ComponentDevice.swift */,
 				C2E9F4F31ABCA395007581F2 /* Activity.swift */,
 				C293C73D1AC25F7700408D35 /* ModelIndex.swift */,
+				C20D2F431AE0798400D0007B /* ModelIndexStruct.swift */,
 				C2E9F4F41ABCA395007581F2 /* ActivityController.swift */,
 				C2E9F4F51ABCA395007581F2 /* DictionaryStorage.swift */,
 				C2E9F4FE1ABCA395007581F2 /* ModelObject.swift */,
@@ -2554,6 +2558,7 @@
 				C2E9F5421ABCA395007581F2 /* TitleAttributes.swift */,
 				C2A0C7521AD8905B008CF88B /* ColorStorage.swift */,
 				C253B2E01AD98D6B00F7E6AF /* Asset.swift */,
+				C20D2F451AE0858800D0007B /* IndexedModelObject.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3509,6 +3514,7 @@
 				C2E9F6141ABCA395007581F2 /* RemoteElement.swift in Sources */,
 				C2E9F6091ABCA395007581F2 /* ControlStateSet.swift in Sources */,
 				C293C7791AC318EB00408D35 /* ISYDevice.swift in Sources */,
+				C20D2F461AE0858800D0007B /* IndexedModelObject.swift in Sources */,
 				C2A0C7511AD88D68008CF88B /* JSONStorage.swift in Sources */,
 				C2E9F5DC1ABCA395007581F2 /* ModelObject.swift in Sources */,
 				C2E9F5F91ABCA395007581F2 /* CommandContainer.swift in Sources */,
@@ -3520,9 +3526,9 @@
 				C293C7751AC318EB00408D35 /* Image.swift in Sources */,
 				C2E9F5DF1ABCA395007581F2 /* ActivityCommand.swift in Sources */,
 				C2E9F61E1ABCA395007581F2 /* DataManager.swift in Sources */,
-				C293C73E1AC25F7700408D35 /* ModelIndex.swift in Sources */,
 				C2E9F6001ABCA395007581F2 /* CommandSetCollection.swift in Sources */,
 				C285D86A1AC4C0E800C527F6 /* DataModelProtocols.swift in Sources */,
+				C20D2F441AE0798400D0007B /* ModelIndexStruct.swift in Sources */,
 				C293C7761AC318EB00408D35 /* ImageCategory.swift in Sources */,
 				C2E9F5E11ABCA395007581F2 /* DelayCommand.swift in Sources */,
 				C293C7781AC318EB00408D35 /* IRCodeSet.swift in Sources */,

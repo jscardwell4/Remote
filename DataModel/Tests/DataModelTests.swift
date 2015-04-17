@@ -22,6 +22,7 @@ class DataModelTests: XCTestCase {
     if self === DataModelTests.self {
       MSLog.addTaggingASLLogger()
       MSLog.addTaggingTTYLogger()
+      LogManager.logLevel = .Error
     }
   }
 
@@ -231,17 +232,22 @@ class IsolatedDataModelTests: DataModelTests {
 
   func testModelIndex() {
     let uuid = "4E9FE3CD-A64C-4D6D-8E3D-F7F5B7D7EB92"
-    let uuidIndex = UUIDIndex(uuid)
+    let uuidIndex = UUIDIndex(rawValue: uuid)
     XCTAssert(uuidIndex != nil)
     XCTAssert(uuidIndex?.rawValue == uuid)
 
+    var modelIndex = ModelIndex(uuid)
+    XCTAssertEqual(modelIndex.rawValue, uuid)
+
     let path = "I/Am/a%20Path"
     let pathIndex = PathIndex(path)
-    XCTAssert(pathIndex != nil)
-    XCTAssert(pathIndex?.rawValue == path)
-    XCTAssert(pathIndex?.first == "I")
-    XCTAssert(pathIndex?.last == "a%20Path")
-    XCTAssert(pathIndex?.count == 3)
+    XCTAssert(pathIndex.rawValue == path)
+    XCTAssert(pathIndex.first == "I")
+    XCTAssert(pathIndex.last == "a%20Path")
+    XCTAssert(pathIndex.count == 3)
+
+    modelIndex = ModelIndex(path)
+    XCTAssertEqual(modelIndex.rawValue, path)
   }
 
   func testPreset() {
@@ -443,10 +449,10 @@ class InterdependentDataModelTests: DataModelTests {
 
   func expectFileLoad(name: String, type: ModelObject.Type) {
     let expectation = expectationWithDescription("load \(name)")
-    DataManager.loadDataFromFile(name,
-                            type: type,
-                         context: context,
-                      completion: {(success: Bool, error: NSError?) -> Void in
+    DataManager.loadJSONFileNamed(name,
+                         forModel: type,
+                          context: context,
+                       completion: {(success: Bool, error: NSError?) -> Void in
                         XCTAssertTrue(success, "loading data from file triggered an error")
                         DataManager.saveRootContext(completion: { (success: Bool, error: NSError?) -> Void in
                           XCTAssertTrue(success, "saving context triggered an error")
@@ -521,13 +527,13 @@ class InterdependentDataModelTests: DataModelTests {
     expectFileLoad("Preset", type: PresetCategory.self)
     expectFileLoad("Remote_Demo", type: Remote.self)
     expectFileLoad("ActivityController", type: ActivityController.self)
-    DataManager.dumpJSONForModelType(Manufacturer.self, context: context)
-    DataManager.dumpJSONForModelType(ComponentDevice.self, context: context)
-    DataManager.dumpJSONForModelType(ImageCategory.self, context: context)
-    DataManager.dumpJSONForModelType(NetworkDevice.self, context: context)
-    DataManager.dumpJSONForModelType(Activity.self, context: context)
-    DataManager.dumpJSONForModelType(PresetCategory.self, context: context)
-    DataManager.dumpJSONForModelType(Remote.self, context: context)
-    DataManager.dumpJSONForModelType(ActivityController.self, context: context)
+//    DataManager.dumpJSONForModelType(Manufacturer.self, context: context)
+//    DataManager.dumpJSONForModelType(ComponentDevice.self, context: context)
+//    DataManager.dumpJSONForModelType(ImageCategory.self, context: context)
+//    DataManager.dumpJSONForModelType(NetworkDevice.self, context: context)
+//    DataManager.dumpJSONForModelType(Activity.self, context: context)
+//    DataManager.dumpJSONForModelType(PresetCategory.self, context: context)
+//    DataManager.dumpJSONForModelType(Remote.self, context: context)
+//    DataManager.dumpJSONForModelType(ActivityController.self, context: context)
   }
 }

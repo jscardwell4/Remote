@@ -99,15 +99,14 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
 
   /** Accessor for the model's `uuid` as a `UUIDIndex` */
   public var index: ModelIndex {
-    if self is PathIndexedModel { return (self as! PathIndexedModel).pathIndex }
-    else if let uuidIndex = UUIDIndex(rawValue: uuid) { return uuidIndex }
+    if let uuidIndex = UUIDIndex(rawValue: uuid) { return ModelIndex(uuidIndex) }
     else { fatalError("unable to generate uuid index for model, is uuid nil?") }
   }
 
   /** Entity description retrieved from the managed object model */
   public class var entityDescription: NSEntityDescription {
     let entities = DataManager.managedObjectModel.entities as! [NSEntityDescription]
-    if let entity = findFirst(entities, {$0.managedObjectClassName == self.className()}) { return  entity }
+    if let entity = findFirst(entities, {$0.managedObjectClassName == self.className()}) { return entity }
     else { fatalError("unable to locate entity for class '\(className())'") }
   }
 
@@ -159,21 +158,9 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
 
   :returns: Self?
   */
-  public class func objectWithIndex(index: UUIDIndex, context: NSManagedObjectContext) -> Self? {
-    return objectWithUUID(index.rawValue, context: context)
-  }
-
-  /**
-  objectWithIndex:context:
-
-  :param: index PathIndex
-  :param: context NSManagedObjectContext
-
-  :returns: Self?
-  */
-  @objc(objectWithPathIndex:context:)
-  public class func objectWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Self? {
-    return nil
+  public class func objectWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Self? {
+    if let uuidIndex = index.uuidIndex { return objectWithUUID(uuidIndex.rawValue, context: context) }
+    else { return nil }
   }
 
   /**
@@ -187,16 +174,7 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   public class func objectWithData(data: ObjectJSONValue, context: NSManagedObjectContext) -> Self? {
     if let uuid = String(data["uuid"]), object = objectWithUUID(uuid, context: context) { return object }
     else if let rawIndex = String(data["index"]) {
-      if let index = UUIDIndex(rawValue: rawIndex), object = objectWithIndex(index, context: context) {
-        MSLogVerbose("object for index \(index.rawValue):\n\(object)")
-        return object
-      } else if let index = PathIndex(rawValue: rawIndex), object = objectWithIndex(index, context: context) {
-        MSLogVerbose("object for index \(index.rawValue):\n\(object)")
-        return object
-      } else {
-        MSLogVerbose("failed to locate object with index \(rawIndex)")
-        return nil
-      }
+      return objectWithIndex(ModelIndex(rawIndex), context: context)
     }
     else { return nil }
   }

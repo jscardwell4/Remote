@@ -112,19 +112,6 @@ public final class ComponentDevice: EditableModelObject {
     return description
   }
 
-  /**
-  objectWithIndex:context:
-
-  :param: index PathIndex
-  :param: context NSManagedObjectContext
-
-  :returns: ComponentDevice?
-  */
-  @objc(objectWithPathIndex:context:)
-  override public class func objectWithIndex(index: PathIndex, context: NSManagedObjectContext) -> ComponentDevice? {
-    return modelWithIndex(index, context: context)
-  }
-
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
     obj["port"] = port.jsonValue
@@ -139,12 +126,5 @@ public final class ComponentDevice: EditableModelObject {
 
   }
 
-}
-
-extension ComponentDevice: PathIndexedModel {
-  public var pathIndex: PathIndex { return PathIndex(indexedName)! }
-  public static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> ComponentDevice? {
-    return objectWithValue(index.rawValue.pathDecoded, forAttribute: "name", context: context)
-  }
 }
 

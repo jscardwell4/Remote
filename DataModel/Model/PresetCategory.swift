@@ -37,23 +37,6 @@ final public class PresetCategory: EditableModelObject {
     return obj.jsonValue
   }
 
-
-  /**
-  objectWithIndex:context:
-
-  :param: index PathIndex
-  :param: context NSManagedObjectContext
-
-  :returns: Image?
-  */
-  @objc(objectWithPathIndex:context:)
-  public override class func objectWithIndex(index: PathIndex, context: NSManagedObjectContext) -> PresetCategory? {
-    if let object = modelWithIndex(index, context: context) {
-      MSLogDebug("located preset category with name '\(object.name)'")
-      return object
-    } else { return nil }
-  }
-
   override public var description: String {
     var description = "\(super.description)\n\t" + "\n\t".join(
       "presets count = \(presets.count)",
@@ -63,10 +46,7 @@ final public class PresetCategory: EditableModelObject {
     return description
   }
 
-}
-
-extension PresetCategory: PathIndexedModel {
-  public var pathIndex: PathIndex { return parentCategory != nil ? parentCategory!.pathIndex + PathIndex(indexedName)! : PathIndex(indexedName)! }
+  public override var pathIndex: PathIndex { return parentCategory?.pathIndex + PathIndex(indexedName) }
 
   /**
   modelWithIndex:context:
@@ -76,18 +56,14 @@ extension PresetCategory: PathIndexedModel {
 
   :returns: PresetCategory?
   */
-  public static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> PresetCategory? {
-    if index.count < 1 { return nil }
-    var pathComponents = index.pathComponents.reverse()
-    var name = pathComponents.removeLast()
-    var currentCategory = objectMatchingPredicate(∀"parentCategory == NULL AND name == '\(name.pathDecoded)'", context: context)
-
-    while currentCategory != nil && pathComponents.count > 0 {
-      name = pathComponents.removeLast().pathDecoded
-      currentCategory = findFirst(currentCategory!.childCategories, {$0.name == name})
+  public override static func modelWithIndex(var index: PathIndex, context: NSManagedObjectContext) -> PresetCategory? {
+    if index.isEmpty { return nil }
+    else if index.count == 1 {
+      return objectMatchingPredicate(∀"parentCategory == NULL && name == '\(index.rawValue.pathDecoded)'", context: context)
+    } else {
+      let name = index.removeLast().pathDecoded
+      return findFirst(modelWithIndex(index, context: context)?.childCategories, {$0.name == name})
     }
-    return currentCategory
-
   }
 }
 
@@ -102,7 +78,7 @@ extension PresetCategory: NestingModelCollection {
 extension PresetCategory: DefaultingModelCollection {
   public static func defaultCollectionInContext(context: NSManagedObjectContext) -> PresetCategory {
     let categoryName = "Uncategorized"
-    if let category = modelWithIndex(PathIndex(categoryName)!, context: context) { return category }
+    if let category = modelWithIndex(PathIndex(categoryName), context: context) { return category }
     else {
       let category = self(context: context)
       category.name = categoryName

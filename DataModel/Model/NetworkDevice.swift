@@ -47,29 +47,30 @@ public class NetworkDevice: EditableModelObject {
 
   :returns: NetworkDevice?
   */
-//  override class func importObjectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> NetworkDevice? {
-//
-//    var device: NetworkDevice?
-//
-//    // Try getting the type of device to import
-//    if let type = data["type"] as? String {
-//
-//      var entityName: String?
-//      var deviceType: NetworkDevice.Type = NetworkDevice.self
-//
-//      // Import with parameters derived from specified type
-//      switch type {
-//        case "itach":
-//          device = importObjectForEntity("ITachDevice", forType: ITachDevice.self, fromData: data, context: context) as? NetworkDevice
-//        case "isy":
-//          device = importObjectForEntity("ISYDevice", forType: ISYDevice.self, fromData: data, context: context) as? NetworkDevice
-//        default:
-//          break
-//      }
-//    }
-//
-//    return device
-//  }
+  override public class func importObjectWithData(data: ObjectJSONValue, context: NSManagedObjectContext) -> NetworkDevice? {
+
+    if self !== NetworkDevice.self {
+      return typeCast(super.importObjectWithData(data, context: context), self)
+    }
+
+    var device: NetworkDevice?
+
+    // Try getting the type of device to import
+    if let type = String(data["type"]) {
+
+      // Import with parameters derived from specified type
+      switch type {
+        case "itach":
+          device = ITachDevice.importObjectWithData(data, context: context)
+        case "isy":
+          device = ISYDevice.importObjectWithData(data, context: context)
+        default:
+          break
+      }
+    }
+
+    return device
+  }
 
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!

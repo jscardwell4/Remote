@@ -474,10 +474,7 @@ import MoonKit
         }
         if removeExisting { rootContext.deleteObjects(Set($0.modelType.objectsInContext(rootContext))) }
         if fileName != nil {
-          self.loadDataFromFile(fileName!,
-                           type: $0.modelType,
-                        context: rootContext,
-                        logFlags: logFlags)
+          self.loadJSONFileNamed(fileName!, forModel: $0.modelType, context: rootContext, logFlags: logFlags)
         }
       }
     }
@@ -553,41 +550,47 @@ import MoonKit
     public static var Imported: LogFlags = LogFlags(rawValue: 0b0100)
   }
 
-  /**
-  loadDataFromFile:type:context:
+  public class func loadResourceForURL(url: NSURL) {
+    let fm = NSFileManager.defaultManager()
 
-  :param: file String
+    if let path = url.path where fm.isReadableFileAtPath(path) {
+
+    }
+  }
+
+
+
+  /**
+  loadJSONFileAtPath:forModel:context:logFlags:completion:
+
+  :param: path String
   :param: type T.Type
   :param: context NSManagedObjectContext
-  :param: logFile Bool = false
-  :param: logParsed Bool = false
-  :param: logImported Bool = false
+  :param: logFlags LogFlags = .Default
   :param: completion ((Bool, NSError?) -> Void)? = nil
   */
-  public class func loadDataFromFile<T:ModelObject>(file: String,
-                                                type: T.Type,
-                                             context: NSManagedObjectContext,
+  public class func loadJSONFileAtPath<T:ModelObject>(path: String,
+                                             forModel type: T.Type,
+                                              context: NSManagedObjectContext,
                                              logFlags: LogFlags = .Default,
-                                          completion: ((Bool, NSError?) -> Void)? = nil)
+                                           completion: ((Bool, NSError?) -> Void)? = nil)
   {
-    MSLogDebug("parsing file '\(file).json'")
+    MSLogDebug("parsing file '\(path)'")
 
     var error: NSError?
     context.performBlockAndWait {
-      if let filePath = self.dataModelBundle.pathForResource(file, ofType: "json"),
-        json = JSONSerialization.objectByParsingFile(filePath, options: .InflateKeypaths, error: &error)
+      if let json = JSONSerialization.objectByParsingFile(path, options: .InflateKeypaths, error: &error)
         where MSHandleError(error) == false
       {
         if isOptionSet(LogFlags.File, logFlags) {
-          MSLogDebug("content of file to parse:\n" + (String(contentsOfFile: filePath,
-                                                             encoding: NSUTF8StringEncoding,
-                                                                error: nil) ?? "")) }
+          MSLogDebug("content of file to parse:\n" + (String(contentsOfFile: path, encoding: NSUTF8StringEncoding, error: nil) ?? ""))
+        }
 
         if isOptionSet(LogFlags.Parsed, logFlags) { MSLogDebug("json objects from parsed file:\n\(json)") }
 
         if let data = ObjectJSONValue(json), importedObject = type(data: data, context: context) {
 
-          MSLogDebug("imported \(type.className()) from file '\(file).json'")
+          MSLogDebug("imported \(type.className()) from file '\(path)'")
 
           if isOptionSet(LogFlags.Imported, logFlags) { MSLogDebug("json output for imported object:\n\(importedObject.jsonValue)") }
 
@@ -595,16 +598,47 @@ import MoonKit
 
           let importedObjects = type.importObjectsWithData(data, context: context)
 
-          MSLogDebug("\(importedObjects.count) \(type.className()) objects imported from file '\(file).json'")
+          MSLogDebug("\(importedObjects.count) \(type.className()) objects imported from file '\(path).json'")
 
-          if isOptionSet(LogFlags.Imported, logFlags) { MSLogDebug("json output for imported object:\n\(JSONValue.Array((importedObjects as [ModelObject]).map({$0.jsonValue})).prettyRawValue)") }
+          if isOptionSet(LogFlags.Imported, logFlags) {
+            MSLogDebug("json output for imported object:\n\(JSONValue.Array(importedObjects.map({$0.jsonValue})).prettyRawValue)")
+          }
 
         } else { MSLogError("file content must resolve into [String:AnyObject] or [[String:AnyObject]]") }
 
-      } else { MSLogError("failed to parse file '\(file).json'") }
+      } else { MSLogError("failed to parse file '\(path)'") }
 
     }
     completion?(error == nil, error)
+  }
+
+  /**
+  loadJSONFileNamed:forModel:context:logFlags:completion:
+
+  :param: name String
+  :param: type T.Type
+  :param: context NSManagedObjectContext
+  :param: logFlags LogFlags = .Default
+  :param: completion ((Bool, NSError?) -> Void)? = nil
+  */
+  public class func loadJSONFileNamed<T:ModelObject>(var name: String,
+                                             forModel type: T.Type,
+                                             context: NSManagedObjectContext,
+                                            logFlags: LogFlags = .Default,
+                                          completion: ((Bool, NSError?) -> Void)? = nil)
+  {
+    var error: NSError?
+    if name.hasSuffix(".json") { name = name.stringByDeletingPathExtension }
+    var path: String?
+    if let p = self.dataModelBundle.pathForResource(name, ofType: "json") { path = p }
+    else if let p = NSBundle.mainBundle().pathForResource(name, ofType: "json") { path = p }
+    else {
+      MSLogError("unable to resolve the name '\(name)' into a bundled file path")
+      error = NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil)
+    }
+
+    if path != nil { loadJSONFileAtPath(path!, forModel: type, context: context, logFlags: logFlags, completion: completion) }
+    else { completion?(false, error) }
   }
 
 }

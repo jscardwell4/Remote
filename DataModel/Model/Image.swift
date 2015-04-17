@@ -80,19 +80,6 @@ final public class Image: EditableModelObject {
   public var preview: UIImage { return image ?? UIImage() }
   public var thumbnail: UIImage { return preview }
 
-  /**
-  objectWithIndex:context:
-
-  :param: index PathIndex
-  :param: context NSManagedObjectContext
-
-  :returns: Image?
-  */
-  @objc(objectWithPathIndex:context:)
-  public override class func objectWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Image? {
-    return modelWithIndex(index, context: context)
-  }
-
   override public var description: String {
     return "\(super.description)\n\t" + "\n\t".join(
       "asset = \(toString(asset))",
@@ -102,10 +89,7 @@ final public class Image: EditableModelObject {
     )
   }
 
-}
-
-extension Image: PathIndexedModel {
-  public var pathIndex: PathIndex { return imageCategory.pathIndex + indexedName }
+  public override var pathIndex: PathIndex { return imageCategory.pathIndex + indexedName }
 
   /**
   modelWithIndex:context:
@@ -115,7 +99,7 @@ extension Image: PathIndexedModel {
 
   :returns: Image?
   */
-  public static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Image? {
+  public override static func modelWithIndex(var index: PathIndex, context: NSManagedObjectContext) -> Image? {
     if index.count < 1 { return nil }
     let imageName = index.removeLast().pathDecoded
     return findFirst(ImageCategory.modelWithIndex(index, context: context)?.images, {$0.name == imageName})

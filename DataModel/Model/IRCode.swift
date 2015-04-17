@@ -108,19 +108,6 @@ final public class IRCode: EditableModelObject {
     if let onOffPattern = String(data["onOffPattern"]) { self.onOffPattern = onOffPattern }
   }
 
-  /**
-  objectWithIndex:context:
-
-  :param: index PathIndex
-  :param: context NSManagedObjectContext
-
-  :returns: Image?
-  */
-  @objc(objectWithPathIndex:context:)
-  public override class func objectWithIndex(index: PathIndex, context: NSManagedObjectContext) -> IRCode? {
-    return modelWithIndex(index, context: context)
-  }
-
   override public var description: String {
     return "\(super.description)\n\t" + "\n\t".join(
       "code set = \(codeSet.index)",
@@ -145,10 +132,8 @@ final public class IRCode: EditableModelObject {
     obj["prontoHex"] = prontoHex?.jsonValue
     return obj.jsonValue
   }
-}
 
-extension IRCode: PathIndexedModel {
-  public var pathIndex: PathIndex { return codeSet.pathIndex + indexedName }
+  public override var pathIndex: PathIndex { return codeSet.pathIndex + indexedName }
 
   /**
   modelWithIndex:context:
@@ -158,7 +143,7 @@ extension IRCode: PathIndexedModel {
 
   :returns: IRCode?
   */
-  public static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> IRCode? {
+  public override static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> IRCode? {
     if index.count != 3 { return nil }
     if let codeSet = IRCodeSet.modelWithIndex(index[0...1], context: context) {
       return objectMatchingPredicate(∀"codeSet.uuid == '\(codeSet.uuid)' AND name == '\(index[2].pathDecoded)'", context: context)

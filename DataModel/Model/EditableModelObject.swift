@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 import MoonKit
 
-public class EditableModelObject: NamedModelObject, EditableModel {
+public class EditableModelObject: IndexedModelObject, EditableModel {
   @NSManaged public var user: Bool
 
   /** save */
