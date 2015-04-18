@@ -9,6 +9,37 @@
 import Foundation
 import CocoaLumberjack
 
+public struct ColorLog {
+  public static let ESCAPE = "\u{001b}["
+
+  public static let RESET_FG = ESCAPE + "fg;" // Clear any foreground color
+  public static let RESET_BG = ESCAPE + "bg;" // Clear any background color
+  public static let RESET = ESCAPE + ";"   // Clear any foreground or background color
+
+  public static func red<T>(object:T) {
+    println("\(ESCAPE)fg255,0,0;\(object)\(RESET)")
+  }
+
+  public static func green<T>(object:T) {
+    println("\(ESCAPE)fg0,255,0;\(object)\(RESET)")
+  }
+
+  public static func blue<T>(object:T) {
+    println("\(ESCAPE)fg0,0,255;\(object)\(RESET)")
+  }
+
+  public static func yellow<T>(object:T) {
+    println("\(ESCAPE)fg255,255,0;\(object)\(RESET)")
+  }
+
+  public static func purple<T>(object:T) {
+    println("\(ESCAPE)fg255,0,255;\(object)\(RESET)")
+  }
+
+  public static func cyan<T>(object:T) {
+    println("\(ESCAPE)fg0,255,255;\(object)\(RESET)")
+  }
+}
 
 public class LogManager {
 

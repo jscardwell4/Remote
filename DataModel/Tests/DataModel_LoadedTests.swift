@@ -284,9 +284,9 @@ class DataModel_LoadedTests: QuickSpec {
     }
 
     describe("the activities") {
+      var pending = false
+      var activity: Activity?
       describe("the hopper activity") {
-        var pending = false
-        var activity: Activity?
         it("can be retrieved by index") {
           activity = Activity.objectWithIndex(ModelIndex("Dish%20Hopper%20Activity"), context: self.dynamicType.context)
           expect(activity).toNot(beNil())
@@ -329,6 +329,19 @@ class DataModel_LoadedTests: QuickSpec {
           expect(iTachDevice).toNot(beNil())
           pending = iTachDevice == nil
         }
+        it("has the expected values", flags: [Filter.pending: pending]) {
+          expect(iTachDevice?.uuid).to(equal("A7582E04-16F3-4319-9F21-41A17C922AC9"))
+          expect(iTachDevice?.name).to(equal("GlobalCache-iTachIP2IR"))
+          expect(iTachDevice?.uniqueIdentifier).to(equal("GlobalCache_000C1E022AED"))
+          expect(iTachDevice?.pcbPN).to(equal("025-0028-03"))
+          expect(iTachDevice?.pkgLevel).to(equal("GCPK002"))
+          expect(iTachDevice?.sdkClass).to(equal("Utility"))
+          expect(iTachDevice?.make).to(equal("GlobalCache"))
+          expect(iTachDevice?.model).to(equal("iTachIP2IR"))
+          expect(iTachDevice?.status).to(equal("Ready"))
+          expect(iTachDevice?.configURL).to(equal("192.168.1.45"))
+          expect(iTachDevice?.revision).to(equal("710-1005-05"))
+        }
       }
       describe("the isy device"){
         var pending = false
@@ -338,10 +351,156 @@ class DataModel_LoadedTests: QuickSpec {
           expect(isyDevice).toNot(beNil())
           pending = isyDevice == nil
         }
+        it("has the expected values", flags: [Filter.pending: pending]) {
+          expect(isyDevice?.name).to(equal("ISYDevice1"))
+          expect(isyDevice?.uniqueIdentifier).to(equal("uuid:00:21:b9:01:f2:b6"))
+          expect(isyDevice?.modelNumber).to(equal("1120"))
+          expect(isyDevice?.modelName).to(equal("ISY 994i 256"))
+          expect(isyDevice?.modelDescription).to(equal("X_Insteon_Lighting_Device:1"))
+          expect(isyDevice?.manufacturerURL).to(equal("http://www.universal-devices.com"))
+          expect(isyDevice?.manufacturer).to(equal("Universal Devices Inc."))
+          expect(isyDevice?.friendlyName).to(equal("ISY"))
+          expect(isyDevice?.deviceType).to(equal("urn:udi-com:device:X_Insteon_Lighting_Device:1"))
+          expect(isyDevice?.baseURL).to(equal("http://192.168.1.9"))
+        }
+        describe("the nodes", flags: [Filter.pending: pending]) {
+          var nodes: Set<ISYDeviceNode>?
+          it("has 4 nodes"){
+            nodes = isyDevice?.nodes
+            expect(nodes).toNot(beNil())
+            expect(nodes?.count).to(equal(4))
+            pending = nodes == nil
+          }
+          describe("it has a node named '20.12.40.1'") {
+            var node1: ISYDeviceNode?
+            it("exists") {
+              node1 = findFirst(nodes, {$0.name == "20.12.40.1"})
+              expect(node1).toNot(beNil())
+              pending = node1 == nil
+            }
+            it("has the expected values", flags: [Filter.pending: pending]) {
+              expect(node1?.name).to(equal("20.12.40.1"))
+              expect(node1?.flag).to(equal(128))
+              expect(node1?.address).to(equal("20 12 40 1"))
+              expect(node1?.type).to(equal("1.58.193.0"))
+              expect(node1?.enabled).to(beTrue())
+              expect(node1?.pnode).to(equal("20 12 40 1"))
+              expect(node1?.propertyID).to(equal("ST"))
+              expect(node1?.propertyValue).to(equal(255))
+              expect(node1?.propertyUOM).to(equal("%/on/off"))
+              expect(node1?.propertyFormatted).to(equal("On"))
+              expect(node1?.groups.count) == 1
+            }
+          }
+          describe("it has a node named '18.F0.08.1'") {
+            var node2: ISYDeviceNode?
+            it("exists") {
+              node2 = findFirst(nodes, {$0.name == "18.F0.08.1"})
+              expect(node2).toNot(beNil())
+              pending = node2 == nil
+            }
+            it("has the expected values", flags: [Filter.pending: pending]) {
+              expect(node2?.name).to(equal("18.F0.08.1"))
+              expect(node2?.flag).to(equal(128))
+              expect(node2?.address).to(equal("18 F0 8 1"))
+              expect(node2?.type).to(equal("1.7.56.0"))
+              expect(node2?.enabled).to(beFalse())
+              expect(node2?.pnode).to(equal("18 F0 8 1"))
+              expect(node2?.propertyID).to(equal("ST"))
+              expect(node2?.propertyValue).to(equal(0))
+              expect(node2?.propertyUOM).to(equal("%/on/off"))
+              expect(node2?.propertyFormatted).to(equal(""))
+              expect(node2?.groups.count) == 1
+            }
+          }
+          describe("it has a node named 'Sofa Table Lamp'") {
+            var node3: ISYDeviceNode?
+            it("exists") {
+              node3 = findFirst(nodes, {$0.name == "Sofa Table Lamp"})
+              expect(node3).toNot(beNil())
+              pending = node3 == nil
+            }
+            it("has the expected values", flags: [Filter.pending: pending]) {
+              expect(node3?.name).to(equal("Sofa Table Lamp"))
+              expect(node3?.flag).to(equal(128))
+              expect(node3?.address).to(equal("23 78 77 1"))
+              expect(node3?.type).to(equal("1.14.65.0"))
+              expect(node3?.enabled).to(beTrue())
+              expect(node3?.pnode).to(equal("23 78 77 1"))
+              expect(node3?.propertyID).to(equal("ST"))
+              expect(node3?.propertyValue).to(equal(255))
+              expect(node3?.propertyUOM).to(equal("%/on/off"))
+              expect(node3?.propertyFormatted).to(equal("On"))
+              expect(node3?.groups.count) == 1
+            }
+          }
+          describe("it has a node named 'Front Door Table Lamp'") {
+            var node4: ISYDeviceNode?
+            it("exists") {
+              node4 = findFirst(nodes, {$0.name == "Front Door Table Lamp"})
+              expect(node4).toNot(beNil())
+              pending = node4 == nil
+            }
+            it("has the expected values", flags: [Filter.pending: pending]) {
+              expect(node4?.name).to(equal("Front Door Table Lamp"))
+              expect(node4?.flag).to(equal(128))
+              expect(node4?.address).to(equal("1B 6E B2 1"))
+              expect(node4?.type).to(equal("2.23.57.0"))
+              expect(node4?.enabled).to(beTrue())
+              expect(node4?.pnode).to(equal("1B 6E B2 1"))
+              expect(node4?.propertyID).to(equal("ST"))
+              expect(node4?.propertyValue).to(equal(255))
+              expect(node4?.propertyUOM).to(equal("on/off"))
+              expect(node4?.propertyFormatted).to(equal("On"))
+              expect(node4?.groups.count) == 1
+            }
+          }
+        }
+        describe("the device's groups", flags: [Filter.pending: pending]) {
+          var groups: Set<ISYDeviceGroup>?
+          it("contains two groups") {
+            groups = isyDevice?.groups
+            expect(groups).toNot(beNil())
+            pending = groups == nil
+          }
+          describe("the isy group", flags: [Filter.pending: pending]) {
+            var isyGroup: ISYDeviceGroup?
+            it("exists") {
+              isyGroup = findFirst(groups, {$0.name == "ISY"})
+              expect(isyGroup).toNot(beNil())
+              pending = isyGroup == nil
+            }
+            it("has the expected values", flags: [Filter.pending: pending]) {
+              expect(isyGroup?.name).to(equal("ISY"))
+              expect(isyGroup?.flag).to(equal(12))
+              expect(isyGroup?.address).to(equal("00:21:b9:01:f2:b6"))
+              expect(isyGroup?.family).to(equal(6))
+              expect(map(isyGroup?.members ?? [], {$0.name})).to(contain("20.12.40.1",
+                                                                         "Front Door Table Lamp",
+                                                                         "18.F0.08.1",
+                                                                         "Sofa Table Lamp"))
+            }
+          }
+          describe("the auto dr group", flags: [Filter.pending: pending]) {
+            var autoDRGroup: ISYDeviceGroup?
+            it("exists") {
+              autoDRGroup = findFirst(groups, {$0.name == "Auto DR"})
+              expect(autoDRGroup).toNot(beNil())
+              pending = autoDRGroup == nil
+            }
+            it("has the expected values", flags: [Filter.pending: pending]) {
+              expect(autoDRGroup?.name).to(equal("Auto DR"))
+              expect(autoDRGroup?.flag).to(equal(132))
+              expect(autoDRGroup?.address).to(equal("ADR0001"))
+              expect(autoDRGroup?.family).to(equal(5))
+              expect(autoDRGroup?.members.count).to(equal(0))
+            }
+          }
+        }
       }
     }
 
-    describe("the activity controller") {
+    xdescribe("the activity controller") {
       var pending = false
       var activityController: ActivityController?
       it("can be retrieved") {

@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(ISYDeviceGroup)
-public class ISYDeviceGroup: NamedModelObject {
+public class ISYDeviceGroup: IndexedModelObject {
 
   @NSManaged public var address: String
   @NSManaged public var family: Int16
@@ -24,6 +24,9 @@ public class ISYDeviceGroup: NamedModelObject {
     if let flag = Int16(data["flag"]) { self.flag = flag }
     if let address = String(data["address"]) { self.address = address }
     if let family = Int16(data["family"]) { self.family = family }
+//    if let membersJSON = ArrayJSONValue(data["members"]) {
+//
+//    }
     updateRelationshipFromData(data, forAttribute: "members")
   }
 
@@ -33,7 +36,7 @@ public class ISYDeviceGroup: NamedModelObject {
     obj["address"] = address.jsonValue
     obj["family"] = family.jsonValue
     obj["device.index"] = device?.index.jsonValue
-    obj["members.uuid"] = JSONValue(members)
+    obj["members.index"] = JSONValue(map(members, {$0.index}))
     return obj.jsonValue
   }
 

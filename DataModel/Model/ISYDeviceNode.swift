@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(ISYDeviceNode)
-public class ISYDeviceNode: NamedModelObject {
+public class ISYDeviceNode: IndexedModelObject {
 
     @NSManaged public var address: String
     @NSManaged public var enabled: Bool
@@ -50,7 +50,7 @@ public class ISYDeviceNode: NamedModelObject {
     obj["propertyID"] = propertyID.jsonValue
     obj["propertyUOM"] = propertyUOM.jsonValue
     obj["propertyValue"] = propertyValue.jsonValue
-    obj["groups.uuid"] = JSONValue(groups)
+    obj["groups.index"] = JSONValue(map(groups, {$0.index}))
     return obj.jsonValue
   }
 

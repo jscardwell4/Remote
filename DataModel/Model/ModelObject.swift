@@ -391,8 +391,16 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
     {
       let relatedObjects = relatedType.importObjectsWithData(data, context: moc)
       setPrimitiveValue(relationship.ordered ? NSOrderedSet(array: relatedObjects) : NSSet(array: relatedObjects), forKey: relationship.name)
-      if let inverseAttributeName = relationship.inverseRelationship?.name {
-        apply(relatedObjects, {$0.setPrimitiveValue(self, forKey: inverseAttributeName)})
+      if let inverseRelationship = relationship.inverseRelationship {
+        if inverseRelationship.toMany {
+          if inverseRelationship.ordered {
+            apply(relatedObjects, {$0.mutableOrderedSetValueForKey(inverseRelationship.name).addObject(self)})
+          } else {
+            apply(relatedObjects, {$0.mutableSetValueForKey(inverseRelationship.name).addObject(self)})
+          }
+        } else {
+          apply(relatedObjects, {$0.setPrimitiveValue(self, forKey: inverseRelationship.name)})
+        }
         return true
       }
     }
