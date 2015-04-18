@@ -97,7 +97,7 @@ public final class Remote: RemoteElement {
 
     if let moc = managedObjectContext {
 
-      if let topBarHidden = Bool(data["topBar-hidden"]) { self.topBarHidden = topBarHidden }
+      if let topBarHidden = Bool(data["topBarHidden"]) { self.topBarHidden = topBarHidden }
 
       if let panels = ObjectJSONValue(data["panels"] ?? .Null) {
         for (key, json) in panels {

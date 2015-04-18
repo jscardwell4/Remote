@@ -13,20 +13,6 @@ import MoonKit
 @objc(Button)
 public final class Button: RemoteElement {
 
-//  public struct State: RawOptionSetType {
-//
-//    private(set) var rawValue: Int
-//    init(rawValue: Int) { self.rawValue = rawValue & 0b0111 }
-//    init(nilLiteral:()) { rawValue = 0 }
-//
-//    static var Default:     State = State(rawValue: 0b0000)
-//    static var Normal:      State = State.Default
-//    static var Highilghted: State = State(rawValue: 0b0001)
-//    static var Disabled:    State = State(rawValue: 0b0010)
-//    static var Selected:    State = State(rawValue: 0b0100)
-//
-//  }
-
   override public var elementType: BaseType { return .Button }
 
   /**
@@ -81,17 +67,16 @@ public final class Button: RemoteElement {
   @NSManaged public var command:          Command?
   @NSManaged public var longPressCommand: Command?
 
-  @NSManaged var primitiveState: NSNumber
   public var state: UIControlState {
     get {
       willAccessValueForKey("state")
-      let state = primitiveState
+      let state = primitiveValueForKey("state") as! NSNumber
       didAccessValueForKey("state")
       return UIControlState(rawValue: UInt(state.integerValue))
     }
     set {
       willChangeValueForKey("state")
-      primitiveState = newValue.rawValue
+      setPrimitiveValue(newValue.rawValue, forKey: "state")
       didChangeValueForKey("state")
     }
   }
@@ -138,47 +123,44 @@ public final class Button: RemoteElement {
     }
   }
 
-  @NSManaged var primitiveTitleEdgeInsets: NSValue
   public var titleEdgeInsets: UIEdgeInsets {
     get {
       willAccessValueForKey("titleEdgeInsets")
-      let insets = primitiveTitleEdgeInsets
+      let insets = primitiveValueForKey("titleEdgeInsets") as! NSValue
       didAccessValueForKey("titleEdgeInsets")
       return insets.UIEdgeInsetsValue()
     }
     set {
       willChangeValueForKey("titleEdgeInsets")
-      primitiveTitleEdgeInsets = NSValue(UIEdgeInsets: newValue)
+      setPrimitiveValue(NSValue(UIEdgeInsets: newValue), forKey: "titleEdgeInsets")
       didChangeValueForKey("titleEdgeInsets")
     }
   }
 
-  @NSManaged var primitiveImageEdgeInsets: NSValue
   public var imageEdgeInsets: UIEdgeInsets {
     get {
       willAccessValueForKey("imageEdgeInsets")
-      let insets = primitiveImageEdgeInsets
+      let insets = primitiveValueForKey("imageEdgeInsets") as! NSValue
       didAccessValueForKey("imageEdgeInsets")
       return insets.UIEdgeInsetsValue()
     }
     set {
       willChangeValueForKey("imageEdgeInsets")
-      primitiveImageEdgeInsets = NSValue(UIEdgeInsets: newValue)
+      setPrimitiveValue(NSValue(UIEdgeInsets: newValue), forKey: "imageEdgeInsets")
       didChangeValueForKey("imageEdgeInsets")
     }
   }
 
-  @NSManaged var primitiveContentEdgeInsets: NSValue
   public var contentEdgeInsets: UIEdgeInsets {
     get {
       willAccessValueForKey("contentEdgeInsets")
-      let insets = primitiveContentEdgeInsets
+      let insets = primitiveValueForKey("contentEdgeInsets") as! NSValue
       didAccessValueForKey("contentEdgeInsets")
       return insets.UIEdgeInsetsValue()
     }
     set {
       willChangeValueForKey("contentEdgeInsets")
-      primitiveContentEdgeInsets = NSValue(UIEdgeInsets: newValue)
+      setPrimitiveValue(NSValue(UIEdgeInsets: newValue), forKey: "contentEdgeInsets")
       didChangeValueForKey("contentEdgeInsets")
     }
   }
@@ -406,7 +388,6 @@ public final class Button: RemoteElement {
         }
       }
 
-      let wtf = data["titleEdge-insets"]
       if let titleEdgeInsets = UIEdgeInsets(data["titleEdge-insets"]) { self.titleEdgeInsets = titleEdgeInsets }
       if let contentEdgeInsets = UIEdgeInsets(data["contentEdge-insets"]) { self.contentEdgeInsets = contentEdgeInsets }
       if let imageEdgeInsets = UIEdgeInsets(data["imageEdge-insets"]) { self.imageEdgeInsets = imageEdgeInsets }
@@ -442,7 +423,7 @@ public final class Button: RemoteElement {
     obj["commands"]           = .Object(commands)
     obj["titles"]             = .Object(titles)
     obj["icons"]              = .Object(icons)
-    obj["backgroundColors"]  = .Object(backgroundColors)
+    obj["backgroundColors"]   = .Object(backgroundColors)
     obj["images"]             = .Object(images)
 
     obj["titleEdge-insets"]   = titleEdgeInsets.jsonValue

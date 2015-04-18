@@ -351,23 +351,26 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   :returns: Bool
   */
   private func updateRelationship(relationship: NSRelationshipDescription, withData data: ObjectJSONValue) -> Bool {
-    if let moc = managedObjectContext,
+    if !relationship.toMany, let moc = managedObjectContext,
       relatedTypeName = relationship.destinationEntity?.managedObjectClassName,
-      relatedType = NSClassFromString(relatedTypeName) as? ModelObject.Type,
-      relatedObject = relatedType.importObjectWithData(data, context: moc) where !relationship.toMany
+      relatedType = NSClassFromString(relatedTypeName) as? ModelObject.Type
     {
-      setPrimitiveValue(relatedObject, forKey: relationship.name)
+      let relatedObject: ModelObject?
+      if let index = String(data["index"]) { relatedObject = relatedType.objectWithIndex(ModelIndex(index), context: moc) }
+      else { relatedObject = relatedType.importObjectWithData(data, context: moc) }
+      if relatedObject == nil { return false }
+      setPrimitiveValue(relatedObject!, forKey: relationship.name)
       if let inverse = relationship.inverseRelationship {
         if inverse.toMany {
           if inverse.ordered {
-            let inverseRelatedSet = relatedObject.mutableOrderedSetValueForKey(inverse.name)
+            let inverseRelatedSet = relatedObject!.mutableOrderedSetValueForKey(inverse.name)
             inverseRelatedSet.addObject(self)
           } else {
-            let inverseRelatedSet = relatedObject.mutableSetValueForKey(inverse.name)
+            let inverseRelatedSet = relatedObject!.mutableSetValueForKey(inverse.name)
             inverseRelatedSet.addObject(self)
           }
         } else {
-          relatedObject.setPrimitiveValue(self, forKey: inverse.name)
+          relatedObject!.setPrimitiveValue(self, forKey: inverse.name)
         }
         return true
       }

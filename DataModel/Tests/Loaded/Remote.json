@@ -42,7 +42,7 @@
       ]
     },
     "backgroundColor.default": "black",
-    "backgroundImage.default.imagePath": "Backgrounds/Pro%20Dots",
+    "backgroundImage.default.image.index": "Backgrounds/Pro%20Dots",
     "subelements": [
       {
         "uuid": "B9A5F86F-ED62-49E9-B6D4-AE1093D02202",
@@ -1278,7 +1278,6 @@
     }
   },
   {
-    "uuid": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD",
     "name": "Home Screen",
     "constraints": {
       "index": {
@@ -1295,7 +1294,7 @@
       ]
     },
     "backgroundColor.default": "black",
-    "backgroundImage.default.imagePath": "Backgrounds/Pro Dots",
+    "backgroundImage.default.image.index": "Backgrounds/Pro%20Dots",
     "subelements": [
       {
         "uuid": "F358CB82-496C-446D-8833-D4373777D23E",
@@ -1435,11 +1434,11 @@
             },
             "icons.default": {
               "normal": {
-                "imagePath": "Icons/Glyphish%204/Light Switch",
+                "imagePath": "Icons/Glyphish%204/Light%20Switch",
                 "color": <@include ForegroundColor_Normal.json>
               },
               "highlighted": {
-                "imagePath": "Icons/Glyphish%204/Light Switch",
+                "imagePath": "Icons/Glyphish%204/Light%20Switch",
                 "color": <@include ForegroundColor_Highlighted.json>
               }
             }

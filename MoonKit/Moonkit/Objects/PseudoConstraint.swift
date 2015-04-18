@@ -120,9 +120,9 @@ public struct PseudoConstraint {
         case (3, let s): if let r = Relation(rawValue: s) { relation = r } else { return nil }
         case (4, let s): secondItem = s
         case (5, let s): if let a = Attribute(rawValue: s) { secondAttribute = a } else { return nil }
-        case (6, let s): let scanner = NSScanner(string: s); if !scanner.scanFloat(&multiplier) { return nil }
-        case (7, let s): let scanner = NSScanner(string: s); if !scanner.scanFloat(&constant) { return nil }
-        case (8, let s): let scanner = NSScanner(string: s); if !scanner.scanFloat(&priority) { return nil }
+        case (6, let s): let sc = NSScanner(string: s); if !sc.scanFloat(&multiplier) { return nil }
+        case (7, let s): let sc = NSScanner(string: String(filter(s, {$0 != " "}))); if !sc.scanFloat(&constant) { return nil }
+        case (8, let s): let sc = NSScanner(string: s); if !sc.scanFloat(&priority) { return nil }
         default: assert(false, "should be unreachable")
       }
     }

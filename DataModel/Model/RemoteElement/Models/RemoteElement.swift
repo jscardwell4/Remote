@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(RemoteElement)
-public class RemoteElement: NamedModelObject {
+public class RemoteElement: IndexedModelObject {
 
   /**
   remoteElementFromPreset:
@@ -228,7 +228,7 @@ public class RemoteElement: NamedModelObject {
       if let backgroundImageJSON = ObjectJSONValue(data["backgroundImage"]) {
         for (mode, jsonValue) in backgroundImageJSON {
           if let value = ObjectJSONValue(jsonValue),
-            image = Image.importObjectWithData(value, context: moc)
+            image = ImageView.importObjectWithData(value, context: moc)
           {
             setURIForObject(image, forKey: "backgroundImage", forMode: mode)
           }

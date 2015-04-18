@@ -598,7 +598,7 @@ import MoonKit
 
           let importedObjects = type.importObjectsWithData(data, context: context)
 
-          MSLogDebug("\(importedObjects.count) \(type.className()) objects imported from file '\(path).json'")
+          MSLogDebug("\(importedObjects.count) \(type.className()) objects imported from file '\(path)'")
 
           if isOptionSet(LogFlags.Imported, logFlags) {
             MSLogDebug("json output for imported object:\n\(JSONValue.Array(importedObjects.map({$0.jsonValue})).prettyRawValue)")

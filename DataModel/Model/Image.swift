@@ -100,7 +100,7 @@ final public class Image: EditableModelObject {
   :returns: Image?
   */
   public override static func modelWithIndex(var index: PathIndex, context: NSManagedObjectContext) -> Image? {
-    if index.count < 1 { return nil }
+    if index.count < 2 { return nil }
     let imageName = index.removeLast().pathDecoded
     return findFirst(ImageCategory.modelWithIndex(index, context: context)?.images, {$0.name == imageName})
   }

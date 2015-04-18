@@ -1,6 +1,6 @@
 {
   "uuid": "01844614-744C-4664-BF8F-ABF948CE5996",
-  "homeRemote.uuid": "B0EA5B35-5CF6-40E9-B302-0F164D4A7ADD", // Home Screen
+  "homeRemote.index": "Home%20Screen",
   "topToolbar": {
     "uuid": "648C5ADA-F9E0-41BF-948A-6E980C657F97",
     "name": "Top Toolbar",
@@ -48,15 +48,15 @@
         },
         "icons.default": {
           "normal": {
-            "imagePath": "Icons/Glyphish%206/Large/Normal/Home",
+            "image.index": "Icons/Glyphish%206/Large/Normal/Home",
             "color": <@include ForegroundColor_Normal.json>
           },
           "highlighted": {
-            "imagePath": "Icons/Glyphish%206/Large/Normal/Home",
+            "image.index": "Icons/Glyphish%206/Large/Normal/Home",
             "color":  <@include ForegroundColor_Highlighted.json>
           },
           "disabled": {
-            "imagePath": "Icons/Glyphish%206/Large/Normal/Home",
+            "image.index": "Icons/Glyphish%206/Large/Normal/Home",
             "color": <@include ForegroundColor_Disabled.json>
           }
         }
@@ -71,15 +71,15 @@
         },
         "icons.default": {
           "normal": {
-            "imagePath": "Icons/Glyphish%206/Large/Normal/Gear",
+            "image.index": "Icons/Glyphish%206/Large/Normal/Gear",
             "color": <@include ForegroundColor_Normal.json>
           },
           "highlighted": {
-            "imagePath": "Icons/Glyphish%206/Large/Normal/Gear",
+            "image.index": "Icons/Glyphish%206/Large/Normal/Gear",
             "color":  <@include ForegroundColor_Highlighted.json>
           },
           "disabled": {
-            "imagePath": "Icons/Glyphish%206/Large/Normal/Gear",
+            "image.index": "Icons/Glyphish%206/Large/Normal/Gear",
             "color": <@include ForegroundColor_Disabled.json>
           }
         }
@@ -94,15 +94,15 @@
         },
         "icons.default": {
           "normal": {
-            "imagePath": "Icons/Glyphish%206/Large/Normal/Pencil",
+            "image.index": "Icons/Glyphish%206/Large/Normal/Pencil",
             "color": <@include ForegroundColor_Normal.json>
           },
           "highlighted": {
-            "imagePath": "Icons/Glyphish%206/Large/Normal/Pencil",
+            "image.index": "Icons/Glyphish%206/Large/Normal/Pencil",
             "color":  <@include ForegroundColor_Highlighted.json>
           },
           "disabled": {
-            "imagePath": "Icons/Glyphish%206/Large/Normal/Pencil",
+            "image.index": "Icons/Glyphish%206/Large/Normal/Pencil",
             "color": <@include ForegroundColor_Disabled.json>
           }
         }
@@ -113,19 +113,19 @@
         "role": "battery-status",
         "icons.default": {
           "normal": {
-            "imagePath": "Icons/Glyphish%207/Large/Normal/Battery",
+            "image.index": "Icons/Glyphish%207/Large/Normal/Battery",
             "color": <@include ForegroundColor_Normal.json>
           },
           "highlighted": {
-            "imagePath": "Icons/Glyphish%207/Large/Normal/Battery",
+            "image.index": "Icons/Glyphish%207/Large/Normal/Battery",
             "color":  <@include ForegroundColor_Highlighted.json>
           },
           "disabled": {
-            "imagePath": "Icons/Glyphish%206/Large/Normal/Lighting%20Bolt",
+            "image.index": "Icons/Glyphish%206/Large/Normal/Lighting%20Bolt",
             "color": <@include ForegroundColor_Disabled.json>
           },
           "selected": {
-            "imagePath": "Icons/Glyphish%204/Power%20Plug",
+            "image.index": "Icons/Glyphish%204/Power%20Plug",
             "color": <@include ForegroundColor_Normal.json>
           }
         }
@@ -136,15 +136,15 @@
         "role": "connection-status",
         "icons.default": {
           "normal": {
-            "imagePath": "Icons/Glyphish%207/Large/Normal/Wifi%20Signal",
+            "image.index": "Icons/Glyphish%207/Large/Normal/Wifi%20Signal",
             "color": <@include ForegroundColor_Normal.json>
           },
           "highlighted": {
-            "imagePath": "Icons/Glyphish%207/Large/Normal/Wifi%20Signal",
+            "image.index": "Icons/Glyphish%207/Large/Normal/Wifi%20Signal",
             "color":  <@include ForegroundColor_Highlighted.json>
           },
           "disabled": {
-            "imagePath": "Icons/Glyphish%207/Large/Normal/Wifi%20Signal",
+            "image.index": "Icons/Glyphish%207/Large/Normal/Wifi%20Signal",
             "color": <@include ForegroundColor_Disabled.json>
           }
         }

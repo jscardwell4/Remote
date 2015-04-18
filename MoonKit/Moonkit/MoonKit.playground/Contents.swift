@@ -1,7 +1,16 @@
 //: Playground - noun: a place where people can play
-
+import Foundation
 import UIKit
 import MoonKit
+
+var scanner = NSScanner(string: "+ 20")
+var f: Float = 0.0
+let didScanFloatWithSpace = scanner.scanFloat(&f)
+scanner = NSScanner(string: "+20")
+let didScanFloatWithoutSpace = scanner.scanFloat(&f)
+let str = "+ 20"
+let filteredStr = String(filter(str, {$0 != " "}))
+filteredStr
 
 func takesAnInt(i: Int) {
   println("takesAnInt(i = \(i))")

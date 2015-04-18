@@ -15,6 +15,7 @@ public final class ImageView: ModelObject {
 
   @NSManaged public var color: UIColor?
   @NSManaged public var image: Image?
+  @NSManaged public var alpha: Float
 
   @NSManaged public var buttonIcon: Button?
   @NSManaged public var buttonImage: Button?
