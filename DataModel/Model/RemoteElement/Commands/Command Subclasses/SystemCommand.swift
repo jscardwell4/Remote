@@ -58,6 +58,10 @@ public final class SystemCommand: Command {
   override var operation: CommandOperation { return SystemCommandOperation(command: self) }
 }
 
+extension SystemCommand.SystemCommandType: StringValueConvertible {
+  public var stringValue: String { return String(jsonValue)! }
+}
+
 extension SystemCommand.SystemCommandType: JSONValueConvertible {
   public var jsonValue: JSONValue {
     switch self {

@@ -9,7 +9,7 @@
 import Foundation
 import MoonKit
 
-@objc public class ModelIndex: RawRepresentable, JSONValueConvertible, JSONValueInitializable {
+@objc public class ModelIndex: RawRepresentable, JSONValueConvertible, JSONValueInitializable, StringValueConvertible {
   public let pathIndex: PathIndex?
   public let uuidIndex: UUIDIndex?
   public init(_ index: PathIndex) { pathIndex = index; uuidIndex = nil }
@@ -19,6 +19,7 @@ import MoonKit
     if let uuidIndex = UUIDIndex(rawValue: string) { self.init(uuidIndex) }
     else { let pathIndex = PathIndex(rawValue: string); self.init(pathIndex) }
   }
+  public var stringValue: String { return rawValue }
   public var rawValue: String { return uuidIndex != nil ? uuidIndex!.rawValue : pathIndex?.rawValue ?? "" }
   public var jsonValue: JSONValue { return rawValue.jsonValue }
   public convenience required init?(_ jsonValue: JSONValue?) {

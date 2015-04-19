@@ -101,8 +101,8 @@ public final class CommandSet: CommandContainer {
 
 }
 
-extension CommandSet.CommandSetType: JSONValueConvertible {
-  public var jsonValue: JSONValue {
+extension CommandSet.CommandSetType: StringValueConvertible {
+  public var stringValue: String {
     switch self {
       case .Dpad:      return "dpad"
       case .Transport: return "transport"
@@ -111,6 +111,10 @@ extension CommandSet.CommandSetType: JSONValueConvertible {
       default:         return "unspecified"
     }
   }
+}
+
+extension CommandSet.CommandSetType: JSONValueConvertible {
+  public var jsonValue: JSONValue { return stringValue.jsonValue }
 
   public init(jsonValue: JSONValue) {
     switch String(jsonValue) {

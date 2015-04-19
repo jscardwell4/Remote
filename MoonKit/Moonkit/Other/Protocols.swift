@@ -93,6 +93,10 @@ public protocol Unpackable4 {
   var name: String? { get set }
 }
 
+public protocol StringValueConvertible {
+  var stringValue: String { get }
+}
+
 /**
 sortedByName:
 

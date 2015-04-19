@@ -33,7 +33,7 @@ public class BankRootController: UITableViewController, BankController {
 
   }
 
-  private(set) var exportSelection: [MSJSONExport] = []
+  private(set) var exportSelection: [JSONValueConvertible] = []
   var exportSelectionMode: Bool = false
 
   /** selectAllExportableItems */

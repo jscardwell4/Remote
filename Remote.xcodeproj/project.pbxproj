@@ -78,6 +78,34 @@
 		C222480519B76E270093B07C /* ISYConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C222480419B76E270093B07C /* ISYConnectionManager.m */; };
 		C22645F619F6EB20001F5A5E /* AuxiliaryStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59216DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard */; };
 		C231C6421A197C74003D2587 /* SwitchToRemoteCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B465716FF679B0042B59E /* SwitchToRemoteCommandEditingViewController.m */; };
+		C2345AC81AE3005A000AA262 /* Activity.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AAC1AE3005A000AA262 /* Activity.json */; };
+		C2345AC91AE3005A000AA262 /* ActivityController.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AAD1AE3005A000AA262 /* ActivityController.json */; };
+		C2345ACA1AE3005A000AA262 /* BackgroundColor_Dark_Normal.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AAE1AE3005A000AA262 /* BackgroundColor_Dark_Normal.json */; };
+		C2345ACB1AE3005A000AA262 /* BackgroundColor_Default.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AAF1AE3005A000AA262 /* BackgroundColor_Default.json */; };
+		C2345ACC1AE3005A000AA262 /* ComponentDevice.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AB01AE3005A000AA262 /* ComponentDevice.json */; };
+		C2345ACD1AE3005A000AA262 /* ForegroundColor_Disabled.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AB11AE3005A000AA262 /* ForegroundColor_Disabled.json */; };
+		C2345ACE1AE3005A000AA262 /* ForegroundColor_Highlighted.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AB21AE3005A000AA262 /* ForegroundColor_Highlighted.json */; };
+		C2345ACF1AE3005A000AA262 /* ForegroundColor_Normal.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AB31AE3005A000AA262 /* ForegroundColor_Normal.json */; };
+		C2345AD01AE3005A000AA262 /* ImageCategory.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AB41AE3005A000AA262 /* ImageCategory.json */; };
+		C2345AD11AE3005A000AA262 /* Manufacturer.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AB51AE3005A000AA262 /* Manufacturer.json */; };
+		C2345AD21AE3005A000AA262 /* NetworkDevice.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AB61AE3005A000AA262 /* NetworkDevice.json */; };
+		C2345AD31AE3005A000AA262 /* Preset.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AB71AE3005A000AA262 /* Preset.json */; };
+		C2345AD41AE3005A000AA262 /* Preset_Button_Rectangular.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AB81AE3005A000AA262 /* Preset_Button_Rectangular.json */; };
+		C2345AD51AE3005A000AA262 /* Preset_Button_Round.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AB91AE3005A000AA262 /* Preset_Button_Round.json */; };
+		C2345AD61AE3005A000AA262 /* Preset_Button_Roundish.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345ABA1AE3005A000AA262 /* Preset_Button_Roundish.json */; };
+		C2345AD71AE3005A000AA262 /* Preset_Button_Toolbar.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345ABB1AE3005A000AA262 /* Preset_Button_Toolbar.json */; };
+		C2345AD81AE3005A000AA262 /* Preset_ButtonGroup_1x3.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345ABC1AE3005A000AA262 /* Preset_ButtonGroup_1x3.json */; };
+		C2345AD91AE3005A000AA262 /* Preset_ButtonGroup_Dpad.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345ABD1AE3005A000AA262 /* Preset_ButtonGroup_Dpad.json */; };
+		C2345ADA1AE3005A000AA262 /* Preset_ButtonGroup_ModeSelectionPanel.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345ABE1AE3005A000AA262 /* Preset_ButtonGroup_ModeSelectionPanel.json */; };
+		C2345ADB1AE3005A000AA262 /* Preset_ButtonGroup_Numberpad.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345ABF1AE3005A000AA262 /* Preset_ButtonGroup_Numberpad.json */; };
+		C2345ADC1AE3005A000AA262 /* Preset_ButtonGroup_OverlayPanel.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AC01AE3005A000AA262 /* Preset_ButtonGroup_OverlayPanel.json */; };
+		C2345ADD1AE3005A000AA262 /* Preset_ButtonGroup_Rocker.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AC11AE3005A000AA262 /* Preset_ButtonGroup_Rocker.json */; };
+		C2345ADE1AE3005A000AA262 /* Preset_ButtonGroup_Toolbar.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AC21AE3005A000AA262 /* Preset_ButtonGroup_Toolbar.json */; };
+		C2345ADF1AE3005A000AA262 /* Preset_ButtonGroup_Transport.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AC31AE3005A000AA262 /* Preset_ButtonGroup_Transport.json */; };
+		C2345AE01AE3005A000AA262 /* Remote.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AC41AE3005A000AA262 /* Remote.json */; };
+		C2345AE11AE3005A000AA262 /* TitleAttributes_Default_Icon.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AC51AE3005A000AA262 /* TitleAttributes_Default_Icon.json */; };
+		C2345AE21AE3005A000AA262 /* TitleAttributes_Default_Text.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AC61AE3005A000AA262 /* TitleAttributes_Default_Text.json */; };
+		C2345AE31AE3005A000AA262 /* TitleEdgeInsets_Default.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AC71AE3005A000AA262 /* TitleEdgeInsets_Default.json */; };
 		C2355952170A736500160896 /* REBackgroundCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2355951170A736300160896 /* REBackgroundCollectionViewController.m */; };
 		C235A2DE1A06E1AE0067E226 /* ButtonGroupEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C235A2DD1A06E1AE0067E226 /* ButtonGroupEditingController.swift */; };
 		C235A2E31A06E1CB0067E226 /* ButtonEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C235A2E21A06E1CB0067E226 /* ButtonEditingController.swift */; };
@@ -818,6 +846,34 @@
 		C222480319B76E270093B07C /* ISYConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISYConnectionManager.h; sourceTree = "<group>"; };
 		C222480419B76E270093B07C /* ISYConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISYConnectionManager.m; sourceTree = "<group>"; };
 		C22E1BD819C12FB800A93D61 /* Remote-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Remote-Bridging-Header.h"; path = "Source/Remote-Bridging-Header.h"; sourceTree = "<group>"; };
+		C2345AAC1AE3005A000AA262 /* Activity.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Activity.json; sourceTree = "<group>"; };
+		C2345AAD1AE3005A000AA262 /* ActivityController.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ActivityController.json; sourceTree = "<group>"; };
+		C2345AAE1AE3005A000AA262 /* BackgroundColor_Dark_Normal.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundColor_Dark_Normal.json; sourceTree = "<group>"; };
+		C2345AAF1AE3005A000AA262 /* BackgroundColor_Default.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundColor_Default.json; sourceTree = "<group>"; };
+		C2345AB01AE3005A000AA262 /* ComponentDevice.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ComponentDevice.json; sourceTree = "<group>"; };
+		C2345AB11AE3005A000AA262 /* ForegroundColor_Disabled.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ForegroundColor_Disabled.json; sourceTree = "<group>"; };
+		C2345AB21AE3005A000AA262 /* ForegroundColor_Highlighted.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ForegroundColor_Highlighted.json; sourceTree = "<group>"; };
+		C2345AB31AE3005A000AA262 /* ForegroundColor_Normal.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ForegroundColor_Normal.json; sourceTree = "<group>"; };
+		C2345AB41AE3005A000AA262 /* ImageCategory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ImageCategory.json; sourceTree = "<group>"; };
+		C2345AB51AE3005A000AA262 /* Manufacturer.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer.json; sourceTree = "<group>"; };
+		C2345AB61AE3005A000AA262 /* NetworkDevice.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = NetworkDevice.json; sourceTree = "<group>"; };
+		C2345AB71AE3005A000AA262 /* Preset.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset.json; sourceTree = "<group>"; };
+		C2345AB81AE3005A000AA262 /* Preset_Button_Rectangular.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_Button_Rectangular.json; sourceTree = "<group>"; };
+		C2345AB91AE3005A000AA262 /* Preset_Button_Round.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_Button_Round.json; sourceTree = "<group>"; };
+		C2345ABA1AE3005A000AA262 /* Preset_Button_Roundish.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_Button_Roundish.json; sourceTree = "<group>"; };
+		C2345ABB1AE3005A000AA262 /* Preset_Button_Toolbar.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_Button_Toolbar.json; sourceTree = "<group>"; };
+		C2345ABC1AE3005A000AA262 /* Preset_ButtonGroup_1x3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_1x3.json; sourceTree = "<group>"; };
+		C2345ABD1AE3005A000AA262 /* Preset_ButtonGroup_Dpad.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_Dpad.json; sourceTree = "<group>"; };
+		C2345ABE1AE3005A000AA262 /* Preset_ButtonGroup_ModeSelectionPanel.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_ModeSelectionPanel.json; sourceTree = "<group>"; };
+		C2345ABF1AE3005A000AA262 /* Preset_ButtonGroup_Numberpad.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_Numberpad.json; sourceTree = "<group>"; };
+		C2345AC01AE3005A000AA262 /* Preset_ButtonGroup_OverlayPanel.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_OverlayPanel.json; sourceTree = "<group>"; };
+		C2345AC11AE3005A000AA262 /* Preset_ButtonGroup_Rocker.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_Rocker.json; sourceTree = "<group>"; };
+		C2345AC21AE3005A000AA262 /* Preset_ButtonGroup_Toolbar.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_Toolbar.json; sourceTree = "<group>"; };
+		C2345AC31AE3005A000AA262 /* Preset_ButtonGroup_Transport.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_Transport.json; sourceTree = "<group>"; };
+		C2345AC41AE3005A000AA262 /* Remote.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Remote.json; sourceTree = "<group>"; };
+		C2345AC51AE3005A000AA262 /* TitleAttributes_Default_Icon.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TitleAttributes_Default_Icon.json; sourceTree = "<group>"; };
+		C2345AC61AE3005A000AA262 /* TitleAttributes_Default_Text.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TitleAttributes_Default_Text.json; sourceTree = "<group>"; };
+		C2345AC71AE3005A000AA262 /* TitleEdgeInsets_Default.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TitleEdgeInsets_Default.json; sourceTree = "<group>"; };
 		C2355950170A736100160896 /* REBackgroundCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REBackgroundCollectionViewController.h; sourceTree = "<group>"; };
 		C2355951170A736300160896 /* REBackgroundCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REBackgroundCollectionViewController.m; sourceTree = "<group>"; };
 		C235A2DD1A06E1AE0067E226 /* ButtonGroupEditingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonGroupEditingController.swift; sourceTree = "<group>"; };
@@ -1652,6 +1708,41 @@
 				C2E9F4B31ABCA395007581F2 /* TitleAttributesDetailController.swift */,
 			);
 			name = DetailController;
+			sourceTree = "<group>";
+		};
+		C2345AAB1AE3005A000AA262 /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				C2345AAC1AE3005A000AA262 /* Activity.json */,
+				C2345AAD1AE3005A000AA262 /* ActivityController.json */,
+				C2345AAE1AE3005A000AA262 /* BackgroundColor_Dark_Normal.json */,
+				C2345AAF1AE3005A000AA262 /* BackgroundColor_Default.json */,
+				C2345AB01AE3005A000AA262 /* ComponentDevice.json */,
+				C2345AB11AE3005A000AA262 /* ForegroundColor_Disabled.json */,
+				C2345AB21AE3005A000AA262 /* ForegroundColor_Highlighted.json */,
+				C2345AB31AE3005A000AA262 /* ForegroundColor_Normal.json */,
+				C2345AB41AE3005A000AA262 /* ImageCategory.json */,
+				C2345AB51AE3005A000AA262 /* Manufacturer.json */,
+				C2345AB61AE3005A000AA262 /* NetworkDevice.json */,
+				C2345AB71AE3005A000AA262 /* Preset.json */,
+				C2345AB81AE3005A000AA262 /* Preset_Button_Rectangular.json */,
+				C2345AB91AE3005A000AA262 /* Preset_Button_Round.json */,
+				C2345ABA1AE3005A000AA262 /* Preset_Button_Roundish.json */,
+				C2345ABB1AE3005A000AA262 /* Preset_Button_Toolbar.json */,
+				C2345ABC1AE3005A000AA262 /* Preset_ButtonGroup_1x3.json */,
+				C2345ABD1AE3005A000AA262 /* Preset_ButtonGroup_Dpad.json */,
+				C2345ABE1AE3005A000AA262 /* Preset_ButtonGroup_ModeSelectionPanel.json */,
+				C2345ABF1AE3005A000AA262 /* Preset_ButtonGroup_Numberpad.json */,
+				C2345AC01AE3005A000AA262 /* Preset_ButtonGroup_OverlayPanel.json */,
+				C2345AC11AE3005A000AA262 /* Preset_ButtonGroup_Rocker.json */,
+				C2345AC21AE3005A000AA262 /* Preset_ButtonGroup_Toolbar.json */,
+				C2345AC31AE3005A000AA262 /* Preset_ButtonGroup_Transport.json */,
+				C2345AC41AE3005A000AA262 /* Remote.json */,
+				C2345AC51AE3005A000AA262 /* TitleAttributes_Default_Icon.json */,
+				C2345AC61AE3005A000AA262 /* TitleAttributes_Default_Text.json */,
+				C2345AC71AE3005A000AA262 /* TitleEdgeInsets_Default.json */,
+			);
+			path = JSON;
 			sourceTree = "<group>";
 		};
 		C253B09517E61AC2007CDFE4 /* Auxiallary Editors */ = {
@@ -2639,6 +2730,7 @@
 		C2E9F61F1ABCA7A2007581F2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C2345AAB1AE3005A000AA262 /* JSON */,
 				C2FA4B911AC5E5260071429E /* Glyphish.xcassets */,
 				C2E9F6201ABCA7A3007581F2 /* Fonts */,
 				C2E9F6381ABCA7A3007581F2 /* Remote.xcassets */,
@@ -3366,30 +3458,58 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2345ADF1AE3005A000AA262 /* Preset_ButtonGroup_Transport.json in Resources */,
+				C2345AE01AE3005A000AA262 /* Remote.json in Resources */,
 				C22115BB1AC59CD30071F2D0 /* Type Dynamic - Elysio Hairline.otf in Resources */,
 				C22115BC1AC59CD30071F2D0 /* Type Dynamic - Elysio Light Italic.otf in Resources */,
+				C2345AD71AE3005A000AA262 /* Preset_Button_Toolbar.json in Resources */,
 				C22115C11AC59CD30071F2D0 /* Type Dynamic - Elysio Thin Italic.otf in Resources */,
 				C22115B11AC59CD30071F2D0 /* gui_design_icons.otf in Resources */,
 				C22115B51AC59CD30071F2D0 /* modernpics.otf in Resources */,
+				C2345ACF1AE3005A000AA262 /* ForegroundColor_Normal.json in Resources */,
+				C2345AD81AE3005A000AA262 /* Preset_ButtonGroup_1x3.json in Resources */,
 				C2FA4B921AC5E5260071429E /* Glyphish.xcassets in Resources */,
+				C2345ACA1AE3005A000AA262 /* BackgroundColor_Dark_Normal.json in Resources */,
+				C2345AE11AE3005A000AA262 /* TitleAttributes_Default_Icon.json in Resources */,
 				C22115C01AC59CD30071F2D0 /* Type Dynamic - Elysio Regular Italic.otf in Resources */,
+				C2345ACD1AE3005A000AA262 /* ForegroundColor_Disabled.json in Resources */,
 				C22115B01AC59CD30071F2D0 /* glyphish.ttf in Resources */,
+				C2345AE21AE3005A000AA262 /* TitleAttributes_Default_Text.json in Resources */,
+				C2345ADE1AE3005A000AA262 /* Preset_ButtonGroup_Toolbar.json in Resources */,
 				C22115B81AC59CD30071F2D0 /* Type Dynamic - Elysio Bold Italic.otf in Resources */,
+				C2345AD21AE3005A000AA262 /* NetworkDevice.json in Resources */,
 				C22115C21AC59CD30071F2D0 /* Type Dynamic - Elysio Thin.otf in Resources */,
+				C2345AD31AE3005A000AA262 /* Preset.json in Resources */,
+				C2345ADA1AE3005A000AA262 /* Preset_ButtonGroup_ModeSelectionPanel.json in Resources */,
+				C2345AD51AE3005A000AA262 /* Preset_Button_Round.json in Resources */,
+				C2345ADB1AE3005A000AA262 /* Preset_ButtonGroup_Numberpad.json in Resources */,
+				C2345AD41AE3005A000AA262 /* Preset_Button_Rectangular.json in Resources */,
+				C2345AC91AE3005A000AA262 /* ActivityController.json in Resources */,
 				C22115AF1AC59CD30071F2D0 /* Fico.otf in Resources */,
 				C22115BD1AC59CD30071F2D0 /* Type Dynamic - Elysio Light.otf in Resources */,
 				C22115B71AC59CD30071F2D0 /* Type Dynamic - Elysio Black.otf in Resources */,
+				C2345ADC1AE3005A000AA262 /* Preset_ButtonGroup_OverlayPanel.json in Resources */,
 				C22115B41AC59CD30071F2D0 /* iconSweets.otf in Resources */,
+				C2345AD11AE3005A000AA262 /* Manufacturer.json in Resources */,
 				C22115BA1AC59CD30071F2D0 /* Type Dynamic - Elysio Hairline Italic.otf in Resources */,
 				C22115B91AC59CD30071F2D0 /* Type Dynamic - Elysio Bold.otf in Resources */,
 				C22115B21AC59CD30071F2D0 /* iconic_fill.otf in Resources */,
 				C22115B31AC59CD30071F2D0 /* iconic_stroke.otf in Resources */,
 				C22115BF1AC59CD30071F2D0 /* Type Dynamic - Elysio Medium.otf in Resources */,
+				C2345ACC1AE3005A000AA262 /* ComponentDevice.json in Resources */,
+				C2345ADD1AE3005A000AA262 /* Preset_ButtonGroup_Rocker.json in Resources */,
+				C2345AD01AE3005A000AA262 /* ImageCategory.json in Resources */,
+				C2345AE31AE3005A000AA262 /* TitleEdgeInsets_Default.json in Resources */,
+				C2345AC81AE3005A000AA262 /* Activity.json in Resources */,
 				C22115BE1AC59CD30071F2D0 /* Type Dynamic - Elysio Medium Italic.otf in Resources */,
+				C2345ACB1AE3005A000AA262 /* BackgroundColor_Default.json in Resources */,
+				C2345AD91AE3005A000AA262 /* Preset_ButtonGroup_Dpad.json in Resources */,
 				C22115AE1AC59CD30071F2D0 /* Apple Symbols.ttf in Resources */,
 				C22115B61AC59CD30071F2D0 /* Type Dynamic - Elysio Black Italic.otf in Resources */,
 				C22115C31AC59CD30071F2D0 /* Type Dynamic - Elysio.otf in Resources */,
 				C22115C51AC59CE40071F2D0 /* Remote.xcassets in Resources */,
+				C2345ACE1AE3005A000AA262 /* ForegroundColor_Highlighted.json in Resources */,
+				C2345AD61AE3005A000AA262 /* Preset_Button_Roundish.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

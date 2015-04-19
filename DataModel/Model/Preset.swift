@@ -187,27 +187,27 @@ final public class Preset: EditableModelObject {
 
 
   /** titles data stored in format ["state":["attribute":"value"]] */
-  public var titles: JSONValue? {
-    get { return storage["titles"] }
-    set { storage["titles"] = newValue }
+  public var titles: ObjectJSONValue? {
+    get { return ObjectJSONValue(storage["titles"]) }
+    set { storage["titles"] = newValue?.jsonValue }
   }
 
   /** icons data stored in format ["state":["image/color":"value"]] */
-  public var icons: JSONValue? {
-    get { return storage["icons"] }
-    set { storage["icons"] = newValue }
+  public var icons: ObjectJSONValue? {
+    get { return ObjectJSONValue(storage["icons"]) }
+    set { storage["icons"] = newValue?.jsonValue }
   }
 
   /** images data stored in format ["state":["image/color":"value"]] */
-  public var images: JSONValue? {
-    get { return storage["images"] }
-    set { storage["images"] = newValue }
+  public var images: ObjectJSONValue? {
+    get { return ObjectJSONValue(storage["images"]) }
+    set { storage["images"] = newValue?.jsonValue }
   }
 
   /** backgroundColors data stored in format ["state":"color"] */
-  public var backgroundColors: JSONValue? {
-    get { return storage["backgroundColors"] }
-    set { storage["backgroundColors"] = newValue }
+  public var backgroundColors: ObjectJSONValue? {
+    get { return ObjectJSONValue(storage["backgroundColors"]) }
+    set { storage["backgroundColors"] = newValue?.jsonValue }
   }
 
   public var titleEdgeInsets: UIEdgeInsets {
@@ -225,9 +225,9 @@ final public class Preset: EditableModelObject {
     set { storage["imageEdgeInsets"] = newValue.jsonValue }
   }
 
-  public var command: JSONValue? {
-    get { return storage["command"] }
-    set { storage["command"] = newValue }
+  public var command: ObjectJSONValue? {
+    get { return ObjectJSONValue(storage["command"]) }
+    set { storage["command"] = newValue?.jsonValue }
   }
 
   // MARK: Printable

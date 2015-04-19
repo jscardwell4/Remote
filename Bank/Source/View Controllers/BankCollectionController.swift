@@ -41,7 +41,8 @@ class BankCollectionController: UICollectionViewController, BankController {
 
   private var layout: BankCollectionLayout { return collectionViewLayout as! BankCollectionLayout }
 
-  private(set) var exportSelection: [MSJSONExport] = []
+  private(set) var exportSelection: [JSONValueConvertible] = []
+  private(set) var exportSelectionIndices: [NSIndexPath] = []
 
   var exportButton: BlockBarButtonItem!
   var selectAllButton: BlockBarButtonItem!
@@ -57,6 +58,7 @@ class BankCollectionController: UICollectionViewController, BankController {
       if exportSelectionMode {
 
         exportSelection.removeAll(keepCapacity: false)  // If entering, make sure our export items collection is empty
+        exportSelectionIndices.removeAll(keepCapacity: false)
 
         // And, make sure no cells are selected
         if let indexPaths = collectionView?.indexPathsForSelectedItems() as? [NSIndexPath] {
@@ -416,18 +418,22 @@ extension BankCollectionController {
     if exportSelectionMode && mode == .Default{
 
       exportSelection.removeAll(keepCapacity: true)
+      exportSelectionIndices.removeAll(keepCapacity: true)
       var capacity = 0
       if let nestingCollection = collection as? NestingModelCollection, collections = nestingCollection.collections {
         capacity += collections.count
       }
       if let items = collection.items { capacity += items.count }
       exportSelection.reserveCapacity(capacity)
+      exportSelectionIndices.reserveCapacity(capacity)
 
       if let nestingCollection = collection as? NestingModelCollection, collections = nestingCollection.collections {
         for (i, collection) in enumerate(collections) {
-          if let exportCollection = collection as? MSJSONExport {
+          if let exportCollection = collection as? JSONValueConvertible {
             exportSelection.append(exportCollection)
-            if let cell = collectionView?.cellForItemAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as? BankCollectionCell {
+            let indexPath = NSIndexPath(forRow: i, inSection: 0)
+            exportSelectionIndices.append(indexPath)
+            if let cell = collectionView?.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
               cell.showIndicator(true, selected: true)
             }
           }
@@ -436,9 +442,11 @@ extension BankCollectionController {
 
       if let items = collection.items {
         for (i, item) in enumerate(items) {
-          if let exportItem = item as? MSJSONExport {
+          if let exportItem = item as? JSONValueConvertible {
             exportSelection.append(exportItem)
-            if let cell = collectionView?.cellForItemAtIndexPath(NSIndexPath(forRow: i, inSection: 1)) as? BankCollectionCell {
+            let indexPath = NSIndexPath(forRow: i, inSection: 1)
+            exportSelectionIndices.append(indexPath)
+            if let cell = collectionView?.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
               cell.showIndicator(true, selected: true)
             }
           }
@@ -461,6 +469,7 @@ extension BankCollectionController {
 
       // Remove all the items from export selection
       exportSelection.removeAll(keepCapacity: false)
+      exportSelectionIndices.removeAll(keepCapacity: false)
 
       // Enumerate the selected index paths
       for indexPath in collectionView?.indexPathsForSelectedItems() as! [NSIndexPath] {
@@ -583,9 +592,10 @@ extension BankCollectionController: UICollectionViewDelegate {
   override func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
     if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
       // Check if we are selecting items to export
-      if exportSelectionMode {
+      if exportSelectionMode, let idx = find(exportSelectionIndices, indexPath) {
         // Remove the item and update the cell's indicator image
-        exportSelection.removeAtIndex((exportSelection as NSArray).indexOfObject(cell.exportItem!))
+        exportSelection.removeAtIndex(idx)
+        exportSelectionIndices.removeAtIndex(idx)
         cell.showIndicator(true)
         if exportSelection.count == 0 { exportButton.enabled = false }
       } else if mode == .Selection {
@@ -613,6 +623,7 @@ extension BankCollectionController: UICollectionViewDelegate {
 
       	assert(mode == .Default)
         exportSelection.append(cell.exportItem!)
+        exportSelectionIndices.append(indexPath)
         cell.showIndicator(true, selected: true)
         if !exportButton.enabled { exportButton.enabled = true }
 

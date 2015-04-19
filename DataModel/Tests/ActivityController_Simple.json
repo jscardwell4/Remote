@@ -42,9 +42,7 @@
           "index.homeButton": "FA623A4E-AA5D-4796-B606-359A8909ABF9",
           "format": "homeButton.width ≥ 44"
         },
-        "commands.default": {
-          "class": "system",
-          "type": "return-to-launch-screen"
+        "commands.default": {          "type": "return-to-launch-screen"
         },
         "icons.default": {
           "normal": {
@@ -65,9 +63,7 @@
         "uuid": "7613EC8B-13A5-4836-9715-5931D72E2D72",
         "name": "Settings Button",
         "role": "toolbar",
-        "commands.default": {
-          "class": "system",
-          "type": "open-settings"
+        "commands.default": {          "type": "open-settings"
         },
         "icons.default": {
           "normal": {
@@ -88,9 +84,7 @@
         "uuid": "586B3D79-3766-42EA-95AE-AC7F4DDEBDF9",
         "name": "Edit Remote Button",
         "role": "toolbar",
-        "commands.default": {
-          "class": "system",
-          "type": "open-editor"
+        "commands.default": {          "type": "open-editor"
         },
         "icons.default": {
           "normal": {

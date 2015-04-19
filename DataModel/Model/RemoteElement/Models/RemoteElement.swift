@@ -403,7 +403,7 @@ public class RemoteElement: IndexedModelObject {
   :returns: Bool
   */
   public func isIdentifiedByString(string: String) -> Bool {
-    return uuid == string  || identifier == string || (key != nil && key! == string)
+    return uuid == string  || identifier == string || (key != nil && key! == string) || index.rawValue == string
   }
 
   /**
@@ -685,11 +685,11 @@ public class RemoteElement: IndexedModelObject {
 }
 
 extension RemoteElement.BaseType: Printable {
-  public var description: String { return String(jsonValue)! }
+  public var description: String { return stringValue }
 }
 
-extension RemoteElement.BaseType: JSONValueConvertible {
-  public var jsonValue: JSONValue {
+extension RemoteElement.BaseType: StringValueConvertible {
+  public var stringValue: String {
     switch self {
       case .Undefined:   return "undefined"
       case .Remote:      return "remote"
@@ -697,6 +697,10 @@ extension RemoteElement.BaseType: JSONValueConvertible {
       case .Button:      return "button"
     }
   }
+}
+
+extension RemoteElement.BaseType: JSONValueConvertible {
+  public var jsonValue: JSONValue { return stringValue.jsonValue }
 }
 
 extension RemoteElement.BaseType: JSONValueInitializable {
@@ -713,11 +717,11 @@ extension RemoteElement.BaseType: JSONValueInitializable {
 }
 
 extension RemoteElement.Shape: Printable {
-  public var description: String { return String(jsonValue)! }
+  public var description: String { return stringValue }
 }
 
-extension RemoteElement.Shape: JSONValueConvertible {
-  public var jsonValue: JSONValue {
+extension RemoteElement.Shape: StringValueConvertible {
+  public var stringValue: String {
     switch self {
       case .Undefined:        return "undefined"
       case .RoundedRectangle: return "rounded-rectangle"
@@ -727,6 +731,10 @@ extension RemoteElement.Shape: JSONValueConvertible {
       case .Diamond:          return "diamond"
     }
   }
+}
+
+extension RemoteElement.Shape: JSONValueConvertible {
+  public var jsonValue: JSONValue { return stringValue.jsonValue }
 }
 
 extension RemoteElement.Shape: JSONValueInitializable {
@@ -745,7 +753,11 @@ extension RemoteElement.Shape: JSONValueInitializable {
 }
 
 extension RemoteElement.Style: Printable {
-  public var description: String { return String(jsonValue)! }
+  public var description: String { return stringValue }
+}
+
+extension RemoteElement.Style: StringValueConvertible {
+  public var stringValue: String { return String(jsonValue)! }
 }
 
 extension RemoteElement.Style: JSONValueConvertible {
@@ -794,6 +806,10 @@ extension RemoteElement.Role: Hashable {
 
 extension RemoteElement.Role: Printable {
   public var description: String { return String(jsonValue)! }
+}
+
+extension RemoteElement.Role: StringValueConvertible {
+  public var stringValue: String { return String(jsonValue)! }
 }
 
 extension RemoteElement.Role: JSONValueConvertible {

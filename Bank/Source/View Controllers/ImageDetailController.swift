@@ -43,7 +43,7 @@ class ImageDetailController: BankItemDetailController {
     let detailsSection = DetailSection(section: 0)
 
     detailsSection.addRow({ DetailLabelRow(pushableCollection: image.imageCategory, label: "Category") }, forKey: RowKey.Category)
-    detailsSection.addRow({ DetailLabelRow(label: "Asset", value: image.assetName) }, forKey: RowKey.Asset)
+    detailsSection.addRow({ DetailLabelRow(label: "Asset", value: image.asset?.name) }, forKey: RowKey.Asset)
     detailsSection.addRow({ DetailLabelRow(label: "Size", value: PrettySize(image.size)) }, forKey: RowKey.Size)
 
     sections[SectionKey.Details] = detailsSection

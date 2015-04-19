@@ -93,23 +93,11 @@ public final class MacroCommand: Command {
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
-    if let commandsData = ArrayJSONValue(data["commands"]) {
+    if let moc = managedObjectContext, commandsData = ArrayJSONValue(data["commands"]) {
       var commands: OrderedSet<Command> = []
       for commandData in compressedMap(commandsData, {ObjectJSONValue($0)}) {
-        if let commandClassNameJSON = String(commandData.value["class"]), let moc = managedObjectContext {
-          let command: Command?
-          switch commandClassNameJSON {
-            case "power":    command = PowerCommand.importObjectWithData(commandData, context: moc)
-            case "sendir":   command = SendIRCommand.importObjectWithData(commandData, context: moc)
-            case "http":     command = HTTPCommand.importObjectWithData(commandData, context: moc)
-            case "delay":    command = DelayCommand.importObjectWithData(commandData, context: moc)
-            case "macro":    command = MacroCommand.importObjectWithData(commandData, context: moc)
-            case "system":   command = SystemCommand.importObjectWithData(commandData, context: moc)
-            case "switch":   command = SwitchCommand.importObjectWithData(commandData, context: moc)
-            case "activity": command = ActivityCommand.importObjectWithData(commandData, context: moc)
-            default:         command = nil
-          }
-          if command != nil { commands.append(command!) }
+        if let command = Command.importObjectWithData(commandData, context: moc) {
+          commands.append(command)
         }
       }
       self.commands = commands

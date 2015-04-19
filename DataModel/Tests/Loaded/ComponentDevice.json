@@ -15,9 +15,7 @@
     "port": 2,
     "inputPowersOn": true,
     "codeSet.index": "Sony/AV%20Receiver",
-    "offCommand": {
-      "class": "sendir",
-      "code.index": "Sony/AV%20Receiver/Power"
+    "offCommand": {       "code.index": "Sony/AV%20Receiver/Power"
     },
     "manufacturer.index": "Sony"
   },
@@ -25,13 +23,9 @@
     "name": "Samsung TV",
     "port": 3,
     "codeSet.index": "Samsung/Samsung%20TV",
-    "onCommand": {
-      "class": "sendir",
-      "code.index": "Samsung/Samsung%20TV/Power%20On"
+    "onCommand": {       "code.index": "Samsung/Samsung%20TV/Power%20On"
     },
-    "offCommand": {
-      "class": "sendir",
-      "code.index": "Samsung/Samsung%20TV/Power%20Off"
+    "offCommand": {       "code.index": "Samsung/Samsung%20TV/Power%20Off"
     },
     "manufacturer.index": "Samsung"
   }

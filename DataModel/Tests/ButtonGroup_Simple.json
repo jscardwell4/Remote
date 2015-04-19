@@ -30,13 +30,9 @@
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "commands": {
-        "default": {
-          "class": "sendir",
-          "code.index": "Dish/Dish/Guide"
+        "default": {           "code.index": "Dish/Dish/Guide"
         },
-        "tv": {
-          "class": "sendir",
-          "code.index": "Samsung/Samsung%20TV/Tools"
+        "tv": {           "code.index": "Samsung/Samsung%20TV/Tools"
         }
       },
       "titles": {
@@ -72,13 +68,9 @@
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "commands": {
-        "default": {
-          "class": "sendir",
-          "code.index": "Dish/Dish/DVR"
+        "default": {           "code.index": "Dish/Dish/DVR"
         },
-        "tv": {
-          "class": "sendir",
-          "code.index": "Samsung/Samsung%20TV/Internet@TV"
+        "tv": {           "code.index": "Samsung/Samsung%20TV/Internet@TV"
         }
       },
       "titles": {
@@ -114,13 +106,9 @@
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "commands": {
-        "default": {
-          "class": "sendir",
-          "code.index": "Dish/Dish/Info"
+        "default": {           "code.index": "Dish/Dish/Info"
         },
-        "tv": {
-          "class": "sendir",
-          "code.index": "Samsung/Samsung%20TV/Info"
+        "tv": {           "code.index": "Samsung/Samsung%20TV/Info"
         }
       },
       "titles.default": {

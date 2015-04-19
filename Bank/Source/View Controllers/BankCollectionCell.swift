@@ -43,7 +43,7 @@ class BankCollectionCell: UICollectionViewCell {
 
   var showingDelete: Bool { return contentView.transform.tx == -100.0 }
 
-  var exportItem: MSJSONExport? { return nil }
+  var exportItem: JSONValueConvertible? { return nil }
 
   private(set) var contentSize = CGSize.zeroSize
 

@@ -19,7 +19,7 @@ public final class SwitchCommand: Command {
   @objc public enum SwitchType: Int { case Undefined = 0, Remote = 1, Mode = 2 }
 
   @NSManaged var primitiveType: NSNumber
-  public var type: SwitchType {
+  public var targetType: SwitchType {
     get {
       willAccessValueForKey("type")
       let type = primitiveType
@@ -37,7 +37,7 @@ public final class SwitchCommand: Command {
     var obj = ObjectJSONValue(super.jsonValue)!
 
     obj["class"] = "switch"
-    obj["type"] = type.jsonValue
+    obj["targetType"] = targetType.jsonValue
     obj["target"] = target.jsonValue
     return obj.jsonValue
   }
@@ -49,13 +49,17 @@ public final class SwitchCommand: Command {
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let type = SwitchType(data["type"]) { self.type = type }
+    if let type = SwitchType(data["targetType"]) { self.targetType = type }
     if let target = String(data["target"]) { self.target = target }
   }
 
   override var operation: CommandOperation {
     return SwitchCommandOperation(command: self)
   }
+}
+
+extension SwitchCommand.SwitchType: StringValueConvertible {
+  public var stringValue: String { return String(jsonValue)! }
 }
 
 extension SwitchCommand.SwitchType: JSONValueConvertible {

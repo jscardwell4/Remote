@@ -20,7 +20,7 @@ class BankCollectionItemCell: BankCollectionCell {
     }
   }
 
-  override var exportItem: MSJSONExport? { return item as? MSJSONExport }
+  override var exportItem: JSONValueConvertible? { return item as? JSONValueConvertible }
 
   private let thumbnailImageView: UIImageView = {
     let view = UIImageView()

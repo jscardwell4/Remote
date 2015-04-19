@@ -136,7 +136,7 @@ private func loadComponentDevicesSection() {
     ////////////////////////////////////////////////////////////////////////////////
 
     var componentDevicesSection = DetailSection(section: 5, title: "Component Devices")
-    for (idx, device) in enumerate(sortedByName(iSYDevice.componentDevices?.allObjects as? [ComponentDevice] ?? [])) {
+    for (idx, device) in enumerate(sortedByName(iSYDevice.componentDevices)) {
       componentDevicesSection.addRow({ DetailListRow(pushableItem: device) }, forKey: "\(RowKey.ComponentDevices)\(idx)")
     }
 

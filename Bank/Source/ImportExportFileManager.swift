@@ -102,7 +102,7 @@ class ImportExportFileManager {
 
   :param: items [MSJSONExport]
   */
-  class func confirmExportOfItems(items: [MSJSONExport], completion: ((Bool) -> Void)? = nil) {
+  class func confirmExportOfItems(items: [JSONValueConvertible], completion: ((Bool) -> Void)? = nil) {
 
     refreshExistingFiles()
 
@@ -154,12 +154,14 @@ class ImportExportFileManager {
   :param: items [MSJSONExport]
   :param: file String
   */
-  class func exportItems(items: [MSJSONExport], toFile file: String) {
+  class func exportItems(items: [JSONValueConvertible], toFile file: String) {
+    let jsonString: String?
     switch items.count {
-      case 0:  break
-      case 1:  items.first?.JSONString.writeToFile(file)
-      default: (items as NSArray).JSONString.writeToFile(file)
+      case 0:  jsonString = nil
+      case 1:  jsonString = items.first?.jsonValue.prettyRawValue
+      default: jsonString = JSONValue(items)?.prettyRawValue
     }
+    jsonString?.writeToFile(file)
   }
 
   /**

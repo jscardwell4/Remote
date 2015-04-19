@@ -2,24 +2,16 @@
   "CH": <@include CommandSet_Simple.json>,
   "PAGE": {
     "type": "rocker",
-    "top": {
-      "class": "sendir",
-      "code.index": "Dish/Dish/Page%20Up"
+    "top": {       "code.index": "Dish/Dish/Page%20Up"
     },
-    "bottom": {
-      "class": "sendir",
-      "code.index": "Dish/Dish/Page%20Down"
+    "bottom": {       "code.index": "Dish/Dish/Page%20Down"
     }
   },
   "VOL": {
     "type": "rocker",
-    "top": {
-      "class": "sendir",
-      "code.index": "Sony/AV%20Receiver/Volume%20Up"
+    "top": {       "code.index": "Sony/AV%20Receiver/Volume%20Up"
     },
-    "bottom": {
-      "class": "sendir",
-      "code.index": "Sony/AV%20Receiver/Volume%20Down"
+    "bottom": {       "code.index": "Sony/AV%20Receiver/Volume%20Down"
     }
   }
 }

@@ -217,6 +217,19 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
     return dictionary.updateValue(value, forKey: key)
   }
 
+  /**
+  updateValue:atIndex:
+
+  :param: value Value
+  :param: atIndex idx Index
+
+  :returns: Value?
+  */
+  public mutating func updateValue(value: Value, atIndex index: Index) -> Value? {
+    precondition(index < _keys.count)
+    return dictionary.updateValue(value, forKey: _keys[index])
+  }
+
   public mutating func extend<S: SequenceType where S.Generator.Element == (Key, Value)>(s: S) {
     for (k, v) in s { self[k] = v }
   }

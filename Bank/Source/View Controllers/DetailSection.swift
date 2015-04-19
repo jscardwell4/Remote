@@ -100,7 +100,7 @@ class DetailSection {
   :param: idx Int
   :param: row (Void) -> DetailRow
   */
-  func replaceRowAtIndex(idx: Int, withRow row: (Void) -> DetailRow) { assert(idx < blocks.count); blocks[idx] = row }
+  func replaceRowAtIndex(idx: Int, withRow row: (Void) -> DetailRow) { assert(idx < blocks.count); blocks.updateValue(row, atIndex: idx) }
 
   /**
   removeAllRows:

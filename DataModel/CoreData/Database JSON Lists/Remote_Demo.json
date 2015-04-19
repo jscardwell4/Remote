@@ -78,13 +78,9 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "commands": {
-              "default": {
-                "class": "sendir",
-                "code.index": "Dish/Dish/Guide"
+              "default": {                 "code.index": "Dish/Dish/Guide"
               },
-              "tv": {
-                "class": "sendir",
-                "code.index": "Samsung/Samsung%20TV/Tools"
+              "tv": {                 "code.index": "Samsung/Samsung%20TV/Tools"
               }
             },
             "titles": {
@@ -120,13 +116,9 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "commands": {
-              "default": {
-                "class": "sendir",
-                "code.index": "Dish/Dish/DVR"
+              "default": {                 "code.index": "Dish/Dish/DVR"
               },
-              "tv": {
-                "class": "sendir",
-                "code.index": "Samsung/Samsung%20TV/Internet@TV"
+              "tv": {                 "code.index": "Samsung/Samsung%20TV/Internet@TV"
               }
             },
             "titles": {
@@ -162,13 +154,9 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "commands": {
-              "default": {
-                "class": "sendir",
-                "code.index": "Dish/Dish/Info"
+              "default": {                 "code.index": "Dish/Dish/Info"
               },
-              "tv": {
-                "class": "sendir",
-                "code.index": "Samsung/Samsung%20TV/Info"
+              "tv": {                 "code.index": "Samsung/Samsung%20TV/Info"
               }
             },
             "titles.default": {
@@ -256,35 +244,23 @@
         "commandSetCollection.default": {
           "CH": {
             "type": "rocker",
-            "top": {
-              "class": "sendir",
-              "code.index": "Dish/Dish/Channel%20Up"
+            "top": {               "code.index": "Dish/Dish/Channel%20Up"
             },
-            "bottom": {
-              "class": "sendir",
-              "code.index": "Dish/Dish/Channel%20Down"
+            "bottom": {               "code.index": "Dish/Dish/Channel%20Down"
             }
           },
           "PAGE": {
             "type": "rocker",
-            "top": {
-              "class": "sendir",
-              "code.index": "Dish/Dish/Page%20Up"
+            "top": {               "code.index": "Dish/Dish/Page%20Up"
             },
-            "bottom": {
-              "class": "sendir",
-              "code.index": "Dish/Dish/Page%20Down"
+            "bottom": {               "code.index": "Dish/Dish/Page%20Down"
             }
           },
           "VOL": {
             "type": "rocker",
-            "top": {
-              "class": "sendir",
-              "code.index": "Sony/AV%20Receiver/Volume%20Up"
+            "top": {               "code.index": "Sony/AV%20Receiver/Volume%20Up"
             },
-            "bottom": {
-              "class": "sendir",
-              "code.index": "Sony/AV%20Receiver/Volume%20Down"
+            "bottom": {               "code.index": "Sony/AV%20Receiver/Volume%20Down"
             }
           }
         },
@@ -437,25 +413,15 @@
         ],
         "command-set.default": {
           "type": "dpad",
-          "up": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/Up"
+          "up": {             "code.index": "Dish/Dish/Up"
           },
-          "down": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/Down"
+          "down": {             "code.index": "Dish/Dish/Down"
           },
-          "left": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/Left"
+          "left": {             "code.index": "Dish/Dish/Left"
           },
-          "right": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/Right"
+          "right": {             "code.index": "Dish/Dish/Right"
           },
-          "center": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/OK"
+          "center": {             "code.index": "Dish/Dish/OK"
           }
         }
       },
@@ -875,53 +841,29 @@
         ],
         "command-set.default": {
           "type": "numberpad",
-          "one": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/One"
+          "one": {             "code.index": "Dish/Dish/One"
           },
-          "two": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/Two"
+          "two": {             "code.index": "Dish/Dish/Two"
           },
-          "three": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/Three"
+          "three": {             "code.index": "Dish/Dish/Three"
           },
-          "four": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/Four"
+          "four": {             "code.index": "Dish/Dish/Four"
           },
-          "five": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/Five"
+          "five": {             "code.index": "Dish/Dish/Five"
           },
-          "six": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/Six"
+          "six": {             "code.index": "Dish/Dish/Six"
           },
-          "seven": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/Seven"
+          "seven": {             "code.index": "Dish/Dish/Seven"
           },
-          "eight": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/Eight"
+          "eight": {             "code.index": "Dish/Dish/Eight"
           },
-          "nine": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/Nine"
+          "nine": {             "code.index": "Dish/Dish/Nine"
           },
-          "zero": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/Zero"
+          "zero": {             "code.index": "Dish/Dish/Zero"
           },
-          "aux1": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/Exit"
+          "aux1": {             "code.index": "Dish/Dish/Exit"
           },
-          "aux2": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/Enter"
+          "aux2": {             "code.index": "Dish/Dish/Enter"
           }
         }
       },
@@ -1167,37 +1109,21 @@
         ],
         "commandSet.default": {
           "type": "transport",
-          "record": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/Record"
+          "record": {             "code.index": "Dish/Dish/Record"
           },
-          "play": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/Play"
+          "play": {             "code.index": "Dish/Dish/Play"
           },
-          "pause": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/Pause"
+          "pause": {             "code.index": "Dish/Dish/Pause"
           },
-          "stop": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/Stop"
+          "stop": {             "code.index": "Dish/Dish/Stop"
           },
-          "skip": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/Next"
+          "skip": {             "code.index": "Dish/Dish/Next"
           },
-          "replay": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/Last"
+          "replay": {             "code.index": "Dish/Dish/Last"
           },
-          "rewind": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/Rewind"
+          "rewind": {             "code.index": "Dish/Dish/Rewind"
           },
-          "fastForward": {
-            "class": "sendir",
-            "code.index": "Dish/Dish/Fast%20Forward"
+          "fastForward": {             "code.index": "Dish/Dish/Fast%20Forward"
           }
         }
       },
@@ -1328,13 +1254,9 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "commands": {
-              "default": {
-                "class": "sendir",
-                "code.index": "Dish/Dish/On%20Demand"
+              "default": {                 "code.index": "Dish/Dish/On%20Demand"
               },
-              "tv": {
-                "class": "sendir",
-                "code.index": "Samsung/Samsung%20TV/Source"
+              "tv": {                 "code.index": "Samsung/Samsung%20TV/Source"
               }
             },
             "titles": {
@@ -1368,13 +1290,9 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "commands": {
-              "default": {
-                "class": "sendir",
-                "code.index": "Dish/Dish/Menu"
+              "default": {                 "code.index": "Dish/Dish/Menu"
               },
-              "tv": {
-                "class": "sendir",
-                "code.index": "Samsung/Samsung%20TV/Menu"
+              "tv": {                 "code.index": "Samsung/Samsung%20TV/Menu"
               }
             },
             "titles.default.normal": {
@@ -1394,13 +1312,9 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "commands": {
-              "default": {
-                "class": "sendir",
-                "code.index": "Dish/Dish/Last"
+              "default": {                 "code.index": "Dish/Dish/Last"
               },
-              "tv": {
-                "class": "sendir",
-                "code.index": "Samsung/Samsung%20TV/Return"
+              "tv": {                 "code.index": "Samsung/Samsung%20TV/Return"
               }
             },
             "titles": {
@@ -1434,13 +1348,9 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "commands": {
-              "default": {
-                "class": "sendir",
-                "code.index": "Dish/Dish/Exit"
+              "default": {                 "code.index": "Dish/Dish/Exit"
               },
-              "tv": {
-                "class": "sendir",
-                "code.index": "Samsung/Samsung%20TV/Exit"
+              "tv": {                 "code.index": "Samsung/Samsung%20TV/Exit"
               }
             },
             "titles.default.normal": {
@@ -1459,9 +1369,7 @@
             "name": "DVR Audio Input",
             "shape": "rounded-rectangle",
             "style": "gloss2",
-            "commands.default": {
-              "class": "sendir",
-              "code.index": "Sony/AV%20Receiver/TV%2FSAT"
+            "commands.default": {               "code.index": "Sony/AV%20Receiver/TV%2FSAT"
             },
             "titles.default.normal": {
               "font": "Helvetica Neue@18",
@@ -1479,9 +1387,7 @@
             "name": "TV Audio Input",
             "shape": "rounded-rectangle",
             "style": "gloss2",
-            "commands.default": {
-              "class": "sendir",
-              "code.index": "Sony/AV%20Receiver/Video%201"
+            "commands.default": {               "code.index": "Sony/AV%20Receiver/Video%201"
             },
             "titles.default.normal": {
               "font": "Helvetica Neue@18",
@@ -1499,9 +1405,7 @@
             "name": "Mute",
             "shape": "rounded-rectangle",
             "style": "gloss2",
-            "commands.default": {
-              "class": "sendir",
-              "code.index": "Sony/AV%20Receiver/Mute"
+            "commands.default": {               "code.index": "Sony/AV%20Receiver/Mute"
             },
             "titles.default.normal": {
               "font": "Helvetica Neue@18",
@@ -1716,9 +1620,7 @@
               "index.lightsOn": "65E065E6-2976-4726-99E4-9D4D932804E4",
               "format": "lightsOn.width = 44"
             },
-            "commands.default": {
-              "class": "http",
-              "url": "http://10.0.1.27/0?1201=I=0"
+            "commands.default": {              "url": "http://10.0.1.27/0?1201=I=0"
             },
             "icons.default": {
               "normal": {
@@ -1735,9 +1637,7 @@
             "uuid": "085F92D0-7D04-4586-BD2E-BCD0F0AFB729",
             "name": "Lights Off",
             "role": "toolbar",
-            "commands.default": {
-              "class": "http",
-              "url": "http://10.0.1.27/0?1401=I=0"
+            "commands.default": {              "url": "http://10.0.1.27/0?1401=I=0"
             },
             "icons.default": {
               "normal": {

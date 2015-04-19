@@ -58,6 +58,11 @@ extension UIControlState: EnumerableType {
   public static func enumerate(block: (UIControlState) -> Void) { apply(all, block) }
 }
 
+extension UIControlState: StringValueConvertible {
+  /** Convenience accessor for the `jsonValue` as a `String` */
+  public var stringValue: String { return String(jsonValue)! }
+}
+
 /** Add `ControlStateSet` specific methods and properties to `UIControlState` */
 extension UIControlState {
 

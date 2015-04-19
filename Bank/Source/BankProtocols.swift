@@ -76,7 +76,7 @@ protocol BankItemSelectionDelegate {
 /** Protocol for types that want to display Bank toolbars, or other assets */
 protocol BankController: class {
 
-  var exportSelection: [MSJSONExport] { get }
+  var exportSelection: [JSONValueConvertible] { get }
   var exportSelectionMode: Bool { get set }
 
   func selectAllExportableItems() // Called from select all bar button action

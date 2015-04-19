@@ -2,9 +2,7 @@
   "name": "Home",
   "baseType": "button",
   "role": "toolbar",
-  "command": {
-    "class": "system",
-    "type": "return-to-launch-screen"
+  "command": {    "type": "return-to-launch-screen"
   },
   "icons": {
     "normal": {
@@ -25,9 +23,7 @@
   "name": "Settings",
   "baseType": "button",
   "role": "toolbar",
-  "command": {
-    "class": "system",
-    "type": "open-settings"
+  "command": {    "type": "open-settings"
   },
   "icons": {
     "normal": {
@@ -48,9 +44,7 @@
   "name": "Edit",
   "baseType": "button",
   "role": "toolbar",
-  "command": {
-    "class": "system",
-    "type": "open-editor"
+  "command": {    "type": "open-editor"
   },
   "icons": {
     "normal": {

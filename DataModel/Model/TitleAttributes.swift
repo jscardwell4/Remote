@@ -499,6 +499,10 @@ extension NSUnderlineStyle: JSONValueInitializable {
   }
 }
 
+extension NSUnderlineStyle: StringValueConvertible {
+  public var stringValue: String { return String(jsonValue)! }
+}
+
 extension NSUnderlineStyle: EnumerableType {
   public static var all: [NSUnderlineStyle] {
     return [.StyleNone, .StyleSingle, .StyleThick, .StyleDouble, .PatternDot, .PatternDash,
@@ -537,6 +541,10 @@ extension NSLineBreakMode: JSONValueInitializable {
   }
 }
 
+extension NSLineBreakMode: StringValueConvertible {
+  public var stringValue: String { return String(jsonValue)! }
+}
+
 extension NSLineBreakMode: EnumerableType {
   public static var all: [NSLineBreakMode] {
     return [.ByWordWrapping, .ByCharWrapping, .ByClipping, .ByTruncatingHead, .ByTruncatingTail, .ByTruncatingMiddle]
@@ -570,6 +578,11 @@ extension NSTextAlignment: JSONValueInitializable {
     } else { return nil }
   }
 }
+
+extension NSTextAlignment: StringValueConvertible {
+  public var stringValue: String { return String(jsonValue)! }
+}
+
 
 extension NSTextAlignment: EnumerableType {
   public static var all: [NSTextAlignment] { return [.Left, .Right, .Center, .Justified, .Natural] }
@@ -617,6 +630,11 @@ extension TitleAttributes.IconTextOrderSpecification: JSONValueInitializable {
   }
 
 }
+
+extension TitleAttributes.IconTextOrderSpecification: StringValueConvertible {
+  public var stringValue: String { return String(jsonValue)! }
+}
+
 
 extension TitleAttributes.IconTextOrderSpecification: EnumerableType {
   public static var all: [TitleAttributes.IconTextOrderSpecification] { return [.IconText, .TextIcon] }

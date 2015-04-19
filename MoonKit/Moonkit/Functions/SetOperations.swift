@@ -10,11 +10,11 @@ import Foundation
 
 //TODO: All of these set operations need revisiting now that there is a real `Set` type
 
-//public func ∪<T, S0:SequenceType, S1:SequenceType
-//  where S0.Generator.Element == T, S1.Generator.Element == T> (lhs:S0, rhs:S1) -> [T]
-//{
-//  return Array(lhs) + Array(rhs)
-//}
+public func ∪<T, S0:SequenceType, S1:SequenceType
+  where S0.Generator.Element == T, S1.Generator.Element == T> (lhs:S0, rhs:S1) -> [T]
+{
+  return Array(lhs) + Array(rhs)
+}
 
 //public func ∪=<T, C:RangeReplaceableCollectionType, S:SequenceType
 //  where C.Generator.Element == S.Generator.Element> (inout lhs:C, rhs:S)
@@ -35,11 +35,11 @@ public func ∖=<C:RangeReplaceableCollectionType, S:SequenceType
   for i in lhs.startIndex..<lhs.endIndex { if rhsElements.contains(lhs[i]) { lhs.removeAtIndex(i) } }
 }
 
-//public func ∩<T:Equatable, S0:SequenceType, S1:SequenceType
-//  where S0.Generator.Element == T, S1.Generator.Element == T> (lhs:S0, rhs:S1) -> [T]
-//{
-//  return filter(uniqued(lhs ∪ rhs)) {$0 ∈ lhs && $0 ∈ rhs}
-//}
+public func ∩<T:Equatable, S0:SequenceType, S1:SequenceType
+  where S0.Generator.Element == T, S1.Generator.Element == T> (lhs:S0, rhs:S1) -> [T]
+{
+  return filter(uniqued(lhs ∪ rhs)) {$0 ∈ lhs && $0 ∈ rhs}
+}
 
 //public func ∩=<T:Equatable>(inout lhs:[T], rhs:[T]) { lhs = uniqued(lhs ∪ rhs).filter {$0 ∈ lhs && $0 ∈ rhs} }
 

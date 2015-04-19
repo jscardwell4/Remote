@@ -25,22 +25,22 @@ public final class Button: RemoteElement {
 
     if let moc = managedObjectContext {
 
-      if let titlesData = ObjectJSONValue(preset.titles) {
+      if let titlesData = preset.titles {
         setTitles(ControlStateTitleSet.importObjectWithData(titlesData, context: moc),
           forMode: RemoteElement.DefaultMode)
       }
 
-      if let iconsData = ObjectJSONValue(preset.icons) {
+      if let iconsData = preset.icons {
         setIcons(ControlStateImageSet.importObjectWithData(iconsData, context: moc),
          forMode: RemoteElement.DefaultMode)
       }
 
-      if let imagesData = ObjectJSONValue(preset.images) {
+      if let imagesData = preset.images {
         setImages(ControlStateImageSet.importObjectWithData(imagesData, context: moc),
           forMode: RemoteElement.DefaultMode)
       }
 
-      if let backgroundColorsData = ObjectJSONValue(preset.backgroundColors) {
+      if let backgroundColorsData = preset.backgroundColors {
         setBackgroundColors(ControlStateColorSet.importObjectWithData(backgroundColorsData, context: moc),
                     forMode: RemoteElement.DefaultMode)
       }
@@ -49,7 +49,7 @@ public final class Button: RemoteElement {
       contentEdgeInsets = preset.contentEdgeInsets
       imageEdgeInsets = preset.imageEdgeInsets
 
-      if let commandData = ObjectJSONValue(preset.command) {
+      if let commandData = preset.command {
         setCommand(Command.importObjectWithData(commandData, context: moc), forMode: RemoteElement.DefaultMode)
       }
 

@@ -73,7 +73,7 @@ class PresetDetailController: BankItemDetailController {
 
   let baseType = preset.baseType
 
-  commonAttributesSection.addRow({ DetailLabelRow(label: "Base Type", value: baseType.JSONValue.titlecaseString) },
+  commonAttributesSection.addRow({ DetailLabelRow(label: "Base Type", value: baseType.stringValue.titlecaseString) },
                           forKey: RowKey.BaseType)
 
   var roles: [RemoteElement.Role]
@@ -87,15 +87,15 @@ class PresetDetailController: BankItemDetailController {
   commonAttributesSection.addRow({
     let row = DetailButtonRow()
     row.name = "Role"
-    row.info = preset.role.JSONValue.titlecaseString
+    row.info = preset.role.stringValue.titlecaseString
 
     var pickerRow = DetailPickerRow()
     pickerRow.titleForInfo = {($0 as! String).titlecaseString}
-    pickerRow.data = roles.map{$0.JSONValue}
-    pickerRow.info = preset.role.JSONValue
+    pickerRow.data = roles.map{$0.stringValue}
+    pickerRow.info = preset.role.stringValue
     pickerRow.didSelectItem = {
       if !self.didCancel {
-        preset.role = RemoteElement.Role(JSONValue: $0 as! String)
+        preset.role = RemoteElement.Role(($0 as! String).jsonValue) ?? .Undefined
         self.cellDisplayingPicker?.info = ($0 as! String).titlecaseString
         pickerRow.info = $0
       }
@@ -111,19 +111,19 @@ class PresetDetailController: BankItemDetailController {
       commonAttributesSection.addRow({
         let row = DetailButtonRow()
         row.name = "Shape"
-        row.info = preset.shape.JSONValue.titlecaseString
+        row.info = preset.shape.stringValue.titlecaseString
 
         var pickerRow = DetailPickerRow()
         pickerRow.didSelectItem = {
           if !self.didCancel {
-            preset.shape = RemoteElement.Shape(JSONValue: $0 as! String)
+            preset.shape = RemoteElement.Shape(($0 as! String).jsonValue) ?? .Undefined
             self.cellDisplayingPicker?.info = ($0 as! String).titlecaseString
             pickerRow.info = $0
           }
         }
         pickerRow.titleForInfo = {($0 as! String).titlecaseString}
-        pickerRow.data = RemoteElement.Shape.allShapes.map{$0.JSONValue}
-        pickerRow.info = preset.shape.JSONValue
+        pickerRow.data = RemoteElement.Shape.allShapes.map{$0.stringValue}
+        pickerRow.info = preset.shape.stringValue
 
         row.detailPickerRow = pickerRow
 
@@ -133,9 +133,9 @@ class PresetDetailController: BankItemDetailController {
       commonAttributesSection.addRow({
         let row = DetailTextFieldRow()
         row.name = "Style"
-        row.info = preset.style.JSONValue.capitalizedString
+        row.info = preset.style.stringValue.capitalizedString
         row.placeholderText = "None"
-        row.valueDidChange = { preset.style = RemoteElement.Style(JSONValue: ($0 as! String).lowercaseString) }
+        row.valueDidChange = { preset.style = RemoteElement.Style(($0 as! String).lowercaseString.jsonValue) ?? .None }
 
         return row
       }, forKey: RowKey.Style)
@@ -152,7 +152,7 @@ class PresetDetailController: BankItemDetailController {
       row.name = "Background Image Alpha"
       row.info = preset.backgroundImageAlpha
       row.sliderStyle = .Gradient(.Alpha)
-      row.valueDidChange = { preset.backgroundImageAlpha = CGFloat(($0 as! NSNumber).floatValue) }
+      row.valueDidChange = { preset.backgroundImageAlpha = ($0 as! NSNumber).floatValue }
       return row
     }, forKey: RowKey.BackgroundImageAlpha)
 

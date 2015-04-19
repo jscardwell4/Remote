@@ -14,7 +14,7 @@ class BankCollectionCategoryCell: BankCollectionCell {
 
   var collection: ModelCollection? { didSet { label.text = collection?.name } }
 
-  override var exportItem: MSJSONExport? { return collection as? MSJSONExport }
+  override var exportItem: JSONValueConvertible? { return collection as? JSONValueConvertible }
 
   private let label: UILabel = {
     let view = UILabel()

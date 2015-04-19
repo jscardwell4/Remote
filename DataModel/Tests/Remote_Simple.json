@@ -54,9 +54,7 @@
             "index.dish": "92E33ABD-9893-47A9-8922-86146A94C0E4",
             "format": "dish.height = dish.width"
           },
-          "commands.default": {
-            "class": "activity",
-            "activity.index": "Dish%20Hopper%20Activity"
+          "commands.default": {            "activity.index": "Dish%20Hopper%20Activity"
           },
           "titles.default": {
             "normal": {
@@ -106,9 +104,7 @@
             "index.lightsOn": "65E065E6-2976-4726-99E4-9D4D932804E4",
             "format": "lightsOn.width = 44"
           },
-          "commands.default": {
-            "class": "http",
-            "url": "http://10.0.1.27/0?1201=I=0"
+          "commands.default": {            "url": "http://10.0.1.27/0?1201=I=0"
           },
           "icons.default": {
             "normal": {
@@ -125,9 +121,7 @@
           "uuid": "085F92D0-7D04-4586-BD2E-BCD0F0AFB729",
           "name": "Lights Off",
           "role": "toolbar",
-          "commands.default": {
-            "class": "http",
-            "url": "http://10.0.1.27/0?1401=I=0"
+          "commands.default": {            "url": "http://10.0.1.27/0?1401=I=0"
           },
           "icons.default": {
             "normal": {
