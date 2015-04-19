@@ -10,26 +10,26 @@ import Foundation
 import UIKit
 import MoonKit
 
-private var _existingFiles: [String] = []
-private let _importExportQueue = dispatch_queue_create("com.moondeerstudios.import-export",
-                                                      dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_CONCURRENT,
-                                                                                                QOS_CLASS_BACKGROUND,
-                                                                                                -1))
-private let _textColor = UIColor(RGBAHexString:"#9FA0A4FF")
-private let _invalidTextColor = UIColor(name: "fire-brick")
 
-private var nameValidator: ImportExportFileManager.FileNameValidator?
+final class ImportExportFileManager {
 
-class ImportExportFileManager {
+  private static var existingFiles: [String] = []
+  private static let importExportQueue = dispatch_queue_create("com.moondeerstudios.import-export",
+    dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_CONCURRENT,
+      QOS_CLASS_BACKGROUND,
+      -1))
+
+  private static var nameValidator: ImportExportFileManager.FileNameValidator?
+  private static let textColor = UIColor(RGBAHexString:"#9FA0A4FF")
+  private static let invalidTextColor = UIColor(name: "fire-brick")
+
 
   /** refreshExistingFiles */
   class func refreshExistingFiles() {
-    dispatch_async(_importExportQueue) {
-      _existingFiles = MoonFunctions.documentsDirectoryContents().filter{$0.hasSuffix(".json")}.map{$0[0..<($0.length - 5)]}
+    dispatch_async(importExportQueue) {
+      self.existingFiles = MoonFunctions.documentsDirectoryContents().filter{$0.hasSuffix(".json")}.map{$0[0..<($0.length - 5)]}
     }
   }
-
-  class var existingFiles: [String] { return _existingFiles }
 
   private class FileNameValidator: NSObject, UITextFieldDelegate {
 
@@ -50,8 +50,8 @@ class ImportExportFileManager {
     :returns: Bool
     */
     func textFieldShouldEndEditing(textField: UITextField) -> Bool {
-      if _existingFiles ∋ textField.text {
-        textField.textColor = _invalidTextColor
+      if ImportExportFileManager.existingFiles ∋ textField.text {
+        textField.textColor = ImportExportFileManager.invalidTextColor
         return false
       }
       return true
@@ -72,8 +72,8 @@ class ImportExportFileManager {
       let text = (range.length == 0
         ? textField.text + string
         : (textField.text as NSString).stringByReplacingCharactersInRange(range, withString:string))
-      let nameInvalid = _existingFiles ∋ text
-      textField.textColor = nameInvalid ? _invalidTextColor : _textColor
+      let nameInvalid = ImportExportFileManager.existingFiles ∋ text
+      textField.textColor = nameInvalid ? ImportExportFileManager.invalidTextColor : ImportExportFileManager.textColor
       exportAlertAction?.enabled = !nameInvalid
       return true
     }
@@ -116,7 +116,7 @@ class ImportExportFileManager {
     let exportAlertAction = UIAlertAction(title: "Export", style: .Default){
       (action: UIAlertAction!) -> Void in
       let text = (alert.textFields as! [UITextField])[0].text
-      precondition(text.length > 0 && text ∉ _existingFiles, "text field should not be empty or match an existing file")
+      precondition(text.length > 0 && text ∉ ImportExportFileManager.existingFiles, "text field should not be empty or match an existing file")
       self.exportItems(items, toFile: MoonFunctions.documentsPathToFile(text + ".json")!)
       completion?(true)
       alert.dismissViewControllerAnimated(true, completion: nil)
@@ -128,8 +128,8 @@ class ImportExportFileManager {
     // Add the text field
     alert.addTextFieldWithConfigurationHandler{
       $0.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
-      $0.textColor = _textColor
-      $0.delegate = nameValidator
+      $0.textColor = ImportExportFileManager.textColor
+      $0.delegate = ImportExportFileManager.nameValidator
     }
 
     // Add the cancel button

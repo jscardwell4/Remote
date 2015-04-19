@@ -166,7 +166,7 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
                               usingDirectory directory: OrderedDictionary<String, RemoteElement>) -> Constraint?
   {
     var constraint: Constraint?
-    if pseudo.valid, let firstElement = elementFromDirectory(directory, forString: pseudo.firstItem) {
+    if pseudo.valid, let firstElement = elementFromDirectory(directory, forString: pseudo.firstItem!) {
       var secondElement: RemoteElement?
       if pseudo.secondItem != nil { secondElement = elementFromDirectory(directory, forString: pseudo.secondItem!) }
       if pseudo.secondAttribute == .NotAnAttribute || secondElement != nil {
@@ -270,23 +270,22 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
   */
   public class func constraintFromFormat(format: String, withIndex index: [String:String], context: NSManagedObjectContext) -> Constraint? {
     var constraint: Constraint?
-    if let pseudo = PseudoConstraint(format) {
-      let firstItemIndex = pseudo.firstItem
-      if let firstItemUUID = index[firstItemIndex],
-        firstItem = RemoteElement.objectWithValue(firstItemUUID, forAttribute: "uuid", context: context)
-      {
-        var secondItem: RemoteElement?
-        if let secondItemIndex = pseudo.secondItem, secondItemUUID = index[secondItemIndex] {
-          secondItem = RemoteElement.objectWithValue(secondItemUUID, forAttribute: "uuid", context: context)
-        }
-
-        var directory: OrderedDictionary<String,RemoteElement> = [firstItem.identifier: firstItem]
-        if secondItem != nil { directory.setValue(secondItem!, forKey: secondItem!.identifier) }
-        var updatedPseudo = pseudo
-        updatedPseudo.firstItem = firstItem.identifier
-        updatedPseudo.secondItem = secondItem?.identifier
-        constraint = Constraint.constraintFromPseudoConstraint(updatedPseudo, usingDirectory: directory)
+    if let pseudo = PseudoConstraint(format),
+      firstItemIndex = pseudo.firstItem,
+      firstItemUUID = index[firstItemIndex],
+      firstItem = RemoteElement.objectWithValue(firstItemUUID, forAttribute: "uuid", context: context)
+    {
+      var secondItem: RemoteElement?
+      if let secondItemIndex = pseudo.secondItem, secondItemUUID = index[secondItemIndex] {
+        secondItem = RemoteElement.objectWithValue(secondItemUUID, forAttribute: "uuid", context: context)
       }
+
+      var directory: OrderedDictionary<String,RemoteElement> = [firstItem.identifier: firstItem]
+      if secondItem != nil { directory.setValue(secondItem!, forKey: secondItem!.identifier) }
+      var updatedPseudo = pseudo
+      updatedPseudo.firstItem = firstItem.identifier
+      updatedPseudo.secondItem = secondItem?.identifier
+      constraint = Constraint.constraintFromPseudoConstraint(updatedPseudo, usingDirectory: directory)
     }
     return constraint
   }

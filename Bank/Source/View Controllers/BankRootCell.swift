@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class BankRootCell: UITableViewCell {
+final class BankRootCell: UITableViewCell {
 
   var rootCategory: Bank.RootCategory? {
     didSet {

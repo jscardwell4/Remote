@@ -10,7 +10,7 @@ import UIKit
 import MoonKit
 import DataModel
 
-class BankCollectionCategoryCell: BankCollectionCell {
+final class BankCollectionCategoryCell: BankCollectionCell {
 
   var collection: ModelCollection? { didSet { label.text = collection?.name } }
 

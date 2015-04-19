@@ -13,24 +13,62 @@ private let UILayoutPriorityRequired: Float = 1000.0 // to avoid linker error
 
 public struct PseudoConstraint {
 
-  public typealias Item = String
-
-  public var firstItem: Item = "item1"
-  public var firstAttribute: Attribute = .Center
+  public typealias ItemName = String
+  public var firstItem: ItemName?
+  public var firstObject: AnyObject? {
+    didSet {
+      if let obj: AnyObject = firstObject where firstItem == nil {
+        firstItem = "item1"
+      }
+    }
+  }
+  public var firstAttribute: Attribute = .NotAnAttribute
   public var relation: Relation = .Equal
-  public var secondItem: Item?
+  public var secondObject: AnyObject? {
+    didSet {
+      if let obj: AnyObject = secondObject where secondItem == nil {
+        secondItem = "item2"
+      }
+    }
+  }
+  public var secondItem: ItemName?
   public var secondAttribute: Attribute = .NotAnAttribute
   public var constant: Float = 0
   public var multiplier: Float = 1
   public var priority: UILayoutPriority = UILayoutPriorityRequired
   public var identifier: String?
 
+  /**
+  itemNameFromString:
+
+  :param: string String
+
+  :returns: ItemName?
+  */
+  private func itemNameFromString(string: String?) -> ItemName? {
+    if string == nil { return nil }
+    let whitespaceAndNewline = NSCharacterSet.whitespaceAndNewlineCharacterSet()
+    let letters = NSCharacterSet.letterCharacterSet()
+    var result = ""
+    for u in string!.utf16 {
+      switch u {
+        case whitespaceAndNewline: result += "_"
+        case letters: result += String(u)
+        default: break
+      }
+    }
+    return result.isEmpty ? nil : result
+  }
+
+  /** Whether the pseudo constraint can actually be turned into an `NSLayoutConstraint` object */
   public var valid: Bool {
-    return firstAttribute != .NotAnAttribute
+    return firstItem != nil
+      && firstAttribute != .NotAnAttribute
       && !expandable
       && (secondAttribute == .NotAnAttribute ? secondItem == nil : secondItem != nil)
   }
 
+  /** Returns the array of `PseudoConstraint` objects by expanding a compatible attribute, i.e. 'center' into 'centerX', 'centerY' */
   public var expanded: [PseudoConstraint] {
     switch (firstAttribute, secondAttribute) {
       case (.Center, .Center):
@@ -50,9 +88,13 @@ public struct PseudoConstraint {
     }
   }
 
+  /** Whether the `PseudoConstraint` is expansion compatible */
   public var expandable: Bool {
     return firstAttribute == secondAttribute && ([.Center, .Size, .CenterWithinMargins] ∋ firstAttribute)
   }
+
+  /** init */
+  public init() {}
 
   /**
   init:attribute:relatedBy:toItem:attribute:multiplier:constant:priority:identifier:
@@ -67,10 +109,10 @@ public struct PseudoConstraint {
   :param: priority UILayoutPriority = UILayoutPriorityRequired
   :param: identifier String? = nil
   */
-  public init(item item1: Item,
+  public init(item item1: ItemName,
               attribute attr1: Attribute,
               relatedBy relation: Relation = Relation.Equal,
-              toItem item2: Item? = nil,
+              toItem item2: ItemName? = nil,
               attribute attr2: Attribute = Attribute.NotAnAttribute,
               multiplier: Float = 1.0,
               constant c: Float = 0.0,
@@ -135,12 +177,16 @@ public struct PseudoConstraint {
   :param: constraint NSLayoutConstraint
   :param: replacements [String String]
   */
-  public init(constraint: NSLayoutConstraint, item1: Item = "item1", item2: Item?) {
+  public init(constraint: NSLayoutConstraint, item1: ItemName = "item1", item2: ItemName?) {
     identifier = constraint.identifier
-    firstItem = item1
+    firstObject = constraint.firstItem
+    if let nametag = firstObject?.nametag, name = itemNameFromString(nametag) { firstItem = name }
+    if firstItem == nil { firstItem = item1 }
     firstAttribute = Attribute(constraint.firstAttribute)
     relation = Relation(constraint.relation)
-    if constraint.secondItem != nil { secondItem = item2 ?? "item2" }
+    secondObject = constraint.secondItem
+    if let nametag = secondObject?.nametag, name = itemNameFromString(nametag) { secondItem = name }
+    if secondItem == nil && secondObject != nil { secondItem == item2 ?? "item2" }
     secondAttribute = Attribute(constraint.secondAttribute)
     multiplier = Float(constraint.multiplier)
     constant = Float(constraint.constant)
@@ -169,15 +215,13 @@ public struct PseudoConstraint {
   public func constraintWithItems(item1: AnyObject, _ item2: AnyObject?) -> NSLayoutConstraint? {
     if !valid || ((item2 == nil) != (secondItem == nil)) { return nil }
     else {
-      let constraint = NSLayoutConstraint(
-        item: item1,
-        attribute: firstAttribute.NSLayoutAttributeValue,
-        relatedBy: relation.NSLayoutRelationValue,
-        toItem: item2,
-        attribute: secondAttribute.NSLayoutAttributeValue,
-        multiplier: CGFloat(multiplier),
-        constant: CGFloat(constant)
-      )
+      let constraint = NSLayoutConstraint(item: item1,
+                                          attribute: firstAttribute.NSLayoutAttributeValue,
+                                          relatedBy: relation.NSLayoutRelationValue,
+                                          toItem: item2,
+                                          attribute: secondAttribute.NSLayoutAttributeValue,
+                                          multiplier: CGFloat(multiplier),
+                                          constant: CGFloat(constant))
       constraint.priority = priority
       constraint.identifier = identifier
       return constraint
@@ -191,10 +235,26 @@ public struct PseudoConstraint {
 
   :returns: NSLayoutConstraint?
   */
-  public func constraintWithItems(items: [Item:AnyObject]) -> NSLayoutConstraint? {
-    if let item1: AnyObject = items[firstItem] {
+  public func constraintWithItems(items: [ItemName:AnyObject]) -> NSLayoutConstraint? {
+    if let firstItem = self.firstItem, item1: AnyObject = items[firstItem] {
       return constraintWithItems(item1, secondItem != nil ? items[secondItem!] : nil)
     } else { return nil }
+  }
+
+  public func constraint() -> NSLayoutConstraint? {
+    if !valid { return nil }
+    else {
+      let constraint = NSLayoutConstraint(item: firstObject!,
+                                          attribute: firstAttribute.NSLayoutAttributeValue,
+                                          relatedBy: relation.NSLayoutRelationValue,
+                                          toItem: secondObject,
+                                          attribute: secondAttribute.NSLayoutAttributeValue,
+                                          multiplier: CGFloat(multiplier),
+                                          constant: CGFloat(constant))
+      constraint.priority = priority
+      constraint.identifier = identifier
+      return constraint
+    }
   }
 
 }
@@ -229,7 +289,7 @@ extension PseudoConstraint: Printable {
 extension PseudoConstraint: DebugPrintable {
   public var debugDescription: String {
     return "\n".join(description,
-      "firstItem: \(firstItem)",
+      "firstItem: \(toString(firstItem))",
       "secondItem: \(toString(secondItem))",
       "firstAttribute: \(firstAttribute.rawValue)",
       "secondAttribute: \(secondAttribute.rawValue)",
@@ -350,5 +410,47 @@ extension PseudoConstraint {
       }
     }
   }
+}
+
+extension UIView {
+  public var right: (UIView, PseudoConstraint.Attribute) { return (self, .Right) }
+  public var left: (UIView, PseudoConstraint.Attribute) { return (self, .Left) }
+  public var top: (UIView, PseudoConstraint.Attribute) { return (self, .Top) }
+  public var bottom: (UIView, PseudoConstraint.Attribute) { return (self, .Bottom) }
+  public var centerX: (UIView, PseudoConstraint.Attribute) { return (self, .CenterX) }
+  public var centerY: (UIView, PseudoConstraint.Attribute) { return (self, .CenterY) }
+  public var width: (UIView, PseudoConstraint.Attribute) { return (self, .Width) }
+  public var height: (UIView, PseudoConstraint.Attribute) { return (self, .Height) }
+  public var baseline: (UIView, PseudoConstraint.Attribute) { return (self, .Baseline) }
+  public var leading: (UIView, PseudoConstraint.Attribute) { return (self, .Leading) }
+  public var trailing: (UIView, PseudoConstraint.Attribute) { return (self, .Trailing) }
+
+  public func constrain(pseudo: PseudoConstraint ...) {
+    for p in pseudo { if let c = p.constraint() { self.addConstraint(c) } }
+  }
+}
+
+public func ==(lhs: (UIView, PseudoConstraint.Attribute), rhs: (UIView, PseudoConstraint.Attribute)) -> PseudoConstraint {
+  var pseudo = PseudoConstraint()
+  pseudo.firstObject = lhs.0
+  pseudo.firstAttribute = lhs.1
+  pseudo.secondObject = rhs.0
+  pseudo.secondAttribute = rhs.1
+  return pseudo
+}
+
+public func *(var lhs: PseudoConstraint, rhs: Float) -> PseudoConstraint {
+  lhs.multiplier = rhs
+  return lhs
+}
+
+public func +(var lhs: PseudoConstraint, rhs: Float) -> PseudoConstraint {
+  lhs.constant = rhs
+  return lhs
+}
+
+public func -(var lhs: PseudoConstraint, rhs: Float) -> PseudoConstraint {
+  lhs.constant = -rhs
+  return lhs
 }
 

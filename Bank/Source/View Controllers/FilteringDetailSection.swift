@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class FilteringDetailSection: DetailSection {
+final class FilteringDetailSection: DetailSection {
 
   override var identifier: DetailSectionHeader.Identifier { return .FilteringHeader }
 

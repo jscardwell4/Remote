@@ -11,7 +11,7 @@ import UIKit
 import MoonKit
 import DataModel
 
-class BankSurrogateCategory: NSObject, BankModelCollection {
+final class BankSurrogateCategory: NSObject, BankModelCollection {
 
   var collections: [ModelCollection] = []
   var items: [NamedModel] = []

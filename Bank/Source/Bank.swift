@@ -11,7 +11,7 @@ import UIKit
 import MoonKit
 import DataModel
 
-final class Bank {
+final public class Bank {
 
   private static let bankBundle = NSBundle(forClass: Bank.self)
 
@@ -22,7 +22,7 @@ final class Bank {
 
   :returns: UIImage?
   */
-  static func bankImageNamed(named: String) -> UIImage! {
+  public static func bankImageNamed(named: String) -> UIImage! {
     return UIImage(named: named, inBundle: bankBundle, compatibleWithTraitCollection: nil)!
   }
 

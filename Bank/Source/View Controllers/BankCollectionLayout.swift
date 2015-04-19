@@ -10,21 +10,20 @@ import Foundation
 import UIKit
 import MoonKit
 
-@objc(BankCollectionLayout)
-class BankCollectionLayout: UICollectionViewLayout {
+final class BankCollectionLayout: UICollectionViewLayout {
 
   /// Default cell sizes
   ////////////////////////////////////////////////////////////////////////////////
 
-  class var listItemCellSize:      CGSize { return CGSize(width: 320.0, height: 38.0) }
-  class var thumbnailItemCellSize: CGSize { return CGSize(width: 100.0, height: 100.0) }
+  static let ListItemCellSize = CGSize(width: 320.0, height: 38.0)
+  static let ThumbnailItemCellSize = CGSize(width: 100.0, height: 100.0)
 
   /// Customizable cell sizes, spacing, and viewing mode
   ////////////////////////////////////////////////////////////////////////////////
 
-  var itemListSize      = BankCollectionLayout.listItemCellSize
-  var itemThumbnailSize = BankCollectionLayout.thumbnailItemCellSize
-  var categorySize      = BankCollectionLayout.listItemCellSize
+  var itemListSize      = BankCollectionLayout.ListItemCellSize
+  var itemThumbnailSize = BankCollectionLayout.ThumbnailItemCellSize
+  var categorySize      = BankCollectionLayout.ListItemCellSize
 
   var verticalSpacing:   CGFloat = 10.0
   var horizontalSpacing: CGFloat = 10.0
@@ -43,7 +42,7 @@ class BankCollectionLayout: UICollectionViewLayout {
   /// Private variables to hold calculations
   ////////////////////////////////////////////////////////////////////////////////
 
-  private(set) var itemSize  = BankCollectionLayout.listItemCellSize
+  private(set) var itemSize  = BankCollectionLayout.ListItemCellSize
 
   private var categoryCount = 0
   private var itemCount     = 0

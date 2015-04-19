@@ -8,8 +8,7 @@
 import Foundation
 import UIKit
 
-@objc(BankCollectionAttributes)
-class BankCollectionAttributes: UICollectionViewLayoutAttributes {
+final class BankCollectionAttributes: UICollectionViewLayoutAttributes {
 
   enum ViewingMode: Int { case List, Thumbnail }
 

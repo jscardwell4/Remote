@@ -412,6 +412,7 @@
 		C24A22981ADB4C1E0065E7EA /* FunctionManipulation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunctionManipulation.swift; sourceTree = "<group>"; };
 		C24D19E919EDAE1500CC3CD9 /* InlinePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlinePickerView.swift; sourceTree = "<group>"; };
 		C24D19EC19EDB54400CC3CD9 /* UIView+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+MoonKitAdditions.swift"; sourceTree = "<group>"; };
+		C24DD28A1AE4056D000306A0 /* Constraints.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = Constraints.playground; path = Moonkit/Constraints.playground; sourceTree = "<group>"; };
 		C24E0EB81AC6141B0044248E /* Bool+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bool+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C24ECC8F19DE085D00C1870E /* BlockBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockBarButtonItem.swift; sourceTree = "<group>"; };
 		C256F07E1ABDFFE5005B7CB3 /* MoonKitOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoonKitOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -902,6 +903,7 @@
 		C2CE884518138C4900555D63 = {
 			isa = PBXGroup;
 			children = (
+				C24DD28A1AE4056D000306A0 /* Constraints.playground */,
 				C22734571AE1622E00641CC3 /* JSON.playground */,
 				C2A46E651AD703E70030E3CC /* MoonKit.playground */,
 				C285D8251AC44E0300C527F6 /* MoonKitLite */,

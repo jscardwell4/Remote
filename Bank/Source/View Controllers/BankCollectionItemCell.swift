@@ -11,7 +11,7 @@ import UIKit
 import MoonKit
 
 
-class BankCollectionItemCell: BankCollectionCell {
+final class BankCollectionItemCell: BankCollectionCell {
 
   weak var item: protocol<Named>? {
     didSet {

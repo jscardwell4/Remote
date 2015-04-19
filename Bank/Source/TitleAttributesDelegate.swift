@@ -11,14 +11,13 @@ import UIKit
 import MoonKit
 import DataModel
 
-@objc public protocol TitleAttributesDelegateObserver {
+@objc protocol TitleAttributesDelegateObserver {
   optional func saveInvokedForTitleAttributesDelegate(titleAttributesDelegate: TitleAttributesDelegate)
   optional func deleteInvokedForTitleAttributesDelegate(titleAttributesDelegate: TitleAttributesDelegate)
   optional func rollbackInvokedForTitleAttributesDelegate(titleAttributesDelegate: TitleAttributesDelegate)
 }
 
-@objc(TitleAttributesDelegate)
-public class TitleAttributesDelegate: Editable , Detailable {
+@objc final class TitleAttributesDelegate: Editable , Detailable {
 
   var titleAttributes: TitleAttributes
 
@@ -27,11 +26,11 @@ public class TitleAttributesDelegate: Editable , Detailable {
   var name: String?
 
   var observer: TitleAttributesDelegateObserver?
-  public var editable: Bool { return true }
+  internal var editable: Bool { return true }
 
-  public func save() { observer?.saveInvokedForTitleAttributesDelegate?(self) }
-  public func delete() { observer?.deleteInvokedForTitleAttributesDelegate?(self) }
-  public func rollback() { titleAttributes = initialAttributes; observer?.rollbackInvokedForTitleAttributesDelegate?(self) }
+  func save() { observer?.saveInvokedForTitleAttributesDelegate?(self) }
+  func delete() { observer?.deleteInvokedForTitleAttributesDelegate?(self) }
+  func rollback() { titleAttributes = initialAttributes; observer?.rollbackInvokedForTitleAttributesDelegate?(self) }
 
   /**
   initWithAttributes:

@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class FilteringDetailSectionHeader: DetailSectionHeader {
+final class FilteringDetailSectionHeader: DetailSectionHeader {
 
   private var checkBoxContainer = UIView(autolayout: true)
 

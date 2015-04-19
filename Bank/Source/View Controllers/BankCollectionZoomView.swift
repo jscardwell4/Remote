@@ -18,10 +18,10 @@ protocol BankCollectionZoomViewDelegate {
 
 }
 
-class BankCollectionZoomView: UIView {
+final class BankCollectionZoomView: UIView {
 
-  class var LabelHeight: CGFloat { return 21.0 }
-  class var ButtonSize: CGSize { return CGSize(width: 44.0, height: 44.0) }
+  static let LabelHeight: CGFloat = 21.0
+  static let ButtonSize = CGSize(width: 44.0, height: 44.0)
 
   var item: Previewable? {
     didSet {

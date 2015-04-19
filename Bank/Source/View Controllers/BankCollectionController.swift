@@ -13,10 +13,10 @@ import DataModel
 
 // TODO: Viewing mode changes need to respect whether category items are `previewable`
 
-class BankCollectionController: UICollectionViewController, BankController {
+final class BankCollectionController: UICollectionViewController, BankController {
 
-	private let itemCellIdentifier = "ItemCell"
-	private let categoryCellIdentifier = "CategoryCell"
+	private static let ItemCellIdentifier = "ItemCell"
+	private static let CategoryCellIdentifier = "CategoryCell"
 
   var collection: BankModelCollection!
 
@@ -126,8 +126,8 @@ class BankCollectionController: UICollectionViewController, BankController {
       collectionView.backgroundColor = Bank.backgroundColor
 
       // Register header and cell classes
-      collectionView.registerClass(BankCollectionCategoryCell.self, forCellWithReuseIdentifier: self.categoryCellIdentifier)
-      collectionView.registerClass(BankCollectionItemCell.self, forCellWithReuseIdentifier: self.itemCellIdentifier)
+      collectionView.registerClass(BankCollectionCategoryCell.self, forCellWithReuseIdentifier: BankCollectionController.CategoryCellIdentifier)
+      collectionView.registerClass(BankCollectionItemCell.self, forCellWithReuseIdentifier: BankCollectionController.ItemCellIdentifier)
       return collectionView
 
     }()
@@ -519,7 +519,7 @@ extension BankCollectionController: UICollectionViewDataSource {
   {
     switch indexPath.section {
       case 0:
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(categoryCellIdentifier,
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(BankCollectionController.CategoryCellIdentifier,
                                                             forIndexPath: indexPath) as! BankCollectionCategoryCell
         if let collection = nestedCollectionForIndexPath(indexPath) {
           cell.collection = collection
@@ -533,7 +533,7 @@ extension BankCollectionController: UICollectionViewDataSource {
         return cell
 
       default:
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(itemCellIdentifier,
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(BankCollectionController.ItemCellIdentifier,
                                                             forIndexPath: indexPath) as! BankCollectionItemCell
         if let item = itemForIndexPath(indexPath) {
           cell.item = item

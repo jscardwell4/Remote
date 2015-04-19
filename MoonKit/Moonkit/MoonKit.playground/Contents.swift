@@ -3,6 +3,106 @@ import Foundation
 import UIKit
 import MoonKit
 
+
+
+
+let indicator = UIImageView.newForAutolayout()
+indicator.nametag = "indicator"
+//indicator.constrain("self.width ≤ self.height :: self.height = 22")
+
+let deleteButton = UIButton()
+deleteButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+deleteButton.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.75)
+deleteButton.setTitle("Delete", forState: .Normal)
+deleteButton.constrain("self.width = 100")
+
+var indicatorImage = UIImage(named: "1040-checkmark-toolbar")
+indicator.image = indicatorImage
+
+let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 34))
+label.setTranslatesAutoresizingMaskIntoConstraints(false)
+label.text = "Label Muthafucka!"
+label.font = UIFont.systemFontOfSize(20)
+
+let contentView = UIView()
+contentView.setTranslatesAutoresizingMaskIntoConstraints(false)
+contentView.backgroundColor = UIColor.lightGrayColor().colorWithAlpha(0.5)
+contentView.addSubview(indicator)
+contentView.addSubview(label)
+contentView.addSubview(deleteButton)
+
+let view = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: 38))
+view.backgroundColor = UIColor.whiteColor()
+view.addSubview(contentView)
+view.setNeedsLayout()
+view.layoutIfNeeded()
+view
+
+let identifier = createIdentifier(view, "Internal")
+
+// Refresh our constraints
+let format = "\n".join(
+  "H:|[content]|", "V:|[content]|",
+  "delete.right = self.right",
+  "delete.top = self.top",
+  "delete.bottom = self.bottom",
+  "H:|-[indicator]-[label]",
+  "label.centerY = content.centerY",
+  "indicator.centerY = content.centerY")
+let views = ["delete": deleteButton, "content": contentView, "indicator": indicator, "label": label]
+view.constrain(format, views: views, identifier: identifier)
+view.setNeedsLayout()
+view.layoutIfNeeded()
+
+
+view
+
+
+
+
+
+
+view.removeAllConstraints()
+view.setNeedsLayout()
+view.layoutIfNeeded()
+
+
+
+infix operator =|= {}
+infix operator =-= {}
+
+func =|=<V1:UIView, V2:UIView>(lhs: V1, rhs: V2) {
+  if lhs.isDescendantOfView(rhs) {
+    rhs.constrain("lhs.centerX = self.centerX", views: ["lhs": lhs])
+  } else if rhs.isDescendantOfView(lhs) {
+    lhs.constrain("rhs.centerX = self.centerX", views: ["rhs": rhs])
+  }
+}
+
+func =-=<V1:UIView, V2:UIView>(lhs: V1, rhs: V2) {
+  if lhs.isDescendantOfView(rhs) {
+    rhs.constrain("lhs.centerY = self.centerY", views: ["lhs": lhs])
+  } else if rhs.isDescendantOfView(lhs) {
+    lhs.constrain("rhs.centerY = self.centerY", views: ["rhs": rhs])
+  }
+}
+
+
+
+
+label =|= view
+label =-= view
+
+view.setNeedsLayout()
+view.layoutIfNeeded()
+
+view
+
+
+
+
+
+
 var scanner = NSScanner(string: "+ 20")
 var f: Float = 0.0
 let didScanFloatWithSpace = scanner.scanFloat(&f)
@@ -78,8 +178,3 @@ println("spaceSeparated = \(spaceSeparated)")
 let anyButSpaceSeparated = split(Array(s.generate()), isSeparator: invert(matchesSpace)).map({String($0)})
 println("anyButSpaceSeparated = \(anyButSpaceSeparated)")
 
-println()
-let format = "$1.bottom = self.bottom"
-let pseudo = PseudoConstraint(format)
-println(pseudo!.description)
-println(pseudo!.debugDescription)
