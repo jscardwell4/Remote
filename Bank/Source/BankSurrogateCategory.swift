@@ -34,3 +34,17 @@ final class BankSurrogateCategory: NSObject, BankModelCollection {
   }
 
 }
+
+extension BankSurrogateCategory: Printable {
+  override var description: String {
+    var result = "BankSurrogateCategory:\n"
+    result += "\tname = \(name)\n"
+    result += "\tcollections = "
+    if collections.count == 0 { result += "[]\n" }
+    else { result += "{\n" + "\n\n".join(collections.map({toString($0)})).indentedBy(8) + "\n\t}\n" }
+    result += "\titems = "
+    if items.count == 0 { result += "[]\n" }
+    else { result += "{\n" + "\n\n".join(items.map({toString($0)})).indentedBy(8) + "\n\t}\n" }
+    return result
+  }
+}

@@ -13,6 +13,19 @@ import MoonKit
 @objc(Image)
 final public class Image: EditableModelObject {
 
+  static var resourceRegistration: [String:NSBundle] = [:]
+
+  /**
+  Public api for registering a bundle for a corresponding `Asset.location` value so that `Image` objects may use
+  bundle-based resources not representable by a file url, i.e. 'Assets.car'
+
+  :param: bundle NSBundle?
+  :param: locationValue String
+  */
+  public class func registerBundle(bundle: NSBundle?, forLocationValue locationValue: String) {
+    resourceRegistration[locationValue] = bundle
+  }
+
   @NSManaged public var asset: Asset?
 
   @NSManaged public var leftCap: Int32
@@ -61,7 +74,17 @@ final public class Image: EditableModelObject {
     if let topCap = Int32(data["topCap"]) { self.topCap = topCap }
   }
   // FIXME: Move UIImage retrieval to bank module?
-  public var image: UIImage? { return UIImage(contentsOfFile: asset?.location ?? "") }
+  public var image: UIImage? {
+    debugPrintln(self.dynamicType.resourceRegistration)
+    var img: UIImage? = nil
+    if let location = asset?.location {
+      img = UIImage(contentsOfFile: location)
+      if img == nil, let imageBundle = Image.resourceRegistration[location], assetName = asset?.name {
+        img = UIImage(named: assetName, inBundle: imageBundle, compatibleWithTraitCollection: nil)
+      }
+    }
+    return img
+  }
   public var templateImage: UIImage? { return image?.imageWithRenderingMode(.AlwaysTemplate) }
 
   override public var jsonValue: JSONValue {

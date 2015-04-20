@@ -116,7 +116,7 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
   */
   public subscript (key: Key) -> Value? {
     get { return dictionary[key] }
-    set { setValue(newValue, forKey: key) }
+    mutating set { setValue(newValue, forKey: key) }
   }
 
   /**
@@ -131,7 +131,7 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
       precondition(i < _keys.count)
       return (_keys[i], values[i])
     }
-    set {
+    mutating set {
       precondition(i < _keys.count)
       insertValue(newValue.1, atIndex: i, forKey: newValue.0)
     }
@@ -150,7 +150,7 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
       for key in keys { values.append(self[key]) }
       return values
     }
-    set {
+    mutating set {
       if newValue.count == keys.count {
         for (i, key) in enumerate(keys) { self[key] = newValue[i] }
       }

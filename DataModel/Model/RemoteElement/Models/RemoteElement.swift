@@ -279,7 +279,7 @@ public class RemoteElement: IndexedModelObject {
     if bgImageAlphas.count > 0 { obj["backgroundImage-alpha"] = .Object(bgImageAlphas) }
 
     let subelementJSON = childElements.map({$0.jsonValue})
-    if subelementJSON.count > 0 { obj["subelements"] = JSONValue(subelementJSON) }
+    if subelementJSON.count > 0 { obj["subelements"] = Optional(JSONValue(subelementJSON)) }
 
     if constraints.count > 0 {
 

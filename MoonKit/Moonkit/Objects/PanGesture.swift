@@ -122,11 +122,6 @@ public class PanGesture: ConfiningBlockActionGesture {
         finalVelocity = ((currentVelocity - previousVelocity) / deltaTime) * time
       }
     }
-    MSLogDebug("\n".join("currentTimestamp: \(currentTimestamp)",
-                         "currentPoint: \(currentPoint)",
-                         "time: \(time)",
-                         "currentVelocity: \(currentVelocity)",
-                         "finalVelocity: \(finalVelocity)"))
   }
 
   /// MARK: - UIGestureRecognizer

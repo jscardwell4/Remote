@@ -83,10 +83,13 @@ extension BankRootController: UITableViewDelegate {
   */
   override public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     let rootCategory = rootCategories[indexPath.row]
+    debugPrintln(rootCategory)
     let collection = BankSurrogateCategory(title: rootCategory.label,
                                          collections: rootCategory.collections,
                                          items: rootCategory.items)
+    debugPrintln(collection)
     let collectionController = BankCollectionController(collection: collection)!
+    debugPrintln(collectionController)
     navigationController?.pushViewController(collectionController, animated: true)
   }
 

@@ -533,6 +533,7 @@
 		C2CDB8F81AD74BC8006DF88C /* Remote_Simple.json in Resources */ = {isa = PBXBuildFile; fileRef = C2CDB8F51AD74BC8006DF88C /* Remote_Simple.json */; };
 		C2CEFF1C1A2F8FF400F3BE24 /* RemoteStyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CEFF1B1A2F8FF400F3BE24 /* RemoteStyleKit.swift */; };
 		C2D361DE182BE49600775239 /* RemoteElementKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D361DD182BE49600775239 /* RemoteElementKeys.m */; };
+		C2DD7E5E1AE560AD004A6449 /* Bank.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C293C7441AC3164700408D35 /* Bank.framework */; };
 		C2E8D99919BCBF6800E6098E /* 1067-gray-enter-fullscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99519BCBF6800E6098E /* 1067-gray-enter-fullscreen.png */; };
 		C2E8D99A19BCBF6800E6098E /* 1067-gray-enter-fullscreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99619BCBF6800E6098E /* 1067-gray-enter-fullscreen@2x.png */; };
 		C2E8D99B19BCBF6800E6098E /* 1068-gray-exit-fullscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99719BCBF6800E6098E /* 1068-gray-exit-fullscreen.png */; };
@@ -1603,6 +1604,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C24E0EBF1AC61E080044248E /* MoonKit.framework in Frameworks */,
+				C2DD7E5E1AE560AD004A6449 /* Bank.framework in Frameworks */,
 				C21F10681AC62D8100CD877B /* CocoaLumberjack.framework in Frameworks */,
 				C2FA4B8B1AC5E3250071429E /* DataModel.framework in Frameworks */,
 			);
@@ -5244,7 +5246,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";

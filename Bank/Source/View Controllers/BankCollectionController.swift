@@ -18,6 +18,8 @@ final class BankCollectionController: UICollectionViewController, BankController
 	private static let ItemCellIdentifier = "ItemCell"
 	private static let CategoryCellIdentifier = "CategoryCell"
 
+  override var description: String { return "\(super.description), collection = {\n\(toString(collection).indentedBy(4))\n}" }
+
   var collection: BankModelCollection!
 
   enum Mode { case Default, Selection }
@@ -212,10 +214,7 @@ final class BankCollectionController: UICollectionViewController, BankController
   :returns: ModelCollection?
   */
   private func nestedCollectionForIndexPath(indexPath: NSIndexPath) -> ModelCollection? {
-    if indexPath.section == 0,
-      let nestingCollection = collection as? NestingModelCollection,
-      collections = nestingCollection.collections where collections.count > indexPath.row
-    {
+    if indexPath.section == 0, let collections = collection.collections where collections.count > indexPath.row {
       return collections[indexPath.row]
     } else { return nil }
   }
@@ -420,14 +419,12 @@ extension BankCollectionController {
       exportSelection.removeAll(keepCapacity: true)
       exportSelectionIndices.removeAll(keepCapacity: true)
       var capacity = 0
-      if let nestingCollection = collection as? NestingModelCollection, collections = nestingCollection.collections {
-        capacity += collections.count
-      }
+      if let collections = collection.collections { capacity += collections.count }
       if let items = collection.items { capacity += items.count }
       exportSelection.reserveCapacity(capacity)
       exportSelectionIndices.reserveCapacity(capacity)
 
-      if let nestingCollection = collection as? NestingModelCollection, collections = nestingCollection.collections {
+      if let collections = collection.collections {
         for (i, collection) in enumerate(collections) {
           if let exportCollection = collection as? JSONValueConvertible {
             exportSelection.append(exportCollection)
@@ -503,7 +500,7 @@ extension BankCollectionController: UICollectionViewDataSource {
   :returns: Int
   */
   override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return (section == 0 ? (collection as? NestingModelCollection)?.collections?.count  : collection.items?.count) ?? 0
+    return (section == 0 ? collection.collections?.count  : collection.items?.count) ?? 0
   }
 
   /**

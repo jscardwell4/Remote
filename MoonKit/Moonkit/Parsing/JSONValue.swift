@@ -37,7 +37,7 @@ public enum JSONValue {
 
   :param: s S
   */
-  public init<S:SequenceType where S.Generator.Element == JSONValue>(s: S) {
+  public init<S:SequenceType where S.Generator.Element == JSONValue>(_ s: S) {
     self = Array(Swift.Array(s))
   }
 
@@ -46,7 +46,7 @@ public enum JSONValue {
 
   :param: s S
   */
-  public init<S:SequenceType where S.Generator.Element:JSONValueConvertible>(s: S) {
+  public init<S:SequenceType where S.Generator.Element:JSONValueConvertible>(_ s: S) {
     self = Array(Swift.Array(map(s, {$0.jsonValue})))
   }
 
@@ -56,7 +56,7 @@ public enum JSONValue {
   :param: c C
   */
   public init<C:KeyValueCollectionType where C.KeysLazyCollectionType.Generator.Element == Swift.String,
-                                             C.ValuesLazyCollectionType.Generator.Element == JSONValue>(c: C)
+                                             C.ValuesLazyCollectionType.Generator.Element == JSONValue>(_ c: C)
   {
     self = Object(OrderedDictionary<Swift.String, JSONValue>(keys: c.keys, values: c.values))
   }
@@ -67,7 +67,7 @@ public enum JSONValue {
   :param: c C
   */
   public init<C:KeyValueCollectionType where C.KeysLazyCollectionType.Generator.Element == Swift.String,
-    C.ValuesLazyCollectionType.Generator.Element:JSONValueConvertible>(c: C)
+    C.ValuesLazyCollectionType.Generator.Element:JSONValueConvertible>(_ c: C)
   {
     self = Object(OrderedDictionary<Swift.String, JSONValue>(keys: c.keys, values: map(c.values, {$0.jsonValue})))
   }

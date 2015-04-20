@@ -13,7 +13,12 @@ import DataModel
 
 final public class Bank {
 
-  private static let bankBundle = NSBundle(forClass: Bank.self)
+  private static let imageLocation = "$bank"
+  private static let bankBundle: NSBundle = {
+    let bundle = NSBundle(forClass: Bank.self)
+    Image.registerBundle(bundle, forLocationValue: Bank.imageLocation)
+    return bundle
+    }()
 
   /**
   bankImageNamed:
@@ -206,7 +211,7 @@ final public class Bank {
     }()
 
   /** A simple structure for packaging top level bank category data for consumption by `BankRootController` */
-  struct RootCategory {
+  struct RootCategory: Printable {
     let label: String
     let icon: UIImage
     let collections: [ModelCollection]
@@ -221,6 +226,19 @@ final public class Bank {
       self.icon = icon
       self.collections = collections
       self.items = items
+    }
+
+    var description: String {
+      var result = "RootCategory:\n"
+      result += "\tlabel = \(label)\n"
+      result += "\ticon = \(icon)\n"
+      result += "\tcollections = "
+      if collections.count == 0 { result += "[]\n" }
+      else { result += "{\n" + "\n\n".join(collections.map({toString($0)})).indentedBy(8) + "\n\t}\n" }
+      result += "items = "
+      if items.count == 0 { result += "[]\n" }
+      else { result += "{\n" + "\n\n".join(items.map({toString($0)})).indentedBy(8) + "\n\t}\n" }
+      return result
     }
   }
 

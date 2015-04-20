@@ -35,8 +35,8 @@ final public class ImageCategory: EditableModelObject {
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
     obj["category.index"] = parentCategory?.index.jsonValue
-    obj["images"] = JSONValue(images)
-    obj["subcategories"] = JSONValue(childCategories)
+    obj["images"] = Optional(JSONValue(images))
+    obj["subcategories"] = Optional(JSONValue(childCategories))
     return obj.jsonValue
   }
 

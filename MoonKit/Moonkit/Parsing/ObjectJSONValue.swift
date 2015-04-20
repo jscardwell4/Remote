@@ -19,7 +19,7 @@ public struct ObjectJSONValue: JSONValueConvertible, JSONValueInitializable {
   public init<J:JSONValueConvertible>(_ value: [String:J]) { self.value = OrderedDictionary(value).map({$1.jsonValue}) }
 
   public init?(_ v: JSONValue?) { switch v ?? .Null { case .Object(let o): value = o; default: return nil } }
-  public subscript(key: String) -> JSONValue? { get { return value[key] } set { value[key] = newValue } }
+  public subscript(key: String) -> JSONValue? { get { return value[key] } mutating set { value[key] = newValue } }
   public var keys: LazyForwardCollection<[String]> { return value.keys }
   public var values: LazyForwardCollection<MapCollectionView<[String], JSONValue>> { return value.values }
   public func filter(includeElement: (String, JSONValue) -> Bool) -> ObjectJSONValue {

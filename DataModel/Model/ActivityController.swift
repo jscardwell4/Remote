@@ -66,7 +66,7 @@ public final class ActivityController: ModelObject {
     obj["currentRemote.uuid"] = currentRemote.uuid.jsonValue
     obj["currentActivity.uuid"] = currentActivity?.uuid.jsonValue
     obj["topToolbar"] = topToolbar.jsonValue
-    obj["activities"] = JSONValue(activities)
+    obj["activities"] = Optional(JSONValue(activities))
     return obj.jsonValue
   }
 
