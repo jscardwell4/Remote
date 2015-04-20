@@ -15,14 +15,18 @@ class BankItemDetailController: NamedItemDetailController {
 
 
   var model: EditableModel! { return item as? EditableModel }
-  let context: NSManagedObjectContext!
+  private(set) var context: NSManagedObjectContext!
+
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+  }
 
   /**
   initWithCoder:
 
   :param: aDecoder NSCoder
   */
-  required init(coder aDecoder: NSCoder) { context = nil; super.init(coder: aDecoder) }
+  required init(coder aDecoder: NSCoder) { fatalError("must use init(model:") }
 
   /**
   initWithModel:

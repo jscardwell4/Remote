@@ -19,7 +19,9 @@ extension NSLayoutConstraint {
   :returns: [String]
   */
   public class func splitFormat(format: String) -> [String] {
-    return "\n".split(format.sub("::", "\n").sub("[⏎;]", "\n").sub("  +", " ")).filter(invert(isEmpty))
+    return "\n".split(format.sub("::", "\n").sub("[⏎;]", "\n").sub("  +", " "))
+      .map({$0.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())})
+      .filter(invert(isEmpty))
   }
 
   /**

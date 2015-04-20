@@ -13,66 +13,27 @@ import DataModel
 
 class DetailController: UITableViewController {
 
-  /// A private structure to encapsulate constant class properties
-  ////////////////////////////////////////////////////////////////////////////////
-  private struct DetailControllerProperties {
+  // Fonts
+  static let labelFont = UIFont(name: "Elysio-Medium", size: 15.0)!
+  static let boldLabelFont = UIFont(name: "Elysio-Bold",   size: 17.0)!
+  static let infoFont = UIFont(name: "Elysio-Light",  size: 15.0)!
+  static let actionFont = UIFont(name: "Elysio-RegularItalic", size: 15.0)!
 
-    // Fonts
-    static let labelFont                  = UIFont(name: "Elysio-Medium", size: 15.0)!
-    static let boldLabelFont              = UIFont(name: "Elysio-Bold",   size: 17.0)!
-    static let infoFont                   = UIFont(name: "Elysio-Light",  size: 15.0)!
-    static let actionFont                 = UIFont(name: "Elysio-RegularItalic", size: 15.0)!
+  // Colors
+  static let labelColor = UIColor(r: 59 , g: 60,  b: 64,  a: 255)!
+  static let infoColor = UIColor(r: 159, g: 160, b: 164, a: 255)!
+  static let actionColor = UIColor(r: 0,   g: 175, b: 255, a: 255)!
+  static let backgroundColor = UIColor.whiteColor()
 
-    // Colors
-    static let labelColor                 = UIColor(r: 59 , g: 60,  b: 64,  a: 255)!
-    static let infoColor                  = UIColor(r: 159, g: 160, b: 164, a: 255)!
-    static let actionColor                = UIColor(r: 0,   g: 175, b: 255, a: 255)!
-    static let backgroundColor            = UIColor.whiteColor()
+  static let defaultRowHeight: CGFloat = 38.0
+  static let separatorStyle: UITableViewCellSeparatorStyle = .None
+  static let keyboardAppearance: UIKeyboardAppearance = .Dark
 
-    static let defaultRowHeight: CGFloat = 38.0
-    static let separatorStyle: UITableViewCellSeparatorStyle = .None
-    static let keyboardAppearance: UIKeyboardAppearance = .Dark
-
-    static let titleTextAttributes = [ NSFontAttributeName:            DetailControllerProperties.boldLabelFont,
-                                       NSForegroundColorAttributeName: DetailControllerProperties.labelColor ]
-  }
-
-  /// Font accessors
-  ////////////////////////////////////////////////////////////////////////////////
-
-  class var labelFont                  : UIFont  { return DetailControllerProperties.labelFont     }
-  class var boldLabelFont              : UIFont  { return DetailControllerProperties.boldLabelFont }
-  class var infoFont                   : UIFont  { return DetailControllerProperties.infoFont      }
-  class var actionFont                 : UIFont  { return DetailControllerProperties.actionFont    }
-
-  /// Color accessors
-  ////////////////////////////////////////////////////////////////////////////////
-
-  class var labelColor                 : UIColor { return DetailControllerProperties.labelColor      }
-  class var infoColor                  : UIColor { return DetailControllerProperties.infoColor       }
-  class var actionColor                : UIColor { return DetailControllerProperties.actionColor     }
-  class var backgroundColor            : UIColor { return DetailControllerProperties.backgroundColor }
-
-  /// Keyboard
-  ////////////////////////////////////////////////////////////////////////////////
-
-  class var keyboardAppearance: UIKeyboardAppearance { return DetailControllerProperties.keyboardAppearance }
-
-  /// Metrics
-  ////////////////////////////////////////////////////////////////////////////////
-
-  class var defaultRowHeight: CGFloat { return DetailControllerProperties.defaultRowHeight }
-
-  /// Styles
-  ////////////////////////////////////////////////////////////////////////////////
-
-  class var separatorStyle: UITableViewCellSeparatorStyle { return DetailControllerProperties.separatorStyle }
-
-  class var titleTextAttributes: [NSString : NSObject] { return DetailControllerProperties.titleTextAttributes }
+  static let titleTextAttributes = [NSFontAttributeName: boldLabelFont, NSForegroundColorAttributeName: labelColor]
 
   var sections: OrderedDictionary<String, DetailSection> = [:] { didSet { apply(sections.values){$0.controller = self} } }
 
-  let item: Detailable!
+  private(set) var item: Detailable!
 
   private(set) var didCancel: Bool = false
 
@@ -84,10 +45,9 @@ class DetailController: UITableViewController {
   :param: nibNameOrNil String?
   :param: nibBundleOrNil NSBundle?
   */
-//  override init(nibName: String?, bundle: NSBundle?) {
-//    super.init(nibName: nibName, bundle: bundle)
-//  }
-
+  override init!(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
+    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+  }
   /**
   initWithStyle:
 
@@ -100,7 +60,7 @@ class DetailController: UITableViewController {
 
   :param: aDecoder NSCoder
   */
-  required init(coder aDecoder: NSCoder) { item = nil; super.init(coder: aDecoder) }
+  required init(coder aDecoder: NSCoder) { fatalError("must use init(item:)") }
 
 
   /**
@@ -109,8 +69,8 @@ class DetailController: UITableViewController {
   :param: item Detailable
   */
   init(item: Detailable) {
-    self.item = item
     super.init(style: .Grouped)
+    self.item = item
     hidesBottomBarWhenPushed = true
   }
 
