@@ -28,7 +28,7 @@ final class BankCollectionLayout: UICollectionViewLayout {
   var verticalSpacing:   CGFloat = 10.0
   var horizontalSpacing: CGFloat = 10.0
 
-  var viewingMode: BankCollectionAttributes.ViewingMode = .List {
+  var viewingMode: Bank.ViewingMode = .List {
     didSet {
       switch viewingMode {
         case .List:      itemSize = itemListSize

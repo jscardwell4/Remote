@@ -402,7 +402,7 @@ WRAP(if(lvl&flg){[[MSLog loggingQueue] addOperationWithBlock:block];})
      if ([ERROR isKindOfClass:[MSError class]])                                                          \
      {                                                                                                   \
        NSString * message = ((MSError *)ERROR).message;                                                  \
-       if (message) [errorMessage appendFormat:@"!!! %@ !!!", message];                                  \
+       if (message) [errorMessage appendFormat:@"!! %@ !!", message];                                    \
        handledError = ((MSError *)ERROR).error;                                                          \
      }                                                                                                   \
                                                                                                          \

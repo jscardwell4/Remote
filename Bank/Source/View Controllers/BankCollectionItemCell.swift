@@ -56,7 +56,7 @@ final class BankCollectionItemCell: BankCollectionCell {
     }
   }
 
-  private var viewingMode: BankCollectionAttributes.ViewingMode = .List {
+  private var viewingMode: Bank.ViewingMode = .List {
     didSet {
       previewGesture.enabled = (viewingMode == .List && previewable)
       swipeToDelete = (viewingMode == .List)

@@ -10,15 +10,27 @@ import Foundation
 import UIKit
 import MoonKit
 import DataModel
+import Settings
 
-final public class Bank {
+@objc final public class Bank {
 
+  enum ViewingMode: Int {
+    case List, Thumbnail
+    init(rawValue: Int) { self = rawValue == 1 ? .Thumbnail : .List }
+  }
+
+  class func initialize() {
+    SettingsManager.registerSettingWithKey(Bank.viewingModeKey,
+                          withDefaultValue: .List,
+                              fromDefaults: {ViewingMode(rawValue: ($0 as? NSNumber)?.integerValue ?? 0)},
+                                toDefaults: {$0.rawValue})
+    Image.registerBundle(Bank.bankBundle, forLocationValue: Bank.imageLocation)
+
+  }
+
+  public static let viewingModeKey = "BankViewingModeKey"
   private static let imageLocation = "$bank"
-  private static let bankBundle: NSBundle = {
-    let bundle = NSBundle(forClass: Bank.self)
-    Image.registerBundle(bundle, forLocationValue: Bank.imageLocation)
-    return bundle
-    }()
+  private static let bankBundle = NSBundle(forClass: Bank.self)
 
   /**
   bankImageNamed:
@@ -27,8 +39,8 @@ final public class Bank {
 
   :returns: UIImage?
   */
-  public static func bankImageNamed(named: String) -> UIImage! {
-    return UIImage(named: named, inBundle: bankBundle, compatibleWithTraitCollection: nil)!
+  public static func bankImageNamed(named: String) -> UIImage? {
+    return UIImage(named: named, inBundle: bankBundle, compatibleWithTraitCollection: nil)
   }
 
   /// The bank's constant class properties
@@ -46,12 +58,24 @@ final public class Bank {
   static let backgroundColor            = UIColor.whiteColor()
 
   // Images
-  static let exportBarItemImage         = Bank.bankImageNamed("702-share-toolbar")
-  static let exportBarItemImageSelected = Bank.bankImageNamed("702-share-toolbar-selected")
-  static let importBarItemImage         = Bank.bankImageNamed("703-download-toolbar")
-  static let importBarItemImageSelected = Bank.bankImageNamed("703-download-toolbar-selected")
-  static let searchBarItemImage         = Bank.bankImageNamed("708-search-toolbar")
-  static let searchBarItemImageSelected = Bank.bankImageNamed("708-search-toolbar-selected")
+  static let exportBarItemImage            = Bank.bankImageNamed("702-share-toolbar")!
+  static let exportBarItemImageSelected    = Bank.bankImageNamed("702-share-toolbar-selected")!
+  static let importBarItemImage            = Bank.bankImageNamed("703-download-toolbar")!
+  static let importBarItemImageSelected    = Bank.bankImageNamed("703-download-toolbar-selected")!
+  static let searchBarItemImage            = Bank.bankImageNamed("708-search-toolbar")!
+  static let searchBarItemImageSelected    = Bank.bankImageNamed("708-search-toolbar-selected")!
+  static let listBarItemImage              = Bank.bankImageNamed("1073-grid-1-toolbar")!
+  static let listBarItemImageSelected      = Bank.bankImageNamed("1073-grid-1-toolbar-selected")!
+  static let thumbnailBarItemImage         = Bank.bankImageNamed("1076-grid-4-toolbar")!
+  static let thumbnailBarItemImageSelected = Bank.bankImageNamed("1076-grid-4-toolbar-selected")!
+  static let indicatorImage                = Bank.bankImageNamed("1040-checkmark-toolbar")!
+  static let indicatorImageSelected        = Bank.bankImageNamed("1040-checkmark-toolbar-selected")!
+  static let componentDevicesImage         = Bank.bankImageNamed("969-television")!
+  static let irCodesImage                  = Bank.bankImageNamed("tv-remote")!
+  static let imagesImage                   = Bank.bankImageNamed("926-photos")!
+  static let manufacturersImage            = Bank.bankImageNamed("1022-factory")!
+  static let networkDevicesImage           = Bank.bankImageNamed("937-wifi-signal")!
+  static let presetsImage                  = Bank.bankImageNamed("1059-sliders")!
 
   static let defaultRowHeight: CGFloat = 38.0
   static let separatorStyle: UITableViewCellSeparatorStyle = .None
@@ -246,34 +270,34 @@ final public class Bank {
     let context = DataManager.rootContext
     let componentDeviceRoot = RootCategory(
       label: "Component Devices",
-      icon: Bank.bankImageNamed("969-television"),
+      icon: componentDevicesImage,
       items: ComponentDevice.objectsInContext(context, sortBy: "name") as? [ComponentDevice] ?? []
     )
     let irCodeRoot = RootCategory(
       label: "IR Codes",
-      icon: Bank.bankImageNamed("tv-remote"),
+      icon: irCodesImage,
       collections: IRCodeSet.objectsInContext(context, sortBy: "name") as? [IRCodeSet] ?? []
     )
     let imageRoot = RootCategory(
       label: "Images",
-      icon: Bank.bankImageNamed("926-photos"),
+      icon: imagesImage,
       collections: ImageCategory.objectsMatchingPredicate(∀"parentCategory == NULL",
                                                     sortBy: "name",
                                                    context: context) as? [ImageCategory] ?? []
     )
     let manufacturerRoot = RootCategory(
       label: "Manufacturers",
-      icon: Bank.bankImageNamed("1022-factory"),
+      icon: manufacturersImage,
       items: Manufacturer.objectsInContext(context, sortBy: "name") as? [Manufacturer] ?? []
     )
     let networkDeviceRoot = RootCategory(
       label: "Network Devices",
-      icon: Bank.bankImageNamed("937-wifi-signal"),
+      icon: networkDevicesImage,
       items: NetworkDevice.objectsInContext(context, sortBy: "name") as? [NetworkDevice] ?? []
     )
     let presetRoot = RootCategory(
       label: "Presets",
-      icon: Bank.bankImageNamed("1059-sliders"),
+      icon: presetsImage,
       collections: PresetCategory.objectsMatchingPredicate(∀"parentCategory == NULL",
                                                     sortBy: "name",
                                                    context: context) as? [PresetCategory] ?? []

@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 import DataModel
+import Settings
 
 // TODO: Viewing mode changes need to respect whether category items are `previewable`
 
@@ -87,7 +88,7 @@ final class BankCollectionController: UICollectionViewController, BankController
     }
   }
 
-  var viewingMode: BankCollectionAttributes.ViewingMode = .List {
+  var viewingMode: Bank.ViewingMode = .List {
     didSet { layout.viewingMode = viewingMode; displayOptionsControl?.selectedSegmentIndex = viewingMode.rawValue }
   }
 
@@ -128,8 +129,11 @@ final class BankCollectionController: UICollectionViewController, BankController
       collectionView.backgroundColor = Bank.backgroundColor
 
       // Register header and cell classes
-      collectionView.registerClass(BankCollectionCategoryCell.self, forCellWithReuseIdentifier: BankCollectionController.CategoryCellIdentifier)
-      collectionView.registerClass(BankCollectionItemCell.self, forCellWithReuseIdentifier: BankCollectionController.ItemCellIdentifier)
+      collectionView.registerClass(BankCollectionCategoryCell.self,
+        forCellWithReuseIdentifier: BankCollectionController.CategoryCellIdentifier)
+      collectionView.registerClass(BankCollectionItemCell.self,
+        forCellWithReuseIdentifier: BankCollectionController.ItemCellIdentifier)
+
       return collectionView
 
     }()
@@ -139,26 +143,24 @@ final class BankCollectionController: UICollectionViewController, BankController
 	    toolbarItems = {
 
 	      // Check if we should include viewing mode control
-        // FIXME:
-//	      if self.collection is PreviewableCategory {
-//
-//	        // Create the segmented control
-//	        let displayOptions = ToggleImageSegmentedControl(items: [Bank.bankImageNamed("1073-grid-1-toolbar"),
-//	                                                                 Bank.bankImageNamed("1073-grid-1-toolbar-selected"),
-//	                                                                 Bank.bankImageNamed("1076-grid-4-toolbar"),
-//	                                                                 Bank.bankImageNamed("1076-grid-4-toolbar-selected")])
-//	        displayOptions.selectedSegmentIndex = self.viewingMode.rawValue
-//	        displayOptions.toggleAction = {[unowned self] control in
-//	          self.viewingMode = BankCollectionAttributes.ViewingMode(rawValue: control.selectedSegmentIndex)!
-//            //FIXME: Circular dependency
-////	          SettingsManager.setValue(self.viewingMode.rawValue, forSetting: .BankViewingMode)
-//	        }
-//	        let displayOptionsItem = UIBarButtonItem(customView: displayOptions)
-//	        self.displayOptionsControl = displayOptions
-//
-//	        // Return the toolbar with segmented control added
-//	        return Bank.toolbarItemsForController(self, addingItems: [displayOptionsItem])
-//	      }
+	      if self.collection.previewable == true {
+
+	        // Create the segmented control
+	        let displayOptions = ToggleImageSegmentedControl(items: [Bank.listBarItemImage,
+	                                                                 Bank.listBarItemImageSelected,
+	                                                                 Bank.thumbnailBarItemImage,
+	                                                                 Bank.thumbnailBarItemImageSelected])
+          displayOptions.selectedSegmentIndex = self.viewingMode.rawValue
+          displayOptions.toggleAction = {[unowned self] control in
+            self.viewingMode = Bank.ViewingMode(rawValue: control.selectedSegmentIndex)
+	          SettingsManager.setValue(self.viewingMode, forSetting: Bank.viewingModeKey)
+	        }
+	        let displayOptionsItem = UIBarButtonItem(customView: displayOptions)
+	        self.displayOptionsControl = displayOptions
+
+	        // Return the toolbar with segmented control added
+	        return Bank.toolbarItemsForController(self, addingItems: [displayOptionsItem])
+	      }
 
 	      // Otherwise return the default toolbar items
 	      return Bank.toolbarItemsForController(self)
@@ -178,11 +180,10 @@ final class BankCollectionController: UICollectionViewController, BankController
     exportSelectionMode = false
     navigationItem.rightBarButtonItem = Bank.dismissButton
 
-    //FIXME: Circular dependency
-//    if !(category is PreviewableCategory) { viewingMode = .List }
-//    else if let modeSettingValue = SettingsManager.valueForSetting(.BankViewingMode) as? NSNumber {
-//      viewingMode = BankCollectionAttributes.ViewingMode(rawValue: modeSettingValue.integerValue) ?? .List
-//    }
+    if collection.previewable != true { viewingMode = .List }
+    else if let viewingModeSetting: Bank.ViewingMode = SettingsManager.valueForSetting(Bank.viewingModeKey) {
+      viewingMode = viewingModeSetting
+    }
   }
 
 

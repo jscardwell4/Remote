@@ -10,9 +10,8 @@ import UIKit
 
 final class BankCollectionAttributes: UICollectionViewLayoutAttributes {
 
-  enum ViewingMode: Int { case List, Thumbnail }
 
-  var viewingMode: ViewingMode = .List
+  var viewingMode: Bank.ViewingMode = .List
 
   /**
   copyWithZone:

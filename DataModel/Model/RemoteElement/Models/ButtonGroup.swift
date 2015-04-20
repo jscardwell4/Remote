@@ -314,8 +314,7 @@ public final class ButtonGroup: RemoteElement {
       labelConstraints = String(data["labelConstraints"])
 
       if let labelAttributesData = ObjectJSONValue(data["labelAttributes"]) {
-        // FIXME: Need to be able to obtain AnyObject compatible collection for storage
-//        labelAttributes.dictionary = labelAttributesData
+        labelAttributes.dictionary = labelAttributesData.value
       }
 
     }

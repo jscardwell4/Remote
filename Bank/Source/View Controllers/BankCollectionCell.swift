@@ -59,9 +59,6 @@ class BankCollectionCell: UICollectionViewCell {
 
   var animateIndicator: ((Void) -> Void)?
 
-  private let indicatorImageNormal = Bank.bankImageNamed("1040-checkmark-toolbar")
-  private let indicatorImageSelected = Bank.bankImageNamed("1040-checkmark-toolbar-selected")
-
   /**
   showIndicator:selected:
 
@@ -69,7 +66,7 @@ class BankCollectionCell: UICollectionViewCell {
   :param: selected Bool = false
   */
   func showIndicator(show: Bool, selected: Bool = false) {
-    indicatorImage = (show ? (selected ? indicatorImageSelected : indicatorImageNormal) : nil)
+    indicatorImage = (show ? (selected ? Bank.indicatorImageSelected : Bank.indicatorImage) : nil)
   }
 
 

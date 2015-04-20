@@ -73,9 +73,8 @@ final public class Image: EditableModelObject {
     if let leftCap = Int32(data["leftCap"]) { self.leftCap = leftCap }
     if let topCap = Int32(data["topCap"]) { self.topCap = topCap }
   }
-  // FIXME: Move UIImage retrieval to bank module?
+
   public var image: UIImage? {
-    debugPrintln(self.dynamicType.resourceRegistration)
     var img: UIImage? = nil
     if let location = asset?.location {
       img = UIImage(contentsOfFile: location)

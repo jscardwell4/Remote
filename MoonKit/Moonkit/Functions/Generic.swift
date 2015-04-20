@@ -136,6 +136,6 @@ public func +(lhs: Range<Int>, rhs: Int) -> Range<Int> { return lhs.startIndex +
 The Box class is used to box values and as a workaround to the limitations with generics in the compiler. 
 From "Functional Programming in Swift", www.objc.io
 */
-class Box<T> { let unbox: T; init(_ value: T) { unbox = value } }
+public class Box<T> { public let unbox: T; public init(_ value: T) { unbox = value } }
 
 

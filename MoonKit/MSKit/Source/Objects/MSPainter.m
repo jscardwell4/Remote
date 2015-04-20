@@ -2411,7 +2411,6 @@ NSData *scaledImageDataFromImageData(NSData *imageData, NSUInteger bytesPerRow, 
         UIGraphicsPopContext();
 
         //// Rounded Rectangle Drawing
-        //???: Overlay gradient?
         CGRect roundedRectangleRect = CGRectMake(CGRectGetMinX(frame) + 2, CGRectGetMinY(frame) + 1, CGRectGetWidth(frame) - 4, floor((CGRectGetHeight(frame) - 1) * 0.48649 + 0.5));
         UIBezierPath *roundedRectanglePath = [UIBezierPath bezierPathWithRoundedRect:roundedRectangleRect cornerRadius:7];
         UIGraphicsPushContext(context);

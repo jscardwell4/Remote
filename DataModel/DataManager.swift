@@ -456,7 +456,6 @@ import MoonKit
   */
   private class func loadData(completion: ((Bool, NSError?) -> Void)? = nil) {
 
-    // TODO: Check if this is broken due to race condition/asynchronous calls
     rootContext.performBlock {[rootContext = self.rootContext] in
 
       self.modelFlags ➤ {

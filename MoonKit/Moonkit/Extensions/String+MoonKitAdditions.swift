@@ -29,14 +29,6 @@ public extension String {
         offset = range.endIndex + 1
       }
       s += self[offset..<length]
-      // ???: Possibly introducing garbage into string?
-      //      var s = String(self[startIndex])
-      //      for c in String(dropFirst(self)).unicodeScalars {
-      //        switch c.value {
-      //          case 65...90: s += "-"; s += String(UnicodeScalar(c.value + 32))
-      //          default: s.append(c)
-      //        }
-      //      }
       return s.lowercaseString
     } else { return String(map(self){$0 == " " ? "-" : $0}).lowercaseString }
   }

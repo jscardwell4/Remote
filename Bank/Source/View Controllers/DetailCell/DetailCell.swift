@@ -10,9 +10,6 @@ import Foundation
 import UIKit
 import MoonKit
 
-// TODO: Add creation row option for table style cells as well as ability to delete member rows
-// TODO: Create a specific cell type for the cells of a table style cell
-
 class DetailCell: UITableViewCell {
 
   /// MARK: Identifiers

@@ -60,12 +60,17 @@ extension Preset: Previewable {}
 @objc protocol BankModelCollection: Named {
   optional var items: [NamedModel] { get }
   optional var collections: [ModelCollection] { get }
+  optional var previewable: Bool { get }
 }
 
 extension Manufacturer: BankModelCollection {}
 extension IRCodeSet: BankModelCollection {}
-extension ImageCategory: BankModelCollection {}
-extension PresetCategory: BankModelCollection {}
+extension ImageCategory: BankModelCollection {
+  var previewable: Bool { return true }
+}
+extension PresetCategory: BankModelCollection {
+  var previewable: Bool { return true }
+}
 
 // MARK: - View controller related protocols
 
