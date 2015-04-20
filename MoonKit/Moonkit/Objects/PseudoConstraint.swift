@@ -412,32 +412,52 @@ extension PseudoConstraint {
   }
 }
 
-extension UIView {
-  public var right: (UIView, PseudoConstraint.Attribute) { return (self, .Right) }
-  public var left: (UIView, PseudoConstraint.Attribute) { return (self, .Left) }
-  public var top: (UIView, PseudoConstraint.Attribute) { return (self, .Top) }
-  public var bottom: (UIView, PseudoConstraint.Attribute) { return (self, .Bottom) }
-  public var centerX: (UIView, PseudoConstraint.Attribute) { return (self, .CenterX) }
-  public var centerY: (UIView, PseudoConstraint.Attribute) { return (self, .CenterY) }
-  public var width: (UIView, PseudoConstraint.Attribute) { return (self, .Width) }
-  public var height: (UIView, PseudoConstraint.Attribute) { return (self, .Height) }
-  public var baseline: (UIView, PseudoConstraint.Attribute) { return (self, .Baseline) }
-  public var leading: (UIView, PseudoConstraint.Attribute) { return (self, .Leading) }
-  public var trailing: (UIView, PseudoConstraint.Attribute) { return (self, .Trailing) }
-
-  public func constrain(pseudo: PseudoConstraint ...) {
-    for p in pseudo { if let c = p.constraint() { self.addConstraint(c) } }
-  }
+infix operator ⚌ {precedence 160}
+infix operator --> {}
+public func -->(var lhs: PseudoConstraint, rhs: String) -> PseudoConstraint {
+  lhs.identifier = rhs
+  return lhs
 }
 
-public func ==(lhs: (UIView, PseudoConstraint.Attribute), rhs: (UIView, PseudoConstraint.Attribute)) -> PseudoConstraint {
+infix operator -!> {}
+
+public func -!>(var lhs: PseudoConstraint, rhs: Float) -> PseudoConstraint {
+  lhs.priority = rhs
+  return lhs
+}
+
+public func ⚌<V1: UIView, V2: UIView>(lhs: (V1, PseudoConstraint.Attribute), rhs: (V2, PseudoConstraint.Attribute)) -> PseudoConstraint {
   var pseudo = PseudoConstraint()
   pseudo.firstObject = lhs.0
   pseudo.firstAttribute = lhs.1
   pseudo.secondObject = rhs.0
   pseudo.secondAttribute = rhs.1
+  pseudo.relation = .Equal
   return pseudo
 }
+
+infix operator ≥ {precedence 160}
+public func ≥<V1: UIView, V2: UIView>(lhs: (V1, PseudoConstraint.Attribute), rhs: (V2, PseudoConstraint.Attribute)) -> PseudoConstraint {
+  var pseudo = PseudoConstraint()
+  pseudo.firstObject = lhs.0
+  pseudo.firstAttribute = lhs.1
+  pseudo.secondObject = rhs.0
+  pseudo.secondAttribute = rhs.1
+  pseudo.relation = .GreaterThanOrEqual
+  return pseudo
+}
+
+infix operator ≤ {precedence 160}
+public func ≤<V1: UIView, V2: UIView>(lhs: (V1, PseudoConstraint.Attribute), rhs: (V2, PseudoConstraint.Attribute)) -> PseudoConstraint {
+  var pseudo = PseudoConstraint()
+  pseudo.firstObject = lhs.0
+  pseudo.firstAttribute = lhs.1
+  pseudo.secondObject = rhs.0
+  pseudo.secondAttribute = rhs.1
+  pseudo.relation = .LessThanOrEqual
+  return pseudo
+}
+
 
 public func *(var lhs: PseudoConstraint, rhs: Float) -> PseudoConstraint {
   lhs.multiplier = rhs

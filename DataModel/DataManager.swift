@@ -14,21 +14,26 @@ import MoonKit
 
   // MARK: - Setup
 
-  /** initialize */
+  /** Process any arguments passed in via the command line */
   class func initialize() {
     MSLogDebug("bundle path: '\(dataModelBundle.bundlePath)'")
     MSLogDebug("performing \(dataFlag)\nmodel flags…\n" + "\n".join(modelFlags.map({$0.description})))
-    if databaseStoreURL.checkResourceIsReachableAndReturnError(nil)
-      && dataFlag.remove
-    {
+
+    if databaseStoreURL.checkResourceIsReachableAndReturnError(nil) && dataFlag.remove {
       var error: NSError?
       NSFileManager.defaultManager().removeItemAtURL(databaseStoreURL, error: &error)
       if !MSHandleError(error) { MSLogDebug("previous database store has been removed") }
     }
 
+    // If we are loading, we can dump as we load
     if dataFlag.load {
       loadData { if !MSHandleError($1, message: "data load failed") && self.dataFlag.dump { self.dumpData() } }
-    } else if dataFlag.dump { dumpData() }
+    }
+
+    // Otherwise dump now
+    else if dataFlag.dump {
+      dumpData()
+    }
   }
 
   /** Stores a reference to the `DataModel` bundle */

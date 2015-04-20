@@ -40,8 +40,8 @@ extension NSLayoutConstraint {
     var constraints: [NSLayoutConstraint] = []
 
     for string in splitFormat(format) {
-      if let pseudoConstraint = PseudoConstraint(string), constraint = pseudoConstraint.constraintWithItems(views) {
-          constraints.append(constraint)
+      if let c = PseudoConstraint(string)?.expanded.compressedMap({$0.constraintWithItems(views)}) where c.count > 0 {
+          constraints.extend(c)
       } else {
         let c = constraintsWithVisualFormat(string, options: options, metrics: metrics, views: views) as! [NSLayoutConstraint]
         constraints.extend(c)

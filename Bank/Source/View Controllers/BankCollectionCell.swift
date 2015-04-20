@@ -218,6 +218,7 @@ class BankCollectionCell: UICollectionViewCell {
       self.addGestureRecognizer(gesture)
       return gesture
       }()
+    
     insertSubview(deleteButton, belowSubview: contentView)
     deleteButton.addTarget(self, action: "deleteButtonAction", forControlEvents: .TouchUpInside)
     contentView.addSubview(indicator)
