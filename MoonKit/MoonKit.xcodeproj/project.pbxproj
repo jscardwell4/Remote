@@ -319,6 +319,7 @@
 		C2CEFF2A1A32807E00F3BE24 /* TextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CEFF291A32807E00F3BE24 /* TextInputView.swift */; };
 		C2CEFF2C1A328B2000F3BE24 /* FloatInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CEFF2B1A328B2000F3BE24 /* FloatInputView.swift */; };
 		C2E7C8321A1AA3F0006BC80E /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E7C8311A1AA3F0006BC80E /* Protocols.swift */; };
+		C2E8C8B71AE7325300F8AC45 /* UITableViewCell+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8C8B61AE7325300F8AC45 /* UITableViewCell+MoonKitAdditions.swift */; };
 		C2E937001ACE04D4003EB3E8 /* JSONParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E936FF1ACE04D4003EB3E8 /* JSONParser.swift */; };
 		C2E937041ACF0736003EB3E8 /* JSONSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E937031ACF0736003EB3E8 /* JSONSerialization.swift */; };
 		C2EB15771A1D45C100B64D84 /* ConfiningBlockActionGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EB15761A1D45C100B64D84 /* ConfiningBlockActionGesture.swift */; };
@@ -624,6 +625,7 @@
 		C2E37782181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAssertionHandler+MSKitAdditions.h"; sourceTree = "<group>"; };
 		C2E37783181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAssertionHandler+MSKitAdditions.m"; sourceTree = "<group>"; };
 		C2E7C8311A1AA3F0006BC80E /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		C2E8C8B61AE7325300F8AC45 /* UITableViewCell+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C2E936FF1ACE04D4003EB3E8 /* JSONParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONParser.swift; sourceTree = "<group>"; };
 		C2E937031ACF0736003EB3E8 /* JSONSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONSerialization.swift; sourceTree = "<group>"; };
 		C2EB15761A1D45C100B64D84 /* ConfiningBlockActionGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfiningBlockActionGesture.swift; sourceTree = "<group>"; };
@@ -745,6 +747,7 @@
 				C2C4B72B1AA951D700912951 /* NSManagedObject+MoonKitAdditions.swift */,
 				C28E98ED1AD196B800E78711 /* NSNumber+MoonKitAdditions.swift */,
 				C2874FBB1AE68D3800BD7634 /* NSShadow+MoonKitAdditions.swift */,
+				C2E8C8B61AE7325300F8AC45 /* UITableViewCell+MoonKitAdditions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1637,6 +1640,7 @@
 				C2358F6919C78E0C00920F8D /* MSCompletionBlockOperation.m in Sources */,
 				C2E937041ACF0736003EB3E8 /* JSONSerialization.swift in Sources */,
 				C2358F6A19C78E0C00920F8D /* MSContextChangeReceptionist.m in Sources */,
+				C2E8C8B71AE7325300F8AC45 /* UITableViewCell+MoonKitAdditions.swift in Sources */,
 				C24A22871ADAF0300065E7EA /* BoxedJSONValue.swift in Sources */,
 				C25E63E11A00427100F54626 /* OrderedSet.swift in Sources */,
 				C2CEFF261A3121F100F3BE24 /* TextField.swift in Sources */,

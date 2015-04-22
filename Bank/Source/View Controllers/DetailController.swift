@@ -13,24 +13,6 @@ import DataModel
 
 class DetailController: UITableViewController {
 
-  // Fonts
-  static let labelFont = UIFont(name: "Elysio-Medium", size: 15.0)!
-  static let boldLabelFont = UIFont(name: "Elysio-Bold",   size: 17.0)!
-  static let infoFont = UIFont(name: "Elysio-Light",  size: 15.0)!
-  static let actionFont = UIFont(name: "Elysio-RegularItalic", size: 15.0)!
-
-  // Colors
-  static let labelColor = UIColor(r: 59 , g: 60,  b: 64,  a: 255)!
-  static let infoColor = UIColor(r: 159, g: 160, b: 164, a: 255)!
-  static let actionColor = UIColor(r: 0,   g: 175, b: 255, a: 255)!
-  static let backgroundColor = UIColor.whiteColor()
-
-  static let defaultRowHeight: CGFloat = 38.0
-  static let separatorStyle: UITableViewCellSeparatorStyle = .None
-  static let keyboardAppearance: UIKeyboardAppearance = .Dark
-
-  static let titleTextAttributes = [NSFontAttributeName: boldLabelFont, NSForegroundColorAttributeName: labelColor]
-
   var sections: OrderedDictionary<String, DetailSection> = [:] { didSet { apply(sections.values){$0.controller = self} } }
 
   private(set) var item: Detailable!
@@ -80,14 +62,14 @@ class DetailController: UITableViewController {
   /** loadView */
   override func loadView() {
     tableView = UITableView(frame: UIScreen.mainScreen().bounds, style: .Grouped)
-    tableView?.rowHeight = UITableViewAutomaticDimension
-    tableView?.estimatedRowHeight = 44.0
-    tableView?.sectionHeaderHeight = UITableViewAutomaticDimension
-    tableView?.estimatedSectionHeaderHeight = 44.0
-    tableView?.sectionFooterHeight = 10.0
-    tableView?.separatorStyle = .None
-    tableView?.delegate = self
-    tableView?.dataSource = self
+    tableView.estimatedRowHeight = 44.0
+    tableView.rowHeight = UITableViewAutomaticDimension
+    tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+    tableView.estimatedSectionHeaderHeight = 44.0
+    tableView.sectionFooterHeight = 10.0
+    tableView.separatorStyle = .None
+    tableView.delegate = self
+    tableView.dataSource = self
     DetailCell.registerIdentifiersWithTableView(tableView)
     DetailSectionHeader.registerIdentifiersWithTableView(tableView)
     navigationItem.rightBarButtonItem = editButtonItem()

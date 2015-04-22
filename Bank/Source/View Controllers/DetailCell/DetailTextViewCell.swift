@@ -31,8 +31,8 @@ final class DetailTextViewCell: DetailTextInputCell, UITextViewDelegate {
     let textView = UITextView(autolayout: true)
     textView.userInteractionEnabled = false
     textView.scrollEnabled = false
-    textView.font = DetailController.infoFont
-    textView.textColor = DetailController.infoColor
+    textView.font = Bank.infoFont
+    textView.textColor = Bank.infoColor
     textView.setContentHuggingPriority(750, forAxis: .Horizontal)
     textView.setContentHuggingPriority(750, forAxis: .Vertical)
     textView.setContentCompressionResistancePriority(750, forAxis: .Horizontal)
@@ -80,6 +80,7 @@ final class DetailTextViewCell: DetailTextInputCell, UITextViewDelegate {
           nameLabel.right => textView.left - 20,
           textView.top => contentView.top + 8,
           textView.bottom => contentView.bottom - 8,
+          textView.height => Float(Bank.defaultRowHeight * 2.0),
           textView.right => contentView.right - 20
         )
       case .Default:
@@ -97,16 +98,5 @@ final class DetailTextViewCell: DetailTextInputCell, UITextViewDelegate {
 
   /// Configuring how the label and text view are displayed
   var displayStyle: DisplayStyle = .Default { didSet { setNeedsUpdateConstraints() } }
-
-  /**
-  _textDidChange:
-
-  :param: textInput UITextInput
-  */
-  internal override func _textDidChange(textInput: UITextInput) {
-    super._textDidChange(textInput)
-    if textInput !== self.textInput { return }
-
-  }
 
 }

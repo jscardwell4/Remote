@@ -104,14 +104,14 @@ class ButtonPresetDetailController: PresetDetailController {
 
     var attributes = [
       NSFontAttributeName: UIFont(awesomeFontWithSize: 15),
-      NSForegroundColorAttributeName: DetailController.actionColor,
+      NSForegroundColorAttributeName: Bank.actionColor,
       NSParagraphStyleAttributeName: NSParagraphStyle.paragraphStyleWithAttributes(alignment: .Center)
     ]
 
     let attributedString = NSAttributedString(string: UIFont.fontAwesomeIconForName("plus"),
                                               attributes: attributes).mutableCopy() as! NSMutableAttributedString
 
-    attributes[NSFontAttributeName] = DetailController.actionFont
+    attributes[NSFontAttributeName] = Bank.actionFont
     attributedString.appendAttributedString(NSAttributedString(string: " Add Background Color", attributes: attributes))
 
     row.info = attributedString
@@ -244,12 +244,12 @@ class ButtonPresetDetailController: PresetDetailController {
 
     var attributes = [
       NSFontAttributeName: UIFont(awesomeFontWithSize: 15),
-      NSForegroundColorAttributeName: DetailController.actionColor,
+      NSForegroundColorAttributeName: Bank.actionColor,
       NSParagraphStyleAttributeName: NSParagraphStyle.paragraphStyleWithAttributes(alignment: .Center)
     ]
 
     let attributedString = NSAttributedString(string: UIFont.fontAwesomeIconForName("plus"), attributes: attributes).mutableCopy() as! NSMutableAttributedString
-    attributes[NSFontAttributeName] = DetailController.actionFont
+    attributes[NSFontAttributeName] = Bank.actionFont
     attributedString.appendAttributedString(NSAttributedString(string: " Add Title", attributes: attributes))
 
     row.info = attributedString
@@ -382,12 +382,12 @@ class ButtonPresetDetailController: PresetDetailController {
 
     var attributes = [
       NSFontAttributeName: UIFont(awesomeFontWithSize: 15),
-      NSForegroundColorAttributeName: DetailController.actionColor,
+      NSForegroundColorAttributeName: Bank.actionColor,
       NSParagraphStyleAttributeName: NSParagraphStyle.paragraphStyleWithAttributes(alignment: .Center)
     ]
 
     let attributedString = NSAttributedString(string: UIFont.fontAwesomeIconForName("plus"), attributes: attributes).mutableCopy() as! NSMutableAttributedString
-    attributes[NSFontAttributeName] = DetailController.actionFont
+    attributes[NSFontAttributeName] = Bank.actionFont
     attributedString.appendAttributedString(NSAttributedString(string: " Add Icon", attributes: attributes))
 
     row.info = attributedString
@@ -518,12 +518,12 @@ class ButtonPresetDetailController: PresetDetailController {
 
     var attributes = [
       NSFontAttributeName: UIFont(awesomeFontWithSize: 15),
-      NSForegroundColorAttributeName: DetailController.actionColor,
+      NSForegroundColorAttributeName: Bank.actionColor,
       NSParagraphStyleAttributeName: NSParagraphStyle.paragraphStyleWithAttributes(alignment: .Center)
     ]
 
     let attributedString = NSAttributedString(string: UIFont.fontAwesomeIconForName("plus"), attributes: attributes).mutableCopy() as! NSMutableAttributedString
-    attributes[NSFontAttributeName] = DetailController.actionFont
+    attributes[NSFontAttributeName] = Bank.actionFont
     attributedString.appendAttributedString(NSAttributedString(string: " Add Image", attributes: attributes))
 
     row.info = attributedString
