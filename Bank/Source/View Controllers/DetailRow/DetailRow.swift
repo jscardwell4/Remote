@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import MoonKit
+import DataModel
 
 class DetailRow {
 
@@ -33,6 +34,27 @@ class DetailRow {
   var valueDidChange: ((AnyObject?) -> Void)?
   var valueIsValid: ((AnyObject?) -> Bool)?
 
+  static func selectPushableCollection(pushableCollection: BankModelCollection?) -> Void -> Void {
+    return {
+      if let collection = pushableCollection,
+        controller = BankCollectionController(collection: collection),
+        nav = UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController
+      {
+        nav.pushViewController(controller, animated: true)
+      }
+    }
+  }
+
+  static func selectPushableItem(pushableItem: protocol<EditableModel, Detailable>?) -> Void -> Void {
+    return {
+      if let item = pushableItem,
+        nav = UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController
+      {
+        nav.pushViewController(item.detailController(), animated: true)
+      }
+    }
+  }
+
   /**
   super.configureCell:
 
@@ -51,8 +73,8 @@ class DetailRow {
     if valueDidChange != nil              { cell.valueDidChange = valueDidChange!                           }
   }
 
-  var load: (DetailRow) -> Void = {_ in }
+//  var load: (DetailRow) -> Void = {_ in }
 
   /** init */
-  init(){}
+//  init(){}
 }

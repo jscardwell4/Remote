@@ -24,6 +24,7 @@ class TitleAttributesDetailController: DetailController {
   }
 
   private struct RowKey {
+    static let Temp               = "Temp"
     static let Text               = "Text"
     static let Icon               = "Icon"
     static let Order              = "Order"
@@ -73,11 +74,12 @@ class TitleAttributesDetailController: DetailController {
 
     // text
     contentSection.addRow({
-      var row = DetailTextFieldRow()
+      var row = DetailTextViewRow()
       row.name = "Text"
       row.info = attributesDelegate.text
-      row.placeholderText = "No Text"
+      row.displayStyle = .Condensed
       row.valueDidChange = { attributesDelegate.text = $0 as? String ?? "" }
+      row.didEndEditing = { if self.didCancel { attributesDelegate.rollback(); $0.currentText = attributesDelegate.text } }
       return row
     }, forKey: RowKey.Text)
 

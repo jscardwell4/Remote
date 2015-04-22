@@ -23,10 +23,7 @@ final class DetailColorRow: DetailRow {
   */
   override func configureCell(cell: DetailCell) {
     super.configureCell(cell)
-    if placeholderColor != nil { (cell as? DetailColorCell)?.placeholderColor = placeholderColor! }
+    (cell as? DetailColorCell)?.placeholderColor = placeholderColor
   }
-
-  /** init */
-  override init() { super.init() }
 
 }

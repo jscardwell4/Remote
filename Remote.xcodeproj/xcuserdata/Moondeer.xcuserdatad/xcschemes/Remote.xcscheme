@@ -76,6 +76,34 @@
                ReferencedContainer = "container:Remote.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C24A05DA1AE5C65C00C9255E"
+               BuildableName = "UITests.xctest"
+               BlueprintName = "UITests"
+               ReferencedContainer = "container:Remote.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C24A060D1AE5CB4900C9255E"
+               BuildableName = "NetworkingTests.xctest"
+               BlueprintName = "NetworkingTests"
+               ReferencedContainer = "container:Remote.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -121,6 +149,26 @@
                BlueprintIdentifier = "C24A05A61AE5806200C9255E"
                BuildableName = "SettingsTests.xctest"
                BlueprintName = "SettingsTests"
+               ReferencedContainer = "container:Remote.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C24A05DA1AE5C65C00C9255E"
+               BuildableName = "UITests.xctest"
+               BlueprintName = "UITests"
+               ReferencedContainer = "container:Remote.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C24A060D1AE5CB4900C9255E"
+               BuildableName = "NetworkingTests.xctest"
+               BlueprintName = "NetworkingTests"
                ReferencedContainer = "container:Remote.xcodeproj">
             </BuildableReference>
          </TestableReference>

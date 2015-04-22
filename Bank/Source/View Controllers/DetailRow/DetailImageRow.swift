@@ -23,17 +23,7 @@ final class DetailImageRow: DetailRow {
   */
   override func configureCell(cell: DetailCell) {
     super.configureCell(cell)
-    if imageTint != nil { (cell as? DetailImageCell)?.imageTint = imageTint }
+    (cell as? DetailImageCell)?.imageTint = imageTint
   }
-
-  /**
-  initWithPreviewable:
-
-  :param: previewableItem EditableModel
-  */
-  convenience init(previewableItem: Previewable?) { self.init(); info = previewableItem?.preview }
-
-  /** init */
-  override init() { super.init() }
 
 }

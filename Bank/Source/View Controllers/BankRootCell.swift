@@ -48,20 +48,20 @@ final class BankRootCell: UITableViewCell {
     let identifier = "Internal"
     if constraintsWithIdentifier(identifier).count == 0 {
       constrain(identifier: identifier,
-        icon.left ⚌ contentView.left + 20,
-        label.left ⚌ icon.right + 20,
-        chevron.left ⚌ label.right + 8,
-        chevron.right ⚌ contentView.right - 20,
-        icon.top ⚌ contentView.top + 8,
-        icon.bottom ⚌ contentView.bottom - 8,
-        label.top ⚌ contentView.top,
-        label.bottom ⚌ contentView.bottom,
-        chevron.top ⚌ contentView.top + 8,
-        chevron.bottom ⚌ contentView.bottom - 8,
-        contentView.left ⚌ self.left,
-        contentView.right ⚌ self.right,
-        contentView.top ⚌ self.top,
-        contentView.bottom ⚌ self.bottom
+        icon.left => contentView.left + 20,
+        label.left => icon.right + 20,
+        chevron.left => label.right + 8,
+        chevron.right => contentView.right - 20,
+        icon.top => contentView.top + 8,
+        icon.bottom => contentView.bottom - 8,
+        label.top => contentView.top,
+        label.bottom => contentView.bottom,
+        chevron.top => contentView.top + 8,
+        chevron.bottom => contentView.bottom - 8,
+        contentView.left => self.left,
+        contentView.right => self.right,
+        contentView.top => self.top,
+        contentView.bottom => self.bottom
       )
     }
     super.updateConstraints()

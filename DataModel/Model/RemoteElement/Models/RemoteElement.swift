@@ -44,6 +44,16 @@ public class RemoteElement: IndexedModelObject {
   }
 
   /**
+  initWithEntity:insertIntoManagedObjectContext:
+
+  :param: entity NSEntityDescription
+  :param: context NSManagedObjectContext?
+  */
+  public override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+    super.init(entity: entity, insertIntoManagedObjectContext: context)
+  }
+
+  /**
   initWithData:context:
 
   :param: data ObjectJSONValue

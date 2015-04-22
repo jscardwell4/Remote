@@ -589,25 +589,6 @@ extension NSTextAlignment: EnumerableType {
   public static func enumerate(block: (NSTextAlignment) -> Void) { apply(all, block) }
 }
 
-extension NSShadow: JSONValueConvertible {
-  public var jsonValue: JSONValue {
-    var obj = ObjectJSONValue(["offset": shadowOffset.jsonValue, "radius": shadowBlurRadius.jsonValue])
-    if shadowColor != nil { obj["color"] = (shadowColor as! UIColor).jsonValue }
-    return obj.jsonValue
-  }
-}
-
-extension NSShadow /*: JSONValueInitializable */ {
-  public convenience init?(_ jsonValue: JSONValue?) {
-    self.init()
-    if let object = ObjectJSONValue(jsonValue) {
-      if let offset = CGSize(object["offset"]) { shadowOffset = offset }
-      if let radius = CGFloat(object["radius"]) { shadowBlurRadius = radius }
-      if let color = UIColor(object["color"]) { shadowColor = color }
-    }
-  }
-}
-
 extension TitleAttributes {
   public enum IconTextOrderSpecification: JSONValueConvertible {
     case IconText, TextIcon

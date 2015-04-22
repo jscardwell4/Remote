@@ -77,8 +77,8 @@ public extension UIView {
   public var bottom: (UIView, PseudoConstraint.Attribute) { return (self, .Bottom) }
   public var centerX: (UIView, PseudoConstraint.Attribute) { return (self, .CenterX) }
   public var centerY: (UIView, PseudoConstraint.Attribute) { return (self, .CenterY) }
-  public var w: (UIView, PseudoConstraint.Attribute) { return (self, .Width) }
-  public var h: (UIView, PseudoConstraint.Attribute) { return (self, .Height) }
+  public var width: (UIView, PseudoConstraint.Attribute) { return (self, .Width) }
+  public var height: (UIView, PseudoConstraint.Attribute) { return (self, .Height) }
   public var baseline: (UIView, PseudoConstraint.Attribute) { return (self, .Baseline) }
   public var leading: (UIView, PseudoConstraint.Attribute) { return (self, .Leading) }
   public var trailing: (UIView, PseudoConstraint.Attribute) { return (self, .Trailing) }

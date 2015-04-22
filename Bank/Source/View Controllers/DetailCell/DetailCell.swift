@@ -268,6 +268,7 @@ class DetailCell: UITableViewCell {
     let label = Label(autolayout: true)
     label.font      = DetailController.labelFont
     label.textColor = DetailController.labelColor
+    label.setContentCompressionResistancePriority(1000, forAxis: .Horizontal)
     return label
   }()
 

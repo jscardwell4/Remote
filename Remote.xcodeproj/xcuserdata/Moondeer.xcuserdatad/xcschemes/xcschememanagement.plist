@@ -61,6 +61,11 @@
 			<key>orderHint</key>
 			<integer>7</integer>
 		</dict>
+		<key>Networking.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>23</integer>
+		</dict>
 		<key>Remote.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -77,6 +82,11 @@
 		<dict>
 			<key>orderHint</key>
 			<integer>21</integer>
+		</dict>
+		<key>UI.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>22</integer>
 		</dict>
 		<key>iTachClient.xcscheme</key>
 		<dict>
@@ -119,6 +129,26 @@
 			<true/>
 		</dict>
 		<key>C24A05A61AE5806200C9255E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C24A05D01AE5C65C00C9255E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C24A05DA1AE5C65C00C9255E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C24A06031AE5CB4800C9255E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C24A060D1AE5CB4900C9255E</key>
 		<dict>
 			<key>primary</key>
 			<true/>

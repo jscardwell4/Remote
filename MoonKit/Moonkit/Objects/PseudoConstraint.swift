@@ -412,7 +412,7 @@ extension PseudoConstraint {
   }
 }
 
-infix operator ⚌ {precedence 160}
+infix operator => {precedence 160}
 infix operator --> {}
 public func -->(var lhs: PseudoConstraint, rhs: String) -> PseudoConstraint {
   lhs.identifier = rhs
@@ -426,13 +426,23 @@ public func -!>(var lhs: PseudoConstraint, rhs: Float) -> PseudoConstraint {
   return lhs
 }
 
-public func ⚌<V1: UIView, V2: UIView>(lhs: (V1, PseudoConstraint.Attribute), rhs: (V2, PseudoConstraint.Attribute)) -> PseudoConstraint {
+public func =><V1: UIView, V2: UIView>(lhs: (V1, PseudoConstraint.Attribute), rhs: (V2, PseudoConstraint.Attribute)) -> PseudoConstraint {
   var pseudo = PseudoConstraint()
   pseudo.firstObject = lhs.0
   pseudo.firstAttribute = lhs.1
   pseudo.secondObject = rhs.0
   pseudo.secondAttribute = rhs.1
   pseudo.relation = .Equal
+  return pseudo
+}
+public func =><V: UIView>(lhs: (V, PseudoConstraint.Attribute), rhs: Float) -> PseudoConstraint {
+  var pseudo = PseudoConstraint()
+  pseudo.firstObject = lhs.0
+  pseudo.firstAttribute = lhs.1
+  pseudo.secondObject = nil
+  pseudo.secondAttribute = .NotAnAttribute
+  pseudo.relation = .Equal
+  pseudo.constant = rhs
   return pseudo
 }
 
@@ -446,6 +456,16 @@ public func ≥<V1: UIView, V2: UIView>(lhs: (V1, PseudoConstraint.Attribute), r
   pseudo.relation = .GreaterThanOrEqual
   return pseudo
 }
+public func ≥<V: UIView>(lhs: (V, PseudoConstraint.Attribute), rhs: Float) -> PseudoConstraint {
+  var pseudo = PseudoConstraint()
+  pseudo.firstObject = lhs.0
+  pseudo.firstAttribute = lhs.1
+  pseudo.secondObject = nil
+  pseudo.secondAttribute = .NotAnAttribute
+  pseudo.relation = .GreaterThanOrEqual
+  pseudo.constant = rhs
+  return pseudo
+}
 
 infix operator ≤ {precedence 160}
 public func ≤<V1: UIView, V2: UIView>(lhs: (V1, PseudoConstraint.Attribute), rhs: (V2, PseudoConstraint.Attribute)) -> PseudoConstraint {
@@ -455,6 +475,16 @@ public func ≤<V1: UIView, V2: UIView>(lhs: (V1, PseudoConstraint.Attribute), r
   pseudo.secondObject = rhs.0
   pseudo.secondAttribute = rhs.1
   pseudo.relation = .LessThanOrEqual
+  return pseudo
+}
+public func ≤<V: UIView>(lhs: (V, PseudoConstraint.Attribute), rhs: Float) -> PseudoConstraint {
+  var pseudo = PseudoConstraint()
+  pseudo.firstObject = lhs.0
+  pseudo.firstAttribute = lhs.1
+  pseudo.secondObject = nil
+  pseudo.secondAttribute = .NotAnAttribute
+  pseudo.relation = .LessThanOrEqual
+  pseudo.constant = rhs
   return pseudo
 }
 

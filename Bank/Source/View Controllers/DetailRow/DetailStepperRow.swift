@@ -26,13 +26,12 @@ final class DetailStepperRow: DetailRow {
   */
   override func configureCell(cell: DetailCell) {
     super.configureCell(cell)
-    if stepperWraps != nil     { (cell as? DetailStepperCell)?.stepperWraps = stepperWraps!         }
-    if stepperMinValue != nil  { (cell as? DetailStepperCell)?.stepperMinValue = stepperMinValue!   }
-    if stepperMaxValue != nil  { (cell as? DetailStepperCell)?.stepperMaxValue = stepperMaxValue!   }
-    if stepperStepValue != nil { (cell as? DetailStepperCell)?.stepperStepValue = stepperStepValue! }
+    if let stepperCell = cell as? DetailStepperCell {
+      stepperCell.stepperWraps = stepperWraps
+      stepperCell.stepperMinValue = stepperMinValue
+      stepperCell.stepperMaxValue = stepperMaxValue
+      stepperCell.stepperStepValue = stepperStepValue
+    }
   }
-
-  /** init */
-  override init() { super.init() }
 
 }

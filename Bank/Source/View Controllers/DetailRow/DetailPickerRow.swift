@@ -29,16 +29,16 @@ final class DetailPickerRow: DetailRow {
   :param: cell DetailCell
   */
   override func configureCell(cell: DetailCell) {
-    if titleForInfo != nil    { (cell as? DetailPickerCell)?.titleForInfo = titleForInfo!       }
-    if nilItemTitle != nil    { (cell as? DetailPickerCell)?.nilItemTitle = nilItemTitle!       }
-    if createItemTitle != nil { (cell as? DetailPickerCell)?.createItemTitle = createItemTitle! }
-    if didSelectItem != nil   { (cell as? DetailPickerCell)?.didSelectItem = didSelectItem!     }
-    if createItem != nil      { (cell as? DetailPickerCell)?.createItem = createItem!           }
-    if data != nil            { (cell as? DetailPickerCell)?.data = data!                       }
+    // Set picker cell properties first so data is there when `info` gets set by `super`
+    if let pickerCell = cell as? DetailPickerCell {
+      pickerCell.titleForInfo = titleForInfo
+      pickerCell.nilItemTitle = nilItemTitle
+      pickerCell.createItemTitle = createItemTitle
+      pickerCell.didSelectItem = didSelectItem
+      pickerCell.createItem = createItem
+      if data != nil {pickerCell.data = data! }
+    }
     super.configureCell(cell)
   }
-
-  /** init */
-  override init() { super.init() }
 
 }

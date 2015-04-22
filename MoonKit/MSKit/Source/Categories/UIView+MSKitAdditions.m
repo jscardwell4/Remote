@@ -116,11 +116,11 @@ static const void *UIViewNametagKey = &UIViewNametagKey;
 
 /// height
 /// @return CGFloat
-- (CGFloat)height { return self.bounds.size.height; }
+- (CGFloat)h { return self.bounds.size.height; }
 
 /// width
 /// @return CGFloat
-- (CGFloat)width { return self.bounds.size.width; }
+- (CGFloat)w { return self.bounds.size.width; }
 
 /// viewMatching:
 /// @param predicate

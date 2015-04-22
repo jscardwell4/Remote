@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 import DataModel
+import UI
 
 // TODO: Cancel needs to reset any changed color values
 
@@ -45,68 +46,92 @@ class PresetDetailController: BankItemDetailController {
 
   }
 
+  var element: RemoteElement?
 
- /** loadPreviewSection */
- private func loadPreviewSection() {
+  /** save */
+  override func save() {
+    // TODO: Handle saving preset but deleting temporary remote element created for view
+    setEditing(false, animated: true)
+  }
 
-   let previewSection = DetailSection(section: 0)
+  /** loadPreviewSection */
+  private func loadPreviewSection() {
 
-   previewSection.addRow({
-     let row = DetailCustomRow()
-    //FIXME: Circular dependency
-//     row.generateCustomView = { RemoteElementView.viewWithPreset(self.model as! Preset) ?? UIView() }
-     return row
-   }, forKey: RowKey.Preview)
+    let previewSection = DetailSection(section: 0)
 
-   sections[SectionKey.Preview] = previewSection
- }
+    previewSection.addRow({
+      let row = DetailCustomRow()
+      if let e = self.element { e.managedObjectContext?.deleteObject(e) }
+      row.generateCustomView = {
+        if let view = RemoteElementView.viewWithPreset(self.model as! Preset) {
+          self.element = view.model
+          return view
+        } else {
+          MSLogError("unable to create `RemoteElementView` from preset")
+          return UIView()
+        }
+      }
+      return row
+      }, forKey: RowKey.Preview)
 
- /** loadCommonAttributesSection */
- private func loadCommonAttributesSection() {
+    sections[SectionKey.Preview] = previewSection
+  }
 
-  let preset = model as! Preset
+  /** loadCommonAttributesSection */
+  private func loadCommonAttributesSection() {
 
-  let commonAttributesSection = DetailSection(section: 1, title: "Common Attributes")
+    let preset = model as! Preset
 
-  commonAttributesSection.addRow({ DetailLabelRow(pushableCollection: preset.presetCategory, label: "Category") },
-                          forKey: RowKey.Category)
+    let commonAttributesSection = DetailSection(section: 1, title: "Common Attributes")
 
-  let baseType = preset.baseType
+    commonAttributesSection.addRow({
+      let row = DetailLabelRow()
+      row.name = "Category"
+      row.info = preset.presetCategory
+      row.select = DetailRow.selectPushableCollection(preset.presetCategory)
+      return row
+      }, forKey: RowKey.Category)
 
-  commonAttributesSection.addRow({ DetailLabelRow(label: "Base Type", value: baseType.stringValue.titlecaseString) },
-                          forKey: RowKey.BaseType)
+    let baseType = preset.baseType
 
-  var roles: [RemoteElement.Role]
+    commonAttributesSection.addRow({
+      let row = DetailLabelRow()
+      row.name = "Base Type"
+      row.info = baseType.stringValue.titlecaseString
+      return row
+      }, forKey: RowKey.BaseType)
 
-  switch baseType {
+    var roles: [RemoteElement.Role]
+
+    switch baseType {
     case .Button: roles = RemoteElement.Role.buttonRoles
     case .ButtonGroup: roles = RemoteElement.Role.buttonGroupRoles
     default: roles = [.Undefined]
-  }
-
-  commonAttributesSection.addRow({
-    let row = DetailButtonRow()
-    row.name = "Role"
-    row.info = preset.role.stringValue.titlecaseString
-
-    var pickerRow = DetailPickerRow()
-    pickerRow.titleForInfo = {($0 as! String).titlecaseString}
-    pickerRow.data = roles.map{$0.stringValue}
-    pickerRow.info = preset.role.stringValue
-    pickerRow.didSelectItem = {
-      if !self.didCancel {
-        preset.role = RemoteElement.Role(($0 as! String).jsonValue) ?? .Undefined
-        self.cellDisplayingPicker?.info = ($0 as! String).titlecaseString
-        pickerRow.info = $0
-      }
     }
 
-    row.detailPickerRow = pickerRow
+    commonAttributesSection.addRow({
+      let row = DetailButtonRow()
+      row.name = "Role"
+      row.info = preset.role.stringValue.titlecaseString
 
-    return row
-  }, forKey: RowKey.Role)
+      var pickerRow = DetailPickerRow()
+      pickerRow.titleForInfo = {($0 as! String).titlecaseString}
+      pickerRow.data = roles.map{$0.stringValue}
+      pickerRow.info = preset.role.stringValue
+      pickerRow.didSelectItem = {
+        if !self.didCancel {
+          preset.role = RemoteElement.Role(($0 as! String).jsonValue) ?? .Undefined
+          self.cellDisplayingPicker?.info = ($0 as! String).titlecaseString
+          pickerRow.info = $0
+        }
+      }
 
-  if [.ButtonGroup, .Button] ∋ baseType {
+      row.detailPickerRow = pickerRow
+
+      return row
+      }, forKey: RowKey.Role)
+
+    if [.ButtonGroup, .Button] ∋ baseType {
 
       commonAttributesSection.addRow({
         let row = DetailButtonRow()
@@ -128,7 +153,7 @@ class PresetDetailController: BankItemDetailController {
         row.detailPickerRow = pickerRow
 
         return row
-      }, forKey: RowKey.Shape)
+        }, forKey: RowKey.Shape)
 
       commonAttributesSection.addRow({
         let row = DetailTextFieldRow()
@@ -138,14 +163,16 @@ class PresetDetailController: BankItemDetailController {
         row.valueDidChange = { preset.style = RemoteElement.Style(($0 as! String).lowercaseString.jsonValue) ?? .None }
 
         return row
-      }, forKey: RowKey.Style)
-  }
+        }, forKey: RowKey.Style)
+    }
 
     commonAttributesSection.addRow({
-      let row = DetailLabeledImageRow(label: "Background Image", previewableItem: preset.backgroundImage)
+      let row = DetailLabeledImageRow()
+      row.name = "Background Image"
+      row.info = preset.backgroundImage?.preview
       row.placeholderImage = DrawingKit.imageOfNoImage(frame: CGRect(size: CGSize(square: 32.0)))
       return row
-    }, forKey: RowKey.BackgroundImage)
+      }, forKey: RowKey.BackgroundImage)
 
     commonAttributesSection.addRow({
       let row = DetailSliderRow()
@@ -154,7 +181,7 @@ class PresetDetailController: BankItemDetailController {
       row.sliderStyle = .Gradient(.Alpha)
       row.valueDidChange = { preset.backgroundImageAlpha = ($0 as! NSNumber).floatValue }
       return row
-    }, forKey: RowKey.BackgroundImageAlpha)
+      }, forKey: RowKey.BackgroundImageAlpha)
 
     commonAttributesSection.addRow({
       let row = DetailColorRow()
@@ -162,10 +189,10 @@ class PresetDetailController: BankItemDetailController {
       row.info = preset.backgroundColor
       row.valueDidChange = { preset.backgroundColor = $0 as? UIColor }
       return row
-    }, forKey: RowKey.BackgroundColor)
-
+      }, forKey: RowKey.BackgroundColor)
+    
     sections[SectionKey.CommonAttributes] = commonAttributesSection
-
+    
   }
-
+  
 }

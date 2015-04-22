@@ -42,9 +42,27 @@ class ImageDetailController: BankItemDetailController {
 
     let detailsSection = DetailSection(section: 0)
 
-    detailsSection.addRow({ DetailLabelRow(pushableCollection: image.imageCategory, label: "Category") }, forKey: RowKey.Category)
-    detailsSection.addRow({ DetailLabelRow(label: "Asset", value: image.asset?.name) }, forKey: RowKey.Asset)
-    detailsSection.addRow({ DetailLabelRow(label: "Size", value: PrettySize(image.size)) }, forKey: RowKey.Size)
+    detailsSection.addRow({
+      let row = DetailLabelRow()
+      row.name = "Category"
+      row.info = image.imageCategory
+      row.select = DetailRow.selectPushableCollection(image.imageCategory)
+      return row
+      }, forKey: RowKey.Category)
+
+    detailsSection.addRow({
+      let row = DetailLabelRow()
+      row.name = "Asset"
+      row.info = image.asset?.name
+      return row
+      }, forKey: RowKey.Asset)
+
+    detailsSection.addRow({
+      let row = DetailLabelRow()
+      row.name = "Size"
+      row.info = PrettySize(image.size)
+      return row
+      }, forKey: RowKey.Size)
 
     sections[SectionKey.Details] = detailsSection
   }
@@ -55,7 +73,11 @@ class ImageDetailController: BankItemDetailController {
     let image = model as! Image
 
     let previewSection = DetailSection(section: 1)
-    previewSection.addRow({ DetailImageRow(previewableItem: image) }, forKey: RowKey.Preview)
+    previewSection.addRow({
+      let row = DetailImageRow()
+      row.info = image
+      return row
+      }, forKey: RowKey.Preview)
 
     sections[SectionKey.Preview] = previewSection
 

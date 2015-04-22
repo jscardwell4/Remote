@@ -50,14 +50,54 @@ class ITachDeviceDetailController: BankItemDetailController {
 
     let mainSection = DetailSection(section: 0)
 
-    mainSection.addRow({ DetailLabelRow(label: "Identifier", value: iTachDevice.uniqueIdentifier)}, forKey: RowKey.Identifier)
-    mainSection.addRow({ DetailLabelRow(label: "Make", value: iTachDevice.make)}, forKey: RowKey.Make)
-    mainSection.addRow({ DetailLabelRow(label: "Model", value: iTachDevice.model)}, forKey: RowKey.Model)
-    mainSection.addRow({ DetailLabelRow(label: "Config-URL", value: iTachDevice.configURL)}, forKey: RowKey.ConfigURL)
-    mainSection.addRow({ DetailLabelRow(label: "Revision", value: iTachDevice.revision)}, forKey: RowKey.Revision)
-    mainSection.addRow({ DetailLabelRow(label: "Pcb_PN", value: iTachDevice.pcbPN)}, forKey: RowKey.Pcb_PN)
-    mainSection.addRow({ DetailLabelRow(label: "Pkg_Level", value: iTachDevice.pkgLevel)}, forKey: RowKey.Pkg_Level)
-    mainSection.addRow({ DetailLabelRow(label: "SDKClass", value: iTachDevice.sdkClass)}, forKey: RowKey.SDKClass)
+    mainSection.addRow({
+      let row = DetailLabelRow()
+      row.name = "Identifier"
+      row.info = iTachDevice.uniqueIdentifier
+      return row
+      }, forKey: RowKey.Identifier)
+    mainSection.addRow({
+      let row = DetailLabelRow()
+      row.name = "Make"
+      row.info = iTachDevice.make
+      return row
+      }, forKey: RowKey.Make)
+    mainSection.addRow({
+      let row = DetailLabelRow()
+      row.name = "Model"
+      row.info = iTachDevice.model
+      return row
+      }, forKey: RowKey.Model)
+    mainSection.addRow({
+      let row = DetailLabelRow()
+      row.name = "Config-URL"
+      row.info = iTachDevice.configURL
+      return row
+      }, forKey: RowKey.ConfigURL)
+    mainSection.addRow({
+      let row = DetailLabelRow()
+      row.name = "Revision"
+      row.info = iTachDevice.revision
+      return row
+      }, forKey: RowKey.Revision)
+    mainSection.addRow({
+      let row = DetailLabelRow()
+      row.name = "Pcb_PN"
+      row.info = iTachDevice.pcbPN
+      return row
+      }, forKey: RowKey.Pcb_PN)
+    mainSection.addRow({
+      let row = DetailLabelRow()
+      row.name = "Pkg_Level"
+      row.info = iTachDevice.pkgLevel
+      return row
+      }, forKey: RowKey.Pkg_Level)
+    mainSection.addRow({
+      let row = DetailLabelRow()
+      row.name = "SDKClass"
+      row.info = iTachDevice.sdkClass
+      return row
+      }, forKey: RowKey.SDKClass)
 
     sections[SectionKey.Details] = mainSection
 
@@ -73,7 +113,12 @@ class ITachDeviceDetailController: BankItemDetailController {
 
     let componentDevicesSection = DetailSection(section: 1, title: "Component Devices")
     for (idx, device) in enumerate(sortedByName(iTachDevice.componentDevices)) {
-      componentDevicesSection.addRow({ DetailListRow(pushableItem: device) }, forKey: "\(RowKey.ComponentDevices)\(idx)")
+      componentDevicesSection.addRow({
+       let row = DetailListRow()
+       row.info = device
+       row.select = DetailRow.selectPushableItem(device)
+       return row
+       }, forKey: "\(RowKey.ComponentDevices)\(idx)")
     }
 
     sections[SectionKey.ComponentDevices] = componentDevicesSection

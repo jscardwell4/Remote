@@ -59,9 +59,10 @@ class ComponentDeviceDetailController: BankItemDetailController {
     let manufacturerSection = DetailSection(section: 0)
 
     manufacturerSection.addRow({
-      var row = DetailButtonRow(pushableItem: componentDevice.manufacturer)
+      var row = DetailButtonRow()
       row.name = "Manufacturer"
       row.info = componentDevice.manufacturer
+      row.select = DetailRow.selectPushableItem(componentDevice.manufacturer)
 
       var pickerRow = DetailPickerRow()
       pickerRow.nilItemTitle = "No Manufacturer"
@@ -118,9 +119,10 @@ class ComponentDeviceDetailController: BankItemDetailController {
 
     manufacturerSection.addRow({
 
-      var row = DetailButtonRow(pushableCollection: componentDevice.codeSet)
+      var row = DetailButtonRow()
       row.name = "Code Set"
       row.info = componentDevice.codeSet
+      row.select = DetailRow.selectPushableCollection(componentDevice.codeSet)
 
       var pickerRow = DetailPickerRow()
       pickerRow.nilItemTitle = "No Code Set"
@@ -345,7 +347,13 @@ class ComponentDeviceDetailController: BankItemDetailController {
     }, forKey: RowKey.InputPowersOn)
 
     for (idx, input) in enumerate(sortedByName(componentDevice.inputs)) {
-      inputsSection.addRow({ return DetailListRow(pushableItem: input) }, forKey: "\(SectionKey.Inputs)\(idx)")
+      inputsSection.addRow({
+        let row = DetailListRow()
+        row.info = input
+        row.select = DetailRow.selectPushableItem(input)
+        row.delete = {input.delete()}
+        return row
+        }, forKey: "\(SectionKey.Inputs)\(idx)")
     }
 
     sections[SectionKey.Inputs] = inputsSection

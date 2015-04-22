@@ -51,10 +51,10 @@ final class BankCollectionZoomView: UIView {
     set { backgroundImageView?.image = newValue }
   }
 
-  var maxImageWidth: CGFloat { return width - BankCollectionZoomView.ButtonSize.width * 3.0 }
+  var maxImageWidth: CGFloat { return w - BankCollectionZoomView.ButtonSize.width * 3.0 }
 
   var maxImageHeight: CGFloat {
-    return height - BankCollectionZoomView.ButtonSize.height * 3.0 - BankCollectionZoomView.LabelHeight
+    return h - BankCollectionZoomView.ButtonSize.height * 3.0 - BankCollectionZoomView.LabelHeight
   }
   var imageSize: CGSize = CGSize.zeroSize
 

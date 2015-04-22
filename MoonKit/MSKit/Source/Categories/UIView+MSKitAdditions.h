@@ -40,8 +40,8 @@
 @property (nonatomic, assign, readonly) CGFloat minY;
 @property (nonatomic, assign, readonly) CGFloat maxX;
 @property (nonatomic, assign, readonly) CGFloat maxY;
-@property (nonatomic, assign, readonly) CGFloat height;
-@property (nonatomic, assign, readonly) CGFloat width;
+@property (nonatomic, assign, readonly) CGFloat h;
+@property (nonatomic, assign, readonly) CGFloat w;
 
 - (UIView *)viewWithNametag:(NSString *)nametag;
 - (UIView *)viewWithNametagPrefix:(NSString *)prefix;

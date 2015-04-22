@@ -612,10 +612,13 @@ extension ButtonPresetDetailController: TitleAttributesDelegateObserver {
     assert(pushedTitleAttributesKey != nil)
     let preset = model as! Preset
     if var titles = preset.titles {
+      let updatedAttributes = titleAttributesDelegate.titleAttributes
       titles[pushedTitleAttributesKey!] = titleAttributesDelegate.titleAttributes.jsonValue
       preset.titles = titles
+      MSLogDebug("titles = \(titles)\n\nupdatedAttributes = \(updatedAttributes)\nupdated titles = \(preset.titles)")
     }
     preset.save()
+    MSLogDebug("preset = \(preset)")
     loadTitleSection()
   }
 

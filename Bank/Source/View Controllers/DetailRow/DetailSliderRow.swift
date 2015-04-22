@@ -24,12 +24,11 @@ final class DetailSliderRow: DetailRow {
   */
   override func configureCell(cell: DetailCell) {
     super.configureCell(cell)
-    if minValue != nil           { (cell as? DetailSliderCell)?.minValue = minValue!                    }
-    if maxValue != nil           { (cell as? DetailSliderCell)?.maxValue = maxValue!                    }
-    if sliderStyle != nil { (cell as? DetailSliderCell)?.sliderStyle = sliderStyle!}
+    if let sliderCell = cell as? DetailSliderCell {
+      if minValue != nil    { sliderCell.minValue = minValue!       }
+      if maxValue != nil    { sliderCell.maxValue = maxValue!       }
+      if sliderStyle != nil { sliderCell.sliderStyle = sliderStyle! }
+    }
   }
-
-  /** init */
-  override init() { super.init() }
 
 }
