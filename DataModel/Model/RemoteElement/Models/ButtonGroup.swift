@@ -292,7 +292,7 @@ public final class ButtonGroup: RemoteElement {
       if let autohide = Bool(data["autohide"]) { self.autohide = autohide }
 
       if let commandSetData = ObjectJSONValue(data["commandSet"]) {
-        for (mode, jsonValue) in commandSetData {
+        for (_, mode, jsonValue) in commandSetData {
           if let values = ObjectJSONValue(jsonValue),
             commandSet = CommandSet.importObjectWithData(values, context: moc)
           {
@@ -302,7 +302,7 @@ public final class ButtonGroup: RemoteElement {
       }
 
       else if let collectionData = ObjectJSONValue(data["commandSet-collection"]) {
-        for (mode, jsonValue) in collectionData {
+        for (_, mode, jsonValue) in collectionData {
           if let values = ObjectJSONValue(jsonValue),
             commandSetCollection = CommandSetCollection.importObjectWithData(values, context: moc)
           {

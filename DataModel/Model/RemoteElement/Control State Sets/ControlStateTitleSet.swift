@@ -109,7 +109,7 @@ public final class ControlStateTitleSet: ControlStateSet {
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
-    for (stateKey, dictionary) in data {
+    for (_, stateKey, dictionary) in data {
 
       if let controlState = UIControlState(stateKey.jsonValue), json = ObjectJSONValue(dictionary) {
         setTitleAttributes(TitleAttributes(storage: json.value), forState: controlState)

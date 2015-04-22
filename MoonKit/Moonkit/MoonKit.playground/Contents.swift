@@ -178,3 +178,43 @@ println("spaceSeparated = \(spaceSeparated)")
 let anyButSpaceSeparated = split(Array(s.generate()), isSeparator: invert(matchesSpace)).map({String($0)})
 println("anyButSpaceSeparated = \(anyButSpaceSeparated)")
 
+
+
+func memoize1<T: Hashable, U>(body: ((T) -> U, T) -> U) -> (T) -> U {
+  var memo: [T:U] = [:]
+  var result: (T -> U)!
+  result = {
+    (t: T) -> U in
+    if let q = memo[t] { return q }
+    let r = body(result, t)
+    memo[t] = r
+    return r
+  }
+  return result
+}
+
+func memoize2<T:Hashable, U>(fn : ((T) -> U, T) -> U) -> (T -> U) {
+  var cache = Dictionary<T, U>()
+  var memoized: (T -> U)!
+  memoized = {
+    (t: T) -> U in
+    if cache.indexForKey(t) == nil {
+      cache[t] = fn(memoized, t)
+    }
+    return cache[t]!
+  }
+  return memoized
+}
+
+
+let fibonacci1 = memoize1 {
+  (fibonacci: (Double) -> Double, n: Double) -> Double in
+  n < 2 ? n : fibonacci(n-1) + fibonacci(n-2)
+}
+let fibonacci2 = memoize2 {
+  (fibonacci: (Double) -> Double, n: Double) -> Double in
+  n < 2 ? n : fibonacci(n-1) + fibonacci(n-2)
+}
+
+println(fibonacci1(45)/fibonacci1(44))
+println(fibonacci2(45)/fibonacci2(44))

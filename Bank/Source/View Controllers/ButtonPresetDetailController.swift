@@ -615,10 +615,8 @@ extension ButtonPresetDetailController: TitleAttributesDelegateObserver {
       let updatedAttributes = titleAttributesDelegate.titleAttributes
       titles[pushedTitleAttributesKey!] = titleAttributesDelegate.titleAttributes.jsonValue
       preset.titles = titles
-      MSLogDebug("titles = \(titles)\n\nupdatedAttributes = \(updatedAttributes)\nupdated titles = \(preset.titles)")
     }
-    preset.save()
-    MSLogDebug("preset = \(preset)")
+//    preset.save()
     loadTitleSection()
   }
 
@@ -634,7 +632,7 @@ extension ButtonPresetDetailController: TitleAttributesDelegateObserver {
       titles[pushedTitleAttributesKey!] = nil
       preset.titles = titles
     }
-    preset.save()
+//    preset.save()
     loadTitleSection()
   }
 

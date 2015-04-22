@@ -394,7 +394,7 @@ public struct TitleAttributes {
 
   :param: storage [String AnyObject]
   */
-  public init(storage: JSONValue.ObjectValue) { self.storage = storage.filter({(k, _) in PropertyKey(rawValue: k) != nil}) }
+  public init(storage: JSONValue.ObjectValue) { self.storage = storage.filter({(_, k, _) in PropertyKey(rawValue: k) != nil}) }
 
   /**
   initWithAttributedString:

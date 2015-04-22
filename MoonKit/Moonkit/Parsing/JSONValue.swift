@@ -95,7 +95,7 @@ public enum JSONValue {
         else { return nil }
       }
       else if let x = v as? OrderedDictionary<Swift.String, Any> {
-        let converted = x.compressedMap({JSONValue($1)})
+        let converted = x.compressedMap({JSONValue($2)})
         if converted.count == x.count { self = Object(converted) }
         else { return nil }
       }
@@ -140,7 +140,7 @@ public enum JSONValue {
         let outerIndent = " " * (depth * 4)
         let innerIndent = outerIndent + " " * 4
         var string = "{"
-        let keyValuePairs = o.map({"\"\($0)\": \($1.stringValueWithDepth(depth + 1))"}).values.array
+        let keyValuePairs = o.map({"\"\($1)\": \($2.stringValueWithDepth(depth + 1))"}).values.array
         switch keyValuePairs.count {
           case 0: string += "]"
           case 1: string += "\n\(innerIndent)" + keyValuePairs[0] + "\n\(outerIndent)}"
@@ -161,7 +161,7 @@ public enum JSONValue {
       case .Number(let n):  return n
       case .String(let s):  return s
       case .Array(let a):   return a.map({$0.anyObjectValue})
-      case .Object(let o):  return o.map({$1.anyObjectValue}) as MSDictionary
+      case .Object(let o):  return o.map({$2.anyObjectValue}) as MSDictionary
     }
   }
 
@@ -203,7 +203,7 @@ public enum JSONValue {
 
   public var objectValue: ObjectValue? { switch self { case .Object(let o):  return o; default: return nil } }
   public var mappedObjectValue: AnyMappedObjectValue? {
-    return objectValue?.map({$1.mappedObjectValue ?? $1.mappedArrayValue ?? $1.value})
+    return objectValue?.map({$2.mappedObjectValue ?? $2.mappedArrayValue ?? $2.value})
   }
 
   public var arrayValue: ArrayValue? { switch self { case .Array(let a):  return a; default: return nil } }
@@ -220,7 +220,7 @@ public enum JSONValue {
           while let k = keypath.pop() { leaf = [k:.Object(leaf)] }
           return .Object(leaf)
         }
-        return .Object(o.inflated(expand: expand).map({$1.inflatedValue}))
+        return .Object(o.inflated(expand: expand).map({$2.inflatedValue}))
       default: return self
     }
   }
@@ -235,7 +235,7 @@ public enum JSONValue {
   public subscript(idx: Int) -> JSONValue? {
     switch self {
       case .Array(let a) where a.count > idx: return a[idx]
-      case .Object(let o) where o.count > idx: return o[idx].1
+      case .Object(let o) where o.count > idx: return o[idx].2
     default: return nil
     }
   }

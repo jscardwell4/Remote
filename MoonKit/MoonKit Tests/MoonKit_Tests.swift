@@ -63,8 +63,8 @@ class MoonKit_Tests: XCTestCase {
     let arrayJSON = JSONValue(array)
     if arrayJSON == nil { XCTFail("unexpected nil value when converting to `JSONValue` type")}
     else {
-      switch arrayJSON! { case .Array: break; default: XCTFail("unexpected enumeration value, expected 'JSON.Array'") }
-      XCTAssertEqual(arrayJSON!.rawValue, "[\"item1\",\"item2\"]", "unexpected stringValue")
+      switch arrayJSON { case .Array: break; default: XCTFail("unexpected enumeration value, expected 'JSON.Array'") }
+      XCTAssertEqual(arrayJSON.rawValue, "[\"item1\",\"item2\"]", "unexpected stringValue")
     }
 
     let objectJSON = JSONValue(object)
@@ -103,8 +103,8 @@ class MoonKit_Tests: XCTestCase {
     let array2JSON = JSONValue(array2)
     if array2JSON == nil { XCTFail("unexpected nil value when converting to `JSONValue` type")}
     else {
-      switch array2JSON! { case .Array: break; default: XCTFail("unexpected enumeration value, expected 'JSON.Array")}
-      XCTAssertEqual(array2JSON!.rawValue, array2String)
+      switch array2JSON { case .Array: break; default: XCTFail("unexpected enumeration value, expected 'JSON.Array")}
+      XCTAssertEqual(array2JSON.rawValue, array2String)
     }
     let arrayJSON = JSONValue(array)
     if arrayJSON == nil { XCTFail("unexpected nil value when converting to `JSONValue` type")}
@@ -336,4 +336,15 @@ class MoonKit_Tests: XCTestCase {
     let fromOrderedSetFromNSOrderedSet = fromNSOrderedSet?._bridgeToObjectiveC()
     XCTAssert(fromOrderedSetFromNSOrderedSet != nil)
   }
+
+  func testMemoizePerformance() {
+    let fibonacci = memoize {
+      (fibonacci: (Double) -> Double, n: Double) -> Double in
+      n < 2 ? n : fibonacci(n-1) + fibonacci(n-2)
+    }
+    measureBlock {
+      let result = fibonacci(7587)
+    }
+  }
+
 }

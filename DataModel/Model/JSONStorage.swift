@@ -13,6 +13,20 @@ import MoonKit
 @objc(JSONStorage)
 public final class JSONStorage: ModelObject, ModelStorage {
 
+  override public func awakeFromSnapshotEvents(flags: NSSnapshotEventType) {
+    super.awakeFromSnapshotEvents(flags)
+    dictionary = convertedRawDictionary
+  }
+
+  override public func willSave() {
+    super.willSave()
+    setPrimitiveValue(dictionary.map {$2.rawValue} as MSDictionary, forKey: "dictionary")
+  }
+
+  private var convertedRawDictionary: OrderedDictionary<String, JSONValue> {
+    return rawDictionary.compressedMap {JSONValue(rawValue: $2)}
+  }
+
   private var rawDictionary: OrderedDictionary<String, String> {
     get {
       willAccessValueForKey("dictionary")
@@ -27,18 +41,10 @@ public final class JSONStorage: ModelObject, ModelStorage {
     }
   }
 
-  public var dictionary: OrderedDictionary<String, JSONValue> {
-    get { return rawDictionary.compressedMap({JSONValue(rawValue: $1)}) }
-    set { rawDictionary = newValue.map({$1.rawValue}) }
-  }
+  public lazy var dictionary: OrderedDictionary<String, JSONValue> = { return self.convertedRawDictionary }()
 
-  public subscript(key: String) -> JSONValue? {
-    get { return dictionary[key] }
-    set { var d = dictionary; d[key] = newValue; dictionary = d }
-  }
+  public subscript(key: String) -> JSONValue? { get { return dictionary[key] } set { dictionary[key] = newValue } }
 
-  override public var jsonValue: JSONValue {
-    return (ObjectJSONValue(super.jsonValue)! + ObjectJSONValue(dictionary)).jsonValue
-  }
+  override public var jsonValue: JSONValue { return (ObjectJSONValue(super.jsonValue)! + ObjectJSONValue(dictionary)).jsonValue }
 }
 

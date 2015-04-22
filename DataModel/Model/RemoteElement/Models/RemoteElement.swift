@@ -228,15 +228,15 @@ public class RemoteElement: IndexedModelObject {
       if let tag = Int16(data["tag"]) { self.tag = tag }
 
       if let backgroundColorJSON = ObjectJSONValue(data["backgroundColor"]) {
-        for (mode, value) in backgroundColorJSON { setObject(UIColor(value), forKey: "backgroundColor", forMode: mode) }
+        for (_, mode, value) in backgroundColorJSON { setObject(UIColor(value), forKey: "backgroundColor", forMode: mode) }
       }
 
       if let backgroundImageAlphaJSON = ObjectJSONValue(data["backgroundImage-alpha"]) {
-        for (mode, value) in backgroundImageAlphaJSON { setObject(Float(value), forKey: "backgroundImageAlpha", forMode: mode) }
+        for (_, mode, value) in backgroundImageAlphaJSON { setObject(Float(value), forKey: "backgroundImageAlpha", forMode: mode) }
       }
 
       if let backgroundImageJSON = ObjectJSONValue(data["backgroundImage"]) {
-        for (mode, jsonValue) in backgroundImageJSON {
+        for (_, mode, jsonValue) in backgroundImageJSON {
           if let value = ObjectJSONValue(jsonValue),
             image = ImageView.importObjectWithData(value, context: moc)
           {
@@ -301,7 +301,7 @@ public class RemoteElement: IndexedModelObject {
       }
       var constraintsJSON: JSONValue.ObjectValue = [:]
       if uuidIndex.count == 1 {
-        let (k, v) = uuidIndex[uuidIndex.startIndex]
+        let (_, k, v) = uuidIndex[uuidIndex.startIndex]
         constraintsJSON["index.\(k)"] = v
       }
       else {

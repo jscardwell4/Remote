@@ -77,7 +77,7 @@ public final class CommandSetCollection: CommandContainer {
     super.updateWithData(data)
 
     if let moc = managedObjectContext {
-      for (label, jsonValue) in data {
+      for (_, label, jsonValue) in data {
         if let commandSetData = ObjectJSONValue(jsonValue),
           commandSet: CommandSet = CommandSet.importObjectWithData(commandSetData, context: moc)
         {
@@ -90,7 +90,7 @@ public final class CommandSetCollection: CommandContainer {
 
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
-    containerIndex ➤ {k, _ in obj[k] = self[k]?.jsonValue}
+    containerIndex ➤ {_, k, _ in obj[k] = self[k]?.jsonValue}
     return obj.jsonValue
   }
 

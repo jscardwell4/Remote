@@ -337,6 +337,7 @@
 		C25B47AE16FF8D5E0042B59E /* ViewDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAFFB16DC18530093D5B4 /* ViewDecorator.m */; };
 		C25E63D619FD4B1400F54626 /* RemoteElementEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63D519FD4B1400F54626 /* RemoteElementEditingController.swift */; };
 		C25E63E31A01B4E500F54626 /* RemoteEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63E21A01B4E500F54626 /* RemoteEditingController.swift */; };
+		C265DBB81AE81E4600655C4C /* PNG.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265DBB71AE81E4600655C4C /* PNG.swift */; };
 		C26BAEB816DC10FE0093D5B4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C26BAEB616DC10FE0093D5B4 /* InfoPlist.strings */; };
 		C26BAEBA16DC10FE0093D5B4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAEB916DC10FE0093D5B4 /* main.m */; };
 		C26BBA8916DC18A90093D5B4 /* CommandDetailEditorsStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59316DC18A90093D5B4 /* CommandDetailEditorsStoryboard.storyboard */; };
@@ -1264,6 +1265,7 @@
 		C25E63D519FD4B1400F54626 /* RemoteElementEditingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteElementEditingController.swift; sourceTree = "<group>"; };
 		C25E63E21A01B4E500F54626 /* RemoteEditingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteEditingController.swift; sourceTree = "<group>"; };
 		C25EC02019C3849C00E5A437 /* QuickLookup.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = QuickLookup.playground; sourceTree = "<group>"; };
+		C265DBB71AE81E4600655C4C /* PNG.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PNG.swift; sourceTree = "<group>"; };
 		C26A4ECE1ACA1B4E004EEF7C /* RemoteDataModel.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = RemoteDataModel.json; sourceTree = "<group>"; };
 		C26BAEA816DC10FE0093D5B4 /* Remote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Remote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C26BAEB516DC10FE0093D5B4 /* Remote-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Remote-Info.plist"; sourceTree = "<group>"; };
@@ -3012,6 +3014,7 @@
 				C2A0C7521AD8905B008CF88B /* ColorStorage.swift */,
 				C253B2E01AD98D6B00F7E6AF /* Asset.swift */,
 				C20D2F451AE0858800D0007B /* IndexedModelObject.swift */,
+				C265DBB71AE81E4600655C4C /* PNG.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -4253,6 +4256,7 @@
 				C2E9F5511ABCA395007581F2 /* ComponentDevice.swift in Sources */,
 				C2E9F61A1ABCA395007581F2 /* TitleAttributes.swift in Sources */,
 				C2A0C7531AD8905B008CF88B /* ColorStorage.swift in Sources */,
+				C265DBB81AE81E4600655C4C /* PNG.swift in Sources */,
 				C2E9F5D11ABCA395007581F2 /* Activity.swift in Sources */,
 				C2E9F5DD1ABCA395007581F2 /* NamedModelObject.swift in Sources */,
 				C2E9F5F21ABCA395007581F2 /* Command.swift in Sources */,

@@ -327,7 +327,7 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
   public class func importObjectsWithData(data: ObjectJSONValue, context: NSManagedObjectContext) -> [ModelObject] {
     // TODO: Pre-parse constraint format for $[0-9] and self
     if let index = ObjectJSONValue(data["index"]) {
-      let convertedIndex = index.value.compressedMap({String($1)}).dictionary
+      let convertedIndex = index.value.compressedMap({String($2)}).dictionary
       let formatStrings: [String]
       if let formatData = ArrayJSONValue(data["format"]) { formatStrings = compressedMap(formatData.value, {String($0)}) }
       else if let formatString = String(data["format"]) { formatStrings = [formatString] }

@@ -100,7 +100,7 @@ public final class Remote: RemoteElement {
       if let topBarHidden = Bool(data["topBarHidden"]) { self.topBarHidden = topBarHidden }
 
       if let panels = ObjectJSONValue(data["panels"] ?? .Null) {
-        for (key, json) in panels {
+        for (_, key, json) in panels {
           if let uuid = String(json),
             buttonGroup = subelements.objectPassingTest({($0.0 as! RemoteElement).uuid == uuid}) as? ButtonGroup {
             if let assignment = ButtonGroup.PanelAssignment(.String(key))

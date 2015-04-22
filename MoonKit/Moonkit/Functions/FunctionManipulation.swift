@@ -29,6 +29,28 @@ public func curry<A, B, C, D>( f: (A, B, C) -> D) -> A -> B -> C -> D {
   return { a in { b in { c in f( a, b, c) } } }
 }
 
+
+/**
+Apple's memoized function producer
+
+:param: body ((T) -> U
+:param: T
+
+:returns: U) -> (T) -> U
+*/
+public func memoize<T: Hashable, U>(body: ((T) -> U, T) -> U) -> (T) -> U {
+  var memo: [T:U] = [:]
+  var result: (T -> U)!
+  result = {
+    (t: T) -> U in
+    if let q = memo[t] { return q }
+    let r = body(result, t)
+    memo[t] = r
+    return r
+  }
+  return result
+}
+
 /**
 The flip function reverses the order of the arguments of the function you pass into it.
 From "Functional Programming in Swift", www.objc.io
@@ -51,6 +73,7 @@ The function is a simple wrapper around `reduce` that ignores the actual reducti
 :param: block (S.Generator.Element) -> Void
 */
 public func apply<S:SequenceType>(sequence: S, f: (S.Generator.Element) -> Void) { reduce(sequence, Void(), { f($0.1) }) }
+public func apply<C:CollectionType>(collection: C, f: (C.Generator.Element) -> Void) { reduce(collection, Void(), { f($0.1) }) }
 public func apply<T>(x: T, f: (T) -> Void) { f(x) }
 public func apply<T, U>(x: T, f: (T) -> U) -> U { return f(x) }
 

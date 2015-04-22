@@ -24,7 +24,7 @@ class PresetDetailController: BankItemDetailController {
   private struct RowKey {
     static let Preview              = "Preview"
     static let Category             = "Category"
-    static let BaseType             = "Base Type"
+    static let BaseType             = "Type"
     static let Role                 = "Role"
     static let Shape                = "Shape"
     static let Style                = "Style"
@@ -51,6 +51,11 @@ class PresetDetailController: BankItemDetailController {
   /** save */
   override func save() {
     // TODO: Handle saving preset but deleting temporary remote element created for view
+    if let previewSection = sections[SectionKey.Preview],
+      previewRow = previewSection[0] as? DetailCustomRow
+    {
+
+    }
     setEditing(false, animated: true)
   }
 
@@ -82,11 +87,11 @@ class PresetDetailController: BankItemDetailController {
 
     let preset = model as! Preset
 
-    let commonAttributesSection = DetailSection(section: 1, title: "Common Attributes")
+    let commonAttributesSection = DetailSection(section: 1, title: SectionKey.CommonAttributes)
 
     commonAttributesSection.addRow({
       let row = DetailLabelRow()
-      row.name = "Category"
+      row.name = RowKey.Category
       row.info = preset.presetCategory
       row.select = DetailRow.selectPushableCollection(preset.presetCategory)
       return row
@@ -96,7 +101,7 @@ class PresetDetailController: BankItemDetailController {
 
     commonAttributesSection.addRow({
       let row = DetailLabelRow()
-      row.name = "Base Type"
+      row.name = RowKey.BaseType
       row.info = baseType.stringValue.titlecaseString
       return row
       }, forKey: RowKey.BaseType)
@@ -111,7 +116,7 @@ class PresetDetailController: BankItemDetailController {
 
     commonAttributesSection.addRow({
       let row = DetailButtonRow()
-      row.name = "Role"
+      row.name = RowKey.Role
       row.info = preset.role.stringValue.titlecaseString
 
       var pickerRow = DetailPickerRow()
@@ -135,7 +140,7 @@ class PresetDetailController: BankItemDetailController {
 
       commonAttributesSection.addRow({
         let row = DetailButtonRow()
-        row.name = "Shape"
+        row.name = RowKey.Shape
         row.info = preset.shape.stringValue.titlecaseString
 
         var pickerRow = DetailPickerRow()
@@ -157,7 +162,7 @@ class PresetDetailController: BankItemDetailController {
 
       commonAttributesSection.addRow({
         let row = DetailTextFieldRow()
-        row.name = "Style"
+        row.name = RowKey.Style
         row.info = preset.style.stringValue.capitalizedString
         row.placeholderText = "None"
         row.valueDidChange = { preset.style = RemoteElement.Style(($0 as! String).lowercaseString.jsonValue) ?? .None }
@@ -168,7 +173,7 @@ class PresetDetailController: BankItemDetailController {
 
     commonAttributesSection.addRow({
       let row = DetailLabeledImageRow()
-      row.name = "Background Image"
+      row.name = RowKey.BackgroundImage
       row.info = preset.backgroundImage?.preview
       row.placeholderImage = DrawingKit.imageOfNoImage(frame: CGRect(size: CGSize(square: 32.0)))
       return row
@@ -176,7 +181,7 @@ class PresetDetailController: BankItemDetailController {
 
     commonAttributesSection.addRow({
       let row = DetailSliderRow()
-      row.name = "Background Image Alpha"
+      row.name = RowKey.BackgroundImageAlpha
       row.info = preset.backgroundImageAlpha
       row.sliderStyle = .Gradient(.Alpha)
       row.valueDidChange = { preset.backgroundImageAlpha = ($0 as! NSNumber).floatValue }
@@ -185,7 +190,7 @@ class PresetDetailController: BankItemDetailController {
 
     commonAttributesSection.addRow({
       let row = DetailColorRow()
-      row.name = "Background Color"
+      row.name = RowKey.BackgroundColor
       row.info = preset.backgroundColor
       row.valueDidChange = { preset.backgroundColor = $0 as? UIColor }
       return row

@@ -12,6 +12,14 @@ import MoonKit
 
 class DetailSection {
 
+  typealias RowConstructor = () -> DetailRow
+
+  /** Keyed collection of row creation blocks */
+  private var blocks: OrderedDictionary<String, RowConstructor> = [:]
+
+  /** Cache for created rows */
+  private var cache: [String:DetailRow] = [:]
+
   /** Weak reference to controller presenting this section */
   weak var controller: DetailController?
 
@@ -28,14 +36,12 @@ class DetailSection {
   var count: Int { return blocks.count }
 
   /** Lazy collection that maps row creation blocks to their results */
-  var rows: LazyRandomAccessCollection<MapCollectionView<[(index: Int, element: () -> DetailRow)], DetailRow>> {
-    let enumeratedBlocks = Array(enumerate(blocks.values))
-    let lazyEnumeratedBlocks = lazy(enumeratedBlocks)
-    return lazyEnumeratedBlocks.map {
-      (index: Int, element: (Void) -> DetailRow) -> DetailRow in
-
-      var row = element()
+  var rows: LazyRandomAccessCollection<MapCollectionView<OrderedDictionary<String, RowConstructor>, DetailRow>> {
+    return lazy(blocks).map {
+      index, key, block -> DetailRow in
+      var row = block()
       row.indexPath = NSIndexPath(forRow: index, inSection: self.section)
+      self.cache[key] = row
       return row
     }
   }
@@ -45,11 +51,7 @@ class DetailSection {
 
   :param: header DetailSectionHeader
   */
-  func configureHeader(header: DetailSectionHeader) {
-    header.title = title
-  }
-
-  private var blocks: OrderedDictionary<String, () -> DetailRow> = [:]
+  func configureHeader(header: DetailSectionHeader) { header.title = title }
 
   /**
   Access an individual row
@@ -58,7 +60,10 @@ class DetailSection {
 
   :returns: DetailRow
   */
-  subscript(row: Int) -> DetailRow { assert(row < count); return rows[row] }
+  subscript(row: Int) -> DetailRow {
+    precondition(row < count)
+    return cache[blocks.keyForIndex(row)] ?? rows[row]
+  }
 
   /**
   Insert a row by wrapping in a creation block that simply returns the row
@@ -67,7 +72,11 @@ class DetailSection {
   :param: idx Int
   :param: key String
   */
-  func insertRow(row: DetailRow, atIndex idx: Int, forKey key: String) { insertRow({row}, atIndex: idx, forKey: key) }
+  func insertRow(row: DetailRow, atIndex idx: Int, forKey key: String) {
+    precondition(idx <= blocks.count)
+    insertRow({row}, atIndex: idx, forKey: key)
+    cache[key] = row
+  }
 
   /**
   insertRow:atIndex:
@@ -75,24 +84,32 @@ class DetailSection {
   :param: createRow (Void) -> DetailRow
   :param: idx Int
   */
-  func insertRow(createRow: (Void) -> DetailRow, atIndex idx: Int, forKey key: String) {
-    assert(idx <= blocks.count)
+  func insertRow(createRow: RowConstructor, atIndex idx: Int, forKey key: String) {
+    precondition(idx <= blocks.count)
     blocks.insertValue(createRow, atIndex: idx, forKey: key)
   }
+
 
   /**
   removeRowAtIndex:
 
   :param: idx Int
   */
-  func removeRowAtIndex(idx: Int) { assert(idx < blocks.count); blocks.removeAtIndex(idx) }
+  func removeRowAtIndex(idx: Int) {
+    precondition(idx < blocks.count)
+    cache[blocks.keyForIndex(idx)] = nil
+    blocks.removeAtIndex(idx)
+  }
 
   /**
   removeRowForKey:
 
   :param: key String
   */
-  func removeRowForKey(key: String) { blocks[key] = nil }
+  func removeRowForKey(key: String) {
+    cache[key] = nil
+    blocks[key] = nil
+  }
 
   /**
   replaceRowAtIndex:withRow:
@@ -100,21 +117,30 @@ class DetailSection {
   :param: idx Int
   :param: row (Void) -> DetailRow
   */
-  func replaceRowAtIndex(idx: Int, withRow row: (Void) -> DetailRow) { assert(idx < blocks.count); blocks.updateValue(row, atIndex: idx) }
+  func replaceRowAtIndex(idx: Int, withRow row: RowConstructor) {
+    precondition(idx < blocks.count)
+    cache[blocks.keyForIndex(idx)] = nil
+    blocks.updateValue(row, atIndex: idx)
+  }
 
   /**
   removeAllRows:
 
   :param: keepCapacity Bool = false
   */
-  func removeAllRows(keepCapacity: Bool = false) { blocks.removeAll(keepCapacity: keepCapacity) }
+  func removeAllRows(keepCapacity: Bool = false) {
+    cache.removeAll(keepCapacity: keepCapacity)
+    blocks.removeAll(keepCapacity: keepCapacity)
+  }
 
   /**
   addRow:
 
   :param: createRow (Void) -> DetailRow
   */
-  func addRow(createRow: (Void) -> DetailRow, forKey key: String) { blocks[key] = createRow }
+  func addRow(createRow: RowConstructor, forKey key: String) {
+    blocks[key] = createRow
+  }
 
   /**
   initWithSectionNumber:title:
@@ -128,4 +154,5 @@ class DetailSection {
     self.title = title
     self.controller = controller
   }
+
 }

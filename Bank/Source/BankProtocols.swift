@@ -50,7 +50,7 @@ extension Preset: Detailable {
 }
 
 // MARK: - Previewable protocol and extensions
-@objc protocol Previewable { var preview: UIImage { get }; var thumbnail: UIImage { get } }
+@objc protocol Previewable { var preview: UIImage? { get }; var thumbnail: UIImage? { get } }
 
 extension Image: Previewable {}
 extension Preset: Previewable {}
@@ -94,4 +94,3 @@ protocol SearchableBankController: BankController {
   func searchBankObjects()  // Called from search bar button action
   
 }
-

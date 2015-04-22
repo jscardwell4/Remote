@@ -9,12 +9,27 @@
 import Foundation
 import CoreData
 import MoonKit
+import UIKit
 
 @objc(Preset)
 final public class Preset: EditableModelObject {
 
-  public var preview: UIImage { return UIImage() }
-  public var thumbnail: UIImage { return preview }
+  public var preview: UIImage? {
+    get { return previewData?.image }
+    set {
+      if let image = newValue {
+        if let data = previewData { data.image = image }
+        else {
+          let data = PNG(context: managedObjectContext)
+          data.image = image
+          previewData = data
+        }
+      } else {
+        previewData = nil
+      }
+    }
+  }
+  public var thumbnail: UIImage? { return preview }
 
   private(set) public var storage: JSONStorage {
     get {
@@ -67,6 +82,7 @@ final public class Preset: EditableModelObject {
     }
   }
   @NSManaged public var parentPreset: Preset?
+  @NSManaged var previewData: PNG?
 
 //  public subscript(key: String) -> AnyObject? {
 //    get { return storage[key] }

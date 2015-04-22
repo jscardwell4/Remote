@@ -27,7 +27,7 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
     return keys.map({self.dictionary[$0]!})
   }
 
-  public var keyValuePairs: [(Key, Value)] { return Array(SequenceOf({self.generate()})) }
+  public var keyValuePairs: [(Key, Value)] { return Array(zip(_keys, _keys.map({self.dictionary[$0]!}))) }
 
   /**
   Initialize with a minimum capacity
@@ -107,6 +107,8 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
 
   public func keyForIndex(idx: Index) -> Key { return _keys[idx] }
 
+  public func valueAtIndex(idx: Index) -> Value? { return dictionary[_keys[idx]] }
+
   /**
   subscript:
 
@@ -126,14 +128,14 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
 
   :returns: (Key, Value)
   */
-  public subscript(i: Index) -> (Key, Value) {
+  public subscript(i: Index) -> (Index, Key, Value) {
     get {
       precondition(i < _keys.count)
-      return (_keys[i], values[i])
+      return (i, _keys[i], values[i])
     }
     mutating set {
       precondition(i < _keys.count)
-      insertValue(newValue.1, atIndex: i, forKey: newValue.0)
+      insertValue(newValue.2, atIndex: i, forKey: newValue.1)
     }
   }
 
@@ -230,8 +232,8 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
     return dictionary.updateValue(value, forKey: _keys[index])
   }
 
-  public mutating func extend<S: SequenceType where S.Generator.Element == (Key, Value)>(s: S) {
-    for (k, v) in s { self[k] = v }
+  public mutating func extend<S: SequenceType where S.Generator.Element == (Int, Key, Value)>(s: S) {
+    for (i, k, v) in s { self[k] = v }
   }
 
   /**
@@ -349,9 +351,9 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
 
   :returns: OrderedDictionary<Key, Value>
   */
-  public func filter(includeElement: (Key, Value) -> Bool) -> SelfType {
+  public func filter(includeElement: (Index, Key, Value) -> Bool) -> SelfType {
     var result: SelfType = [:]
-    for (k, v) in self { if includeElement((k, v)) { result.setValue(v, forKey: k) } }
+    for (i, k, v) in self { if includeElement((i, k, v)) { result.setValue(v, forKey: k) } }
     return result
   }
 
@@ -363,9 +365,9 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
 
   :returns: OrderedDictionary<Key, U>
   */
-  public func map<U>(transform: (Key, Value) -> U) -> OrderedDictionary<Key, U> {
+  public func map<U>(transform: (Index, Key, Value) -> U) -> OrderedDictionary<Key, U> {
     var result: OrderedDictionary<Key, U> = [:]
-    for (k, v) in self { result[k] = transform(k, v) }
+    for (i, k, v) in self { result[k] = transform(i, k, v) }
     return result
   }
 
@@ -376,8 +378,8 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
 
   :returns: OrderedDictionary<Key, U>
   */
-  public func compressedMap<U>(transform: (Key, Value) -> U?) -> OrderedDictionary<Key, U> {
-    return map(transform).filter({$1 != nil}).map({$1!})
+  public func compressedMap<U>(transform: (Index, Key, Value) -> U?) -> OrderedDictionary<Key, U> {
+    return map(transform).filter({$2 != nil}).map({$2!})
   }
 
   public func valuesForKeys<S:SequenceType where S.Generator.Element == Key>(keys: S) -> OrderedDictionary<Key, Value?> {
@@ -463,27 +465,28 @@ extension OrderedDictionary: _ObjectiveCBridgeable {
 
 extension  OrderedDictionary: SequenceType  {
   public func generate() -> OrderedDictionaryGenerator<Key, Value> {
-    return OrderedDictionaryGenerator(value: self)
+    return OrderedDictionaryGenerator(self)
   }
 }
 
-public struct OrderedDictionaryGenerator<Key : Hashable, Value> : GeneratorType {
+public struct OrderedDictionaryGenerator<Key:Hashable, Value> : GeneratorType {
 
-  let keys: [Key]
-  let values: [Value]
-  var keyIndex = 0
+  public typealias Index = OrderedDictionary<Key, Value>.Index
+  let dictionary: OrderedDictionary<Key, Value>
+  var index: Index
 
 
-  init(value:OrderedDictionary<Key,Value>) {
-    keys = Array(value.keys); values = Array(value.values)
+  init(_ value: OrderedDictionary<Key,Value>) {
+    dictionary = value; index = dictionary.startIndex
   }
 
-
-  public mutating func next() -> (Key, Value)? {
-    if keyIndex < keys.count {
-      let keyValue = (keys[keyIndex], values[keyIndex])
-      keyIndex++
-      return keyValue
+  public mutating func next() -> (Index, Key, Value)? {
+    if index < dictionary.endIndex {
+      let key: Key = dictionary._keys[index]
+      let value: Value = dictionary.dictionary[key]!
+      let element = (index, key, value)
+      index++
+      return element
     } else { return nil }
   }
 
@@ -497,12 +500,12 @@ public struct OrderedDictionaryGenerator<Key : Hashable, Value> : GeneratorType 
 //  return OrderedDictionary<K,V>(keys: keys, values: values)
 //}
 
-public func +<K, V, S:SequenceType where S.Generator.Element == (K, V)>(var lhs: OrderedDictionary<K, V>, rhs: S) -> OrderedDictionary<K,V> {
-  for (k, v) in rhs { lhs[k] = v }
+public func +<K, V, S:SequenceType where S.Generator.Element == (Int, K, V)>(var lhs: OrderedDictionary<K, V>, rhs: S) -> OrderedDictionary<K,V> {
+  for (_, k, v) in rhs { lhs[k] = v }
   return lhs
 }
 
-public func +=<K, V, S:SequenceType where S.Generator.Element == (K, V)>(inout lhs: OrderedDictionary<K, V>, rhs: S) {
+public func +=<K, V, S:SequenceType where S.Generator.Element == (Int, K, V)>(inout lhs: OrderedDictionary<K, V>, rhs: S) {
   lhs = lhs + rhs
 }
 

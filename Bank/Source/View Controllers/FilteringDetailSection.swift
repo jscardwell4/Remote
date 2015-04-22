@@ -34,7 +34,7 @@ final class FilteringDetailSection: DetailSection {
 
   var activePredicatesDidChange: ((FilteringDetailSection) -> Void)?
 
-  var filteredRows: LazySequence<FilterSequenceView<MapCollectionView<[(index: Int, element: () -> DetailRow)], DetailRow>>> {
+  var filteredRows: LazySequence<FilterSequenceView<MapCollectionView<OrderedDictionary<String, () -> DetailRow>, DetailRow>>> {
     return rows.filter {
       (row: DetailRow) -> Bool in
 
@@ -78,15 +78,17 @@ final class FilteringDetailSection: DetailSection {
   override func configureHeader(header: DetailSectionHeader) {
     super.configureHeader(header)
 
-    (header as? FilteringDetailSectionHeader)?.predicates = predicates
-    (header as? FilteringDetailSectionHeader)?.activePredicatesDidChange = {
-      self.activePredicatesDidChange?(self)
-      if self.singleRowDisplay {
-        self.controller?.reloadRowAtIndexPath(NSIndexPath(forRow: 0, inSection: self.section), withRowAnimation: .Fade)
-      } else {
-        self.controller?.reloadSection(self, withRowAnimation: .Fade)
+    if let filteringHeader = header as? FilteringDetailSectionHeader {
+      filteringHeader.predicates = predicates
+      filteringHeader.activePredicatesDidChange = {
+        self.activePredicatesDidChange?(self)
+        if self.singleRowDisplay {
+          self.controller?.reloadRowAtIndexPath(NSIndexPath(forRow: 0, inSection: self.section), withRowAnimation: .Fade)
+        } else {
+          self.controller?.reloadSection(self, withRowAnimation: .Fade)
+        }
       }
-   }
+    }
   }
 
 }

@@ -344,46 +344,46 @@ public final class Button: RemoteElement {
 
     if let moc = managedObjectContext {
 
-      if let titles = ObjectJSONValue(data["titles"])?.compressedMap({ObjectJSONValue($1)}) {
-        for (mode, jsonValue) in titles {
+      if let titles = ObjectJSONValue(data["titles"])?.compressedMap({ObjectJSONValue($2)}) {
+        for (_, mode, jsonValue) in titles {
           if let titleSet = ControlStateTitleSet.importObjectWithData(jsonValue, context: moc) {
             setTitles(titleSet, forMode: mode)
           }
         }
       }
 
-      if let icons = ObjectJSONValue(data["icons"])?.compressedMap({ObjectJSONValue($1)}) {
-        for (mode, jsonValue) in icons {
+      if let icons = ObjectJSONValue(data["icons"])?.compressedMap({ObjectJSONValue($2)}) {
+        for (_, mode, jsonValue) in icons {
           if let  imageSet = ControlStateImageSet.importObjectWithData(jsonValue, context: moc) {
             setIcons(imageSet, forMode: mode)
           }
         }
       }
 
-      if let images = ObjectJSONValue(data["images"])?.compressedMap({ObjectJSONValue($1)}) {
-        for (mode, jsonValue) in images {
+      if let images = ObjectJSONValue(data["images"])?.compressedMap({ObjectJSONValue($2)}) {
+        for (_, mode, jsonValue) in images {
           if let imageSet = ControlStateImageSet.importObjectWithData(jsonValue, context: moc) {
             setImages(imageSet, forMode: mode)
           }
         }
       }
 
-      if let backgroundColors = ObjectJSONValue(data["backgroundColors"])?.compressedMap({ObjectJSONValue($1)}) {
-        for (mode, jsonValue) in backgroundColors {
+      if let backgroundColors = ObjectJSONValue(data["backgroundColors"])?.compressedMap({ObjectJSONValue($2)}) {
+        for (_, mode, jsonValue) in backgroundColors {
           if let colorSet = ControlStateColorSet.importObjectWithData(jsonValue, context: moc) {
             setBackgroundColors(colorSet, forMode: mode)
           }
         }
       }
 
-      if let commands = ObjectJSONValue(data["commands"])?.compressedMap({ObjectJSONValue($1)}) {
-        for (mode, jsonValue) in commands {
+      if let commands = ObjectJSONValue(data["commands"])?.compressedMap({ObjectJSONValue($2)}) {
+        for (_, mode, jsonValue) in commands {
           if let command = Command.importObjectWithData(jsonValue, context: moc) { setCommand(command, forMode: mode) }
         }
       }
 
-      if let longPressCommands = ObjectJSONValue(data["longPress-commands"])?.compressedMap({ObjectJSONValue($1)}) {
-        for (mode, jsonValue) in longPressCommands {
+      if let longPressCommands = ObjectJSONValue(data["longPress-commands"])?.compressedMap({ObjectJSONValue($2)}) {
+        for (_, mode, jsonValue) in longPressCommands {
           if let command = Command.importObjectWithData(jsonValue, context: moc){ setLongPressCommand(command, forMode: mode) }
         }
       }

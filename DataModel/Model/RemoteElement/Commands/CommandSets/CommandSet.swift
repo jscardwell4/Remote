@@ -79,7 +79,7 @@ public final class CommandSet: CommandContainer {
       let type = CommandSetType(jsonValue: typeJSON)
       if type != .Unspecified {
         self.type = type
-        for (roleJSON, jsonValue) in data {
+        for (_, roleJSON, jsonValue) in data {
           if let role = RemoteElement.Role(roleJSON.jsonValue),
             commandData = ObjectJSONValue(jsonValue),
             command = Command.importObjectWithData(commandData, context: moc)
@@ -94,7 +94,7 @@ public final class CommandSet: CommandContainer {
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
     obj["type"] = type.jsonValue
-    obj += containerIndex.compressedMap({k, _ in self[k]?.jsonValue})
+    obj += containerIndex.compressedMap({_, k, _ in self[k]?.jsonValue})
     return obj.jsonValue
   }
 

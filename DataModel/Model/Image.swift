@@ -99,8 +99,8 @@ final public class Image: EditableModelObject {
     return image?.stretchableImageWithLeftCapWidth(Int(leftCap), topCapHeight: Int(topCap))
   }
 
-  public var preview: UIImage { return image ?? UIImage() }
-  public var thumbnail: UIImage { return preview }
+  public var preview: UIImage? { return image }
+  public var thumbnail: UIImage? { return preview }
 
   override public var description: String {
     return "\(super.description)\n\t" + "\n\t".join(
