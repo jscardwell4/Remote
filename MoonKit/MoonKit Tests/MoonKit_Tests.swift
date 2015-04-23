@@ -15,8 +15,8 @@ class MoonKit_Tests: XCTestCase {
   override class func initialize() {
     super.initialize()
     if self === MoonKit_Tests.self {
-      MSLog.addTaggingTTYLogger()
-      MSLog.addTaggingASLLogger()
+      LogManager.addTaggingTTYLogger()
+      LogManager.addTaggingASLLogger()
     }
   }
 

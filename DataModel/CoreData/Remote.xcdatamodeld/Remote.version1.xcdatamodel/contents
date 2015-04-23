@@ -362,7 +362,7 @@
         <attribute name="user" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <relationship name="componentDevices" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="networkDevice" inverseEntity="ComponentDevice" syncable="YES"/>
     </entity>
-    <entity name="PNG" representedClassName="PRODUCT_MODULE_NAME.PNG" syncable="YES">
+    <entity name="PNG" representedClassName="PNG" syncable="YES">
         <attribute name="image" attributeType="Transformable" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <relationship name="previewDataForPreset" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Preset" inverseName="previewData" inverseEntity="Preset" syncable="YES"/>
     </entity>

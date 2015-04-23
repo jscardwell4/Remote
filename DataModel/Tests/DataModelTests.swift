@@ -20,8 +20,8 @@ class DataModelTests: XCTestCase {
   override class func initialize() {
     super.initialize()
     if self === DataModelTests.self {
-      MSLog.addTaggingASLLogger()
-      MSLog.addTaggingTTYLogger()
+      LogManager.addASLLogger()
+      LogManager.addTTYLogger()
       LogManager.logLevel = .Error
     }
   }

@@ -51,12 +51,16 @@ class PresetDetailController: BankItemDetailController {
   /** save */
   override func save() {
     // TODO: Handle saving preset but deleting temporary remote element created for view
-    if let previewSection = sections[SectionKey.Preview],
-      previewRow = previewSection[0] as? DetailCustomRow
+    if let preset = model as? Preset where preset.preview == nil,
+      let previewSection = sections[SectionKey.Preview],
+      previewRow = previewSection[0] as? DetailCustomRow,
+      previewRowCell = previewRow.cell as? DetailCustomCell,
+      elementView = previewRowCell.customView as? RemoteElementView,
+      snapshot = elementView.snapshot()
     {
-
+      preset.preview = snapshot
     }
-    setEditing(false, animated: true)
+    super.save()
   }
 
   /** loadPreviewSection */

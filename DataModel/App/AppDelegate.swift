@@ -16,16 +16,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
 
   override class func initialize() {
-    MSLog.addTaggingTTYLogger()
-    MSLog.addTaggingASLLogger()
-    (DDTTYLogger.sharedInstance().logFormatter() as! MSLogFormatter).includeObjectName = false
+    LogManager.addConsoleLoggers()
     MSLogDebug("main bundle: '\(NSBundle.mainBundle().bundlePath)'")
   }
 
-//  func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
-//    let entities = DataManager.stack.managedObjectModel.entities
-//    MSLogDebug("entities:\n\(entities)")
-//    return true
-//  }
+  func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
+    let fileManager = NSFileManager.defaultManager()
+    let path = "/Users/Moondeer/Projects/MSRemote/Remote/Bank/Resources/JSON"
+    var error: NSError?
+    let contents = fileManager.contentsOfDirectoryAtPath(path, error: &error)
+    if let c = contents where !MSHandleError(error, message: "error retrieving directory contents") {
+      MSLogVerbose("\n".join(c))
+    }
+
+    return true
+  }
 }
 

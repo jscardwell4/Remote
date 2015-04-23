@@ -37,7 +37,7 @@ public final class ActivityViewController: UIViewController {
 
   :param: controller ActivityController
   */
-  init(controller: ActivityController) {
+  public init(controller: ActivityController) {
     self.controller = controller
     super.init(nibName: nil, bundle: nil)
 

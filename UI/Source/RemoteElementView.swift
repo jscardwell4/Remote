@@ -74,7 +74,7 @@ public class RemoteElementView: UIView {
     super.init(frame: CGRect.zeroRect)
     setTranslatesAutoresizingMaskIntoConstraints(false)
     self.model = model
-   self.model.refresh()
+    self.model.refresh()
     registerForChangeNotification()
     initializeIVARs()
   }

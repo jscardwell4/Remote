@@ -72,6 +72,36 @@ public enum JSONValue {
     self = Object(OrderedDictionary<Swift.String, JSONValue>(keys: c.keys, values: map(c.values, {$0.jsonValue})))
   }
 
+  public init?(_ v: Any) {
+    if let x = v as? JSONValueConvertible { self = x.jsonValue }
+    else if let x = v as? NSNumber { self = Number(x) }
+    else if let x = v as? Swift.String { self = String(x) }
+    else if let x = v as? BooleanType { self = Boolean(x.boolValue) }
+    else if let x = v as? NSNull { self = Null }
+    else if let x = v as? NSArray {
+      let converted = compressedMap(x, {JSONValue($0)})
+      if converted.count == x.count { self = Array(converted) }
+      else { return nil }
+    }
+    else if let x = v as? [Any] {
+      let converted = compressedMap(x, {JSONValue($0)})
+      if converted.count == x.count { self = Array(converted) }
+      else { return nil }
+    }
+    else if let x = v as? OrderedDictionary<Swift.String, Any> {
+      let converted = x.compressedMap({JSONValue($2)})
+      if converted.count == x.count { self = Object(converted) }
+      else { return nil }
+    }
+    else if let x = v as? NSDictionary {
+      let keys = x.allKeys.map({toString($0)})
+      let values = compressedMap(x.allValues, {JSONValue($0)})
+      if keys.count == values.count { self = Object(OrderedDictionary(Swift.Array(zip(keys, values)))) }
+      else { return nil }
+    }
+    else { return nil }
+  }
+
   /**
   Initialize with any object or return nil upon conversion failure
 
@@ -79,33 +109,7 @@ public enum JSONValue {
   */
   public init?(_ value: Any?) {
     if let v = value {
-      if let x = v as? JSONValueConvertible { self = x.jsonValue }
-      else if let x = v as? NSNumber { self = Number(x) }
-      else if let x = v as? Swift.String { self = String(x) }
-      else if let x = v as? BooleanType { self = Boolean(x.boolValue) }
-      else if let x = v as? NSNull { self = Null }
-      else if let x = v as? NSArray {
-        let converted = compressedMap(x, {JSONValue($0)})
-        if converted.count == x.count { self = Array(converted) }
-        else { return nil }
-      }
-      else if let x = v as? [Any] {
-        let converted = compressedMap(x, {JSONValue($0)})
-        if converted.count == x.count { self = Array(converted) }
-        else { return nil }
-      }
-      else if let x = v as? OrderedDictionary<Swift.String, Any> {
-        let converted = x.compressedMap({JSONValue($2)})
-        if converted.count == x.count { self = Object(converted) }
-        else { return nil }
-      }
-      else if let x = v as? NSDictionary {
-        let keys = x.allKeys.map({toString($0)})
-        let values = compressedMap(x.allValues, {JSONValue($0)})
-        if keys.count == values.count { self = Object(OrderedDictionary(Swift.Array(zip(keys, values)))) }
-        else { return nil }
-      }
-      else { return nil }
+      self.init(v)
     } else { return nil }
   }
 

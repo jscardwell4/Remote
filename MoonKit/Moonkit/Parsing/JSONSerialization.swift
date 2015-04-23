@@ -57,7 +57,8 @@ public class JSONSerialization {
     var object: JSONValue? // Our return object
 
     // Create the parser with the provided string
-    let parser = JSONParser(string: string!)
+    let ignoreExcess = isOptionSet(options, ReadOptions.IgnoreExcess)
+    let parser = JSONParser(string: string!, ignoreExcess: ignoreExcess)
     object = parser.parse(error: error)
 
     // Inflate key paths
@@ -120,6 +121,7 @@ extension JSONSerialization {
 
     public static var None            : ReadOptions = ReadOptions(rawValue: 0b0)
     public static var InflateKeypaths : ReadOptions = ReadOptions(rawValue: 0b1)
+    public static var IgnoreExcess    : ReadOptions = ReadOptions(rawValue: 0b01)
 
     public static var allZeros        : ReadOptions { return None }
 

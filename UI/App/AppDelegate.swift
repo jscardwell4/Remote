@@ -1,14 +1,15 @@
 //
 //  AppDelegate.swift
-//  Bank
+//  UIApp
 //
-//  Created by Jason Cardwell on 3/20/15.
+//  Created by Jason Cardwell on 4/23/15.
 //  Copyright (c) 2015 Moondeer Studios. All rights reserved.
 //
 
 import UIKit
 import MoonKit
-import Bank
+import DataModel
+import UI
 
 @UIApplicationMain
 final class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -26,7 +27,14 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     window = UIWindow(frame: UIScreen.mainScreen().bounds)
     window?.backgroundColor = UIColor.whiteColor()
     window?.makeKeyAndVisible()
-    window?.rootViewController = UINavigationController(rootViewController: BankRootController())
+
+//    let wtf = DataManager.self
+//    window?.rootViewController = UINavigationController()
+    let mainContext = DataManager.mainContext()
+    let activityController = ActivityController.sharedController(mainContext)
+    MSLogDebug("activityController = \(toString(activityController))")
+    let activityViewController = ActivityViewController(controller: activityController)
+    window?.rootViewController = UINavigationController(rootViewController: activityViewController)
 
     return true
   }

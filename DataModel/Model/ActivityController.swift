@@ -14,33 +14,31 @@ import MoonKit
 @objc(ActivityController)
 public final class ActivityController: ModelObject {
 
-  @NSManaged var primitiveCurrentActivity: Activity?
   public var currentActivity: Activity? {
     get {
       willAccessValueForKey("currentActivity")
-      let activity = primitiveCurrentActivity
+      let activity = primitiveValueForKey("currentActivity") as? Activity
       didAccessValueForKey("currentActivity")
       return activity
     }
     set {
       willChangeValueForKey("currentActivity")
-      primitiveCurrentActivity = newValue
+      setPrimitiveValue(newValue, forKey: "currentActivity")
       didChangeValueForKey("currentActivity")
       if let remote = newValue?.remote { currentRemote = remote }
     }
   }
 
-  @NSManaged var primitiveCurrentRemote: Remote?
   public var currentRemote: Remote {
     get {
       willAccessValueForKey("currentRemote")
-      let remote = primitiveCurrentRemote
+      let remote = primitiveValueForKey("currentRemote") as? Remote
       didAccessValueForKey("currentRemote")
       return remote ?? homeRemote
     }
     set {
       willChangeValueForKey("currentRemote")
-      primitiveCurrentRemote = newValue
+      setPrimitiveValue(newValue, forKey: "currentRemote")
       didChangeValueForKey("currentRemote")
     }
   }
@@ -62,12 +60,23 @@ public final class ActivityController: ModelObject {
 
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
-    obj["homeRemote.uuid"] = homeRemote.uuid.jsonValue
-    obj["currentRemote.uuid"] = currentRemote.uuid.jsonValue
-    obj["currentActivity.uuid"] = currentActivity?.uuid.jsonValue
+    obj["homeRemote.index"] = homeRemote.index.jsonValue
+    obj["currentRemote.index"] = currentRemote.index.jsonValue
+    obj["currentActivity.index"] = currentActivity?.index.jsonValue
     obj["topToolbar"] = topToolbar.jsonValue
     obj["activities"] = Optional(JSONValue(activities))
     return obj.jsonValue
+  }
+
+  override public var description: String {
+    var description = super.description
+    description += "\n\t".join(
+      "home remote = \(homeRemote.index)",
+      "top toolbar = {\(topToolbar.description.indentedBy(4))\n\t}",
+      "activities = " + toString(activities.map {$0.name}),
+      "current activity = \(toString(currentActivity?.name))"
+    )
+    return description
   }
 
   /**

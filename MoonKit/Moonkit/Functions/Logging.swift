@@ -98,29 +98,52 @@ public class LogManager {
     registeredLogLevels[file] = level
   }
 
+  public static func addConsoleLoggers() {
+    addTTYLogger()
+    addASLLogger()
+  }
+
+  public static func addTTYLogger() {
+    MSLog.enableColor()
+    MSLog.addTaggingTTYLogger()
+    (DDTTYLogger.sharedInstance().logFormatter() as! MSLogFormatter).useFileInsteadOfSEL = true
+  }
+
+  public static func addASLLogger() {
+    MSLog.enableColor()
+    MSLog.addTaggingASLLogger()
+    (DDASLLogger.sharedInstance().logFormatter() as! MSLogFormatter).useFileInsteadOfSEL = true
+  }
+
 }
 
 /**
-MSLogMessage:flag:function:line:level:context:
+MSLogMessage:flag:function:line:file:className:context:
 
 :param: message String
 :param: flag LogManager.LogFlag
 :param: function String = __FUNCTION__
-:param: line Int = __LINE__
+:param: line Int32 = __LINE__
+:param: file String = __FILE__
+:param: className String? = nil
 :param: context Int32 = LOG_CONTEXT_CONSOLE
 */
 public func MSLogMessage(message: String,
+            asynchronous: Bool,
                     flag: LogManager.LogFlag,
                 function: String = __FUNCTION__,
                     line: Int32 = __LINE__,
                     file: String = __FILE__,
                  context: Int32 = LOG_CONTEXT_CONSOLE)
 {
-  MSLog.log(false,
+  MSLog.log(asynchronous,
       level: LogManager.logLevelForFile(file).rawValue,
        flag: flag.rawValue,
     context: context,
+       file: file,
    function: function,
+       line: line,
+        tag: nil,
     message: message)
 }
 
@@ -139,7 +162,7 @@ public func MSLogDebug(message: String,
                   file: String = __FILE__,
                context: Int32 = LOG_CONTEXT_CONSOLE)
 {
-  MSLogMessage(message, .Debug, function: function, file: file, line: line, context: context)
+  MSLogMessage(message, false, .Debug, function: function, file: file, line: line, context: context)
 }
 
 /**
@@ -156,7 +179,7 @@ public func MSLogError(message: String,
                   file: String = __FILE__,
                context: Int32 = LOG_CONTEXT_CONSOLE)
 {
-  MSLogMessage(message, .Error, function: function, file: file, line: line, context: context)
+  MSLogMessage(message, false, .Error, function: function, file: file, line: line, context: context)
 }
 
 /**
@@ -173,7 +196,7 @@ public func MSLogInfo(message: String,
                  file: String = __FILE__,
               context: Int32 = LOG_CONTEXT_CONSOLE)
 {
-  MSLogMessage(message, .Info, function: function, file: file, line: line, context: context)
+  MSLogMessage(message, true, .Info, function: function, file: file, line: line, context: context)
 }
 
 /**
@@ -190,7 +213,7 @@ public func MSLogWarn(message: String,
                  file: String = __FILE__,
               context: Int32 = LOG_CONTEXT_CONSOLE)
 {
-  MSLogMessage(message, .Warn, function: function, file: file, line: line, context: context)
+  MSLogMessage(message, true, .Warn, function: function, file: file, line: line, context: context)
 }
 
 /**
@@ -207,7 +230,7 @@ public func MSLogVerbose(message: String,
                     file: String = __FILE__,
                  context: Int32 = LOG_CONTEXT_CONSOLE)
 {
-  MSLogMessage(message, .Verbose, function: function, file: file, line: line, context: context)
+  MSLogMessage(message, true, .Verbose, function: function, file: file, line: line, context: context)
 }
 
 /**

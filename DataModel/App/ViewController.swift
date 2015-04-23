@@ -26,7 +26,7 @@ class ViewController: UIViewController {
 
   @IBOutlet weak var entityPicker: UIPickerView!
   lazy var entities: [NSEntityDescription] = {
-    return sorted(DataManager.stack.managedObjectModel.entities as! [NSEntityDescription], {$0.name! < $1.name!})
+    return sorted(DataManager.managedObjectModel.entities as! [NSEntityDescription], {$0.name! < $1.name!})
   }()
 
   var selectedEntity: NSEntityDescription? {
@@ -40,14 +40,14 @@ class ViewController: UIViewController {
   }
 
   @IBAction func dumpJSON() {
-//    if let type = selectedModelObjectType { DataManager.dumpJSONForModelType(type) }
     if let type = selectedModelObjectType {
       var error: NSError?
       let query = queryTextView.text
       println("dumping json for query '\(query)' …")
       let results = type.objectsMatchingPredicate(∀query, context: context, error: &error)
       MSHandleError(error)
-      println((results as NSArray).JSONString)
+      if let json = JSONValue(results) { println(json.prettyRawValue) }
+      else { MSLogError("failed to generate json value") }
     }
   }
 
