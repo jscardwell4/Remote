@@ -270,7 +270,7 @@ extension PseudoConstraint: Printable {
   public var description: String {
     var s = ""
     if let i = identifier { s += "'\(i)' " }
-    s += "\(firstItem).\(firstAttribute.rawValue) \(relation.rawValue)"
+    s += "\(toString(firstItem)).\(firstAttribute.rawValue) \(relation.rawValue)"
     if let s2 = secondItem {
       s += " \(s2).\(secondAttribute.rawValue)"
       if multiplier != 1.0 { s += " * \(multiplier)" }

@@ -24,7 +24,9 @@ public final class ActivityViewController: UIViewController {
     }
   }
 
-  let controller: ActivityController
+  let context = DataManager.mainContext()
+
+  private(set) var activityController: ActivityController
   
   private var remoteReceptionist: MSKVOReceptionist!
   private var settingsReceptionist: MSNotificationReceptionist!
@@ -32,17 +34,28 @@ public final class ActivityViewController: UIViewController {
   private weak var topToolbarConstraint: NSLayoutConstraint!
   private weak var remoteView: RemoteView!
 
-  /**
-  initWithController:
-
-  :param: controller ActivityController
-  */
-  public init(controller: ActivityController) {
-    self.controller = controller
+  /** init */
+  public init() {
+    activityController = ActivityController.sharedController(context)
     super.init(nibName: nil, bundle: nil)
+    initializeReceptionists()
+  }
 
+  /**
+  init:
+
+  :param: aDecoder NSCoder
+  */
+  required public init(coder aDecoder: NSCoder) {
+    activityController = ActivityController.sharedController(context)
+    super.init(coder: aDecoder)
+    initializeReceptionists()
+  }
+
+  /** initializeReceptionists */
+  private func initializeReceptionists() {
     remoteReceptionist = MSKVOReceptionist(observer: self,
-      forObject: controller,
+      forObject: activityController,
       keyPath: "currentRemote",
       options: .New,
       queue: NSOperationQueue.mainQueue(),
@@ -64,15 +77,6 @@ public final class ActivityViewController: UIViewController {
     })
   }
 
-  /**
-  init:
-
-  :param: aDecoder NSCoder
-  */
-  required public init(coder aDecoder: NSCoder) {
-      fatalError("init(coder:) has not been implemented")
-  }
-
   /** viewDidLoad */
   override public func viewDidLoad() {
     super.viewDidLoad()
@@ -80,11 +84,11 @@ public final class ActivityViewController: UIViewController {
     // Do any additional setup after loading the view.
     view.addGestureRecognizer(UIPinchGestureRecognizer(target: self, action: "handlePinch:"))
 
-    let topToolbarView = ButtonGroupView(model: controller.topToolbar)
+    let topToolbarView = ButtonGroupView(model: activityController.topToolbar)
     view.addSubview(topToolbarView)
     self.topToolbarView = topToolbarView
 
-    insertRemoteView(RemoteView(model: controller.currentRemote))
+    insertRemoteView(RemoteView(model: activityController.currentRemote))
   }
 
   /**
@@ -113,7 +117,7 @@ public final class ActivityViewController: UIViewController {
 
   /** updateTopToolbarLocation */
   func updateTopToolbarLocation() {
-    if controller.currentRemote.topBarHidden == (topToolbarConstraint.constant == 0) { toggleTopToolbar(true) }
+    if activityController.currentRemote.topBarHidden == (topToolbarConstraint.constant == 0) { toggleTopToolbar(true) }
   }
 
   /**

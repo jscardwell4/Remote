@@ -104,6 +104,9 @@ public class RemoteElementView: UIView {
   /** updateConstraints */
   override public func updateConstraints() {
     //TODO: Modify to use model constraint uuids to update only where necessary
+
+    MSLogDebug("model = \(model)")
+
     var identifier = createIdentifier(self, ["Internal", "Base"])
     if constraintsWithIdentifier(identifier).count == 0 {
       constrain("|[b]| :: V:|[b]| :: |[c]| :: V:|[c]| :: |[s]| :: V:|[s]| :: |[o]| :: V:|[o]|",

@@ -44,10 +44,10 @@ class DataModelTests: XCTestCase {
                 forObject object: ObjectJSONValue,
             excludingKeys excluded: [String] = [])
   {
-    let expectedData = data.filter({(k, _) in excluded ∌ k})
+    let expectedData = data.filter({(_, k, _) in excluded ∌ k})
     if !object.contains(expectedData) {
       var foundTheProblem = false
-      for (key, expectedValue) in expectedData {
+      for (_, key, expectedValue) in expectedData {
         if let actualValue = object[key] {
           let equalValues = actualValue == expectedValue
           XCTAssertTrue(equalValues,

@@ -30,11 +30,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
 //    let wtf = DataManager.self
 //    window?.rootViewController = UINavigationController()
-    let mainContext = DataManager.mainContext()
-    let activityController = ActivityController.sharedController(mainContext)
-    MSLogDebug("activityController = \(toString(activityController))")
-    let activityViewController = ActivityViewController(controller: activityController)
-    window?.rootViewController = UINavigationController(rootViewController: activityViewController)
+    window?.rootViewController = UINavigationController(rootViewController: ActivityViewController())
 
     return true
   }

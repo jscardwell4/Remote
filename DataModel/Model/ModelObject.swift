@@ -106,7 +106,8 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /** Entity description retrieved from the managed object model */
   public class var entityDescription: NSEntityDescription {
     let entities = DataManager.managedObjectModel.entities as! [NSEntityDescription]
-    if let entity = findFirst(entities, {$0.managedObjectClassName == self.className()}) { return entity }
+    let name = className().substringForCapture(1, inFirstMatchFor: ~/"^([^_]+)")
+    if let entity = findFirst(entities, {$0.managedObjectClassName == name}) { return entity }
     else { fatalError("unable to locate entity for class '\(className())'") }
   }
 

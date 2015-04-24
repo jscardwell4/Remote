@@ -677,6 +677,18 @@ class DataModel_LoadedTests: QuickSpec {
           expect(remote?.panels.count) == 4
         }
       }
+      describe("the home screen remote", flags: [Filter.pending: pending]) {
+        it("can be retrieved by index") {
+          remote = Remote.objectWithIndex(ModelIndex("Home%20Screen"), context: moc)
+          expect(remote) != nil
+          pending = remote == nil
+        }
+        it("has the expected values", flags: [Filter.pending: pending]) {
+          expect(remote?.name) == "Home Screen"
+          expect(remote?.constraints.count) == 5
+          expect(remote?.subelements.count) == 2
+        }
+      }
     }
 
   }

@@ -34,4 +34,17 @@ extension NSShadow {
     self.shadowOffset = offset
     self.shadowBlurRadius = blurRadius
   }
+
+  public var color: UIColor! { return shadowColor as? UIColor }
+
+  public func setShadow() {
+    CGContextSetShadowWithColor(UIGraphicsGetCurrentContext(),
+                                shadowOffset,
+                                shadowBlurRadius,
+                                (shadowColor as! UIColor).CGColor)
+  }
+
+  public func shadowWithColor(color: AnyObject!) -> NSShadow {
+    return NSShadow(color: color, offset: shadowOffset, blurRadius: shadowBlurRadius)
+  }
 }

@@ -692,6 +692,33 @@ public class RemoteElement: IndexedModelObject {
     }
   }
 
+  override public var description: String {
+    var result = super.description + "\n\t"
+
+    result += "\n\t".join( "key = \(toString(key))", "tag = \(tag)", "role = \(role)", "shape = \(shape)", "style = \(style)" )
+
+    result += "\n\t"
+    result += "\n\t".join(reduce(modes,
+                                 [String](),
+                                 {$0 + ["\($1).backgroundColor = \(toString(self.backgroundColorForMode($1)?.string))"]}))
+    result += "\n\t"
+    result += "\n\t".join(reduce(modes,
+                                 [String](),
+                                 {$0 + ["\($1).backgroundImage = \(toString(self.backgroundImageForMode($1)?.image?.index.rawValue))"]}))
+    result += "\n\t"
+    result += "\n\t".join(reduce(modes,
+                                 [String](),
+                                 {$0 + ["\($1).backgroundImageAlpha = \(toString(self.backgroundImageAlphaForMode($1)))"]}))
+    result += "\n\tsubelement count = \(subelements.count)"
+    result += "\n\tconstraints = "
+    if constraints.count == 0 { result += "nil" }
+    else {
+      result += "{\n\t\t" + "\n\t\t".join(map(constraints){$0.description}) + "\n\t}"
+    }
+
+    return result
+  }
+
 }
 
 extension RemoteElement.BaseType: Printable {
