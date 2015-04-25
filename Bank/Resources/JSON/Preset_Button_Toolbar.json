@@ -1,19 +1,19 @@
 {
   "name": "Home",
   "baseType": "button",
-  "role": "toolbar",
-  "command": { "type": "return-to-launch-screen" },
+  "role": "toolbar-button",
+  "command.type": "return-to-launch-screen",
   "icons": {
     "normal": {
-      "imagePath": "Icons/Glyphish%206/Large/Normal/Home",
+      "image.index": "Icons/Glyphish%206/Large/Normal/Home",
       "color": <@include ForegroundColor_Normal.json>
     },
     "highlighted": {
-      "imagePath": "Icons/Glyphish%206/Large/Normal/Home",
+      "image.index": "Icons/Glyphish%206/Large/Normal/Home",
       "color": <@include ForegroundColor_Highlighted.json>
     },
     "disabled": {
-      "imagePath": "Icons/Glyphish%206/Large/Normal/Home",
+      "image.index": "Icons/Glyphish%206/Large/Normal/Home",
       "color": <@include ForegroundColor_Disabled.json>
     }
   }
@@ -21,19 +21,19 @@
 {
   "name": "Settings",
   "baseType": "button",
-  "role": "toolbar",
-  "command": { "type": "open-settings" },
+  "role": "toolbar-button",
+  "command.type": "open-settings",
   "icons": {
     "normal": {
-      "imagePath": "Icons/Glyphish%206/Large/Normal/Gear",
+      "image.index": "Icons/Glyphish%206/Large/Normal/Gear",
       "color": <@include ForegroundColor_Normal.json>
     },
     "highlighted": {
-      "imagePath": "Icons/Glyphish%206/Large/Normal/Gear",
+      "image.index": "Icons/Glyphish%206/Large/Normal/Gear",
       "color": <@include ForegroundColor_Highlighted.json>
     },
     "disabled": {
-      "imagePath": "Icons/Glyphish%206/Large/Normal/Gear",
+      "image.index": "Icons/Glyphish%206/Large/Normal/Gear",
       "color": <@include ForegroundColor_Disabled.json>
     }
   }
@@ -41,19 +41,19 @@
 {
   "name": "Edit",
   "baseType": "button",
-  "role": "toolbar",
-  "command": { "type": "open-editor" },
+  "role": "toolbar-button",
+  "command.type": "open-editor",
   "icons": {
     "normal": {
-      "imagePath": "Icons/Glyphish%206/Large/Normal/Pencil",
+      "image.index": "Icons/Glyphish%206/Large/Normal/Pencil",
       "color": <@include ForegroundColor_Normal.json>
     },
     "highlighted": {
-      "imagePath": "Icons/Glyphish%206/Large/Normal/Pencil",
+      "image.index": "Icons/Glyphish%206/Large/Normal/Pencil",
       "color": <@include ForegroundColor_Highlighted.json>
     },
     "disabled": {
-      "imagePath": "Icons/Glyphish%206/Large/Normal/Pencil",
+      "image.index": "Icons/Glyphish%206/Large/Normal/Pencil",
       "color": <@include ForegroundColor_Disabled.json>
     }
   }

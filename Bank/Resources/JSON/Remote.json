@@ -887,7 +887,7 @@
             "uuid": "60FBB7D9-D48A-42E5-A6FD-B47FC13EC23F",
             "name": "Button STB",
             "key": "default",
-            "role": "selection-panel",
+            "role": "selection-panel-button",
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue32>",
@@ -906,7 +906,7 @@
             "uuid": "DDF69EC8-CE1A-45A0-8721-CD91DBEA2135",
             "name": "Button TV",
             "key": "tv",
-            "role": "selection-panel",
+            "role": "selection-panel-button",
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue32>",
@@ -979,6 +979,7 @@
         "subelements": [
           {
             "uuid": "93A20B92-6A22-4DEC-802A-D735A1EBA583",
+            "role": "panel-button",
             "name": "On Demand / Source",
             "shape": "rounded-rectangle",
             "style": "gloss",
@@ -995,6 +996,7 @@
           },
           {
             "uuid": "84B5AAD7-F716-49E4-B2DC-F9654CD5EA83",
+            "role": "panel-button",
             "name": "Menu",
             "shape": "rounded-rectangle",
             "style": "gloss",
@@ -1008,6 +1010,7 @@
           },
           {
             "uuid": "1490C210-7F20-4276-810D-232396713B76",
+            "role": "panel-button",
             "name": "Last / Return",
             "shape": "rounded-rectangle",
             "style": "gloss",
@@ -1024,6 +1027,7 @@
           },
           {
             "uuid": "5EBDC469-0E9E-4720-A65E-86F6EF652635",
+            "role": "panel-button",
             "name": "Exit",
             "shape": "rounded-rectangle",
             "style": "gloss",
@@ -1037,6 +1041,7 @@
           },
           {
             "uuid": "447B0C03-6390-47B3-8F66-FA58E79AAE81",
+            "role": "panel-button",
             "name": "DVR Audio Input",
             "shape": "rounded-rectangle",
             "style": "gloss",
@@ -1047,6 +1052,7 @@
           },
           {
             "uuid": "CA88D652-A7F3-4EBE-ABC0-E559CE6AF337",
+            "role": "panel-button",
             "name": "TV Audio Input",
             "shape": "rounded-rectangle",
             "style": "gloss",
@@ -1057,6 +1063,7 @@
           },
           {
             "uuid": "66E58C75-BC33-4E25-A4AE-876E37FA991E",
+            "role": "panel-button",
             "name": "Mute",
             "shape": "rounded-rectangle",
             "style": "gloss",
@@ -1221,7 +1228,7 @@
           {
             "uuid": "65E065E6-2976-4726-99E4-9D4D932804E4",
             "name": "Lights On",
-            "role": "toolbar",
+            "role": "toolbar-button",
             "constraints": {
               "index.lightsOn": "65E065E6-2976-4726-99E4-9D4D932804E4",
               "format": "lightsOn.width = 44"
@@ -1241,7 +1248,7 @@
           {
             "uuid": "085F92D0-7D04-4586-BD2E-BCD0F0AFB729",
             "name": "Lights Off",
-            "role": "toolbar",
+            "role": "toolbar-button",
             "commands.default": { "url": "http://10.0.1.27/0?1401=I=0" },
             "icons.default": {
               "normal": {

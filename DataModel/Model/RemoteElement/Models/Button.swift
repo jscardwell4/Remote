@@ -14,6 +14,7 @@ import MoonKit
 public final class Button: RemoteElement {
 
   override public var elementType: BaseType { return .Button }
+  override public class var parentElementType: RemoteElement.Type? { return ButtonGroup.self }
 
   /**
   updateWithPreset:
@@ -407,7 +408,7 @@ public final class Button: RemoteElement {
     var commands          : JSONValue.ObjectValue = [:]
     var longPressCommands : JSONValue.ObjectValue = [:]
 
-    for mode in modes as [String] {
+    for mode in modes {
       if let modeTitles = titlesForMode(mode)?.jsonValue { titles[mode] = modeTitles }
       if let modeBackgroundColors = backgroundColorsForMode(mode)?.jsonValue {
         backgroundColors[mode] = modeBackgroundColors

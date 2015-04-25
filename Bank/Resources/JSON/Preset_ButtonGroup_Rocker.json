@@ -16,15 +16,15 @@
       "role": "top",
       "icons": {
         "normal": {
-          "imagePath": "Icons/Glyphish%204/Plus",
+          "image.index": "Icons/Glyphish%204/Plus",
           "color": <@include ForegroundColor_Normal.json>
         },
         "highlighted": {
-          "imagePath": "Icons/Glyphish%204/Plus",
+          "image.index": "Icons/Glyphish%204/Plus",
           "color": <@include ForegroundColor_Highlighted.json>
         },
         "disabled": {
-          "imagePath": "Icons/Glyphish%204/Plus",
+          "image.index": "Icons/Glyphish%204/Plus",
           "color": <@include ForegroundColor_Disabled.json>
         }
       }
@@ -34,15 +34,15 @@
       "role": "bottom",
       "icons": {
         "normal": {
-          "imagePath": "Icons/Glyphish%204/Minus",
+          "image.index": "Icons/Glyphish%204/Minus",
           "color": <@include ForegroundColor_Normal.json>
         },
         "highlighted": {
-          "imagePath": "Icons/Glyphish%204/Minus",
+          "image.index": "Icons/Glyphish%204/Minus",
           "color": <@include ForegroundColor_Highlighted.json>
         },
         "disabled": {
-          "imagePath": "Icons/Glyphish%204/Minus",
+          "image.index": "Icons/Glyphish%204/Minus",
           "color": <@include ForegroundColor_Disabled.json>
         }
       }

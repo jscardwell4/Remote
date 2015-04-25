@@ -473,7 +473,7 @@ class DataModel_LoadedTests: QuickSpec {
       describe("the top toolbar") {
         it("has the expected values") {
           expect(topToolbar?.name) == "Top Toolbar"
-          expect(topToolbar?.role) == RemoteElement.Role.Toolbar
+          expect(topToolbar?.role) == RemoteElement.Role.TopToolbar
           expect(topToolbar?.shape) == RemoteElement.Shape.Rectangle
           expect(topToolbar?.constraints.count) == 14
           expect(topToolbar?.backgroundColorForMode(RemoteElement.DefaultMode)?.jsonValue) == "gray@50%"
@@ -482,7 +482,7 @@ class DataModel_LoadedTests: QuickSpec {
         var subelements: OrderedSet<RemoteElement>?
         describe("the toolbar buttons") {
           it("can be retrieved") {
-            subelements = topToolbar?.childElements
+            subelements = topToolbar?.subelements
             expect(subelements) != nil
             expect(subelements?.count) == 5
           }
@@ -494,7 +494,7 @@ class DataModel_LoadedTests: QuickSpec {
             }
             it("has the expected values") {
               expect(button?.name) == "Home Button"
-              expect(button?.role) == RemoteElement.Role.ToolbarButton
+              expect(button?.role) == RemoteElement.Role.TopToolbarButton
               expect(button?.constraints.count) == 1
               expect(button?.commandForMode(RemoteElement.DefaultMode)) != nil
               expect(button?.iconsForMode(RemoteElement.DefaultMode)?.normal?.image?.name) == "Home"
@@ -507,7 +507,7 @@ class DataModel_LoadedTests: QuickSpec {
             }
             it("has the expected values") {
               expect(button?.name) == "Settings Button"
-              expect(button?.role) == RemoteElement.Role.ToolbarButton
+              expect(button?.role) == RemoteElement.Role.TopToolbarButton
               expect(button?.commandForMode(RemoteElement.DefaultMode)) != nil
               expect(button?.iconsForMode(RemoteElement.DefaultMode)?.normal?.image?.name) == "Gear"
             }
@@ -519,7 +519,7 @@ class DataModel_LoadedTests: QuickSpec {
             }
             it("has the expected values") {
               expect(button?.name) == "Edit Remote Button"
-              expect(button?.role) == RemoteElement.Role.ToolbarButton
+              expect(button?.role) == RemoteElement.Role.TopToolbarButton
               expect(button?.commandForMode(RemoteElement.DefaultMode)) != nil
               expect(button?.iconsForMode(RemoteElement.DefaultMode)?.normal?.image?.name) == "Pencil"
             }
@@ -590,7 +590,7 @@ class DataModel_LoadedTests: QuickSpec {
       }
     }
 
-    fdescribe("the remotes") {
+    describe("the remotes") {
       it("can be fetched") {
         let remotes = Remote.objectsInContext(moc) as? [Remote]
         expect(remotes) != nil

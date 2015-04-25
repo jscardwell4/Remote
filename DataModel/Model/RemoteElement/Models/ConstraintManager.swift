@@ -23,7 +23,7 @@ public final class ConstraintManager: NSObject {
   public var subelementConstraints: Set<Constraint> { return remoteElement.constraints ∖ intrinsicConstraints }
   public var dependentConstraints: Set<Constraint> { return remoteElement.secondItemConstraints ∖ intrinsicConstraints }
   public var dependentChildConstraints: Set<Constraint> {
-    return filter(dependentConstraints) {$0.firstItem != nil && self.remoteElement.childElements ∋ $0.firstItem!}
+    return filter(dependentConstraints) {$0.firstItem != nil && self.remoteElement.subelements ∋ $0.firstItem!}
   }
   public var dependentSiblingConstraints: Set<Constraint> { return dependentConstraints ∖ dependentChildConstraints }
   public var intrinsicConstraints: Set<Constraint> {
@@ -62,7 +62,7 @@ public final class ConstraintManager: NSObject {
   public func replacementFormatForString(format: String) -> String {
 
     var identifiers = [remoteElement.identifier]
-    identifiers.extend(remoteElement.childElements.map{$0.identifier})
+    identifiers.extend(remoteElement.subelements.map{$0.identifier})
 
     let regex = ~/"\\$([0-9]+)"
 
@@ -106,7 +106,7 @@ public final class ConstraintManager: NSObject {
       }
 
       var directory: OrderedDictionary<String, RemoteElement> = [self.remoteElement.identifier: self.remoteElement]
-      apply(self.remoteElement.childElements){directory.setValue($0, forKey: $0.identifier)}
+      apply(self.remoteElement.subelements){directory.setValue($0, forKey: $0.identifier)}
 
       var constraints: Set<Constraint> = []
       apply(pseudoConstraints){

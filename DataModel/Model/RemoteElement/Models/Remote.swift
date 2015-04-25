@@ -44,7 +44,7 @@ public final class Remote: RemoteElement {
     }
   }
 
-  override public var parentElement: RemoteElement? { get { return nil } set {} }
+  override public class var subelementType: RemoteElement.Type? { return ButtonGroup.self }
 
   /**
   updateWithPreset:
@@ -102,7 +102,7 @@ public final class Remote: RemoteElement {
       if let panels = ObjectJSONValue(data["panels"] ?? .Null) {
         for (_, key, json) in panels {
           if let uuid = String(json),
-            buttonGroup = subelements.objectPassingTest({($0.0 as! RemoteElement).uuid == uuid}) as? ButtonGroup {
+            buttonGroup = findFirst(subelements, {$0.uuid == uuid}) as? ButtonGroup {
             if let assignment = ButtonGroup.PanelAssignment(.String(key))
               where assignment != ButtonGroup.PanelAssignment.Unassigned
             {

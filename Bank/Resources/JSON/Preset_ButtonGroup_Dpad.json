@@ -26,15 +26,15 @@
       "role": "up",
       "icons": {
         "normal": {
-          "image": "Icons/Glyphish%206/Large/Normal/Arrow%20Up",
+          "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Up",
           "color": <@include ForegroundColor_Normal.json>
         },
         "highlighted": {
-          "image": "Icons/Glyphish%206/Large/Normal/Arrow%20Up",
+          "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Up",
           "color": <@include ForegroundColor_Highlighted.json>
         },
         "disabled": {
-          "image": "Icons/Glyphish%206/Large/Normal/Arrow%20Up",
+          "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Up",
           "color": <@include ForegroundColor_Disabled.json>
         }
       }
@@ -44,15 +44,15 @@
       "role": "down",
       "icons": {
         "normal": {
-          "image": "Icons/Glyphish%206/Large/Normal/Arrow%20Down",
+          "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Down",
           "color": <@include ForegroundColor_Normal.json>
         },
         "highlighted": {
-          "image": "Icons/Glyphish%206/Large/Normal/Arrow%20Down",
+          "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Down",
           "color": <@include ForegroundColor_Highlighted.json>
         },
         "disabled": {
-          "image": "Icons/Glyphish%206/Large/Normal/Arrow%20Down",
+          "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Down",
           "color": <@include ForegroundColor_Disabled.json>
         }
       }
@@ -62,15 +62,15 @@
       "role": "left",
       "icons": {
         "normal": {
-          "image": "Icons/Glyphish%206/Large/Normal/Arrow%20Left",
+          "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Left",
           "color": <@include ForegroundColor_Normal.json>
         },
         "highlighted": {
-          "image": "Icons/Glyphish%206/Large/Normal/Arrow%20Left",
+          "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Left",
           "color": <@include ForegroundColor_Highlighted.json>
         },
         "disabled": {
-          "image": "Icons/Glyphish%206/Large/Normal/Arrow%20Left",
+          "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Left",
           "color": <@include ForegroundColor_Disabled.json>
         }
       }
@@ -80,15 +80,15 @@
       "role": "right",
       "icons": {
         "normal": {
-          "image": "Icons/Glyphish%206/Large/Normal/Arrow%20Right",
+          "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Right",
           "color": <@include ForegroundColor_Normal.json>
         },
         "highlighted": {
-          "image": "Icons/Glyphish%206/Large/Normal/Arrow%20Right",
+          "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Right",
           "color": <@include ForegroundColor_Highlighted.json>
         },
         "disabled": {
-          "image": "Icons/Glyphish%206/Large/Normal/Arrow%20Right",
+          "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Right",
           "color": <@include ForegroundColor_Disabled.json>
         }
       }

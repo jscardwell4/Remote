@@ -14,7 +14,7 @@
     {
       "key": "default",
       "baseType": "button",
-      "role": "selection-panel",
+      "role": "selection-panel-button",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@32",
@@ -32,7 +32,7 @@
     {
       "key": "other",
       "baseType": "button",
-      "role": "selection-panel",
+      "role": "selection-panel-button",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@32",

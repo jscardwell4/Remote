@@ -41,6 +41,16 @@ public final class ImageView: ModelObject {
   }
 
   /**
+  initWithImage:
+
+  :param: image Image
+  */
+  public convenience init(image: Image) {
+    self.init(context: image.managedObjectContext)
+    self.image = image
+  }
+
+  /**
   updateWithData:
 
   :param: data ObjectJSONValue

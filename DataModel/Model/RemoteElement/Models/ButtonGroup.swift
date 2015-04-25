@@ -111,6 +111,10 @@ public final class ButtonGroup: RemoteElement {
 
   override public var elementType: BaseType { return .ButtonGroup }
 
+  override public class var parentElementType: RemoteElement.Type? { return Remote.self }
+  override public class var subelementType: RemoteElement.Type? { return Button.self }
+
+
   /**
   updateWithPreset:
 
@@ -249,7 +253,7 @@ public final class ButtonGroup: RemoteElement {
     }
     commandSet = commandSet?.faultedObject()
     if commandSet != nil {
-      for button in childElements.array as! [Button] {
+      for button in subelements.map({$0 as! Button}) {
          if button.role == RemoteElement.Role.Tuck { continue }
          button.command = commandSet![button.role]
          button.enabled = button.command != nil
@@ -328,7 +332,7 @@ public final class ButtonGroup: RemoteElement {
     var commandSetCollections : JSONValue.ObjectValue = [:]
     var labels                : JSONValue.ObjectValue = [:]
 
-    for mode in modes as [String] {
+    for mode in modes {
       if let container = commandContainerForMode(mode) {
         let d = container.jsonValue
         if container is CommandSetCollection { commandSetCollections[mode] = d }
