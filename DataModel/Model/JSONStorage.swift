@@ -48,3 +48,12 @@ public final class JSONStorage: ModelObject, ModelStorage {
   override public var jsonValue: JSONValue { return (ObjectJSONValue(super.jsonValue)! + ObjectJSONValue(dictionary)).jsonValue }
 }
 
+/**
+`Equatable` support for `JSONStorage`
+
+:param: lhs JSONStorage
+:param: rhs JSONStorage
+
+:returns: Bool
+*/
+public func ==(lhs: JSONStorage, rhs: JSONStorage) -> Bool { return lhs.isEqual(rhs) }

@@ -69,6 +69,15 @@ public final class ImageView: ModelObject {
     return obj.jsonValue
   }
 
-
-
 }
+
+/**
+`Equatable` support for `ImageView`
+
+:param: lhs ImageView
+:param: rhs ImageView
+
+:returns: Bool
+*/
+public func ==(lhs: ImageView, rhs: ImageView) -> Bool { return lhs.isEqual(rhs) }
+

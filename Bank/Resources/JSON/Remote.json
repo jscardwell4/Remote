@@ -202,7 +202,7 @@
             "bottom.code.index": "Sony/AV%20Receiver/Volume%20Down"
           }
         },
-        "labelAttributes": {
+        "labelAttributes.default": {
           "font": "Helvetica Neue@20",
           "foregroundColor": <@include ForegroundColor_Normal.json>,
           "strokeColor": "white@50%",

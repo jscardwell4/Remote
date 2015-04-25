@@ -638,15 +638,15 @@ public class RemoteElement: IndexedModelObject {
     if hasNonDefaultValue("shape") { obj["shape"] = shape.jsonValue }
     if hasNonDefaultValue("style") { obj["style"] = style.jsonValue }
 
-    let bgColors = OrderedDictionary(compressedMap(modes) { mode -> (String, JSONValue)? in
+    let bgColors = OrderedDictionary(compressedMap(modes) { mode -> (Mode, JSONValue)? in
         if let color = self.backgroundColorForMode(mode)?.jsonValue { return (mode, color) } else { return nil }
     })
 
-    let bgImages = OrderedDictionary(compressedMap(modes) { mode -> (String, JSONValue)? in
+    let bgImages = OrderedDictionary(compressedMap(modes) { mode -> (Mode, JSONValue)? in
       if let image = self.backgroundImageForMode(mode)?.jsonValue { return (mode, image) } else { return nil }
     })
 
-    let bgImageAlphas = OrderedDictionary(compressedMap(modes) { mode -> (String, JSONValue)? in
+    let bgImageAlphas = OrderedDictionary(compressedMap(modes) { mode -> (Mode, JSONValue)? in
       if let alpha = self.backgroundImageAlphaForMode(mode)?.jsonValue { return (mode, alpha) } else { return nil }
     })
 

@@ -458,6 +458,7 @@
 		C27BCCAD1801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC891801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png */; };
 		C27BCCAE1801C16A0002464C /* IntegerKeyboard_Erase.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC8A1801C16A0002464C /* IntegerKeyboard_Erase.png */; };
 		C27BCCAF1801C16A0002464C /* IntegerKeyboard_Erase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */; };
+		C2817C411AEC101B00C60C07 /* ModalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2817C401AEC101B00C60C07 /* ModalStorage.swift */; };
 		C285D82B1AC48A5400C527F6 /* TitleAttributesDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F5431ABCA395007581F2 /* TitleAttributesDelegate.swift */; };
 		C285D82F1AC48BA500C527F6 /* BankCollectionAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4731ABCA395007581F2 /* BankCollectionAttributes.swift */; };
 		C285D8301AC48BC800C527F6 /* BankCollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4791ABCA395007581F2 /* BankCollectionLayout.swift */; };
@@ -1444,6 +1445,7 @@
 		C27BCC891801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Erase-Highlighted@2x.png"; sourceTree = "<group>"; };
 		C27BCC8A1801C16A0002464C /* IntegerKeyboard_Erase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_Erase.png; sourceTree = "<group>"; };
 		C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Erase@2x.png"; sourceTree = "<group>"; };
+		C2817C401AEC101B00C60C07 /* ModalStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalStorage.swift; sourceTree = "<group>"; };
 		C285D8691AC4C0E800C527F6 /* DataModelProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataModelProtocols.swift; path = Model/DataModelProtocols.swift; sourceTree = "<group>"; };
 		C2874FB91AE68CD100BD7634 /* DrawingKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingKit.swift; sourceTree = "<group>"; };
 		C28E98F31AD1A4B000E78711 /* DataModel Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "DataModel Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3054,6 +3056,7 @@
 				C253B2E01AD98D6B00F7E6AF /* Asset.swift */,
 				C20D2F451AE0858800D0007B /* IndexedModelObject.swift */,
 				C265DBB71AE81E4600655C4C /* PNG.swift */,
+				C2817C401AEC101B00C60C07 /* ModalStorage.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -4312,6 +4315,7 @@
 				C2E9F55F1ABCA395007581F2 /* EditableModelObject.swift in Sources */,
 				C2E9F5EF1ABCA395007581F2 /* SystemCommand.swift in Sources */,
 				C2E9F5D31ABCA395007581F2 /* DictionaryStorage.swift in Sources */,
+				C2817C411AEC101B00C60C07 /* ModalStorage.swift in Sources */,
 				C2E9F5F61ABCA395007581F2 /* CommandOperation.swift in Sources */,
 				C293C7801AC318EB00408D35 /* PresetCategory.swift in Sources */,
 				C2E9F6101ABCA395007581F2 /* Constraint.swift in Sources */,

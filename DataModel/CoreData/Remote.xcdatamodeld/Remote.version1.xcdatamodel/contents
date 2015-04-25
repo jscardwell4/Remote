@@ -63,7 +63,7 @@
         <attribute name="labelConstraints" optional="YES" attributeType="String" defaultValueString="H:|[label] V:|[label]" syncable="YES"/>
         <attribute name="panelAssignment" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="commandContainer" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CommandContainer" inverseName="buttonGroup" inverseEntity="CommandContainer" syncable="YES"/>
-        <relationship name="labelAttributes" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="JSONStorage" inverseName="storageForButtonGroupLabelAttributes" inverseEntity="JSONStorage" syncable="YES"/>
+        <relationship name="labelAttributes" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ModalStorage" inverseName="storageForButtonGroupLabelAttributes" inverseEntity="ModalStorage" syncable="YES"/>
         <relationship name="topToolbarForController" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ActivityController" inverseName="topToolbar" inverseEntity="ActivityController" syncable="YES"/>
     </entity>
     <entity name="ColorStorage" representedClassName="ColorStorage" parentEntity="DictionaryStorage" syncable="YES"/>
@@ -257,6 +257,7 @@
         <relationship name="imageSetNormal" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="normal" inverseEntity="ControlStateImageSet" syncable="YES"/>
         <relationship name="imageSetSelected" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="selected" inverseEntity="ControlStateImageSet" syncable="YES"/>
         <relationship name="imageSetSelectedHighlightedDisabled" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="highlightedSelectedDisabled" inverseEntity="ControlStateImageSet" syncable="YES"/>
+        <relationship name="modalStorage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ModalStorage" inverseName="imageViewSet" inverseEntity="ModalStorage" syncable="YES"/>
         <relationship name="remoteElements" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="backgroundImage" inverseEntity="RemoteElement" syncable="YES"/>
     </entity>
     <entity name="IRCode" representedClassName="IRCode" syncable="YES">
@@ -332,7 +333,7 @@
         <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="JSONStorage" representedClassName="JSONStorage" parentEntity="DictionaryStorage" syncable="YES">
-        <relationship name="storageForButtonGroupLabelAttributes" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ButtonGroup" inverseName="labelAttributes" inverseEntity="ButtonGroup" syncable="YES"/>
+        <relationship name="modalStorage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ModalStorage" inverseName="jSONStorageSet" inverseEntity="ModalStorage" syncable="YES"/>
         <relationship name="storageForPreset" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Preset" inverseName="storage" inverseEntity="Preset" syncable="YES"/>
         <relationship name="storageForTitleSetDisabled" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="disabled" inverseEntity="ControlStateTitleSet" syncable="YES"/>
         <relationship name="storageForTitleSetHighlighted" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="highlighted" inverseEntity="ControlStateTitleSet" syncable="YES"/>
@@ -354,6 +355,11 @@
         <attribute name="user" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <relationship name="codeSets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IRCodeSet" inverseName="manufacturer" inverseEntity="IRCodeSet" syncable="YES"/>
         <relationship name="devices" toMany="YES" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="manufacturer" inverseEntity="ComponentDevice" syncable="YES"/>
+    </entity>
+    <entity name="ModalStorage" representedClassName="ModalStorage" parentEntity="DictionaryStorage" syncable="YES">
+        <relationship name="imageViewSet" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ImageView" inverseName="modalStorage" inverseEntity="ImageView" syncable="YES"/>
+        <relationship name="jSONStorageSet" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="JSONStorage" inverseName="modalStorage" inverseEntity="JSONStorage" syncable="YES"/>
+        <relationship name="storageForButtonGroupLabelAttributes" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ButtonGroup" inverseName="labelAttributes" inverseEntity="ButtonGroup" syncable="YES"/>
     </entity>
     <entity name="NetworkDevice" representedClassName="NetworkDevice" syncable="YES">
         <attribute name="autoGeneratedName" optional="YES" attributeType="String" syncable="YES"/>
@@ -463,7 +469,7 @@
         <element name="HTTPCommand" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Image" positionX="0" positionY="0" width="128" height="30"/>
         <element name="ImageCategory" positionX="36" positionY="180" width="128" height="135"/>
-        <element name="ImageView" positionX="0" positionY="0" width="128" height="255"/>
+        <element name="ImageView" positionX="0" positionY="0" width="128" height="270"/>
         <element name="IRCode" positionX="0" positionY="0" width="128" height="240"/>
         <element name="IRCodeSet" positionX="9" positionY="153" width="128" height="135"/>
         <element name="ISYDevice" positionX="0" positionY="0" width="128" height="195"/>
@@ -474,6 +480,7 @@
         <element name="MacroCommand" positionX="0" positionY="0" width="128" height="90"/>
         <element name="Manufacturer" positionX="0" positionY="0" width="128" height="120"/>
         <element name="NetworkDevice" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="PNG" positionX="36" positionY="153" width="128" height="75"/>
         <element name="PowerCommand" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Preset" positionX="0" positionY="0" width="128" height="165"/>
         <element name="PresetCategory" positionX="63" positionY="189" width="128" height="135"/>
@@ -482,6 +489,6 @@
         <element name="SendIRCommand" positionX="0" positionY="0" width="128" height="105"/>
         <element name="SwitchCommand" positionX="0" positionY="0" width="128" height="75"/>
         <element name="SystemCommand" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="PNG" positionX="36" positionY="153" width="128" height="75"/>
+        <element name="ModalStorage" positionX="36" positionY="153" width="128" height="90"/>
     </elements>
 </model>

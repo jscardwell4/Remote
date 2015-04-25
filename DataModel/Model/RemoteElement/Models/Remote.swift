@@ -10,36 +10,33 @@ import Foundation
 import CoreData
 import MoonKit
 
+
 @objc(Remote)
 public final class Remote: RemoteElement {
 
   override public var elementType: BaseType { return .Remote }
 
-  public var topBarHidden: Bool {
-    get {
-      willAccessValueForKey("topBarHidden")
-      let topBarHidden = (primitiveValueForKey("topBarHidden") as? NSNumber)?.boolValue ?? false
-      didAccessValueForKey("topBarHidden")
-      return topBarHidden
-    }
-    set {
-      willChangeValueForKey("topBarHidden")
-      setPrimitiveValue(newValue, forKey: "topBarHidden")
-      didChangeValueForKey("topBarHidden")
-    }
-  }
+  @NSManaged public var topBarHidden: Bool
   @NSManaged public var activity: Activity?
 
-  public var panels: [NSNumber:String] {
+  public typealias PanelAssignment = ButtonGroup.PanelAssignment
+
+  /** Index mapping panel assignments to button group uuids */
+  public var panels: [PanelAssignment:UUIDIndex] {
     get {
       willAccessValueForKey("panels")
-      let panels = primitiveValueForKey("panels") as? [NSNumber:String]
+      let panels = primitiveValueForKey("panels") as! [Int:String]
       didAccessValueForKey("panels")
-      return panels ?? [:]
+
+      let keys = map(panels.keys) {PanelAssignment(rawValue: $0)}
+      let values = map(panels.values) {UUIDIndex(rawValue: $0)!}
+      return zip(keys, values)
     }
     set {
+      let keys = map(newValue.keys) {$0.rawValue}
+      let values = map(newValue.values) {$0.rawValue}
       willChangeValueForKey("panels")
-      setPrimitiveValue(newValue, forKey: "panels")
+      setPrimitiveValue(zip(keys,values), forKey: "panels")
       didChangeValueForKey("panels")
     }
   }
@@ -53,37 +50,32 @@ public final class Remote: RemoteElement {
   */
   override func updateWithPreset(preset: Preset) {
     super.updateWithPreset(preset)
-
     topBarHidden = preset.topBarHidden ?? false
+    // ???: Panel assignments?
   }
 
   /**
   setButtonGroup:forPanelAssignment:
 
   :param: buttonGroup ButtonGroup?
-  :param: assignment ButtonGroup.PanelAssignment
+  :param: assignment PanelAssignment
   */
-  public func setButtonGroup(buttonGroup: ButtonGroup?, forPanelAssignment assignment: ButtonGroup.PanelAssignment) {
+  public func setButtonGroup(buttonGroup: ButtonGroup?, forPanelAssignment assignment: PanelAssignment) {
     var assignments = panels
-    if assignment != ButtonGroup.PanelAssignment.Unassigned { assignments[assignment.rawValue] = buttonGroup?.uuid }
+    if assignment != PanelAssignment.Unassigned { assignments[assignment] = UUIDIndex(buttonGroup?.uuid) }
     panels = assignments
   }
 
   /**
   buttonGroupForPanelAssignment:
 
-  :param: assignment ButtonGroup.PanelAssignment
+  :param: assignment PanelAssignment
 
   :returns: ButtonGroup?
   */
-  public func buttonGroupForPanelAssignment(assignment: ButtonGroup.PanelAssignment) -> ButtonGroup? {
-    var buttonGroup: ButtonGroup?
-    if managedObjectContext != nil {
-      if let uuid = panels[assignment.rawValue] {
-        buttonGroup = ButtonGroup.objectWithUUID(uuid, context: managedObjectContext!)
-      }
-    }
-    return buttonGroup
+  public func buttonGroupForPanelAssignment(assignment: PanelAssignment) -> ButtonGroup? {
+    if let moc = managedObjectContext, uuid = panels[assignment] { return ButtonGroup.objectWithUUID(uuid, context: moc) }
+    else { return nil }
   }
 
 
@@ -99,15 +91,13 @@ public final class Remote: RemoteElement {
 
       if let topBarHidden = Bool(data["topBarHidden"]) { self.topBarHidden = topBarHidden }
 
-      if let panels = ObjectJSONValue(data["panels"] ?? .Null) {
+      if let panels = ObjectJSONValue(data["panels"]) {
         for (_, key, json) in panels {
-          if let uuid = String(json),
-            buttonGroup = findFirst(subelements, {$0.uuid == uuid}) as? ButtonGroup {
-            if let assignment = ButtonGroup.PanelAssignment(.String(key))
-              where assignment != ButtonGroup.PanelAssignment.Unassigned
-            {
+          if let uuid = UUIDIndex(String(json)),
+            buttonGroup = ButtonGroup.objectWithUUID(uuid, context: moc) where subelements ∋ buttonGroup,
+            let assignment = PanelAssignment(key.jsonValue) where assignment != PanelAssignment.Unassigned
+          {
               setButtonGroup(buttonGroup, forPanelAssignment: assignment)
-            }
           }
         }
       }
@@ -118,17 +108,7 @@ public final class Remote: RemoteElement {
 
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
-
-    var panels: JSONValue.ObjectValue = [:]
-
-    for (number, uuid) in self.panels {
-      let assignment = ButtonGroup.PanelAssignment(rawValue: number.integerValue)
-      if let assignedUUID = buttonGroupForPanelAssignment(assignment)?.uuid {
-        panels[assignment.jsonValue.value as! String] = .String(assignedUUID)
-      }
-    }
-
-    if panels.count > 0 { obj["panels"] = .Object(panels) }
+    obj["panels"] = .Object(OrderedDictionary(zip(map(panels.keys, {$0.stringValue}), map(panels.values, {$0.jsonValue}))))
     return obj.jsonValue
   }
 

@@ -307,6 +307,8 @@ public struct UUIDIndex: RawRepresentable {
 
   private(set) public var rawValue: String
 
+  public init?(_ value: String?) { if value != nil { self.init(rawValue: value!) } else { return nil } }
+
   public init?(rawValue: String) {
     if UUIDIndex.isValidRawValue(rawValue) { self.rawValue = rawValue }
     else { return nil }

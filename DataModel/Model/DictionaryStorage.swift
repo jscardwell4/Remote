@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(DictionaryStorage)
-public final class DictionaryStorage: ModelObject, ModelStorage {
+public class DictionaryStorage: ModelObject, ModelStorage {
 
   public var dictionary: OrderedDictionary<String, AnyObject> {
     get {

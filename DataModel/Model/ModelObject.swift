@@ -106,7 +106,7 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /** Entity description retrieved from the managed object model */
   public class var entityDescription: NSEntityDescription {
     let entities = DataManager.managedObjectModel.entities as! [NSEntityDescription]
-    let name = className().substringForCapture(1, inFirstMatchFor: ~/"^([^_]+)")
+    let name = className().substringForCapture(1, inFirstMatchFor: ~/"^([^_0-9]+)")
     if let entity = findFirst(entities, {$0.managedObjectClassName == name}) { return entity }
     else { fatalError("unable to locate entity for class '\(className())'") }
   }
@@ -149,6 +149,18 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   */
   public class func objectWithUUID(uuid: String, context: NSManagedObjectContext) -> Self? {
     if isValidUUID(uuid) { return objectWithValue(uuid, forAttribute: "uuid", context: context) } else { return nil }
+  }
+
+  /**
+  objectWithUUIDIndex:context:
+
+  :param: uuidIndex UUIDIndex
+  :param: context NSManagedObjectContext
+
+  :returns: Self?
+  */
+  public class func objectWithUUID(uuidIndex: UUIDIndex, context: NSManagedObjectContext) -> Self? {
+    return objectWithUUID(uuidIndex.rawValue, context: context)
   }
 
   /**
