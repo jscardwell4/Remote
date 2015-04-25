@@ -20,7 +20,7 @@
       "baseType": "button",
       "role": "play",
       "shape": "rounded-rectangle",
-      "style": "gloss2",
+      "style": "gloss",
       "titles": {
         "normal": <@include TitleAttributes_Default_Icon.json,ICON=play,SIZE=32>,
         "disabled.foregroundColor": <@include ForegroundColor_Disabled.json>,
@@ -33,7 +33,7 @@
       "baseType": "button",
       "role": "pause",
       "shape": "rounded-rectangle",
-      "style": "gloss2",
+      "style": "gloss",
       "titles": {
         "normal": <@include TitleAttributes_Default_Icon.json,ICON=pause,SIZE=32>,
         "disabled.foregroundColor": <@include ForegroundColor_Disabled.json>,
@@ -46,7 +46,7 @@
       "baseType": "button",
       "role": "rewind",
       "shape": "rounded-rectangle",
-      "style": "gloss2",
+      "style": "gloss",
       "titles": {
         "normal": <@include TitleAttributes_Default_Icon.json,ICON=backward,SIZE=32>,
         "disabled.foregroundColor": <@include ForegroundColor_Disabled.json>,
@@ -59,7 +59,7 @@
       "baseType": "button",
       "role": "fast-forward",
       "shape": "rounded-rectangle",
-      "style": "gloss2",
+      "style": "gloss",
       "titles": {
         "normal": <@include TitleAttributes_Default_Icon.json,ICON=fast-forward,SIZE=32>,
         "disabled.foregroundColor": <@include ForegroundColor_Disabled.json>,
@@ -72,7 +72,7 @@
       "baseType": "button",
       "role": "stop",
       "shape": "rounded-rectangle",
-      "style": "gloss2",
+      "style": "gloss",
       "titles": {
         "normal": <@include TitleAttributes_Default_Icon.json,ICON=stop,SIZE=32>,
         "disabled.foregroundColor": <@include ForegroundColor_Disabled.json>,
@@ -85,7 +85,7 @@
       "baseType": "button",
       "role": "replay",
       "shape": "rounded-rectangle",
-      "style": "gloss2",
+      "style": "gloss",
       "titles": {
         "normal": <@include TitleAttributes_Default_Icon.json,ICON=step-backward,SIZE=32>,
         "disabled.foregroundColor": <@include ForegroundColor_Disabled.json>,
@@ -109,7 +109,7 @@
       "baseType": "button",
       "role": "skip",
       "shape": "rounded-rectangle",
-      "style": "gloss2",
+      "style": "gloss",
       "titles": {
         "normal": <@include TitleAttributes_Default_Icon.json,ICON=step-forward,SIZE=32>,
         "disabled.foregroundColor": <@include ForegroundColor_Disabled.json>,
@@ -122,7 +122,7 @@
       "baseType": "button",
       "role": "record",
       "shape": "rounded-rectangle",
-      "style": "gloss2",
+      "style": "gloss",
       "titles": {
         "normal": <@include TitleAttributes_Default_Icon.json,ICON=circle,SIZE=32>,
         "disabled.foregroundColor": <@include ForegroundColor_Disabled.json>,

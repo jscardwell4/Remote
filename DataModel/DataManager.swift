@@ -260,15 +260,28 @@ import MoonKit
 
     var error: NSError?
     context.performBlockAndWait {
-      if let json = JSONSerialization.objectByParsingFile(path, options: .InflateKeypaths, error: &error)
-        where MSHandleError(error) == false
-      {
-        if isOptionSet(LogFlags.File, logFlags),
-          let contents = String(contentsOfFile: path, encoding: NSUTF8StringEncoding, error: nil)
-        {
-          MSLogDebug("content of file to parse:\n\(contents)")
-        }
 
+      if isOptionSet(LogFlags.File, logFlags),
+        let contents = String(contentsOfFile: path, encoding: NSUTF8StringEncoding, error: nil)
+      {
+        MSLogDebug("content of file to parse:\n\(contents)")
+      }
+
+      let json: JSONValue?
+      if isOptionSet(LogFlags.Preparsed, logFlags) {
+        let preparsedString = JSONSerialization.stringByParsingDirectivesForFile(path, options: .InflateKeypaths, error: &error)
+        if preparsedString != nil && MSHandleError(error) == false {
+          MSLogDebug("preparsed content of file to parse:\n\(preparsedString!)")
+          json = JSONSerialization.objectByParsingString(preparsedString, options: .InflateKeypaths, error: &error)
+        } else {
+          json = nil
+        }
+      } else {
+        json = JSONSerialization.objectByParsingFile(path, options: .InflateKeypaths, error: &error)
+      }
+      
+      if MSHandleError(error) == false && json != nil
+      {
         if isOptionSet(LogFlags.Parsed, logFlags) { MSLogDebug("json objects from parsed file:\n\(json)") }
 
         if let data = ObjectJSONValue(json), importedObject = type(data: data, context: context) {
@@ -694,7 +707,8 @@ import MoonKit
     public static var Default: LogFlags = LogFlags(rawValue: 0b0000)
     public static var File: LogFlags = LogFlags(rawValue: 0b0001)
     public static var Parsed: LogFlags = LogFlags(rawValue: 0b0010)
-    public static var Imported: LogFlags = LogFlags(rawValue: 0b0100)
+    public static var Preparsed: LogFlags = LogFlags(rawValue: 0b0100)
+    public static var Imported: LogFlags = LogFlags(rawValue: 0b1000)
   }
 
   public class func loadResourceForURL(url: NSURL) {

@@ -87,6 +87,7 @@ public final class ControlStateTitleSet: ControlStateSet {
   }
 
   public func attributedStringForState(state: UIControlState) -> NSAttributedString? {
+    MSLogDebug("state = \(state.stringValue)\nself.jsonValue = \(jsonValue.prettyRawValue)")
     var string: NSAttributedString?
     if let indexedAttributes = self[state.rawValue] as? JSONStorage {
       let attributes = TitleAttributes(storage: indexedAttributes.dictionary)

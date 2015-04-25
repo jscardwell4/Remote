@@ -16,10 +16,12 @@ public final class ConnectionStatusButtonView: ButtonView {
 
   private var receptionist: MSNotificationReceptionist!
 
+  private var connected: Bool = false
+
   /** initializeIVARs */
   override func initializeIVARs() {
     super.initializeIVARs()
-    button.selected = ConnectionManager.isWifiAvailable()
+    connected = ConnectionManager.isWifiAvailable()
     receptionist = MSNotificationReceptionist(
       observer: self,
       forObject: nil,
@@ -28,12 +30,18 @@ public final class ConnectionStatusButtonView: ButtonView {
       handler: {
         (receptionist: MSNotificationReceptionist!) -> Void in
           if let v = receptionist.observer as? ConnectionStatusButtonView {
-            let selected = v.button.selected
+            let currentlyConnected = v.connected
             if let wifiAvailable = receptionist.notification.userInfo?[CMConnectionStatusWifiAvailableKey] as? Bool {
-              if selected != wifiAvailable { v.button.selected = !selected }
+              if currentlyConnected != wifiAvailable { v.connected = !currentlyConnected; v.setNeedsDisplay() }
             }
           }
       })
   }
 
+  override func drawContentInContext(ctx: CGContextRef, inRect rect: CGRect) {
+    let iconColor: UIColor
+    if let color = backgroundColor where color != UIColor.clearColor() { iconColor = color }
+    else { iconColor = UI.DrawingKit.buttonStrokeColor }
+    UI.DrawingKit.drawWifiStatus(iconColor: iconColor, connected: connected, containingFrame: rect)
+  }
 }

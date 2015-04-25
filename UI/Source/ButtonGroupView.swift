@@ -33,25 +33,25 @@ public class ButtonGroupView: RemoteElementView {
 
   :param: frame CGRect
   */
-  override init(frame: CGRect) { super.init(frame: frame) }
+//  override init(frame: CGRect) { super.init(frame: frame) }
 
   /**
   Overridden properties prevent synthesized initializers
 
   :param: model RemoteElement
   */
-  required public init(model: RemoteElement) {
-    super.init(model: model)
-  }
+//  required public init(model: RemoteElement) {
+//    super.init(model: model)
+//  }
 
   /**
   Overridden properties prevent synthesized initializers
 
   :param: aDecoder NSCoder
   */
-  required public init(coder aDecoder: NSCoder) {
-      fatalError("init(coder:) has not been implemented")
-  }
+//  required public init(coder aDecoder: NSCoder) {
+//      fatalError("init(coder:) has not been implemented")
+//  }
 
   /** tuck */
   func tuck() {

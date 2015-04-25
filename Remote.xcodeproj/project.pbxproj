@@ -8,34 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		C20D11AF1A40E28700C33499 /* RemoteDrawingKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D11AE1A40E28700C33499 /* RemoteDrawingKit.swift */; };
-		C20D2F271AE012AE00D0007B /* Activity.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F0B1AE012AE00D0007B /* Activity.json */; };
-		C20D2F281AE012AE00D0007B /* ActivityController.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F0C1AE012AE00D0007B /* ActivityController.json */; };
-		C20D2F291AE012AE00D0007B /* BackgroundColor_Dark_Normal.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F0D1AE012AE00D0007B /* BackgroundColor_Dark_Normal.json */; };
-		C20D2F2A1AE012AE00D0007B /* BackgroundColor_Default.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F0E1AE012AE00D0007B /* BackgroundColor_Default.json */; };
-		C20D2F2B1AE012AE00D0007B /* ComponentDevice.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F0F1AE012AE00D0007B /* ComponentDevice.json */; };
-		C20D2F2C1AE012AE00D0007B /* ForegroundColor_Disabled.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F101AE012AE00D0007B /* ForegroundColor_Disabled.json */; };
-		C20D2F2D1AE012AE00D0007B /* ForegroundColor_Highlighted.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F111AE012AE00D0007B /* ForegroundColor_Highlighted.json */; };
-		C20D2F2E1AE012AE00D0007B /* ForegroundColor_Normal.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F121AE012AE00D0007B /* ForegroundColor_Normal.json */; };
-		C20D2F2F1AE012AE00D0007B /* ImageCategory.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F131AE012AE00D0007B /* ImageCategory.json */; };
-		C20D2F301AE012AE00D0007B /* Manufacturer.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F141AE012AE00D0007B /* Manufacturer.json */; };
-		C20D2F311AE012AE00D0007B /* NetworkDevice.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F151AE012AE00D0007B /* NetworkDevice.json */; };
-		C20D2F321AE012AE00D0007B /* Preset.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F161AE012AE00D0007B /* Preset.json */; };
-		C20D2F331AE012AE00D0007B /* Preset_Button_Rectangular.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F171AE012AE00D0007B /* Preset_Button_Rectangular.json */; };
-		C20D2F341AE012AE00D0007B /* Preset_Button_Round.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F181AE012AE00D0007B /* Preset_Button_Round.json */; };
-		C20D2F351AE012AE00D0007B /* Preset_Button_Roundish.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F191AE012AE00D0007B /* Preset_Button_Roundish.json */; };
-		C20D2F361AE012AE00D0007B /* Preset_Button_Toolbar.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F1A1AE012AE00D0007B /* Preset_Button_Toolbar.json */; };
-		C20D2F371AE012AE00D0007B /* Preset_ButtonGroup_1x3.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F1B1AE012AE00D0007B /* Preset_ButtonGroup_1x3.json */; };
-		C20D2F381AE012AE00D0007B /* Preset_ButtonGroup_Dpad.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F1C1AE012AE00D0007B /* Preset_ButtonGroup_Dpad.json */; };
-		C20D2F391AE012AE00D0007B /* Preset_ButtonGroup_ModeSelectionPanel.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F1D1AE012AE00D0007B /* Preset_ButtonGroup_ModeSelectionPanel.json */; };
-		C20D2F3A1AE012AE00D0007B /* Preset_ButtonGroup_Numberpad.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F1E1AE012AE00D0007B /* Preset_ButtonGroup_Numberpad.json */; };
-		C20D2F3B1AE012AE00D0007B /* Preset_ButtonGroup_OverlayPanel.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F1F1AE012AE00D0007B /* Preset_ButtonGroup_OverlayPanel.json */; };
-		C20D2F3C1AE012AE00D0007B /* Preset_ButtonGroup_Rocker.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F201AE012AE00D0007B /* Preset_ButtonGroup_Rocker.json */; };
-		C20D2F3D1AE012AE00D0007B /* Preset_ButtonGroup_Toolbar.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F211AE012AE00D0007B /* Preset_ButtonGroup_Toolbar.json */; };
-		C20D2F3E1AE012AE00D0007B /* Preset_ButtonGroup_Transport.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F221AE012AE00D0007B /* Preset_ButtonGroup_Transport.json */; };
-		C20D2F3F1AE012AE00D0007B /* Remote.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F231AE012AE00D0007B /* Remote.json */; };
-		C20D2F401AE012AE00D0007B /* TitleAttributes_Default_Icon.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F241AE012AE00D0007B /* TitleAttributes_Default_Icon.json */; };
-		C20D2F411AE012AE00D0007B /* TitleAttributes_Default_Text.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F251AE012AE00D0007B /* TitleAttributes_Default_Text.json */; };
-		C20D2F421AE012AE00D0007B /* TitleEdgeInsets_Default.json in Resources */ = {isa = PBXBuildFile; fileRef = C20D2F261AE012AE00D0007B /* TitleEdgeInsets_Default.json */; };
 		C20D2F441AE0798400D0007B /* ModelIndexStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D2F431AE0798400D0007B /* ModelIndexStruct.swift */; };
 		C20D2F461AE0858800D0007B /* IndexedModelObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D2F451AE0858800D0007B /* IndexedModelObject.swift */; };
 		C215CC041ABB102F00E8077E /* DataModel.h in Headers */ = {isa = PBXBuildFile; fileRef = C215CC031ABB102F00E8077E /* DataModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1044,34 +1016,6 @@
 		C2011DCB19B238F900B982CD /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
 		C203CC361A17DA1E0064D4CB /* RemoteElementViewConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteElementViewConstraint.swift; sourceTree = "<group>"; };
 		C20D11AE1A40E28700C33499 /* RemoteDrawingKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDrawingKit.swift; sourceTree = "<group>"; };
-		C20D2F0B1AE012AE00D0007B /* Activity.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Activity.json; sourceTree = "<group>"; };
-		C20D2F0C1AE012AE00D0007B /* ActivityController.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ActivityController.json; sourceTree = "<group>"; };
-		C20D2F0D1AE012AE00D0007B /* BackgroundColor_Dark_Normal.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundColor_Dark_Normal.json; sourceTree = "<group>"; };
-		C20D2F0E1AE012AE00D0007B /* BackgroundColor_Default.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BackgroundColor_Default.json; sourceTree = "<group>"; };
-		C20D2F0F1AE012AE00D0007B /* ComponentDevice.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ComponentDevice.json; sourceTree = "<group>"; };
-		C20D2F101AE012AE00D0007B /* ForegroundColor_Disabled.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ForegroundColor_Disabled.json; sourceTree = "<group>"; };
-		C20D2F111AE012AE00D0007B /* ForegroundColor_Highlighted.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ForegroundColor_Highlighted.json; sourceTree = "<group>"; };
-		C20D2F121AE012AE00D0007B /* ForegroundColor_Normal.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ForegroundColor_Normal.json; sourceTree = "<group>"; };
-		C20D2F131AE012AE00D0007B /* ImageCategory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ImageCategory.json; sourceTree = "<group>"; };
-		C20D2F141AE012AE00D0007B /* Manufacturer.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer.json; sourceTree = "<group>"; };
-		C20D2F151AE012AE00D0007B /* NetworkDevice.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = NetworkDevice.json; sourceTree = "<group>"; };
-		C20D2F161AE012AE00D0007B /* Preset.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset.json; sourceTree = "<group>"; };
-		C20D2F171AE012AE00D0007B /* Preset_Button_Rectangular.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_Button_Rectangular.json; sourceTree = "<group>"; };
-		C20D2F181AE012AE00D0007B /* Preset_Button_Round.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_Button_Round.json; sourceTree = "<group>"; };
-		C20D2F191AE012AE00D0007B /* Preset_Button_Roundish.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_Button_Roundish.json; sourceTree = "<group>"; };
-		C20D2F1A1AE012AE00D0007B /* Preset_Button_Toolbar.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_Button_Toolbar.json; sourceTree = "<group>"; };
-		C20D2F1B1AE012AE00D0007B /* Preset_ButtonGroup_1x3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_1x3.json; sourceTree = "<group>"; };
-		C20D2F1C1AE012AE00D0007B /* Preset_ButtonGroup_Dpad.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_Dpad.json; sourceTree = "<group>"; };
-		C20D2F1D1AE012AE00D0007B /* Preset_ButtonGroup_ModeSelectionPanel.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_ModeSelectionPanel.json; sourceTree = "<group>"; };
-		C20D2F1E1AE012AE00D0007B /* Preset_ButtonGroup_Numberpad.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_Numberpad.json; sourceTree = "<group>"; };
-		C20D2F1F1AE012AE00D0007B /* Preset_ButtonGroup_OverlayPanel.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_OverlayPanel.json; sourceTree = "<group>"; };
-		C20D2F201AE012AE00D0007B /* Preset_ButtonGroup_Rocker.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_Rocker.json; sourceTree = "<group>"; };
-		C20D2F211AE012AE00D0007B /* Preset_ButtonGroup_Toolbar.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_Toolbar.json; sourceTree = "<group>"; };
-		C20D2F221AE012AE00D0007B /* Preset_ButtonGroup_Transport.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_ButtonGroup_Transport.json; sourceTree = "<group>"; };
-		C20D2F231AE012AE00D0007B /* Remote.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Remote.json; sourceTree = "<group>"; };
-		C20D2F241AE012AE00D0007B /* TitleAttributes_Default_Icon.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TitleAttributes_Default_Icon.json; sourceTree = "<group>"; };
-		C20D2F251AE012AE00D0007B /* TitleAttributes_Default_Text.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TitleAttributes_Default_Text.json; sourceTree = "<group>"; };
-		C20D2F261AE012AE00D0007B /* TitleEdgeInsets_Default.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TitleEdgeInsets_Default.json; sourceTree = "<group>"; };
 		C20D2F431AE0798400D0007B /* ModelIndexStruct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelIndexStruct.swift; sourceTree = "<group>"; };
 		C20D2F451AE0858800D0007B /* IndexedModelObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedModelObject.swift; sourceTree = "<group>"; };
 		C215CBFF1ABB102F00E8077E /* DataModel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataModel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1979,41 +1923,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C20D2F0A1AE012AE00D0007B /* Loaded */ = {
-			isa = PBXGroup;
-			children = (
-				C20D2F0B1AE012AE00D0007B /* Activity.json */,
-				C20D2F0C1AE012AE00D0007B /* ActivityController.json */,
-				C20D2F0D1AE012AE00D0007B /* BackgroundColor_Dark_Normal.json */,
-				C20D2F0E1AE012AE00D0007B /* BackgroundColor_Default.json */,
-				C20D2F0F1AE012AE00D0007B /* ComponentDevice.json */,
-				C20D2F101AE012AE00D0007B /* ForegroundColor_Disabled.json */,
-				C20D2F111AE012AE00D0007B /* ForegroundColor_Highlighted.json */,
-				C20D2F121AE012AE00D0007B /* ForegroundColor_Normal.json */,
-				C20D2F131AE012AE00D0007B /* ImageCategory.json */,
-				C20D2F141AE012AE00D0007B /* Manufacturer.json */,
-				C20D2F151AE012AE00D0007B /* NetworkDevice.json */,
-				C20D2F161AE012AE00D0007B /* Preset.json */,
-				C20D2F171AE012AE00D0007B /* Preset_Button_Rectangular.json */,
-				C20D2F181AE012AE00D0007B /* Preset_Button_Round.json */,
-				C20D2F191AE012AE00D0007B /* Preset_Button_Roundish.json */,
-				C20D2F1A1AE012AE00D0007B /* Preset_Button_Toolbar.json */,
-				C20D2F1B1AE012AE00D0007B /* Preset_ButtonGroup_1x3.json */,
-				C20D2F1C1AE012AE00D0007B /* Preset_ButtonGroup_Dpad.json */,
-				C20D2F1D1AE012AE00D0007B /* Preset_ButtonGroup_ModeSelectionPanel.json */,
-				C20D2F1E1AE012AE00D0007B /* Preset_ButtonGroup_Numberpad.json */,
-				C20D2F1F1AE012AE00D0007B /* Preset_ButtonGroup_OverlayPanel.json */,
-				C20D2F201AE012AE00D0007B /* Preset_ButtonGroup_Rocker.json */,
-				C20D2F211AE012AE00D0007B /* Preset_ButtonGroup_Toolbar.json */,
-				C20D2F221AE012AE00D0007B /* Preset_ButtonGroup_Transport.json */,
-				C20D2F231AE012AE00D0007B /* Remote.json */,
-				C20D2F241AE012AE00D0007B /* TitleAttributes_Default_Icon.json */,
-				C20D2F251AE012AE00D0007B /* TitleAttributes_Default_Text.json */,
-				C20D2F261AE012AE00D0007B /* TitleEdgeInsets_Default.json */,
-			);
-			path = Loaded;
-			sourceTree = "<group>";
-		};
 		C215CC001ABB102F00E8077E /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -2755,7 +2664,6 @@
 		C28E98F51AD1A4B000E78711 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				C20D2F0A1AE012AE00D0007B /* Loaded */,
 				C24A22621ADABB540065E7EA /* ActivityCommand_Simple.json */,
 				C24A22631ADABB540065E7EA /* CommandSet_Simple.json */,
 				C24A22641ADABB540065E7EA /* CommandSetCollection_Simple.json */,
@@ -4161,55 +4069,27 @@
 				C24A22791ADABB540065E7EA /* HTTPCommand_Simple.json in Resources */,
 				C24A22771ADABB540065E7EA /* ControlStateTitleSet_Simple.json in Resources */,
 				C24A22781ADABB540065E7EA /* DelayCommand_Simple.json in Resources */,
-				C20D2F421AE012AE00D0007B /* TitleEdgeInsets_Default.json in Resources */,
 				C23F071B1AD5A54F003BD28B /* ITachDevice_Simple.json in Resources */,
 				C24A227E1ADABB540065E7EA /* SwitchCommand_Simple.json in Resources */,
 				C24A227C1ADABB540065E7EA /* PowerCommand_Simple.json in Resources */,
 				C23F071E1AD5A54F003BD28B /* PresetCategory_Simple.json in Resources */,
 				C24A227F1ADABB540065E7EA /* SystemCommand_Simple.json in Resources */,
-				C20D2F301AE012AE00D0007B /* Manufacturer.json in Resources */,
 				C24A22751ADABB540065E7EA /* ControlStateColorSet_Simple.json in Resources */,
 				C2CDB8F81AD74BC8006DF88C /* Remote_Simple.json in Resources */,
 				C24A227D1ADABB540065E7EA /* SendIRCommand_Simple.json in Resources */,
-				C20D2F361AE012AE00D0007B /* Preset_Button_Toolbar.json in Resources */,
-				C20D2F3C1AE012AE00D0007B /* Preset_ButtonGroup_Rocker.json in Resources */,
-				C20D2F3F1AE012AE00D0007B /* Remote.json in Resources */,
-				C20D2F3A1AE012AE00D0007B /* Preset_ButtonGroup_Numberpad.json in Resources */,
-				C20D2F331AE012AE00D0007B /* Preset_Button_Rectangular.json in Resources */,
-				C20D2F371AE012AE00D0007B /* Preset_ButtonGroup_1x3.json in Resources */,
 				C24A22761ADABB540065E7EA /* ControlStateImageSet_Simple.json in Resources */,
 				C24A22711ADABB540065E7EA /* ActivityCommand_Simple.json in Resources */,
-				C20D2F2D1AE012AE00D0007B /* ForegroundColor_Highlighted.json in Resources */,
 				C23F071A1AD5A54F003BD28B /* ISYDeviceNode_Simple.json in Resources */,
-				C20D2F321AE012AE00D0007B /* Preset.json in Resources */,
 				C24A227A1ADABB540065E7EA /* ImageView_Simple.json in Resources */,
-				C20D2F3E1AE012AE00D0007B /* Preset_ButtonGroup_Transport.json in Resources */,
 				C23F07111AD5A54F003BD28B /* Activity_Simple.json in Resources */,
-				C20D2F381AE012AE00D0007B /* Preset_ButtonGroup_Dpad.json in Resources */,
-				C20D2F341AE012AE00D0007B /* Preset_Button_Round.json in Resources */,
 				C23F07181AD5A54F003BD28B /* ISYDevice_Simple.json in Resources */,
-				C20D2F291AE012AE00D0007B /* BackgroundColor_Dark_Normal.json in Resources */,
-				C20D2F3B1AE012AE00D0007B /* Preset_ButtonGroup_OverlayPanel.json in Resources */,
-				C20D2F271AE012AE00D0007B /* Activity.json in Resources */,
-				C20D2F2A1AE012AE00D0007B /* BackgroundColor_Default.json in Resources */,
 				C23F07161AD5A54F003BD28B /* IRCode_Simple.json in Resources */,
 				C23F07151AD5A54F003BD28B /* ImageCategory_Simple.json in Resources */,
-				C20D2F401AE012AE00D0007B /* TitleAttributes_Default_Icon.json in Resources */,
 				C2CDB8F71AD74BC8006DF88C /* ButtonGroup_Simple.json in Resources */,
 				C23F07171AD5A54F003BD28B /* IRCodeSet_Simple.json in Resources */,
 				C23F071D1AD5A54F003BD28B /* Preset_Simple.json in Resources */,
-				C20D2F411AE012AE00D0007B /* TitleAttributes_Default_Text.json in Resources */,
-				C20D2F2F1AE012AE00D0007B /* ImageCategory.json in Resources */,
-				C20D2F2E1AE012AE00D0007B /* ForegroundColor_Normal.json in Resources */,
-				C20D2F2C1AE012AE00D0007B /* ForegroundColor_Disabled.json in Resources */,
-				C20D2F391AE012AE00D0007B /* Preset_ButtonGroup_ModeSelectionPanel.json in Resources */,
 				C23F071C1AD5A54F003BD28B /* Manufacturer_Simple.json in Resources */,
-				C20D2F2B1AE012AE00D0007B /* ComponentDevice.json in Resources */,
 				C23F07131AD5A54F003BD28B /* ComponentDevice_Simple.json in Resources */,
-				C20D2F311AE012AE00D0007B /* NetworkDevice.json in Resources */,
-				C20D2F351AE012AE00D0007B /* Preset_Button_Roundish.json in Resources */,
-				C20D2F3D1AE012AE00D0007B /* Preset_ButtonGroup_Toolbar.json in Resources */,
-				C20D2F281AE012AE00D0007B /* ActivityController.json in Resources */,
 				C23F071F1AD5A54F003BD28B /* TitleAttributes_Simple.json in Resources */,
 				C2CDB8F61AD74BC8006DF88C /* Button_Simple.json in Resources */,
 			);

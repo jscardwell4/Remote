@@ -76,20 +76,14 @@
             "uuid": "037BB6A2-A4AF-408A-9F45-E48E0AA20E1E",
             "name": "Guide / Tools",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
+            "style": "gloss",
             "commands": {
-              "default": { "code.index": "Dish/Dish/Guide" },
-              "tv": { "code.index": "Samsung/Samsung%20TV/Tools" }
+              "default.code.index": "Dish/Dish/Guide",
+              "tv.code.index": "Samsung/Samsung%20TV/Tools"
             },
             "titles": {
-              "default": {
-                "normal": <@include TitleAttributes_Default_Text.json,TEXT=Guide,SIZE=20>,
-                "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
-              },
-              "tv": {
-                "normal": <@include TitleAttributes_Default_Text.json,TEXT=Tools,SIZE=20>,
-                "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
-              }
+              "default": <@include TitleAttributes_Default_Text.json,TEXT=Guide,SIZE=20>,
+              "tv": <@include TitleAttributes_Default_Text.json,TEXT=Tools,SIZE=20>
             },
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
@@ -98,20 +92,14 @@
             "uuid": "6EB0A6D1-992C-4F1D-816B-83E75187FCEB",
             "name": "DVR / Internet@TV",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
+            "style": "gloss",
             "commands": {
-              "default": { "code.index": "Dish/Dish/DVR" },
-              "tv": { "code.index": "Samsung/Samsung%20TV/Internet@TV" }
+              "default.code.index": "Dish/Dish/DVR",
+              "tv.code.index": "Samsung/Samsung%20TV/Internet@TV"
             },
             "titles": {
-              "default": {
-                "normal": <@include TitleAttributes_Default_Text.json,TEXT=DVR,SIZE=20>,
-                "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
-              },
-              "tv": {
-                "normal": <@include TitleAttributes_Default_Text.json,TEXT=Internet@TV,SIZE=20>,
-                "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
-              }
+              "default": <@include TitleAttributes_Default_Text.json,TEXT=DVR,SIZE=20>,
+              "tv": <@include TitleAttributes_Default_Text.json,TEXT=Internet@TV,SIZE=20>
             },
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
@@ -120,15 +108,12 @@
             "uuid": "2E48E207-00B8-481A-A57E-4FA84B51A02C",
             "name": "Info",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
+            "style": "gloss",
             "commands": {
-              "default": { "code.index": "Dish/Dish/Info"},
-              "tv": { "code.index": "Samsung/Samsung%20TV/Info" }
+              "default.code.index": "Dish/Dish/Info",
+              "tv.code.index": "Samsung/Samsung%20TV/Info"
             },
-            "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text.json,TEXT=Info,SIZE=20>,
-              "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
-            },
+            "titles.default": <@include TitleAttributes_Default_Text.json,TEXT=Info,SIZE=20>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           }
@@ -139,7 +124,7 @@
         "name": "DVR Activity Rocker",
         "role": "rocker",
         "shape": "rounded-rectangle",
-        "style": "border gloss1",
+        "style": "border gloss",
         "constraints": {
           "index": {
             "buttonBottom": "A947EAE0-0FFE-4448-8269-76F8954DF865",
@@ -167,15 +152,15 @@
             "role": "top",
             "icons.default": {
               "normal": {
-                "imagePath": "Icons/Glyphish%204/Plus",
+                "image.index": "Icons/Glyphish%204/Plus",
                 "color": <@include ForegroundColor_Normal.json>
               },
               "highlighted": {
-                "imagePath": "Icons/Glyphish%204/Plus",
+                "image.index": "Icons/Glyphish%204/Plus",
                 "color": <@include ForegroundColor_Highlighted.json>
               },
               "disabled": {
-                "imagePath": "Icons/Glyphish%204/Plus",
+                "image.index": "Icons/Glyphish%204/Plus",
                 "color": <@include ForegroundColor_Disabled.json>
               }
             }
@@ -186,15 +171,15 @@
             "role": "bottom",
             "icons.default": {
               "normal": {
-                "imagePath": "Icons/Glyphish%204/Minus",
+                "image.index": "Icons/Glyphish%204/Minus",
                 "color": <@include ForegroundColor_Normal.json>
               },
               "highlighted": {
-                "imagePath": "Icons/Glyphish%204/Minus",
+                "image.index": "Icons/Glyphish%204/Minus",
                 "color": <@include ForegroundColor_Highlighted.json>
               },
               "disabled": {
-                "imagePath": "Icons/Glyphish%204/Minus",
+                "image.index": "Icons/Glyphish%204/Minus",
                 "color": <@include ForegroundColor_Disabled.json>
               }
             }
@@ -203,18 +188,18 @@
         "commandSetCollection.default": {
           "CH": {
             "type": "rocker",
-            "top": { "code.index": "Dish/Dish/Channel%20Up" },
-            "bottom": { "code.index": "Dish/Dish/Channel%20Down" }
+            "top.code.index": "Dish/Dish/Channel%20Up",
+            "bottom.code.index": "Dish/Dish/Channel%20Down"
           },
           "PAGE": {
             "type": "rocker",
-            "top": { "code.index": "Dish/Dish/Page%20Up" },
-            "bottom": { "code.index": "Dish/Dish/Page%20Down" }
+            "top.code.index": "Dish/Dish/Page%20Up",
+            "bottom.code.index": "Dish/Dish/Page%20Down"
           },
           "VOL": {
             "type": "rocker",
-            "top": { "code.index": "Sony/AV%20Receiver/Volume%20Up" },
-            "bottom": { "code.index": "Sony/AV%20Receiver/Volume%20Down" }
+            "top.code.index": "Sony/AV%20Receiver/Volume%20Up",
+            "bottom.code.index": "Sony/AV%20Receiver/Volume%20Down"
           }
         },
         "labelAttributes": {
@@ -230,7 +215,7 @@
         "name": "DVR Activity DPad",
         "role": "dpad",
         "shape": "oval",
-        "style": "gloss2",
+        "style": "gloss",
         "constraints": {
           "index": {
             "buttonCenter": "83B25E99-F70E-45DF-9831-FCBE2C34F6ED",
@@ -286,15 +271,15 @@
             "role": "up",
             "icons.default": {
               "normal": {
-                "imagePath": "Icons/Glyphish%206/Large/Normal/Arrow%20Up",
+                "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Up",
                 "color": <@include ForegroundColor_Normal.json>
               },
               "highlighted": {
-                "imagePath": "Icons/Glyphish%206/Large/Normal/Arrow%20Up",
+                "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Up",
                 "color": <@include ForegroundColor_Highlighted.json>
               },
               "disabled": {
-                "imagePath": "Icons/Glyphish%206/Large/Normal/Arrow%20Up",
+                "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Up",
                 "color": <@include ForegroundColor_Disabled.json>
               }
             }
@@ -305,15 +290,15 @@
             "role": "down",
             "icons.default": {
               "normal": {
-                "imagePath": "Icons/Glyphish%206/Large/Normal/Arrow%20Down",
+                "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Down",
                 "color": <@include ForegroundColor_Normal.json>
               },
               "highlighted": {
-                "imagePath": "Icons/Glyphish%206/Large/Normal/Arrow%20Down",
+                "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Down",
                 "color": <@include ForegroundColor_Highlighted.json>
               },
               "disabled": {
-                "imagePath": "Icons/Glyphish%206/Large/Normal/Arrow%20Down",
+                "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Down",
                 "color": <@include ForegroundColor_Disabled.json>
               }
             }
@@ -324,15 +309,15 @@
             "role": "left",
             "icons.default": {
               "normal": {
-                "imagePath": "Icons/Glyphish%206/Large/Normal/Arrow%20Left",
+                "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Left",
                 "color": <@include ForegroundColor_Normal.json>
               },
               "highlighted": {
-                "imagePath": "Icons/Glyphish%206/Large/Normal/Arrow%20Left",
+                "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Left",
                 "color": <@include ForegroundColor_Highlighted.json>
               },
               "disabled": {
-                "imagePath": "Icons/Glyphish%206/Large/Normal/Arrow%20Left",
+                "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Left",
                 "color": <@include ForegroundColor_Disabled.json>
               }
             }
@@ -343,15 +328,15 @@
             "role": "right",
             "icons.default": {
               "normal": {
-                "imagePath": "Icons/Glyphish%206/Large/Normal/Arrow%20Right",
+                "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Right",
                 "color": <@include ForegroundColor_Normal.json>
               },
               "highlighted": {
-                "imagePath": "Icons/Glyphish%206/Large/Normal/Arrow%20Right",
+                "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Right",
                 "color": <@include ForegroundColor_Highlighted.json>
               },
               "disabled": {
-                "imagePath": "Icons/Glyphish%206/Large/Normal/Arrow%20Right",
+                "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Right",
                 "color": <@include ForegroundColor_Disabled.json>
               }
             }
@@ -359,11 +344,11 @@
         ],
         "command-set.default": {
           "type": "dpad",
-          "up": { "code.index": "Dish/Dish/Up" },
-          "down": { "code.index": "Dish/Dish/Down" },
-          "left": { "code.index": "Dish/Dish/Left" },
-          "right": { "code.index": "Dish/Dish/Right" },
-          "center": { "code.index": "Dish/Dish/OK" }
+          "up.code.index": "Dish/Dish/Up",
+          "down.code.index": "Dish/Dish/Down",
+          "left.code.index": "Dish/Dish/Left",
+          "right.code.index": "Dish/Dish/Right",
+          "center.code.index": "Dish/Dish/OK"
         }
       },
       {
@@ -389,7 +374,7 @@
             "uuid": "8FD73238-A965-40D3-954E-1E486D5964F7",
             "name": "Home Button",
             "shape": "oval",
-            "style": "gloss1",
+            "style": "gloss",
             "constraints": {
               "index.homeButton": "8FD73238-A965-40D3-954E-1E486D5964F7",
               "format": [
@@ -403,15 +388,15 @@
             },
             "icons.default": {
               "normal": {
-                "imagePath": "Icons/Glyphish%206/Large/Normal/Home",
+                "image.index": "Icons/Glyphish%206/Large/Normal/Home",
                 "color": <@include ForegroundColor_Normal.json>
               },
               "highlighted": {
-                "imagePath": "Icons/Glyphish%206/Large/Normal/Home",
+                "image.index": "Icons/Glyphish%206/Large/Normal/Home",
                 "color": <@include ForegroundColor_Highlighted.json>
               },
               "disabled": {
-                "imagePath": "Icons/Glyphish%206/Large/Normal/Home",
+                "image.index": "Icons/Glyphish%206/Large/Normal/Home",
                 "color": <@include ForegroundColor_Disabled.json>
               }
             },
@@ -422,7 +407,7 @@
             "name": "Power Off and Exit Activity",
             "key": "activity1",
             "shape": "oval",
-            "style": "gloss1",
+            "style": "gloss",
             "constraints": {
               "index.powerOffAndExitActivity": "A60C6C80-513A-47EC-A720-0D9A28E18D94",
               "format": [
@@ -432,15 +417,15 @@
             },
             "icons.default": {
               "normal": {
-                "imagePath": "Icons/Glyphish%203/Outlet",
+                "image.index": "Icons/Glyphish%203/Outlet",
                 "color": <@include ForegroundColor_Normal.json>
               },
               "highlighted": {
-                "imagePath": "Icons/Glyphish%203/Outlet",
+                "image.index": "Icons/Glyphish%203/Outlet",
                 "color": <@include ForegroundColor_Highlighted.json>
               },
               "disabled": {
-                "imagePath": "Icons/Glyphish%203/Outlet",
+                "image.index": "Icons/Glyphish%203/Outlet",
                 "color": <@include ForegroundColor_Disabled.json>
               }
             },
@@ -531,11 +516,8 @@
             "name": "Button 1",
             "role": "one",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
-            "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text.json,TEXT=1,SIZE=32>,
-              "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
-            },
+            "style": "gloss",
+            "titles.default":<@include TitleAttributes_Default_Text.json,TEXT=1,SIZE=32>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -544,11 +526,8 @@
             "name": "Button 2",
             "role": "two",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
-            "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text.json,TEXT=2,SIZE=32>,
-              "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
-            },
+            "style": "gloss",
+            "titles.default":<@include TitleAttributes_Default_Text.json,TEXT=2,SIZE=32>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -557,11 +536,8 @@
             "name": "Button 3",
             "role": "three",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
-            "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text.json,TEXT=3,SIZE=32>,
-              "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
-            },
+            "style": "gloss",
+            "titles.default":<@include TitleAttributes_Default_Text.json,TEXT=3,SIZE=32>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -570,11 +546,8 @@
             "name": "Button 4",
             "role": "four",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
-            "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text.json,TEXT=4,SIZE=32>,
-              "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
-            },
+            "style": "gloss",
+            "titles.default":<@include TitleAttributes_Default_Text.json,TEXT=4,SIZE=32>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -583,11 +556,8 @@
             "name": "Button 5",
             "role": "five",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
-            "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text.json,TEXT=5,SIZE=32>,
-              "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
-            },
+            "style": "gloss",
+            "titles.default":<@include TitleAttributes_Default_Text.json,TEXT=5,SIZE=32>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -596,11 +566,8 @@
             "name": "Button 6",
             "role": "six",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
-            "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text.json,TEXT=6,SIZE=32>,
-              "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
-            },
+            "style": "gloss",
+            "titles.default":<@include TitleAttributes_Default_Text.json,TEXT=6,SIZE=32>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -609,11 +576,8 @@
             "name": "Button 7",
             "role": "seven",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
-            "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text.json,TEXT=7,SIZE=32>,
-              "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
-            },
+            "style": "gloss",
+            "titles.default":<@include TitleAttributes_Default_Text.json,TEXT=7,SIZE=32>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -622,11 +586,8 @@
             "name": "Button 8",
             "role": "eight",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
-            "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text.json,TEXT=8,SIZE=32>,
-              "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
-            },
+            "style": "gloss",
+            "titles.default":<@include TitleAttributes_Default_Text.json,TEXT=8,SIZE=32>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -635,11 +596,8 @@
             "name": "Button 9",
             "role": "nine",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
-            "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text.json,TEXT=9,SIZE=32>,
-              "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
-            },
+            "style": "gloss",
+            "titles.default":<@include TitleAttributes_Default_Text.json,TEXT=9,SIZE=32>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -648,11 +606,8 @@
             "name": "Button 0",
             "role": "zero",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
-            "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text.json,TEXT=0,SIZE=32>,
-              "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
-            },
+            "style": "gloss",
+            "titles.default":<@include TitleAttributes_Default_Text.json,TEXT=0,SIZE=32>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -661,11 +616,8 @@
             "name": "Button Aux 1",
             "role": "aux1",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
-            "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text.json,TEXT=Exit,SIZE=20>,
-              "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
-            },
+            "style": "gloss",
+            "titles.default":<@include TitleAttributes_Default_Text.json,TEXT=Exit,SIZE=20>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -674,11 +626,8 @@
             "name": "Button Aux 2",
             "role": "aux2",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
-            "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text.json,TEXT=Enter,SIZE=20>,
-              "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
-            },
+            "style": "gloss",
+            "titles.default":<@include TitleAttributes_Default_Text.json,TEXT=Enter,SIZE=20>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -697,18 +646,18 @@
         ],
         "command-set.default": {
           "type": "numberpad",
-          "one": { "code.index": "Dish/Dish/One" },
-          "two": { "code.index": "Dish/Dish/Two" },
-          "three": { "code.index": "Dish/Dish/Three" },
-          "four": { "code.index": "Dish/Dish/Four" },
-          "five": { "code.index": "Dish/Dish/Five" },
-          "six": { "code.index": "Dish/Dish/Six" },
-          "seven": { "code.index": "Dish/Dish/Seven" },
-          "eight": { "code.index": "Dish/Dish/Eight" },
-          "nine": { "code.index": "Dish/Dish/Nine" },
-          "zero": { "code.index": "Dish/Dish/Zero" },
-          "aux1": { "code.index": "Dish/Dish/Exit" },
-          "aux2": { "code.index": "Dish/Dish/Enter" }
+          "one.code.index": "Dish/Dish/One",
+          "two.code.index": "Dish/Dish/Two",
+          "three.code.index": "Dish/Dish/Three",
+          "four.code.index": "Dish/Dish/Four",
+          "five.code.index": "Dish/Dish/Five",
+          "six.code.index": "Dish/Dish/Six",
+          "seven.code.index": "Dish/Dish/Seven",
+          "eight.code.index": "Dish/Dish/Eight",
+          "nine.code.index": "Dish/Dish/Nine",
+          "zero.code.index": "Dish/Dish/Zero",
+          "aux1.code.index": "Dish/Dish/Exit",
+          "aux2.code.index": "Dish/Dish/Enter"
         }
       },
       {
@@ -775,7 +724,7 @@
             "name": "Button Play",
             "role": "play",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
+            "style": "gloss",
             "titles.default": {
               "normal": <@include TitleAttributes_Default_Icon.json,ICON=play,SIZE=32>,
               "disabled.foregroundColor": <@include ForegroundColor_Disabled.json>,
@@ -789,7 +738,7 @@
             "name": "Button Pause",
             "role": "pause",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
+            "style": "gloss",
             "titles.default": {
               "normal": <@include TitleAttributes_Default_Icon.json,ICON=pause,SIZE=32>,
               "disabled.foregroundColor": <@include ForegroundColor_Disabled.json>,
@@ -803,7 +752,7 @@
             "name": "Button Rewind",
             "role": "rewind",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
+            "style": "gloss",
             "titles.default": {
               "normal": <@include TitleAttributes_Default_Icon.json,ICON=backward,SIZE=32>,
               "disabled.foregroundColor": <@include ForegroundColor_Disabled.json>,
@@ -817,7 +766,7 @@
             "name": "Button Fast Forward",
             "role": "fast-forward",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
+            "style": "gloss",
             "titles.default": {
               "normal": <@include TitleAttributes_Default_Icon.json,ICON=fast-forward,SIZE=32>,
               "disabled.foregroundColor": <@include ForegroundColor_Disabled.json>,
@@ -831,7 +780,7 @@
             "name": "Button Stop",
             "role": "stop",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
+            "style": "gloss",
             "titles.default": {
               "normal": <@include TitleAttributes_Default_Icon.json,ICON=stop,SIZE=32>,
               "disabled.foregroundColor": <@include ForegroundColor_Disabled.json>,
@@ -845,7 +794,7 @@
             "name": "Button Replay",
             "role": "replay",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
+            "style": "gloss",
             "titles.default": {
               "normal": <@include TitleAttributes_Default_Icon.json,ICON=step-backward,SIZE=32>,
               "disabled.foregroundColor": <@include ForegroundColor_Disabled.json>,
@@ -871,7 +820,7 @@
             "name": "Button Skip",
             "role": "skip",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
+            "style": "gloss",
             "titles.default": {
               "normal": <@include TitleAttributes_Default_Icon.json,ICON=step-forward,SIZE=32>,
               "disabled.foregroundColor": <@include ForegroundColor_Disabled.json>,
@@ -885,7 +834,7 @@
             "name": "Button Record",
             "role": "record",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
+            "style": "gloss",
             "titles.default": {
               "normal": <@include TitleAttributes_Default_Icon.json,ICON=circle,SIZE=32>,
               "disabled.foregroundColor": <@include ForegroundColor_Disabled.json>,
@@ -897,14 +846,14 @@
         ],
         "commandSet.default": {
           "type": "transport",
-          "record": { "code.index": "Dish/Dish/Record" },
-          "play": { "code.index": "Dish/Dish/Play" },
-          "pause": { "code.index": "Dish/Dish/Pause" },
-          "stop": { "code.index": "Dish/Dish/Stop" },
-          "skip": { "code.index": "Dish/Dish/Next" },
-          "replay": { "code.index": "Dish/Dish/Last" },
-          "rewind": { "code.index": "Dish/Dish/Rewind" },
-          "fastForward": { "code.index": "Dish/Dish/Fast%20Forward" }
+          "record.code.index": "Dish/Dish/Record",
+          "play.code.index": "Dish/Dish/Play",
+          "pause.code.index": "Dish/Dish/Pause",
+          "stop.code.index": "Dish/Dish/Stop",
+          "skip.code.index": "Dish/Dish/Next",
+          "replay.code.index": "Dish/Dish/Last",
+          "rewind.code.index": "Dish/Dish/Rewind",
+          "fastForward.code.index": "Dish/Dish/Fast%20Forward"
         }
       },
       {
@@ -940,7 +889,14 @@
             "key": "default",
             "role": "selection-panel",
             "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text.json,TEXT=STB,SIZE=32>,
+              "normal": {
+                "font": "Helvetica Neue32>",
+                "foregroundColor": <@include ForegroundColor_Normal.json>,
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
+                "alignment": "center",
+                "text": "DVR"
+              },
               "selected.foregroundColor": "yellow",
               "highlighted.foregroundColor": "yellow"
             },
@@ -952,7 +908,14 @@
             "key": "tv",
             "role": "selection-panel",
             "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text.json,TEXT=TV,SIZE=32>,
+              "normal": {
+                "font": "Helvetica Neue32>",
+                "foregroundColor": <@include ForegroundColor_Normal.json>,
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
+                "alignment": "center",
+                "text": "TV"
+              },
               "selected.foregroundColor": "yellow",
               "highlighted.foregroundColor": "yellow"
             },
@@ -1018,18 +981,14 @@
             "uuid": "93A20B92-6A22-4DEC-802A-D735A1EBA583",
             "name": "On Demand / Source",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
+            "style": "gloss",
             "commands": {
-              "default": { "code.index": "Dish/Dish/On%20Demand" },
-              "tv": { "code.index": "Samsung/Samsung%20TV/Source" }
+              "default.code.index": "Dish/Dish/On%20Demand",
+              "tv.code.index": "Samsung/Samsung%20TV/Source"
             },
             "titles": {
-              "default": {
-                "normal": <@include TitleAttributes_Default_Text.json,TEXT=On Demand,SIZE=18>
-              },
-              "tv": {
-                "normal": <@include TitleAttributes_Default_Text.json,TEXT=Source,SIZE=18>
-              }
+              "default": <@include TitleAttributes_Default_Text.json,TEXT=On Demand,SIZE=18>,
+              "tv": <@include TitleAttributes_Default_Text.json,TEXT=Source,SIZE=18>
             },
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
@@ -1038,12 +997,12 @@
             "uuid": "84B5AAD7-F716-49E4-B2DC-F9654CD5EA83",
             "name": "Menu",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
+            "style": "gloss",
             "commands": {
-              "default": { "code.index": "Dish/Dish/Menu" },
-              "tv": { "code.index": "Samsung/Samsung%20TV/Menu" }
+              "default.code.index": "Dish/Dish/Menu",
+              "tv.code.index": "Samsung/Samsung%20TV/Menu"
             },
-            "titles.default.normal": <@include TitleAttributes_Default_Text.json,TEXT=Menu,SIZE=18>,
+            "titles.default": <@include TitleAttributes_Default_Text.json,TEXT=Menu,SIZE=18>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -1051,18 +1010,14 @@
             "uuid": "1490C210-7F20-4276-810D-232396713B76",
             "name": "Last / Return",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
+            "style": "gloss",
             "commands": {
-              "default": { "code.index": "Dish/Dish/Last" },
-              "tv": { "code.index": "Samsung/Samsung%20TV/Return" }
+              "default.code.index": "Dish/Dish/Last",
+              "tv.code.index": "Samsung/Samsung%20TV/Return"
             },
             "titles": {
-              "default": {
-                "normal": <@include TitleAttributes_Default_Text.json,TEXT=Last,SIZE=18>
-              },
-              "tv": {
-                "normal": <@include TitleAttributes_Default_Text.json,TEXT=Return,SIZE=18>
-              }
+              "default": <@include TitleAttributes_Default_Text.json,TEXT=Last,SIZE=18>,
+              "tv": <@include TitleAttributes_Default_Text.json,TEXT=Return,SIZE=18>
             },
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
@@ -1071,12 +1026,12 @@
             "uuid": "5EBDC469-0E9E-4720-A65E-86F6EF652635",
             "name": "Exit",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
+            "style": "gloss",
             "commands": {
-              "default": { "code.index": "Dish/Dish/Exit" },
-              "tv": { "code.index": "Samsung/Samsung%20TV/Exit" }
+              "default.code.index": "Dish/Dish/Exit",
+              "tv.code.index": "Samsung/Samsung%20TV/Exit"
             },
-            "titles.default.normal": <@include TitleAttributes_Default_Text.json,TEXT=Exit,SIZE=18>,
+            "titles.default": <@include TitleAttributes_Default_Text.json,TEXT=Exit,SIZE=18>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -1084,10 +1039,9 @@
             "uuid": "447B0C03-6390-47B3-8F66-FA58E79AAE81",
             "name": "DVR Audio Input",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
-            "commands.default": {               "code.index": "Sony/AV%20Receiver/TV%2FSAT"
-            },
-            "titles.default.normal": <@include TitleAttributes_Default_Text.json,TEXT=DVR Audio,SIZE=18>,
+            "style": "gloss",
+            "commands.default.code.index": "Sony/AV%20Receiver/TV%2FSAT",
+            "titles.default": <@include TitleAttributes_Default_Text.json,TEXT=DVR Audio,SIZE=18>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -1095,10 +1049,9 @@
             "uuid": "CA88D652-A7F3-4EBE-ABC0-E559CE6AF337",
             "name": "TV Audio Input",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
-            "commands.default": {               "code.index": "Sony/AV%20Receiver/Video%201"
-            },
-            "titles.default.normal": <@include TitleAttributes_Default_Text.json,TEXT=TV Audio,SIZE=18>,
+            "style": "gloss",
+            "commands.default.code.index": "Sony/AV%20Receiver/Video%201",
+            "titles.default": <@include TitleAttributes_Default_Text.json,TEXT=TV Audio,SIZE=18>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -1106,10 +1059,9 @@
             "uuid": "66E58C75-BC33-4E25-A4AE-876E37FA991E",
             "name": "Mute",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
-            "commands.default": {               "code.index": "Sony/AV%20Receiver/Mute"
-            },
-            "titles.default.normal": <@include TitleAttributes_Default_Text.json,TEXT=Mute,SIZE=18>,
+            "style": "gloss",
+            "commands.default.code.index": "Sony/AV%20Receiver/Mute",
+            "titles.default": <@include TitleAttributes_Default_Text.json,TEXT=Mute,SIZE=18>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -1188,7 +1140,7 @@
             "uuid": "92E33ABD-9893-47A9-8922-86146A94C0E4",
             "name": "Dish",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
+            "style": "gloss",
             "constraints": {
               "index.dish": "92E33ABD-9893-47A9-8922-86146A94C0E4",
               "format": "dish.height = dish.width"
@@ -1197,10 +1149,7 @@
               "targetType": "remote",
               "target": "F668F0D5-80E4-46A4-A703-EF5A1601C645"
             },
-            "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text.json,TEXT=Dish,SIZE=20>,
-              "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
-            },
+            "titles.default": <@include TitleAttributes_Default_Text.json,TEXT=Dish,SIZE=20>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -1208,15 +1157,12 @@
             "uuid": "DB1C794B-A3BB-4C9E-91EC-88A1D3FB401A",
             "name": "Playstation",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
+            "style": "gloss",
             "constraints": {
               "index.playstation": "DB1C794B-A3BB-4C9E-91EC-88A1D3FB401A",
               "format": "playstation.height = playstation.width"
             },
-            "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text.json,TEXT=Playstation,SIZE=20>,
-              "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
-            },
+            "titles.default":<@include TitleAttributes_Default_Text.json,TEXT=Playstation,SIZE=20>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -1224,15 +1170,12 @@
             "uuid": "58A7D2DB-9635-486A-9336-43D6292674BA",
             "name": "Apple TV",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
+            "style": "gloss",
             "constraints": {
               "index.appleTV": "58A7D2DB-9635-486A-9336-43D6292674BA",
               "format": "appleTV.height = appleTV.width"
             },
-            "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text.json,TEXT= TV,SIZE=20>,
-              "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
-            },
+            "titles.default": <@include TitleAttributes_Default_Text.json,TEXT= TV,SIZE=20>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -1240,15 +1183,12 @@
             "uuid": "19F3F351-AB2B-435D-A31A-ECB703DDE993",
             "name": "Sonos",
             "shape": "rounded-rectangle",
-            "style": "gloss2",
+            "style": "gloss",
             "constraints": {
               "index.sonos": "19F3F351-AB2B-435D-A31A-ECB703DDE993",
               "format": "sonos.height = sonos.width"
             },
-            "titles.default": {
-              "normal": <@include TitleAttributes_Default_Text.json,TEXT=Sonos,SIZE=20>,
-              "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
-            },
+            "titles.default": <@include TitleAttributes_Default_Text.json,TEXT=Sonos,SIZE=20>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           }
@@ -1289,11 +1229,11 @@
             "commands.default": { "url": "http://10.0.1.27/0?1201=I=0" },
             "icons.default": {
               "normal": {
-                "imagePath": "Icons/Glyphish%204/Light%20Switch",
+                "image.index": "Icons/Glyphish%204/Light%20Switch",
                 "color": <@include ForegroundColor_Normal.json>
               },
               "highlighted": {
-                "imagePath": "Icons/Glyphish%204/Light%20Switch",
+                "image.index": "Icons/Glyphish%204/Light%20Switch",
                 "color": <@include ForegroundColor_Highlighted.json>
               }
             }
@@ -1305,11 +1245,11 @@
             "commands.default": { "url": "http://10.0.1.27/0?1401=I=0" },
             "icons.default": {
               "normal": {
-                "imagePath": "Icons/Glyphish%204/Light%20Switch",
+                "image.index": "Icons/Glyphish%204/Light%20Switch",
                 "color": <@include ForegroundColor_Disabled.json>
               },
               "highlighted": {
-                "imagePath": "Icons/Glyphish%204/Light%20Switch",
+                "image.index": "Icons/Glyphish%204/Light%20Switch",
                 "color": <@include ForegroundColor_Highlighted.json>
               }
             }

@@ -61,42 +61,10 @@
 {
   "name": "Battery Status",
   "baseType": "button",
-  "role": "battery-status",
-  "icons": {
-    "normal": {
-      "image": "Icons/Glyphish%297/Large/Normal/Battery",
-      "color": <@include ForegroundColor_Normal.json>
-    },
-    "highlighted": {
-      "image": "Icons/Glyphish%297/Large/Normal/Battery",
-      "color": <@include ForegroundColor_Highlighted.json>
-    },
-    "disabled": {
-      "imagePath": "Icons/Glyphish%206/Large/Normal/Lightning%20Bolt",
-      "color": <@include ForegroundColor_Disabled.json>
-    },
-    "selected": {
-      "image": "Icons/Glyphish%204/Power%20Plug",
-      "color": <@include ForegroundColor_Normal.json>
-    }
-  }
+  "role": "battery-status"
 },
 {
   "name": "Connection Status",
   "baseType": "button",
-  "role": "connection-status",
-  "icons": {
-    "normal": {
-      "image": "Icons/Glyphish%297/Large/Normal/Wifi%20Signal",
-      "color": <@include ForegroundColor_Normal.json>
-    },
-    "highlighted": {
-      "image": "Icons/Glyphish%297/Large/Normal/Wifi%20Signal",
-      "color": <@include ForegroundColor_Highlighted.json>
-    },
-    "disabled": {
-      "image": "Icons/Glyphish%297/Large/Normal/Wifi%20Signal",
-      "color": <@include ForegroundColor_Disabled.json>
-    }
-  }
+  "role": "connection-status"
 }

@@ -94,12 +94,15 @@ public final class BatteryStatusButtonView: ButtonView {
 	    batteryState = device.batteryState
 	  }
 
-    var baseColor = backgroundColor ?? UIColor.darkGrayColor()
-    if baseColor == UIColor.clearColor() { baseColor = UIColor.darkGrayColor() }
-    UI.DrawingKit.drawBatteryStatus(frame: rect,
-                                    color: baseColor,
-                                    hasPower: [.Charging, .Full] ∋ batteryState,
-                                    chargeLevel: CGFloat(batteryLevel))
+    let baseColor: UIColor
+    if let color = backgroundColor where color != UIColor.clearColor() { baseColor = color }
+    else { baseColor = UI.DrawingKit.buttonBaseColor }
+
+    let hasPower = [.Charging, .Full] ∋ batteryState
+
+    let chargeLevel = CGFloat(batteryLevel)
+
+    UI.DrawingKit.drawBatteryStatus(batteryBaseColor: baseColor, hasPower: hasPower, chargeLevel: chargeLevel, containingFrame: rect)
 
 /*
 	  let insetRect = rect.rectByInsetting(dx: 2.0, dy: 2.0)

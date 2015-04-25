@@ -2,7 +2,7 @@
   "name": "Round (Small)",
   "baseType": "button",
   "shape": "oval",
-  "style": "gloss1",
+  "style": "gloss",
   "constraints": "$0.height = $0.width :: $0.width = 50",
   "backgroundColors.normal": <@include BackgroundColor_Default.json>
 },
@@ -10,7 +10,7 @@
   "name": "Round (Medium)",
   "baseType": "button",
   "shape": "oval",
-  "style": "gloss1",
+  "style": "gloss",
   "constraints": "$0.height = $0.width :: $0.width = 75",
   "backgroundColors.normal": <@include BackgroundColor_Default.json>
 },
@@ -18,7 +18,7 @@
   "name": "Round (Large)",
   "baseType": "button",
   "shape": "oval",
-  "style": "gloss1",
+  "style": "gloss",
   "constraints": "$0.height = $0.width :: $0.width = 100",
   "backgroundColors.normal": <@include BackgroundColor_Default.json>
 }

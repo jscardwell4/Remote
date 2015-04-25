@@ -14,7 +14,7 @@ import MoonKit
 import Quick
 import Nimble
 
-infix operator ⊂ {}
+infix operator ⊇ {}
 
 
 class DataModel_LoadedTests: QuickSpec {
@@ -26,59 +26,49 @@ class DataModel_LoadedTests: QuickSpec {
     let moc = self.dynamicType.context
 
     beforeSuite {
-      LogManager.logLevel = .Error
-      if let bundlePath = NSUserDefaults.standardUserDefaults().stringForKey("XCTestedBundlePath"),
-        let bundle = NSBundle(path: bundlePath)
-      {
-        let loadInfo: [(String,ModelObject.Type,DataManager.LogFlags)] =  [
-          ("Manufacturer",       Manufacturer.self,         DataManager.LogFlags.Default),
-          ("ComponentDevice",    ComponentDevice.self,      DataManager.LogFlags.Default),
-          ("ImageCategory",      ImageCategory.self,        DataManager.LogFlags.Default),
-          ("Activity",           Activity.self,             DataManager.LogFlags.Default),
-          ("NetworkDevice",      NetworkDevice.self,        DataManager.LogFlags.Default),
-          ("Preset",             PresetCategory.self,       DataManager.LogFlags.Default),
-          ("Remote",             Remote.self,               DataManager.LogFlags.Default),
-          ("ActivityController", ActivityController.self,   DataManager.LogFlags.Default)
-        ]
-        for (file, type, flags) in loadInfo {
-          if let filePath = bundle.pathForResource(file, ofType: "json") {
-            DataManager.loadJSONFileAtPath(filePath, forModel: type, context: moc, logFlags:flags)
-          } else {
-            MSLogError("unable to locate file for name '\(file)'")
-          }
-        }
-      } else { MSLogError("unable to locate test bundle") }
+      LogManager.logLevel = .Debug
+      let rootDir = "/Users/Moondeer/Projects/MSRemote/Remote/Bank/Resources/JSON/"
+
+      let loadInfo: [(String,ModelObject.Type,DataManager.LogFlags)] =  [
+        ("Manufacturer",       Manufacturer.self,         DataManager.LogFlags.Default),
+        ("ComponentDevice",    ComponentDevice.self,      DataManager.LogFlags.Default),
+        ("ImageCategory",      ImageCategory.self,        DataManager.LogFlags.Default),
+        ("Activity",           Activity.self,             DataManager.LogFlags.Default),
+        ("NetworkDevice",      NetworkDevice.self,        DataManager.LogFlags.Default),
+        ("Preset",             PresetCategory.self,       DataManager.LogFlags.Default),
+        ("Remote",             Remote.self,               DataManager.LogFlags.Default),
+        ("ActivityController", ActivityController.self,   DataManager.LogFlags.Default)
+      ]
+      for (file, type, flags) in loadInfo {
+        DataManager.loadJSONFileAtPath(rootDir + file + ".json", forModel: type, context: moc, logFlags:flags)
+      }
     }
 
     describe("the manufacturers") {
       describe("the Dish manufacturer") {
-        var pending = false
         var manufacturer: Manufacturer?
         it("can be retrieved by index") {
           manufacturer = Manufacturer.objectWithIndex(ModelIndex("Dish"), context: moc)
           expect(manufacturer) != nil
-          pending = manufacturer == nil
         }
         var codeSet: IRCodeSet?
-        it("has a code set named 'Dish'", flags: [Filter.pending: pending]) {
+        it("has a code set named 'Dish'") {
           expect(manufacturer?.codeSets.count) == 1
           codeSet = manufacturer?.codeSets.first
           expect(codeSet) != nil
-          pending = codeSet == nil
         }
-        describe("the code set", flags: [Filter.pending: pending]) {
+        describe("the code set") {
           it("has the expected values") {
             expect(codeSet?.name) == "Dish"
             expect(codeSet?.user).to(beTrue())
             expect(codeSet?.codes.count) == 47
           }
           var code: IRCode?
-          it("has a code named 'Favorites'", flags: [Filter.pending: pending]) {
+          it("has a code named 'Favorites'") {
             code = IRCode.objectWithIndex(ModelIndex("Dish/Dish/Favorites"), context: moc)
             expect(code) != nil
-            pending = code == nil
           }
-          describe("the code", flags: [Filter.pending: pending]) {
+          describe("the code") {
             it("has the expected values") {
               expect(code?.name) == "Favorites"
               expect(code?.frequency) == 38343
@@ -88,33 +78,29 @@ class DataModel_LoadedTests: QuickSpec {
         }
       }
       describe("the Sony manufacturer") {
-        var pending = false
         var manufacturer: Manufacturer?
         it("can be retrieved by index") {
           manufacturer = Manufacturer.objectWithIndex(ModelIndex("Sony"), context: moc)
           expect(manufacturer) != nil
-          pending = manufacturer == nil
         }
         var codeSet: IRCodeSet?
-        it("has a code set named 'AV Receiver''", flags: [Filter.pending: pending]) {
+        it("has a code set named 'AV Receiver''") {
           expect(manufacturer?.codeSets.count) == 1
           codeSet = manufacturer?.codeSets.first
           expect(codeSet) != nil
-          pending = codeSet == nil
         }
-        describe("the code set", flags: [Filter.pending: pending]) {
+        describe("the code set") {
           it("has the expected values") {
             expect(codeSet?.name) == "AV Receiver"
             expect(codeSet?.user).to(beTrue())
             expect(codeSet?.codes.count) == 14
           }
           var code: IRCode?
-          it("has a code named 'Volume Up'", flags: [Filter.pending: pending]) {
+          it("has a code named 'Volume Up'") {
             code = IRCode.objectWithIndex(ModelIndex("Sony/AV%20Receiver/Volume%20Up"), context: moc)
             expect(code) != nil
-            pending = code == nil
           }
-          describe("the code", flags: [Filter.pending: pending]) {
+          describe("the code") {
             it("has the expected values") {
               expect(code?.name) == "Volume Up"
               expect(code?.frequency) == 40192
@@ -125,33 +111,29 @@ class DataModel_LoadedTests: QuickSpec {
         }
       }
       describe("the Samsung manufacturer") {
-        var pending = false
         var manufacturer: Manufacturer?
         it("can be retrieved by index") {
           manufacturer = Manufacturer.objectWithIndex(ModelIndex("Samsung"), context: moc)
           expect(manufacturer) != nil
-          pending = manufacturer == nil
         }
         var codeSet: IRCodeSet?
-        it("has a code set named 'Samsung TV'", flags: [Filter.pending: pending]) {
+        it("has a code set named 'Samsung TV'") {
           expect(manufacturer?.codeSets.count) == 1
           codeSet = manufacturer?.codeSets.first
           expect(codeSet) != nil
-          pending = codeSet == nil
         }
-        describe("the code set", flags: [Filter.pending: pending]) {
+        describe("the code set") {
           it("has the expected values") {
             expect(codeSet?.name) == "Samsung TV"
             expect(codeSet?.user).to(beTrue())
             expect(codeSet?.codes.count) == 54
           }
           var code: IRCode?
-          it("has a code named 'Mute'", flags: [Filter.pending: pending]) {
+          it("has a code named 'Mute'") {
             code = IRCode.objectWithIndex(ModelIndex("Samsung/Samsung%20TV/Mute"), context: moc)
             expect(code) != nil
-            pending = code == nil
           }
-          describe("the code", flags: [Filter.pending: pending]) {
+          describe("the code") {
             it("has the expected values") {
               expect(code?.name) == "Mute"
               expect(code?.frequency) == 38109
@@ -164,14 +146,12 @@ class DataModel_LoadedTests: QuickSpec {
 
     describe("the component devices") {
       describe("the Dish Hopper device") {
-        var pending = false
         var componentDevice: ComponentDevice?
         it("can be retrieved by index") {
           componentDevice = ComponentDevice.objectWithIndex(ModelIndex("Dish%20Hopper"), context: moc)
           expect(componentDevice) != nil
-          pending = componentDevice == nil
         }
-        it("has the expected values", flags: [Filter.pending: pending]) {
+        it("has the expected values") {
           expect(componentDevice?.name) == "Dish Hopper"
           expect(componentDevice?.codeSet?.name) == "Dish"
           expect(componentDevice?.manufacturer.name) == "Dish"
@@ -179,14 +159,12 @@ class DataModel_LoadedTests: QuickSpec {
         }
       }
       describe("the PS3 device") {
-        var pending = false
         var componentDevice: ComponentDevice?
         it("can be retrieved by index") {
           componentDevice = ComponentDevice.objectWithIndex(ModelIndex("PS3"), context: moc)
           expect(componentDevice) != nil
-          pending = componentDevice == nil
         }
-        it("has the expected values", flags: [Filter.pending: pending]) {
+        it("has the expected values") {
           expect(componentDevice?.name) == "PS3"
           expect(componentDevice?.codeSet?.name).to(beNil())
           expect(componentDevice?.manufacturer.name) == "Sony"
@@ -195,14 +173,12 @@ class DataModel_LoadedTests: QuickSpec {
 
       }
       describe("the Samsung TV device") {
-        var pending = false
         var componentDevice: ComponentDevice?
         it("can be retrieved by index") {
           componentDevice = ComponentDevice.objectWithIndex(ModelIndex("Samsung%20TV"), context: moc)
           expect(componentDevice) != nil
-          pending = componentDevice == nil
         }
-        it("has the expected values", flags: [Filter.pending: pending]) {
+        it("has the expected values") {
           expect(componentDevice?.name) == "Samsung TV"
           expect(componentDevice?.codeSet?.name) == "Samsung TV"
           expect(componentDevice?.manufacturer.name) == "Samsung"
@@ -211,14 +187,12 @@ class DataModel_LoadedTests: QuickSpec {
 
       }
       describe("the AV Receiver device") {
-        var pending = false
         var componentDevice: ComponentDevice?
         it("can be retrieved by index") {
           componentDevice = ComponentDevice.objectWithIndex(ModelIndex("AV%20Receiver"), context: moc)
           expect(componentDevice) != nil
-          pending = componentDevice == nil
         }
-        it("has the expected values", flags: [Filter.pending: pending]) {
+        it("has the expected values") {
           expect(componentDevice?.name) == "AV Receiver"
           expect(componentDevice?.codeSet?.name) == "AV Receiver"
           expect(componentDevice?.manufacturer.name) == "Sony"
@@ -229,21 +203,18 @@ class DataModel_LoadedTests: QuickSpec {
     }
 
     describe("the image categories") {
-      var pending = false
       var imageCategory: ImageCategory?
       describe("the Backgrounds category") {
         it("can be retrieved by index") {
           imageCategory = ImageCategory.objectWithIndex(ModelIndex("Backgrounds"), context: moc)
           expect(imageCategory) != nil
-          pending = imageCategory == nil
         }
         var image: Image?
-        it("has an image", flags: [Filter.pending: pending]) {
+        it("has an image") {
           expect(imageCategory?.images.count) == 1
           image = imageCategory?.images.first
-          pending = image == nil
         }
-        describe("the image", flags: [Filter.pending: pending]) {
+        describe("the image") {
           it("is named and indexed") {
             expect(image?.name) == "Pro Dots"
             expect(image?.index.rawValue) == "Backgrounds/Pro%20Dots"
@@ -252,32 +223,29 @@ class DataModel_LoadedTests: QuickSpec {
           it("has an asset") {
             expect(image?.asset) != nil
             asset = image?.asset
-            pending = asset == nil
           }
-          describe("the asset", flags: [Filter.pending: pending]) {
+          describe("the asset") {
             it("has a name but no location") {
               expect(asset?.name) == "Pro Dots"
-              expect(asset?.location).to(beNil())
+              expect(asset?.location) == "$bank"
             }
           }
         }
       }
-      pending = false
       describe("the Icons category") {
         it("can be retrieved by index") {
           imageCategory = ImageCategory.objectWithIndex(ModelIndex("Icons"), context: moc)
           expect(imageCategory) != nil
-          pending = imageCategory == nil
         }
-        it("has no images", flags: [Filter.pending: pending]) {
+        it("has no images") {
           expect(imageCategory?.images.count) == 0
         }
-        it("has child categories", flags: [Filter.pending: pending]) {
+        it("has child categories") {
           let names = map(imageCategory!.childCategories, {$0.name})
-          expect(names) ⊂ ["Glyphish 3", "Glyphish 4", "Glyphish 6", "Glyphish 7"]
+          expect(names) ⊇ ["Glyphish 3", "Glyphish 4", "Glyphish 6", "Glyphish 7"]
         }
 
-        it("has nested images retrievable by index", flags: [Filter.pending: pending]) {
+        it("has nested images retrievable by index") {
           expect(Image.objectWithIndex(ModelIndex("Icons/Glyphish%207/Large/Normal/Battery"), context: moc)) != nil
           expect(Image.objectWithIndex(ModelIndex("Icons/Glyphish%206/Large/Normal/Home"), context: moc)) != nil
           expect(Image.objectWithIndex(ModelIndex("Icons/Glyphish%206/Large/Normal/Pencil"), context: moc)) != nil
@@ -291,21 +259,18 @@ class DataModel_LoadedTests: QuickSpec {
     }
 
     describe("the activities") {
-      var pending = false
       var activity: Activity?
       describe("the hopper activity") {
         it("can be retrieved by index") {
           activity = Activity.objectWithIndex(ModelIndex("Dish%20Hopper%20Activity"), context: moc)
           expect(activity) != nil
-          pending = activity == nil
         }
         var launchMacro: MacroCommand?
-        it("has a launch macro", flags: [Filter.pending: pending]) {
+        it("has a launch macro") {
           launchMacro = activity?.launchMacro
           expect(launchMacro) != nil
-          pending = launchMacro == nil
         }
-        describe("the macro", flags: [Filter.pending: pending]) {
+        describe("the macro") {
           it("has sendir, power, delay, sendir commands") {
             expect(launchMacro?.commands.count) == 4
           }
@@ -315,11 +280,9 @@ class DataModel_LoadedTests: QuickSpec {
 
     describe("the network devices") {
       it("total of two") {
-        var pending = false
         let devices = NetworkDevice.objectsInContext(moc) as! [NetworkDevice]
         expect(devices.count) == 2
-        pending = devices.count != 2
-        describe("the devices are properly modeled", flags: [Filter.pending: pending]) {
+        describe("the devices are properly modeled") {
           let (device1, device2) = disperse2(devices)
           let device1AsItach = device1 as? ITachDevice, device2AsItach = device2 as? ITachDevice
           expect(device1AsItach == nil && device2AsItach == nil).toNot(beTrue())
@@ -329,14 +292,12 @@ class DataModel_LoadedTests: QuickSpec {
 
       }
       describe("the iTach device"){
-        var pending = false
         var iTachDevice: ITachDevice?
         it("can be retrieved by index") {
           iTachDevice = ITachDevice.objectWithIndex(ModelIndex("GlobalCache-iTachIP2IR"), context: moc)
           expect(iTachDevice) != nil
-          pending = iTachDevice == nil
         }
-        it("has the expected values", flags: [Filter.pending: pending]) {
+        it("has the expected values") {
           expect(iTachDevice?.uuid) == "A7582E04-16F3-4319-9F21-41A17C922AC9"
           expect(iTachDevice?.name) == "GlobalCache-iTachIP2IR"
           expect(iTachDevice?.uniqueIdentifier) == "GlobalCache_000C1E022AED"
@@ -351,14 +312,12 @@ class DataModel_LoadedTests: QuickSpec {
         }
       }
       describe("the isy device"){
-        var pending = false
         var isyDevice: ISYDevice?
         it("can be retrieved by index") {
           isyDevice = ISYDevice.objectWithIndex(ModelIndex("ISYDevice1"), context: moc)
           expect(isyDevice) != nil
-          pending = isyDevice == nil
         }
-        it("has the expected values", flags: [Filter.pending: pending]) {
+        it("has the expected values") {
           expect(isyDevice?.name) == "ISYDevice1"
           expect(isyDevice?.uniqueIdentifier) == "uuid:00:21:b9:01:f2:b6"
           expect(isyDevice?.modelNumber) == "1120"
@@ -370,22 +329,20 @@ class DataModel_LoadedTests: QuickSpec {
           expect(isyDevice?.deviceType) == "urn:udi-com:device:X_Insteon_Lighting_Device:1"
           expect(isyDevice?.baseURL) == "http://192.168.1.9"
         }
-        describe("the nodes", flags: [Filter.pending: pending]) {
+        describe("the nodes") {
           var nodes: Set<ISYDeviceNode>?
           it("has 4 nodes"){
             nodes = isyDevice?.nodes
             expect(nodes) != nil
             expect(nodes?.count) == 4
-            pending = nodes == nil
           }
           describe("it has a node named '20.12.40.1'") {
             var node1: ISYDeviceNode?
             it("exists") {
               node1 = findFirst(nodes, {$0.name == "20.12.40.1"})
               expect(node1) != nil
-              pending = node1 == nil
             }
-            it("has the expected values", flags: [Filter.pending: pending]) {
+            it("has the expected values") {
               expect(node1?.name) == "20.12.40.1"
               expect(node1?.flag) == 128
               expect(node1?.address) == "20 12 40 1"
@@ -404,9 +361,8 @@ class DataModel_LoadedTests: QuickSpec {
             it("exists") {
               node2 = findFirst(nodes, {$0.name == "18.F0.08.1"})
               expect(node2) != nil
-              pending = node2 == nil
             }
-            it("has the expected values", flags: [Filter.pending: pending]) {
+            it("has the expected values") {
               expect(node2?.name) == "18.F0.08.1"
               expect(node2?.flag) == 128
               expect(node2?.address) == "18 F0 8 1"
@@ -425,9 +381,8 @@ class DataModel_LoadedTests: QuickSpec {
             it("exists") {
               node3 = findFirst(nodes, {$0.name == "Sofa Table Lamp"})
               expect(node3) != nil
-              pending = node3 == nil
             }
-            it("has the expected values", flags: [Filter.pending: pending]) {
+            it("has the expected values") {
               expect(node3?.name) == "Sofa Table Lamp"
               expect(node3?.flag) == 128
               expect(node3?.address) == "23 78 77 1"
@@ -446,9 +401,8 @@ class DataModel_LoadedTests: QuickSpec {
             it("exists") {
               node4 = findFirst(nodes, {$0.name == "Front Door Table Lamp"})
               expect(node4) != nil
-              pending = node4 == nil
             }
-            it("has the expected values", flags: [Filter.pending: pending]) {
+            it("has the expected values") {
               expect(node4?.name) == "Front Door Table Lamp"
               expect(node4?.flag) == 128
               expect(node4?.address) == "1B 6E B2 1"
@@ -463,37 +417,34 @@ class DataModel_LoadedTests: QuickSpec {
             }
           }
         }
-        describe("the device's groups", flags: [Filter.pending: pending]) {
+        describe("the device's groups") {
           var groups: Set<ISYDeviceGroup>?
           it("contains two groups") {
             groups = isyDevice?.groups
             expect(groups) != nil
-            pending = groups == nil
           }
-          describe("the isy group", flags: [Filter.pending: pending]) {
+          describe("the isy group") {
             var isyGroup: ISYDeviceGroup?
             it("exists") {
               isyGroup = findFirst(groups, {$0.name == "ISY"})
               expect(isyGroup) != nil
-              pending = isyGroup == nil
             }
-            it("has the expected values", flags: [Filter.pending: pending]) {
+            it("has the expected values") {
               expect(isyGroup?.name) == "ISY"
               expect(isyGroup?.flag) == 12
               expect(isyGroup?.address) == "00:21:b9:01:f2:b6"
               expect(isyGroup?.family) == 6
-              expect(map(isyGroup?.members ?? [], {$0.name})) ⊂ ["20.12.40.1", "Front Door Table Lamp",
+              expect(map(isyGroup?.members ?? [], {$0.name})) ⊇ ["20.12.40.1", "Front Door Table Lamp",
                                                                  "18.F0.08.1", "Sofa Table Lamp"]
             }
           }
-          describe("the auto dr group", flags: [Filter.pending: pending]) {
+          describe("the auto dr group") {
             var autoDRGroup: ISYDeviceGroup?
             it("exists") {
               autoDRGroup = findFirst(groups, {$0.name == "Auto DR"})
               expect(autoDRGroup) != nil
-              pending = autoDRGroup == nil
             }
-            it("has the expected values", flags: [Filter.pending: pending]) {
+            it("has the expected values") {
               expect(autoDRGroup?.name) == "Auto DR"
               expect(autoDRGroup?.flag) == 132
               expect(autoDRGroup?.address) == "ADR0001"
@@ -506,23 +457,20 @@ class DataModel_LoadedTests: QuickSpec {
     }
 
     describe("the activity controller") {
-      var pending = false
       var activityController: ActivityController?
       it("can be retrieved") {
         activityController = ActivityController.sharedController(moc)
         expect(activityController) != nil
-        pending = activityController == nil
       }
-      it("has a home remote", flags: [Filter.pending: pending]) {
+      it("has a home remote") {
         expect(activityController?.homeRemote) != nil
       }
       var topToolbar: ButtonGroup?
-      it("has a top toolbar", flags: [Filter.pending: pending]) {
+      it("has a top toolbar") {
         topToolbar = activityController?.topToolbar
         expect(topToolbar) != nil
-        pending = topToolbar == nil
       }
-      describe("the top toolbar", flags: [Filter.pending: pending]) {
+      describe("the top toolbar") {
         it("has the expected values") {
           expect(topToolbar?.name) == "Top Toolbar"
           expect(topToolbar?.role) == RemoteElement.Role.Toolbar
@@ -532,21 +480,19 @@ class DataModel_LoadedTests: QuickSpec {
           expect(topToolbar?.subelements.count) == 5
         }
         var subelements: OrderedSet<RemoteElement>?
-        describe("the toolbar buttons", flags: [Filter.pending: pending]) {
+        describe("the toolbar buttons") {
           it("can be retrieved") {
             subelements = topToolbar?.childElements
             expect(subelements) != nil
             expect(subelements?.count) == 5
-            pending = subelements == nil
           }
           var button: Button?
-          describe("the home button", flags: [Filter.pending: pending]) {
+          describe("the home button") {
             it("is the first button") {
               button = subelements?[0] as? Button
               expect(button) != nil
-              pending = button == nil
             }
-            it("has the expected values", flags: [Filter.pending: pending]) {
+            it("has the expected values") {
               expect(button?.name) == "Home Button"
               expect(button?.role) == RemoteElement.Role.ToolbarButton
               expect(button?.constraints.count) == 1
@@ -554,51 +500,47 @@ class DataModel_LoadedTests: QuickSpec {
               expect(button?.iconsForMode(RemoteElement.DefaultMode)?.normal?.image?.name) == "Home"
             }
           }
-          describe("the settings button", flags: [Filter.pending: pending]) {
+          describe("the settings button") {
             it("is the second button") {
               button = subelements?[1] as? Button
               expect(button) != nil
-              pending = button == nil
             }
-            it("has the expected values", flags: [Filter.pending: pending]) {
+            it("has the expected values") {
               expect(button?.name) == "Settings Button"
               expect(button?.role) == RemoteElement.Role.ToolbarButton
               expect(button?.commandForMode(RemoteElement.DefaultMode)) != nil
               expect(button?.iconsForMode(RemoteElement.DefaultMode)?.normal?.image?.name) == "Gear"
             }
           }
-          describe("the edit remote button", flags: [Filter.pending: pending]) {
+          describe("the edit remote button") {
             it("is the third button") {
               button = subelements?[2] as? Button
               expect(button) != nil
-              pending = button == nil
             }
-            it("has the expected values", flags: [Filter.pending: pending]) {
+            it("has the expected values") {
               expect(button?.name) == "Edit Remote Button"
               expect(button?.role) == RemoteElement.Role.ToolbarButton
               expect(button?.commandForMode(RemoteElement.DefaultMode)) != nil
               expect(button?.iconsForMode(RemoteElement.DefaultMode)?.normal?.image?.name) == "Pencil"
             }
           }
-          describe("the battery status button", flags: [Filter.pending: pending]) {
+          describe("the battery status button") {
             it("is the fourth button") {
               button = subelements?[3] as? Button
               expect(button) != nil
-              pending = button == nil
             }
-            it("has the expected values", flags: [Filter.pending: pending]) {
+            it("has the expected values") {
               expect(button?.name) == "Battery Status Button"
               expect(button?.role) == RemoteElement.Role.BatteryStatus
               expect(button?.iconsForMode(RemoteElement.DefaultMode)?.normal?.image?.name) == "Battery"
             }
           }
-          describe("the connection status button", flags: [Filter.pending: pending]) {
+          describe("the connection status button") {
             it("is the fifth button") {
               button = subelements?[4] as? Button
               expect(button) != nil
-              pending = button == nil
             }
-            it("has the expected values", flags: [Filter.pending: pending]) {
+            it("has the expected values") {
               expect(button?.name) == "Connection Status Button"
               expect(button?.role) == RemoteElement.Role.ConnectionStatus
               expect(button?.iconsForMode(RemoteElement.DefaultMode)?.normal?.image?.name) == "Wifi Signal"
@@ -609,38 +551,35 @@ class DataModel_LoadedTests: QuickSpec {
     }
 
     describe("the presets") {
-      var pending = false
       it("can be fetched") {
         let presetCategories = PresetCategory.objectsInContext(moc) as? [PresetCategory]
         expect(presetCategories) != nil
         expect(presetCategories?.count) > 0
-        pending = ((presetCategories?.count ?? 0) > 0) == false
       }
 
       var presetCategory: PresetCategory?
-      describe("the Remote category", flags: [Filter.pending: pending]) {
-        it("can be retrieved by index", flags: [Filter.pending: pending]) {
+      describe("the Remote category") {
+        it("can be retrieved by index") {
           presetCategory = PresetCategory.objectWithIndex(ModelIndex("Remote"), context: moc)
           expect(presetCategory) != nil
         }
       }
-      describe("the Button Group category", flags: [Filter.pending: pending]) {
-        it("can be retrieved by index", flags: [Filter.pending: pending]) {
+      describe("the Button Group category") {
+        it("can be retrieved by index") {
           presetCategory = PresetCategory.objectWithIndex(ModelIndex("Button%20Group"), context: moc)
           expect(presetCategory) != nil
-          pending = presetCategory == nil
         }
-        it("contains 8 presets", flags: [Filter.pending: pending]) {
+        it("contains 8 presets") {
           expect(presetCategory?.presets.count) == 8
         }
 
         var preset: Preset?
-        it("has a preset named '1 x 3'", flags: [Filter.pending: pending]) {
+        it("has a preset named '1 x 3'") {
           preset = Preset.objectWithIndex(ModelIndex("Button%20Group/1%20x%203"), context: moc)
           expect(preset) != nil
         }
-        describe("the '1 x 3' preset", flags: [Filter.pending: pending]) {
-          it("has the expected values", flags: [Filter.pending: pending]) {
+        describe("the '1 x 3' preset") {
+          it("has the expected values") {
             expect(preset?.name) == "1 x 3"
             expect(preset?.baseType) == RemoteElement.BaseType.ButtonGroup
             expect(preset?.constraints) ==  "$0.height ≥ 150\n$0.width ≥ 132\n$1.left = $0.left :: $1.right = $0.right :: $1.top = $0.top\n$2.height = $1.height :: $2.left = $0.left :: $2.right = $0.right :: $2.top = $1.bottom + 4\n$3.bottom = $0.bottom :: $3.height = $1.height :: $3.left = $0.left :: $3.right = $0.right :: $3.top = $2.bottom + 4"
@@ -651,22 +590,19 @@ class DataModel_LoadedTests: QuickSpec {
       }
     }
 
-    describe("the remotes") {
-      var pending = false
+    fdescribe("the remotes") {
       it("can be fetched") {
         let remotes = Remote.objectsInContext(moc) as? [Remote]
         expect(remotes) != nil
         expect(remotes?.count) == 2
-        pending = (remotes?.count ?? 0) != 2
       }
       var remote: Remote?
-      describe("the dish hopper remote", flags: [Filter.pending: pending]) {
+      describe("the dish hopper remote") {
         it("can be retrieved by index") {
           remote = Remote.objectWithIndex(ModelIndex("Dish%20Hopper%20Activity"), context: moc)
           expect(remote) != nil
-          pending = remote == nil
         }
-        it("has the expected values", flags: [Filter.pending: pending]) {
+        it("has the expected values") {
           expect(remote?.key) == "activity1"
           expect(remote?.name) == "Dish Hopper Activity"
           expect(remote?.topBarHidden).to(beTrue())
@@ -677,16 +613,41 @@ class DataModel_LoadedTests: QuickSpec {
           expect(remote?.panels.count) == 4
         }
       }
-      describe("the home screen remote", flags: [Filter.pending: pending]) {
+      describe("the home screen remote") {
         it("can be retrieved by index") {
           remote = Remote.objectWithIndex(ModelIndex("Home%20Screen"), context: moc)
           expect(remote) != nil
-          pending = remote == nil
         }
-        it("has the expected values", flags: [Filter.pending: pending]) {
+        it("has the expected values") {
           expect(remote?.name) == "Home Screen"
           expect(remote?.constraints.count) == 5
           expect(remote?.subelements.count) == 2
+        }
+        var buttonGroup: ButtonGroup?
+        describe("the activities button group") {
+          it("can be retrieved") {
+            buttonGroup = remote?.subelements[0] as? ButtonGroup
+            expect(buttonGroup) != nil
+          }
+          it("has the expected values") {
+            expect(buttonGroup?.constraints.count) == 14
+            expect(buttonGroup?.subelements.count) == 4
+          }
+
+          var button: Button?
+          describe("the Dish button") {
+            it("can be retrieved") {
+              button = buttonGroup?.subelements[0] as? Button
+              expect(button) != nil
+            }
+            it("has the expected values") {
+              let titles = button?.titlesForMode(RemoteElement.DefaultMode)
+              expect(titles) != nil
+              let titleAttributes: TitleAttributes? = titles?.titleAttributesForState(.Normal)
+              expect(titleAttributes == nil) == false
+              expect(titleAttributes?.text) == "Dish"
+            }
+          }
         }
       }
     }

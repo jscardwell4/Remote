@@ -3,7 +3,7 @@
   "baseType": "button-group",
   "role": "rocker",
   "shape": "rounded-rectangle",
-  "style": "border gloss1",
+  "style": "border gloss",
   "constraints": [
     "$0.height ≥ 150 :: $0.width = 70",
     "$1.height = $0.height * 0.5 :: $1.left = $0.left :: $1.right = $0.right :: $1.top = $0.top",

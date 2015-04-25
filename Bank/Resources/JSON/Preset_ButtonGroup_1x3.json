@@ -12,7 +12,7 @@
     {
       "baseType": "button",
       "shape": "rounded-rectangle",
-      "style": "gloss2",
+      "style": "gloss",
       "titles": <@include TitleAttributes_Default_Text.json,TEXT=Button 1,SIZE=20>,
       "backgroundColors.normal": <@include BackgroundColor_Default.json>,
       "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
@@ -20,7 +20,7 @@
     {
       "baseType": "button",
       "shape": "rounded-rectangle",
-      "style": "gloss2",
+      "style": "gloss",
       "titles": <@include TitleAttributes_Default_Text.json,TEXT=Button 2,SIZE=20>,
       "backgroundColors.normal": <@include BackgroundColor_Default.json>,
       "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
@@ -28,7 +28,7 @@
     {
       "baseType": "button",
       "shape": "rounded-rectangle",
-      "style": "gloss2",
+      "style": "gloss",
       "titles": <@include TitleAttributes_Default_Text.json,TEXT=Button 3,SIZE=20>,
       "backgroundColors.normal": <@include BackgroundColor_Default.json>,
       "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>

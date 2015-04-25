@@ -18,56 +18,56 @@
     {
       "baseType": "button",
       "shape": "rounded-rectangle",
-      "style": "gloss2",
-      "titles.normal": <@include TitleAttributes_Default_Text.json,TEXT=Button 1,SIZE=18>,
+      "style": "gloss",
+      "titles": <@include TitleAttributes_Default_Text.json,TEXT=Button 1,SIZE=18>,
       "backgroundColors.normal": <@include BackgroundColor_Dark_Normal.json>,
       "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
     },
     {
       "baseType": "button",
       "shape": "rounded-rectangle",
-      "style": "gloss2",
-      "titles.normal": <@include TitleAttributes_Default_Text.json,TEXT=Button 2,SIZE=18>,
+      "style": "gloss",
+      "titles": <@include TitleAttributes_Default_Text.json,TEXT=Button 2,SIZE=18>,
       "backgroundColors.normal": <@include BackgroundColor_Dark_Normal.json>,
       "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
     },
     {
       "baseType": "button",
       "shape": "rounded-rectangle",
-      "style": "gloss2",
-      "titles.normal": <@include TitleAttributes_Default_Text.json,TEXT=Button 3,SIZE=18>,
+      "style": "gloss",
+      "titles": <@include TitleAttributes_Default_Text.json,TEXT=Button 3,SIZE=18>,
       "backgroundColors.normal": <@include BackgroundColor_Dark_Normal.json>,
       "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
     },
     {
       "baseType": "button",
       "shape": "rounded-rectangle",
-      "style": "gloss2",
-      "titles.normal": <@include TitleAttributes_Default_Text.json,TEXT=Button 4,SIZE=18>,
+      "style": "gloss",
+      "titles": <@include TitleAttributes_Default_Text.json,TEXT=Button 4,SIZE=18>,
       "backgroundColors.normal": <@include BackgroundColor_Dark_Normal.json>,
       "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
     },
     {
       "baseType": "button",
       "shape": "rounded-rectangle",
-      "style": "gloss2",
-      "titles.normal": <@include TitleAttributes_Default_Text.json,TEXT=Button 5,SIZE=18>,
+      "style": "gloss",
+      "titles": <@include TitleAttributes_Default_Text.json,TEXT=Button 5,SIZE=18>,
       "backgroundColors.normal": <@include BackgroundColor_Dark_Normal.json>,
       "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
     },
     {
       "baseType": "button",
       "shape": "rounded-rectangle",
-      "style": "gloss2",
-      "titles.normal": <@include TitleAttributes_Default_Text.json,TEXT=Button 6,SIZE=18>,
+      "style": "gloss",
+      "titles": <@include TitleAttributes_Default_Text.json,TEXT=Button 6,SIZE=18>,
       "backgroundColors.normal": <@include BackgroundColor_Dark_Normal.json>,
       "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
     },
     {
       "baseType": "button",
       "shape": "rounded-rectangle",
-      "style": "gloss2",
-      "titles.normal": <@include TitleAttributes_Default_Text.json,TEXT=Button 7,SIZE=18>,
+      "style": "gloss",
+      "titles": <@include TitleAttributes_Default_Text.json,TEXT=Button 7,SIZE=18>,
       "backgroundColors.normal": <@include BackgroundColor_Dark_Normal.json>,
       "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
     },

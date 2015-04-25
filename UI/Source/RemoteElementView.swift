@@ -37,6 +37,7 @@ public class RemoteElementView: UIView {
   :returns: RemoteElementView
   */
   class func viewWithModel(model: RemoteElement) -> RemoteElementView? {
+    MSLogDebug("model = \(model)")
     switch model.elementType {
       case .Remote: return RemoteView(model: model)
       case .ButtonGroup:
@@ -514,41 +515,26 @@ public class RemoteElementView: UIView {
   :returns: [String:(MSKVOReceptionist!) -> Void]
   */
   func kvoRegistration() -> [String:(MSKVOReceptionist!) -> Void] {
+
     var registry: [String:(MSKVOReceptionist!) -> Void] = [:]
-    registry["constraints"] = {
-      (receptionist: MSKVOReceptionist!) -> Void in
-        if let v = receptionist.observer as? RemoteElementView {
-          v.setNeedsUpdateConstraints()
-        }
-    }
     registry["backgroundColor"] = {
-      (receptionist: MSKVOReceptionist!) -> Void in
-        if let v = receptionist.observer as? RemoteElementView {
-          if let color = receptionist.change[NSKeyValueChangeNewKey] as? UIColor {
-            v.backgroundColor = color
-          } else {
-            v.backgroundColor = nil
+        if let v = $0.observer as? RemoteElementView {
+          let currentColor = v.backgroundColor
+          let changeColor = $0.change[NSKeyValueChangeNewKey] as? UIColor
+          if currentColor != changeColor {
+            v.backgroundColor = changeColor
+            v.setNeedsDisplay()
           }
         }
     }
-    registry["backgroundImage"] = {
-      (receptionist: MSKVOReceptionist!) -> Void in
-        if let v = receptionist.observer as? RemoteElementView {
-          v.setNeedsDisplay()
-        }
-    }
-    registry["style"] = {
-      (receptionist: MSKVOReceptionist!) -> Void in
-        if let v = receptionist.observer as? RemoteElementView {
-          v.setNeedsDisplay()
-        }
-    }
-    registry["shape"] = {
-      (receptionist: MSKVOReceptionist!) -> Void in
-        if let v = receptionist.observer as? RemoteElementView {
-          v.refreshBorderPath()
-        }
-    }
+    registry["constraints"] = {($0.observer as? RemoteElementView)?.setNeedsUpdateConstraints()}
+
+    let updateDisplay: (MSKVOReceptionist!) -> Void = {($0.observer as? RemoteElementView)?.setNeedsDisplay()}
+    registry["backgroundImageAlpha"] = updateDisplay
+    registry["backgroundImage"] = updateDisplay
+    registry["style"] = updateDisplay
+    registry["shape"] = updateDisplay
+
     return registry
   }
 
@@ -567,7 +553,7 @@ public class RemoteElementView: UIView {
   :param: rect CGRect
   */
   func drawBackdropInContext(ctx: CGContextRef, inRect rect: CGRect) {
-    // Draw background color
+    if model.role == .Toolbar { return }
     switch model.shape {
       case .RoundedRectangle:
         UI.DrawingKit.drawRoundishButtonBase(frame: rect,
@@ -589,7 +575,10 @@ public class RemoteElementView: UIView {
     }
 
     // Draw background image
-    if let image = model.backgroundImage?.colorImage {
+    if let imageView = model.backgroundImage,
+      imageModel = imageView.image,
+      image = imageModel.image
+    {
       if rect.size <= image.size { image.drawInRect(rect) }
       else { image.drawAsPatternInRect(rect) }
     }
@@ -603,28 +592,10 @@ public class RemoteElementView: UIView {
   */
   func drawOverlayInContext(ctx: CGContextRef, inRect rect: CGRect) {
 
-    if model.style & RemoteElement.Style.GlossStyleMask != nil {
-      UI.DrawingKit.drawGloss(frame: rect)
-    }
-
     let path = borderPath != nil ? UIBezierPath(CGPath: borderPath!.CGPath) : UIBezierPath(rect: rect)
     UIGraphicsPushContext(ctx)
     path.addClip()
-/*
-    let style = model.style & RemoteElement.Style.GlossStyleMask
-    switch style {
-      case RemoteElement.Style.GlossStyle1:
-        MSPainter.drawGlossGradientWithColor(UIColor(white: 1.0, alpha: 0.02), rect: bounds, context: ctx, offset: 0.0)
-      case RemoteElement.Style.GlossStyle2:
-        MSPainter.drawRoundedRectButtonOverlayInContext(ctx, shineColor: nil, frame: rect)
-      case RemoteElement.Style.GlossStyle3:
-        MSPainter.drawGlossGradientWithColor(UIColor(white: 1.0, alpha: 0.02), rect: bounds, context: ctx, offset: 0.8)
-      case RemoteElement.Style.GlossStyle4:
-        MSPainter.drawGlossGradientWithColor(UIColor(white: 1.0, alpha: 0.02), rect: bounds, context: ctx, offset: -0.8)
-      default: break
-    }
 
-*/
     if model.style & RemoteElement.Style.DrawBorder != nil {
       path.lineWidth = 3.0
       path.lineJoinStyle = kCGLineJoinRound
@@ -632,6 +603,11 @@ public class RemoteElementView: UIView {
       UIColor.blackColor().setStroke()
       path.stroke()
     }
+
+    if model.style & RemoteElement.Style.GlossStyleMask != nil {
+      UI.DrawingKit.drawGloss(frame: rect)
+    }
+
     UIGraphicsPopContext()
   }
 
@@ -643,10 +619,12 @@ public class RemoteElementView: UIView {
       case .RoundedRectangle:
         borderPath = UIBezierPath(roundedRect: bounds, byRoundingCorners: .AllCorners, cornerRadii: cornerRadii)
       case .Oval:
-        borderPath = MSPainter.stretchedOvalFromRect(bounds)
+        borderPath = UIBezierPath(ovalInRect: bounds.rectByInsetting(dx: 2, dy: 2))
       case .Triangle:
+        //TODO: Refactor DrawingKit code to include a function for creating a triangle path from a rect
         fallthrough
       case .Diamond:
+        //TODO: Refactor DrawingKit code to include a function for creating a diamond path from a rect
         fallthrough
       default:
         borderPath = nil
@@ -747,25 +725,19 @@ extension RemoteElementView {
 
     weak var delegate: RemoteElementView!
 
-
-    /** init */
-//    override init() { super.init() }
-
-    /**
-    initWithFrame:
-
-    :param: frame CGRect
-    */
-    override init(frame: CGRect) { super.init(frame: frame) }
-
     /**
     initWithDelegate:
 
     :param: delegate RemoteElementView
     */
-    init(delegate: RemoteElementView) {
-      super.init(frame: delegate.bounds)
+    convenience init(delegate: RemoteElementView) {
+      self.init(frame: delegate.bounds)
       self.delegate = delegate
+      initialize()
+    }
+
+    /** initialize */
+    func initialize() {
       userInteractionEnabled = self is RemoteElementView.SubelementsView
       setTranslatesAutoresizingMaskIntoConstraints(false)
       backgroundColor = UIColor.clearColor()
@@ -774,13 +746,6 @@ extension RemoteElementView {
       contentMode = .Redraw
       autoresizesSubviews = false
     }
-
-    /**
-    init:
-
-    :param: aDecoder NSCoder
-    */
-    required init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
   }
 }
@@ -869,33 +834,12 @@ extension RemoteElementView {
 
     var lineWidth: CGFloat = 2.0 { didSet { boundaryOverlay.lineWidth = lineWidth } }
 
-    /** init */
-//    override init() { super.init() }
-
-    /**
-    initWithFrame:
-
-    :param: frame CGRect
-    */
-    override init(frame: CGRect) { super.init(frame: frame) }
-
-    /**
-    initWithDelegate:
-
-    :param: delegate RemoteElementView
-    */
-    override init(delegate: RemoteElementView) {
-      super.init(delegate: delegate)
+    /** initialize */
+    override func initialize() {
+      super.initialize()
       layer.addSublayer(boundaryOverlay)
       layer.addSublayer(alignmentOverlay)
     }
-
-    /**
-    init:
-
-    :param: aDecoder NSCoder
-    */
-    required init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
     /**
     drawRect:

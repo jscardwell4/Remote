@@ -30,7 +30,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
 //    let wtf = DataManager.self
 //    window?.rootViewController = UINavigationController()
-    window?.rootViewController = UINavigationController(rootViewController: ActivityViewController())
+//    window?.rootViewController = UINavigationController(rootViewController: ActivityViewController())
 
     return true
   }

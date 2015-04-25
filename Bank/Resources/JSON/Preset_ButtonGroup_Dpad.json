@@ -3,7 +3,7 @@
   "baseType": "button-group",
   "role": "dpad",
   "shape": "oval",
-  "style": "gloss2",
+  "style": "gloss",
   "constraints": [
     "$0.height = 280 :: $0.width = $0.height",
     "$1.centerX = $0.centerX :: $1.centerY = $0.centerY :: $1.width = $0.width * 0.3",
@@ -18,10 +18,7 @@
       "baseType": "button",
       "role": "center",
       "constraints": "$0.width = $0.height",
-      "titles": {
-        "normal": <@include TitleAttributes_Default_Text.json,TEXT=OK,SIZE=28>,
-        "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
-      },
+      "titles": <@include TitleAttributes_Default_Text.json,TEXT=OK,SIZE=28>,
       "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
     },
     {

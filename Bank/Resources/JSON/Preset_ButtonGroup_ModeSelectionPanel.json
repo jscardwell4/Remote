@@ -16,7 +16,14 @@
       "baseType": "button",
       "role": "selection-panel",
       "titles": {
-        "normal": <@include TitleAttributes_Default_Text.json,TEXT=Default,SIZE=32>,
+        "normal": {
+          "font": "Helvetica Neue@32",
+          "foregroundColor": <@include ForegroundColor_Normal.json>,
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
+          "alignment": "center",
+          "text": "Default"
+        },
         "selected.foregroundColor": "yellow",
         "highlighted.foregroundColor": "yellow"
       },
@@ -27,7 +34,14 @@
       "baseType": "button",
       "role": "selection-panel",
       "titles": {
-        "normal": <@include TitleAttributes_Default_Text.json,TEXT=Other,SIZE=32>,
+        "normal": {
+          "font": "Helvetica Neue@32",
+          "foregroundColor": <@include ForegroundColor_Normal.json>,
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
+          "alignment": "center",
+          "text": "Other"
+        },
         "selected.foregroundColor": "yellow",
         "highlighted.foregroundColor": "yellow"
       },
