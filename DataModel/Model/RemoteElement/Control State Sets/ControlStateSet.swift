@@ -121,15 +121,9 @@ public class ControlStateSet: ModelObject {
   public subscript(idx: UInt) -> AnyObject? {
     get {
       let state = UIControlState(rawValue: idx)
-      if let property = state.controlStateSetProperty, let value: AnyObject = self[property] {
-        return value
-      }
-      if let property = (state & .Selected).controlStateSetProperty, let value: AnyObject = self[property] {
-        return value
-      }
-      if let property = (state & .Highlighted).controlStateSetProperty, let value: AnyObject = self[property] {
-        return value
-      }
+      if let property = state.controlStateSetProperty, let value: AnyObject = self[property] { return value }
+      if let property = (state & .Selected).controlStateSetProperty, let value: AnyObject = self[property] { return value }
+      if let property = (state & .Highlighted).controlStateSetProperty, let value: AnyObject = self[property] { return value }
       return self["normal"]
     }
     set { if let property = UIControlState(rawValue: UInt(idx)).controlStateSetProperty { self[property] = newValue } }
@@ -153,7 +147,7 @@ public class ControlStateSet: ModelObject {
       if let propertyName = $0.controlStateSetProperty {
         let value: AnyObject? = self.valueForKey(propertyName)
         if value == nil { result += "\n\t\(propertyName) = nil" }
-        else { result += "\n\t\(propertyName) = {\n\t\t\(toString(value!))\n\t}" }
+        else { result += "\n\t\(propertyName) = {\n\(toString(value!).indentedBy(8))\n\t}" }
       }
     }
     return result

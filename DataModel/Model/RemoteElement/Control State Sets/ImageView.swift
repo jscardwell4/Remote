@@ -65,13 +65,24 @@ public final class ImageView: ModelObject, NSCopying {
     super.updateWithData(data)
 
     updateRelationshipFromData(data, forAttribute: "image")
-    if let color = UIColor(data["color"]) { self.color = color }
+    color = UIColor(data["color"])
+    alpha = Float(data["alpha"])
 
+  }
+
+  override public var description: String {
+    var result = super.description
+    result += "\n\timage = \(toString(image?.index))"
+    result += "\n\tcolor = \(toString(color?.string))"
+    result += "\n\talpha = \(toString(alpha))"
+    return result
   }
 
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
     obj["color"] = color?.jsonValue
+    obj["image.index"] = image?.index.jsonValue
+    obj["alpha"] = alpha?.jsonValue
     return obj.jsonValue
   }
 

@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 import DataModel
-//import UI
+import UI
 
 // TODO: Cancel needs to reset any changed color values
 
@@ -72,13 +72,13 @@ class PresetDetailController: BankItemDetailController {
       let row = DetailCustomRow()
       if let e = self.element { e.managedObjectContext?.deleteObject(e) }
       row.generateCustomView = {
-//        if let view = RemoteElementView.viewWithPreset(self.model as! Preset) {
-//          self.element = view.model
-//          return view
-//        } else {
-//          MSLogError("unable to create `RemoteElementView` from preset")
+        if let view = RemoteElementView.viewWithPreset(self.model as! Preset) {
+          self.element = view.model
+          return view
+        } else {
+          MSLogError("unable to create `RemoteElementView` from preset")
           return UIView()
-//        }
+        }
       }
       return row
       }, forKey: RowKey.Preview)

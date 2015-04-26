@@ -19,14 +19,19 @@
         "batteryStatusButton.centerY = homeButton.centerY",
         "batteryStatusButton.left = connectionStatusButton.right + 20",
         "batteryStatusButton.width = homeButton.width",
+        "batteryStatusButton.right = topToolbar.right - 20",
+
         "connectionStatusButton.centerY = homeButton.centerY",
         "connectionStatusButton.left = editRemoteButton.right + 20",
         "connectionStatusButton.width = homeButton.width",
-        "editRemoteButton.centerY = homeButton.centerY",
-        "editRemoteButton.left = settingsButton.right + 20",
+
+        "editRemoteButton.center = topToolbar.center",
         "editRemoteButton.width = homeButton.width",
+
         "homeButton.centerY = topToolbar.centerY",
-        "homeButton.left = topToolbar.left + 4",
+        "homeButton.left = topToolbar.left + 20",
+
+        "settingsButton.right = editRemoteButton.left -20",
         "settingsButton.centerY = homeButton.centerY",
         "settingsButton.left = homeButton.right + 20",
         "settingsButton.width = homeButton.width"
@@ -43,6 +48,7 @@
           "format": "homeButton.width ≥ 44"
         },
         "commands.default.type": "return-to-launch-screen",
+        "contentEdgeInsets": "{4, 4, 4, 4}",
         "icons.default": {
           "normal": {
             "image.index": "Icons/Glyphish%206/Large/Normal/Home",
@@ -63,6 +69,7 @@
         "name": "Settings Button",
         "role": "top-toolbar-button",
         "commands.default.type": "open-settings",
+        "contentEdgeInsets": "{4, 4, 4, 4}",
         "icons.default": {
           "normal": {
             "image.index": "Icons/Glyphish%206/Large/Normal/Gear",
@@ -83,6 +90,7 @@
         "name": "Edit Remote Button",
         "role": "top-toolbar-button",
         "commands.default.type": "open-editor",
+        "contentEdgeInsets": "{4, 4, 4, 4}",
         "icons.default": {
           "normal": {
             "image.index": "Icons/Glyphish%206/Large/Normal/Pencil",
@@ -102,42 +110,23 @@
         "uuid": "8B75639D-9209-4AE8-BB2A-A76262FBA644",
         "name": "Battery Status Button",
         "role": "battery-status",
+        "contentEdgeInsets": "{4, 4, 4, 4}",
         "icons.default": {
-          "normal": {
-            "image.index": "Icons/Glyphish%207/Large/Normal/Battery",
-            "color": <@include ForegroundColor_Normal.json>
-          },
-          "highlighted": {
-            "image.index": "Icons/Glyphish%207/Large/Normal/Battery",
-            "color":  <@include ForegroundColor_Highlighted.json>
-          },
-          "disabled": {
-            "image.index": "Icons/Glyphish%206/Large/Normal/Lighting%20Bolt",
-            "color": <@include ForegroundColor_Disabled.json>
-          },
-          "selected": {
-            "image.index": "Icons/Glyphish%204/Power%20Plug",
-            "color": <@include ForegroundColor_Normal.json>
-          }
+          "normal.color": <@include ForegroundColor_Normal.json>,
+          "highlighted.color":  <@include ForegroundColor_Highlighted.json>,
+          "disabled.color": <@include ForegroundColor_Disabled.json>,
+          "selected.color": <@include ForegroundColor_Normal.json>
         }
       },
       {
         "uuid": "56157095-5D4A-4A58-971A-2E1B6D214E3B",
         "name": "Connection Status Button",
         "role": "connection-status",
+        "contentEdgeInsets": "{4, 4, 4, 4}",
         "icons.default": {
-          "normal": {
-            "image.index": "Icons/Glyphish%207/Large/Normal/Wifi%20Signal",
-            "color": <@include ForegroundColor_Normal.json>
-          },
-          "highlighted": {
-            "image.index": "Icons/Glyphish%207/Large/Normal/Wifi%20Signal",
-            "color":  <@include ForegroundColor_Highlighted.json>
-          },
-          "disabled": {
-            "image.index": "Icons/Glyphish%207/Large/Normal/Wifi%20Signal",
-            "color": <@include ForegroundColor_Disabled.json>
-          }
+          "normal.color": <@include ForegroundColor_Normal.json>,
+          "highlighted.color":  <@include ForegroundColor_Highlighted.json>,
+          "disabled.color": <@include ForegroundColor_Disabled.json>
         }
       }
     ]

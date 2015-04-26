@@ -29,8 +29,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     window?.backgroundColor = UIColor.whiteColor()
     window?.makeKeyAndVisible()
 
-//    var wtf: AnyClass = DataManager.self
     let wtf = Bank.self
+    let ftw = DataManager.self
     let dataFlag = DataManager.databaseOperations
     if dataFlag.remove || dataFlag.load {
       window?.rootViewController = UINavigationController()

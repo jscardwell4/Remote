@@ -52,9 +52,9 @@ public final class Button: RemoteElement {
         self.setLongPressCommand(Command.importObjectWithData($2, context: moc), forMode: $1)
       }
 
-      titleEdgeInsets = UIEdgeInsets(data["titleEdge-insets"]) ?? UIEdgeInsets.zeroInsets
-      contentEdgeInsets = UIEdgeInsets(data["contentEdge-insets"]) ?? UIEdgeInsets.zeroInsets
-      imageEdgeInsets = UIEdgeInsets(data["imageEdge-insets"]) ?? UIEdgeInsets.zeroInsets
+      titleEdgeInsets = UIEdgeInsets(data["titleEdgeInsets"]) ?? UIEdgeInsets.zeroInsets
+      contentEdgeInsets = UIEdgeInsets(data["contentEdgeInsets"]) ?? UIEdgeInsets.zeroInsets
+      imageEdgeInsets = UIEdgeInsets(data["imageEdgeInsets"]) ?? UIEdgeInsets.zeroInsets
 
     }
 

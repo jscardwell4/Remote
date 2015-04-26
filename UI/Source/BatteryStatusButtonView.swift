@@ -79,7 +79,11 @@ public final class BatteryStatusButtonView: ButtonView {
 
 	:returns: CGSize
 	*/
-  override public func intrinsicContentSize() -> CGSize { return button.icon?.image?.size ?? RemoteElementView.MinimumSize }
+  override public func intrinsicContentSize() -> CGSize {
+    if let iconSize = button.icon?.image?.size where iconSize > RemoteElementView.MinimumSize { return iconSize }
+    else { return RemoteElementView.MinimumSize }
+  }
+
 
 	/**
 	drawContentInContext:inRect:

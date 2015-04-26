@@ -23,6 +23,8 @@ extension UIColor /*: JSONValueInitializable */ {
   }
 }
 
+extension UIColor: StringValueConvertible { public var stringValue: String { return string ?? "" } }
+
 extension UIColor {
 
   /**

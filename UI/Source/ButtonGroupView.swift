@@ -266,7 +266,7 @@ public class ButtonGroupView: RemoteElementView {
   :returns: CGSize
   */
   override public func intrinsicContentSize() -> CGSize {
-    if buttonGroup.role == RemoteElement.Role.Toolbar { return CGSize(width: UIScreen.mainScreen().bounds.width, height: 44.0) }
+    if buttonGroup.role & RemoteElement.Role.Toolbar != nil { return CGSize(width: UIScreen.mainScreen().bounds.width, height: 44.0) }
     else { return CGSize(square: UIViewNoIntrinsicMetric) }
   }
 

@@ -282,7 +282,7 @@ public class ButtonView: RemoteElementView {
 	override func drawContentInContext(ctx: CGContextRef, inRect rect: CGRect) {
 		if let icon = button.icon?.colorImage {
 			UIGraphicsPushContext(ctx)
-			let insetRect = button.imageEdgeInsets.insetRect(bounds)
+			let insetRect = button.contentEdgeInsets.insetRect(bounds)
       let imageSize = insetRect.size.contains(icon.size)
                         ? icon.size
                         : icon.size.aspectMappedToSize(insetRect.size, binding: true)

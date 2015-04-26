@@ -85,6 +85,7 @@ public final class ActivityViewController: UIViewController {
     view.addGestureRecognizer(UIPinchGestureRecognizer(target: self, action: "handlePinch:"))
 
     let topToolbarView = ButtonGroupView(model: activityController.topToolbar)
+    MSLogDebug(topToolbarView.model.description)
     view.addSubview(topToolbarView)
     self.topToolbarView = topToolbarView
 
@@ -221,7 +222,7 @@ public final class ActivityViewController: UIViewController {
                                                   attribute: .Top,
                                                   multiplier: 1.0,
                                                   constant: 0.0)
-
+    topToolbarConstraint.identifier = identifier
     view.addConstraint(topToolbarConstraint)
     self.topToolbarConstraint = topToolbarConstraint
 
