@@ -30,10 +30,14 @@ public final class DelayCommand: Command {
 
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
-
-    obj["class"] = "delay"
     obj["duration"] = duration.jsonValue
     return obj.jsonValue
+  }
+
+  override public var description: String {
+    var result = super.description
+    result += "\n\tduration = \(duration)"
+    return result
   }
 
   override var operation: CommandOperation { return DelayCommandOperation(command: self) }

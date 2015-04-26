@@ -46,6 +46,17 @@ public final class JSONStorage: ModelObject, ModelStorage {
   public subscript(key: String) -> JSONValue? { get { return dictionary[key] } set { dictionary[key] = newValue } }
 
   override public var jsonValue: JSONValue { return (ObjectJSONValue(super.jsonValue)! + ObjectJSONValue(dictionary)).jsonValue }
+
+  override public var description: String {
+    var result = super.description
+    if dictionary.count == 0 { result += "\n\tdictionary = {}" }
+    else {
+      result += "\n\tdictionary: {\n\t\t"
+      result += "\n\t\t".join(dictionary.keyValuePairs.map({"\($0) = \(toString($1))"}))
+      result += "\n\t}"
+    }
+    return result
+  }
 }
 
 /**

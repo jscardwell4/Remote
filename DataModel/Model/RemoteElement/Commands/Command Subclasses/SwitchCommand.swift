@@ -33,10 +33,15 @@ public final class SwitchCommand: Command {
     }
   }
 
+  override public var description: String {
+    var result = super.description
+    result += "\n\ttargetType = \(targetType.stringValue)"
+    result += "\n\ttarget = \(target)"
+    return result
+  }
+
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
-
-    obj["class"] = "switch"
     obj["targetType"] = targetType.jsonValue
     obj["target"] = target.jsonValue
     return obj.jsonValue

@@ -37,7 +37,7 @@ public class RemoteElementView: UIView {
   :returns: RemoteElementView
   */
   class func viewWithModel(model: RemoteElement) -> RemoteElementView? {
-    MSLogDebug("model = \(model)")
+    MSLogDebug(model.description)
     switch model.elementType {
       case .Remote: return RemoteView(model: model)
       case .ButtonGroup:
@@ -105,8 +105,6 @@ public class RemoteElementView: UIView {
   /** updateConstraints */
   override public func updateConstraints() {
     //TODO: Modify to use model constraint uuids to update only where necessary
-
-    MSLogDebug("model = \(model)")
 
     var identifier = createIdentifier(self, ["Internal", "Base"])
     if constraintsWithIdentifier(identifier).count == 0 {
@@ -373,7 +371,7 @@ public class RemoteElementView: UIView {
   public var appliedScale: CGFloat = 1.0
 
   /** updateSubelementOrderFromView */
-  public func updateSubelementOrderFromView() { model.childElements = subelementViews.map{$0.model} }
+  public func updateSubelementOrderFromView() { model.subelements = subelementViews.map{$0.model} }
 
   /**
   translateSubelements:translation:
@@ -500,7 +498,7 @@ public class RemoteElementView: UIView {
   func initializeViewFromModel() {
     super.backgroundColor = model.backgroundColor
     refreshBorderPath()
-    for element in model.childElements {
+    for element in model.subelements {
       if let subelementView = self.dynamicType.viewWithModel(element) {
         addSubelementView(subelementView)
       }
@@ -517,6 +515,7 @@ public class RemoteElementView: UIView {
   func kvoRegistration() -> [String:(MSKVOReceptionist!) -> Void] {
 
     var registry: [String:(MSKVOReceptionist!) -> Void] = [:]
+
     registry["backgroundColor"] = {
         if let v = $0.observer as? RemoteElementView {
           let currentColor = v.backgroundColor
@@ -534,6 +533,7 @@ public class RemoteElementView: UIView {
     registry["backgroundImage"] = updateDisplay
     registry["style"] = updateDisplay
     registry["shape"] = updateDisplay
+    registry["currentMode"] = updateDisplay
 
     return registry
   }
@@ -575,10 +575,7 @@ public class RemoteElementView: UIView {
     }
 
     // Draw background image
-    if let imageView = model.backgroundImage,
-      imageModel = imageView.image,
-      image = imageModel.image
-    {
+    if let image = model.backgroundImage?.image {
       if rect.size <= image.size { image.drawInRect(rect) }
       else { image.drawAsPatternInRect(rect) }
     }
@@ -604,7 +601,7 @@ public class RemoteElementView: UIView {
       path.stroke()
     }
 
-    if model.style & RemoteElement.Style.GlossStyleMask != nil {
+    if model.style & RemoteElement.Style.ApplyGloss != nil {
       UI.DrawingKit.drawGloss(frame: rect)
     }
 

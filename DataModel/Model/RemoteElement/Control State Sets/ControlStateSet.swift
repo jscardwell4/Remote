@@ -92,6 +92,8 @@ extension UIControlState {
   }
 }
 
+//extension UIControlState: Hashable { public var hashValue: Int { return Int(rawValue) } }
+
 @objc(ControlStateSet)
 public class ControlStateSet: ModelObject {
 
@@ -143,6 +145,18 @@ public class ControlStateSet: ModelObject {
   public subscript(property: String) -> AnyObject? {
     get { return UIControlState(controlStateSetProperty: property) != nil ? valueForKey(property) : nil }
     set { if UIControlState(controlStateSetProperty: property) != nil { setValue(newValue, forKey: property) } }
+  }
+
+  public override var description: String {
+    var result = super.description
+    UIControlState.enumerate {
+      if let propertyName = $0.controlStateSetProperty {
+        let value: AnyObject? = self.valueForKey(propertyName)
+        if value == nil { result += "\n\t\(propertyName) = nil" }
+        else { result += "\n\t\(propertyName) = {\n\t\t\(toString(value!))\n\t}" }
+      }
+    }
+    return result
   }
 
 }

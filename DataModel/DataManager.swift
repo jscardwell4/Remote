@@ -92,8 +92,10 @@ import MoonKit
   /** Stores a reference to the `DataModel` bundle */
   private static let dataModelBundle = NSBundle(forClass: DataManager.self)
 
+  public static let databaseOperations: DataFlag = DataFlag()
+
   /** Database operation flags parsed from command line */
-  static private(set) public var dataFlag: DataFlag = DataFlag()
+  static private(set) public var dataFlag = DataManager.databaseOperations
 
   /** Model flags parsed from command line */
   static public let modelFlags: [ModelFlag] = ModelFlag.all
@@ -582,12 +584,12 @@ import MoonKit
   Type for parsing database operations command line arguments
   */
   public struct DataFlag: Printable {
-    var load: Bool
-    var dump: Bool
-    var remove: Bool
-    var inMemory: Bool
-    var copy: Bool
-    var logModel: Bool
+    public var load: Bool
+    public var dump: Bool
+    public var remove: Bool
+    public var inMemory: Bool
+    public var copy: Bool
+    public var logModel: Bool
 
     static let key = "databaseOperations"
 

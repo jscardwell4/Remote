@@ -9,6 +9,7 @@
 import UIKit
 import MoonKit
 import DataModel
+import Bank
 import UI
 
 @UIApplicationMain
@@ -28,9 +29,14 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     window?.backgroundColor = UIColor.whiteColor()
     window?.makeKeyAndVisible()
 
-//    let wtf = DataManager.self
-//    window?.rootViewController = UINavigationController()
-//    window?.rootViewController = UINavigationController(rootViewController: ActivityViewController())
+//    var wtf: AnyClass = DataManager.self
+    let wtf = Bank.self
+    let dataFlag = DataManager.databaseOperations
+    if dataFlag.remove || dataFlag.load {
+      window?.rootViewController = UINavigationController()
+    } else {
+      window?.rootViewController = ActivityViewController()
+    }
 
     return true
   }

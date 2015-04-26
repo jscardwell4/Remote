@@ -121,9 +121,35 @@ public class RemoteElement: IndexedModelObject {
 
   // MARK: - Background
 
-  @NSManaged public var backgroundImageAlpha: Float
-  @NSManaged public var backgroundColor: UIColor?
-  @NSManaged public var backgroundImage: ImageView?
+  private(set) var backgrounds: ModalStorage {
+    get {
+      var storage: ModalStorage!
+      willAccessValueForKey("backgrounds")
+      storage = primitiveValueForKey("backgrounds") as? ModalStorage
+      didAccessValueForKey("backgrounds")
+      if storage == nil {
+        storage = ModalStorage(context: managedObjectContext)
+        setPrimitiveValue(storage, forKey: "backgrounds")
+      }
+      return storage
+    }
+    set {
+      willChangeValueForKey("backgrounds")
+      setPrimitiveValue(newValue, forKey: "backgrounds")
+      didChangeValueForKey("backgrounds")
+    }
+  }
+
+  public var backgroundImageAlpha: Float? {
+    return backgroundImageAlphaForMode(currentMode) ?? backgroundImageAlphaForMode(RemoteElement.DefaultMode)
+  }
+
+  public var backgroundColor: UIColor? {
+    return backgroundColorForMode(currentMode) ?? backgroundColorForMode(RemoteElement.DefaultMode)
+  }
+  public var backgroundImage: Image? {
+    return backgroundImageForMode(currentMode) ?? backgroundImageForMode(RemoteElement.DefaultMode)
+  }
 
   // MARK: - Parent and subelements
 
@@ -223,11 +249,7 @@ public class RemoteElement: IndexedModelObject {
 
   :param: mode String
   */
-  public func updateForMode(mode: Mode) {
-    backgroundColor = backgroundColorForMode(mode) ?? backgroundColorForMode(RemoteElement.DefaultMode)
-    backgroundImage = backgroundImageForMode(mode) ?? backgroundImageForMode(RemoteElement.DefaultMode)
-    backgroundImageAlpha = (backgroundImageAlphaForMode(mode) ?? backgroundImageAlphaForMode(RemoteElement.DefaultMode)) ?? 1.0
-  }
+  public func updateForMode(mode: Mode) {}
 
   /**
   faultedObjectForKey:mode:
@@ -288,9 +310,7 @@ public class RemoteElement: IndexedModelObject {
 
   :returns: UIColor?
   */
-  public func backgroundColorForMode(mode: Mode) -> UIColor? {
-    return objectForKey("backgroundColor", forMode: mode) as? UIColor
-  }
+  public func backgroundColorForMode(mode: Mode) -> UIColor? { return backgrounds[mode]?.color }
 
   /**
   setBackgroundColor:forMode:
@@ -298,9 +318,7 @@ public class RemoteElement: IndexedModelObject {
   :param: color UIColor?
   :param: mode String
   */
-  public func setBackgroundColor(color: UIColor?, forMode mode: Mode) {
-    setObject(color, forKey: "backgroundColor", forMode: mode)
-  }
+  public func setBackgroundColor(color: UIColor?, forMode mode: Mode) { imageViewForMode(mode).color = color }
 
   /**
   backgroundImageAlphaForMode:
@@ -309,9 +327,7 @@ public class RemoteElement: IndexedModelObject {
 
   :returns: NSNumber?
   */
-  public func backgroundImageAlphaForMode(mode: Mode) -> Float? {
-    return objectForKey("backgroundImageAlpha", forMode: mode) as? Float
-  }
+  public func backgroundImageAlphaForMode(mode: Mode) -> Float? { return backgrounds[mode]?.alpha?.floatValue }
 
   /**
   setBackgroundImageAlpha:forMode:
@@ -319,9 +335,7 @@ public class RemoteElement: IndexedModelObject {
   :param: alpha NSNumber?
   :param: mode String
   */
-  public func setBackgroundImageAlpha(alpha: Float?, forMode mode: Mode) {
-    setObject(alpha, forKey: "backgroundImageAlpha", forMode: mode)
-  }
+  public func setBackgroundImageAlpha(alpha: Float?, forMode mode: Mode) { imageViewForMode(mode).alpha = alpha }
 
   /**
   backgroundImageForMode:
@@ -330,9 +344,7 @@ public class RemoteElement: IndexedModelObject {
 
   :returns: ImageView?
   */
-  public func backgroundImageForMode(mode: Mode) -> ImageView? {
-    return faultedObjectForKey("backgroundImage", forMode: mode) as? ImageView
-  }
+  public func backgroundImageForMode(mode: Mode) -> Image? { return backgrounds[mode]?.image }
 
   /**
   setBackgroundImage:forMode:
@@ -340,8 +352,27 @@ public class RemoteElement: IndexedModelObject {
   :param: image Image?
   :param: mode String
   */
-  public func setBackgroundImage(image: ImageView?, forMode mode: Mode) {
-    setURIForObject(image, forKey: "backgroundImage", forMode: mode)
+  public func setBackgroundImage(image: Image?, forMode mode: Mode) { imageViewForMode(mode).image = image }
+
+  /**
+  Accessor for the `ImageView` associated with the specified `Mode`. If one does not exist a copy is made of the 
+  `ImageView` for `RemoteElement.Default`. If that does not exist a new `ImageView` is created and returned.
+
+  :param: mode Mode
+
+  :returns: ImageView
+  */
+  private func imageViewForMode(mode: Mode) -> ImageView {
+    let imageView: ImageView
+    if let i: ImageView = backgrounds[mode] {
+      imageView = i
+    } else if mode != RemoteElement.DefaultMode, let i: ImageView = backgrounds[RemoteElement.DefaultMode] {
+      imageView = i.copy() as! ImageView
+    } else {
+      imageView = ImageView(context: managedObjectContext)
+      backgrounds[mode] = imageView
+    }
+    return imageView
   }
 
   // MARK: - Role
@@ -560,10 +591,7 @@ public class RemoteElement: IndexedModelObject {
     shape = preset.shape
     style = preset.style
     setBackgroundColor(preset.backgroundColor, forMode: RemoteElement.DefaultMode)
-    let imageView: ImageView?
-    if let image = preset.backgroundImage { imageView = ImageView(image: image) }
-    else { imageView = nil }
-    setBackgroundImage(imageView, forMode: RemoteElement.DefaultMode)
+    setBackgroundImage(preset.backgroundImage, forMode: RemoteElement.DefaultMode)
     setBackgroundImageAlpha(preset.backgroundImageAlpha, forMode: RemoteElement.DefaultMode)
     var elements: OrderedSet<RemoteElement> = []
     if let subelementPresets = preset.subelements {
@@ -589,28 +617,24 @@ public class RemoteElement: IndexedModelObject {
 
     if let moc = managedObjectContext {
 
-      if let role = Role(data["role"]) { self.role = role }
-      if let key = String(data["key"]) { self.key = key }
-      if let shape = Shape(data["shape"]) { self.shape = shape }
-      if let style = Style(data["style"]) { self.style = style }
-      if let tag = Int16(data["tag"]) { self.tag = tag }
+      role = Role(data["role"]) ?? .Undefined
+      key = String(data["key"])
+      shape = Shape(data["shape"]) ?? .Undefined
+      style = Style(data["style"]) ?? .None
+      tag = Int16(data["tag"]) ?? 0
 
-      if let backgroundColorJSON = ObjectJSONValue(data["backgroundColor"]) {
-        for (_, mode, value) in backgroundColorJSON { setObject(UIColor(value), forKey: "backgroundColor", forMode: mode) }
-      }
-
-      if let backgroundImageAlphaJSON = ObjectJSONValue(data["backgroundImage-alpha"]) {
-        for (_, mode, value) in backgroundImageAlphaJSON { setObject(Float(value), forKey: "backgroundImageAlpha", forMode: mode) }
-      }
-
-      if let backgroundImageJSON = ObjectJSONValue(data["backgroundImage"]) {
-        for (_, mode, jsonValue) in backgroundImageJSON {
-          if let value = ObjectJSONValue(jsonValue),
-            image = ImageView.importObjectWithData(value, context: moc)
-          {
-            setURIForObject(image, forKey: "backgroundImage", forMode: mode)
-          }
+      applyMaybe(ObjectJSONValue(data["backgroundColor"])) { self.setBackgroundColor(UIColor($2), forMode: $1) }
+      applyMaybe(ObjectJSONValue(data["backgroundImage-alpha"])) { self.setBackgroundImageAlpha(Float($2), forMode: $1) }
+      applyMaybe(ObjectJSONValue(data["backgroundImage"])) {
+        let image: Image?
+        if let imageData = ObjectJSONValue($2), imageIndex = ModelIndex(imageData["index"]) {
+          image = Image.objectWithIndex(imageIndex, context: moc)
+        } else if let imageData = ObjectJSONValue($2), importedImage = Image.importObjectWithData(imageData, context: moc) {
+          image = importedImage
+        } else {
+          image = nil
         }
+        self.setBackgroundImage(image, forMode: $1)
       }
 
       if let subType = self.dynamicType.subelementType, subelementsJSON = ArrayJSONValue(data["subelements"]) {
@@ -745,13 +769,13 @@ public class RemoteElement: IndexedModelObject {
     }
   }
 
-  // MARK: - Description
+  // MARK: - Printable
 
   override public var description: String {
     var result = super.description + "\n\t"
 
     result += "\n\t".join( "key = \(toString(key))", "tag = \(tag)", "role = \(role)", "shape = \(shape)", "style = \(style)" )
-
+    result += "\n\tbackgrounds = {\n\(backgrounds.description.indentedBy(8))\n\t}"
     result += "\n\t"
     result += "\n\t".join(reduce(modes,
                                  [String](),
@@ -759,7 +783,7 @@ public class RemoteElement: IndexedModelObject {
     result += "\n\t"
     result += "\n\t".join(reduce(modes,
                                  [String](),
-                                 {$0 + ["\($1).backgroundImage = \(toString(self.backgroundImageForMode($1)?.image?.index.rawValue))"]}))
+                                 {$0 + ["\($1).backgroundImage = \(toString(self.backgroundImageForMode($1)?.index.rawValue))"]}))
     result += "\n\t"
     result += "\n\t".join(reduce(modes,
                                  [String](),

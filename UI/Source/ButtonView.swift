@@ -267,6 +267,12 @@ public class ButtonView: RemoteElementView {
 		}
 	}
 
+  /** setNeedsDisplay */
+  override public func setNeedsDisplay() {
+    labelView?.attributedText = button.title
+    super.setNeedsDisplay()
+  }
+
 	/**
 	drawContentInContext:inRect:
 

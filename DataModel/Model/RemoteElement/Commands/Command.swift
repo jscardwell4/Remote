@@ -19,7 +19,7 @@ import MoonKit
   <SystemCommand>, <SendIRCommand>, <HTTPCommand>, <SwitchToRemoteCommand>.
 */
 @objc(Command)
-public class Command: NamedModelObject {
+public class Command: ModelObject {
 
   /** Simple enumeration for specifying execution behavior. */
   public enum Option { case Default, LongPress }

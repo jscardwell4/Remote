@@ -37,6 +37,8 @@ extension CGPoint: Unpackable2 {
   public func unpack() -> (CGFloat, CGFloat) { return (x, y) }
 }
 
+extension CGPoint: Printable { public var description: String { return NSStringFromCGPoint(self) } }
+
 public func -(lhs: CGPoint, rhs: CGPoint) -> CGPoint {
   return lhs.isNull ? rhs : (rhs.isNull ? lhs : CGPoint(x: lhs.x - rhs.x, y: lhs.y - rhs.y))
 }
@@ -63,13 +65,12 @@ extension CGVector {
   public var absolute: CGVector { return isNull ? self : CGVector(dx: abs(dx), dy: abs(dy)) }
   public init(_ point: CGPoint) { dx = point.x; dy = point.y }
 }
-
 extension CGVector: NilLiteralConvertible {
   public init(nilLiteral: ()) { self = CGVector.nullVector }
 }
 
 extension CGVector: Printable {
-  public var description: String { return "(\(dx), \(dy))"}
+  public var description: String { return NSStringFromCGVector(self) }
 }
 
 extension CGVector: Unpackable2 {
@@ -124,6 +125,7 @@ extension CGSize {
     return CGSizeApplyAffineTransform(self, transform)
   }
 }
+extension CGSize: Printable { public var description: String { return NSStringFromCGSize(self) } }
 extension CGSize: Unpackable2 {
   public func unpack() -> (CGFloat, CGFloat) { return (width, height) }
 }
@@ -162,6 +164,10 @@ extension UIEdgeInsets {
   public init(inset: CGFloat) { self = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset) }
 }
 
+extension UIEdgeInsets: Printable {
+  public var description: String { return NSStringFromUIEdgeInsets(self) }
+}
+
 extension UIEdgeInsets: Unpackable4 {
   public func unpack() -> (CGFloat, CGFloat, CGFloat, CGFloat) { return (top, left, bottom, right) }
 }
@@ -169,6 +175,8 @@ extension UIEdgeInsets: Unpackable4 {
 extension UIOffset {
   public init?(_ string: String?) { if let s = string { self = UIOffsetFromString(s) } else { return nil } }
 }
+
+extension UIOffset: Printable { public var description: String { return NSStringFromUIOffset(self) } }
 
 extension CGAffineTransform {
   public init(tx: CGFloat, ty: CGFloat) { self = CGAffineTransformMakeTranslation(tx, ty) }
@@ -187,6 +195,8 @@ extension CGAffineTransform {
   public static var identityTransform: CGAffineTransform { return CGAffineTransformIdentity }
   public init?(_ string: String?) { if let s = string { self = CGAffineTransformFromString(s) } else { return nil } }
 }
+
+extension CGAffineTransform: Printable { public var description: String { return NSStringFromCGAffineTransform(self) } }
 
 public func +(lhs: CGAffineTransform, rhs: CGAffineTransform) -> CGAffineTransform { return CGAffineTransformConcat(lhs, rhs) }
 public func +=(inout lhs: CGAffineTransform, rhs: CGAffineTransform) { lhs = lhs + rhs }
@@ -243,6 +253,8 @@ extension CGRect {
                   height: min(size.height + pushY + pullY, size.height))
   }
 }
+
+extension CGRect: Printable { public var description: String { return NSStringFromCGRect(self) } }
 
 extension CGRect: Unpackable4 {
   public func unpack() -> (CGFloat, CGFloat, CGFloat, CGFloat) { return (origin.x, origin.y, size.width, size.height) }

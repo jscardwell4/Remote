@@ -42,7 +42,7 @@
       ]
     },
     "backgroundColor.default": "black",
-    "backgroundImage.default.image.index": "Backgrounds/Pro%20Dots",
+    "backgroundImage.default.index": "Backgrounds/Pro%20Dots",
     "subelements": [
       {
         "uuid": "B9A5F86F-ED62-49E9-B6D4-AE1093D02202",
@@ -1112,7 +1112,7 @@
       ]
     },
     "backgroundColor.default": "black",
-    "backgroundImage.default.image.index": "Backgrounds/Pro%20Dots",
+    "backgroundImage.default.index": "Backgrounds/Pro%20Dots",
     "subelements": [
       {
         "uuid": "F358CB82-496C-446D-8833-D4373777D23E",

@@ -19,10 +19,14 @@ public final class ActivityCommand: Command {
 
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
-
-    obj["class"] = "activity".jsonValue
-    obj["activity.uuid"] = activity?.uuid.jsonValue
+    obj["activity.index"] = activity?.index.jsonValue
     return obj.jsonValue
+  }
+
+  override public var description: String {
+    var result = super.description
+    result += "\n\tactivity = \(toString(activity?.index.rawValue))"
+    return result
   }
 
   /**

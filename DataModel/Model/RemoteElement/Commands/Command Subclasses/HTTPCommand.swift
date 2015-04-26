@@ -23,9 +23,14 @@ public final class HTTPCommand: SendCommand {
 
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
-    obj["class"] = "http"
     obj["url"] = url.absoluteString?.jsonValue
     return obj.jsonValue
+  }
+
+  override public var description: String {
+    var result = super.description
+    result += "\n\turl = \(toString(url.absoluteString))"
+    return result
   }
 
   /**

@@ -48,9 +48,14 @@ public final class SystemCommand: Command {
     if let typeJSON = String(data["type"]) { type = SystemCommandType(jsonValue: typeJSON.jsonValue) }
   }
 
+  override public var description: String {
+    var result = super.description
+    result += "\n\ttype = \(type.stringValue)"
+    return result
+  }
+
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
-    obj["class"] = "system".jsonValue
     obj["type"] = type.jsonValue
     return obj.jsonValue
   }

@@ -2,12 +2,35 @@
 //  ModelIndex.swift
 //  Remote
 //
-//  Created by Jason Cardwell on 3/24/15.
+//  Created by Jason Cardwell on 4/16/15.
 //  Copyright (c) 2015 Moondeer Studios. All rights reserved.
 //
 
 import Foundation
 import MoonKit
+
+@objc public class ModelIndex: RawRepresentable, JSONValueConvertible, JSONValueInitializable, StringValueConvertible {
+  public let pathIndex: PathIndex?
+  public let uuidIndex: UUIDIndex?
+  public init(_ index: PathIndex) { pathIndex = index; uuidIndex = nil }
+  public init(_ index: UUIDIndex) { pathIndex = nil; uuidIndex = index }
+  public convenience required init(rawValue: String) { self.init(rawValue) }
+  public convenience init(_ string: String) {
+    if let uuidIndex = UUIDIndex(rawValue: string) { self.init(uuidIndex) }
+    else { let pathIndex = PathIndex(rawValue: string); self.init(pathIndex) }
+  }
+  public var stringValue: String { return rawValue }
+  public var rawValue: String { return uuidIndex != nil ? uuidIndex!.rawValue : pathIndex?.rawValue ?? "" }
+  public var jsonValue: JSONValue { return rawValue.jsonValue }
+  public convenience required init?(_ jsonValue: JSONValue?) {
+    if let s = String(jsonValue) {
+      self.init(s)
+    } else {
+      self.init("")
+      return nil
+    }
+  }
+}
 
 /**
 A simple structure that serves as a glorified file path for use as an index.
@@ -15,55 +38,6 @@ A simple structure that serves as a glorified file path for use as an index.
 i.e. 'Sony/AV Receiver/Volume Up' would be an index for the code named 'Volume Up'
 in the code set named 'AV Receiver' for the manufacturer named 'Sony'
 */
-@objc public class ModelIndex: NSObject, RawRepresentable {
-
-  private(set) public var rawValue: String
-
-  private class func isValidRawValue(rawValue: String) -> Bool { return true }
-
-  /**
-  initWithRawValue:
-
-  :param: rawValue String
-  */
-  public required init?(rawValue: String) {
-    self.rawValue = rawValue
-    super.init()
-    if !self.dynamicType.isValidRawValue(rawValue) { return nil }
-  }
-
-  /**
-  init:
-
-  :param: value String
-  */
-  public convenience init?(_ value: String) { self.init(rawValue: value) }
-
-  /**
-  initWithJSONValue:
-
-  :param: JSONValue String
-  */
-  public convenience required init?(JSONValue: String) { self.init(rawValue: JSONValue) }
-
-}
-
-// MARK: JSONValueConvertible
-extension ModelIndex: JSONValueConvertible {
-  public var jsonValue: JSONValue { return rawValue.jsonValue }
-}
-
-// MARK: Equatable
-extension ModelIndex: Equatable {}
-/**
-Equatable support function
-
-:param: lhs ModelIndex
-:param: rhs ModelIndex
-
-:returns: Bool
-*/
-public func ==(lhs: ModelIndex, rhs: ModelIndex) -> Bool { return lhs.rawValue == rhs.rawValue }
 
 // MARK: - PathIndex
 
@@ -73,14 +47,19 @@ A simple structure that serves as a glorified file path for use as an index.
 i.e. 'Sony/AV Receiver/Volume Up' would be an index for the code named 'Volume Up'
 in the code set named 'AV Receiver' for the manufacturer named 'Sony'
 */
-@objc public final class PathIndex: ModelIndex {
+public struct PathIndex: RawRepresentable {
+
+  private(set) public var rawValue: String
+
+  public init(_ value: String) { rawValue = value }
+  public init(rawValue: String) { self.rawValue = rawValue }
 
   /**
   transformComponents:
 
   :param: transform (inout [String]) -> Void
   */
-  private func transformComponents(transform: (inout [String]) -> Void) {
+  private mutating func transformComponents(transform: (inout [String]) -> Void) {
     var components = pathComponents
     transform(&components)
     rawValue = join("/", components)
@@ -93,7 +72,7 @@ in the code set named 'AV Receiver' for the manufacturer named 'Sony'
 
   :returns: String
   */
-  private func modifyComponents(modify: (inout [String]) -> String) -> String {
+  private mutating func modifyComponents(modify: (inout [String]) -> String) -> String {
     var components = pathComponents
     let result = modify(&components)
     rawValue = join("/", components)
@@ -111,7 +90,7 @@ in the code set named 'AV Receiver' for the manufacturer named 'Sony'
 
   :param: array [String]
   */
-  public convenience init?(array: [String]) {
+  public init?(array: [String]) {
     self.init("/".join(array.filter({!$0.isEmpty})))
   }
 
@@ -120,14 +99,14 @@ in the code set named 'AV Receiver' for the manufacturer named 'Sony'
 
   :param: component String
   */
-  public func append(component: String) { rawValue += "/" + component }
+  public mutating func append(component: String) { rawValue += "/" + component }
 
   /**
   removeLast
 
   :returns: String
   */
-  public func removeLast() -> String {
+  public mutating func removeLast() -> String {
     return modifyComponents({(inout components: [String]) -> String in components.removeLast()})
   }
 
@@ -137,7 +116,7 @@ in the code set named 'AV Receiver' for the manufacturer named 'Sony'
   :param: component String
   :param: i Int
   */
-  public func insert(component: String, atIndex i: Int) {
+  public mutating func insert(component: String, atIndex i: Int) {
     transformComponents({(inout components:[String]) -> Void in components.insert(component, atIndex: i)})
   }
 
@@ -148,7 +127,7 @@ in the code set named 'AV Receiver' for the manufacturer named 'Sony'
 
   :returns: String
   */
-  public func removeAtIndex(index: Int) -> String {
+  public mutating func removeAtIndex(index: Int) -> String {
     return modifyComponents({ (inout components: [String]) -> String in components.removeAtIndex(index) })
   }
 
@@ -158,7 +137,7 @@ in the code set named 'AV Receiver' for the manufacturer named 'Sony'
   :param: subRange Range<Int>
   :param: newElements [String]
   */
-  public func replaceRange(subRange: Range<Int>, with newElements: [String]) {
+  public mutating func replaceRange(subRange: Range<Int>, with newElements: [String]) {
     transformComponents({
       (inout components:[String]) -> Void in
       components.replaceRange(subRange, with: newElements)
@@ -171,7 +150,7 @@ in the code set named 'AV Receiver' for the manufacturer named 'Sony'
   :param: newElements [String]
   :param: i Int
   */
-  public func splice(newElements: [String], atIndex i: Int) {
+  public mutating func splice(newElements: [String], atIndex i: Int) {
     transformComponents({
       (inout components: [String]) -> Void in
       components.splice(newElements, atIndex: i)
@@ -183,7 +162,7 @@ in the code set named 'AV Receiver' for the manufacturer named 'Sony'
 
   :param: subRange Range<Int>
   */
-  public func removeRange(subRange: Range<Int>) {
+  public mutating func removeRange(subRange: Range<Int>) {
     transformComponents({(inout components:[String]) -> Void in components.removeRange(subRange)})
   }
 
@@ -191,8 +170,8 @@ in the code set named 'AV Receiver' for the manufacturer named 'Sony'
 
 // MARK: Printable, DebugPrintable
 extension PathIndex: Printable, DebugPrintable {
-  public override var description: String { return rawValue }
-  public  override var debugDescription: String { return pathComponents.debugDescription }
+  public var description: String { return rawValue }
+  public var debugDescription: String { return pathComponents.debugDescription }
 }
 
 // MARK: Sliceable
@@ -204,7 +183,7 @@ extension PathIndex: Sliceable {
 
   :returns: PathIndex
   */
-  public subscript(bounds: Range<Int>) -> PathIndex { return PathIndex("/".join(pathComponents[bounds]))! }
+  public subscript(bounds: Range<Int>) -> PathIndex { return PathIndex("/".join(pathComponents[bounds])) }
 }
 
 // MARK: MutableCollectionType
@@ -222,7 +201,7 @@ extension PathIndex: MutableCollectionType {
   */
   public subscript(i: Int) -> String {
     get { return pathComponents[i] }
-    set { transformComponents { (inout components: [String]) -> Void in components[i] = newValue} }
+    mutating set { transformComponents { (inout components: [String]) -> Void in components[i] = newValue} }
   }
 
 }
@@ -247,7 +226,7 @@ Addition binary operator for two `PathIndex` objects
 :returns: PathIndex
 */
 public func +(lhs: PathIndex, rhs: PathIndex) -> PathIndex {
-  return PathIndex("/".join(lhs.pathComponents + rhs.pathComponents))!
+  return PathIndex("/".join(lhs.pathComponents + rhs.pathComponents))
 }
 
 /**
@@ -259,7 +238,31 @@ Addtion binary operator for a `PathIndex` and a `String`
 :returns: PathIndex
 */
 public func +(lhs: PathIndex, rhs: String) -> PathIndex {
-  if let rhsAsIndex = PathIndex(rhs) { return lhs + rhsAsIndex } else { return lhs }
+  return lhs + PathIndex(rhs)
+}
+
+/**
+Addition binary operator for an optional `PathIndex` with a non-optional `PathIndex`
+
+:param: lhs PathIndex?
+:param: rhs PathIndex
+
+:returns: PathIndex
+*/
+public func +(lhs: PathIndex?, rhs: PathIndex) -> PathIndex {
+  return lhs == nil ? rhs : lhs! + rhs
+}
+
+/**
+Addition binary operator for an optional `PathIndex` with and a `String`
+
+:param: lhs PathIndex
+:param: rhs String
+
+:returns: PathIndex
+*/
+public func +(lhs: PathIndex?, rhs: String) -> PathIndex {
+  return lhs + PathIndex(rhs)
 }
 
 /**
@@ -278,11 +281,38 @@ Addition unary operator for a `PathIndex` and a `String`
 :param: lhs PathIndex
 :param: rhs String
 */
-public func +=(inout lhs: PathIndex, rhs: String) { if let rhsAsIndex = PathIndex(rhs) { lhs += rhsAsIndex } }
+public func +=(inout lhs: PathIndex, rhs: String) { lhs += PathIndex(rhs) }
+
+// MARK: JSONValueConvertible
+extension PathIndex: JSONValueConvertible {
+  public var jsonValue: JSONValue { return rawValue.jsonValue }
+}
+
+// MARK: Equatable
+extension PathIndex: Equatable {}
+/**
+Equatable support function
+
+:param: lhs ModelIndex
+:param: rhs ModelIndex
+
+:returns: Bool
+*/
+public func ==(lhs: PathIndex, rhs: PathIndex) -> Bool { return lhs.rawValue == rhs.rawValue }
 
 // MARK: - UUIDIndex
 
-public final class UUIDIndex: ModelIndex {
+public struct UUIDIndex: RawRepresentable {
+
+
+  private(set) public var rawValue: String
+
+  public init?(_ value: String?) { if value != nil { self.init(rawValue: value!) } else { return nil } }
+
+  public init?(rawValue: String) {
+    if UUIDIndex.isValidRawValue(rawValue) { self.rawValue = rawValue }
+    else { return nil }
+  }
 
   /**
   isValidRawValue:
@@ -291,8 +321,25 @@ public final class UUIDIndex: ModelIndex {
 
   :returns: Bool
   */
-  override public class func isValidRawValue(rawValue: String) -> Bool {
+  static func isValidRawValue(rawValue: String) -> Bool {
     return rawValue ~= "[A-F0-9]{8}-(?:[A-F0-9]{4}-){3}[A-Z0-9]{12}"
   }
-
+  
 }
+
+// MARK: JSONValueConvertible
+extension UUIDIndex: JSONValueConvertible {
+  public var jsonValue: JSONValue { return rawValue.jsonValue }
+}
+
+// MARK: Equatable
+extension UUIDIndex: Equatable {}
+/**
+Equatable support function
+
+:param: lhs ModelIndex
+:param: rhs ModelIndex
+
+:returns: Bool
+*/
+public func ==(lhs: UUIDIndex, rhs: UUIDIndex) -> Bool { return lhs.rawValue == rhs.rawValue }

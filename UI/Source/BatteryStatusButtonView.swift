@@ -67,10 +67,11 @@ public final class BatteryStatusButtonView: ButtonView {
 	/** initializeViewFromModel */
 	override func initializeViewFromModel() {
 		super.initializeViewFromModel()
-    batteryFrame     = button.icons?[UIControlState.Normal.rawValue] as? ImageView
-    batteryPlug      = button.icons?[UIControlState.Selected.rawValue] as? ImageView
-    batteryLightning = button.icons?[UIControlState.Disabled.rawValue] as? ImageView
-    batteryFill      = button.icons?[UIControlState.Highlighted.rawValue] as? ImageView
+    let icons = button.iconsForMode(button.currentMode) ?? button.iconsForMode(RemoteElement.DefaultMode)
+    batteryFrame     = icons?[UIControlState.Normal.rawValue] as? ImageView
+    batteryPlug      = icons?[UIControlState.Selected.rawValue] as? ImageView
+    batteryLightning = icons?[UIControlState.Disabled.rawValue] as? ImageView
+    batteryFill      = icons?[UIControlState.Highlighted.rawValue] as? ImageView
 	}
 
 	/**

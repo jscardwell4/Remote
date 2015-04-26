@@ -73,9 +73,12 @@ The function is a simple wrapper around `reduce` that ignores the actual reducti
 :param: block (S.Generator.Element) -> Void
 */
 public func apply<S:SequenceType>(sequence: S, f: (S.Generator.Element) -> Void) { reduce(sequence, Void(), { f($0.1) }) }
-public func apply<C:CollectionType>(collection: C, f: (C.Generator.Element) -> Void) { reduce(collection, Void(), { f($0.1) }) }
 public func apply<T>(x: T, f: (T) -> Void) { f(x) }
-public func apply<T, U>(x: T, f: (T) -> U) -> U { return f(x) }
+//public func apply<T, U>(x: T, f: (T) -> U) -> U { return f(x) }
+
+public func applyMaybe<S:SequenceType>(sequence: S?, f: (S.Generator.Element) -> Void) { if let s = sequence { apply(s, f) } }
+public func applyMaybe<T>(x: T?, f: (T) -> Void) { if let x = x { apply(x, f) } }
+
 
 /**
 A function that simply calls `apply` and then returns the sequence

@@ -38,34 +38,27 @@ public final class ButtonGroup: RemoteElement {
 
       if let autohide = Bool(data["autohide"]) { self.autohide = autohide }
 
-      if let commandSetData = ObjectJSONValue(data["commandSet"]) {
-        for (_, mode, jsonValue) in commandSetData {
-          if let values = ObjectJSONValue(jsonValue),
-            commandSet = CommandSet.importObjectWithData(values, context: moc)
-          {
-            setCommandContainer(commandSet, forMode: mode)
-          }
+      applyMaybe(ObjectJSONValue(data["commandSet"])) {
+        if let values = ObjectJSONValue($2),
+          commandSet = CommandSet.importObjectWithData(values, context: moc)
+        {
+          self.setCommandContainer(commandSet, forMode: $1)
         }
       }
 
-      else if let collectionData = ObjectJSONValue(data["commandSet-collection"]) {
-        for (_, mode, jsonValue) in collectionData {
-          if let values = ObjectJSONValue(jsonValue),
-            commandSetCollection = CommandSetCollection.importObjectWithData(values, context: moc)
-          {
-            setCommandContainer(commandSetCollection, forMode: mode)
-          }
+      applyMaybe(ObjectJSONValue(data["commandSetCollection"])) {
+        if let values = ObjectJSONValue($2),
+          commandSetCollection = CommandSetCollection.importObjectWithData(values, context: moc)
+        {
+          self.setCommandContainer(commandSetCollection, forMode: $1)
         }
       }
 
       labelConstraints = String(data["labelConstraints"])
 
-      if let labelAttributesData = ObjectJSONValue(data["labelAttributes"]) {
-        for (_, mode, jsonValue) in labelAttributesData {
-          if let attributes = TitleAttributes(jsonValue) { setLabelAttributes(attributes, forMode: mode) }
-        }
+      applyMaybe(ObjectJSONValue(data["labelAttributes"])) {
+        if let attributes = TitleAttributes($2) { self.setLabelAttributes(attributes, forMode: $1) }
       }
-
 
     }
 
@@ -85,7 +78,6 @@ public final class ButtonGroup: RemoteElement {
     // if let panelAssignment = preset.panelAssignment { self.panelAssignment = panelAssignment }
   }
 
-  @NSManaged public var commandContainer: CommandContainer?
   @NSManaged public var autohide: Bool
 
   // MARK: - Configurations
@@ -97,23 +89,15 @@ public final class ButtonGroup: RemoteElement {
   */
   override public func updateForMode(mode: String) {
     super.updateForMode(mode)
-    commandContainer = commandContainerForMode(mode) ?? commandContainerForMode(RemoteElement.DefaultMode)
-
     updateButtons()
   }
 
   /** updateButtons */
   public func updateButtons() {
-    var commandSet: CommandSet?
-    if commandContainer != nil && commandContainer! is CommandSet { commandSet = commandContainer! as? CommandSet }
-    else if let collection = commandContainer as? CommandSetCollection {
-      commandSet = collection.commandSetAtIndex(commandSetIndex)
-    }
-    commandSet = commandSet?.faultedObject()
-    if commandSet != nil {
+    if let commands = (commandSet ?? commandSetCollection?[commandSetIndex])?.faultedObject() {
       for button in subelements.map({$0 as! Button}) {
          if button.role == RemoteElement.Role.Tuck { continue }
-         button.command = commandSet![button.role]
+         button.setCommand(commands[button.role], forMode: currentMode)
          button.enabled = button.command != nil
       }
     }
@@ -121,15 +105,9 @@ public final class ButtonGroup: RemoteElement {
 
   // MARK: Labels
 
-  //FIXME: Needs updating after model restructure
-/*
   var label: NSAttributedString? {
-    get {
-
-    }
+    return (labelAttributesForMode(currentMode) ?? labelAttributesForMode(RemoteElement.DefaultMode))?.string
   }
-
-*/
 
   private(set) var labelAttributes: ModalStorage {
     get {
@@ -191,17 +169,6 @@ public final class ButtonGroup: RemoteElement {
   }
 
   /**
-  labelForMode:
-
-  :param: mode String
-
-  :returns: NSAttributedString?
-  */
-  public func labelForMode(mode: Mode) -> NSAttributedString? {
-    return objectForKey("label", forMode: mode) as? NSAttributedString
-  }
-
-  /**
   labelForCommandSetAtIndex:
 
   :param: idx Int
@@ -222,15 +189,38 @@ public final class ButtonGroup: RemoteElement {
 
   // MARK: CommandSet(Collection)s
 
+  public var commandContainer: CommandContainer? {
+    return commandContainers[currentMode] ?? commandContainers[RemoteElement.DefaultMode]
+  }
+  public var commandSet: CommandSet? { return commandContainer as? CommandSet }
+  public var commandSetCollection: CommandSetCollection? { return commandContainer as? CommandSetCollection }
+
+  private(set) var commandContainers: ModalStorage {
+    get {
+      var storage: ModalStorage!
+      willAccessValueForKey("commandContainers")
+      storage = primitiveValueForKey("commandContainers") as? ModalStorage
+      didAccessValueForKey("commandContainers")
+      if storage == nil {
+        storage = ModalStorage(context: managedObjectContext)
+        setPrimitiveValue(storage, forKey: "commandContainers")
+      }
+      return storage
+    }
+    set {
+      willChangeValueForKey("commandContainers")
+      setPrimitiveValue(newValue, forKey: "commandContainers")
+      didChangeValueForKey("commandContainers")
+    }
+  }
+
   /**
   setCommandContainer:forMode:
 
   :param: container CommandContainer?
   :param: mode String
   */
-  public func setCommandContainer(container: CommandContainer?, forMode mode: Mode) {
-    setURIForObject(container, forKey: "commandContainer", forMode: mode)
-  }
+  public func setCommandContainer(container: CommandContainer?, forMode mode: Mode) { commandContainers[mode] = container }
 
   /**
   commandContainerForMode:
@@ -239,14 +229,12 @@ public final class ButtonGroup: RemoteElement {
 
   :returns: CommandContainer?
   */
-  public func commandContainerForMode(mode: Mode) -> CommandContainer? {
-    return faultedObjectForKey("commandContainer", forMode: mode) as? CommandContainer
-  }
+  public func commandContainerForMode(mode: Mode) -> CommandContainer? { return commandContainers[mode] }
 
   /** Holds the index for the current `CommandSet` when the `CommandContainer` is a `CommandSetCollection` */
   public var commandSetIndex: Int = 0 {
     didSet {
-      if let collection = commandContainer as? CommandSetCollection {
+      if let collection = commandSetCollection {
         if !contains((0 ..< Int(collection.count)), commandSetIndex) { commandSetIndex = 0 }
         updateButtons()
       }
@@ -268,8 +256,6 @@ public final class ButtonGroup: RemoteElement {
         if container is CommandSetCollection { commandSetCollections[mode] = d }
         else if container is CommandSet { commandSets[mode] = d }
       }
-      // TODO: Probably need to add jsonValue to NSAttributedString to export labels
-      if let label = labelForMode(mode) { labels[mode] = JSONValue(label) }
     }
 
     if commandSetCollections.count > 0 { obj["commandSet-collection"] = .Object(commandSetCollections) }
@@ -400,6 +386,20 @@ public final class ButtonGroup: RemoteElement {
 
     public var hashValue: Int { return rawValue }
 
+  }
+
+  // MARK: - Printable
+  override public var description: String {
+    var result = super.description
+    result += "\n\tautohide = \(autohide)"
+    result += "\n\tlabelAttributes = {\n\(labelAttributes.description.indentedBy(8))\n\t}"
+    result += "\n\tlabel = \(toString(label))"
+    result += "\n\tcommandContainers = {\n\(commandContainers.description.indentedBy(8))\n\t}"
+    if let container = commandContainer { result += "\n\tcommandContainer = {\n\(container.description.indentedBy(8))\n\t}" }
+    else { result += "\n\tcommandContainer = nil" }
+    result += "\n\tcommandSetIndex = \(commandSetIndex)"
+    result += "\n\tpanelAssignment = \(panelAssignment.stringValue)"
+    return result
   }
 
 }

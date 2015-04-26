@@ -39,9 +39,14 @@ public final class SendIRCommand: SendCommand {
     updateRelationshipFromData(data, forAttribute: "code")
   }
 
+  override public var description: String {
+    var result = super.description
+    result += "\n\tcode = \(code.index.rawValue)"
+    return result
+  }
+
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
-    obj["class"] = "sendir".jsonValue
     obj["code.index"] = code.index.jsonValue
     return obj.jsonValue
   }

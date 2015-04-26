@@ -608,7 +608,7 @@ class DataModel_LoadedTests: QuickSpec {
           expect(remote?.topBarHidden).to(beTrue())
           expect(remote?.constraints.count) == 22
           expect(remote?.backgroundColorForMode(RemoteElement.DefaultMode)?.jsonValue.rawValue) == "\"black\""
-          expect(remote?.backgroundImageForMode(RemoteElement.DefaultMode)?.image?.index.rawValue) == "Backgrounds/Pro%20Dots"
+          expect(remote?.backgroundImageForMode(RemoteElement.DefaultMode)?.index.rawValue) == "Backgrounds/Pro%20Dots"
           expect(remote?.subelements.count) == 8
           expect(remote?.panels.count) == 4
         }

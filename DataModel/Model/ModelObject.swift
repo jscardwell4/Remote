@@ -331,6 +331,10 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
     else { return self(data: data, context: context) }
   }
 
+  public class func importObjectWithData(data: ObjectJSONValue?, context: NSManagedObjectContext) -> Self? {
+    if let d = data { return importObjectWithData(d, context: context) } else { return nil }
+  }
+
   /**
   importObjectsWithData:context:
 

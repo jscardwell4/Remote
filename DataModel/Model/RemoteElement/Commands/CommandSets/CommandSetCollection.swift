@@ -39,6 +39,8 @@ public final class CommandSetCollection: CommandContainer {
     set { containerIndex[label] = newValue?.permanentURI() }
   }
 
+  public subscript(index: Int) -> CommandSet? { return commandSetAtIndex(index) }
+
   /**
   labelForCommandSet:
 

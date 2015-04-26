@@ -34,9 +34,15 @@ public final class PowerCommand: Command {
     updateRelationshipFromData(data, forAttribute: "device")
   }
 
+  override public var description: String {
+    var result = super.description
+    result += "\n\tstate = " + (state ? "on" : "off")
+    result += "\n\tdevice = \(device.index.rawValue)"
+    return result
+  }
+
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
-    obj["class"] = "power"
     obj["device.index"] = device.index.jsonValue
     obj["state"] = (state ? "on" : "off").jsonValue
     return obj.jsonValue

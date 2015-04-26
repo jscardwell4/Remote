@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 import DataModel
-import UI
+//import UI
 
 // TODO: Cancel needs to reset any changed color values
 
@@ -51,15 +51,15 @@ class PresetDetailController: BankItemDetailController {
   /** save */
   override func save() {
     // TODO: Handle saving preset but deleting temporary remote element created for view
-    if let preset = model as? Preset where preset.preview == nil,
-      let previewSection = sections[SectionKey.Preview],
-      previewRow = previewSection[0] as? DetailCustomRow,
-      previewRowCell = previewRow.cell as? DetailCustomCell,
-      elementView = previewRowCell.customView as? RemoteElementView,
-      snapshot = elementView.snapshot()
-    {
-      preset.preview = snapshot
-    }
+//    if let preset = model as? Preset where preset.preview == nil,
+//      let previewSection = sections[SectionKey.Preview],
+//      previewRow = previewSection[0] as? DetailCustomRow,
+//      previewRowCell = previewRow.cell as? DetailCustomCell,
+//      elementView = previewRowCell.customView as? RemoteElementView,
+//      snapshot = elementView.snapshot()
+//    {
+//      preset.preview = snapshot
+//    }
     super.save()
   }
 
@@ -72,13 +72,13 @@ class PresetDetailController: BankItemDetailController {
       let row = DetailCustomRow()
       if let e = self.element { e.managedObjectContext?.deleteObject(e) }
       row.generateCustomView = {
-        if let view = RemoteElementView.viewWithPreset(self.model as! Preset) {
-          self.element = view.model
-          return view
-        } else {
-          MSLogError("unable to create `RemoteElementView` from preset")
+//        if let view = RemoteElementView.viewWithPreset(self.model as! Preset) {
+//          self.element = view.model
+//          return view
+//        } else {
+//          MSLogError("unable to create `RemoteElementView` from preset")
           return UIView()
-        }
+//        }
       }
       return row
       }, forKey: RowKey.Preview)

@@ -85,6 +85,17 @@ public final class MacroCommand: Command {
 //    set { super.name = newValue }
 //  }
 
+  override public var description: String {
+    var result = super.description
+    if commands.count == 0 { result += "\n\tcommands = {}" }
+    else {
+      result += "\n\tcommands = {\n"
+      result += ",\n".join(map(commands){"{\($0.description.indentedBy(12))\n}".indentedBy(8)})
+      result += "\n\t}"
+    }
+    return result
+  }
+
   /**
   updateWithData:
 
@@ -107,7 +118,6 @@ public final class MacroCommand: Command {
 
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
-    obj["class"] = "macro"
     obj["commands"] = .Array(map(commands, {$0.jsonValue}))
     return obj.jsonValue
   }

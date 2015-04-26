@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C20D11AF1A40E28700C33499 /* RemoteDrawingKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D11AE1A40E28700C33499 /* RemoteDrawingKit.swift */; };
-		C20D2F441AE0798400D0007B /* ModelIndexStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D2F431AE0798400D0007B /* ModelIndexStruct.swift */; };
+		C20D2F441AE0798400D0007B /* ModelIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D2F431AE0798400D0007B /* ModelIndex.swift */; };
 		C20D2F461AE0858800D0007B /* IndexedModelObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D2F451AE0858800D0007B /* IndexedModelObject.swift */; };
 		C215CC041ABB102F00E8077E /* DataModel.h in Headers */ = {isa = PBXBuildFile; fileRef = C215CC031ABB102F00E8077E /* DataModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */; };
@@ -45,6 +45,8 @@
 		C22115C31AC59CD30071F2D0 /* Type Dynamic - Elysio.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6361ABCA7A3007581F2 /* Type Dynamic - Elysio.otf */; };
 		C22115C51AC59CE40071F2D0 /* Remote.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6381ABCA7A3007581F2 /* Remote.xcassets */; };
 		C22645F619F6EB20001F5A5E /* AuxiliaryStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59216DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard */; };
+		C22D7CDD1AED52FE009018A1 /* Bank.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C293C7441AC3164700408D35 /* Bank.framework */; };
+		C22D7CDE1AED52FE009018A1 /* Bank.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C293C7441AC3164700408D35 /* Bank.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C231C6421A197C74003D2587 /* SwitchToRemoteCommandEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25B465716FF679B0042B59E /* SwitchToRemoteCommandEditingViewController.m */; };
 		C233E58C1AE9412A00B0FD63 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C233E58B1AE9412A00B0FD63 /* AppDelegate.swift */; };
 		C233E5931AE9412A00B0FD63 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C233E5921AE9412A00B0FD63 /* Images.xcassets */; };
@@ -540,7 +542,6 @@
 		C293C77F1AC318EB00408D35 /* Preset.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C7731AC318EB00408D35 /* Preset.swift */; };
 		C293C7801AC318EB00408D35 /* PresetCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C7741AC318EB00408D35 /* PresetCategory.swift */; };
 		C2A0C7511AD88D68008CF88B /* JSONStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A0C7501AD88D68008CF88B /* JSONStorage.swift */; };
-		C2A0C7531AD8905B008CF88B /* ColorStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A0C7521AD8905B008CF88B /* ColorStorage.swift */; };
 		C2A4EC4D178B990F00FD3AFF /* App_Icon@2x-ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = C2A4EC4B178B990F00FD3AFF /* App_Icon@2x-ios7.png */; };
 		C2A4EC4E178B990F00FD3AFF /* image.512x512.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2A4EC4C178B990F00FD3AFF /* image.512x512.jpg */; };
 		C2C482C819C9F968002E84A9 /* Remote_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2C482C719C9F968002E84A9 /* Remote_Tests.m */; };
@@ -751,6 +752,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		C22D7CDF1AED52FE009018A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C293C7431AC3164700408D35;
+			remoteInfo = Bank;
+		};
 		C233E5B61AE9455700B0FD63 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
@@ -863,13 +871,6 @@
 			remoteGlobalIDString = C215CBFE1ABB102F00E8077E;
 			remoteInfo = DataModel;
 		};
-		C2874FC11AE6A05B00BD7634 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C24A05D01AE5C65C00C9255E;
-			remoteInfo = UI;
-		};
 		C2874FC51AE6A5A400BD7634 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
@@ -958,6 +959,7 @@
 			files = (
 				C233E5B31AE944FD00B0FD63 /* CocoaLumberjack.framework in Embed Frameworks */,
 				C233E5AE1AE9448700B0FD63 /* MoonKit.framework in Embed Frameworks */,
+				C22D7CDE1AED52FE009018A1 /* Bank.framework in Embed Frameworks */,
 				C24844511AE952E8004FCADD /* Networking.framework in Embed Frameworks */,
 				C233E5B91AE9455D00B0FD63 /* UI.framework in Embed Frameworks */,
 				C233E5BD1AE9456200B0FD63 /* DataModel.framework in Embed Frameworks */,
@@ -1017,7 +1019,7 @@
 		C2011DCB19B238F900B982CD /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
 		C203CC361A17DA1E0064D4CB /* RemoteElementViewConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteElementViewConstraint.swift; sourceTree = "<group>"; };
 		C20D11AE1A40E28700C33499 /* RemoteDrawingKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDrawingKit.swift; sourceTree = "<group>"; };
-		C20D2F431AE0798400D0007B /* ModelIndexStruct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelIndexStruct.swift; sourceTree = "<group>"; };
+		C20D2F431AE0798400D0007B /* ModelIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelIndex.swift; sourceTree = "<group>"; };
 		C20D2F451AE0858800D0007B /* IndexedModelObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedModelObject.swift; sourceTree = "<group>"; };
 		C215CBFF1ABB102F00E8077E /* DataModel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataModel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C215CC021ABB102F00E8077E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1451,7 +1453,6 @@
 		C28E98F31AD1A4B000E78711 /* DataModel Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "DataModel Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C28E98F61AD1A4B000E78711 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C28E98F71AD1A4B000E78711 /* DataModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModelTests.swift; sourceTree = "<group>"; };
-		C293C73D1AC25F7700408D35 /* ModelIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelIndex.swift; sourceTree = "<group>"; };
 		C293C7441AC3164700408D35 /* Bank.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bank.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C293C7471AC3164700408D35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C293C7481AC3164700408D35 /* Bank.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bank.h; sourceTree = "<group>"; };
@@ -1469,7 +1470,6 @@
 		C293C7741AC318EB00408D35 /* PresetCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetCategory.swift; sourceTree = "<group>"; };
 		C2997F2316FA563900290737 /* RETypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RETypedefs.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		C2A0C7501AD88D68008CF88B /* JSONStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONStorage.swift; sourceTree = "<group>"; };
-		C2A0C7521AD8905B008CF88B /* ColorStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorStorage.swift; sourceTree = "<group>"; };
 		C2A4102219B4BFB90089AACA /* ITachDeviceConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITachDeviceConnection.h; sourceTree = "<group>"; };
 		C2A4102319B4BFB90089AACA /* ITachDeviceConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITachDeviceConnection.m; sourceTree = "<group>"; };
 		C2A4102419B4BFB90089AACA /* NetworkDeviceMulticastConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceMulticastConnection.h; sourceTree = "<group>"; };
@@ -1780,6 +1780,7 @@
 			files = (
 				C233E5B21AE944FD00B0FD63 /* CocoaLumberjack.framework in Frameworks */,
 				C233E5AD1AE9448700B0FD63 /* MoonKit.framework in Frameworks */,
+				C22D7CDD1AED52FE009018A1 /* Bank.framework in Frameworks */,
 				C24844501AE952E8004FCADD /* Networking.framework in Frameworks */,
 				C233E5B81AE9455D00B0FD63 /* UI.framework in Frameworks */,
 				C233E5BC1AE9456200B0FD63 /* DataModel.framework in Frameworks */,
@@ -3044,15 +3045,13 @@
 				C2E9F4641ABCA395007581F2 /* EditableModelObject.swift */,
 				C2E9F4561ABCA395007581F2 /* ComponentDevice.swift */,
 				C2E9F4F31ABCA395007581F2 /* Activity.swift */,
-				C293C73D1AC25F7700408D35 /* ModelIndex.swift */,
-				C20D2F431AE0798400D0007B /* ModelIndexStruct.swift */,
+				C20D2F431AE0798400D0007B /* ModelIndex.swift */,
 				C2E9F4F41ABCA395007581F2 /* ActivityController.swift */,
 				C2E9F4F51ABCA395007581F2 /* DictionaryStorage.swift */,
 				C2E9F4FE1ABCA395007581F2 /* ModelObject.swift */,
 				C2E9F4FF1ABCA395007581F2 /* NamedModelObject.swift */,
 				C2E9F5001ABCA395007581F2 /* RemoteElement */,
 				C2E9F5421ABCA395007581F2 /* TitleAttributes.swift */,
-				C2A0C7521AD8905B008CF88B /* ColorStorage.swift */,
 				C253B2E01AD98D6B00F7E6AF /* Asset.swift */,
 				C20D2F451AE0858800D0007B /* IndexedModelObject.swift */,
 				C265DBB71AE81E4600655C4C /* PNG.swift */,
@@ -3311,6 +3310,7 @@
 				C233E5BB1AE9455D00B0FD63 /* PBXTargetDependency */,
 				C233E5BF1AE9456300B0FD63 /* PBXTargetDependency */,
 				C24844531AE952E9004FCADD /* PBXTargetDependency */,
+				C22D7CE01AED52FE009018A1 /* PBXTargetDependency */,
 			);
 			name = UIApp;
 			productName = UIApp;
@@ -3483,7 +3483,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				C2874FC21AE6A05B00BD7634 /* PBXTargetDependency */,
 				C24A05C31AE595EF00C9255E /* PBXTargetDependency */,
 				C28104BF1AC5D059003C6E7A /* PBXTargetDependency */,
 			);
@@ -4292,7 +4291,7 @@
 				C2E9F61E1ABCA395007581F2 /* DataManager.swift in Sources */,
 				C2E9F6001ABCA395007581F2 /* CommandSetCollection.swift in Sources */,
 				C285D86A1AC4C0E800C527F6 /* DataModelProtocols.swift in Sources */,
-				C20D2F441AE0798400D0007B /* ModelIndexStruct.swift in Sources */,
+				C20D2F441AE0798400D0007B /* ModelIndex.swift in Sources */,
 				C293C7761AC318EB00408D35 /* ImageCategory.swift in Sources */,
 				C2E9F5E11ABCA395007581F2 /* DelayCommand.swift in Sources */,
 				C293C7781AC318EB00408D35 /* IRCodeSet.swift in Sources */,
@@ -4305,7 +4304,6 @@
 				C2E9F5ED1ABCA395007581F2 /* SwitchCommand.swift in Sources */,
 				C2E9F5511ABCA395007581F2 /* ComponentDevice.swift in Sources */,
 				C2E9F61A1ABCA395007581F2 /* TitleAttributes.swift in Sources */,
-				C2A0C7531AD8905B008CF88B /* ColorStorage.swift in Sources */,
 				C265DBB81AE81E4600655C4C /* PNG.swift in Sources */,
 				C2E9F5D11ABCA395007581F2 /* Activity.swift in Sources */,
 				C2E9F5DD1ABCA395007581F2 /* NamedModelObject.swift in Sources */,
@@ -4578,6 +4576,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		C22D7CE01AED52FE009018A1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C293C7431AC3164700408D35 /* Bank */;
+			targetProxy = C22D7CDF1AED52FE009018A1 /* PBXContainerItemProxy */;
+		};
 		C233E5B71AE9455700B0FD63 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C24A059C1AE5806100C9255E /* Settings */;
@@ -4657,11 +4660,6 @@
 			isa = PBXTargetDependency;
 			target = C215CBFE1ABB102F00E8077E /* DataModel */;
 			targetProxy = C28104BE1AC5D059003C6E7A /* PBXContainerItemProxy */;
-		};
-		C2874FC21AE6A05B00BD7634 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C24A05D01AE5C65C00C9255E /* UI */;
-			targetProxy = C2874FC11AE6A05B00BD7634 /* PBXContainerItemProxy */;
 		};
 		C2874FC61AE6A5A400BD7634 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4835,11 +4833,11 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_SWIFT_FLAGS = "-Xfrontend -serialize-debugging-options";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -4888,11 +4886,11 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_SWIFT_FLAGS = "-Xfrontend -serialize-debugging-options";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -4942,11 +4940,11 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_SWIFT_FLAGS = "-Xfrontend -serialize-debugging-options";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -4996,11 +4994,11 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_SWIFT_FLAGS = "-Xfrontend -serialize-debugging-options";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -5050,9 +5048,9 @@
 				INFOPLIST_FILE = UI/App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_SWIFT_FLAGS = "-Xfrontend -serialize-debugging-options";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 			};
 			name = Debug;
 		};
@@ -5092,8 +5090,8 @@
 				INFOPLIST_FILE = UI/App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_SWIFT_FLAGS = "-Xfrontend -serialize-debugging-options";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Info;
@@ -5134,8 +5132,8 @@
 				INFOPLIST_FILE = UI/App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_SWIFT_FLAGS = "-Xfrontend -serialize-debugging-options";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Verbose;
@@ -5176,8 +5174,8 @@
 				INFOPLIST_FILE = UI/App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_SWIFT_FLAGS = "-Xfrontend -serialize-debugging-options";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -5228,10 +5226,11 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_SWIFT_FLAGS = "-Xfrontend -serialize-debugging-options";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -5278,9 +5277,10 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_SWIFT_FLAGS = "-Xfrontend -serialize-debugging-options";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -5328,9 +5328,10 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_SWIFT_FLAGS = "-Xfrontend -serialize-debugging-options";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -5378,9 +5379,10 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_SWIFT_FLAGS = "-Xfrontend -serialize-debugging-options";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -5607,10 +5609,10 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_SWIFT_FLAGS = "-Xfrontend -serialize-debugging-options";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -5657,9 +5659,9 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_SWIFT_FLAGS = "-Xfrontend -serialize-debugging-options";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -5707,9 +5709,9 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_SWIFT_FLAGS = "-Xfrontend -serialize-debugging-options";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -5757,9 +5759,9 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_SWIFT_FLAGS = "-Xfrontend -serialize-debugging-options";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -6991,11 +6993,11 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_SWIFT_FLAGS = "-Xfrontend -serialize-debugging-options";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -7044,10 +7046,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_SWIFT_FLAGS = "-Xfrontend -serialize-debugging-options";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -7097,10 +7099,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_SWIFT_FLAGS = "-Xfrontend -serialize-debugging-options";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -7150,10 +7152,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_SWIFT_FLAGS = "-Xfrontend -serialize-debugging-options";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";

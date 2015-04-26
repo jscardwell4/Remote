@@ -106,6 +106,19 @@ public final class Remote: RemoteElement {
 
   }
 
+  override public var description: String {
+    var result = super.description
+    result += "\n\ttopBarHidden = \(topBarHidden)"
+    result += "\n\tactivity = \(toString(activity?.index))"
+    result += "\n\tpanels = {"
+    let panelEntries = keyValuePairs(panels)
+    if panelEntries.count == 0 { result += "}" }
+    else {
+      result += "\n\t\t" + "\n\t\t".join(panelEntries.map({"\($0.stringValue) = \($1.rawValue)"})) + "\n\t}"
+    }
+    return result
+  }
+
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
     obj["panels"] = .Object(OrderedDictionary(zip(map(panels.keys, {$0.stringValue}), map(panels.values, {$0.jsonValue}))))
