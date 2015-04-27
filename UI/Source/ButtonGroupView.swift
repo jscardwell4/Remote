@@ -226,10 +226,24 @@ public class ButtonGroupView: RemoteElementView {
   }
 
   /**
+  addSubview:
+
+  :param: view UIView
+  */
+  override public func addSubview(view: UIView) {
+    if let buttonView = view as? ButtonView {
+      if locked { buttonView.resizable = false; buttonView.moveable = false }
+      if buttonView.model.role == .Tuck { buttonView.tapAction = {self.tuck()} }
+    }
+    super.addSubview(view)
+  }
+
+  /**
   addSubelementView:
 
   :param: view RemoteElementView
   */
+/*
   override public func addSubelementView(view: RemoteElementView) {
     if locked {
       view.resizable = false
@@ -243,12 +257,14 @@ public class ButtonGroupView: RemoteElementView {
     super.addSubelementView(view)
   }
 
+*/
   /** addInternalSubviews */
   override func addInternalSubviews() {
     super.addInternalSubviews()
     let label = UILabel.newForAutolayout()
     label.backgroundColor = UIColor.clearColor()
-    addViewToContent(label)
+    addSubview(label)
+//    addViewToContent(label)
     self.label = label
   }
 
@@ -256,7 +272,8 @@ public class ButtonGroupView: RemoteElementView {
     didSet {
       resizable = editingMode == .Undefined
       moveable = editingMode == .Undefined
-      subelementInteractionEnabled = editingMode != .Remote
+      userInteractionEnabled = editingMode != .Remote
+//      subelementInteractionEnabled = editingMode != .Remote
     }
   }
 

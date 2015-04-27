@@ -64,11 +64,18 @@ public final class RockerView: ButtonGroupView {
 
   :param: view RemoteElementView
   */
+/*
   override public func addSubelementView(view: RemoteElementView) {
     super.addSubelementView(view)
     apply(view.gestureRecognizers as! [UIGestureRecognizer]){$0.requireGestureRecognizerToFail(self.labelPanGesture)}
   }
 
+*/
+
+  override public func addSubview(view: UIView) {
+    super.addSubview(view)
+    apply(view.gestureRecognizers as! [UIGestureRecognizer]){$0.requireGestureRecognizerToFail(self.labelPanGesture)}
+  }
   /**
   kvoRegistration
 
@@ -90,11 +97,12 @@ public final class RockerView: ButtonGroupView {
   /** addInternalSubviews */
   override func addInternalSubviews() {
     super.addInternalSubviews()
-    overlayClipsToBounds = true
+//    overlayClipsToBounds = true
     let labelContainer = UIView.newForAutolayout()
     labelContainer.backgroundColor = UIColor.clearColor()
     self.labelContainer = labelContainer
-    addViewToContent(labelContainer)
+    addSubview(labelContainer)
+//    addViewToContent(labelContainer)
   }
 
   /** initializeViewFromModel */

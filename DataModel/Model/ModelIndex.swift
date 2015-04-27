@@ -288,6 +288,9 @@ extension PathIndex: JSONValueConvertible {
   public var jsonValue: JSONValue { return rawValue.jsonValue }
 }
 
+// MARK: Hashable
+extension PathIndex: Hashable { public var hashValue: Int { return rawValue.hashValue } }
+
 // MARK: Equatable
 extension PathIndex: Equatable {}
 /**
@@ -331,6 +334,9 @@ public struct UUIDIndex: RawRepresentable {
 extension UUIDIndex: JSONValueConvertible {
   public var jsonValue: JSONValue { return rawValue.jsonValue }
 }
+
+// MARK: Hashable
+extension UUIDIndex: Hashable { public var hashValue: Int { return rawValue.hashValue } }
 
 // MARK: Equatable
 extension UUIDIndex: Equatable {}

@@ -97,11 +97,13 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
     }
   }
 
-  /** Accessor for the model's `uuid` as a `UUIDIndex` */
-  public var index: ModelIndex {
-    if let uuidIndex = UUIDIndex(rawValue: uuid) { return ModelIndex(uuidIndex) }
+  public var uuidIndex: UUIDIndex {
+    if let uuidIndex = UUIDIndex(rawValue: uuid) { return uuidIndex }
     else { fatalError("unable to generate uuid index for model, is uuid nil?") }
   }
+
+  /** Accessor for the model's `uuid` as a `UUIDIndex` */
+  public var index: ModelIndex { return ModelIndex(uuidIndex) }
 
   /** Entity description retrieved from the managed object model */
   public class var entityDescription: NSEntityDescription {

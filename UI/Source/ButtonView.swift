@@ -51,30 +51,30 @@ public class ButtonView: RemoteElementView {
 
 	:param: view RemoteElementView
 	*/
-	override public func addSubelementView(view: RemoteElementView) {}
+//	override public func addSubelementView(view: RemoteElementView) {}
 
 	/**
 	removeSubelementView:
 
 	:param: view RemoteElementView
 	*/
-	override public func removeSubelementView(view: RemoteElementView) {}
+//	override public func removeSubelementView(view: RemoteElementView) {}
 
 	/**
 	addSubelementViews:
 
 	:param: views NSSet
 	*/
-	override public func addSubelementViews(views: Set<RemoteElementView>) {}
+//	override public func addSubelementViews(views: Set<RemoteElementView>) {}
 
 	/**
 	removeSubelementViews:
 
 	:param: views NSSet
 	*/
-	override public func removeSubelementViews(views: Set<RemoteElementView>) {}
+//	override public func removeSubelementViews(views: Set<RemoteElementView>) {}
 
-	override public var subelementViews: OrderedSet<RemoteElementView> { return [] }
+//	override public var subelementViews: OrderedSet<RemoteElementView> { return [] }
 
 	/**
 	executeActionWithOption:
@@ -144,17 +144,19 @@ public class ButtonView: RemoteElementView {
 	override func addInternalSubviews() {
 		super.addInternalSubviews()
 
-		subelementInteractionEnabled = false
-		contentInteractionEnabled    = false
+//		subelementInteractionEnabled = false
+//		contentInteractionEnabled    = false
 
 		let labelView = UILabel.newForAutolayout()
-		addViewToContent(labelView)
+    addSubview(labelView)
+//		addViewToContent(labelView)
 		self.labelView = labelView
 
 		let activityIndicator = UIActivityIndicatorView.newForAutolayout()
 		activityIndicator.activityIndicatorViewStyle = .WhiteLarge
 		activityIndicator.color = UIColor.whiteColor()
-		addViewToOverlay(activityIndicator)
+    addSubview(activityIndicator)
+//		addViewToOverlay(activityIndicator)
 		self.activityIndicator = activityIndicator
 	}
 
@@ -280,6 +282,7 @@ public class ButtonView: RemoteElementView {
 	:param: rect CGRect
 	*/
 	override func drawContentInContext(ctx: CGContextRef, inRect rect: CGRect) {
+    super.drawContentInContext(ctx, inRect: rect)
 		if let icon = button.icon?.colorImage {
 			UIGraphicsPushContext(ctx)
 			let insetRect = button.contentEdgeInsets.insetRect(bounds)

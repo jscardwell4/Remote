@@ -20,8 +20,24 @@ public final class ModeSelectionView: ButtonGroupView {
 
   :param: view RemoteElementView
   */
+/*
   override public func addSubelementView(view: RemoteElementView) {
     super.addSubelementView(view)
+    if let buttonView = view as? ButtonView {
+      if selectedButton == nil { selectButton(buttonView) }
+      buttonView.tapAction = {self.handleSelection(buttonView)}
+    }
+  }
+
+*/
+
+  /**
+  addSubview:
+
+  :param: view UIView
+  */
+  override public func addSubview(view: UIView) {
+    super.addSubview(view)
     if let buttonView = view as? ButtonView {
       if selectedButton == nil { selectButton(buttonView) }
       buttonView.tapAction = {self.handleSelection(buttonView)}

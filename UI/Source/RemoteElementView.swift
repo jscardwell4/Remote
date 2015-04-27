@@ -13,9 +13,7 @@ import DataModel
 
 public class RemoteElementView: UIView {
 
-
-
-  class var MinimumSize: CGSize { return CGSize(square: 44.0) }
+  // MARK: - Initialization
 
   /**
   viewWithPreset:
@@ -81,41 +79,78 @@ public class RemoteElementView: UIView {
   }
 
   /**
-  objectIsSubelementKind:
-
-  :param: object AnyObject
-
-  :returns: Bool
-  */
-  public func objectIsSubelementKind(object: AnyObject) -> Bool {
-    switch model.elementType {
-      case .Remote: return object is ButtonGroupView
-      case .ButtonGroup: return object is ButtonView
-      default: return false
-    }
-  }
-
-  /**
   init:
 
   :param: aDecoder NSCoder
   */
   required public init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
+
+  /** attachGestureRecognizers */
+  func attachGestureRecognizers() {}
+
+  /** registerForChangeNotification */
+  func registerForChangeNotification() {
+    precondition(model != nil, "why are we calling this without a valid model object?")
+    kvoReceptionists = map(kvoRegistration()) {
+      (key: String, value: (MSKVOReceptionist!) -> Void) -> MSKVOReceptionist in
+        MSKVOReceptionist(observer: self, forObject: self.model, keyPath: key, options: .New,
+                          queue: NSOperationQueue.mainQueue(), handler: value)
+    }
+  }
+
+  /** initializeIVARs */
+  func initializeIVARs() {
+    clipsToBounds = false
+    opaque = false
+    multipleTouchEnabled = true
+    userInteractionEnabled = true
+    addInternalSubviews()
+    attachGestureRecognizers()
+    initializeViewFromModel()
+  }
+
+  /** addInternalSubviews */
+  func addInternalSubviews() {
+//    addSubview(backdropView)
+//    addSubview(contentView)
+//    addSubview(subelementsView)
+//    addSubview(overlayView)
+  }
+
+  /** initializeViewFromModel */
+  func initializeViewFromModel() {
+    super.backgroundColor = model.backgroundColor
+    refreshBorderPath()
+    for element in model.subelements {
+      if let subelementView = RemoteElementView.viewWithModel(element) {
+        addSubview(subelementView)
+//        addSubelementView(subelementView)
+      }
+    }
+  }
+
+  // MARK: - Constraints
+
+  public var modeledConstraints: [RemoteElementViewConstraint] {
+    return constraints().filter{$0 is RemoteElementViewConstraint} as! [RemoteElementViewConstraint]
+  }
+
   /** updateConstraints */
   override public func updateConstraints() {
     //TODO: Modify to use model constraint uuids to update only where necessary
 
-    var identifier = createIdentifier(self, ["Internal", "Base"])
-    if constraintsWithIdentifier(identifier).count == 0 {
-      constrain("|[b]| :: V:|[b]| :: |[c]| :: V:|[c]| :: |[s]| :: V:|[s]| :: |[o]| :: V:|[o]|",
-                    views: ["b": backdropView, "c": contentView, "s": subelementsView, "o": overlayView],
-               identifier: identifier)
-    }
+//    var identifier = createIdentifier(self, ["Internal", "Base"])
+//    if constraintsWithIdentifier(identifier).count == 0 {
+//      constrain("|[b]| :: V:|[b]| :: |[c]| :: V:|[c]| :: |[s]| :: V:|[s]| :: |[o]| :: V:|[o]|",
+//                    views: ["b": backdropView, "c": contentView, "s": subelementsView, "o": overlayView],
+//               identifier: identifier)
+//    }
 
     let modelConstraints = model.constraints
     let modeledConstraints = self.modeledConstraints
 
+    let identifier = createIdentifier(self, ["Internal", "Model"])
     if modelConstraints.count > modeledConstraints.count {
       removeConstraints(modeledConstraints)
       for modelConstraint in modelConstraints {
@@ -131,248 +166,6 @@ public class RemoteElementView: UIView {
 
   override public class func requiresConstraintBasedLayout() -> Bool { return true }
 
-  private lazy var subelementsView: SubelementsView = SubelementsView(delegate: self)
-  private lazy var contentView: ContentView = ContentView(delegate: self)
-  private lazy var backdropView: BackdropView = BackdropView(delegate: self)
-  private lazy var overlayView: OverlayView = OverlayView(delegate: self)
-
-  public var viewFrames: [String:CGRect] {
-    var frames = [model.uuid: frame]
-    if parentElementView != nil {
-      frames[parentElementView!.model.uuid] = parentElementView!.frame
-    }
-    for subelementView in subelementViews { frames[subelementView.model.uuid] = subelementView.frame }
-    return frames
-  }
-
-  public var minimumSize: CGSize {
-
-    var size = RemoteElementView.MinimumSize
-
-    if subelementViews.count > 0 {
-
-      var xAxisIntervals: [HalfOpenInterval<CGFloat>] = []
-      var yAxisIntervals: [HalfOpenInterval<CGFloat>] = []
-
-      for subelementView in subelementViews {
-        let min = subelementView.minimumSize
-        let origin = subelementView.frame.origin
-        xAxisIntervals.append(HalfOpenInterval(origin.x, (origin.x + min.width)))
-        yAxisIntervals.append(HalfOpenInterval(origin.y, (origin.y + min.height)))
-      }
-      xAxisIntervals.sort{$0.start < $1.start}
-      yAxisIntervals.sort{$0.start < $1.start}
-
-      var tmpInterval = xAxisIntervals[0]
-      var tmpAxisIntervals: [HalfOpenInterval<CGFloat>] = []
-      for interval in xAxisIntervals {
-        if overlaps(tmpInterval, interval) {
-          tmpInterval = HalfOpenInterval(tmpInterval.start, interval.end)
-        } else {
-          tmpAxisIntervals.append(tmpInterval)
-          tmpInterval = interval
-        }
-      }
-      tmpAxisIntervals.append(tmpInterval)
-      xAxisIntervals = tmpAxisIntervals
-
-      tmpInterval = yAxisIntervals[0]
-      tmpAxisIntervals.removeAll()
-      for interval in yAxisIntervals {
-        if overlaps(tmpInterval, interval) {
-          tmpInterval = HalfOpenInterval(tmpInterval.start, interval.end)
-        } else {
-          tmpAxisIntervals.append(tmpInterval)
-          tmpInterval = interval
-        }
-      }
-      tmpAxisIntervals.append(tmpInterval)
-      yAxisIntervals = tmpAxisIntervals
-
-      size.width = xAxisIntervals.reduce(0.0) {$0 + ($1.end - $1.start)}
-      size.height = yAxisIntervals.reduce(0.0) {$0 + ($1.end - $1.start)}
-
-      if model.constraintManager.proportionLock { size = bounds.size.aspectMappedToSize(size, binding: false) }
-
-    }
-
-    return size
-  }
-
-  public var maximumSize: CGSize {
-    var size = superview?.bounds.size ?? CGSize.zeroSize
-    if model.constraintManager.proportionLock { size = bounds.size.aspectMappedToSize(size, binding: true) }
-    return size
-  }
-
-  override public var backgroundColor: UIColor? {
-    get { return super.backgroundColor ?? model?.backgroundColor }
-    set { super.backgroundColor = newValue }
-  }
-
- /** setNeedsDisplay */
- override public func setNeedsDisplay() {
-   super.setNeedsDisplay()
-   backdropView.setNeedsDisplay()
-   contentView.setNeedsDisplay()
-   subelementsView.setNeedsDisplay()
-   overlayView.setNeedsDisplay()
- }
-
-  override public var bounds: CGRect { didSet { refreshBorderPath() } }
-
-  /**
-  subscript:
-
-  :param: key String
-
-  :returns: RemoteElementView?
-  */
-  override public subscript(key: String) -> RemoteElementView? {
-    if model.isIdentifiedByString(key) { return self }
-    else { return subelementViews.filter{$0.model.isIdentifiedByString(key)}.first }
-  }
-
-  /**
-  subscript:
-
-  :param: idx Int
-
-  :returns: RemoteElementView?
-  */
-  public subscript(idx: Int) -> RemoteElementView? {
-    return idx < subelementsView.subviews.count ? subelementsView.subviews[idx] as? RemoteElementView : nil
-  }
-
-  public var parentElementView: RemoteElementView? { return (superview as? SubelementsView)?.superview as? RemoteElementView }
-
-  public var model: RemoteElement!
-  public var modeledConstraints: [RemoteElementViewConstraint] {
-    return constraints().filter{$0 is RemoteElementViewConstraint} as! [RemoteElementViewConstraint]
-  }
-  public var subelementViews: OrderedSet<RemoteElementView> {
-    return OrderedSet(subelementsView.subviews as? [RemoteElementView] ?? [])
-  }
-
-  /**
-  addSubelementViews:
-
-  :param: views NSSet
-  */
-  public func addSubelementViews(views: Set<RemoteElementView>) {
-    apply(subelementViews){self.subelementsView.addSubview($0)}
-  }
-
-  /**
-  addSubelementView:
-
-  :param: view RemoteElementView
-  */
-  public func addSubelementView(view: RemoteElementView) { subelementsView.addSubview(view) }
-
-  public func removeSubelementViews(views: Set<RemoteElementView>) {
-    apply(subelementViews){$0.removeFromSuperview()}
-  }
-
-  /**
-  removeSubelementView:
-
-  :param: view RemoteElementView
-  */
-  public func removeSubelementView(view: RemoteElementView) { view.removeFromSuperview() }
-
-  /**
-  bringSubelementViewToFront:
-
-  :param: subelementView RemoteElementView
-  */
-  public func bringSubelementViewToFront(subelementView: RemoteElementView) {
-    subelementsView.bringSubviewToFront(subelementView)
-  }
-
-  /**
-  sendSubelementViewToBack:
-
-  :param: subelementView RemoteElementView
-  */
-  public func sendSubelementViewToBack(subelementView: RemoteElementView) {
-    subelementsView.sendSubviewToBack(subelementView)
-  }
-
-  /**
-  insertSubelementView:aboveSubelementView:
-
-  :param: subelementView RemoteElementView
-  :param: siblingSubelementView RemoteElementView
-  */
-  public func insertSubelementView(subelementView: RemoteElementView, aboveSubelementView siblingSubelementView: RemoteElementView) {
-    subelementsView.insertSubview(subelementView, aboveSubview: siblingSubelementView)
-  }
-
-  /**
-  insertSubelementView:atIndex:
-
-  :param: subelementView RemoteElementView
-  :param: index Int
-  */
-  public func insertSubelementView(subelementView: RemoteElementView, atIndex index: Int) {
-    subelementsView.insertSubview(subelementView, atIndex: index)
-  }
-
-  /**
-  insertSubelementView:belowSubelementView:
-
-  :param: subelementView RemoteElementView
-  :param: siblingSubelementView RemoteElementView
-  */
-  public func insertSubelementView(subelementView: RemoteElementView, belowSubelementView siblingSubelementView: RemoteElementView) {
-    subelementsView.insertSubview(subelementView, belowSubview: siblingSubelementView)
-  }
-
-  public var locked: Bool = false {
-    didSet {
-      apply(subelementViews){$0.resizable = !self.locked; $0.moveable = !self.locked}
-    }
-  }
-
-  public var editingMode: RemoteElement.BaseType = .Undefined {
-    didSet {
-      apply(subelementViews){$0.editingMode = self.editingMode}
-    }
-  }
-
-  public var isEditing: Bool { return editingMode != .None }
-
-  public enum EditingState {
-    case None, Selected, Moving, Focus
-    var color: UIColor {
-      switch self {
-        case .None: return UIColor.clearColor()
-        case .Selected: return UIColor.yellowColor()
-        case .Moving: return UIColor.blueColor()
-        case .Focus: return UIColor.redColor()
-      }
-    }
-  }
-
-  public var editingState: EditingState = .None {
-    didSet {
-      overlayView.showAlignmentIndicators = editingState == .Moving
-      overlayView.showContentBoundary = editingState != .None
-      overlayView.refreshBoundary()
-      overlayView.boundaryColor = editingState.color
-      overlayView.layer.setNeedsDisplay()
-      overlayView.layer.displayIfNeeded()
-    }
-  }
-  public var resizable = false
-  public var moveable = false
-  public var shrinkwrap = false
-  public var appliedScale: CGFloat = 1.0
-
-  /** updateSubelementOrderFromView */
-  public func updateSubelementOrderFromView() { model.subelements = subelementViews.map{$0.model} }
-
   /**
   translateSubelements:translation:
 
@@ -386,7 +179,6 @@ public class RemoteElementView: UIView {
                                          metrics: viewFrames)
     if shrinkwrap { model.constraintManager.shrinkwrapSubelementsUsingMetrics(viewFrames) }
 
-//    apply(subelementViews.allObjects as [RemoteElementView]){$0.setNeedsUpdateConstraints()}
     setNeedsUpdateConstraints()
   }
 
@@ -400,7 +192,8 @@ public class RemoteElementView: UIView {
     for subelementView in subelementViews {
       let maxSize = subelementView.maximumSize
       let minSize = subelementView.minimumSize
-      let scaledSize = subelementsView.bounds.size * scale
+//      let scaledSize = subelementsView.bounds.size * scale
+      let scaledSize = bounds.size * scale
       let newSize = maxSize.contains(scaledSize) ? (scaledSize.contains(minSize) ? scaledSize : minSize) : maxSize
       model.constraintManager.resizeElement(subelementView.model,
                                    fromSize: subelementView.bounds.size,
@@ -470,40 +263,221 @@ public class RemoteElementView: UIView {
     setNeedsUpdateConstraints()
   }
 
-  /** attachGestureRecognizers */
-  func attachGestureRecognizers() {}
+  // MARK: - Subelement views
 
-  /** registerForChangeNotification */
-  func registerForChangeNotification() {
-    precondition(model != nil, "why are we calling this without a valid model object?")
-    kvoReceptionists = map(kvoRegistration()) {
-      (key: String, value: (MSKVOReceptionist!) -> Void) -> MSKVOReceptionist in
-        MSKVOReceptionist(observer: self, forObject: self.model, keyPath: key, options: .New,
-                          queue: NSOperationQueue.mainQueue(), handler: value)
+  /**
+  objectIsSubelementKind:
+
+  :param: object AnyObject
+
+  :returns: Bool
+  */
+  public func objectIsSubelementKind(object: AnyObject) -> Bool {
+    switch model.elementType {
+      case .Remote: return object is ButtonGroupView
+      case .ButtonGroup: return object is ButtonView
+      default: return false
     }
   }
 
-  /** initializeIVARs */
-  func initializeIVARs() {
-    clipsToBounds = false
-    opaque = false
-    multipleTouchEnabled = true
-    userInteractionEnabled = true
-    addInternalSubviews()
-    attachGestureRecognizers()
-    initializeViewFromModel()
+  public var viewFrames: [UUIDIndex:CGRect] {
+    var frames = [model.uuidIndex: frame]
+    if parentElementView != nil {
+      frames[parentElementView!.model.uuidIndex] = parentElementView!.frame
+    }
+    for subelementView in subelementViews { frames[subelementView.model.uuidIndex] = subelementView.frame }
+    return frames
   }
 
-  /** initializeViewFromModel */
-  func initializeViewFromModel() {
-    super.backgroundColor = model.backgroundColor
-    refreshBorderPath()
-    for element in model.subelements {
-      if let subelementView = self.dynamicType.viewWithModel(element) {
-        addSubelementView(subelementView)
+  /**
+  subscript:
+
+  :param: key String
+
+  :returns: RemoteElementView?
+  */
+  override public subscript(key: String) -> RemoteElementView? {
+    if model.isIdentifiedByString(key) { return self }
+    else { return subelementViews.filter{$0.model.isIdentifiedByString(key)}.first }
+  }
+
+  /**
+  subscript:
+
+  :param: idx Int
+
+  :returns: RemoteElementView?
+  */
+  public subscript(idx: Int) -> RemoteElementView? {
+    return idx < subviews.count ? subviews[idx] as? RemoteElementView : nil
+//    return idx < subelementsView.subviews.count ? subelementsView.subviews[idx] as? RemoteElementView : nil
+  }
+
+  public var subelementViews: OrderedSet<RemoteElementView> {
+    return OrderedSet(subviews.filter({$0 is RemoteElementView}) as? [RemoteElementView] ?? [])
+//    return OrderedSet(subelementsView.subviews as? [RemoteElementView] ?? [])
+  }
+
+  /**
+  addSubelementViews:
+
+  :param: views NSSet
+  */
+//  public func addSubelementViews(views: Set<RemoteElementView>) {
+//    apply(subelementViews){self.subelementsView.addSubview($0)}
+//  }
+
+  /**
+  addSubelementView:
+
+  :param: view RemoteElementView
+  */
+//  public func addSubelementView(view: RemoteElementView) { subelementsView.addSubview(view) }
+
+  public func removeSubelementViews(views: Set<RemoteElementView>) {
+    apply(subelementViews){$0.removeFromSuperview()}
+  }
+
+  /**
+  removeSubelementView:
+
+  :param: view RemoteElementView
+  */
+//  public func removeSubelementView(view: RemoteElementView) { view.removeFromSuperview() }
+
+  /**
+  bringSubelementViewToFront:
+
+  :param: subelementView RemoteElementView
+  */
+//  public func bringSubelementViewToFront(subelementView: RemoteElementView) {
+//    subelementsView.bringSubviewToFront(subelementView)
+//  }
+
+  /**
+  sendSubelementViewToBack:
+
+  :param: subelementView RemoteElementView
+  */
+//  public func sendSubelementViewToBack(subelementView: RemoteElementView) {
+//    subelementsView.sendSubviewToBack(subelementView)
+//  }
+
+  /**
+  insertSubelementView:aboveSubelementView:
+
+  :param: subelementView RemoteElementView
+  :param: siblingSubelementView RemoteElementView
+  */
+//  public func insertSubelementView(subelementView: RemoteElementView, aboveSubelementView siblingSubelementView: RemoteElementView) {
+//    subelementsView.insertSubview(subelementView, aboveSubview: siblingSubelementView)
+//  }
+
+  /**
+  insertSubelementView:atIndex:
+
+  :param: subelementView RemoteElementView
+  :param: index Int
+  */
+//  public func insertSubelementView(subelementView: RemoteElementView, atIndex index: Int) {
+//    subelementsView.insertSubview(subelementView, atIndex: index)
+//  }
+
+  /**
+  insertSubelementView:belowSubelementView:
+
+  :param: subelementView RemoteElementView
+  :param: siblingSubelementView RemoteElementView
+  */
+//  public func insertSubelementView(subelementView: RemoteElementView, belowSubelementView siblingSubelementView: RemoteElementView) {
+//    subelementsView.insertSubview(subelementView, belowSubview: siblingSubelementView)
+//  }
+
+
+//  private lazy var subelementsView: SubelementsView = SubelementsView(delegate: self)
+//  private lazy var contentView: ContentView = ContentView(delegate: self)
+//  private lazy var backdropView: BackdropView = BackdropView(delegate: self)
+//  private lazy var overlayView: OverlayView = OverlayView(delegate: self)
+
+  // MARK: - Parent view
+
+  public var parentElementView: RemoteElementView? {
+    return superview as? RemoteElementView
+//    return (superview as? SubelementsView)?.superview as? RemoteElementView
+  }
+
+  // MARK: - Size
+
+  override public var bounds: CGRect { didSet { refreshBorderPath() } }
+
+  static var MinimumSize = CGSize(square: 44.0)
+
+  public var minimumSize: CGSize {
+
+    var size = RemoteElementView.MinimumSize
+
+    if subelementViews.count > 0 {
+
+      var xAxisIntervals: [HalfOpenInterval<CGFloat>] = []
+      var yAxisIntervals: [HalfOpenInterval<CGFloat>] = []
+
+      for subelementView in subelementViews {
+        let min = subelementView.minimumSize
+        let origin = subelementView.frame.origin
+        xAxisIntervals.append(HalfOpenInterval(origin.x, (origin.x + min.width)))
+        yAxisIntervals.append(HalfOpenInterval(origin.y, (origin.y + min.height)))
       }
+      xAxisIntervals.sort{$0.start < $1.start}
+      yAxisIntervals.sort{$0.start < $1.start}
+
+      var tmpInterval = xAxisIntervals[0]
+      var tmpAxisIntervals: [HalfOpenInterval<CGFloat>] = []
+      for interval in xAxisIntervals {
+        if overlaps(tmpInterval, interval) {
+          tmpInterval = HalfOpenInterval(tmpInterval.start, interval.end)
+        } else {
+          tmpAxisIntervals.append(tmpInterval)
+          tmpInterval = interval
+        }
+      }
+      tmpAxisIntervals.append(tmpInterval)
+      xAxisIntervals = tmpAxisIntervals
+
+      tmpInterval = yAxisIntervals[0]
+      tmpAxisIntervals.removeAll()
+      for interval in yAxisIntervals {
+        if overlaps(tmpInterval, interval) {
+          tmpInterval = HalfOpenInterval(tmpInterval.start, interval.end)
+        } else {
+          tmpAxisIntervals.append(tmpInterval)
+          tmpInterval = interval
+        }
+      }
+      tmpAxisIntervals.append(tmpInterval)
+      yAxisIntervals = tmpAxisIntervals
+
+      size.width = xAxisIntervals.reduce(0.0) {$0 + ($1.end - $1.start)}
+      size.height = yAxisIntervals.reduce(0.0) {$0 + ($1.end - $1.start)}
+
+      if model.constraintManager.proportionLock { size = bounds.size.aspectMappedToSize(size, binding: false) }
+
     }
+
+    return size
   }
+
+  public var maximumSize: CGSize {
+    var size = superview?.bounds.size ?? CGSize.zeroSize
+    if model.constraintManager.proportionLock { size = bounds.size.aspectMappedToSize(size, binding: true) }
+    return size
+  }
+
+  // MARK: - Model
+
+  /** updateSubelementOrderFromView */
+  public func updateSubelementOrderFromView() { model.subelements = subelementViews.map{$0.model} }
+
+  public var model: RemoteElement!
 
   var kvoReceptionists: [String:MSKVOReceptionist] = [:]
 
@@ -538,6 +512,64 @@ public class RemoteElementView: UIView {
     return registry
   }
 
+  // MARK: - Display
+
+  override public var backgroundColor: UIColor? {
+    get { return super.backgroundColor ?? model?.backgroundColor }
+    set { super.backgroundColor = newValue }
+  }
+
+ /** setNeedsDisplay */
+ override public func setNeedsDisplay() {
+   super.setNeedsDisplay()
+//   backdropView.setNeedsDisplay()
+//   contentView.setNeedsDisplay()
+//   subelementsView.setNeedsDisplay()
+//   overlayView.setNeedsDisplay()
+ }
+
+  public var borderPath: UIBezierPath? {
+    didSet {
+      if borderPath != nil {
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = borderPath!.CGPath
+        layer.mask = shapeLayer
+      } else {
+        layer.mask = nil
+      }
+//      overlayView.refreshBoundary()
+    }
+  }
+
+  public var cornerRadii = CGSize(square: 5.0)
+
+  /** refreshBorderPath */
+  func refreshBorderPath() {
+    switch model.shape {
+      case .Rectangle:
+        borderPath = UIBezierPath(rect: bounds)
+      case .RoundedRectangle:
+        borderPath = UIBezierPath(roundedRect: bounds, byRoundingCorners: .AllCorners, cornerRadii: cornerRadii)
+      case .Oval:
+        borderPath = UIBezierPath(ovalInRect: bounds.rectByInsetting(dx: 2, dy: 2))
+      case .Triangle:
+        //TODO: Refactor DrawingKit code to include a function for creating a triangle path from a rect
+        fallthrough
+      case .Diamond:
+        //TODO: Refactor DrawingKit code to include a function for creating a diamond path from a rect
+        fallthrough
+      default:
+        borderPath = nil
+    }
+  }
+
+  override public func drawRect(rect: CGRect) {
+    let context = UIGraphicsGetCurrentContext()
+    drawBackdropInContext(context, inRect: rect)
+    drawContentInContext(context, inRect: rect)
+    drawOverlayInContext(context, inRect: rect)
+  }
+
   /**
   drawContentInContext:inRect:
 
@@ -553,25 +585,21 @@ public class RemoteElementView: UIView {
   :param: rect CGRect
   */
   func drawBackdropInContext(ctx: CGContextRef, inRect rect: CGRect) {
-    if model.role == .Toolbar { return }
+    if model.role & .Toolbar != nil { return }
+    UIGraphicsPushContext(ctx)
+    let color = UIColor(name: "dark-blue") ?? model.backgroundColor ?? backgroundColor ?? UI.DrawingKit.buttonBaseColor
     switch model.shape {
-      case .RoundedRectangle:
-        UI.DrawingKit.drawRoundishButtonBase(frame: rect,
-                                             color: model.backgroundColor ?? UI.DrawingKit.buttonBaseColor,
-                                             radius: cornerRadii.width)
-      case .Rectangle:
-        UI.DrawingKit.drawRectangularButtonBase(frame: rect, color: model.backgroundColor ?? UI.DrawingKit.buttonBaseColor)
-      case .Triangle:
-        UI.DrawingKit.drawTriangleButtonBase(frame: rect, color: model.backgroundColor ?? UI.DrawingKit.buttonBaseColor)
-      case .Diamond:
-        UI.DrawingKit.drawDiamondButtonBase(frame: rect, color: model.backgroundColor ?? UI.DrawingKit.buttonBaseColor)
-      default:
-        if let path = borderPath {
-          UIGraphicsPushContext(ctx)
-          backgroundColor?.setFill()
-          path.fill()
-          UIGraphicsPopContext()
-        }
+      case .RoundedRectangle: UI.DrawingKit.drawRoundishButtonBase(frame: rect, color: color, radius: cornerRadii.width)
+      case .Rectangle: UI.DrawingKit.drawRectangularButtonBase(frame: rect, color: color)
+      case .Triangle: UI.DrawingKit.drawTriangleButtonBase(frame: rect, color: color)
+      case .Diamond: UI.DrawingKit.drawDiamondButtonBase(frame: rect, color: color)
+      default: break
+//        if let path = borderPath {
+//          UIGraphicsPushContext(ctx)
+//          backgroundColor?.setFill()
+//          path.fill()
+//          UIGraphicsPopContext()
+//        }
     }
 
     // Draw background image
@@ -579,6 +607,7 @@ public class RemoteElementView: UIView {
       if rect.size <= image.size { image.drawInRect(rect) }
       else { image.drawAsPatternInRect(rect) }
     }
+    UIGraphicsPopContext()
   }
 
   /**
@@ -608,115 +637,111 @@ public class RemoteElementView: UIView {
     UIGraphicsPopContext()
   }
 
-  /** refreshBorderPath */
-  func refreshBorderPath() {
-    switch model.shape {
-      case .Rectangle:
-        borderPath = UIBezierPath(rect: bounds)
-      case .RoundedRectangle:
-        borderPath = UIBezierPath(roundedRect: bounds, byRoundingCorners: .AllCorners, cornerRadii: cornerRadii)
-      case .Oval:
-        borderPath = UIBezierPath(ovalInRect: bounds.rectByInsetting(dx: 2, dy: 2))
-      case .Triangle:
-        //TODO: Refactor DrawingKit code to include a function for creating a triangle path from a rect
-        fallthrough
-      case .Diamond:
-        //TODO: Refactor DrawingKit code to include a function for creating a diamond path from a rect
-        fallthrough
-      default:
-        borderPath = nil
-    }
-  }
-
-  public var borderPath: UIBezierPath? {
-    didSet {
-      if borderPath != nil {
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.path = borderPath!.CGPath
-        layer.mask = shapeLayer
-      } else {
-        layer.mask = nil
-      }
-      overlayView.refreshBoundary()
-    }
-  }
-
-  public var cornerRadii = CGSize(square: 5.0)
-
-  /** addInternalSubviews */
-  func addInternalSubviews() {
-    addSubview(backdropView)
-    addSubview(contentView)
-    addSubview(subelementsView)
-    addSubview(overlayView)
-  }
-
   /**
   addViewToContent:
 
   :param: view UIView
   */
-  public func addViewToContent(view: UIView) { contentView.addSubview(view) }
+//  public func addViewToContent(view: UIView) { contentView.addSubview(view) }
 
   /**
   addLayerToContent:
 
   :param: layer CALayer
   */
-  public func addLayerToContent(layer: CALayer) { contentView.layer.addSublayer(layer) }
+//  public func addLayerToContent(layer: CALayer) { contentView.layer.addSublayer(layer) }
 
   /**
   addViewToOverlay:
 
   :param: view UIView
   */
-  public func addViewToOverlay(view: UIView) { overlayView.addSubview(view) }
+//  public func addViewToOverlay(view: UIView) { overlayView.addSubview(view) }
 
   /**
   addLayerToOverlay:
 
   :param: layer CALayer
   */
-  public func addLayerToOverlay(layer: CALayer) { overlayView.layer.addSublayer(layer) }
+//  public func addLayerToOverlay(layer: CALayer) { overlayView.layer.addSublayer(layer) }
 
   /**
   addViewToBackdrop:
 
   :param: view UIView
   */
-  public func addViewToBackdrop(view: UIView) { backdropView.addSubview(view) }
+//  public func addViewToBackdrop(view: UIView) { backdropView.addSubview(view) }
 
   /**
   addLayerToBackdrop:
 
   :param: layer CALayer
   */
-  public func addLayerToBackdrop(layer: CALayer) { backdropView.layer.addSublayer(layer) }
+//  public func addLayerToBackdrop(layer: CALayer) { backdropView.layer.addSublayer(layer) }
 
-  public var contentInteractionEnabled: Bool {
-    get { return contentView.userInteractionEnabled }
-    set { contentView.userInteractionEnabled = newValue }
+//  public var contentClipsToBounds: Bool {
+//    get { return contentView.clipsToBounds }
+//    set { contentView.clipsToBounds = newValue }
+//  }
+
+//  public var overlayClipsToBounds: Bool {
+//    get { return overlayView.clipsToBounds }
+//    set { overlayView.clipsToBounds = newValue }
+//  }
+
+  // MARK: - Editing
+
+  public var locked: Bool = false { didSet { apply(subelementViews){$0.resizable = !self.locked; $0.moveable = !self.locked } } }
+
+  public typealias EditingMode = RemoteElement.BaseType
+  public var editingMode: EditingMode = .Undefined { didSet { apply(subelementViews) {$0.editingMode = self.editingMode} } }
+
+  public var isEditing: Bool { return editingMode != .None }
+
+  public enum EditingState {
+    case None, Selected, Moving, Focus
+    var color: UIColor {
+      switch self {
+        case .None: return UIColor.clearColor()
+        case .Selected: return UIColor.yellowColor()
+        case .Moving: return UIColor.blueColor()
+        case .Focus: return UIColor.redColor()
+      }
+    }
   }
 
-  public var subelementInteractionEnabled: Bool {
-    get { return subelementsView.userInteractionEnabled }
-    set { subelementsView.userInteractionEnabled = newValue }
+  public var editingState: EditingState = .None {
+    didSet {
+//      overlayView.showAlignmentIndicators = editingState == .Moving
+//      overlayView.showContentBoundary = editingState != .None
+//      overlayView.refreshBoundary()
+//      overlayView.boundaryColor = editingState.color
+//      overlayView.layer.setNeedsDisplay()
+//      overlayView.layer.displayIfNeeded()
+    }
   }
+  public var resizable = false
+  public var moveable = false
+  public var shrinkwrap = false
+  public var appliedScale: CGFloat = 1.0
 
-  public var contentClipsToBounds: Bool {
-    get { return contentView.clipsToBounds }
-    set { contentView.clipsToBounds = newValue }
-  }
+//  public var contentInteractionEnabled: Bool {
+//    get { return contentView.userInteractionEnabled }
+//    set { contentView.userInteractionEnabled = newValue }
+//  }
 
-  public var overlayClipsToBounds: Bool {
-    get { return overlayView.clipsToBounds }
-    set { overlayView.clipsToBounds = newValue }
-  }
+//  public var subelementInteractionEnabled: Bool {
+//    get { return subelementsView.userInteractionEnabled }
+//    set { subelementsView.userInteractionEnabled = newValue }
+//  }
+
+  // MARK: - Descriptions
 
   public var modeledConstraintsDescription: String { return "\n".join(modeledConstraints.map{$0.description}) }
 
 }
 
+/*
 extension RemoteElementView {
   private class InternalView: UIView {
 
@@ -1163,3 +1188,4 @@ extension RemoteElementView {
 
   }
 }
+*/
