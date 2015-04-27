@@ -587,12 +587,12 @@ public class RemoteElementView: UIView {
   func drawBackdropInContext(ctx: CGContextRef, inRect rect: CGRect) {
     if model.role & .Toolbar != nil { return }
     UIGraphicsPushContext(ctx)
-    let color = UIColor(name: "dark-blue") ?? model.backgroundColor ?? backgroundColor ?? UI.DrawingKit.buttonBaseColor
+    let color = UIColor(name: "dark-blue") ?? model.backgroundColor ?? backgroundColor ?? UIColor.darkGrayColor()
     switch model.shape {
-      case .RoundedRectangle: UI.DrawingKit.drawRoundishButtonBase(frame: rect, color: color, radius: cornerRadii.width)
-      case .Rectangle: UI.DrawingKit.drawRectangularButtonBase(frame: rect, color: color)
-      case .Triangle: UI.DrawingKit.drawTriangleButtonBase(frame: rect, color: color)
-      case .Diamond: UI.DrawingKit.drawDiamondButtonBase(frame: rect, color: color)
+    case .RoundedRectangle: UI.DrawingKit.drawRoundishButtonBase(frame: rect, color: color, contentColor: UIColor.whiteColor(), radius: cornerRadii.width)
+      case .Rectangle: UI.DrawingKit.drawRectangularButtonBase(frame: rect, color: color, contentColor: UIColor.whiteColor())
+      case .Triangle: UI.DrawingKit.drawTriangleButtonBase(frame: rect, color: color, contentColor: UIColor.whiteColor())
+      case .Diamond: UI.DrawingKit.drawDiamondButtonBase(frame: rect, color: color, contentColor: UIColor.whiteColor())
       default: break
 //        if let path = borderPath {
 //          UIGraphicsPushContext(ctx)

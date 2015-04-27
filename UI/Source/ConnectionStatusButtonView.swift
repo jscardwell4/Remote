@@ -41,7 +41,7 @@ public final class ConnectionStatusButtonView: ButtonView {
   override func drawContentInContext(ctx: CGContextRef, inRect rect: CGRect) {
     let iconColor: UIColor
     if let color = backgroundColor where color != UIColor.clearColor() { iconColor = color }
-    else { iconColor = UI.DrawingKit.buttonStrokeColor }
+    else { iconColor = UIColor.darkGrayColor() }
     UI.DrawingKit.drawWifiStatus(iconColor: iconColor, connected: connected, containingFrame: rect)
   }
 }

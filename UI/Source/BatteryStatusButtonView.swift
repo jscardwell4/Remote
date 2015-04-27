@@ -101,7 +101,7 @@ public final class BatteryStatusButtonView: ButtonView {
 
     let baseColor: UIColor
     if let color = backgroundColor where color != UIColor.clearColor() { baseColor = color }
-    else { baseColor = UI.DrawingKit.buttonBaseColor }
+    else { baseColor = UIColor.darkGrayColor() }
 
     let hasPower = [.Charging, .Full] ∋ batteryState
 
