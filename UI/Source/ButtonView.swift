@@ -282,7 +282,8 @@ public class ButtonView: RemoteElementView {
 	:param: rect CGRect
 	*/
 	override func drawContentInContext(ctx: CGContextRef, inRect rect: CGRect) {
-    UI.DrawingKit.drawButton(rect: rect, color: UI.DrawingKit.defaultButtonColor, contentColor: UI.DrawingKit.defaultContentColor, image: button.icon?.colorImage, radius: cornerRadii.width, text: button.title?.string, fontAttributes: nil, applyGloss: true, shape: button.shape, highlighted: button.highlighted)
+    UI.DrawingKit.drawButtonWithShape(button.shape, inRect: rect, image: button.icon?.colorImage, text: button.title?.string, highlighted: button.highlighted)
+
 
 /*
     super.drawContentInContext(ctx, inRect: rect)

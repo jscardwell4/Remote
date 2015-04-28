@@ -47,4 +47,8 @@ extension NSShadow {
   public func shadowWithColor(color: AnyObject!) -> NSShadow {
     return NSShadow(color: color, offset: shadowOffset, blurRadius: shadowBlurRadius)
   }
+
+  public func shadowWithAlpha(alpha: CGFloat) -> NSShadow {
+    return NSShadow(color: color.colorWithAlphaComponent(alpha), offset: shadowOffset, blurRadius: shadowBlurRadius)
+  }
 }

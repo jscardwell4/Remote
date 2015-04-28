@@ -588,18 +588,7 @@ public class RemoteElementView: UIView {
     if model.role & .Toolbar != nil { return }
     UIGraphicsPushContext(ctx)
     let color = UIColor(name: "dark-blue") ?? model.backgroundColor ?? backgroundColor ?? UIColor.darkGrayColor()
-    UI.DrawingKit.drawButton(
-      rect: rect,
-      color: UI.DrawingKit.defaultButtonColor,
-      contentColor: UI.DrawingKit.defaultContentColor,
-      image: nil,
-      radius: cornerRadii.width,
-      text: nil,
-      fontAttributes: nil,
-      applyGloss: false,
-      shape: model.shape,
-      highlighted: false
-    )
+    UI.DrawingKit.drawButtonWithShape(model.shape, inRect: rect, withRadii: cornerRadii, applyGloss: false, highlighted: false)
 
     // Draw background image
     if let image = model.backgroundImage?.image {
