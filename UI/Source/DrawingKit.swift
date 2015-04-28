@@ -18,7 +18,7 @@ public class DrawingKit : NSObject {
 
     private struct Cache {
         static var verticalGlossStop: UIColor = UIColor(red: 1.000, green: 1.000, blue: 1.000, alpha: 0.000)
-        static var verticalGloss: CGGradient = CGGradientCreateWithColors(CGColorSpaceCreateDeviceRGB(), [DrawingKit.verticalGlossStop.CGColor, DrawingKit.verticalGlossStop.blendedColorWithFraction(0.5, ofColor: UIColor.whiteColor()).CGColor, UIColor.whiteColor().CGColor], [0, 1, 1])
+        static var verticalGloss: CGGradient = CGGradientCreateWithColors(CGColorSpaceCreateDeviceRGB(), [DrawingKit.verticalGlossStop.CGColor, DrawingKit.verticalGlossStop.blendedColorWithFraction(0.5, ofColor: UIColor.whiteColor()).CGColor, UIColor.whiteColor().CGColor], [0, 0.4, 1])
         static var innerShadow: NSShadow = NSShadow(color: UIColor.whiteColor(), offset: CGSizeMake(0.1, -0.1), blurRadius: 2)
         static var outerShadow: NSShadow = NSShadow(color: UIColor.blackColor(), offset: CGSizeMake(0.1, -0.1), blurRadius: 2)
         static var strokeShadow: NSShadow = NSShadow(color: UIColor.lightGrayColor(), offset: CGSizeMake(0.1, -0.1), blurRadius: 1)
@@ -48,13 +48,16 @@ public class DrawingKit : NSObject {
 
     //// Drawing Methods
 
-    public class func drawRoundishButtonBase(#frame: CGRect, color: UIColor, contentColor: UIColor, radius: CGFloat) {
+    public class func drawRoundedButtonBase(#color: UIColor, contentColor: UIColor, radius: CGFloat, rect: CGRect) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
 
 
-        //// Subframes
-        let lightBase: CGRect = CGRectMake(frame.minX + 2, frame.minY + 2, frame.width - 4, frame.height - 4)
+        //// Variable Declarations
+        let contentAndBaseRect = CGRectMake(4, 4, rect.size.width - 8, rect.size.height - 8)
+
+        //// Frames
+        let frame = CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height)
 
 
         //// darkOverlayRectangle Drawing
@@ -98,18 +101,17 @@ public class DrawingKit : NSObject {
         CGContextBeginTransparencyLayer(context, nil)
 
         //// Clip lightBaseClip
-        let lightBaseClipPath = UIBezierPath(roundedRect: CGRectMake(lightBase.minX + floor(lightBase.width * 0.00000 + 0.5), lightBase.minY + floor(lightBase.height * 0.00000 + 0.5), floor(lightBase.width * 1.00000 + 0.5) - floor(lightBase.width * 0.00000 + 0.5), floor(lightBase.height * 1.00000 + 0.5) - floor(lightBase.height * 0.00000 + 0.5)), cornerRadius: radius)
+        let lightBaseClipPath = UIBezierPath(roundedRect: contentAndBaseRect, cornerRadius: radius)
         lightBaseClipPath.addClip()
 
 
         //// lightBaseFillRect Drawing
-        let lightBaseFillRectRect = CGRectMake(lightBase.minX + floor(lightBase.width * -0.02041 + 0.5), lightBase.minY + floor(lightBase.height * -0.03061 + 0.5), floor(lightBase.width * 1.02041 + 0.5) - floor(lightBase.width * -0.02041 + 0.5), floor(lightBase.height * 1.01020 + 0.5) - floor(lightBase.height * -0.03061 + 0.5))
-        let lightBaseFillRectPath = UIBezierPath(rect: lightBaseFillRectRect)
+        let lightBaseFillRectPath = UIBezierPath(rect: CGRectMake(0, 0, 200, 200))
         CGContextSaveGState(context)
         lightBaseFillRectPath.addClip()
         CGContextDrawLinearGradient(context, DrawingKit.verticalGloss,
-            CGPointMake(lightBaseFillRectRect.midX + 0 * lightBaseFillRectRect.width / 204, lightBaseFillRectRect.midY + 102 * lightBaseFillRectRect.height / 204),
-            CGPointMake(lightBaseFillRectRect.midX + 0 * lightBaseFillRectRect.width / 204, lightBaseFillRectRect.midY + 0 * lightBaseFillRectRect.height / 204),
+            CGPointMake(100, 200),
+            CGPointMake(100, 100),
             UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation))
         CGContextRestoreGState(context)
 
@@ -149,13 +151,16 @@ public class DrawingKit : NSObject {
         CGContextRestoreGState(context)
     }
 
-    public class func drawRectangularButtonBase(#frame: CGRect, color: UIColor, contentColor: UIColor) {
+    public class func drawRectangularButtonBase(#color: UIColor, contentColor: UIColor, rect: CGRect) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
 
 
-        //// Subframes
-        let lightBase: CGRect = CGRectMake(frame.minX + 2, frame.minY + 2, frame.width - 4, frame.height - 4)
+        //// Variable Declarations
+        let contentAndBaseRect = CGRectMake(4, 4, rect.size.width - 8, rect.size.height - 8)
+
+        //// Frames
+        let frame = CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height)
 
 
         //// darkOverlayRect Drawing
@@ -199,18 +204,17 @@ public class DrawingKit : NSObject {
         CGContextBeginTransparencyLayer(context, nil)
 
         //// Clip lightBaseClipRect
-        let lightBaseClipRectPath = UIBezierPath(rect: CGRectMake(lightBase.minX + floor(lightBase.width * 0.00000 + 0.5), lightBase.minY + floor(lightBase.height * 0.00000 + 0.5), floor(lightBase.width * 1.00000 + 0.5) - floor(lightBase.width * 0.00000 + 0.5), floor(lightBase.height * 1.00000 + 0.5) - floor(lightBase.height * 0.00000 + 0.5)))
+        let lightBaseClipRectPath = UIBezierPath(rect: contentAndBaseRect)
         lightBaseClipRectPath.addClip()
 
 
         //// lightBaseFillRect Drawing
-        let lightBaseFillRectRect = CGRectMake(lightBase.minX + floor(lightBase.width * -0.01020 + 0.5), lightBase.minY + floor(lightBase.height * -0.02806) + 0.5, floor(lightBase.width * 1.03061 + 0.5) - floor(lightBase.width * -0.01020 + 0.5), floor(lightBase.height * 1.01786) - floor(lightBase.height * -0.02806))
-        let lightBaseFillRectPath = UIBezierPath(rect: lightBaseFillRectRect)
+        let lightBaseFillRectPath = UIBezierPath(rect: CGRectMake(0, -8, 200, 200))
         CGContextSaveGState(context)
         lightBaseFillRectPath.addClip()
         CGContextDrawLinearGradient(context, DrawingKit.verticalGloss,
-            CGPointMake(lightBaseFillRectRect.midX + 0 * lightBaseFillRectRect.width / 204, lightBaseFillRectRect.midY + 102.5 * lightBaseFillRectRect.height / 205),
-            CGPointMake(lightBaseFillRectRect.midX + 0 * lightBaseFillRectRect.width / 204, lightBaseFillRectRect.midY + 0 * lightBaseFillRectRect.height / 205),
+            CGPointMake(100, 192),
+            CGPointMake(100, 92),
             UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation))
         CGContextRestoreGState(context)
 
@@ -219,13 +223,16 @@ public class DrawingKit : NSObject {
         CGContextRestoreGState(context)
     }
 
-    public class func drawOvalButtonBase(#frame: CGRect, color: UIColor, contentColor: UIColor) {
+    public class func drawOvalButtonBase(#color: UIColor, contentColor: UIColor, rect: CGRect) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
 
 
-        //// Subframes
-        let lightBase: CGRect = CGRectMake(frame.minX + 2, frame.minY + 2, frame.width - 4, frame.height - 4)
+        //// Variable Declarations
+        let contentAndBaseRect = CGRectMake(4, 4, rect.size.width - 8, rect.size.height - 8)
+
+        //// Frames
+        let frame = CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height)
 
 
         //// darkOverlayOval Drawing
@@ -269,18 +276,17 @@ public class DrawingKit : NSObject {
         CGContextBeginTransparencyLayer(context, nil)
 
         //// Clip lightBaseClipRect
-        var lightBaseClipRectPath = UIBezierPath(ovalInRect: CGRectMake(lightBase.minX + floor(lightBase.width * 0.00000 + 0.5), lightBase.minY + floor(lightBase.height * 0.00000 + 0.5), floor(lightBase.width * 1.00000 + 0.5) - floor(lightBase.width * 0.00000 + 0.5), floor(lightBase.height * 1.00000 + 0.5) - floor(lightBase.height * 0.00000 + 0.5)))
+        var lightBaseClipRectPath = UIBezierPath(ovalInRect: contentAndBaseRect)
         lightBaseClipRectPath.addClip()
 
 
         //// lightBaseFillRect Drawing
-        let lightBaseFillRectRect = CGRectMake(lightBase.minX + floor(lightBase.width * -0.02041 + 0.5), lightBase.minY + floor(lightBase.height * -0.02041 + 0.5), floor(lightBase.width * 1.02041 + 0.5) - floor(lightBase.width * -0.02041 + 0.5), floor(lightBase.height * 1.02041 + 0.5) - floor(lightBase.height * -0.02041 + 0.5))
-        let lightBaseFillRectPath = UIBezierPath(rect: lightBaseFillRectRect)
+        let lightBaseFillRectPath = UIBezierPath(rect: CGRectMake(0, 0, 200, 200))
         CGContextSaveGState(context)
         lightBaseFillRectPath.addClip()
         CGContextDrawLinearGradient(context, DrawingKit.verticalGloss,
-            CGPointMake(lightBaseFillRectRect.midX + 0 * lightBaseFillRectRect.width / 204, lightBaseFillRectRect.midY + 102 * lightBaseFillRectRect.height / 204),
-            CGPointMake(lightBaseFillRectRect.midX + 0 * lightBaseFillRectRect.width / 204, lightBaseFillRectRect.midY + 0 * lightBaseFillRectRect.height / 204),
+            CGPointMake(100, 200),
+            CGPointMake(100, 100),
             UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation))
         CGContextRestoreGState(context)
 
@@ -289,13 +295,15 @@ public class DrawingKit : NSObject {
         CGContextRestoreGState(context)
     }
 
-    public class func drawDiamondButtonBase(#frame: CGRect, color: UIColor, contentColor: UIColor) {
+    public class func drawDiamondButtonBase(#color: UIColor, contentColor: UIColor, rect: CGRect) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
 
+        //// Frames
+        let frame = CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height)
 
         //// Subframes
-        let lightBase: CGRect = CGRectMake(frame.minX + 2, frame.minY + 2, frame.width - 4, frame.height - 4)
+        let lightBase: CGRect = CGRectMake(frame.minX + 4, frame.minY + 4, frame.width - 8, frame.height - 8)
 
 
         //// darkOverlayDiamond Drawing
@@ -356,13 +364,13 @@ public class DrawingKit : NSObject {
 
 
         //// lightBaseFillRect Drawing
-        let lightBaseFillRectRect = CGRectMake(lightBase.minX + floor(lightBase.width * -0.02041 + 0.5), lightBase.minY + floor(lightBase.height * -0.02041 + 0.5), floor(lightBase.width * 1.02041 + 0.5) - floor(lightBase.width * -0.02041 + 0.5), floor(lightBase.height * 1.02041 + 0.5) - floor(lightBase.height * -0.02041 + 0.5))
+        let lightBaseFillRectRect = CGRectMake(lightBase.minX + floor(lightBase.width * -0.02083 + 0.5), lightBase.minY + floor(lightBase.height * -0.02083 + 0.5), floor(lightBase.width * 1.02083 + 0.5) - floor(lightBase.width * -0.02083 + 0.5), floor(lightBase.height * 1.02083 + 0.5) - floor(lightBase.height * -0.02083 + 0.5))
         let lightBaseFillRectPath = UIBezierPath(rect: lightBaseFillRectRect)
         CGContextSaveGState(context)
         lightBaseFillRectPath.addClip()
         CGContextDrawLinearGradient(context, DrawingKit.verticalGloss,
-            CGPointMake(lightBaseFillRectRect.midX + 0 * lightBaseFillRectRect.width / 204, lightBaseFillRectRect.midY + 102 * lightBaseFillRectRect.height / 204),
-            CGPointMake(lightBaseFillRectRect.midX + 0 * lightBaseFillRectRect.width / 204, lightBaseFillRectRect.midY + 0 * lightBaseFillRectRect.height / 204),
+            CGPointMake(lightBaseFillRectRect.midX + 0 * lightBaseFillRectRect.width / 200, lightBaseFillRectRect.midY + 100 * lightBaseFillRectRect.height / 200),
+            CGPointMake(lightBaseFillRectRect.midX + 0 * lightBaseFillRectRect.width / 200, lightBaseFillRectRect.midY + 0 * lightBaseFillRectRect.height / 200),
             UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation))
         CGContextRestoreGState(context)
 
@@ -371,10 +379,12 @@ public class DrawingKit : NSObject {
         CGContextRestoreGState(context)
     }
 
-    public class func drawTriangleButtonBase(#frame: CGRect, color: UIColor, contentColor: UIColor) {
+    public class func drawTriangleButtonBase(#color: UIColor, contentColor: UIColor, rect: CGRect) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
 
+        //// Frames
+        let frame = CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height)
 
         //// Subframes
         let overlayGroup: CGRect = CGRectMake(frame.minX + 7.2, frame.minY + 9.5, frame.width - 13.4, frame.height - 25)
@@ -446,13 +456,13 @@ public class DrawingKit : NSObject {
 
 
         //// lightBaseFillRect Drawing
-        let lightBaseFillRectRect = CGRectMake(lightBase.minX + floor(lightBase.width * -0.08145 - 0.3) + 0.8, lightBase.minY + floor(lightBase.height * -0.13143 + 0.5), floor(lightBase.width * 1.07073 - 0.3) - floor(lightBase.width * -0.08145 - 0.3), floor(lightBase.height * 1.20000 + 0.5) - floor(lightBase.height * -0.13143 + 0.5))
+        let lightBaseFillRectRect = CGRectMake(lightBase.minX + floor(lightBase.width * -0.03858 - 0.3) + 0.8, lightBase.minY + floor(lightBase.height * -0.05429) + 0.5, floor(lightBase.width * 1.03322 - 0.3) - floor(lightBase.width * -0.03858 - 0.3), floor(lightBase.height * 1.08857) - floor(lightBase.height * -0.05429))
         let lightBaseFillRectPath = UIBezierPath(rect: lightBaseFillRectRect)
         CGContextSaveGState(context)
         lightBaseFillRectPath.addClip()
         CGContextDrawLinearGradient(context, DrawingKit.verticalGloss,
-            CGPointMake(lightBaseFillRectRect.midX + 0 * lightBaseFillRectRect.width / 215, lightBaseFillRectRect.midY + 116.5 * lightBaseFillRectRect.height / 233),
-            CGPointMake(lightBaseFillRectRect.midX + 0 * lightBaseFillRectRect.width / 215, lightBaseFillRectRect.midY + 0 * lightBaseFillRectRect.height / 233),
+            CGPointMake(lightBaseFillRectRect.midX + 0 * lightBaseFillRectRect.width / 200, lightBaseFillRectRect.midY + 100 * lightBaseFillRectRect.height / 200),
+            CGPointMake(lightBaseFillRectRect.midX + 0 * lightBaseFillRectRect.width / 200, lightBaseFillRectRect.midY + 0 * lightBaseFillRectRect.height / 200),
             UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation))
         CGContextRestoreGState(context)
 
@@ -873,12 +883,106 @@ public class DrawingKit : NSObject {
         shapePath.fill()
     }
 
-    public class func drawRoundishPath(#frame: CGRect, contentColor: UIColor, radius: CGFloat) {
+    public class func drawRoundedRectanglePath(#frame: CGRect, contentColor: UIColor, radius: CGFloat) {
 
         //// Shape Drawing
         let shapePath = UIBezierPath(roundedRect: CGRectMake(frame.minX, frame.minY, frame.width, frame.height), cornerRadius: radius)
         contentColor.setFill()
         shapePath.fill()
+    }
+
+    public class func drawRectangleGloss(#frame: CGRect) {
+        //// General Declarations
+        let context = UIGraphicsGetCurrentContext()
+
+        //// Rectangle Drawing
+        let rectangleRect = CGRectMake(frame.minX, frame.minY, frame.width, frame.height)
+        let rectanglePath = UIBezierPath(rect: rectangleRect)
+        CGContextSaveGState(context)
+        rectanglePath.addClip()
+        CGContextDrawLinearGradient(context, DrawingKit.verticalGloss,
+            CGPointMake(rectangleRect.midX + 0 * rectangleRect.width / 200, rectangleRect.midY + 100 * rectangleRect.height / 200),
+            CGPointMake(rectangleRect.midX + 0 * rectangleRect.width / 200, rectangleRect.midY + 0 * rectangleRect.height / 200),
+            UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation))
+        CGContextRestoreGState(context)
+    }
+
+    public class func drawRoundedGloss(#frame: CGRect, radius: CGFloat) {
+        //// General Declarations
+        let context = UIGraphicsGetCurrentContext()
+
+        //// Rounded Drawing
+        let roundedRect = CGRectMake(frame.minX, frame.minY, frame.width, frame.height)
+        let roundedPath = UIBezierPath(roundedRect: roundedRect, cornerRadius: radius)
+        CGContextSaveGState(context)
+        roundedPath.addClip()
+        CGContextDrawLinearGradient(context, DrawingKit.verticalGloss,
+            CGPointMake(roundedRect.midX + 0 * roundedRect.width / 200, roundedRect.midY + 100 * roundedRect.height / 200),
+            CGPointMake(roundedRect.midX + 0 * roundedRect.width / 200, roundedRect.midY + 0 * roundedRect.height / 200),
+            UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation))
+        CGContextRestoreGState(context)
+    }
+
+    public class func drawOvalGloss(#frame: CGRect) {
+        //// General Declarations
+        let context = UIGraphicsGetCurrentContext()
+
+        //// Oval Drawing
+        let ovalRect = CGRectMake(frame.minX, frame.minY, frame.width, frame.height)
+        var ovalPath = UIBezierPath(ovalInRect: ovalRect)
+        CGContextSaveGState(context)
+        ovalPath.addClip()
+        CGContextDrawLinearGradient(context, DrawingKit.verticalGloss,
+            CGPointMake(ovalRect.midX + 0 * ovalRect.width / 200, ovalRect.midY + 100 * ovalRect.height / 200),
+            CGPointMake(ovalRect.midX + 0 * ovalRect.width / 200, ovalRect.midY + 0 * ovalRect.height / 200),
+            UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation))
+        CGContextRestoreGState(context)
+    }
+
+    public class func drawDiamondGloss(#frame: CGRect) {
+        //// General Declarations
+        let context = UIGraphicsGetCurrentContext()
+
+        //// Diamond Drawing
+        var diamondPath = UIBezierPath()
+        diamondPath.moveToPoint(CGPointMake(frame.minX + 0.00000 * frame.width, frame.minY + 0.50000 * frame.height))
+        diamondPath.addLineToPoint(CGPointMake(frame.minX + 0.50000 * frame.width, frame.minY + 0.00000 * frame.height))
+        diamondPath.addLineToPoint(CGPointMake(frame.minX + 1.00000 * frame.width, frame.minY + 0.50000 * frame.height))
+        diamondPath.addLineToPoint(CGPointMake(frame.minX + 0.50000 * frame.width, frame.minY + 1.00000 * frame.height))
+        diamondPath.addLineToPoint(CGPointMake(frame.minX + 0.00000 * frame.width, frame.minY + 0.50000 * frame.height))
+        diamondPath.closePath()
+        CGContextSaveGState(context)
+        diamondPath.addClip()
+        let diamondBounds: CGRect = CGPathGetPathBoundingBox(diamondPath.CGPath)
+        CGContextDrawLinearGradient(context, DrawingKit.verticalGloss,
+            CGPointMake(diamondBounds.midX + 0 * diamondBounds.width / 200, diamondBounds.midY + 100 * diamondBounds.height / 200),
+            CGPointMake(diamondBounds.midX + 0 * diamondBounds.width / 200, diamondBounds.midY + 0 * diamondBounds.height / 200),
+            UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation))
+        CGContextRestoreGState(context)
+    }
+
+    public class func drawTriangleGloss(#frame: CGRect) {
+        //// General Declarations
+        let context = UIGraphicsGetCurrentContext()
+
+        //// Triangle Drawing
+        var trianglePath = UIBezierPath()
+        trianglePath.moveToPoint(CGPointMake(frame.minX + 0.50000 * frame.width, frame.minY + 0.00000 * frame.height))
+        trianglePath.addLineToPoint(CGPointMake(frame.minX + 0.75000 * frame.width, frame.minY + 0.50000 * frame.height))
+        trianglePath.addLineToPoint(CGPointMake(frame.minX + 1.00000 * frame.width, frame.minY + 1.00000 * frame.height))
+        trianglePath.addLineToPoint(CGPointMake(frame.minX + 0.50000 * frame.width, frame.minY + 1.00000 * frame.height))
+        trianglePath.addLineToPoint(CGPointMake(frame.minX + -0.00000 * frame.width, frame.minY + 1.00000 * frame.height))
+        trianglePath.addLineToPoint(CGPointMake(frame.minX + 0.25000 * frame.width, frame.minY + 0.50000 * frame.height))
+        trianglePath.addLineToPoint(CGPointMake(frame.minX + 0.50000 * frame.width, frame.minY + 0.00000 * frame.height))
+        trianglePath.closePath()
+        CGContextSaveGState(context)
+        trianglePath.addClip()
+        let triangleBounds: CGRect = CGPathGetPathBoundingBox(trianglePath.CGPath)
+        CGContextDrawLinearGradient(context, DrawingKit.verticalGloss,
+            CGPointMake(triangleBounds.midX + 0 * triangleBounds.width / 200, triangleBounds.midY + 100 * triangleBounds.height / 200),
+            CGPointMake(triangleBounds.midX + -0.21 * triangleBounds.width / 200, triangleBounds.midY + 50.3 * triangleBounds.height / 200),
+            UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation))
+        CGContextRestoreGState(context)
     }
 
 }

@@ -82,6 +82,7 @@
 		C22734521AE15CEE00641CC3 /* TitleAttributes_Default_Icon.json in Resources */ = {isa = PBXBuildFile; fileRef = C227343D1AE15CEE00641CC3 /* TitleAttributes_Default_Icon.json */; };
 		C22734531AE15CEE00641CC3 /* TitleAttributes_Default_Text.json in Resources */ = {isa = PBXBuildFile; fileRef = C227343E1AE15CEE00641CC3 /* TitleAttributes_Default_Text.json */; };
 		C22734541AE15CEE00641CC3 /* TitleEdgeInsets_Default.json in Resources */ = {isa = PBXBuildFile; fileRef = C227343F1AE15CEE00641CC3 /* TitleEdgeInsets_Default.json */; };
+		C2304E0A1AEECE1C0090D889 /* LayerProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2304E091AEECE1C0090D889 /* LayerProxy.swift */; };
 		C2358F1B19C78D6D00920F8D /* MoonKit.h in Headers */ = {isa = PBXBuildFile; fileRef = C2358F1A19C78D6D00920F8D /* MoonKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358F3219C78E0C00920F8D /* CALayer+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE887A18138CF700555D63 /* CALayer+MSKitAdditions.m */; };
 		C2358F3319C78E0C00920F8D /* NSArray+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE887E18138CF700555D63 /* NSArray+MSKitAdditions.m */; };
@@ -385,6 +386,7 @@
 		C227343E1AE15CEE00641CC3 /* TitleAttributes_Default_Text.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TitleAttributes_Default_Text.json; sourceTree = "<group>"; };
 		C227343F1AE15CEE00641CC3 /* TitleEdgeInsets_Default.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TitleEdgeInsets_Default.json; sourceTree = "<group>"; };
 		C22734571AE1622E00641CC3 /* JSON.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = JSON.playground; path = Moonkit/JSON.playground; sourceTree = "<group>"; };
+		C2304E091AEECE1C0090D889 /* LayerProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayerProxy.swift; sourceTree = "<group>"; };
 		C2358F1619C78D6D00920F8D /* MoonKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoonKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2358F1919C78D6D00920F8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2358F1A19C78D6D00920F8D /* MoonKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoonKit.h; sourceTree = "<group>"; };
@@ -841,6 +843,7 @@
 				C2F094461A32AA8600681AB3 /* KeyInputButton.swift */,
 				C2A6261E1A33598300152E97 /* Slider.swift */,
 				C2B9B4091AC1C499005BA67C /* RegularExpression.swift */,
+				C2304E091AEECE1C0090D889 /* LayerProxy.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -1675,6 +1678,7 @@
 				C24416331ACB16F8007EDEFE /* Set+MoonKitAdditions.swift in Sources */,
 				C2E937001ACE04D4003EB3E8 /* JSONParser.swift in Sources */,
 				C2358F7D19C78E0C00920F8D /* MSCheckboxView.m in Sources */,
+				C2304E0A1AEECE1C0090D889 /* LayerProxy.swift in Sources */,
 				C2358F7E19C78E0C00920F8D /* MSColorInputView.m in Sources */,
 				C27372851A1FC0750079624D /* UIColor+MoonKitAdditions.swift in Sources */,
 				C2358F7F19C78E0C00920F8D /* MSMultiselectView.m in Sources */,

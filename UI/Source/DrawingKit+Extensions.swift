@@ -12,6 +12,10 @@ import DataModel
 
 extension DrawingKit {
 
+  public typealias Shape = RemoteElement.Shape
+  public static var defaultButtonColor: UIColor { return UIColor(r: 41, g: 40, b: 39, a: 255)! }
+  public static var defaultContentColor: UIColor { return UIColor(r: 50, g: 143, b: 239, a: 255)! }
+
   public class func roundishBasePath(#frame: CGRect, radius: CGFloat) -> UIBezierPath {
     return UIBezierPath(roundedRect: frame.rectByInsetting(dx: 2, dy: 2), cornerRadius: radius)
   }
@@ -49,242 +53,160 @@ extension DrawingKit {
     return path
   }
 
-  public class func drawButton(#rect: CGRect,
-                               color: UIColor,
-                               contentColor: UIColor,
-                               image: UIImage? = nil,
-                               imageOffset: CGPoint = CGPoint.zeroPoint,
-                               radius: CGFloat = 5.0,
-                               text: String? = nil,
-                               applyGloss: Bool = true,
-                               shape: RemoteElement.Shape = RemoteElement.Shape.Rectangle,
-                               iconSize: CGSize,
-                               highlighted: Bool = false)
-  {
+
+  public class func drawSelectedButtonBase(#frame: CGRect, color: UIColor, contentColor: UIColor, radius: CGFloat, shape: Shape) {
     //// General Declarations
     let context = UIGraphicsGetCurrentContext()
 
+    CGContextSaveGState(context)
+    UIRectClip(frame)
+    CGContextTranslateCTM(context, frame.origin.x, frame.origin.y)
 
-    //// Variable Declarations
-    let useOvalBase = shape == RemoteElement.Shape.Oval
-    let useDiamondBase = shape == RemoteElement.Shape.Diamond
-    let useTriangleBase = shape == RemoteElement.Shape.Triangle
-    let useRoundishBase = shape == RemoteElement.Shape.RoundedRectangle
-    let useRectangularBase = shape == RemoteElement.Shape.Rectangle
-
-    let widthBasedFontSize: CGFloat = text != nil ? rect.size.width / CGFloat(count(text!.utf16)) : 0
-    let heightBasedFontSize: CGFloat = rect.size.height
-    let appliedFontSize: CGFloat = min(widthBasedFontSize, heightBasedFontSize)
-
-    let offsetIcon = CGPointMake((rect.size.width - iconSize.width) / 2.0, (rect.size.height - iconSize.height) / 2.0)
-    let iconXScale: CGFloat = iconSize.width / rect.size.width
-    let iconYScale: CGFloat = iconSize.height / rect.size.height
-
-    let contentAndBaseRect = CGRectMake(4, 4, rect.size.width - 8, rect.size.height - 8)
-    let bleedGroupRect = CGRectMake(contentAndBaseRect.origin.x + 4, contentAndBaseRect.origin.y + 4, contentAndBaseRect.size.width - 8, contentAndBaseRect.size.height - 8)
-
-    let contentOuterShadow = highlighted ? NSShadow(color: contentColor, offset: CGSizeMake(0, -0), blurRadius: 5) : NSShadow(color: UIColor(red: 0, green: 0, blue: 0, alpha: 0), offset: CGSizeMake(0, -0), blurRadius: 0)
+    CGContextScaleCTM(context, frame.size.width / 200, frame.size.height / 200)
+    let rect = CGRect(size: CGSize(square: 200))
 
 
-    //// Subrects
-    let glossOverlayGroup: CGRect = CGRectMake(rect.minX + floor(rect.width * 0 + 0.5), rect.minY + floor(rect.height * 0 + 0.5), floor(rect.width * 1 + 0.5) - floor(rect.width * 0 + 0.5), floor(rect.height * 1 + 0.5) - floor(rect.height * 0 + 0.5))
+    switch shape {
+      case .Diamond:          DrawingKit.drawDiamondButtonBase(color: color, contentColor: contentColor, rect: rect)
+      case .Oval:             DrawingKit.drawOvalButtonBase(color: color, contentColor: contentColor, rect: rect)
+      case .Triangle:         DrawingKit.drawTriangleButtonBase(color: color, contentColor: contentColor, rect: rect)
+      case .Rectangle:        DrawingKit.drawRectangularButtonBase(color: color, contentColor: contentColor, rect: rect)
+      case .RoundedRectangle: DrawingKit.drawRoundedButtonBase(color: color, contentColor: contentColor, radius: radius, rect: rect)
+      default:                break
+    }
+
+    CGContextRestoreGState(context)
+  }
+
+  public class func drawButton(#rect: CGRect,
+                               color: UIColor = defaultButtonColor,
+                               contentColor: UIColor = defaultContentColor,
+                               image: UIImage? = nil,
+                               radius: CGFloat = 10.0,
+                               text: String? = nil,
+                               fontAttributes: [String:AnyObject]? = nil,
+                               applyGloss: Bool = true,
+                               shape: Shape,
+                               highlighted: Bool = false)
+  {
+    let context = UIGraphicsGetCurrentContext()
+
+    // TODO: Check points against path for the sides of min/max font height, i.e. shrink more for diamond/triangle shapes
+    let contentAndBaseRect = rect.rectByInsetting(dx: 4, dy: 4)
+    let bleedGroupRect = contentAndBaseRect.rectByInsetting(dx: 4, dy: 4)
+
+    let contentOuterShadow: NSShadow? = highlighted ? NSShadow(color: contentColor, offset: CGSize.zeroSize, blurRadius: 5) : nil
+
 
 
     //// Bleed
-    if (useDiamondBase) {
-      //// Diamond Bleed Drawing
-      let diamondBleedRect = CGRectMake(bleedGroupRect.origin.x, bleedGroupRect.origin.y, bleedGroupRect.size.width, bleedGroupRect.size.height)
-      UIGraphicsPushContext(context)
-      UIRectClip(diamondBleedRect)
-      CGContextTranslateCTM(context, diamondBleedRect.origin.x, diamondBleedRect.origin.y)
+    //// Bleed Base Drawing
+    CGContextSaveGState(context)
+    UIRectClip(bleedGroupRect)
+    CGContextTranslateCTM(context, bleedGroupRect.origin.x, bleedGroupRect.origin.y)
 
-      DrawingKit.drawDiamondPath(frame: CGRectMake(0, 0, diamondBleedRect.size.width, diamondBleedRect.size.height), contentColor: contentColor)
-      UIGraphicsPopContext()
-    }
-
-
-    if (useOvalBase) {
-      //// Oval Bleed Drawing
-      let ovalBleedRect = CGRectMake(bleedGroupRect.origin.x, bleedGroupRect.origin.y, bleedGroupRect.size.width, bleedGroupRect.size.height)
-      UIGraphicsPushContext(context)
-      UIRectClip(ovalBleedRect)
-      CGContextTranslateCTM(context, ovalBleedRect.origin.x, ovalBleedRect.origin.y)
-
-      DrawingKit.drawOvalPath(frame: CGRectMake(0, 0, ovalBleedRect.size.width, ovalBleedRect.size.height), contentColor: contentColor)
-      UIGraphicsPopContext()
-    }
-
-
-    if (useTriangleBase) {
-      //// Triangular Bleed Drawing
-      let triangularBleedRect = CGRectMake(bleedGroupRect.origin.x, bleedGroupRect.origin.y, bleedGroupRect.size.width, bleedGroupRect.size.height)
-      UIGraphicsPushContext(context)
-      UIRectClip(triangularBleedRect)
-      CGContextTranslateCTM(context, triangularBleedRect.origin.x, triangularBleedRect.origin.y)
-
-      DrawingKit.drawTrianglePath(frame: CGRectMake(0, 0, triangularBleedRect.size.width, triangularBleedRect.size.height), contentColor: contentColor)
-      UIGraphicsPopContext()
-    }
-
-
-    if (useRectangularBase) {
-      //// Rectangular Bleed Drawing
-      let rectangularBleedRect = CGRectMake(bleedGroupRect.origin.x, bleedGroupRect.origin.y, bleedGroupRect.size.width, bleedGroupRect.size.height)
-      UIGraphicsPushContext(context)
-      UIRectClip(rectangularBleedRect)
-      CGContextTranslateCTM(context, rectangularBleedRect.origin.x, rectangularBleedRect.origin.y)
-
-      DrawingKit.drawRectangularPath(frame: CGRectMake(0, 0, rectangularBleedRect.size.width, rectangularBleedRect.size.height), contentColor: contentColor)
-      UIGraphicsPopContext()
-    }
-
-
-    if (useRoundishBase) {
-      //// Roundish Bleed Drawing
-      let roundishBleedRect = CGRectMake(bleedGroupRect.origin.x, bleedGroupRect.origin.y, bleedGroupRect.size.width, bleedGroupRect.size.height)
-      UIGraphicsPushContext(context)
-      UIRectClip(roundishBleedRect)
-      CGContextTranslateCTM(context, roundishBleedRect.origin.x, roundishBleedRect.origin.y)
-
-      DrawingKit.drawRoundishPath(frame: CGRectMake(0, 0, roundishBleedRect.size.width, roundishBleedRect.size.height), contentColor: contentColor, radius: radius)
-      UIGraphicsPopContext()
-    }
+    DrawingKit.drawSelectedButtonShape(frame: CGRect(size: bleedGroupRect.size), contentColor: contentColor, radius: radius, shape: shape)
+    CGContextRestoreGState(context)
 
 
 
 
     //// Content And Base Group
-    UIGraphicsPushContext(context)
+    CGContextSaveGState(context)
     CGContextBeginTransparencyLayer(context, nil)
 
 
     //// Base Group
-    UIGraphicsPushContext(context)
-    CGContextSetShadowWithColor(context, contentOuterShadow.shadowOffset, contentOuterShadow.shadowBlurRadius, (contentOuterShadow.shadowColor as! UIColor).CGColor)
+    CGContextSaveGState(context)
+    contentOuterShadow?.setShadow()
     CGContextBeginTransparencyLayer(context, nil)
 
 
-    if (useRectangularBase) {
-      //// Rectangular Base Drawing
-      let rectangularBaseRect = CGRectMake(0, 0, 200, 200)
-      UIGraphicsPushContext(context)
-      UIRectClip(rectangularBaseRect)
-      CGContextTranslateCTM(context, rectangularBaseRect.origin.x, rectangularBaseRect.origin.y)
+    //// Button Base Drawing
+    CGContextSaveGState(context)
+    UIRectClip(contentAndBaseRect)
+    CGContextTranslateCTM(context, contentAndBaseRect.origin.x, contentAndBaseRect.origin.y)
 
-      DrawingKit.drawRectangularButtonBase(frame: CGRectMake(0, 0, rectangularBaseRect.size.width, rectangularBaseRect.size.height), color: color, contentColor: contentColor)
-      UIGraphicsPopContext()
-    }
-
-
-    if (useRoundishBase) {
-      //// Roundish Base Drawing
-      let roundishBaseRect = CGRectMake(0, 0, 200, 200)
-      UIGraphicsPushContext(context)
-      UIRectClip(roundishBaseRect)
-      CGContextTranslateCTM(context, roundishBaseRect.origin.x, roundishBaseRect.origin.y)
-
-      DrawingKit.drawRoundishButtonBase(frame: CGRectMake(0, 0, roundishBaseRect.size.width, roundishBaseRect.size.height), color: color, contentColor: contentColor, radius: 5)
-      UIGraphicsPopContext()
-    }
-
-
-    if (useOvalBase) {
-      //// Oval Base Drawing
-      let ovalBaseRect = CGRectMake(0, 0, 200, 200)
-      UIGraphicsPushContext(context)
-      UIRectClip(ovalBaseRect)
-      CGContextTranslateCTM(context, ovalBaseRect.origin.x, ovalBaseRect.origin.y)
-
-      DrawingKit.drawOvalButtonBase(frame: CGRectMake(0, 0, ovalBaseRect.size.width, ovalBaseRect.size.height), color: color, contentColor: contentColor)
-      UIGraphicsPopContext()
-    }
-
-
-    if (useDiamondBase) {
-      //// Diamond Base Drawing
-      let diamondBaseRect = CGRectMake(0, 0, 200, 200)
-      UIGraphicsPushContext(context)
-      UIRectClip(diamondBaseRect)
-      CGContextTranslateCTM(context, diamondBaseRect.origin.x, diamondBaseRect.origin.y)
-
-      DrawingKit.drawDiamondButtonBase(frame: CGRectMake(0, 0, diamondBaseRect.size.width, diamondBaseRect.size.height), color: color, contentColor: contentColor)
-      UIGraphicsPopContext()
-    }
-
-
-    if (useTriangleBase) {
-      //// Triangle Base Drawing
-      let triangleBaseRect = CGRectMake(0, 0, 200, 200)
-      UIGraphicsPushContext(context)
-      UIRectClip(triangleBaseRect)
-      CGContextTranslateCTM(context, triangleBaseRect.origin.x, triangleBaseRect.origin.y)
-
-      DrawingKit.drawTriangleButtonBase(frame: CGRectMake(0, 0, triangleBaseRect.size.width, triangleBaseRect.size.height), color: color, contentColor: contentColor)
-      UIGraphicsPopContext()
-    }
+    DrawingKit.drawSelectedButtonBase(frame: CGRect(size: contentAndBaseRect.size), color: color, contentColor: contentColor, radius: radius, shape: shape)
+    CGContextRestoreGState(context)
 
 
     CGContextEndTransparencyLayer(context)
-    UIGraphicsPopContext()
+    CGContextRestoreGState(context)
 
 
     //// Cutout Group
-    UIGraphicsPushContext(context)
+    CGContextSaveGState(context)
     CGContextSetBlendMode(context, kCGBlendModeDestinationOut)
     CGContextBeginTransparencyLayer(context, nil)
 
 
-    if let icon = image {
+    if let img = image {
+
+      let imgSize = img.size
+
       //// Icon Group
-      UIGraphicsPushContext(context)
-      CGContextSetShadowWithColor(context, DrawingKit.innerShadow.shadowOffset, DrawingKit.innerShadow.shadowBlurRadius, (DrawingKit.innerShadow.shadowColor as! UIColor).CGColor)
+      CGContextSaveGState(context)
+      CGContextTranslateCTM(context, (rect.size.width - imgSize.width) / 2.0, (rect.size.height - imgSize.height) / 2.0)
+
+      innerShadow.setShadow()
       CGContextSetAlpha(context, 0.9)
       CGContextBeginTransparencyLayer(context, nil)
 
 
       //// Icon Path Drawing
-      UIGraphicsPushContext(context)
-      CGContextTranslateCTM(context, (offsetIcon.x - 50), (offsetIcon.y - 50))
-      CGContextScaleCTM(context, iconXScale, iconYScale)
-
-      let iconPathRect = CGRectMake(imageOffset.x, imageOffset.y, 200, 200)
-      let iconPathPath = UIBezierPath(rect: iconPathRect)
-      UIGraphicsPushContext(context)
-      CGContextSetShadowWithColor(context, contentOuterShadow.shadowOffset, contentOuterShadow.shadowBlurRadius, (contentOuterShadow.shadowColor as! UIColor).CGColor)
+      CGContextSaveGState(context)
+      contentOuterShadow?.setShadow()
       CGContextBeginTransparencyLayer(context, nil)
-      UIGraphicsPushContext(context)
-      iconPathPath.addClip()
-      icon.drawInRect(CGRectMake(floor(iconPathRect.minX + 0.5), floor(iconPathRect.minY + 0.5), icon.size.width, icon.size.height))
-      UIGraphicsPopContext()
+      CGContextSaveGState(context)
+      UIBezierPath(rect: CGRect(size: CGSize(square: 100))).addClip()
+      img.drawInRect(CGRect(size: imgSize))
+      CGContextRestoreGState(context)
       CGContextEndTransparencyLayer(context)
-      UIGraphicsPopContext()
+      CGContextRestoreGState(context)
 
-
-      UIGraphicsPopContext()
 
 
       CGContextEndTransparencyLayer(context)
-      UIGraphicsPopContext()
+
+      CGContextRestoreGState(context)
     }
 
 
-    if let text = text {
-      //// Label Group
-      //// label Drawing
-      let labelRect = CGRectMake(0, 0, 200, 200)
-      UIGraphicsPushContext(context)
-      CGContextSetShadowWithColor(context, contentOuterShadow.shadowOffset, contentOuterShadow.shadowBlurRadius, (contentOuterShadow.shadowColor as! UIColor).CGColor)
-      let labelStyle = NSParagraphStyle.defaultParagraphStyle().mutableCopy() as! NSMutableParagraphStyle
-      labelStyle.alignment = NSTextAlignment.Center
+    if let txt: NSString = text {
+      let appliedFontSize: CGFloat = min(rect.size.width / CGFloat(txt.length), rect.size.height)
 
-      let labelFontAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue-Bold", size: appliedFontSize)!, NSForegroundColorAttributeName: UIColor.blackColor(), NSParagraphStyleAttributeName: labelStyle]
+      CGContextSaveGState(context)
+      contentOuterShadow?.setShadow()
 
-      let labelTextHeight: CGFloat = NSString(string: text).boundingRectWithSize(CGSizeMake(labelRect.width, CGFloat.infinity), options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: labelFontAttributes, context: nil).size.height
-      UIGraphicsPushContext(context)
-      CGContextClipToRect(context, labelRect);
-      NSString(string: text).drawInRect(CGRectMake(labelRect.minX, labelRect.minY + (labelRect.height - labelTextHeight) / 2, labelRect.width, labelTextHeight), withAttributes: labelFontAttributes)
-      UIGraphicsPopContext()
-      UIGraphicsPopContext()
+      let attributes: [String:AnyObject]
+      if fontAttributes != nil {
+        var attrs = fontAttributes!
+        if let f = attrs[NSFontAttributeName] as? UIFont {
+          attrs[NSFontAttributeName] = f.fontWithSize(appliedFontSize)
+        }
+        attributes = attrs
+      }
+      else {
+        let paragraphStyle = NSParagraphStyle.paragraphStyleWithAttributes(alignment: .Center)
+        let font = UIFont(name: "HelveticaNeue-Bold", size: appliedFontSize)!
+        let fg = UIColor.blackColor()
+        attributes = [NSFontAttributeName: font, NSForegroundColorAttributeName: fg, NSParagraphStyleAttributeName: paragraphStyle]
+      }
+
+      let textHeight: CGFloat = txt.boundingRectWithSize(CGSize(width: bleedGroupRect.width, height: CGFloat.infinity),
+                                                 options: NSStringDrawingOptions.UsesLineFragmentOrigin,
+                                              attributes: attributes,
+                                                 context: nil).size.height
+      CGContextSaveGState(context)
+      CGContextClipToRect(context, bleedGroupRect);
+      let textRect = CGRect(x: bleedGroupRect.minX,
+                            y: bleedGroupRect.minY + (bleedGroupRect.height - textHeight) / 2,
+                            width: bleedGroupRect.width,
+                            height: textHeight)
+      txt.drawInRect(textRect, withAttributes: attributes)
+      CGContextRestoreGState(context)
+      CGContextRestoreGState(context)
 
 
 
@@ -292,33 +214,79 @@ extension DrawingKit {
 
 
     CGContextEndTransparencyLayer(context)
-    UIGraphicsPopContext()
+    CGContextRestoreGState(context)
 
 
     CGContextEndTransparencyLayer(context)
-    UIGraphicsPopContext()
+    CGContextRestoreGState(context)
 
 
     if (applyGloss) {
       //// Gloss Overlay Group
-      UIGraphicsPushContext(context)
-      CGContextSetAlpha(context, 0.5)
-      CGContextSetBlendMode(context, kCGBlendModeOverlay)
+      CGContextSaveGState(context)
+      CGContextSetAlpha(context, 0.1)
+      CGContextSetBlendMode(context, kCGBlendModeSourceAtop)
       CGContextBeginTransparencyLayer(context, nil)
 
 
       //// Gloss Overlay Drawing
-      let glossOverlayRect = CGRectMake(glossOverlayGroup.minX + floor(glossOverlayGroup.width * 0 + 0.5), glossOverlayGroup.minY + floor(glossOverlayGroup.height * 0 + 0.5), floor(glossOverlayGroup.width * 1 + 0.5) - floor(glossOverlayGroup.width * 0 + 0.5), floor(glossOverlayGroup.height * 1 + 0.5) - floor(glossOverlayGroup.height * 0 + 0.5))
-      UIGraphicsPushContext(context)
+      let glossOverlayRect = CGRect(x: rect.minX, y: rect.minY, width: floor(rect.width + 0.5), height: floor(rect.height + 0.5))
+      CGContextSaveGState(context)
       UIRectClip(glossOverlayRect)
       CGContextTranslateCTM(context, glossOverlayRect.origin.x, glossOverlayRect.origin.y)
 
-      DrawingKit.drawGloss(frame: CGRectMake(0, 0, glossOverlayRect.size.width, glossOverlayRect.size.height))
-      UIGraphicsPopContext()
+      DrawingKit.drawSelectedGloss(frame: CGRect(size: glossOverlayRect.size), radius: radius, shape: shape)
+      CGContextRestoreGState(context)
 
 
       CGContextEndTransparencyLayer(context)
-      UIGraphicsPopContext()
+      CGContextRestoreGState(context)
     }
   }
+
+  public class func drawSelectedButtonShape(#frame: CGRect, contentColor: UIColor, radius: CGFloat, shape: Shape) {
+
+
+    let context = UIGraphicsGetCurrentContext()
+
+    CGContextSaveGState(context)
+    UIRectClip(frame)
+    CGContextTranslateCTM(context, frame.origin.x, frame.origin.y)
+    let rect = CGRect(size: frame.size)
+
+
+    switch shape {
+    case .Diamond:          DrawingKit.drawDiamondPath(frame: rect, contentColor: contentColor)
+    case .Oval:             DrawingKit.drawOvalPath(frame: rect, contentColor: contentColor)
+    case .Triangle:         DrawingKit.drawTrianglePath(frame: rect, contentColor: contentColor)
+    case .Rectangle:        DrawingKit.drawRectangularPath(frame: rect, contentColor: contentColor)
+    case .RoundedRectangle: DrawingKit.drawRoundedRectanglePath(frame: rect, contentColor: contentColor, radius: radius)
+    default:                break
+    }
+
+    CGContextRestoreGState(context)
+
+  }
+
+  public class func drawSelectedGloss(#frame: CGRect, radius: CGFloat, shape: Shape) {
+
+    let context = UIGraphicsGetCurrentContext()
+
+    CGContextSaveGState(context)
+    UIRectClip(frame)
+    CGContextTranslateCTM(context, frame.origin.x, frame.origin.y)
+    let rect = CGRect(size: frame.size)
+
+    switch shape {
+      case .Diamond:          DrawingKit.drawDiamondGloss(frame: rect)
+      case .Oval:             DrawingKit.drawOvalGloss(frame: rect)
+      case .Triangle:         DrawingKit.drawTriangleGloss(frame: rect)
+      case .Rectangle:        DrawingKit.drawRectangleGloss(frame: rect)
+      case .RoundedRectangle: DrawingKit.drawRoundedGloss(frame: rect, radius: radius)
+      default:                break
+    }
+
+    CGContextRestoreGState(context)
+  }
+
 }

@@ -588,19 +588,18 @@ public class RemoteElementView: UIView {
     if model.role & .Toolbar != nil { return }
     UIGraphicsPushContext(ctx)
     let color = UIColor(name: "dark-blue") ?? model.backgroundColor ?? backgroundColor ?? UIColor.darkGrayColor()
-    switch model.shape {
-    case .RoundedRectangle: UI.DrawingKit.drawRoundishButtonBase(frame: rect, color: color, contentColor: UIColor.whiteColor(), radius: cornerRadii.width)
-      case .Rectangle: UI.DrawingKit.drawRectangularButtonBase(frame: rect, color: color, contentColor: UIColor.whiteColor())
-      case .Triangle: UI.DrawingKit.drawTriangleButtonBase(frame: rect, color: color, contentColor: UIColor.whiteColor())
-      case .Diamond: UI.DrawingKit.drawDiamondButtonBase(frame: rect, color: color, contentColor: UIColor.whiteColor())
-      default: break
-//        if let path = borderPath {
-//          UIGraphicsPushContext(ctx)
-//          backgroundColor?.setFill()
-//          path.fill()
-//          UIGraphicsPopContext()
-//        }
-    }
+    UI.DrawingKit.drawButton(
+      rect: rect,
+      color: UI.DrawingKit.defaultButtonColor,
+      contentColor: UI.DrawingKit.defaultContentColor,
+      image: nil,
+      radius: cornerRadii.width,
+      text: nil,
+      fontAttributes: nil,
+      applyGloss: false,
+      shape: model.shape,
+      highlighted: false
+    )
 
     // Draw background image
     if let image = model.backgroundImage?.image {
@@ -617,7 +616,7 @@ public class RemoteElementView: UIView {
   :param: rect CGRect
   */
   func drawOverlayInContext(ctx: CGContextRef, inRect rect: CGRect) {
-
+/*
     let path = borderPath != nil ? UIBezierPath(CGPath: borderPath!.CGPath) : UIBezierPath(rect: rect)
     UIGraphicsPushContext(ctx)
     path.addClip()
@@ -635,7 +634,8 @@ public class RemoteElementView: UIView {
     }
 
     UIGraphicsPopContext()
-  }
+
+*/  }
 
   /**
   addViewToContent:
