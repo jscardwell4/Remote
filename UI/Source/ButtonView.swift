@@ -147,10 +147,10 @@ public class ButtonView: RemoteElementView {
 //		subelementInteractionEnabled = false
 //		contentInteractionEnabled    = false
 
-		let labelView = UILabel.newForAutolayout()
-    addSubview(labelView)
+//		let labelView = UILabel.newForAutolayout()
+//    addSubview(labelView)
 //		addViewToContent(labelView)
-		self.labelView = labelView
+//		self.labelView = labelView
 
 		let activityIndicator = UIActivityIndicatorView.newForAutolayout()
 		activityIndicator.activityIndicatorViewStyle = .WhiteLarge
@@ -167,12 +167,12 @@ public class ButtonView: RemoteElementView {
     let identifier = createIdentifier(self, ["Button", "Internal"])
     if constraintsWithIdentifier(identifier).count == 0 {
       let titleInsets = button.titleEdgeInsets
-      let format = "\n".join("label.left = self.left + \(titleInsets.left) @900",
+      let format = "\n".join(/*"label.left = self.left + \(titleInsets.left) @900",
                              "label.top = self.top + \(titleInsets.top) @900",
                              "label.bottom = self.bottom - \(titleInsets.bottom) @900",
-                             "label.right = self.right - \(titleInsets.right) @900",
+                             "label.right = self.right - \(titleInsets.right) @900",*/
                              "activity.center = self.center")
-      constrain(format, views: ["label": labelView, "activity": activityIndicator], identifier: identifier)
+      constrain(format, views: [/*"label": labelView, */"activity": activityIndicator], identifier: identifier)
     }
 	}
 
@@ -257,7 +257,7 @@ public class ButtonView: RemoteElementView {
 	override func initializeViewFromModel() {
 		super.initializeViewFromModel()
 		longPressGesture.enabled = button.longPressCommand != nil
-		labelView.attributedText = button.title
+//		labelView.attributedText = button.title
 		invalidateIntrinsicContentSize()
 		setNeedsDisplay()
 	}
@@ -275,6 +275,17 @@ public class ButtonView: RemoteElementView {
     super.setNeedsDisplay()
   }
 
+  override func drawBackdropInContext(ctx: CGContextRef, inRect rect: CGRect) {}
+  override func drawOverlayInContext(ctx: CGContextRef, inRect rect: CGRect) {}
+  override public func drawRect(rect: CGRect) {
+    let context = UIGraphicsGetCurrentContext()
+    UIGraphicsPushContext(context)
+    let biggerRect = rect.rectByInsetting(dx: -3, dy: -3)
+    CGContextClearRect(context, biggerRect)
+    UI.DrawingKit.drawButtonWithShape(button.shape, inRect: biggerRect, image: button.icon?.colorImage, text: button.title?.string, highlighted: button.highlighted)
+    UIGraphicsPopContext()
+  }
+
 	/**
 	drawContentInContext:inRect:
 
@@ -282,8 +293,11 @@ public class ButtonView: RemoteElementView {
 	:param: rect CGRect
 	*/
 	override func drawContentInContext(ctx: CGContextRef, inRect rect: CGRect) {
-    UI.DrawingKit.drawButtonWithShape(button.shape, inRect: rect, image: button.icon?.colorImage, text: button.title?.string, highlighted: button.highlighted)
-
+    UIGraphicsPushContext(ctx)
+    let biggerRect = rect.rectByInsetting(dx: -3, dy: -3)
+    CGContextClearRect(ctx, biggerRect)
+    UI.DrawingKit.drawButtonWithShape(button.shape, inRect: biggerRect, image: button.icon?.colorImage, text: button.title?.string, highlighted: button.highlighted)
+    UIGraphicsPopContext()
 
 /*
     super.drawContentInContext(ctx, inRect: rect)

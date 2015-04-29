@@ -536,7 +536,6 @@
 		C293C77E1AC318EB00408D35 /* NetworkDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C7721AC318EB00408D35 /* NetworkDevice.swift */; };
 		C293C77F1AC318EB00408D35 /* Preset.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C7731AC318EB00408D35 /* Preset.swift */; };
 		C293C7801AC318EB00408D35 /* PresetCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C7741AC318EB00408D35 /* PresetCategory.swift */; };
-		C295E4AF1AEDCDCE00691C0E /* DrawingKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C295E4AE1AEDCDCE00691C0E /* DrawingKit+Extensions.swift */; };
 		C2A0C7511AD88D68008CF88B /* JSONStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A0C7501AD88D68008CF88B /* JSONStorage.swift */; };
 		C2A4EC4D178B990F00FD3AFF /* App_Icon@2x-ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = C2A4EC4B178B990F00FD3AFF /* App_Icon@2x-ios7.png */; };
 		C2A4EC4E178B990F00FD3AFF /* image.512x512.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2A4EC4C178B990F00FD3AFF /* image.512x512.jpg */; };
@@ -1466,7 +1465,6 @@
 		C293C7721AC318EB00408D35 /* NetworkDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkDevice.swift; sourceTree = "<group>"; };
 		C293C7731AC318EB00408D35 /* Preset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preset.swift; sourceTree = "<group>"; };
 		C293C7741AC318EB00408D35 /* PresetCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetCategory.swift; sourceTree = "<group>"; };
-		C295E4AE1AEDCDCE00691C0E /* DrawingKit+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DrawingKit+Extensions.swift"; sourceTree = "<group>"; };
 		C2997F2316FA563900290737 /* RETypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RETypedefs.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		C2A0B2F71AEDC1FB006A9182 /* UI-RemoteElementView.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "UI-RemoteElementView.playground"; sourceTree = "<group>"; };
 		C2A0C7501AD88D68008CF88B /* JSONStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONStorage.swift; sourceTree = "<group>"; };
@@ -2120,7 +2118,6 @@
 				C235A2F61A0E96B10067E226 /* RemoteElementView.swift */,
 				C235A2F71A0E96B10067E226 /* RemoteView.swift */,
 				C235A2F81A0E96B10067E226 /* RockerView.swift */,
-				C295E4AE1AEDCDCE00691C0E /* DrawingKit+Extensions.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -4351,7 +4348,6 @@
 				C2461BF31AE5D7DA00F123BD /* RemoteElementViewConstraint.swift in Sources */,
 				C2461BFA1AE5D7DA00F123BD /* RockerView.swift in Sources */,
 				C2461BF61AE5D7DA00F123BD /* ConnectionStatusButtonView.swift in Sources */,
-				C295E4AF1AEDCDCE00691C0E /* DrawingKit+Extensions.swift in Sources */,
 				C2461BF91AE5D7DA00F123BD /* RemoteView.swift in Sources */,
 				C2461BF81AE5D7DA00F123BD /* RemoteElementView.swift in Sources */,
 				C2461BF41AE5D7DA00F123BD /* BatteryStatusButtonView.swift in Sources */,

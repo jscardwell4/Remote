@@ -42,6 +42,6 @@ public final class ConnectionStatusButtonView: ButtonView {
     let iconColor: UIColor
     if let color = backgroundColor where color != UIColor.clearColor() { iconColor = color }
     else { iconColor = UIColor.darkGrayColor() }
-    UI.DrawingKit.drawWifiStatus(iconColor: iconColor, connected: connected, containingFrame: rect)
+    UI.DrawingKit.drawWifiStatus(color: iconColor, connected: connected, frame: rect)
   }
 }

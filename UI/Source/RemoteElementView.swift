@@ -545,22 +545,27 @@ public class RemoteElementView: UIView {
 
   /** refreshBorderPath */
   func refreshBorderPath() {
-    switch model.shape {
-      case .Rectangle:
-        borderPath = UIBezierPath(rect: bounds)
-      case .RoundedRectangle:
-        borderPath = UIBezierPath(roundedRect: bounds, byRoundingCorners: .AllCorners, cornerRadii: cornerRadii)
-      case .Oval:
-        borderPath = UIBezierPath(ovalInRect: bounds.rectByInsetting(dx: 2, dy: 2))
-      case .Triangle:
-        //TODO: Refactor DrawingKit code to include a function for creating a triangle path from a rect
-        fallthrough
-      case .Diamond:
-        //TODO: Refactor DrawingKit code to include a function for creating a diamond path from a rect
-        fallthrough
-      default:
-        borderPath = nil
+    if model.shape == .Undefined { borderPath = nil }
+    else if !bounds.isEmpty{
+      var attrs = UI.DrawingKit.Attributes(rect: bounds.rectByInsetting(dx: 2, dy: 2))
+      borderPath = UI.DrawingKit.pathForShape(model.shape, withAttributes: attrs)
     }
+//    switch model.shape {
+//      case .Rectangle:
+//        borderPath = UIBezierPath(rect: bounds)
+//      case .RoundedRectangle:
+//        borderPath = UIBezierPath(roundedRect: bounds, byRoundingCorners: .AllCorners, cornerRadii: cornerRadii)
+//      case .Oval:
+//        borderPath = UIBezierPath(ovalInRect: bounds.rectByInsetting(dx: 2, dy: 2))
+//      case .Triangle:
+//        //TODO: Refactor DrawingKit code to include a function for creating a triangle path from a rect
+//        fallthrough
+//      case .Diamond:
+//        //TODO: Refactor DrawingKit code to include a function for creating a diamond path from a rect
+//        fallthrough
+//      default:
+//        borderPath = nil
+//    }
   }
 
   override public func drawRect(rect: CGRect) {
@@ -585,17 +590,17 @@ public class RemoteElementView: UIView {
   :param: rect CGRect
   */
   func drawBackdropInContext(ctx: CGContextRef, inRect rect: CGRect) {
-    if model.role & .Toolbar != nil { return }
-    UIGraphicsPushContext(ctx)
-    let color = UIColor(name: "dark-blue") ?? model.backgroundColor ?? backgroundColor ?? UIColor.darkGrayColor()
-    UI.DrawingKit.drawButtonWithShape(model.shape, inRect: rect, withRadii: cornerRadii, applyGloss: false, highlighted: false)
-
-    // Draw background image
-    if let image = model.backgroundImage?.image {
-      if rect.size <= image.size { image.drawInRect(rect) }
-      else { image.drawAsPatternInRect(rect) }
-    }
-    UIGraphicsPopContext()
+//    if model.role & .Toolbar != nil { return }
+//    UIGraphicsPushContext(ctx)
+//    let color = UIColor(name: "dark-blue") ?? model.backgroundColor ?? backgroundColor ?? UIColor.darkGrayColor()
+//    UI.DrawingKit.drawButtonWithShape(model.shape, inRect: rect, withRadii: cornerRadii, applyGloss: false, highlighted: false)
+//
+//    // Draw background image
+//    if let image = model.backgroundImage?.image {
+//      if rect.size <= image.size { image.drawInRect(rect) }
+//      else { image.drawAsPatternInRect(rect) }
+//    }
+//    UIGraphicsPopContext()
   }
 
   /**

@@ -107,7 +107,7 @@ public final class BatteryStatusButtonView: ButtonView {
 
     let chargeLevel = CGFloat(batteryLevel)
 
-    UI.DrawingKit.drawBatteryStatus(batteryBaseColor: baseColor, hasPower: hasPower, chargeLevel: chargeLevel, containingFrame: rect)
+    UI.DrawingKit.drawBatteryStatus(color: baseColor, hasPower: hasPower, chargeLevel: chargeLevel, frame: rect)
 
 /*
 	  let insetRect = rect.rectByInsetting(dx: 2.0, dy: 2.0)
