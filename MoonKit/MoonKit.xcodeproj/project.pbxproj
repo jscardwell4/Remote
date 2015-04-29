@@ -284,6 +284,7 @@
 		C256F09D1ABE005F005B7CB3 /* NSError+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21D7AE31AA60E3F000DE8A3 /* NSError+MoonKitAdditions.swift */; };
 		C256F09E1ABE0089005B7CB3 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C482E419CA0225002E84A9 /* Stack.swift */; };
 		C25E63E11A00427100F54626 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63E01A00427100F54626 /* OrderedSet.swift */; };
+		C2683F7B1AF142E60081C74B /* UIBezierPath+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2683F7A1AF142E60081C74B /* UIBezierPath+MoonKitAdditions.swift */; };
 		C27372851A1FC0750079624D /* UIColor+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27372841A1FC0750079624D /* UIColor+MoonKitAdditions.swift */; };
 		C28447111A3E051F005338AB /* LabeledCheckbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28447101A3E051F005338AB /* LabeledCheckbox.swift */; };
 		C284EA5C1A1EAD6700B07BA8 /* TouchTrackingGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C284EA5B1A1EAD6700B07BA8 /* TouchTrackingGesture.swift */; };
@@ -427,6 +428,7 @@
 		C25E63E01A00427100F54626 /* OrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
 		C264338D18162E8A005E0105 /* NSPointerArray+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPointerArray+MSKitAdditions.h"; sourceTree = "<group>"; };
 		C264338E18162E8A005E0105 /* NSPointerArray+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPointerArray+MSKitAdditions.m"; sourceTree = "<group>"; };
+		C2683F7A1AF142E60081C74B /* UIBezierPath+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C27372841A1FC0750079624D /* UIColor+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C274832519D07942000CB422 /* UIBarButtonItem+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C277AB8619D787EA008DEE39 /* ToggleBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleBarButtonItem.swift; sourceTree = "<group>"; };
@@ -750,6 +752,7 @@
 				C28E98ED1AD196B800E78711 /* NSNumber+MoonKitAdditions.swift */,
 				C2874FBB1AE68D3800BD7634 /* NSShadow+MoonKitAdditions.swift */,
 				C2E8C8B61AE7325300F8AC45 /* UITableViewCell+MoonKitAdditions.swift */,
+				C2683F7A1AF142E60081C74B /* UIBezierPath+MoonKitAdditions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1583,6 +1586,7 @@
 				C2358F4919C78E0C00920F8D /* UICollectionViewFlowLayout+MSKitAdditions.m in Sources */,
 				C24A22931ADB43620065E7EA /* SetOperations.swift in Sources */,
 				C2EB15771A1D45C100B64D84 /* ConfiningBlockActionGesture.swift in Sources */,
+				C2683F7B1AF142E60081C74B /* UIBezierPath+MoonKitAdditions.swift in Sources */,
 				C2358F4A19C78E0C00920F8D /* UIColor+MSKitAdditions.m in Sources */,
 				C2358F4B19C78E0C00920F8D /* UIControl+MSKitAdditions.m in Sources */,
 				C2358F4C19C78E0C00920F8D /* UIFont+MSKitAdditions.m in Sources */,

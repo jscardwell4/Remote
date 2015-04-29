@@ -26,16 +26,21 @@ public final class DrawingKit {
 
   public struct Attributes {
     public var color: UIColor?
-    public var strokeColor: UIColor?
-    public var fillColor: UIColor?
+    public var accentColor: UIColor?
     public var rect: CGRect
     public var lineWidth: CGFloat = 0
     public var corners = DrawingKit.defaultCorners
     public var radii = DrawingKit.defaultRadii
     public var shadow: NSShadow?
+    public var accentShadow: NSShadow?
     public var blendMode: CGBlendMode = kCGBlendModeNormal
     public var stroke = false
     public var fill = true
+    public var alpha: CGFloat = 1.0
+    public var image: UIImage?
+    public var text: String?
+    public var attributedText: NSAttributedString?
+    public var fontAttributes: [NSObject:AnyObject]?
 
     public func attributesWithShadow(shadow: NSShadow?) -> Attributes {
       var attrs = self
@@ -50,8 +55,8 @@ public final class DrawingKit {
 
   public typealias Shape = RemoteElement.Shape
 
-  public static let defaultButtonColor = UIColor(r: 41, g: 40, b: 39, a: 255)!
-  public static let defaultContentColor = UIColor(r: 50, g: 143, b: 239, a: 255)!
+  public static let defaultBackgroundColor = UIColor(r: 41, g: 40, b: 39, a: 255)!
+  public static let defaultAccentColor = UIColor(r: 50, g: 143, b: 239, a: 255)!
   public static let defaultRadii = CGSize(width: 10, height: 20)
   public static let defaultCorners: UIRectCorner = .AllCorners
 
@@ -70,89 +75,6 @@ public final class DrawingKit {
   public static let glowingShadow:   NSShadow = NSShadow(color: white,     offset: offset1_neg1, blurRadius: 5)
 
   /**
-  roundedRectanglePathInRect:radius:
-
-  :param: rect CGRect
-  :param: radius CGFloat
-
-  :returns: UIBezierPath
-  */
-  public class func roundedRectanglePathInRect(rect: CGRect, radius: CGFloat) -> UIBezierPath {
-    return UIBezierPath(roundedRect: rect, cornerRadius: radius)
-  }
-
-  /**
-  roundedRectanglePathInRect:corners:radii:
-
-  :param: rect CGRect
-  :param: radius CGFloat
-
-  :returns: UIBezierPath
-  */
-  public class func roundedRectanglePathInRect(rect: CGRect,
-                             byRoundingCorners corners: UIRectCorner,
-                                     withRadii radii: CGSize) -> UIBezierPath
-  {
-    return UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: radii)
-  }
-
-  /**
-  rectanglePathInRect:
-
-  :param: rect CGRect
-
-  :returns: UIBezierPath
-  */
-  public class func rectanglePathInRect(rect: CGRect) -> UIBezierPath { return UIBezierPath(rect: rect) }
-
-  /**
-  ovalPathInRect:
-
-  :param: rect CGRect
-
-  :returns: UIBezierPath
-  */
-  public class func ovalPathInRect(rect: CGRect) -> UIBezierPath { return UIBezierPath(ovalInRect: rect) }
-
-  /**
-  diamondBasePathInRect:
-
-  :param: rect CGRect
-
-  :returns: UIBezierPath
-  */
-  public class func diamondPathInRect(rect: CGRect) -> UIBezierPath {
-    var path = UIBezierPath()
-    path.moveToPoint(CGPoint(x: rect.minX, y: rect.minY + 0.5 * rect.height))
-    path.addLineToPoint(CGPoint(x: rect.minX + 0.5 * rect.width, y: rect.minY))
-    path.addLineToPoint(CGPoint(x: rect.minX + rect.width, y: rect.minY + 0.5 * rect.height))
-    path.addLineToPoint(CGPoint(x: rect.minX + 0.5 * rect.width, y: rect.minY + rect.height))
-    path.addLineToPoint(CGPoint(x: rect.minX, y: rect.minY + 0.5 * rect.height))
-    path.closePath()
-    return path
-  }
-
-  /**
-  triangleBasePathInRect:
-
-  :param: rect CGRect
-
-  :returns: UIBezierPath
-  */
-  public class func trianglePathInRect(rect: CGRect) -> UIBezierPath {
-    var path = UIBezierPath()
-    path.moveToPoint(CGPoint(x: rect.minX + 0.50 * rect.width, y: rect.minY))
-    path.addLineToPoint(CGPoint(x: rect.minX + 0.75 * rect.width, y: rect.minY + 0.5 * rect.height))
-    path.addLineToPoint(CGPoint(x: rect.minX + rect.width, y: rect.minY + rect.height))
-    path.addLineToPoint(CGPoint(x: rect.minX + 0.50 * rect.width, y: rect.minY + rect.height))
-    path.addLineToPoint(CGPoint(x: rect.minX, y: rect.minY + rect.height))
-    path.addLineToPoint(CGPoint(x: rect.minX + 0.25 * rect.width, y: rect.minY + 0.5 * rect.height))
-    path.addLineToPoint(CGPoint(x: rect.minX + 0.5 * rect.width, y: rect.minY))
-    path.closePath()
-    return path
-  }
-
-  /**
   pathForShape:inRect:byRoundingCorners:withRadii:
 
   :param: shape Shape
@@ -165,19 +87,134 @@ public final class DrawingKit {
   public class func pathForShape(shape: Shape, withAttributes attrs: Attributes) -> UIBezierPath {
     let path: UIBezierPath
     switch shape {
-      case .Diamond:          path = diamondPathInRect(attrs.rect)
-      case .Oval:             path = ovalPathInRect(attrs.rect)
-      case .Triangle:         path = trianglePathInRect(attrs.rect)
-      case .Rectangle:        path = rectanglePathInRect(attrs.rect)
-      case .RoundedRectangle: path = roundedRectanglePathInRect(attrs.rect, byRoundingCorners: attrs.corners, withRadii: attrs.radii)
-      case .Undefined:        path = UIBezierPath()
+      case .Diamond:
+        path = UIBezierPath(diamondInRect: attrs.rect)
+      case .Oval:
+        path = UIBezierPath(ovalInRect: attrs.rect)
+      case .Triangle:
+        path = UIBezierPath(triangleInRect: attrs.rect)
+      case .Rectangle:
+        path = UIBezierPath(rect: attrs.rect)
+      case .RoundedRectangle:
+        path = UIBezierPath(roundedRect: attrs.rect, byRoundingCorners: attrs.corners, cornerRadii: attrs.radii)
+      case .Undefined:
+        path = UIBezierPath()
     }
     path.lineWidth = attrs.lineWidth
     return path
   }
 
   /**
-  drawShape:var:
+  drawText:withAttributes:boundByShape:
+
+  :param: text String
+  :param: attrs Attributes
+  :param: shape Shape = .Rectangle
+  */
+  public class func drawText(text: String, withAttributes attrs: Attributes, boundByShape shape: Shape = .Rectangle) {
+
+    let path = pathForShape(shape, withAttributes: attrs)
+    let bounds = path.bounds
+
+    let appliedFontSize: CGFloat = min(bounds.width / CGFloat(count(text.utf16)), bounds.height)
+
+    let context = UIGraphicsGetCurrentContext()
+
+    CGContextSaveGState(context)                                                          // context: •
+    attrs.shadow?.setShadow()
+    attrs.accentShadow?.setShadow()
+
+    let textAttributes: [NSObject:AnyObject]
+
+    if let fontAttributes = attrs.fontAttributes {
+
+      var attrs = fontAttributes
+      if let f = attrs[NSFontAttributeName] as? UIFont { attrs[NSFontAttributeName] = f.fontWithSize(appliedFontSize) }
+      else { attrs[NSFontAttributeName] = UIFont(name: "HelveticaNeue-Bold", size: appliedFontSize)! }
+
+      textAttributes = attrs
+
+    } else {
+
+      let paragraphStyle = NSParagraphStyle.paragraphStyleWithAttributes(alignment: .Center)
+      let font = UIFont(name: "HelveticaNeue-Bold", size: appliedFontSize)!
+      let fg = attrs.color ?? UIColor.grayColor()
+      textAttributes = [ NSFontAttributeName           : font,
+                         NSForegroundColorAttributeName: fg,
+                         NSParagraphStyleAttributeName : paragraphStyle ]
+
+    }
+
+
+
+    let textHeight: CGFloat = (text as NSString).boundingRectWithSize(CGSize(width: bounds.width, height: CGFloat.infinity),
+                                                              options: NSStringDrawingOptions.UsesLineFragmentOrigin,
+                                                           attributes: textAttributes,
+                                                              context: nil).size.height
+    CGContextSaveGState(context)                                                          // context: ••
+    path.addClip()
+
+    let textRect = CGRect(x: bounds.minX,
+                          y: bounds.minY + (bounds.height - textHeight) * 0.5,
+                          width: bounds.width,
+                          height: textHeight)
+    (text as NSString).drawInRect(textRect, withAttributes: textAttributes)
+    CGContextRestoreGState(context)                                                       // context: •
+    CGContextRestoreGState(context)                                                       // context:
+
+  }
+
+  /**
+  drawImage:withAttributes:boundByShape:
+
+  :param: image UIImage
+  :param: withAttributes Attributes
+  :param: shape Shape = .Rectangle
+  */
+  public class func drawImage(image: UIImage, withAttributes attrs: Attributes, boundByShape shape: Shape = .Rectangle) {
+    let path = pathForShape(shape, withAttributes: attrs)
+    let bounds = path.bounds
+    let actualImageSize = image.size
+    let boundingSize = bounds.size
+    let imageSize = boundingSize.contains(actualImageSize)
+                      ? actualImageSize
+                      : actualImageSize.aspectMappedToSize(boundingSize, binding: true)
+    let imageOffset = CGPoint(x: bounds.midX - imageSize.width * 0.5, y: bounds.midY - imageSize.height * 0.5)
+
+    let context = UIGraphicsGetCurrentContext()
+
+    CGContextSaveGState(context)                                                          // context: •
+    CGContextTranslateCTM(context, imageOffset.x, imageOffset.y)
+
+    attrs.shadow?.setShadow()
+    CGContextSetAlpha(context, attrs.alpha)
+    CGContextSetBlendMode(context, attrs.blendMode)
+    CGContextBeginTransparencyLayer(context, nil)                                         // transparency: •
+
+    CGContextSaveGState(context)                                                          // context: ••
+    attrs.accentShadow?.setShadow()
+    CGContextBeginTransparencyLayer(context, nil)                                         // transparency: ••
+
+    CGContextSaveGState(context)                                                          // context: •••
+
+
+    let imageRect = CGRect(size: imageSize)
+    path.addClip()
+    image.drawInRect(imageRect)
+
+    CGContextRestoreGState(context)                                                       // context: ••
+    CGContextEndTransparencyLayer(context)                                                // transparency: •
+    CGContextRestoreGState(context)                                                       // context: •
+
+
+
+    CGContextEndTransparencyLayer(context)                                                // transparency:
+
+    CGContextRestoreGState(context)                                                       // context:
+  }
+
+  /**
+  drawShape:withAttributes:
 
   :param: shape Shape
   :param: attributes Attributes
@@ -188,6 +225,7 @@ public final class DrawingKit {
 
     CGContextSaveGState(context)
     CGContextSetBlendMode(context, attributes.blendMode)
+    CGContextSetAlpha(context, attributes.alpha)
 
     UIRectClip(attributes.rect)
     CGContextTranslateCTM(context, attributes.rect.origin.x, attributes.rect.origin.y)
@@ -197,26 +235,20 @@ public final class DrawingKit {
 
     let path = pathForShape(shape, withAttributes: attributes)
 
-    if attributes.fill, let c = attributes.fillColor ?? attributes.color { c.setFill(); path.fill() }
-    if attributes.stroke, let c = attributes.strokeColor ?? attributes.color { c.setStroke(); path.stroke() }
+    if attributes.fill, let c = attributes.color { c.setFill(); path.fill() }
+    if attributes.stroke, let c = attributes.accentColor ?? attributes.color { c.setStroke(); path.stroke() }
 
     CGContextRestoreGState(context)
 
   }
 
-
   /**
-  drawButtonBaseWithShape:inRect:withColor:byRoundingCorners:withRadii:
+  drawBackgroundWithShape:attributes:
 
   :param: shape Shape
-  :param: rect CGRect
-  :param: color UIColor = defaultButtonColor
-  :param: corners UIRectCorner = defaultCorners
-  :param: radii CGSize = defaultRadii
+  :param: attributes Attributes
   */
-  public class func drawButtonBaseWithShape(shape: Shape, withAttributes attributes: Attributes)
-  {
-
+  public class func drawBackgroundWithShape(shape: Shape, attributes: Attributes) {
     let context = UIGraphicsGetCurrentContext()
 
     // Draw the base with an outer shadow
@@ -234,183 +266,140 @@ public final class DrawingKit {
     drawShape(shape, withAttributes: attrs)
 
     CGContextEndTransparencyLayer(context)                                                  // transparency:
+  }
 
-/**     var strokeAttrs = attributes
+  /**
+  strokeShape:withAttributes:
+
+  :param: shape Shape
+  :param: attributes Attributes
+  */
+  public class func strokeShape(shape: Shape, withAttributes attributes: Attributes) {
+    var strokeAttrs = attributes
     strokeAttrs.shadow = strokeShadow
     strokeAttrs.stroke = true
     strokeAttrs.fill = false
+    strokeAttrs.lineWidth = max(strokeAttrs.lineWidth, 2)
     drawShape(shape, withAttributes: strokeAttrs)
- */
-    var overlayAttrs = attributes
-    overlayAttrs.rect = attributes.rect.rectByInsetting(dx: 6, dy: 6)
-    let overlayPath = pathForShape(shape, withAttributes: overlayAttrs)
+  }
 
-    CGContextSaveGState(context)                                                           // context: •
-    overlayPath.addClip() // helps to cut down on edge artifacts
+  /**
+  drawGlossWithShape:attributes:
 
-    // Draw overlay
-    CGContextSetBlendMode(context, kCGBlendModeSoftLight)
+  :param: shape Shape
+  :param: attributes Attributes
+  */
+  public class func drawGlossWithShape(shape: Shape, attributes: Attributes)
+  {
 
-    let bounds = overlayPath.bounds
+    let context = UIGraphicsGetCurrentContext()
+
+    CGContextSaveGState(context)
+    CGContextSetBlendMode(context, attributes.blendMode)
+    CGContextSetAlpha(context, attributes.alpha)
+
+    pathForShape(shape, withAttributes: attributes).addClip()
+
+    let bounds = CGContextGetClipBoundingBox(context)
     let p1 = CGPoint(x: bounds.midX, y: bounds.midY + 0.5 * bounds.height)
     let p2 = CGPoint(x: bounds.midX, y: bounds.midY)
     let options = UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation)
     CGContextDrawLinearGradient(context, verticalGloss, p1, p2, options)
 
-    CGContextRestoreGState(context)                                                         // context:
-
+    CGContextRestoreGState(context)
   }
 
   /**
-  drawButton:color:contentColor:image:corners:radii:text:fontAttributes:applyGloss:shape:highlighted:
+  drawBaseWithShape:attributes:
 
-  :param: #rect CGRect
-  :param: color UIColor = defaultButtonColor
-  :param: contentColor UIColor = defaultContentColor
-  :param: image UIImage? = nil
-  :param: corners UIRectCorner = defaultCorners
-  :param: radii CGSize = defaultRadii
-  :param: text String? = nil
-  :param: fontAttributes [String AnyObject]? = nil
-  :param: applyGloss Bool = true
   :param: shape Shape
+  :param: attributes Attributes
+  */
+  public class func drawBaseWithShape(shape: Shape, attributes: Attributes) {
+
+    // Draw the base with an outer shadow
+    drawBackgroundWithShape(shape, attributes: attributes)
+
+    // Stroke shape if attributes have stroke set to true
+    if attributes.stroke {strokeShape(shape, withAttributes: attributes) }
+
+    // Draw glossy overlay
+    var glossAttrs = attributes
+    glossAttrs.rect = attributes.rect.rectByInsetting(dx: 6, dy: 6)
+    glossAttrs.alpha = 0.1
+    glossAttrs.blendMode = kCGBlendModeSoftLight
+
+    drawGlossWithShape(shape, attributes: glossAttrs)
+  }
+
+  /**
+  drawButtonWithShape:attributes:gloss:highlighted:
+
+  :param: shape Shape
+  :param: attributes Attributes
+  :param: gloss Bool = true
   :param: highlighted Bool = false
   */
-  public class func drawButtonWithShape(shape: Shape,
-                                 inRect rect: CGRect,
-                              withColor color: UIColor = defaultButtonColor,
-                       withContentColor ccolor: UIColor = defaultContentColor,
-                      byRoundingCorners corners: UIRectCorner = defaultCorners,
-                              withRadii radii: CGSize = defaultRadii,
-                                  image: UIImage? = nil,
-                                   text: String? = nil,
-                    usingFontAttributes fontAttributes: [String:AnyObject]? = nil,
-                             applyGloss: Bool = true,
-                               highlighted: Bool = false)
-  {
+  public class func drawButtonWithShape(shape: Shape, attributes: Attributes, gloss: Bool = true, highlighted: Bool = false) {
     let context = UIGraphicsGetCurrentContext()
 
     // TODO: Check points against path for the sides of min/max font height, i.e. shrink more for diamond/triangle shapes
-    let baseRect = rect.rectByInsetting(dx: 4, dy: 4).integerRect
+    let baseRect = attributes.rect.rectByInsetting(dx: 4, dy: 4).integerRect
+
     let bleedRect = baseRect.rectByInsetting(dx: 4, dy: 4)
 
-    let contentOuterShadow: NSShadow? = highlighted ? NSShadow(color: ccolor, offset: CGSize.zeroSize, blurRadius: 5) : nil
+    let accentColor = attributes.accentColor ?? defaultAccentColor
+    let accentShadow: NSShadow? = highlighted ? NSShadow(color: accentColor, offset: CGSize.zeroSize, blurRadius: 5) : nil
 
-
-    CGContextSaveGState(context)                                                            // context stack: •
-    UIRectClip(bleedRect)
-    CGContextTranslateCTM(context, bleedRect.origin.x, bleedRect.origin.y)
-    var attrs = Attributes(rect: CGRect(size: bleedRect.size))
-    attrs.color = ccolor
-    attrs.corners = corners
-    attrs.radii = radii
+    // Draw shape filled with accent color
+    var attrs = Attributes(rect: bleedRect)
+    attrs.color = accentColor
+    attrs.corners = attributes.corners
+    attrs.radii = attributes.radii
     drawShape(shape, withAttributes: attrs)
-    CGContextRestoreGState(context)                                                         // context:
 
     CGContextSaveGState(context)                                                            // context: •
+    accentShadow?.setShadow()
     CGContextBeginTransparencyLayer(context, nil)                                           // transparency: •
-    CGContextSaveGState(context)                                                            // context: ••
-    contentOuterShadow?.setShadow()
-    CGContextBeginTransparencyLayer(context, nil)                                           // transparency: ••
 
-    CGContextSaveGState(context)                                                            // context: •••
-    UIRectClip(baseRect)
-    CGContextTranslateCTM(context, baseRect.origin.x, baseRect.origin.y)
-
-    attrs.rect = CGRect(size: baseRect.size)
-    attrs.color = color
-    attrs.strokeColor = ccolor
-    attrs.lineWidth = 1.0
-
-    drawButtonBaseWithShape(shape, withAttributes: attrs)
-    CGContextRestoreGState(context)                                                         // context: ••
-
-
-    CGContextEndTransparencyLayer(context)                                                  // transparency: •
-    CGContextRestoreGState(context)                                                         // context: •
+    // Draw background
+    attrs.color = attributes.color ?? defaultBackgroundColor
+    attrs.accentColor = accentColor
+    attrs.rect = baseRect
+    attrs.stroke = attributes.stroke
+    drawBaseWithShape(shape, attributes: attrs)
 
     CGContextSaveGState(context)                                                            // context: ••
     CGContextSetBlendMode(context, kCGBlendModeDestinationOut)
     CGContextBeginTransparencyLayer(context, nil)                                           // transparency: ••
 
 
-    if let image = image {
+    if let image = attributes.image {
 
-      let actualImageSize = image.size
-      let boundingSize = baseRect.size
-      let imageSize = boundingSize.contains(actualImageSize)
-                        ? actualImageSize
-                        : actualImageSize.aspectMappedToSize(boundingSize, binding: true)
-      let imageOffset = CGPoint(x: baseRect.midX - imageSize.width * 0.5, y: baseRect.midY - imageSize.height * 0.5)
+      var imageAttrs = attributes
+      imageAttrs.rect = baseRect
+      imageAttrs.alpha = 0.9
+      imageAttrs.shadow = innerShadow
+      imageAttrs.accentShadow = accentShadow
 
-      //// Icon Group
-      CGContextSaveGState(context)                                                          // context: •••
-      CGContextTranslateCTM(context, imageOffset.x, imageOffset.y)
-
-      innerShadow.setShadow()
-      CGContextSetAlpha(context, 0.9)
-      CGContextBeginTransparencyLayer(context, nil)                                         // transparency: •••
-
-
-      //// Icon Path Drawing
-      CGContextSaveGState(context)                                                          // context: ••••
-      contentOuterShadow?.setShadow()
-      CGContextBeginTransparencyLayer(context, nil)                                         // transparency: ••••
-      CGContextSaveGState(context)                                                          // context: •••••
-      let imageRect = CGRect(size: imageSize)
-      CGContextClipToRect(context, imageRect)
-      image.drawInRect(imageRect)
-      CGContextRestoreGState(context)                                                       // context: ••••
-      CGContextEndTransparencyLayer(context)                                                // transparency: •••
-      CGContextRestoreGState(context)                                                       // context: •••
-
-
-
-      CGContextEndTransparencyLayer(context)                                                // transparency: ••
-
-      CGContextRestoreGState(context)                                                       // context: ••
+      drawImage(image, withAttributes: imageAttrs, boundByShape: shape)
     }
 
+    if attributes.text != nil || attributes.attributedText != nil {
 
-    if let text: NSString = text {
-      let appliedFontSize: CGFloat = min(baseRect.size.width / CGFloat(text.length), baseRect.size.height)
+      var txtAttrs = attributes
+      txtAttrs.rect = baseRect
+      txtAttrs.shadow = accentShadow
 
-      CGContextSaveGState(context)                                                          // context: •••
-      contentOuterShadow?.setShadow()
-
-      let attributes: [String:AnyObject]
-
-      if fontAttributes != nil {
-
-        var attrs = fontAttributes!
-        if let f = attrs[NSFontAttributeName] as? UIFont { attrs[NSFontAttributeName] = f.fontWithSize(appliedFontSize) }
-        attributes = attrs
-
+      let text: String
+      if let attributedText = attributes.attributedText {
+        txtAttrs.fontAttributes = attributedText.attributesAtIndex(0, effectiveRange: nil)
+        text = attributedText.string
       } else {
-
-        let paragraphStyle = NSParagraphStyle.paragraphStyleWithAttributes(alignment: .Center)
-        let font = UIFont(name: "HelveticaNeue-Bold", size: appliedFontSize)!
-        let fg = UIColor.blackColor()
-        attributes = [ NSFontAttributeName           : font,
-                       NSForegroundColorAttributeName: fg,
-                       NSParagraphStyleAttributeName : paragraphStyle ]
-
+        text = attributes.text!
       }
 
-      let textHeight: CGFloat = text.boundingRectWithSize(CGSize(width: bleedRect.width, height: CGFloat.infinity),
-                                                 options: NSStringDrawingOptions.UsesLineFragmentOrigin,
-                                              attributes: attributes,
-                                                 context: nil).size.height
-      CGContextSaveGState(context)                                                          // context: ••••
-      CGContextClipToRect(context, bleedRect);
-      let textRect = CGRect(x: bleedRect.minX,
-                            y: bleedRect.minY + (bleedRect.height - textHeight) * 0.5,
-                            width: bleedRect.width,
-                            height: textHeight)
-      text.drawInRect(textRect, withAttributes: attributes)
-      CGContextRestoreGState(context)                                                       // context: •••
-      CGContextRestoreGState(context)                                                       // context: ••
-
+      drawText(text, withAttributes: txtAttrs, boundByShape: shape)
     }
 
 
@@ -422,50 +411,17 @@ public final class DrawingKit {
     CGContextRestoreGState(context)                                                         // context:
 
 
-    if (applyGloss) {
-
-      CGContextBeginTransparencyLayer(context, nil)                                         // transparency: •
+    if gloss {
 
       var glossAttrs = Attributes(rect: baseRect)
-      glossAttrs.corners = corners
-      glossAttrs.radii = radii
-      glossAttrs.blendMode = kCGBlendModeSourceAtop
+      glossAttrs.corners = attributes.corners
+      glossAttrs.alpha = 0.1
+      glossAttrs.radii = attributes.radii
+      glossAttrs.blendMode = kCGBlendModeSoftLight
 
-      drawGlossWithShape(shape, withAttributes: glossAttrs)
-
-      CGContextEndTransparencyLayer(context)                                                // transparency:
+      drawGlossWithShape(shape, attributes: glossAttrs)
     }
 
-  }
-
-  /**
-  drawGlossWithShape:inRect:byRoundingCorners:withRadii:
-
-  :param: shape Shape
-  :param: rect CGRect
-  :param: corners UIRectCorner = defaultCorners
-  :param: radii CGSize = defaultRadii
-  */
-  public class func drawGlossWithShape(shape: Shape, withAttributes attributes: Attributes)
-  {
-
-    let context = UIGraphicsGetCurrentContext()
-
-
-    let path = pathForShape(shape, withAttributes: attributes)
-
-    CGContextSaveGState(context)
-    CGContextSetBlendMode(context, attributes.blendMode)
-    CGContextSetAlpha(context, 0.1)
-    path.addClip()
-
-    let bounds = path.bounds
-    let p1 = CGPoint(x: bounds.midX, y: bounds.midY + 0.5 * bounds.height)
-    let p2 = CGPoint(x: bounds.midX, y: bounds.midY)
-    let options = UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation)
-    CGContextDrawLinearGradient(context, verticalGloss, p1, p2, options)
-
-    CGContextRestoreGState(context)
   }
 
   /**

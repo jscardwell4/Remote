@@ -282,7 +282,10 @@ public class ButtonView: RemoteElementView {
     UIGraphicsPushContext(context)
     let biggerRect = rect.rectByInsetting(dx: -3, dy: -3)
     CGContextClearRect(context, biggerRect)
-    UI.DrawingKit.drawButtonWithShape(button.shape, inRect: biggerRect, image: button.icon?.colorImage, text: button.title?.string, highlighted: button.highlighted)
+    var attributes = UI.DrawingKit.Attributes(rect: biggerRect)
+    attributes.image = button.icon?.colorImage
+    attributes.attributedText = button.title
+    UI.DrawingKit.drawButtonWithShape(button.shape, attributes: attributes, highlighted: button.highlighted)
     UIGraphicsPopContext()
   }
 
@@ -293,11 +296,11 @@ public class ButtonView: RemoteElementView {
 	:param: rect CGRect
 	*/
 	override func drawContentInContext(ctx: CGContextRef, inRect rect: CGRect) {
-    UIGraphicsPushContext(ctx)
-    let biggerRect = rect.rectByInsetting(dx: -3, dy: -3)
-    CGContextClearRect(ctx, biggerRect)
-    UI.DrawingKit.drawButtonWithShape(button.shape, inRect: biggerRect, image: button.icon?.colorImage, text: button.title?.string, highlighted: button.highlighted)
-    UIGraphicsPopContext()
+    // UIGraphicsPushContext(ctx)
+    // let biggerRect = rect.rectByInsetting(dx: -3, dy: -3)
+    // CGContextClearRect(ctx, biggerRect)
+    // UI.DrawingKit.drawButtonWithShape(button.shape, inRect: biggerRect, image: button.icon?.colorImage, text: button.title?.string, highlighted: button.highlighted)
+    // UIGraphicsPopContext()
 
 /*
     super.drawContentInContext(ctx, inRect: rect)

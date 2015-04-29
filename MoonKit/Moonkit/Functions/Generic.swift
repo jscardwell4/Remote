@@ -11,6 +11,22 @@ import Foundation
 public func typeCast<T,U>(t: T, u: U.Type) -> U? { return t as? U }
 public func typeCast<T,U>(t: T?, u: U.Type) -> U? { return t != nil ? typeCast(t!, u) : nil }
 
+public func **<T:IntegerArithmeticType>(lhs: T, rhs: T) -> T {
+  return reduce(1..<rhs.toIntMax(), lhs, {n, _ in n * lhs})
+}
+
+public func **(lhs: Float, rhs: Int) -> Float {
+  return reduce(0..<rhs, Float(0.0), {n, _ in n * lhs})
+}
+
+public func **(lhs: Double, rhs: Int) -> Double {
+  return reduce(0..<rhs, 0.0, {n, _ in n * lhs})
+}
+
+public func **(lhs: CGFloat, rhs: Int) -> CGFloat {
+  return reduce(0..<rhs, CGFloat(0.0), {n, _ in n * lhs})
+}
+
 /**
 createIdentifier:suffix:
 
