@@ -218,6 +218,47 @@ extension CGRect {
   	if anchored { rect.offset(dx: midX - rect.midX, dy: midY - rect.midY) }
   	return rect
   }
+  public mutating func proportionallyInsetX(dx: CGFloat) {
+    let (w, h) = size.unpack()
+    let ww = w - 2 * dx
+    let ratio = ww / w
+    let hh = h * ratio
+    let dy = (h - hh) / 2
+    origin.x += dx
+    origin.y += dy
+    size.width = ww
+    size.height = hh
+  }
+  public func rectByProportionallyInsettingX(dx: CGFloat) -> CGRect {
+    var r = self; r.proportionallyInsetX(dx); return r
+  }
+  public mutating func proportionallyInsetY(dy: CGFloat) {
+    let (w, h) = size.unpack()
+    let hh = h - 2 * dy
+    let ratio = hh / h
+    let ww = w * ratio
+    let dx = (w - ww) / 2
+    origin.x += dx
+    origin.y += dy
+    size.width = ww
+    size.height = hh
+  }
+  public func rectByProportionallyInsettingY(dy: CGFloat) -> CGRect {
+    var r = self; r.proportionallyInsetY(dy); return r
+  }
+  public mutating func proportionallyInset(#dx: CGFloat, dy: CGFloat) {
+    let xRect = rectByProportionallyInsettingX(dx)
+    let yRect = rectByProportionallyInsettingY(dy)
+    // self = xRect.size > yRect.size ? xRect : yRect
+    let w = width > height ? max(xRect.width, yRect.width) : min(xRect.width, yRect.width)
+    let h = height > width ? max(xRect.height, yRect.height) : min(xRect.height, yRect.height)
+    let x = (width - w) * 0.5
+    let y = (height - h) * 0.5
+    self = CGRect(x: x, y: y, width: w, height: h)
+  }
+  public func rectByProportionallyInsetting(#dx: CGFloat, dy: CGFloat) -> CGRect {
+    var r = self; r.proportionallyInset(dx: dx, dy: dy); return r
+  }
   public mutating func transform(transform: CGAffineTransform) {
     self = rectByApplyingTransform(transform)
   }

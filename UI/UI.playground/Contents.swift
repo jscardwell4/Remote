@@ -2,70 +2,74 @@
 
 import UIKit
 import MoonKit
+import DataModel
 import UI
 
-class TestView1: UIView {
-  convenience init() { self.init(frame: CGRect(x: 0, y: 0, width: 300, height: 100)); opaque = false }
-  override func drawRect(rect: CGRect) {
-    UI.DrawingKit.drawRoundishButtonBase(frame: rect, color: UI.DrawingKit.buttonBaseColor, radius: 20.0)
-  }
-}
-let testView1 = TestView1()
-testView1
-class TestView2: UIView {
-  convenience init() { self.init(frame: CGRect(x: 0, y: 0, width: 200, height: 200)); opaque = false }
-  override func drawRect(rect: CGRect) {
-    UI.DrawingKit.drawRectangularButtonBase(frame: rect, color: UI.DrawingKit.buttonBaseColor)
-  }
-}
-let testView2 = TestView2()
-testView2
-class TestView3: UIView {
-  convenience init() { self.init(frame: CGRect(x: 0, y: 0, width: 200, height: 200)); opaque = false }
-  override func drawRect(rect: CGRect) {
-    UI.DrawingKit.drawTriangleButtonBase(frame: rect, color: UI.DrawingKit.buttonBaseColor)
-  }
-}
-let testView3 = TestView3()
-testView3
-class TestView4: UIView {
-  convenience init() { self.init(frame: CGRect(x: 0, y: 0, width: 200, height: 200)); opaque = false }
-  override func drawRect(rect: CGRect) {
-    UI.DrawingKit.drawDiamondButtonBase(frame: rect, color: UI.DrawingKit.buttonBaseColor)
-  }
-}
-let testView4 = TestView4()
-testView4
-class TestView5: UIView {
-  convenience init() { self.init(frame: CGRect(x: 0, y: 0, width: 200, height: 200)); opaque = false }
-  override func drawRect(rect: CGRect) {
-    UI.DrawingKit.drawOvalButtonBase(frame: rect, color: UI.DrawingKit.buttonBaseColor)
-  }
-}
-let testView5 = TestView5()
-testView5
-class TestView6: UIView {
-  convenience init() { self.init(frame: CGRect(x: 0, y: 0, width: 200, height: 200)); opaque = false }
-  override func drawRect(rect: CGRect) {
-    UI.DrawingKit.drawBatteryStatus(batteryBaseColor: UI.DrawingKit.buttonBaseColor, hasPower: true, chargeLevel: 0.75, containingFrame: rect)
-  }
-}
-let testView6 = TestView6()
-testView6
+var r = CGRect(size: CGSize(width: 300, height: 100))
+var rr = r
+r.inset(dx: 4, dy: 4)
+rr.proportionallyInsetX(4)
+rr.integerize()
 
-class TestView7: UIView {
-  convenience init() { self.init(frame: CGRect(x: 0, y: 0, width: 200, height: 200)); opaque = false; clipsToBounds = false }
-  override func drawRect(rect: CGRect) {
-    UI.DrawingKit.drawWifiStatus(iconColor: UI.DrawingKit.buttonBaseColor, connected: false, containingFrame: rect)
-  }
+class TestView: UIView {
+  var draw: (CGRect) -> Void = { _ in } { didSet { setNeedsDisplay() } }
+  convenience init(frame: CGRect, draw d: (CGRect) -> Void) { self.init(frame: frame); draw = d; opaque = false }
+  override func drawRect(rect: CGRect) { draw(rect) }
 }
-let testView7 = TestView7()
-testView7
-class TestView8: UIView {
-  convenience init() { self.init(frame: CGRect(x: 0, y: 0, width: 600, height: 400)); opaque = false }
-  override func drawRect(rect: CGRect) {
-    UI.DrawingKit.drawRoundishButtonWithText(color: UI.DrawingKit.buttonBaseColor, buttonText: "Menu", addGloss: true, textFrame: rect, radius: 20)
-  }
+
+let testView = TestView(
+  frame: CGRect(size: CGSize(width: 300, height: 100)),
+  draw: { UI.DrawingKit.drawBaseWithShape(.RoundedRectangle, attributes: UI.DrawingKit.Attributes(rect: $0)) }
+)
+testView
+testView.draw = { UI.DrawingKit.drawBaseWithShape(.Rectangle, attributes: UI.DrawingKit.Attributes(rect: $0)) }
+testView
+//testView.frame = CGRect(size: CGSize(square: 200))
+testView.draw = { UI.DrawingKit.drawBaseWithShape(.Triangle, attributes: UI.DrawingKit.Attributes(rect: $0)) }
+testView
+testView.draw = { UI.DrawingKit.drawBaseWithShape(.Diamond, attributes: UI.DrawingKit.Attributes(rect: $0)) }
+testView
+testView.draw = { UI.DrawingKit.drawBaseWithShape(.Oval, attributes: UI.DrawingKit.Attributes(rect: $0)) }
+testView
+testView.draw = {UI.DrawingKit.drawBatteryStatus(color: UIColor.darkGrayColor(), hasPower: true, chargeLevel: 1, frame: $0)}
+testView
+testView.draw = {UI.DrawingKit.drawBatteryStatus(color: UIColor.darkGrayColor(), hasPower: true, chargeLevel: 0.5, frame: $0)}
+testView
+testView.draw = {UI.DrawingKit.drawBatteryStatus(color: UIColor.darkGrayColor(), hasPower: false, chargeLevel: 0.25, frame: $0)}
+testView
+testView.draw = {UI.DrawingKit.drawWifiStatus(color: UIColor.darkGrayColor(), connected: true, frame: $0)}
+testView
+testView.draw = {UI.DrawingKit.drawWifiStatus(color: UIColor.darkGrayColor(), connected: false, frame: $0)}
+testView
+testView.frame = CGRect(size: CGSize(width: 300, height: 200))
+testView.draw = {
+  var attributes = UI.DrawingKit.Attributes(rect: $0)
+  attributes.text = "Menu"
+  attributes.accentColor = UI.DrawingKit.defaultAccentColor
+  UI.DrawingKit.drawButtonWithShape(.RoundedRectangle, attributes: attributes, gloss: true, highlighted: false)
 }
-let testView8 = TestView8()
-testView8
+testView
+testView.draw = {
+  var attributes = UI.DrawingKit.Attributes(rect: $0)
+  attributes.text = "Menu"
+  attributes.accentColor = UI.DrawingKit.defaultAccentColor
+  UI.DrawingKit.drawButtonWithShape(.RoundedRectangle, attributes: attributes, gloss: false, highlighted: false)
+}
+testView
+testView.draw = {
+  var attributes = UI.DrawingKit.Attributes(rect: $0)
+  attributes.text = "Menu"
+  attributes.accentColor = UI.DrawingKit.defaultAccentColor
+  UI.DrawingKit.drawButtonWithShape(.RoundedRectangle, attributes: attributes, gloss: true, highlighted: true)
+}
+testView
+testView.draw = {
+  var attributes = UI.DrawingKit.Attributes(rect: $0)
+  attributes.text = "Menu"
+  attributes.accentColor = UI.DrawingKit.defaultAccentColor
+  UI.DrawingKit.drawButtonWithShape(.RoundedRectangle, attributes: attributes, gloss: false, highlighted: true)
+}
+testView
+testView.draw = {UI.DrawingKit.drawGlossWithShape(.RoundedRectangle, attributes: UI.DrawingKit.Attributes(rect: $0))}
+testView
+

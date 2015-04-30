@@ -13,7 +13,7 @@ import MoonKit
 
 public final class ConstraintManager: NSObject {
 
-  public typealias Metrics = [String:CGRect]
+  public typealias Metrics = [UUIDIndex:CGRect]
 
   public private(set) weak var remoteElement: RemoteElement!
   public var proportionLock: Bool = false
@@ -196,8 +196,8 @@ public final class ConstraintManager: NSObject {
         if attributes ∌ constraint.firstAttribute || constraint.firstItem == nil { continue }
         var constraintValues = constraint.dictionaryWithValuesForKeys(Constraint.propertyList()) as! [String:AnyObject]
         constraint.managedObjectContext?.deleteObject(constraint)
-        let bounds = CGRect(origin: CGPoint.zeroPoint, size: metrics[self.remoteElement.uuid]!.size)
-        let frame = metrics[constraint.firstItem!.uuid]!
+        let bounds = CGRect(origin: CGPoint.zeroPoint, size: metrics[self.remoteElement.uuidIndex]!.size)
+        let frame = metrics[constraint.firstItem!.uuidIndex]!
         let attribute = NSLayoutAttribute(rawValue: (constraintValues["firstAttribute"] as! NSNumber).integerValue)!
         switch attribute {
           case .Bottom:
@@ -261,7 +261,7 @@ public final class ConstraintManager: NSObject {
 
       for element in subelements {
         self.freezeConstraints(element.constraintManager.dependentSiblingConstraints, attributes: attributes, metrics: metrics)
-        self.removeProportionLockForElement(element, currentSize: metrics[element.uuid]!.size)
+        self.removeProportionLockForElement(element, currentSize: metrics[element.uuidIndex]!.size)
         for constraint in element.constraintManager.constraintsForAttribute(attribute) {
           constraint.managedObjectContext?.deleteObject(constraint)
           let c = Constraint(item: element,
@@ -335,7 +335,7 @@ public final class ConstraintManager: NSObject {
 
       for element in subelements {
         self.freezeConstraints(element.constraintManager.dependentSiblingConstraints, attributes: attributes, metrics: metrics)
-        self.freezeSize(metrics[element.uuid]!.size, forSubelement: element, attribute: attribute)
+        self.freezeSize(metrics[element.uuidIndex]!.size, forSubelement: element, attribute: attribute)
         for constraint in element.constraintManager.constraintsForAttribute(attribute) {
           constraint.managedObjectContext?.deleteObject(constraint)
         }
@@ -361,14 +361,14 @@ public final class ConstraintManager: NSObject {
   public func shrinkwrapSubelementsUsingMetrics(metrics: Metrics) {
 
     var filteredMetrics = metrics
-    filteredMetrics[remoteElement.uuid] = nil
-    if remoteElement.parentElement != nil { filteredMetrics[remoteElement.parentElement!.uuid] = nil }
+    filteredMetrics[remoteElement.uuidIndex] = nil
+    if remoteElement.parentElement != nil { filteredMetrics[remoteElement.parentElement!.uuidIndex] = nil }
 
     let (minX, maxX, minY, maxY) = Array(filteredMetrics.values).reduce((CGFloat.max, CGFloat.min, CGFloat.max, CGFloat.min)) {
       (min($0.0, $1.minX), max($0.1, $1.maxX), min($0.2, $1.minY), max($0.3, $1.maxY))
     }
 
-    let currentSize = metrics[remoteElement.uuid]?.size ?? CGSize.zeroSize
+    let currentSize = metrics[remoteElement.uuidIndex]?.size ?? CGSize.zeroSize
     let contractX = minX > 0 ? -minX : (maxX < currentSize.width ? currentSize.width - maxX : 0.0)
     let contractY = minY > 0 ? -minY : (maxY < currentSize.height ? currentSize.height - maxY : 0.0)
     let expandX = maxX > currentSize.width ? maxX - currentSize.width : (minX < 0 ? minX : 0.0)
@@ -377,7 +377,7 @@ public final class ConstraintManager: NSObject {
     let offsetY = contractY < 0 ? contractY : (expandY < 0 ? -expandY : 0.0)
     var boundingSize = UIScreen.mainScreen().bounds.size
     if remoteElement.parentElement != nil {
-      if let parentFrame = metrics[remoteElement.parentElement!.uuid] { boundingSize = parentFrame.size}
+      if let parentFrame = metrics[remoteElement.parentElement!.uuidIndex] { boundingSize = parentFrame.size}
     }
 
     let newSize = CGSize(width: min(boundingSize.width, maxX - minX), height: min(boundingSize.height, maxY - minY))
@@ -455,7 +455,7 @@ public final class ConstraintManager: NSObject {
   */
   public func removeMultipliersUsingMetrics(metrics: Metrics) {
 
-    if let remoteElementFrame = metrics[remoteElement.uuid] {
+    if let remoteElementFrame = metrics[remoteElement.uuidIndex] {
 
       let boundingWidth = remoteElementFrame.width
       let boundingHeight = remoteElementFrame.height
@@ -469,7 +469,7 @@ public final class ConstraintManager: NSObject {
             constraintValues["multiplier"] = 1.0
             self.remoteElement.managedObjectContext?.deleteObject(constraint)
             precondition(constraintValues["firstItem"] != nil)
-            if let frame = metrics[(constraintValues["firstItem"] as! RemoteElement).uuid] {
+            if let frame = metrics[(constraintValues["firstItem"] as! RemoteElement).uuidIndex] {
               switch constraint.firstAttribute {
                 case .Baseline, .Bottom: constraintValues["constant"] = frame.maxY - boundingHeight
                 case .Top:               constraintValues["constant"] = frame.minY
@@ -536,7 +536,7 @@ public final class ConstraintManager: NSObject {
       let constraintsToRemove = filter(constraint.firstItem!.firstItemConstraints, {replacements ∋ $0.firstAttribute})
       self.remoteElement.managedObjectContext?.deleteObjects(constraintsToRemove)
 
-      let frame = metrics[constraint.firstItem!.uuid]!
+      let frame = metrics[constraint.firstItem!.uuidIndex]!
       let bounds = frame.rectWithOrigin(CGPoint.zeroPoint)
 
       for firstAttribute in additions {
