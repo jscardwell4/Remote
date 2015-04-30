@@ -136,12 +136,12 @@ public class RemoteElementView: UIView {
   private lazy var backdropView: BackdropView = BackdropView(delegate: self)
   private lazy var overlayView: OverlayView = OverlayView(delegate: self)
 
-  public var viewFrames: [String:CGRect] {
-    var frames = [model.uuid: frame]
+  public var viewFrames: [UUIDIndex:CGRect] {
+    var frames = [model.uuidIndex: frame]
     if parentElementView != nil {
-      frames[parentElementView!.model.uuid] = parentElementView!.frame
+      frames[parentElementView!.model.uuidIndex] = parentElementView!.frame
     }
-    for subelementView in subelementViews { frames[subelementView.model.uuid] = subelementView.frame }
+    for subelementView in subelementViews { frames[subelementView.model.uuidIndex] = subelementView.frame }
     return frames
   }
 
@@ -553,25 +553,16 @@ public class RemoteElementView: UIView {
   :param: rect CGRect
   */
   func drawBackdropInContext(ctx: CGContextRef, inRect rect: CGRect) {
-    if model.role == .Toolbar { return }
     switch model.shape {
-      case .RoundedRectangle:
-        UI.DrawingKit.drawRoundishButtonBase(frame: rect,
-                                             color: model.backgroundColor ?? UI.DrawingKit.buttonBaseColor,
-                                             radius: cornerRadii.width)
-      case .Rectangle:
-        UI.DrawingKit.drawRectangularButtonBase(frame: rect, color: model.backgroundColor ?? UI.DrawingKit.buttonBaseColor)
-      case .Triangle:
-        UI.DrawingKit.drawTriangleButtonBase(frame: rect, color: model.backgroundColor ?? UI.DrawingKit.buttonBaseColor)
-      case .Diamond:
-        UI.DrawingKit.drawDiamondButtonBase(frame: rect, color: model.backgroundColor ?? UI.DrawingKit.buttonBaseColor)
-      default:
-        if let path = borderPath {
-          UIGraphicsPushContext(ctx)
-          backgroundColor?.setFill()
-          path.fill()
-          UIGraphicsPopContext()
+      case .Undefined:
+        if let color = backgroundColor {
+          color.setFill()
+          UIRectFill(rect)
         }
+      default:
+        var attrs = Painter.Attributes(rect: rect)
+        attrs.color = backgroundColor ?? Painter.defaultBackgroundColor
+        Painter.drawBackgroundWithShape(model.shape, attributes: attrs)
     }
 
     // Draw background image
@@ -589,20 +580,11 @@ public class RemoteElementView: UIView {
   */
   func drawOverlayInContext(ctx: CGContextRef, inRect rect: CGRect) {
 
-    let path = borderPath != nil ? UIBezierPath(CGPath: borderPath!.CGPath) : UIBezierPath(rect: rect)
-    UIGraphicsPushContext(ctx)
-    path.addClip()
-
-    if model.style & RemoteElement.Style.DrawBorder != nil {
-      path.lineWidth = 3.0
-      path.lineJoinStyle = kCGLineJoinRound
-      // TODO: Parameterize stroke color
-      UIColor.blackColor().setStroke()
-      path.stroke()
-    }
-
-    if model.style & RemoteElement.Style.ApplyGloss != nil {
-      UI.DrawingKit.drawGloss(frame: rect)
+    if model.style & RemoteElement.Style.ApplyGloss != nil && model.shape != .Undefined {
+      var attrs = Painter.Attributes(rect: rect)
+      attrs.alpha = 0.15
+      attrs.blendMode = kCGBlendModeSoftLight
+      Painter.drawGlossWithShape(model.shape, attributes: attrs)
     }
 
     UIGraphicsPopContext()
@@ -611,20 +593,9 @@ public class RemoteElementView: UIView {
   /** refreshBorderPath */
   func refreshBorderPath() {
     switch model.shape {
-      case .Rectangle:
-        borderPath = UIBezierPath(rect: bounds)
-      case .RoundedRectangle:
-        borderPath = UIBezierPath(roundedRect: bounds, byRoundingCorners: .AllCorners, cornerRadii: cornerRadii)
-      case .Oval:
-        borderPath = UIBezierPath(ovalInRect: bounds.rectByInsetting(dx: 2, dy: 2))
-      case .Triangle:
-        //TODO: Refactor DrawingKit code to include a function for creating a triangle path from a rect
-        fallthrough
-      case .Diamond:
-        //TODO: Refactor DrawingKit code to include a function for creating a diamond path from a rect
-        fallthrough
-      default:
-        borderPath = nil
+      case _ where bounds.isEmpty: fallthrough
+      case .Undefined: borderPath = nil
+      default: borderPath = Painter.pathForShape(model.shape, withAttributes: Painter.Attributes(rect: bounds))
     }
   }
 

@@ -1,5 +1,5 @@
 //
-//  DrawingKit.swift
+//  Painter.swift
 //  Remote
 //
 //  Created by Moondeer on 4/28/15.
@@ -22,15 +22,15 @@ private let offset1_neg1 = CGSize(width: 0.1, height: -0.1)
 private let offset1_6 = CGSize(width: 0.1, height: 0.6)
 private let offset1_neg6 = CGSize(width: 0.1, height: -0.6)
 
-public final class DrawingKit {
+public final class Painter {
 
   public struct Attributes {
     public var color: UIColor?
     public var accentColor: UIColor?
     public var rect: CGRect
     public var lineWidth: CGFloat = 0
-    public var corners = DrawingKit.defaultCorners
-    public var radii = DrawingKit.defaultRadii
+    public var corners = Painter.defaultCorners
+    public var radii = Painter.defaultRadii
     public var shadow: NSShadow?
     public var accentShadow: NSShadow?
     public var blendMode: CGBlendMode = kCGBlendModeNormal
@@ -453,7 +453,7 @@ public final class DrawingKit {
     CGContextTranslateCTM(context, symbolRect.origin.x, symbolRect.origin.y)
     CGContextScaleCTM(context, symbolRect.size.width / 224, symbolRect.size.height / 128)
 
-    DrawingKit.drawBatteryIcon(color: color, hasPower: hasPower, chargeLevel: chargeLevel)
+    Painter.drawBatteryIcon(color: color, hasPower: hasPower, chargeLevel: chargeLevel)
     CGContextRestoreGState(context)
   }
 

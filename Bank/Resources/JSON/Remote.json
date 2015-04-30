@@ -1162,14 +1162,14 @@
           },
           {
             "uuid": "DB1C794B-A3BB-4C9E-91EC-88A1D3FB401A",
-            "name": "Playstation",
+            "name": "PS3",
             "shape": "rounded-rectangle",
             "style": "gloss",
             "constraints": {
               "index.playstation": "DB1C794B-A3BB-4C9E-91EC-88A1D3FB401A",
               "format": "playstation.height = playstation.width"
             },
-            "titles.default":<@include TitleAttributes_Default_Text.json,TEXT=Playstation,SIZE=20>,
+            "titles.default":<@include TitleAttributes_Default_Text.json,TEXT=PS3,SIZE=20>,
             "backgroundColors.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },

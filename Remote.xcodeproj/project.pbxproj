@@ -516,7 +516,7 @@
 		C285D8671AC4BF9800C527F6 /* BankCollectionItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4781ABCA395007581F2 /* BankCollectionItemCell.swift */; };
 		C285D8681AC4BFDF00C527F6 /* BankCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4761ABCA395007581F2 /* BankCollectionController.swift */; };
 		C285D86A1AC4C0E800C527F6 /* DataModelProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C285D8691AC4C0E800C527F6 /* DataModelProtocols.swift */; };
-		C2874FBA1AE68CD100BD7634 /* DrawingKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2874FB91AE68CD100BD7634 /* DrawingKit.swift */; };
+		C2874FBA1AE68CD100BD7634 /* Painter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2874FB91AE68CD100BD7634 /* Painter.swift */; };
 		C2874FC31AE6A5A400BD7634 /* UI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C24A05D11AE5C65C00C9255E /* UI.framework */; };
 		C2874FC41AE6A5A400BD7634 /* UI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C24A05D11AE5C65C00C9255E /* UI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C2874FC71AE6A5A500BD7634 /* Networking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C24A06041AE5CB4900C9255E /* Networking.framework */; };
@@ -1446,7 +1446,7 @@
 		C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Erase@2x.png"; sourceTree = "<group>"; };
 		C2817C401AEC101B00C60C07 /* ModalStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalStorage.swift; sourceTree = "<group>"; };
 		C285D8691AC4C0E800C527F6 /* DataModelProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataModelProtocols.swift; path = Model/DataModelProtocols.swift; sourceTree = "<group>"; };
-		C2874FB91AE68CD100BD7634 /* DrawingKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingKit.swift; sourceTree = "<group>"; };
+		C2874FB91AE68CD100BD7634 /* Painter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Painter.swift; sourceTree = "<group>"; };
 		C28E98F31AD1A4B000E78711 /* DataModel Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "DataModel Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C28E98F61AD1A4B000E78711 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C28E98F71AD1A4B000E78711 /* DataModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModelTests.swift; sourceTree = "<group>"; };
@@ -1466,7 +1466,6 @@
 		C293C7731AC318EB00408D35 /* Preset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preset.swift; sourceTree = "<group>"; };
 		C293C7741AC318EB00408D35 /* PresetCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetCategory.swift; sourceTree = "<group>"; };
 		C2997F2316FA563900290737 /* RETypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RETypedefs.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		C2A0B2F71AEDC1FB006A9182 /* UI-RemoteElementView.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "UI-RemoteElementView.playground"; sourceTree = "<group>"; };
 		C2A0C7501AD88D68008CF88B /* JSONStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONStorage.swift; sourceTree = "<group>"; };
 		C2A4102219B4BFB90089AACA /* ITachDeviceConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITachDeviceConnection.h; sourceTree = "<group>"; };
 		C2A4102319B4BFB90089AACA /* ITachDeviceConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITachDeviceConnection.m; sourceTree = "<group>"; };
@@ -2067,7 +2066,6 @@
 		C24A05D21AE5C65C00C9255E /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				C2A0B2F71AEDC1FB006A9182 /* UI-RemoteElementView.playground */,
 				C233E5881AE9412A00B0FD63 /* App */,
 				C24A05F41AE5C83300C9255E /* Source */,
 				C24A05E11AE5C65D00C9255E /* Tests */,
@@ -2107,7 +2105,7 @@
 		C24A05F41AE5C83300C9255E /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				C2874FB91AE68CD100BD7634 /* DrawingKit.swift */,
+				C2874FB91AE68CD100BD7634 /* Painter.swift */,
 				C21F07CB1AA378E700F1F8DD /* ActivityViewController.swift */,
 				C235A2F31A0E96B10067E226 /* ButtonView.swift */,
 				C203CC361A17DA1E0064D4CB /* RemoteElementViewConstraint.swift */,
@@ -4343,7 +4341,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C2874FBA1AE68CD100BD7634 /* DrawingKit.swift in Sources */,
+				C2874FBA1AE68CD100BD7634 /* Painter.swift in Sources */,
 				C2461BF21AE5D7DA00F123BD /* ButtonView.swift in Sources */,
 				C2461BF31AE5D7DA00F123BD /* RemoteElementViewConstraint.swift in Sources */,
 				C2461BFA1AE5D7DA00F123BD /* RockerView.swift in Sources */,

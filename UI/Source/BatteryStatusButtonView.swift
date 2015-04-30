@@ -101,13 +101,13 @@ public final class BatteryStatusButtonView: ButtonView {
 
     let baseColor: UIColor
     if let color = backgroundColor where color != UIColor.clearColor() { baseColor = color }
-    else { baseColor = UI.DrawingKit.buttonBaseColor }
+    else { baseColor = Painter.defaultBackgroundColor }
 
     let hasPower = [.Charging, .Full] ∋ batteryState
 
     let chargeLevel = CGFloat(batteryLevel)
 
-    UI.DrawingKit.drawBatteryStatus(batteryBaseColor: baseColor, hasPower: hasPower, chargeLevel: chargeLevel, containingFrame: rect)
+    Painter.drawBatteryStatus(color: baseColor, hasPower: hasPower, chargeLevel: chargeLevel, frame: rect)
 
 /*
 	  let insetRect = rect.rectByInsetting(dx: 2.0, dy: 2.0)
