@@ -1,1 +1,2015 @@
-{}
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"replace",
+				"replacetext"
+			],
+			[
+				"for",
+				"forin	for … in … done"
+			],
+			[
+				"sha",
+				"sharedManager"
+			],
+			[
+				"diff",
+				"difficulties"
+			],
+			[
+				"share",
+				"sharedInstance"
+			],
+			[
+				"auth",
+				"authenticatePlayer"
+			],
+			[
+				"user",
+				"userDefaults"
+			],
+			[
+				"Help",
+				"HelpOverlayOptions"
+			],
+			[
+				"Hel",
+				"HelpOverlayOptions"
+			],
+			[
+				"local",
+				"localPlayer"
+			],
+			[
+				"Game",
+				"GameCenterDidAuthenticateNotification"
+			],
+			[
+				"def",
+				"defaultCenter"
+			],
+			[
+				"game",
+				"gameCenterVC"
+			],
+			[
+				"present",
+				"presentGameCenterAuthenticationController"
+			],
+			[
+				"view",
+				"viewController"
+			],
+			[
+				"post",
+				"postNotificationName"
+			],
+			[
+				"disp",
+				"displaySize"
+			],
+			[
+				"disableGa",
+				"disableGameCenter"
+			],
+			[
+				"reg",
+				"registerDefaults"
+			],
+			[
+				"SD",
+				"SDKROOT"
+			],
+			[
+				"ar",
+				"arrayContainsElement"
+			],
+			[
+				"me",
+				"MENTALRAY_LOCATION"
+			],
+			[
+				"list",
+				"listx"
+			],
+			[
+				"M",
+				"MENTALRAY_LOCATION"
+			],
+			[
+				"edit",
+				"edit_note_curses_move"
+			],
+			[
+				"k",
+				"k_in"
+			],
+			[
+				"edi",
+				"edit_note_curses_exit"
+			],
+			[
+				"eid",
+				"edit_note_curses"
+			],
+			[
+				"ed",
+				"edit_note_curses_toggle"
+			],
+			[
+				"c",
+				"c_in"
+			],
+			[
+				"char",
+				"char_in"
+			],
+			[
+				"mac",
+				"max_color_pairs"
+			],
+			[
+				"max",
+				"max_colors"
+			],
+			[
+				"NT",
+				"NOTESDIR"
+			],
+			[
+				"ls",
+				"ls_hook"
+			],
+			[
+				"MSLogDe",
+				"MSLogDebugWeak"
+			],
+			[
+				"GyreCenter",
+				"GyreCenterZoneBeginTexture"
+			],
+			[
+				"wai",
+				"waitForCompletion"
+			],
+			[
+				"GyrePla",
+				"GyrePlayCorrectSound"
+			],
+			[
+				"level",
+				"levelCompletionHandler"
+			],
+			[
+				"curr",
+				"currentTime"
+			],
+			[
+				"GyreC",
+				"GyreCenterZonePauseTexture"
+			],
+			[
+				"setC",
+				"setCenterZoneTexture"
+			],
+			[
+				"all",
+				"allowSelections"
+			],
+			[
+				"wek",
+				"weakself"
+			],
+			[
+				"rev",
+				"revealOverlay"
+			],
+			[
+				"tut",
+				"tutorialStrings_"
+			],
+			[
+				"mes",
+				"messageStack"
+			],
+			[
+				"GyreL",
+				"GyreLevelCenterZone"
+			],
+			[
+				"loc",
+				"locationInNode"
+			],
+			[
+				"weak",
+				"weakself"
+			],
+			[
+				"touch",
+				"touches"
+			],
+			[
+				"revea",
+				"revealOverlay"
+			],
+			[
+				"r",
+				"r_buf"
+			],
+			[
+				"lbu",
+				"l_buf"
+			],
+			[
+				"notes-edit-mo",
+				"notes-edit-move-up"
+			],
+			[
+				"R",
+				"RBUFFER"
+			],
+			[
+				"POWE",
+				"POWERLINE_CURRENT_PATH"
+			],
+			[
+				"a",
+				"alias"
+			],
+			[
+				"hi",
+				"highlight_idx"
+			],
+			[
+				"cur",
+				"current_task_idx"
+			],
+			[
+				"in",
+				"integer"
+			],
+			[
+				"notes",
+				"notes-edit-toggle"
+			],
+			[
+				"fg",
+				"fg_color"
+			],
+			[
+				"not",
+				"notes-edit-undo"
+			],
+			[
+				"note",
+				"notes-edit-highlight"
+			],
+			[
+				"noe",
+				"notes-edit-highlight"
+			],
+			[
+				"e",
+				"e_idx"
+			],
+			[
+				"s",
+				"s_idx"
+			],
+			[
+				"col",
+				"color_code"
+			],
+			[
+				"ms",
+				"ms_print_usage"
+			],
+			[
+				"sg",
+				"sgr_parameters"
+			],
+			[
+				"sgr",
+				"sgr_parameters"
+			],
+			[
+				"color",
+				"color_index"
+			],
+			[
+				"P",
+				"POWERLINE_RIGHT_B"
+			],
+			[
+				"add",
+				"addChild"
+			],
+			[
+				"eix",
+				"exit_status"
+			],
+			[
+				"w",
+				"WIDGET"
+			],
+			[
+				"current",
+				"current_task"
+			],
+			[
+				"W",
+				"WIDGET"
+			],
+			[
+				"curre",
+				"current_line"
+			],
+			[
+				"application",
+				"applications_array"
+			],
+			[
+				"app",
+				"applications_array"
+			],
+			[
+				"appliction",
+				"applications"
+			],
+			[
+				"appli",
+				"applications_array"
+			],
+			[
+				"appic",
+				"applications"
+			],
+			[
+				"py",
+				"pythonpath"
+			],
+			[
+				"exi",
+				"exit_status"
+			],
+			[
+				"create",
+				"create_note"
+			],
+			[
+				"return",
+				"return_status"
+			],
+			[
+				"retu",
+				"return"
+			],
+			[
+				"det",
+				"detect_embedded_syntax"
+			],
+			[
+				"run",
+				"run_command"
+			],
+			[
+				"locate",
+				"locate_database"
+			],
+			[
+				"subl",
+				"subl_command"
+			],
+			[
+				"Detec",
+				"DetectEmbeddedSyntax"
+			],
+			[
+				"sett",
+				"settings_entry"
+			],
+			[
+				"synt",
+				"syntax_file"
+			],
+			[
+				"set",
+				"settings_entry"
+			],
+			[
+				"file",
+				"file_path"
+			],
+			[
+				"syn",
+				"syntax"
+			],
+			[
+				"sy",
+				"syntax_files"
+			],
+			[
+				"line",
+				"line_text"
+			],
+			[
+				"car",
+				"caret_extra_top"
+			],
+			[
+				"chunk",
+				"chunk_lines"
+			],
+			[
+				"chun",
+				"chunk_lines"
+			],
+			[
+				"option",
+				"option_chunks"
+			],
+			[
+				"opt",
+				"option_chunks"
+			],
+			[
+				"op",
+				"option_chunks"
+			],
+			[
+				"unc",
+				"uncrustified_source"
+			],
+			[
+				"out",
+				"outfile"
+			],
+			[
+				"outfile",
+				"outfile_name"
+			],
+			[
+				"outf",
+				"outfile_name"
+			],
+			[
+				"inf",
+				"infile"
+			],
+			[
+				"sour",
+				"source_base"
+			],
+			[
+				"DE",
+				"DEBUG_EXIT_AFTER_REPLACE"
+			],
+			[
+				"DEB",
+				"DEBUG_EXIT_AFTER_ARGS"
+			],
+			[
+				"infi",
+				"infile_name"
+			],
+			[
+				"Filt",
+				"FilteredFileWriteAction"
+			],
+			[
+				"File",
+				"FileFilterAction"
+			],
+			[
+				"name",
+				"namespace"
+			],
+			[
+				"config",
+				"config_file"
+			],
+			[
+				"o",
+				"outfile"
+			],
+			[
+				"no",
+				"no_common"
+			],
+			[
+				"other",
+				"other_keys"
+			],
+			[
+				"onl",
+				"only_common_with_file"
+			],
+			[
+				"sup",
+				"suppress"
+			],
+			[
+				"rep",
+				"replace"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 67.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"ssshe",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"ssswif",
+				"Set Syntax: Swift"
+			],
+			[
+				"sssw",
+				"Set Syntax: Swift"
+			],
+			[
+				"ssswit",
+				"Set Syntax: Swift"
+			],
+			[
+				"ssswi",
+				"Set Syntax: Swift"
+			],
+			[
+				"sssh",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"ssswift",
+				"Set Syntax: Swift"
+			],
+			[
+				"ssshell",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"ssshel",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"sstex",
+				"Set Syntax: TeX"
+			],
+			[
+				"sspy",
+				"Set Syntax: Python"
+			],
+			[
+				"sstext",
+				"Set Syntax: Plain Text"
+			],
+			[
+				"sss",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"sspl",
+				"Set Syntax: Plain Text"
+			],
+			[
+				"ssYam",
+				"Set Syntax: YAML"
+			],
+			[
+				"prett",
+				"Pretty JSON: Reformat (Pretty Print) JSON"
+			],
+			[
+				"remov",
+				"Package Control: Remove Package"
+			],
+			[
+				"view",
+				"View In Browser"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"she",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"Snip",
+				"Snippet: XML Processing Instruction"
+			],
+			[
+				"ssxml",
+				"Set Syntax: XML"
+			],
+			[
+				"SSpy",
+				"Set Syntax: Python"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"Snippet:",
+				"Snippet: New Class"
+			],
+			[
+				"Snippet: ",
+				"Snippet: __magic__"
+			],
+			[
+				"list",
+				"Package Control: List Packages"
+			],
+			[
+				"col",
+				"Color picker"
+			],
+			[
+				"co",
+				"Color picker"
+			],
+			[
+				"color",
+				"Color picker"
+			],
+			[
+				"c",
+				"Color picker"
+			],
+			[
+				"pep",
+				"PEP8: Format Code"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"pret",
+				"Pretty JSON: Reformat (Pretty Print) JSON"
+			],
+			[
+				"oretty",
+				"Pretty JSON: Reformat (Pretty Print) JSON"
+			],
+			[
+				"ssgnu",
+				"Set Syntax: Gnuplot"
+			],
+			[
+				"ssre",
+				"Set Syntax: Reduce"
+			],
+			[
+				"ssr",
+				"Set Syntax: Ruby"
+			],
+			[
+				"ssred",
+				"Set Syntax: Reduce"
+			],
+			[
+				"sslis",
+				"Set Syntax: Lisp"
+			],
+			[
+				"ssl",
+				"Set Syntax: Lisp"
+			],
+			[
+				"ssli",
+				"Set Syntax: Lisp"
+			],
+			[
+				"ssb",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"sscof",
+				"Set Syntax: CoffeeScript"
+			],
+			[
+				"ssjava",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"ssc",
+				"Set Syntax: C"
+			],
+			[
+				"ssapa",
+				"Set Syntax: Apache Conf"
+			],
+			[
+				"sspu",
+				"Set Syntax: Puppet"
+			],
+			[
+				"ssru",
+				"Set Syntax: Ruby"
+			],
+			[
+				"rem",
+				"Package Control: Remove Package"
+			],
+			[
+				"ssphp",
+				"Set Syntax: PHP"
+			],
+			[
+				"sass",
+				"SassBeautify"
+			],
+			[
+				"sssass",
+				"Set Syntax: Sass"
+			],
+			[
+				"sssas",
+				"Set Syntax: Sass"
+			],
+			[
+				"sassb",
+				"SassBeautify"
+			],
+			[
+				"sas",
+				"SassBeautify"
+			],
+			[
+				"SAS",
+				"SassBeautify"
+			],
+			[
+				"ssjade",
+				"Set Syntax: Jade"
+			],
+			[
+				"ssjd",
+				"Set Syntax: Jade"
+			],
+			[
+				"ssj",
+				"Set Syntax: Jade (Python)"
+			],
+			[
+				"ssjad",
+				"Set Syntax: Jade"
+			],
+			[
+				"pa",
+				"Package Control: Install Package"
+			],
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"ssja",
+				"Set Syntax: Jade"
+			],
+			[
+				"form",
+				"Format: Php"
+			],
+			[
+				"read",
+				"ReadmePlease"
+			],
+			[
+				"find",
+				"FindKeyConflicts: All Conflicts"
+			],
+			[
+				"for",
+				"Format: Php"
+			],
+			[
+				"forma",
+				"Format: Php"
+			],
+			[
+				"ssph",
+				"Set Syntax: PHP"
+			],
+			[
+				"ssh",
+				"Set Syntax: HTML"
+			],
+			[
+				"format",
+				"Format: Php"
+			],
+			[
+				"php",
+				"Format: Php"
+			],
+			[
+				"fo",
+				"Format: Javascript"
+			],
+			[
+				"sssa",
+				"Set Syntax: Sass"
+			],
+			[
+				"ss",
+				"Set Syntax: Sass"
+			],
+			[
+				"ind",
+				"Preferences: Alignment Key Bindings – User"
+			],
+			[
+				"pack",
+				"Package Control: Remove Package"
+			],
+			[
+				"ssp",
+				"Set Syntax: Plain Text"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"z",
+				"Set Syntax: ZenCoding"
+			],
+			[
+				"",
+				"Package Control: Install Package"
+			],
+			[
+				"Pa",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 568.0
+	},
+	"console":
+	{
+		"height": 378.0,
+		"history":
+		[
+			"view.run_command(\"detect_embedded_syntax\")",
+			"view.run_command(\"repeat_selected\", {\"count\":2})",
+			"sublime.log_commands(True)",
+			"view.settings().set(\"command_mode\", True)",
+			"view.settings()[\"command_mode\"] = True",
+			"view.run_command(\"repeat_selected\", {\"count\":2})",
+			"view.run_command(\"repeat_selected\", args={count:2})",
+			"view.run_command(\"repeat_selected\", {count:2})",
+			"view.run_command(\"repeat_selected\", {rpt_cnt:2})",
+			"view.run_command(\"repeat_selected\", {count:2})",
+			"view.run_command(\"repeat_selected\", 2)",
+			"view.run_command(\"repeat_selected\", args:{count: 2})",
+			"view.run_command(\"repeat_selected\", args={count: 2})",
+			"view.run_command(\"repeat_selected\", \"{count: 2}\")",
+			"view.run_command(\"repeat_selected\", {count: 2})",
+			"view.run_command(\"repeat_selected\", 2)",
+			"view.run_command(\"repeat_selected\", args={count:2})",
+			"view.run_command(\"repeat_selected\", args={count=2})",
+			"view.run_command(\"repeat_selected\", count=2)",
+			"view.run_command(\"repeat_selected\")",
+			"sublime.status_message('wtf')",
+			"status_message('wtf')",
+			"what",
+			"print(window)",
+			"help()",
+			"clear()",
+			"window.set_layout({'cols':[0.0, 0.5, 1.0],'rows':[0.0, 1.0],'cells':[[0,0,1,1],[1,0,2,1]]})",
+			"window.run_command(set_layout,{'cols':[0.0, 0.5, 1.0],'rows':[0.0, 1.0],'cells':[[0,0,1,1],[1,0,2,1]]})",
+			"sublime.run_command(set_layout,{'cols':[0.0, 0.5, 1.0],'rows':[0.0, 1.0],'cells':[[0,0,1,1],[1,0,2,1]]})",
+			"view.run_command('detect_embedded_syntax')",
+			"settings.has('shell')",
+			"settings = sublime.load_settings('DetectEmbeddedSyntax.sublime-settings')",
+			"settings.has('shell')",
+			"settings = sublime.load_settings('DetectEmbeddedSyntax.sublime-settings')",
+			"view.run_command('detect_embedded_syntax')",
+			"sublime.find_resources('*.tmLanguage')",
+			"len(sublime.find_resources('DetectEmbeddedSyntax.sublime-settings'))",
+			"sublime.find_resources('DetectEmbeddedSyntax.sublime-settings')",
+			"sublime.find_resources('*.tmLanguage')",
+			"view.settings().get('syntax')",
+			"view.run_command(\"plist_to_json\")",
+			"sublime.run_command(plist_to_json_command)",
+			"sublime.run_command(PlistToJsonCommand)",
+			"sublime.run_command(plist_to_json)",
+			"sublime.run_command(\"plist_to_json\")",
+			"sublime.run_command(\"plist_to_json_command\")",
+			"sublime.run_command(\"plist_to_json\")",
+			"sublime.run_command(\"plist_to_json_command\")",
+			"sublime.run_command(\"plist_to_json\")",
+			"run_command(\"plist_to_json\")",
+			"import json",
+			"import plistlib",
+			"random.randint(750, 20000)",
+			"random.randint(750, 40000)",
+			"random.randint(40000)",
+			"import random",
+			"window.run_command('run_shell_command')",
+			"window.run_command('run_shell')",
+			"clear",
+			"window.run_command(\"format_json\")",
+			"window.run_command('repeat_character')",
+			"self.window.run_command('repeat_character')",
+			"pydoc(window)",
+			"pydoc window",
+			"help(window)",
+			"window.command('prompt_open')",
+			"window",
+			"help(sublime)",
+			"help sublime",
+			"help()",
+			"help"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/Moondeer/Projects/MSRemote/Remote",
+		"/Users/Moondeer/Projects/MSRemote/Remote/UI",
+		"/Users/Moondeer/Projects/MSRemote/Remote/UI/Source"
+	],
+	"file_history":
+	[
+		"/Users/Moondeer/Projects/MSRemote/Remote/UI/Source/RemoteElementView.swift",
+		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/361F572B-7D8F-4F48-B852-5CDA3421155C/UI/Source/RemoteElementView.swift",
+		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/17C38239-D05B-46FC-99F3-A52DD3FBC948/UI/Source/RemoteElementViewConstraint.swift",
+		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/A5E10776-9249-42B6-AAA8-B17DBFB18546/UI/Source/RemoteView.swift",
+		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/3A2077A0-6E57-40F8-8EDC-23133CCEA65E/UI/Source/ButtonView.swift",
+		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/0BC70331-7C6E-4B5B-B682-FDE56AD93F8A/UI/Source/BatteryStatusButtonView.swift",
+		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/BDC16E39-ED12-4546-900A-ACDFB5F077E2/UI/Source/RockerView.swift",
+		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/A1F561C6-602B-468A-BC4D-8D502A53CD7B/UI/Source/ModeSelectionView.swift",
+		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/887652C9-C938-4D9E-B0F9-E622BA8A9122/UI/Source/ConnectionStatusButtonView.swift",
+		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/E5E69DCC-A096-41B3-AAE1-25418A1E88F3/UI/Source/ActivityViewController.swift",
+		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/EF6EBEA8-5ED4-415F-AE75-549E8B13614E/Remote/Source/Remote Elements/Views/ButtonView.swift",
+		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/B289663E-4A64-4D5A-B142-D37EFD272851/UI/Source/DrawingKit.swift",
+		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/4B858353-095B-44CF-B0DB-6E56AB359918/Remote/Source/Remote Elements/Views/ButtonView.swift",
+		"/Users/Moondeer/disabled.profile",
+		"/Users/Moondeer/Projects/Gyre/MSKitLib/MSKit/MSKit/Objects/MSLogMacros.h",
+		"/Users/Moondeer/GitHub/CocoaLumberjack/Xcode/LumberjackFramework/Mobile/Lumberjack/Lumberjack.h",
+		"/Users/Moondeer/Projects/MoonKit/MoonLog.swift",
+		"/Users/Moondeer/Projects/Gyre/Gyre-Swift/Gyre-Swift/Scores/ScoreManager.swift",
+		"/Users/Moondeer/Projects/Gyre/Gyre-Swift/Gyre-Swift/Other Objects/SettingsManager.swift",
+		"/Users/Moondeer/Projects/Gyre/Gyre-Swift/Gyre-Swift/Supporting Files/helpers.swift",
+		"/Users/Moondeer/.oh-my-zsh/functions/imgsize",
+		"/Users/Moondeer/.oh-my-zsh/functions/imf_disp",
+		"/Users/Moondeer/.oh-my-zsh/functions/imf_disp copy",
+		"/Users/Moondeer/bin/parseargs",
+		"/Users/Moondeer/.oh-my-zsh/custom/aliases.zsh",
+		"/Users/Moondeer/.oh-my-zsh/functions/dirsync",
+		"/Users/Moondeer/Projects/MoonKit/MoonKit/Array.swift",
+		"/Users/Moondeer/bin/dirsync",
+		"/Users/Moondeer/bin/browser",
+		"/Users/Moondeer/Projects/dirsync/dirsync/main.swift",
+		"/Users/Moondeer/Projects/dirsync/extensions/String.swift",
+		"/Users/Moondeer/Projects/dirsync/extensions/NSFileManager.swift",
+		"/Users/Moondeer/.oh-my-zsh/oh-my-zsh.sublime-project",
+		"/Users/Moondeer/.oh-my-zsh/custom/paths.zsh",
+		"/Users/Moondeer/.oh-my-zsh/functions/exr_to_png",
+		"/Users/Moondeer/.oh-my-zsh/functions/parse_objc_class_names",
+		"/Users/Moondeer/.oh-my-zsh/functions/mayacli",
+		"/Users/Moondeer/.oh-my-zsh/functions/tellmaya",
+		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/Objective-C.tmLanguage",
+		"/Users/Moondeer/Projects/dirsync/dirsync/FileComparison.swift",
+		"/Users/Moondeer/Projects/dirsync/extensions/Array.swift",
+		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/Swift/Swift.tmLanguage",
+		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/Swift/Swift.JSON-tmLanguage",
+		"/Users/Moondeer/Library/Caches/Cleanup At Startup/Transmit/56481B52-BC9D-454B-AF02-65F9ED7FB5A3/Info.plist",
+		"/Users/Moondeer/.oh-my-zsh/functions/pbcp",
+		"/Users/Moondeer/.oh-my-zsh/functions/color_index",
+		"/Users/Moondeer/.oh-my-zsh/custom/functions.zsh",
+		"/Users/Moondeer/.oh-my-zsh/functions/finder_toggle_hidden",
+		"/Users/Moondeer/.oh-my-zsh/functions/remote_file_sync",
+		"/Users/Moondeer/.oh-my-zsh/functions/notes",
+		"/Users/Moondeer/.oh-my-zsh/themes/moondeer-powerline.zsh-theme",
+		"/Users/Moondeer/.oh-my-zsh/functions/zipcat",
+		"/Users/Moondeer/.oh-my-zsh/functions/notes_curses",
+		"/Users/Moondeer/.oh-my-zsh/functions/notes-set-file-name",
+		"/Users/Moondeer/.oh-my-zsh/functions/notes-edit",
+		"/Users/Moondeer/.oh-my-zsh/functions/med",
+		"/Users/Moondeer/.oh-my-zsh/functions/med-set-file-name",
+		"/tmp/subl stdin BPl5DU.txt",
+		"/Users/Moondeer/.oh-my-zsh/plugins/colemak/colemak-less",
+		"/Users/Moondeer/.oh-my-zsh/functions/dash",
+		"/Users/Moondeer/.oh-my-zsh/functions/cd-ls",
+		"/Users/Moondeer/.oh-my-zsh/functions/fdc",
+		"/Users/Moondeer/.oh-my-zsh/functions/rmm",
+		"/Users/Moondeer/.oh-my-zsh/functions/prompt_moondeer_setup",
+		"/Users/Moondeer/.oh-my-zsh/functions/finder",
+		"/Users/Moondeer/Projects/Gyre/MSKit/MSKit/Source/Macros, Defines/MSKitMacros.h",
+		"/Users/Moondeer/Projects/Gyre/Gyre/Scenes/GyreTutorialScene.m",
+		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/Moondeer/.notes/gyre",
+		"/Users/Moondeer/.gitconfig",
+		"/Users/Moondeer/.oh-my-zsh/custom/directories.zsh",
+		"/Users/Moondeer/Projects/Gyre/Gyre/Nodes/GyreGameOverOverlayNode.m",
+		"/Users/Moondeer/Projects/Gyre/Gyre/Nodes/GyreTutorialOverlayNode.m",
+		"/Users/Moondeer/Projects/Gyre/.git/COMMIT_EDITMSG",
+		"/Users/Moondeer/.zshenv",
+		"/Users/Moondeer/.zshrc",
+		"/Users/Moondeer/Projects/Gyre/Gyre/GyreMenuScene.m",
+		"/Users/Moondeer/Projects/Gyre/Gyre/GyreSettingsScene.m",
+		"/Users/Moondeer/Projects/Gyre/Gyre/GyreGameplayScene.m",
+		"/Users/Moondeer/Projects/Gyre/Gyre/GyreGameplayLights.m",
+		"/Users/Moondeer/Projects/Gyre/Gyre/GyreSettingsManager.m",
+		"/Users/Moondeer/.oh-my-zsh/plugins/osx/osx.plugin.zsh",
+		"/Users/Moondeer/.uncrustify/uncrustify.cfg",
+		"/Users/Moondeer/.oh-my-zsh/themes/moondeer.zsh-theme",
+		"/Users/Moondeer/Projects/Gyre/Gyre/GyreScoreManager.m",
+		"/Users/Moondeer/.ssh/id_rsa.pub",
+		"/Users/Moondeer/Projects/Gyre/Gyre-1.0.2/Classes/SettingsViewController.m",
+		"/Users/Moondeer/Projects/Gyre/.gitignore",
+		"/Users/Moondeer/.ssh/known_hosts",
+		"/Users/Moondeer/.oh-my-zsh/functions/color_index.prompt",
+		"/Users/Moondeer/.oh-my-zsh/custom/completions.zsh",
+		"/Users/Moondeer/.oh-my-zsh/custom/completions.zsh.disabled",
+		"/Users/Moondeer/.oh-my-zsh/oh-my-zsh.sh",
+		"/Users/Moondeer/.oh-my-zsh/lib/aliases.zsh",
+		"/Users/Moondeer/.zsh/startup/completions",
+		"/Users/Moondeer/.zsh/startup/aliases",
+		"/Users/Moondeer/.oh-my-zsh/lib/aliases",
+		"/Users/Moondeer/.zsh/startup/options",
+		"/Users/Moondeer/.zsh/startup/functions",
+		"/Users/Moondeer/.zsh/startup/paths",
+		"/Users/Moondeer/.zsh/startup/parameters",
+		"/Users/Moondeer/.zsh/functions/notes",
+		"/Users/Moondeer/.zsh/functions/notes-edit",
+		"/Users/Moondeer/.oh-my-zsh/templates/zshrc.zsh-template",
+		"/Users/Moondeer/.oh-my-zsh/themes/agnoster.zsh-theme",
+		"/etc/zshenv",
+		"/etc/shells",
+		"/Users/Moondeer/Projects/Gyre/Gyre/GyreHighScoresScene.m",
+		"/Users/Moondeer/Projects/Gyre/Gyre/GyreHighScoreNode.m",
+		"/Users/Moondeer/.uncrustify/uncrustify-config",
+		"/Users/Moondeer/.zsh/help/zshzle/zle",
+		"/Users/Moondeer/.zsh/help/source_text/zshbuiltins",
+		"/Users/Moondeer/.zsh/help/zshbuiltins/alias",
+		"/Users/Moondeer/.zsh/help/source_text/zshzftpsys",
+		"/Users/Moondeer/.zsh/help/helpfiles",
+		"/Users/Moondeer/.zsh/help/source_text/zshcalsys",
+		"/Users/Moondeer/.zsh/help/source_text/zshcompctl",
+		"/Users/Moondeer/.zsh/help/source_text/zshcompsys",
+		"/Users/Moondeer/.zsh/help/source_text/zshcompwid",
+		"/Users/Moondeer/.zsh/help/source_text/zshcontrib",
+		"/Users/Moondeer/.zsh/help/source_text/zshexpn",
+		"/Users/Moondeer/.zsh/help/source_text/zshmisc",
+		"/Users/Moondeer/.zsh/help/source_text/zshmodules",
+		"/Users/Moondeer/.zsh/help/source_text/zshoptions",
+		"/Users/Moondeer/.zsh/help/source_text/zshparam",
+		"/Users/Moondeer/.zsh/help/source_text/zshroadmap",
+		"/Users/Moondeer/.zsh/help/zshzftpsys/zshtcpsys",
+		"/Users/Moondeer/.zsh/functions/array_from_file"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			"/Users/Moondeer/Projects/Gyre",
+			"/Users/Moondeer/Box Documents/Projects/Gyre",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/jade,/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Website/Codekit-Compass/jade",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/jade,/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Website/Codekit-Compass/coffee",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/jade,/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Website/Codekit-Compass/sass",
+			"/Library/Ruby/Gems/2.0.0/gems/bootstrap-sass-3.0.2.1",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/jade,/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Website/Codekit-Compass/sass",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/jade,/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Website/Codekit-Compass",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/jade,/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Website/Codekit-Compass/sass",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/jade,/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Website/Codekit-Compass",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/jade,/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/jade,/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/sass",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/jade",
+			"<project>",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/jade",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/PeacefulPathwaysFramework-Alt/jade",
+			"<project>",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/PeacefulPathwaysFramework-Alt/jade",
+			"<open files>",
+			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/PeacefulPathwaysFramework/less/bootstrap",
+			"/Applications/MAMP/htdocs/styles/less",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"overlayView",
+			"objectIsSubelementKind",
+			"X",
+			"Character",
+			"  i",
+			" ",
+			"print -n",
+			"));",
+			"((",
+			"do",
+			"print -- ",
+			"codepoints=($codepoints $i)",
+			"case",
+			"<Lumberjack/",
+			"0x",
+			"0x00",
+			"Score",
+			"w",
+			")",
+			"(",
+			"{",
+			" return",
+			"  ",
+			":",
+			"MyOptions",
+			"warning",
+			"error",
+			"info",
+			"@",
+			"NSUserDefaults.standardUserDefaults()",
+			"Gyre",
+			"UserDefaults",
+			"BOOL",
+			";",
+			"warning",
+			"Gyre",
+			"MSLogInfo",
+			"Array<T>",
+			"swiftscript",
+			"DONE",
+			"script",
+			"var",
+			"self.",
+			"let fileManager = NSFileManager.defaultManager()",
+			"fm",
+			"\"",
+			"\n",
+			"listx",
+			"\"",
+			"A",
+			"dir",
+			"1",
+			"char_in",
+			" && return $exit_status",
+			"note_file_name",
+			"var",
+			"    while vared -M notes -i notes-edit-init var\n",
+			"var",
+			"note_name",
+			"med_file_name",
+			"med",
+			"\"$NOTESDIR/$1\"",
+			"1",
+			"opt",
+			"notes",
+			"zed",
+			"MSLogDebugWeak",
+			"wself",
+			"weakself",
+			"==",
+			"Change",
+			"\\",
+			"\\{\\n(?!\\n)",
+			"noAction",
+			"[weakself revealOverlay]",
+			".",
+			"l_buf",
+			"lbuffer",
+			"\\{\\n(?!\\n)",
+			"4",
+			"\\{\\n(?!\\n)",
+			"PARAM",
+			"_##PARAM",
+			"IVAR",
+			"\\{\\n(?!\\n)",
+			"^ *\\n",
+			"(?!<\\n\\n)\\s*\\}\\];\\n",
+			"\\}\\];\\n(?!\\n)",
+			"\\}\\n(?!\\n)",
+			"\\{(?!\\n\\n)",
+			"{(?!\\n\\n)",
+			"{",
+			"default",
+			"✗",
+			"✓",
+			"✗",
+			"finalScore",
+			"selected_array",
+			"${opts[-k]}",
+			"selected_array",
+			"${opts[-k]}",
+			"{opts[-k]}",
+			"\\",
+			"^([0-9]+) ([^\\n]+)",
+			"^((?:[0-9]+(?:–[0-9]+)?)\\t+.*)[ ]{2,}",
+			"^([0-9]+) ([^\\n]+)",
+			" +\\n",
+			"\\t+",
+			"100–109",
+			"90–99",
+			"40–47",
+			"11–19",
+			"^((?:[0-9]+(?:–[0-9]+)?)\\t+.*)[ ]{2,}",
+			"^([0-9]+(?:–[0-9]+)?) +",
+			"^([0-9][^\\s]*)\\s*([^\\s]+|[^\\n][^\\s]+)+(?:\\n|(?:[ ]+([^\\n]+)\\n))",
+			"^([0-9][^\\s]*)\\s*([^\\s]+|[^\\n][^\\s]+)+(?:\\n|(?:[^w]+([^\\n]+)\\n))",
+			"^[0-9][^\\s]*\\s*([^\\s]+|\\s[^\\s]+)+",
+			"^[0-9][^\\t]*\\t",
+			"returnFromHandler",
+			"f",
+			"FG",
+			";;",
+			"keys",
+			"${#${(M)@%-[[:alpha:]]#l}}",
+			"32",
+			"if",
+			"IF",
+			"if"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"'\\1' '\\2'",
+			"$'\\1' $'\\2'",
+			"\\n",
+			" ",
+			"\\1\\t\\t\\t\\t\\t\\t\\t",
+			"\\1\\t\\t\\t\\t\\t",
+			"\\1\\t\\t\\2\\t\\t\\3\\n",
+			"---\\n",
+			"--------------------------------------------------------------------------------\\n             ",
+			"--------------------------------------------------------------------------------\\n              ",
+			"--------------------------------------------------------------------------------\\n",
+			"\\t\\t",
+			"\\t",
+			"\\t\\t",
+			"\\1\\t\\t\\t\\2",
+			"\\1\\t\\2",
+			"\\1\\t",
+			"\\1 ",
+			" ",
+			"",
+			"\\n",
+			"\\\\\\\\n",
+			"\\1\\\\n\\2",
+			"",
+			"[[",
+			"\\1 = \\2 ",
+			"\\1 = \\2",
+			"",
+			" ",
+			"set grid y\\n",
+			"",
+			" ",
+			" \\1  2, 1, 3, 1, 2, 3, 2, 1, 2, 3, 1, 2, 3, 4, 3, 1\\n",
+			" ",
+			"",
+			"<!-- \\1 -->",
+			"\\n",
+			"'''",
+			"= '''",
+			",",
+			"\\n",
+			"\\t",
+			"",
+			"\\t",
+			"GyreScene",
+			"append tailScripts",
+			"color: $text-muted",
+			"{ trigger_error(\\1); die(); }",
+			"<?php \\1",
+			"<?php",
+			"send_creation_notice",
+			"fetch_memorials",
+			"connect_to_database",
+			"",
+			"\\1",
+			"+\\1'\\2'\\3",
+			"\\1'\\2'\\3",
+			"font-size-h1",
+			"font-size-h2",
+			"font-size-h3",
+			"headings-font-family",
+			"+",
+			"+semi-bold",
+			"+img-responsive",
+			"light-grayish-brown",
+			"grayish-brown",
+			"\\1-light-blue-background",
+			"  ",
+			"include _header.jade",
+			"/images/",
+			"context",
+			"REButtonBuilder",
+			"\\1NSManagedObjectContext * context = [NSManagedObjectContext MR_contextForCurrentThread];\\n\\1\\2context\\3",
+			"+",
+			"peacefulpathways.co",
+			"\".BASE_HOST.\"",
+			"<?php echo \"<img src=\\\\\"\\1{$_SERVER['HTTP_HOST']}\\2\\\\\" />\"; ?>",
+			"<?php echo \"<img src=\\\\\"\\1{$_SERVER['HTTP_HOST']}\\2\\\\\" width=\\\\\"\\3\\\\\" height=\\\\\"\\4\\\\\" />\"; ?>",
+			"<?php echo \"<img src=\\\\\"\\1{$_SERVER['HTTP_HOST']}\\2\\\\\" />\"; ?>",
+			"<?php echo \"<link rel='\\3' href=\\\\\"\\1{$_SERVER['HTTP_HOST']}\\2\\\\\" type='\\4' />\"; ?>",
+			"<?php echo \"<link rel='\\1' href=\\\\\"\\2{$_SERVER['HTTP_HOST']}\\3\\\\\" />\"; ?>",
+			"<?php echo \"<link rel='\\1' href=\\\\\"\\2{$_SERVER['HTTP_HOST']}\\3\\\\\" type='\\4' /> ?>",
+			"<?php echo \"<link rel='\\1' sizes='\\2' href=\\\\\"\\3{$_SERVER['HTTP_HOST']}\\4\\\\\" type='\\5' /> ?>",
+			"<?php echo \"<img src=\\\"\\1{$_SERVER['HTTP_HOST']}\\2\\\" width=\\\"\\3\\\" height=\\\"\\4\\\" alt=\\\"\\5\\\" />\"; ?>",
+			"services",
+			"Aftercare",
+			"",
+			"img/feline-grief",
+			"felineGrief/\\1.png",
+			"bootstrap",
+			"\\1 }",
+			"{ \\1",
+			": \\1",
+			"{ \\1",
+			"\\1 }",
+			"{ \\1",
+			": \\1",
+			"font-face(\"\\1\",font-files(\"../webfonts/\\1.eot\",\"../webfonts/\\1.woff\",\"../webfonts/\\1.ttf\"))",
+			"../webfonts",
+			"img",
+			"@include background(radial-gradient",
+			"$",
+			",",
+			"\"",
+			"",
+			"/alt/img/",
+			"/alt/img",
+			"img",
+			".flex",
+			"> .flex",
+			"> .\\1",
+			",",
+			"@import \"bootstrap-variables.less\"",
+			"#flexbox",
+			"section",
+			"",
+			"p ",
+			"h2 ",
+			"",
+			"img(\\1, \\2, \\3, \\4)",
+			"",
+			" ",
+			"",
+			" ",
+			"",
+			"\\1\\n",
+			"\\n\\1",
+			"\\np.span"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 19.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Packages/AAAPackageDev/Support/Convert to ....sublime-build",
+	"project": "Remote.sublime-project",
+	"replace":
+	{
+		"height": 40.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"path",
+				"custom/paths.zsh"
+			],
+			[
+				"color",
+				"functions/color_index"
+			],
+			[
+				"noe",
+				"functions/notes-edit"
+			],
+			[
+				"note",
+				"functions/notes"
+			],
+			[
+				"memorial-res",
+				"Website/Codekit-Compass/jade/memorial-response.jade"
+			],
+			[
+				"mem",
+				"Website/Codekit-Compass/jade/memorials.jade"
+			],
+			[
+				"analy",
+				"Website/Codekit-Compass/coffee/analytics.coffee"
+			],
+			[
+				"_sc",
+				"Website/Codekit-Compass/jade/_scaffold.jade"
+			],
+			[
+				"home",
+				"Website/Codekit-Compass/jade/home-page.jade"
+			],
+			[
+				"res",
+				"Website/Codekit-Compass/sass/resources.sass"
+			],
+			[
+				"ser",
+				"Website/Codekit-Compass/sass/services.sass"
+			],
+			[
+				"contact-",
+				"Website/Codekit-Compass/jade/contact-us.jade"
+			],
+			[
+				"_home",
+				"Website/Codekit-Compass/sass/_home-page-tab-panes.sass"
+			],
+			[
+				"memro",
+				"Website/Codekit-Compass/sass/memorials.sass"
+			],
+			[
+				"_mix",
+				"Website/Codekit-Compass/sass/_mixins.sass"
+			],
+			[
+				"contact",
+				"Website/Codekit-Compass/coffee/contact-us.coffee"
+			],
+			[
+				"resources",
+				"Website/Codekit-Compass/jade/resources.jade"
+			],
+			[
+				"serv",
+				"Website/Codekit-Compass/coffee/services.coffee"
+			],
+			[
+				"conf",
+				"Website/Codekit-Compass/config.rb"
+			],
+			[
+				"config",
+				"Website/Codekit-Compass/config.rb"
+			],
+			[
+				"about",
+				"Website/Codekit-Compass/jade/about-us.jade"
+			],
+			[
+				"abou",
+				"Website/Codekit-Compass/sass/about-us.sass"
+			],
+			[
+				"scaffol",
+				"Website/Codekit-Compass/sass/scaffold.sass"
+			],
+			[
+				"pixel",
+				"Website/Codekit-Compass/coffee/pixel-ratio.coffee"
+			],
+			[
+				"class.m",
+				"Website/Codekit-Compass/php/class.memorial.php"
+			],
+			[
+				"defa",
+				"puppet/manifests/default.pp"
+			],
+			[
+				"_head",
+				"Codekit-Compass/sass/_header.sass"
+			],
+			[
+				"contact-u",
+				"Codekit-Compass/coffee/contact-us.coffee"
+			],
+			[
+				"memor",
+				"Website/Codekit-Compass/jade/memorials.jade"
+			],
+			[
+				"sty",
+				"Website/Codekit-Compass/sass/styles.sass"
+			],
+			[
+				"_mixin",
+				"bootstrap-sass-3.0.2.1/vendor/assets/stylesheets/bootstrap/_mixins.scss"
+			],
+			[
+				"_create",
+				"Website/Codekit-Compass/sass/_create-memorial.sass"
+			],
+			[
+				"_sca",
+				"Website/Codekit-Compass/jade/_scaffold.jade"
+			],
+			[
+				"style",
+				"Website/Codekit-Compass/sass/styles.sass"
+			],
+			[
+				"style.c",
+				"Website/Codekit-Compass/stylesheets/styles.css"
+			],
+			[
+				"_resou",
+				"Website/Codekit-Compass/sass/_resources.sass"
+			],
+			[
+				"_var",
+				"bootstrap-sass-3.0.2.1/vendor/assets/stylesheets/bootstrap/_variables.scss"
+			],
+			[
+				"_mixins.scss",
+				"bootstrap-sass-3.0.2.1/vendor/assets/stylesheets/bootstrap/_mixins.scss"
+			],
+			[
+				"_cont",
+				"Website/Codekit-Compass/sass/_contact-us.sass"
+			],
+			[
+				"_he",
+				"Website/Codekit-Compass/sass/_header.sass"
+			],
+			[
+				"_h",
+				"Website/Codekit-Compass/jade/_header.jade"
+			],
+			[
+				"_re",
+				"Website/Codekit-Compass/sass/_resources.sass"
+			],
+			[
+				"_ge",
+				"Website/Codekit-Compass/sass/_general.sass"
+			],
+			[
+				"_mem",
+				"Peaceful Pathways - Compass/sass/_memorials.sass"
+			],
+			[
+				"class",
+				"Peaceful Pathways - Compass/php/class.memorial.php"
+			],
+			[
+				"fun",
+				"Peaceful Pathways - Compass/php/functions.php"
+			],
+			[
+				"func",
+				"Peaceful Pathways - Compass/htdocs/functions.php"
+			],
+			[
+				"feline",
+				"Peaceful Pathways - Compass/jade/feline-grief.jade"
+			],
+			[
+				"_mixi",
+				"Peaceful Pathways - Compass/jade/_mixins.jade"
+			],
+			[
+				"_mi",
+				"Peaceful Pathways - Compass/sass/_mixins.sass"
+			],
+			[
+				"_",
+				"Peaceful Pathways - Compass/jade/_scaffold.jade"
+			],
+			[
+				"_lay",
+				"Peaceful Pathways - Compass/jade/_layout.jade"
+			],
+			[
+				"pack",
+				"Peaceful Pathways - Compass/package.json"
+			],
+			[
+				"index",
+				"Peaceful Pathways - Compass/jade/index.jade"
+			],
+			[
+				"_hom",
+				"Peaceful Pathways - Compass/sass/_home-page.sass"
+			],
+			[
+				"_mixins",
+				"bootstrap-sass-3.0.2.1/vendor/assets/stylesheets/bootstrap/_mixins.scss"
+			],
+			[
+				"_ser",
+				"Peaceful Pathways - Compass/sass/_services.sass"
+			],
+			[
+				"memo",
+				"Peaceful Pathways - Compass/jade/memorials.jade"
+			],
+			[
+				"_me",
+				"Peaceful Pathways - Compass/sass/_memorials.sass"
+			],
+			[
+				"_varia",
+				"Peaceful Pathways - Compass/sass/_variables.sass"
+			],
+			[
+				"_gen",
+				"Peaceful Pathways - Compass/sass/_general.sass"
+			],
+			[
+				"lay",
+				"Peaceful Pathways - Compass/jade/_layout.jade"
+			],
+			[
+				"_header",
+				"Peaceful Pathways - Compass/jade/_header.jade"
+			],
+			[
+				"_hea",
+				"Peaceful Pathways - Compass/sass/_header.sass"
+			],
+			[
+				"t",
+				"Peaceful Pathways - Compass/coffee/tab-pane.coffee"
+			],
+			[
+				"_res",
+				"Peaceful Pathways - Compass/sass/_resources.sass"
+			],
+			[
+				"_about",
+				"Peaceful Pathways - Compass/sass/_about-us.sass"
+			],
+			[
+				"_variables.sc",
+				"bootstrap-sass-3.0.2.1/vendor/assets/stylesheets/bootstrap/_variables.scss"
+			],
+			[
+				"_va",
+				"bootstrap-sass-3.0.2.1/vendor/assets/stylesheets/bootstrap/_variables.scss"
+			],
+			[
+				"ind",
+				"Peaceful Pathways - Compass/jade/index.jade"
+			],
+			[
+				"tap",
+				"Peaceful Pathways - Compass/coffee/tab-pane.coffee"
+			],
+			[
+				"resourc",
+				"Peaceful Pathways - Compass/jade/resources.jade"
+			],
+			[
+				"_reso",
+				"Peaceful Pathways - Compass/sass/_resources.sass"
+			],
+			[
+				"servi",
+				"Peaceful Pathways - Compass/jade/services.jade"
+			],
+			[
+				"_hos",
+				"Peaceful Pathways - Compass/jade/_hospice-care.jade"
+			],
+			[
+				"_af",
+				"Peaceful Pathways - Compass/jade/_after-care.jade"
+			],
+			[
+				"_we",
+				"Peaceful Pathways - Compass/jade/_welcome.jade"
+			],
+			[
+				"_in",
+				"Peaceful Pathways - Compass/jade/_in-home-euthanasia.jade"
+			],
+			[
+				"_is",
+				"Peaceful Pathways - Compass/jade/_is-my-pet-suffering.jade"
+			],
+			[
+				"pix",
+				"Peaceful Pathways - Compass/coffee/pixel-ratio.coffee"
+			],
+			[
+				"ana",
+				"Peaceful Pathways - Compass/coffee/analytics.coffee"
+			],
+			[
+				"an",
+				"Peaceful Pathways - Compass/javascripts/analytics.js"
+			],
+			[
+				"_variables-",
+				"Peaceful Pathways - Compass/sass/_variables-pre-bootstrap.sass"
+			],
+			[
+				"clas",
+				"Peaceful Pathways - Compass/php/class.memorial.php"
+			],
+			[
+				"class.",
+				"Peaceful Pathways - Compass/php/class.memorial.php"
+			],
+			[
+				"_memro",
+				"Peaceful Pathways - Compass/sass/_memorials.sass"
+			],
+			[
+				"memorials",
+				"Peaceful Pathways - Compass/javascripts/memorials.js"
+			],
+			[
+				"memori",
+				"Peaceful Pathways - Compass/javascripts/memorials.js"
+			],
+			[
+				"memorial",
+				"Peaceful Pathways - Compass/jade/memorials.jade"
+			],
+			[
+				"_memori",
+				"Peaceful Pathways - Compass/sass/_memorials.sass"
+			],
+			[
+				"_mis",
+				"Peaceful Pathways - Compass/sass/_mixins.sass"
+			],
+			[
+				"_pre-b",
+				"Peaceful Pathways - Compass/sass/_variables-pre-bootstrap.sass"
+			],
+			[
+				"head",
+				"Peaceful Pathways - Compass/jade/_header.jade"
+			],
+			[
+				"fel",
+				"Peaceful Pathways - Compass/jade/feline-grief.jade"
+			],
+			[
+				"mix",
+				"jade/_mixins.jade"
+			],
+			[
+				"upl",
+				"php/upload-memorial.php"
+			],
+			[
+				"up",
+				"php/upload-memorial.php"
+			],
+			[
+				"cla",
+				"php/class.memorial.php"
+			],
+			[
+				"ret",
+				"php/retina-images.php"
+			],
+			[
+				"confi",
+				"config.rb"
+			],
+			[
+				"cl",
+				"php/class.memorial.php"
+			],
+			[
+				"link",
+				"jade/_icon-links.jade"
+			],
+			[
+				"u",
+				"php/upload-memorial.php"
+			],
+			[
+				"reti",
+				"htdocs/retina-images.php"
+			],
+			[
+				"valid",
+				"javascripts/validation.js"
+			],
+			[
+				"va",
+				"coffee/validation.coffee"
+			],
+			[
+				"mer",
+				"javascripts/memorial-preview.js"
+			],
+			[
+				"vali",
+				"javascripts/validation.js"
+			],
+			[
+				"val",
+				"coffee/validation.coffee"
+			],
+			[
+				"me",
+				"php/memorials.php"
+			],
+			[
+				"_ab",
+				"sass/_about-us.sass"
+			],
+			[
+				"gen",
+				"sass/_generic.sass"
+			],
+			[
+				"cr",
+				"jade/create-memorial.jade"
+			],
+			[
+				"_conta",
+				"sass/_contact-us.sass"
+			],
+			[
+				"cont",
+				"jade/contact-us.jade"
+			],
+			[
+				"contac",
+				"jade/contact-us.jade"
+			],
+			[
+				"ab",
+				"jade/about-us.jade"
+			],
+			[
+				"abo",
+				"jade/about-us.jade"
+			],
+			[
+				"tab",
+				"coffee/tab-pane.coffee"
+			],
+			[
+				"_pre",
+				"sass/_variables-pre-bootstrap.sass"
+			],
+			[
+				"page",
+				"javascripts/page-scripts.js"
+			],
+			[
+				"_con",
+				"sass/_contact-us.scss"
+			],
+			[
+				"_memor",
+				"sass/_memorials.scss"
+			],
+			[
+				"_layo",
+				"jade/_layout.jade"
+			],
+			[
+				"create",
+				"jade/create-memorial.jade"
+			],
+			[
+				"_wel",
+				"sass/_welcome.scss"
+			],
+			[
+				"_inh",
+				"sass/_in-home-euthanasia.scss"
+			],
+			[
+				"_ismy",
+				"jade/_is-my-pet-suffering.jade"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 392.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 568.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": false,
+	"side_bar_width": 251.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

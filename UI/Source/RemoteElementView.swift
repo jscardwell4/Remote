@@ -13,11 +13,9 @@ import DataModel
 
 public class RemoteElementView: UIView {
 
+   // MARK: - Initialization
 
-
-  class var MinimumSize: CGSize { return CGSize(square: 44.0) }
-
-  /**
+ /**
   viewWithPreset:
 
   :param: preset Preset
@@ -56,9 +54,6 @@ public class RemoteElementView: UIView {
     }
   }
 
-  /** init */
-//  override init() { super.init() }
-
   /**
   initWithFrame:
 
@@ -81,26 +76,53 @@ public class RemoteElementView: UIView {
   }
 
   /**
-  objectIsSubelementKind:
-
-  :param: object AnyObject
-
-  :returns: Bool
-  */
-  public func objectIsSubelementKind(object: AnyObject) -> Bool {
-    switch model.elementType {
-      case .Remote: return object is ButtonGroupView
-      case .ButtonGroup: return object is ButtonView
-      default: return false
-    }
-  }
-
-  /**
   init:
 
   :param: aDecoder NSCoder
   */
   required public init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+  /** attachGestureRecognizers */
+  func attachGestureRecognizers() {}
+
+  /** registerForChangeNotification */
+  func registerForChangeNotification() {
+    precondition(model != nil, "why are we calling this without a valid model object?")
+    kvoReceptionists = map(kvoRegistration()) {
+      (key: String, value: (MSKVOReceptionist!) -> Void) -> MSKVOReceptionist in
+        MSKVOReceptionist(observer: self, forObject: self.model, keyPath: key, options: .New,
+                          queue: NSOperationQueue.mainQueue(), handler: value)
+    }
+  }
+
+  /** initializeIVARs */
+  func initializeIVARs() {
+    clipsToBounds = false
+    opaque = false
+    multipleTouchEnabled = true
+    userInteractionEnabled = true
+    addInternalSubviews()
+    attachGestureRecognizers()
+    initializeViewFromModel()
+  }
+
+  /** initializeViewFromModel */
+  func initializeViewFromModel() {
+    super.backgroundColor = model.backgroundColor
+    refreshBorderPath()
+    for element in model.subelements {
+      if let subelementView = self.dynamicType.viewWithModel(element) {
+        addSubelementView(subelementView)
+      }
+    }
+  }
+
+
+  // MARK: - Constraints
+
+  public var modeledConstraints: [RemoteElementViewConstraint] {
+    return constraints().filter{$0 is RemoteElementViewConstraint} as! [RemoteElementViewConstraint]
+  }
 
   /** updateConstraints */
   override public func updateConstraints() {
@@ -131,248 +153,6 @@ public class RemoteElementView: UIView {
 
   override public class func requiresConstraintBasedLayout() -> Bool { return true }
 
-  private lazy var subelementsView: SubelementsView = SubelementsView(delegate: self)
-  private lazy var contentView: ContentView = ContentView(delegate: self)
-  private lazy var backdropView: BackdropView = BackdropView(delegate: self)
-  private lazy var overlayView: OverlayView = OverlayView(delegate: self)
-
-  public var viewFrames: [UUIDIndex:CGRect] {
-    var frames = [model.uuidIndex: frame]
-    if parentElementView != nil {
-      frames[parentElementView!.model.uuidIndex] = parentElementView!.frame
-    }
-    for subelementView in subelementViews { frames[subelementView.model.uuidIndex] = subelementView.frame }
-    return frames
-  }
-
-  public var minimumSize: CGSize {
-
-    var size = RemoteElementView.MinimumSize
-
-    if subelementViews.count > 0 {
-
-      var xAxisIntervals: [HalfOpenInterval<CGFloat>] = []
-      var yAxisIntervals: [HalfOpenInterval<CGFloat>] = []
-
-      for subelementView in subelementViews {
-        let min = subelementView.minimumSize
-        let origin = subelementView.frame.origin
-        xAxisIntervals.append(HalfOpenInterval(origin.x, (origin.x + min.width)))
-        yAxisIntervals.append(HalfOpenInterval(origin.y, (origin.y + min.height)))
-      }
-      xAxisIntervals.sort{$0.start < $1.start}
-      yAxisIntervals.sort{$0.start < $1.start}
-
-      var tmpInterval = xAxisIntervals[0]
-      var tmpAxisIntervals: [HalfOpenInterval<CGFloat>] = []
-      for interval in xAxisIntervals {
-        if overlaps(tmpInterval, interval) {
-          tmpInterval = HalfOpenInterval(tmpInterval.start, interval.end)
-        } else {
-          tmpAxisIntervals.append(tmpInterval)
-          tmpInterval = interval
-        }
-      }
-      tmpAxisIntervals.append(tmpInterval)
-      xAxisIntervals = tmpAxisIntervals
-
-      tmpInterval = yAxisIntervals[0]
-      tmpAxisIntervals.removeAll()
-      for interval in yAxisIntervals {
-        if overlaps(tmpInterval, interval) {
-          tmpInterval = HalfOpenInterval(tmpInterval.start, interval.end)
-        } else {
-          tmpAxisIntervals.append(tmpInterval)
-          tmpInterval = interval
-        }
-      }
-      tmpAxisIntervals.append(tmpInterval)
-      yAxisIntervals = tmpAxisIntervals
-
-      size.width = xAxisIntervals.reduce(0.0) {$0 + ($1.end - $1.start)}
-      size.height = yAxisIntervals.reduce(0.0) {$0 + ($1.end - $1.start)}
-
-      if model.constraintManager.proportionLock { size = bounds.size.aspectMappedToSize(size, binding: false) }
-
-    }
-
-    return size
-  }
-
-  public var maximumSize: CGSize {
-    var size = superview?.bounds.size ?? CGSize.zeroSize
-    if model.constraintManager.proportionLock { size = bounds.size.aspectMappedToSize(size, binding: true) }
-    return size
-  }
-
-  override public var backgroundColor: UIColor? {
-    get { return super.backgroundColor ?? model?.backgroundColor }
-    set { super.backgroundColor = newValue }
-  }
-
- /** setNeedsDisplay */
- override public func setNeedsDisplay() {
-   super.setNeedsDisplay()
-   backdropView.setNeedsDisplay()
-   contentView.setNeedsDisplay()
-   subelementsView.setNeedsDisplay()
-   overlayView.setNeedsDisplay()
- }
-
-  override public var bounds: CGRect { didSet { refreshBorderPath() } }
-
-  /**
-  subscript:
-
-  :param: key String
-
-  :returns: RemoteElementView?
-  */
-  override public subscript(key: String) -> RemoteElementView? {
-    if model.isIdentifiedByString(key) { return self }
-    else { return subelementViews.filter{$0.model.isIdentifiedByString(key)}.first }
-  }
-
-  /**
-  subscript:
-
-  :param: idx Int
-
-  :returns: RemoteElementView?
-  */
-  public subscript(idx: Int) -> RemoteElementView? {
-    return idx < subelementsView.subviews.count ? subelementsView.subviews[idx] as? RemoteElementView : nil
-  }
-
-  public var parentElementView: RemoteElementView? { return (superview as? SubelementsView)?.superview as? RemoteElementView }
-
-  public var model: RemoteElement!
-  public var modeledConstraints: [RemoteElementViewConstraint] {
-    return constraints().filter{$0 is RemoteElementViewConstraint} as! [RemoteElementViewConstraint]
-  }
-  public var subelementViews: OrderedSet<RemoteElementView> {
-    return OrderedSet(subelementsView.subviews as? [RemoteElementView] ?? [])
-  }
-
-  /**
-  addSubelementViews:
-
-  :param: views NSSet
-  */
-  public func addSubelementViews(views: Set<RemoteElementView>) {
-    apply(subelementViews){self.subelementsView.addSubview($0)}
-  }
-
-  /**
-  addSubelementView:
-
-  :param: view RemoteElementView
-  */
-  public func addSubelementView(view: RemoteElementView) { subelementsView.addSubview(view) }
-
-  public func removeSubelementViews(views: Set<RemoteElementView>) {
-    apply(subelementViews){$0.removeFromSuperview()}
-  }
-
-  /**
-  removeSubelementView:
-
-  :param: view RemoteElementView
-  */
-  public func removeSubelementView(view: RemoteElementView) { view.removeFromSuperview() }
-
-  /**
-  bringSubelementViewToFront:
-
-  :param: subelementView RemoteElementView
-  */
-  public func bringSubelementViewToFront(subelementView: RemoteElementView) {
-    subelementsView.bringSubviewToFront(subelementView)
-  }
-
-  /**
-  sendSubelementViewToBack:
-
-  :param: subelementView RemoteElementView
-  */
-  public func sendSubelementViewToBack(subelementView: RemoteElementView) {
-    subelementsView.sendSubviewToBack(subelementView)
-  }
-
-  /**
-  insertSubelementView:aboveSubelementView:
-
-  :param: subelementView RemoteElementView
-  :param: siblingSubelementView RemoteElementView
-  */
-  public func insertSubelementView(subelementView: RemoteElementView, aboveSubelementView siblingSubelementView: RemoteElementView) {
-    subelementsView.insertSubview(subelementView, aboveSubview: siblingSubelementView)
-  }
-
-  /**
-  insertSubelementView:atIndex:
-
-  :param: subelementView RemoteElementView
-  :param: index Int
-  */
-  public func insertSubelementView(subelementView: RemoteElementView, atIndex index: Int) {
-    subelementsView.insertSubview(subelementView, atIndex: index)
-  }
-
-  /**
-  insertSubelementView:belowSubelementView:
-
-  :param: subelementView RemoteElementView
-  :param: siblingSubelementView RemoteElementView
-  */
-  public func insertSubelementView(subelementView: RemoteElementView, belowSubelementView siblingSubelementView: RemoteElementView) {
-    subelementsView.insertSubview(subelementView, belowSubview: siblingSubelementView)
-  }
-
-  public var locked: Bool = false {
-    didSet {
-      apply(subelementViews){$0.resizable = !self.locked; $0.moveable = !self.locked}
-    }
-  }
-
-  public var editingMode: RemoteElement.BaseType = .Undefined {
-    didSet {
-      apply(subelementViews){$0.editingMode = self.editingMode}
-    }
-  }
-
-  public var isEditing: Bool { return editingMode != .None }
-
-  public enum EditingState {
-    case None, Selected, Moving, Focus
-    var color: UIColor {
-      switch self {
-        case .None: return UIColor.clearColor()
-        case .Selected: return UIColor.yellowColor()
-        case .Moving: return UIColor.blueColor()
-        case .Focus: return UIColor.redColor()
-      }
-    }
-  }
-
-  public var editingState: EditingState = .None {
-    didSet {
-      overlayView.showAlignmentIndicators = editingState == .Moving
-      overlayView.showContentBoundary = editingState != .None
-      overlayView.refreshBoundary()
-      overlayView.boundaryColor = editingState.color
-      overlayView.layer.setNeedsDisplay()
-      overlayView.layer.displayIfNeeded()
-    }
-  }
-  public var resizable = false
-  public var moveable = false
-  public var shrinkwrap = false
-  public var appliedScale: CGFloat = 1.0
-
-  /** updateSubelementOrderFromView */
-  public func updateSubelementOrderFromView() { model.subelements = subelementViews.map{$0.model} }
-
   /**
   translateSubelements:translation:
 
@@ -389,6 +169,7 @@ public class RemoteElementView: UIView {
 //    apply(subelementViews.allObjects as [RemoteElementView]){$0.setNeedsUpdateConstraints()}
     setNeedsUpdateConstraints()
   }
+
 
   /**
   scaleSubelement:scale:
@@ -470,40 +251,226 @@ public class RemoteElementView: UIView {
     setNeedsUpdateConstraints()
   }
 
-  /** attachGestureRecognizers */
-  func attachGestureRecognizers() {}
+  // MARK: - Subelement views
 
-  /** registerForChangeNotification */
-  func registerForChangeNotification() {
-    precondition(model != nil, "why are we calling this without a valid model object?")
-    kvoReceptionists = map(kvoRegistration()) {
-      (key: String, value: (MSKVOReceptionist!) -> Void) -> MSKVOReceptionist in
-        MSKVOReceptionist(observer: self, forObject: self.model, keyPath: key, options: .New,
-                          queue: NSOperationQueue.mainQueue(), handler: value)
+  /**
+  objectIsSubelementKind:
+
+  :param: object AnyObject
+
+  :returns: Bool
+  */
+  public func objectIsSubelementKind(object: AnyObject) -> Bool {
+    switch model.elementType {
+      case .Remote: return object is ButtonGroupView
+      case .ButtonGroup: return object is ButtonView
+      default: return false
     }
   }
 
-  /** initializeIVARs */
-  func initializeIVARs() {
-    clipsToBounds = false
-    opaque = false
-    multipleTouchEnabled = true
-    userInteractionEnabled = true
-    addInternalSubviews()
-    attachGestureRecognizers()
-    initializeViewFromModel()
+  public var viewFrames: [UUIDIndex:CGRect] {
+    var frames = [model.uuidIndex: frame]
+    if parentElementView != nil {
+      frames[parentElementView!.model.uuidIndex] = parentElementView!.frame
+    }
+    for subelementView in subelementViews { frames[subelementView.model.uuidIndex] = subelementView.frame }
+    return frames
   }
 
-  /** initializeViewFromModel */
-  func initializeViewFromModel() {
-    super.backgroundColor = model.backgroundColor
-    refreshBorderPath()
-    for element in model.subelements {
-      if let subelementView = self.dynamicType.viewWithModel(element) {
-        addSubelementView(subelementView)
+  /**
+  subscript:
+
+  :param: key String
+
+  :returns: RemoteElementView?
+  */
+  override public subscript(key: String) -> RemoteElementView? {
+    if model.isIdentifiedByString(key) { return self }
+    else { return subelementViews.filter{$0.model.isIdentifiedByString(key)}.first }
+  }
+
+  /**
+  subscript:
+
+  :param: idx Int
+
+  :returns: RemoteElementView?
+  */
+  public subscript(idx: Int) -> RemoteElementView? {
+    return idx < subelementsView.subviews.count ? subelementsView.subviews[idx] as? RemoteElementView : nil
+  }
+
+  public var subelementViews: OrderedSet<RemoteElementView> {
+    return OrderedSet(subelementsView.subviews as? [RemoteElementView] ?? [])
+  }
+
+  /**
+  addSubelementViews:
+
+  :param: views NSSet
+  */
+  public func addSubelementViews(views: Set<RemoteElementView>) {
+    apply(subelementViews){self.subelementsView.addSubview($0)}
+  }
+
+  /**
+  addSubelementView:
+
+  :param: view RemoteElementView
+  */
+  public func addSubelementView(view: RemoteElementView) { subelementsView.addSubview(view) }
+
+  public func removeSubelementViews(views: Set<RemoteElementView>) {
+    apply(subelementViews){$0.removeFromSuperview()}
+  }
+
+  /**
+  removeSubelementView:
+
+  :param: view RemoteElementView
+  */
+  public func removeSubelementView(view: RemoteElementView) { view.removeFromSuperview() }
+
+  /**
+  bringSubelementViewToFront:
+
+  :param: subelementView RemoteElementView
+  */
+  public func bringSubelementViewToFront(subelementView: RemoteElementView) {
+    subelementsView.bringSubviewToFront(subelementView)
+  }
+
+  /**
+  sendSubelementViewToBack:
+
+  :param: subelementView RemoteElementView
+  */
+  public func sendSubelementViewToBack(subelementView: RemoteElementView) {
+    subelementsView.sendSubviewToBack(subelementView)
+  }
+
+  /**
+  insertSubelementView:aboveSubelementView:
+
+  :param: subelementView RemoteElementView
+  :param: siblingSubelementView RemoteElementView
+  */
+  public func insertSubelementView(subelementView: RemoteElementView, aboveSubelementView siblingSubelementView: RemoteElementView) {
+    subelementsView.insertSubview(subelementView, aboveSubview: siblingSubelementView)
+  }
+
+  /**
+  insertSubelementView:atIndex:
+
+  :param: subelementView RemoteElementView
+  :param: index Int
+  */
+  public func insertSubelementView(subelementView: RemoteElementView, atIndex index: Int) {
+    subelementsView.insertSubview(subelementView, atIndex: index)
+  }
+
+  /**
+  insertSubelementView:belowSubelementView:
+
+  :param: subelementView RemoteElementView
+  :param: siblingSubelementView RemoteElementView
+  */
+  public func insertSubelementView(subelementView: RemoteElementView, belowSubelementView siblingSubelementView: RemoteElementView) {
+    subelementsView.insertSubview(subelementView, belowSubview: siblingSubelementView)
+  }
+
+  // MARK: - Parent view
+
+  public var parentElementView: RemoteElementView? { return (superview as? ViewProxy)?.superview as? RemoteElementView }
+
+  // MARK: - Size
+
+  override public var bounds: CGRect { didSet { refreshBorderPath() } }
+
+  public static let MinimumSize = CGSize(square: 44)
+
+  public var minimumSize: CGSize {
+
+    var size = RemoteElementView.MinimumSize
+
+    if subelementViews.count > 0 {
+
+      var xAxisIntervals: [HalfOpenInterval<CGFloat>] = []
+      var yAxisIntervals: [HalfOpenInterval<CGFloat>] = []
+
+      for subelementView in subelementViews {
+        let min = subelementView.minimumSize
+        let origin = subelementView.frame.origin
+        xAxisIntervals.append(HalfOpenInterval(origin.x, (origin.x + min.width)))
+        yAxisIntervals.append(HalfOpenInterval(origin.y, (origin.y + min.height)))
       }
+      xAxisIntervals.sort{$0.start < $1.start}
+      yAxisIntervals.sort{$0.start < $1.start}
+
+      var tmpInterval = xAxisIntervals[0]
+      var tmpAxisIntervals: [HalfOpenInterval<CGFloat>] = []
+      for interval in xAxisIntervals {
+        if overlaps(tmpInterval, interval) {
+          tmpInterval = HalfOpenInterval(tmpInterval.start, interval.end)
+        } else {
+          tmpAxisIntervals.append(tmpInterval)
+          tmpInterval = interval
+        }
+      }
+      tmpAxisIntervals.append(tmpInterval)
+      xAxisIntervals = tmpAxisIntervals
+
+      tmpInterval = yAxisIntervals[0]
+      tmpAxisIntervals.removeAll()
+      for interval in yAxisIntervals {
+        if overlaps(tmpInterval, interval) {
+          tmpInterval = HalfOpenInterval(tmpInterval.start, interval.end)
+        } else {
+          tmpAxisIntervals.append(tmpInterval)
+          tmpInterval = interval
+        }
+      }
+      tmpAxisIntervals.append(tmpInterval)
+      yAxisIntervals = tmpAxisIntervals
+
+      size.width = xAxisIntervals.reduce(0.0) {$0 + ($1.end - $1.start)}
+      size.height = yAxisIntervals.reduce(0.0) {$0 + ($1.end - $1.start)}
+
+      if model.constraintManager.proportionLock { size = bounds.size.aspectMappedToSize(size, binding: false) }
+
     }
+
+    return size
   }
+
+  public var maximumSize: CGSize {
+    var size = superview?.bounds.size ?? CGSize.zeroSize
+    if model.constraintManager.proportionLock { size = bounds.size.aspectMappedToSize(size, binding: true) }
+    return size
+  }
+
+  // MARK: - Display
+
+  override public var backgroundColor: UIColor? {
+    get { return super.backgroundColor ?? model?.backgroundColor }
+    set { super.backgroundColor = newValue }
+  }
+
+ /** setNeedsDisplay */
+ override public func setNeedsDisplay() {
+   super.setNeedsDisplay()
+   backdropView.setNeedsDisplay()
+   contentView.setNeedsDisplay()
+   subelementsView.setNeedsDisplay()
+   overlayView.setNeedsDisplay()
+ }
+
+  // MARK: - Model
+
+  public var model: RemoteElement!
+
+  /** updateSubelementOrderFromView */
+  public func updateSubelementOrderFromView() { model.subelements = subelementViews.map{$0.model} }
 
   var kvoReceptionists: [String:MSKVOReceptionist] = [:]
 
@@ -528,7 +495,7 @@ public class RemoteElementView: UIView {
     }
     registry["constraints"] = {($0.observer as? RemoteElementView)?.setNeedsUpdateConstraints()}
 
-    let updateDisplay: (MSKVOReceptionist!) -> Void = {($0.observer as? RemoteElementView)?.setNeedsDisplay()}
+    let updateDisplay: (MSKVOReceptionist!) -> Void = {($0.observer as? RemoteElementView)?.setNeedsDisplay() }
     registry["backgroundImageAlpha"] = updateDisplay
     registry["backgroundImage"] = updateDisplay
     registry["style"] = updateDisplay
@@ -537,6 +504,71 @@ public class RemoteElementView: UIView {
 
     return registry
   }
+
+  // MARK: - Editing
+
+  public var locked: Bool = false {
+    didSet {
+      apply(subelementViews){$0.resizable = !self.locked; $0.moveable = !self.locked}
+    }
+  }
+
+  public var editingMode: RemoteElement.BaseType = .Undefined {
+    didSet {
+      apply(subelementViews){$0.editingMode = self.editingMode}
+    }
+  }
+
+  public var isEditing: Bool { return editingMode != .None }
+
+  public enum EditingState {
+    case None, Selected, Moving, Focus
+    var color: UIColor {
+      switch self {
+        case .None: return UIColor.clearColor()
+        case .Selected: return UIColor.yellowColor()
+        case .Moving: return UIColor.blueColor()
+        case .Focus: return UIColor.redColor()
+      }
+    }
+  }
+
+  public var editingState: EditingState = .None {
+    didSet {
+      showAlignmentIndicators = editingState == .Moving
+      showContentBoundary = editingState != .None
+      refreshBoundary()
+      boundaryColor = editingState.color
+      overlayView.layer.setNeedsDisplay()
+      overlayView.layer.displayIfNeeded()
+    }
+  }
+  public var resizable = false
+  public var moveable = false
+  public var shrinkwrap = false
+  public var appliedScale: CGFloat = 1.0
+
+  private var boundaryColor: UIColor = UIColor.clearColor() { didSet { boundaryOverlay.strokeColor = boundaryColor.CGColor } }
+  private var showAlignmentIndicators: Bool = false {
+    didSet {
+      alignmentOverlay.hidden = !showAlignmentIndicators
+      renderAlignmentOverlayIfNeeded()
+    }
+  }
+  private var showContentBoundary: Bool = false {
+    didSet {
+      refreshBoundary()
+      boundaryOverlay.hidden = !showContentBoundary
+    }
+  }
+  private var lineWidth: CGFloat = 2.0 { didSet { boundaryOverlay.lineWidth = lineWidth } }
+
+  /** refreshBoundary */
+  private func refreshBoundary() { boundaryOverlay.path = boundaryPath }
+
+  private var boundaryPath: CGPath { return (borderPath ?? UIBezierPath(rect: bounds)).CGPath }
+
+  // MARK: - Drawing
 
   /**
   drawContentInContext:inRect:
@@ -553,12 +585,14 @@ public class RemoteElementView: UIView {
   :param: rect CGRect
   */
   func drawBackdropInContext(ctx: CGContextRef, inRect rect: CGRect) {
+
     switch model.shape {
       case .Undefined:
-        if let color = backgroundColor {
-          color.setFill()
-          UIRectFill(rect)
-        }
+        break
+//        if let color = backgroundColor {
+//          color.setFill()
+//          UIRectFill(rect)
+//        }
       default:
         var attrs = Painter.Attributes(rect: rect)
         attrs.color = backgroundColor ?? Painter.defaultBackgroundColor
@@ -591,7 +625,7 @@ public class RemoteElementView: UIView {
   }
 
   /** refreshBorderPath */
-  func refreshBorderPath() {
+  private func refreshBorderPath() {
     switch model.shape {
       case _ where bounds.isEmpty: fallthrough
       case .Undefined: borderPath = nil
@@ -608,11 +642,392 @@ public class RemoteElementView: UIView {
       } else {
         layer.mask = nil
       }
-      overlayView.refreshBoundary()
+      refreshBoundary()
     }
   }
 
   public var cornerRadii = CGSize(square: 5.0)
+
+  /** renderAlignmentOverlayIfNeeded */
+  private func renderAlignmentOverlayIfNeeded() {
+
+    if showAlignmentIndicators {
+
+      let manager = model.constraintManager
+
+      UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0)
+
+      let context = UIGraphicsGetCurrentContext()
+
+      let gentleHighlight = UIColor(red:1, green:1, blue:1, alpha:0.25)
+      let parent          = UIColor(red:0.899, green:0.287, blue:0.238, alpha:1)
+      let sibling         = UIColor(red:0.186, green:0.686, blue:0.661, alpha:1)
+      let intrinsic       = UIColor(red:0.686, green:0.186, blue:0.899, alpha:1)
+      let colors          = [gentleHighlight, parent, sibling, intrinsic]
+
+      let outerOffset = CGSize(width: 0.1, height: -0.1)
+      let outerRadius: CGFloat = 2.5
+      let innerRadius: CGFloat = 0.5
+      let frame = bounds.rectByInsetting(dx: 3.0, dy: 3.0)
+      let cornerRadius: CGFloat = 1.0
+
+      if manager[.Left] {
+
+        // Left Bar Drawing
+        let rect = CGRect(x: frame.minX + 1.0, y: frame.minY + 3.0, width: 2.0, height: frame.height - 6.0)
+        let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
+        let offset = CGSize(width: -1.1, height: -0.1)
+
+        CGContextSaveGState(context)
+        CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
+        colors[manager.dependencyForAttribute(.Left).rawValue].setFill()
+        barPath.fill()
+
+        // Left Bar Inner Shadow
+        var borderRect = barPath.bounds.rectByInsetting(dx: -innerRadius, dy: -innerRadius)
+
+        borderRect.offset(dx: -offset.width, dy: -offset.height)
+        borderRect.union(barPath.bounds)
+        borderRect.inset(dx: -1, dy: -1)
+
+        let negativePath = UIBezierPath(rect:borderRect)
+
+        negativePath.appendPath(barPath)
+        negativePath.usesEvenOddFillRule = true
+
+        CGContextSaveGState(context)
+        let xOffset = offset.width + round(borderRect.size.width)
+        let yOffset = offset.height
+
+        CGContextSetShadowWithColor(context,
+          CGSize(width: xOffset + copysign(0.1, xOffset), height: yOffset + copysign(0.1, yOffset)),
+          innerRadius,
+          gentleHighlight.CGColor)
+
+        barPath.addClip()
+
+        let transform = CGAffineTransformMakeTranslation(-round(borderRect.width), 0)
+
+        negativePath.applyTransform(transform)
+        UIColor.grayColor().setFill()
+        negativePath.fill()
+
+        CGContextRestoreGState(context)
+
+        CGContextRestoreGState(context)
+      }
+
+      if manager[.Right] {
+
+        // Right Bar Drawing
+        let rect = CGRect(x: frame.minX + frame.width - 3.0, y: frame.minY + 3.0, width: 2.0, height: frame.height - 6.0)
+        let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
+        let offset = CGSize(width: 1.1, height: -0.1)
+
+        CGContextSaveGState(context)
+        CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
+        colors[manager.dependencyForAttribute(.Right).rawValue].setFill()
+        barPath.fill()
+
+        // Right Bar Inner Shadow
+        var borderRect = barPath.bounds.rectByInsetting(dx: -innerRadius, dy: -innerRadius)
+
+        borderRect.offset(dx: -offset.width, dy: -offset.height)
+        borderRect.union(barPath.bounds)
+        borderRect.inset(dx: -1, dy: -1)
+
+        let negativePath = UIBezierPath(rect:borderRect)
+
+        negativePath.appendPath(barPath)
+        negativePath.usesEvenOddFillRule = true
+
+        CGContextSaveGState(context)
+        let xOffset = offset.width + round(borderRect.size.width)
+        let yOffset = offset.height
+
+        CGContextSetShadowWithColor(context,
+          CGSize(width: xOffset + copysign(0.1, xOffset), height: yOffset + copysign(0.1, yOffset )),
+          innerRadius,
+          gentleHighlight.CGColor)
+
+        barPath.addClip()
+
+        let transform = CGAffineTransformMakeTranslation(-round(borderRect.width), 0)
+
+        negativePath.applyTransform(transform)
+        UIColor.grayColor().setFill()
+        negativePath.fill()
+
+        CGContextRestoreGState(context)
+
+        CGContextRestoreGState(context)
+      }
+
+      if manager[.Top] {
+
+        // Top Bar Drawing
+        let rect = CGRect(x: frame.minX + 4.0, y: frame.minY + 1.0, width: frame.width - 8.0, height: 2.0)
+        let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
+        let offset = CGSize(width: 0.1, height: -1.1)
+
+        CGContextSaveGState(context)
+        CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
+        colors[manager.dependencyForAttribute(.Top).rawValue].setFill()
+        barPath.fill()
+        
+          // Top Bar Inner Shadow
+          var borderRect = barPath.bounds.rectByInsetting(dx: -innerRadius, dy: -innerRadius)
+
+          borderRect.offset(dx: -offset.width, dy: -offset.height)
+          borderRect.union(barPath.bounds)
+          borderRect.inset(dx: -1, dy: -1)
+
+          let negativePath = UIBezierPath(rect:borderRect)
+
+          negativePath.appendPath(barPath)
+          negativePath.usesEvenOddFillRule = true
+
+          CGContextSaveGState(context)
+          let xOffset = offset.width + round(borderRect.size.width)
+          let yOffset = offset.height
+
+          CGContextSetShadowWithColor(context,
+            CGSize(width: xOffset + copysign(0.1, xOffset), height: yOffset + copysign(0.1, yOffset )),
+            innerRadius,
+            gentleHighlight.CGColor)
+
+          barPath.addClip()
+
+          let transform = CGAffineTransformMakeTranslation(-round(borderRect.width), 0)
+
+          negativePath.applyTransform(transform)
+          UIColor.grayColor().setFill()
+          negativePath.fill()
+
+          CGContextRestoreGState(context)
+
+          CGContextRestoreGState(context)
+        }
+
+        if manager[.Bottom] {
+
+          // Bottom Bar Drawing
+          let rect = CGRect(x: frame.minX + 4.0, y: frame.minY + frame.height - 3.0, width: frame.width - 8.0, height: 2.0)
+          let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
+          let offset = CGSize(width: 0.1, height: 1.1)
+
+          CGContextSaveGState(context)
+          CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
+          colors[manager.dependencyForAttribute(.Bottom).rawValue].setFill()
+          barPath.fill()
+
+          // Bottom Bar Inner Shadow
+          var borderRect = barPath.bounds.rectByInsetting(dx: -innerRadius, dy: -innerRadius)
+
+          borderRect.offset(dx: -offset.width, dy: -offset.height)
+          borderRect.union(barPath.bounds)
+          borderRect.inset(dx: -1, dy: -1)
+
+          let negativePath = UIBezierPath(rect:borderRect)
+
+          negativePath.appendPath(barPath)
+          negativePath.usesEvenOddFillRule = true
+
+          CGContextSaveGState(context)
+          let xOffset = offset.width + round(borderRect.size.width)
+          let yOffset = offset.height
+
+          CGContextSetShadowWithColor(context,
+            CGSize(width: xOffset + copysign(0.1, xOffset), height: yOffset + copysign(0.1, yOffset )),
+            innerRadius,
+            gentleHighlight.CGColor)
+
+          barPath.addClip()
+
+          let transform = CGAffineTransformMakeTranslation(-round(borderRect.width), 0)
+
+          negativePath.applyTransform(transform)
+          UIColor.grayColor().setFill()
+          negativePath.fill()
+
+          CGContextRestoreGState(context)
+
+          CGContextRestoreGState(context)
+        }
+
+        if manager[.CenterX] {
+
+          // CenterX Bar Drawing
+          let rect = CGRect(x: frame.minX + floor((frame.width - 2.0) * 0.5) + 0.5, y: frame.minY + 4.0,
+            width: 2.0, height: frame.height - 7.0)
+          let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
+          let offset = CGSize(width: 0.1, height: -0.1)
+
+          CGContextSaveGState(context)
+          CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
+          colors[manager.dependencyForAttribute(.CenterX).rawValue].setFill()
+          barPath.fill()
+
+          // CenterX Bar Inner Shadow
+          var borderRect = barPath.bounds.rectByInsetting(dx: -innerRadius, dy: -innerRadius)
+
+          borderRect.offset(dx: -offset.width, dy: -offset.height)
+          borderRect.union(barPath.bounds)
+          borderRect.inset(dx: -1, dy: -1)
+
+          let negativePath = UIBezierPath(rect:borderRect)
+
+          negativePath.appendPath(barPath)
+          negativePath.usesEvenOddFillRule = true
+
+          CGContextSaveGState(context)
+          let xOffset = offset.width + round(borderRect.size.width)
+          let yOffset = offset.height
+
+          CGContextSetShadowWithColor(context,
+            CGSize(width: xOffset + copysign(0.1, xOffset), height: yOffset + copysign(0.1, yOffset )),
+            innerRadius,
+            gentleHighlight.CGColor)
+
+          barPath.addClip()
+
+          let transform = CGAffineTransformMakeTranslation(-round(borderRect.width), 0)
+
+          negativePath.applyTransform(transform)
+          UIColor.grayColor().setFill()
+          negativePath.fill()
+
+          CGContextRestoreGState(context)
+
+          CGContextRestoreGState(context)
+        }
+
+        if manager[.CenterY] {
+
+          // CenterY Bar Drawing
+          let rect = CGRect(x: frame.minX + 3.5, y: frame.minY + floor(frame.height - 2.0) * 0.5 + 0.5,
+                            width: frame.width - 8.0, height: 2.0)
+          let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
+          let offset = CGSize(width: 0.1, height: -0.1)
+
+          CGContextSaveGState(context)
+          CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
+          colors[manager.dependencyForAttribute(.CenterY).rawValue].setFill()
+          barPath.fill()
+
+          // CenterY Bar Inner Shadow
+          var borderRect = barPath.bounds.rectByInsetting(dx: -innerRadius, dy: -innerRadius)
+
+          borderRect.offset(dx: -offset.width, dy: -offset.height)
+          borderRect.union(barPath.bounds)
+          borderRect.inset(dx: -1, dy: -1)
+
+          let negativePath = UIBezierPath(rect:borderRect)
+
+          negativePath.appendPath(barPath)
+          negativePath.usesEvenOddFillRule = true
+
+          CGContextSaveGState(context)
+          let xOffset = offset.width + round(borderRect.size.width)
+          let yOffset = offset.height
+
+          CGContextSetShadowWithColor(context,
+            CGSize(width: xOffset + copysign(0.1, xOffset), height: yOffset + copysign(0.1, yOffset )),
+            innerRadius,
+            gentleHighlight.CGColor)
+
+          barPath.addClip()
+
+          let transform = CGAffineTransformMakeTranslation(-round(borderRect.width), 0)
+
+          negativePath.applyTransform(transform)
+          UIColor.grayColor().setFill()
+          negativePath.fill()
+
+          CGContextRestoreGState(context)
+
+          CGContextRestoreGState(context)
+        }
+
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        alignmentOverlay.contents = image.CGImage
+        UIGraphicsEndImageContext()
+
+      }
+
+  }
+
+  // MARK: - Descriptions
+
+  public var modeledConstraintsDescription: String { return "\n".join(modeledConstraints.map{$0.description}) }
+
+  // MARK: - Internal views
+
+  private lazy var subelementsView: ViewProxy = {
+    let view = ViewProxy(frame: self.bounds, draw: {_, _ in })
+    view.userInteractionEnabled = false
+    view.setTranslatesAutoresizingMaskIntoConstraints(false)
+    view.backgroundColor = UIColor.clearColor()
+    view.clipsToBounds = false
+    view.opaque = false
+    view.autoresizesSubviews = false
+    view.subviewType = RemoteElementView.self
+    return view
+    }()
+  private lazy var contentView: ViewProxy = {
+    let view = ViewProxy(frame: self.bounds, draw: self.drawContentInContext)
+    view.userInteractionEnabled = false
+    view.setTranslatesAutoresizingMaskIntoConstraints(false)
+    view.backgroundColor = UIColor.clearColor()
+    view.clipsToBounds = false
+    view.opaque = false
+    view.contentMode = .Redraw
+    view.autoresizesSubviews = false
+    return view
+    }()
+  private lazy var backdropView: ViewProxy = {
+    let view = ViewProxy(frame: self.bounds, draw: self.drawBackdropInContext)
+    view.userInteractionEnabled = false
+    view.setTranslatesAutoresizingMaskIntoConstraints(false)
+    view.backgroundColor = UIColor.clearColor()
+    view.clipsToBounds = false
+    view.opaque = false
+    view.contentMode = .Redraw
+    view.autoresizesSubviews = false
+    return view
+    }()
+  private lazy var overlayView: ViewProxy = {
+    let view = ViewProxy(frame: self.bounds, draw: self.drawOverlayInContext)
+    view.userInteractionEnabled = false
+    view.setTranslatesAutoresizingMaskIntoConstraints(false)
+    view.backgroundColor = UIColor.clearColor()
+    view.clipsToBounds = false
+    view.opaque = false
+    view.contentMode = .Redraw
+    view.autoresizesSubviews = false
+    view.layer.addSublayer(self.boundaryOverlay)
+    view.layer.addSublayer(self.alignmentOverlay)
+    return view
+    }()
+
+  lazy var boundaryOverlay: CAShapeLayer = {
+      let overlay = CAShapeLayer()
+      overlay.lineWidth = self.lineWidth
+      overlay.lineJoin = kCALineJoinRound
+      overlay.fillColor = nil
+      overlay.strokeColor = self.boundaryColor.CGColor
+      overlay.path = self.boundaryPath
+      overlay.opacity = 0.65
+      overlay.hidden = !self.showContentBoundary
+      return overlay
+    }()
+
+  lazy var alignmentOverlay: CALayer = {
+      let overlay = CALayer()
+      overlay.frame = self.layer.bounds
+      overlay.hidden = !self.showAlignmentIndicators
+      return overlay
+    }()
 
   /** addInternalSubviews */
   func addInternalSubviews() {
@@ -684,453 +1099,4 @@ public class RemoteElementView: UIView {
     set { overlayView.clipsToBounds = newValue }
   }
 
-  public var modeledConstraintsDescription: String { return "\n".join(modeledConstraints.map{$0.description}) }
-
-}
-
-extension RemoteElementView {
-  private class InternalView: UIView {
-
-    weak var delegate: RemoteElementView!
-
-    /**
-    initWithDelegate:
-
-    :param: delegate RemoteElementView
-    */
-    convenience init(delegate: RemoteElementView) {
-      self.init(frame: delegate.bounds)
-      self.delegate = delegate
-      initialize()
-    }
-
-    /** initialize */
-    func initialize() {
-      userInteractionEnabled = self is RemoteElementView.SubelementsView
-      setTranslatesAutoresizingMaskIntoConstraints(false)
-      backgroundColor = UIColor.clearColor()
-      clipsToBounds = false
-      opaque = false
-      contentMode = .Redraw
-      autoresizesSubviews = false
-    }
-
-  }
-}
-
-extension RemoteElementView {
-  private class SubelementsView: InternalView {
-
-    /**
-    addSubview:
-
-    :param: subview UIView
-    */
-    override func addSubview(subview: UIView) {
-      if let elementView = subview as? RemoteElementView {
-        if elementView.model.parentElement == delegate!.model {
-          super.addSubview(elementView)
-        }
-      }
-    }
-
-  }
-}
-
-extension RemoteElementView {
-  private class ContentView: InternalView {
-
-    /**
-    drawRect:
-
-    :param: rect CGRect
-    */
-    override func drawRect(rect: CGRect) { delegate?.drawContentInContext(UIGraphicsGetCurrentContext(), inRect: rect) }
-
-  }
-}
-
-extension RemoteElementView {
-  private class BackdropView: InternalView {
-
-    /**
-    drawRect:
-
-    :param: rect CGRect
-    */
-    override func drawRect(rect: CGRect) { delegate?.drawBackdropInContext(UIGraphicsGetCurrentContext(), inRect: rect) }
-
-  }
-}
-
-extension RemoteElementView {
-  private class OverlayView: InternalView {
-
-    var boundaryColor: UIColor = UIColor.clearColor() { didSet { boundaryOverlay.strokeColor = boundaryColor.CGColor } }
-
-    var showAlignmentIndicators: Bool = false {
-      didSet {
-        alignmentOverlay.hidden = !showAlignmentIndicators
-        renderAlignmentOverlayIfNeeded()
-      }
-    }
-    var showContentBoundary: Bool = false {
-      didSet {
-        refreshBoundary()
-        boundaryOverlay.hidden = !showContentBoundary
-      }
-    }
-
-    lazy var boundaryOverlay: CAShapeLayer = {
-        let overlay = CAShapeLayer()
-        overlay.lineWidth = self.lineWidth
-        overlay.lineJoin = kCALineJoinRound
-        overlay.fillColor = nil
-        overlay.strokeColor = self.boundaryColor.CGColor
-        overlay.path = self.boundaryPath
-        overlay.opacity = 0.65
-        overlay.hidden = !self.showContentBoundary
-        return overlay
-      }()
-
-    lazy var alignmentOverlay: CALayer = {
-        let overlay = CALayer()
-        overlay.frame = self.layer.bounds
-        overlay.hidden = !self.showAlignmentIndicators
-        return overlay
-      }()
-
-    var lineWidth: CGFloat = 2.0 { didSet { boundaryOverlay.lineWidth = lineWidth } }
-
-    /** initialize */
-    override func initialize() {
-      super.initialize()
-      layer.addSublayer(boundaryOverlay)
-      layer.addSublayer(alignmentOverlay)
-    }
-
-    /**
-    drawRect:
-
-    :param: rect CGRect
-    */
-    override func drawRect(rect: CGRect) { delegate?.drawOverlayInContext(UIGraphicsGetCurrentContext(), inRect: rect) }
-
-    /** refreshBoundary */
-    func refreshBoundary() { boundaryOverlay.path = boundaryPath }
-
-    var boundaryPath: CGPathRef { return (delegate?.borderPath ?? UIBezierPath(rect: bounds)).CGPath }
-
-    /** renderAlignmentOverlayIfNeeded */
-    func renderAlignmentOverlayIfNeeded() {
-
-      if showAlignmentIndicators {
-
-        if let manager = delegate?.model.constraintManager {
-
-          UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0)
-
-          let context = UIGraphicsGetCurrentContext()
-
-          let gentleHighlight = UIColor(red:1, green:1, blue:1, alpha:0.25)
-          let parent          = UIColor(red:0.899, green:0.287, blue:0.238, alpha:1)
-          let sibling         = UIColor(red:0.186, green:0.686, blue:0.661, alpha:1)
-          let intrinsic       = UIColor(red:0.686, green:0.186, blue:0.899, alpha:1)
-          let colors          = [gentleHighlight, parent, sibling, intrinsic]
-
-          let outerOffset = CGSize(width: 0.1, height: -0.1)
-          let outerRadius: CGFloat = 2.5
-          let innerRadius: CGFloat = 0.5
-          let frame = bounds.rectByInsetting(dx: 3.0, dy: 3.0)
-          let cornerRadius: CGFloat = 1.0
-
-          if manager[.Left] {
-
-            // Left Bar Drawing
-            let rect = CGRect(x: frame.minX + 1.0, y: frame.minY + 3.0, width: 2.0, height: frame.height - 6.0)
-            let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
-            let offset = CGSize(width: -1.1, height: -0.1)
-
-            CGContextSaveGState(context)
-            CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
-            colors[manager.dependencyForAttribute(.Left).rawValue].setFill()
-            barPath.fill()
-
-            // Left Bar Inner Shadow
-            var borderRect = barPath.bounds.rectByInsetting(dx: -innerRadius, dy: -innerRadius)
-
-            borderRect.offset(dx: -offset.width, dy: -offset.height)
-            borderRect.union(barPath.bounds)
-            borderRect.inset(dx: -1, dy: -1)
-
-            let negativePath = UIBezierPath(rect:borderRect)
-
-            negativePath.appendPath(barPath)
-            negativePath.usesEvenOddFillRule = true
-
-            CGContextSaveGState(context)
-            let xOffset = offset.width + round(borderRect.size.width)
-            let yOffset = offset.height
-
-            CGContextSetShadowWithColor(context,
-              CGSize(width: xOffset + copysign(0.1, xOffset), height: yOffset + copysign(0.1, yOffset)),
-              innerRadius,
-              gentleHighlight.CGColor)
-
-            barPath.addClip()
-
-            let transform = CGAffineTransformMakeTranslation(-round(borderRect.width), 0)
-
-            negativePath.applyTransform(transform)
-            UIColor.grayColor().setFill()
-            negativePath.fill()
-
-            CGContextRestoreGState(context)
-
-            CGContextRestoreGState(context)
-          }
-
-          if manager[.Right] {
-
-            // Right Bar Drawing
-            let rect = CGRect(x: frame.minX + frame.width - 3.0, y: frame.minY + 3.0, width: 2.0, height: frame.height - 6.0)
-            let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
-            let offset = CGSize(width: 1.1, height: -0.1)
-
-            CGContextSaveGState(context)
-            CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
-            colors[manager.dependencyForAttribute(.Right).rawValue].setFill()
-            barPath.fill()
-
-            // Right Bar Inner Shadow
-            var borderRect = barPath.bounds.rectByInsetting(dx: -innerRadius, dy: -innerRadius)
-
-            borderRect.offset(dx: -offset.width, dy: -offset.height)
-            borderRect.union(barPath.bounds)
-            borderRect.inset(dx: -1, dy: -1)
-
-            let negativePath = UIBezierPath(rect:borderRect)
-
-            negativePath.appendPath(barPath)
-            negativePath.usesEvenOddFillRule = true
-
-            CGContextSaveGState(context)
-            let xOffset = offset.width + round(borderRect.size.width)
-            let yOffset = offset.height
-
-            CGContextSetShadowWithColor(context,
-              CGSize(width: xOffset + copysign(0.1, xOffset), height: yOffset + copysign(0.1, yOffset )),
-              innerRadius,
-              gentleHighlight.CGColor)
-
-            barPath.addClip()
-
-            let transform = CGAffineTransformMakeTranslation(-round(borderRect.width), 0)
-
-            negativePath.applyTransform(transform)
-            UIColor.grayColor().setFill()
-            negativePath.fill()
-
-            CGContextRestoreGState(context)
-
-            CGContextRestoreGState(context)
-          }
-
-          if manager[.Top] {
-
-            // Top Bar Drawing
-            let rect = CGRect(x: frame.minX + 4.0, y: frame.minY + 1.0, width: frame.width - 8.0, height: 2.0)
-            let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
-            let offset = CGSize(width: 0.1, height: -1.1)
-
-            CGContextSaveGState(context)
-            CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
-            colors[manager.dependencyForAttribute(.Top).rawValue].setFill()
-            barPath.fill()
-
-            // Top Bar Inner Shadow
-            var borderRect = barPath.bounds.rectByInsetting(dx: -innerRadius, dy: -innerRadius)
-
-            borderRect.offset(dx: -offset.width, dy: -offset.height)
-            borderRect.union(barPath.bounds)
-            borderRect.inset(dx: -1, dy: -1)
-
-            let negativePath = UIBezierPath(rect:borderRect)
-
-            negativePath.appendPath(barPath)
-            negativePath.usesEvenOddFillRule = true
-
-            CGContextSaveGState(context)
-            let xOffset = offset.width + round(borderRect.size.width)
-            let yOffset = offset.height
-
-            CGContextSetShadowWithColor(context,
-              CGSize(width: xOffset + copysign(0.1, xOffset), height: yOffset + copysign(0.1, yOffset )),
-              innerRadius,
-              gentleHighlight.CGColor)
-
-            barPath.addClip()
-
-            let transform = CGAffineTransformMakeTranslation(-round(borderRect.width), 0)
-
-            negativePath.applyTransform(transform)
-            UIColor.grayColor().setFill()
-            negativePath.fill()
-
-            CGContextRestoreGState(context)
-
-            CGContextRestoreGState(context)
-          }
-
-          if manager[.Bottom] {
-
-            // Bottom Bar Drawing
-            let rect = CGRect(x: frame.minX + 4.0, y: frame.minY + frame.height - 3.0, width: frame.width - 8.0, height: 2.0)
-            let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
-            let offset = CGSize(width: 0.1, height: 1.1)
-
-            CGContextSaveGState(context)
-            CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
-            colors[manager.dependencyForAttribute(.Bottom).rawValue].setFill()
-            barPath.fill()
-
-            // Bottom Bar Inner Shadow
-            var borderRect = barPath.bounds.rectByInsetting(dx: -innerRadius, dy: -innerRadius)
-
-            borderRect.offset(dx: -offset.width, dy: -offset.height)
-            borderRect.union(barPath.bounds)
-            borderRect.inset(dx: -1, dy: -1)
-
-            let negativePath = UIBezierPath(rect:borderRect)
-
-            negativePath.appendPath(barPath)
-            negativePath.usesEvenOddFillRule = true
-
-            CGContextSaveGState(context)
-            let xOffset = offset.width + round(borderRect.size.width)
-            let yOffset = offset.height
-
-            CGContextSetShadowWithColor(context,
-              CGSize(width: xOffset + copysign(0.1, xOffset), height: yOffset + copysign(0.1, yOffset )),
-              innerRadius,
-              gentleHighlight.CGColor)
-
-            barPath.addClip()
-
-            let transform = CGAffineTransformMakeTranslation(-round(borderRect.width), 0)
-
-            negativePath.applyTransform(transform)
-            UIColor.grayColor().setFill()
-            negativePath.fill()
-
-            CGContextRestoreGState(context)
-
-            CGContextRestoreGState(context)
-          }
-
-          if manager[.CenterX] {
-
-            // CenterX Bar Drawing
-            let rect = CGRect(x: frame.minX + floor((frame.width - 2.0) * 0.5) + 0.5, y: frame.minY + 4.0,
-              width: 2.0, height: frame.height - 7.0)
-            let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
-            let offset = CGSize(width: 0.1, height: -0.1)
-
-            CGContextSaveGState(context)
-            CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
-            colors[manager.dependencyForAttribute(.CenterX).rawValue].setFill()
-            barPath.fill()
-
-            // CenterX Bar Inner Shadow
-            var borderRect = barPath.bounds.rectByInsetting(dx: -innerRadius, dy: -innerRadius)
-
-            borderRect.offset(dx: -offset.width, dy: -offset.height)
-            borderRect.union(barPath.bounds)
-            borderRect.inset(dx: -1, dy: -1)
-
-            let negativePath = UIBezierPath(rect:borderRect)
-
-            negativePath.appendPath(barPath)
-            negativePath.usesEvenOddFillRule = true
-
-            CGContextSaveGState(context)
-            let xOffset = offset.width + round(borderRect.size.width)
-            let yOffset = offset.height
-
-            CGContextSetShadowWithColor(context,
-              CGSize(width: xOffset + copysign(0.1, xOffset), height: yOffset + copysign(0.1, yOffset )),
-              innerRadius,
-              gentleHighlight.CGColor)
-
-            barPath.addClip()
-
-            let transform = CGAffineTransformMakeTranslation(-round(borderRect.width), 0)
-
-            negativePath.applyTransform(transform)
-            UIColor.grayColor().setFill()
-            negativePath.fill()
-
-            CGContextRestoreGState(context)
-
-            CGContextRestoreGState(context)
-          }
-
-          if manager[.CenterY] {
-
-            // CenterY Bar Drawing
-            let rect = CGRect(x: frame.minX + 3.5, y: frame.minY + floor(frame.height - 2.0) * 0.5 + 0.5,
-                              width: frame.width - 8.0, height: 2.0)
-            let barPath = UIBezierPath(roundedRect:rect, cornerRadius:cornerRadius)
-            let offset = CGSize(width: 0.1, height: -0.1)
-
-            CGContextSaveGState(context)
-            CGContextSetShadowWithColor(context, outerOffset, outerRadius, gentleHighlight.CGColor)
-            colors[manager.dependencyForAttribute(.CenterY).rawValue].setFill()
-            barPath.fill()
-
-            // CenterY Bar Inner Shadow
-            var borderRect = barPath.bounds.rectByInsetting(dx: -innerRadius, dy: -innerRadius)
-
-            borderRect.offset(dx: -offset.width, dy: -offset.height)
-            borderRect.union(barPath.bounds)
-            borderRect.inset(dx: -1, dy: -1)
-
-            let negativePath = UIBezierPath(rect:borderRect)
-
-            negativePath.appendPath(barPath)
-            negativePath.usesEvenOddFillRule = true
-
-            CGContextSaveGState(context)
-            let xOffset = offset.width + round(borderRect.size.width)
-            let yOffset = offset.height
-
-            CGContextSetShadowWithColor(context,
-              CGSize(width: xOffset + copysign(0.1, xOffset), height: yOffset + copysign(0.1, yOffset )),
-              innerRadius,
-              gentleHighlight.CGColor)
-
-            barPath.addClip()
-
-            let transform = CGAffineTransformMakeTranslation(-round(borderRect.width), 0)
-
-            negativePath.applyTransform(transform)
-            UIColor.grayColor().setFill()
-            negativePath.fill()
-
-            CGContextRestoreGState(context)
-
-            CGContextRestoreGState(context)
-          }
-
-          let image = UIGraphicsGetImageFromCurrentImageContext()
-          alignmentOverlay.contents = image.CGImage
-          UIGraphicsEndImageContext()
-
-        }
-
-      }
-
-    }
-
-  }
 }

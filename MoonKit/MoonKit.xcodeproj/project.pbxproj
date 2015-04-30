@@ -25,6 +25,7 @@
 		C20650051A13C8FB00342FDE /* Generic.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592EE19C8E04200920F8D /* Generic.swift */; };
 		C20650061A13C90A00342FDE /* FontAwesomeIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592F019C8E04200920F8D /* FontAwesomeIcon.swift */; };
 		C20650071A13C99500342FDE /* GestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63DD19FEC06A00F54626 /* GestureManager.swift */; };
+		C210E9921AF27E3C0026A51D /* ViewProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C210E9911AF27E3C0026A51D /* ViewProxy.swift */; };
 		C21493BD1A33CEA100D274A2 /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21493BC1A33CEA100D274A2 /* Checkbox.swift */; };
 		C21493BF1A35285A00D274A2 /* ColorSwatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21493BE1A35285A00D274A2 /* ColorSwatch.swift */; };
 		C21493C11A35302200D274A2 /* ColorInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21493C01A35302200D274A2 /* ColorInputView.swift */; };
@@ -352,6 +353,7 @@
 		C2064FF91A13C05900342FDE /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		C20FF1F119AEB67100D11F33 /* MSNotificationReceptionist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSNotificationReceptionist.h; sourceTree = "<group>"; };
 		C20FF1F219AEB67100D11F33 /* MSNotificationReceptionist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSNotificationReceptionist.m; sourceTree = "<group>"; };
+		C210E9911AF27E3C0026A51D /* ViewProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewProxy.swift; sourceTree = "<group>"; };
 		C21493BC1A33CEA100D274A2 /* Checkbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Checkbox.swift; sourceTree = "<group>"; };
 		C21493BE1A35285A00D274A2 /* ColorSwatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSwatch.swift; sourceTree = "<group>"; };
 		C21493C01A35302200D274A2 /* ColorInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorInputView.swift; sourceTree = "<group>"; };
@@ -847,6 +849,7 @@
 				C2A6261E1A33598300152E97 /* Slider.swift */,
 				C2B9B4091AC1C499005BA67C /* RegularExpression.swift */,
 				C2304E091AEECE1C0090D889 /* LayerProxy.swift */,
+				C210E9911AF27E3C0026A51D /* ViewProxy.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -1673,6 +1676,7 @@
 				C21493BF1A35285A00D274A2 /* ColorSwatch.swift in Sources */,
 				C28E50951A13CA7300DF3206 /* ToggleImageSegmentedControl.swift in Sources */,
 				C2358F7519C78E0C00920F8D /* MSStack.m in Sources */,
+				C210E9921AF27E3C0026A51D /* ViewProxy.swift in Sources */,
 				C2358F7619C78E0C00920F8D /* MSValueTransformers.m in Sources */,
 				C2358F7A19C78E0C00920F8D /* MSNotificationReceptionist.m in Sources */,
 				C2358F7B19C78E0C00920F8D /* MSXMLParserDelegate.m in Sources */,
