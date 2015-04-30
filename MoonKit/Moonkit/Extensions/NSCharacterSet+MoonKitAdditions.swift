@@ -78,6 +78,16 @@ public func +=(inout lhs: NSCharacterSet, rhs: NSCharacterSet) { lhs = lhs + rhs
 public func ∪(lhs: NSCharacterSet, rhs: NSCharacterSet) -> NSCharacterSet { return lhs + rhs }
 public func ∪=(inout lhs: NSCharacterSet, rhs: NSCharacterSet) { lhs = lhs ∪ rhs }
 
+public func ~=(lhs: NSCharacterSet, rhs: Character) -> Bool {
+  let s = String(rhs).utf16
+  let c = s[s.startIndex]
+  return lhs ~= c
+}
+
+public func ~=(lhs: NSCharacterSet, rhs: unichar) -> Bool {
+  return lhs.characterIsMember(rhs)
+}
+
 /**
 Subtract rhs character set members from lhs character set
 

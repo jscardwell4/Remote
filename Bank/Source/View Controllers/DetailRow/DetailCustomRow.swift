@@ -23,7 +23,7 @@ class DetailCustomRow: DetailRow {
   */
   override func configureCell(cell: DetailCell) {
     super.configureCell(cell)
-    if generateCustomView != nil { (cell as? DetailCustomCell)?.generateCustomView = generateCustomView! }
+    (cell as? DetailCustomCell)?.generateCustomView = generateCustomView
   }
 
 }

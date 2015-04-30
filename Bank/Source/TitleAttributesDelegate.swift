@@ -11,14 +11,13 @@ import UIKit
 import MoonKit
 import DataModel
 
-@objc public protocol TitleAttributesDelegateObserver {
+@objc protocol TitleAttributesDelegateObserver {
   optional func saveInvokedForTitleAttributesDelegate(titleAttributesDelegate: TitleAttributesDelegate)
   optional func deleteInvokedForTitleAttributesDelegate(titleAttributesDelegate: TitleAttributesDelegate)
   optional func rollbackInvokedForTitleAttributesDelegate(titleAttributesDelegate: TitleAttributesDelegate)
 }
 
-@objc(TitleAttributesDelegate)
-public class TitleAttributesDelegate: Editable , Detailable {
+@objc final class TitleAttributesDelegate: Editable , Detailable {
 
   var titleAttributes: TitleAttributes
 
@@ -27,11 +26,11 @@ public class TitleAttributesDelegate: Editable , Detailable {
   var name: String?
 
   var observer: TitleAttributesDelegateObserver?
-  public var editable: Bool { return true }
+  internal var editable: Bool { return true }
 
-  public func save() { observer?.saveInvokedForTitleAttributesDelegate?(self) }
-  public func delete() { observer?.deleteInvokedForTitleAttributesDelegate?(self) }
-  public func rollback() { titleAttributes = initialAttributes; observer?.rollbackInvokedForTitleAttributesDelegate?(self) }
+  func save() { observer?.saveInvokedForTitleAttributesDelegate?(self) }
+  func delete() { observer?.deleteInvokedForTitleAttributesDelegate?(self) }
+  func rollback() { titleAttributes = initialAttributes; observer?.rollbackInvokedForTitleAttributesDelegate?(self) }
 
   /**
   initWithAttributes:
@@ -65,25 +64,13 @@ public class TitleAttributesDelegate: Editable , Detailable {
     set { titleAttributes.iconTextOrder = newValue}
   }
 
-  var text: String {
-    get { return titleAttributes.text }
-    set { titleAttributes.text = newValue}
-  }
+  var text: String { get { return titleAttributes.text } set { titleAttributes.text = newValue} }
 
-  var iconName: String? {
-    get { return titleAttributes.iconName }
-    set { titleAttributes.iconName = newValue}
-  }
+  var iconName: String? { get { return titleAttributes.iconName } set { titleAttributes.iconName = newValue} }
 
-  var icon: String {
-    get { return titleAttributes.icon }
-    set { titleAttributes.icon = newValue}
-  }
+  var icon: String { get { return titleAttributes.icon } set { titleAttributes.icon = newValue} }
 
-  var font: UIFont {
-    get { return titleAttributes.font }
-    set { titleAttributes.font = newValue}
-  }
+  var font: UIFont { get { return titleAttributes.font } set { titleAttributes.font = newValue} }
 
   var foregroundColor: UIColor {
     get { return titleAttributes.foregroundColor }
@@ -95,25 +82,13 @@ public class TitleAttributesDelegate: Editable , Detailable {
     set { titleAttributes.backgroundColor = newValue}
   }
 
-  var ligature: Int {
-    get { return titleAttributes.ligature }
-    set { titleAttributes.ligature = newValue}
-  }
+  var ligature: Int { get { return titleAttributes.ligature } set { titleAttributes.ligature = newValue} }
 
-  var shadow: NSShadow? {
-    get { return titleAttributes.shadow }
-    set { titleAttributes.shadow = newValue}
-  }
+  var shadow: NSShadow? { get { return titleAttributes.shadow } set { titleAttributes.shadow = newValue} }
 
-  var expansion: Float {
-    get { return titleAttributes.expansion }
-    set { titleAttributes.expansion = newValue}
-  }
+  var expansion: Float { get { return titleAttributes.expansion } set { titleAttributes.expansion = newValue} }
 
-  var obliqueness: Float {
-    get { return titleAttributes.obliqueness }
-    set { titleAttributes.obliqueness = newValue}
-  }
+  var obliqueness: Float { get { return titleAttributes.obliqueness } set { titleAttributes.obliqueness = newValue} }
 
   var strikethroughColor: UIColor {
     get { return titleAttributes.strikethroughColor }
@@ -125,30 +100,15 @@ public class TitleAttributesDelegate: Editable , Detailable {
     set { titleAttributes.underlineColor = newValue}
   }
 
-  var baselineOffset: Float {
-    get { return titleAttributes.baselineOffset }
-    set { titleAttributes.baselineOffset = newValue}
-  }
+  var baselineOffset: Float { get { return titleAttributes.baselineOffset } set { titleAttributes.baselineOffset = newValue} }
 
-  var textEffect: String? {
-    get { return titleAttributes.textEffect }
-    set { titleAttributes.textEffect = newValue}
-  }
+  var textEffect: String? { get { return titleAttributes.textEffect } set { titleAttributes.textEffect = newValue} }
 
-  var strokeWidth: Float {
-    get { return titleAttributes.strokeWidth }
-    set { titleAttributes.strokeWidth = newValue}
-  }
+  var strokeWidth: Float { get { return titleAttributes.strokeWidth } set { titleAttributes.strokeWidth = newValue} }
 
-  var strokeFill: Bool {
-    get { return titleAttributes.strokeFill }
-    set { titleAttributes.strokeFill = newValue }
-  }
+  var strokeFill: Bool { get { return titleAttributes.strokeFill } set { titleAttributes.strokeFill = newValue } }
 
-  var strokeColor: UIColor {
-    get { return titleAttributes.strokeColor }
-    set { titleAttributes.strokeColor = newValue}
-  }
+  var strokeColor: UIColor { get { return titleAttributes.strokeColor } set { titleAttributes.strokeColor = newValue} }
 
   var underlineStyle: NSUnderlineStyle {
     get { return titleAttributes.underlineStyle ?? .StyleNone }
@@ -160,35 +120,23 @@ public class TitleAttributesDelegate: Editable , Detailable {
     set { titleAttributes.strikethroughStyle = newValue}
   }
 
-  var kern: Float {
-    get { return titleAttributes.kern }
-    set { titleAttributes.kern = newValue}
-  }
+  var kern: Float { get { return titleAttributes.kern } set { titleAttributes.kern = newValue} }
 
   var paragraphStyle: NSParagraphStyle {
     get { return titleAttributes.paragraphStyle }
     set { titleAttributes.paragraphStyle = newValue}
   }
 
-  var alignment: NSTextAlignment {
-    get { return titleAttributes.alignment }
-    set { titleAttributes.alignment = newValue}
-  }
+  var alignment: NSTextAlignment { get { return titleAttributes.alignment } set { titleAttributes.alignment = newValue} }
 
   var firstLineHeadIndent: CGFloat {
     get { return titleAttributes.firstLineHeadIndent }
     set { titleAttributes.firstLineHeadIndent = newValue}
   }
 
-  var headIndent: CGFloat {
-    get { return titleAttributes.headIndent }
-    set { titleAttributes.headIndent = newValue}
-  }
+  var headIndent: CGFloat { get { return titleAttributes.headIndent } set { titleAttributes.headIndent = newValue} }
 
-  var tailIndent: CGFloat {
-    get { return titleAttributes.tailIndent }
-    set { titleAttributes.tailIndent = newValue}
-  }
+  var tailIndent: CGFloat { get { return titleAttributes.tailIndent } set { titleAttributes.tailIndent = newValue} }
 
   var lineHeightMultiple: CGFloat {
     get { return titleAttributes.lineHeightMultiple }
@@ -205,10 +153,7 @@ public class TitleAttributesDelegate: Editable , Detailable {
     set { titleAttributes.minimumLineHeight = newValue}
   }
 
-  var lineSpacing: CGFloat {
-    get { return titleAttributes.lineSpacing }
-    set { titleAttributes.lineSpacing = newValue}
-  }
+  var lineSpacing: CGFloat { get { return titleAttributes.lineSpacing } set { titleAttributes.lineSpacing = newValue} }
 
   var paragraphSpacing: CGFloat {
     get { return titleAttributes.paragraphSpacing }

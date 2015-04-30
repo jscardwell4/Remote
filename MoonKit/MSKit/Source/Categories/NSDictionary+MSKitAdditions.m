@@ -7,13 +7,14 @@
 //
 
 #import "NSDictionary+MSKitAdditions.h"
-#import "MSJSONSerialization.h"
+//#import "MSJSONSerialization.h"
 #import "MSKitMacros.h"
 #import "NSObject+MSKitAdditions.h"
 #import "MSDictionary.h"
 #import "MSLog.h"
 #import "NSMutableString+MSKitAdditions.h"
 #import "NSArray+MSKitAdditions.h"
+#import "MoonKit/MoonKit-Swift.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -31,59 +32,52 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 /// JSONString
 /// @return NSString *
-- (NSString *)JSONString {
-  id        obj = self.JSONObject;
-  NSError * error;
-  NSData  * data = [NSJSONSerialization dataWithJSONObject:obj options:NSJSONWritingPrettyPrinted error:&error];
-  return (MSHandleErrors(error)
-          ? nil
-          : [[NSString stringWithData:data] stringByReplacingRegEx:@"^(\\s*\"[^\"]+\") :" withString:@"$1:"]);
-}
+//- (NSString *)JSONString { return [JSONSerialization JSONFromObject:self.JSONObject options:MSJSONWriteFormatOptionsDefault];}
 
 /// JSONObject
 /// @return id
-- (id)JSONObject {
-
-  if ([NSJSONSerialization isValidJSONObject:self]) return self;
-  else if (![self count]) return NullObject;
-
-  NSMutableDictionary * dictionary = [NSMutableDictionary dictionaryWithCapacity:[self count]];
-
-  [self enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL * stop) {
-
-    NSString * keyString = [key description];
-    dictionary[keyString] = obj;
-
-    if (![NSJSONSerialization isValidJSONObject:dictionary]) {
-      [dictionary removeObjectForKey:keyString];
-
-      if ([obj respondsToSelector:@selector(JSONObject)]) {
-        id jsonObj = [obj JSONObject];
-
-        if ([NSJSONSerialization isValidJSONObject:jsonObj])
-          dictionary[keyString] = jsonObj;
-        else
-          MSLogDebug(@"object of type %@ returned invalid JSON object",
-                     ClassTagStringForInstance(obj));
-      } else if ([obj respondsToSelector:@selector(JSONValue)])   {
-        id jsonValue = [obj valueForKey:@"JSONValue"];
-
-        if ([MSJSONSerialization isValidJSONValue:jsonValue])
-          dictionary[keyString] = jsonValue;
-        else
-          MSLogDebug(@"object of type %@ returned invalid JSON Value",
-                     ClassTagStringForInstance(obj));
-      }
-
-      NSAssert(![dictionary count] || [NSJSONSerialization isValidJSONObject:dictionary],
-               @"Only valid JSON values should have been added to dictionary");
-    }
-
-  }];
-
-  return dictionary;
-
-}
+//- (id)JSONObject {
+//
+//  if ([NSJSONSerialization isValidJSONObject:self]) return self;
+//  else if (![self count]) return NullObject;
+//
+//  NSMutableDictionary * dictionary = [NSMutableDictionary dictionaryWithCapacity:[self count]];
+//
+//  [self enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL * stop) {
+//
+//    NSString * keyString = [key description];
+//    dictionary[keyString] = obj;
+//
+//    if (![NSJSONSerialization isValidJSONObject:dictionary]) {
+//      [dictionary removeObjectForKey:keyString];
+//
+//      if ([obj respondsToSelector:@selector(JSONObject)]) {
+//        id jsonObj = [obj JSONObject];
+//
+//        if ([NSJSONSerialization isValidJSONObject:jsonObj])
+//          dictionary[keyString] = jsonObj;
+//        else
+//          MSLogDebug(@"object of type %@ returned invalid JSON object",
+//                     ClassTagStringForInstance(obj));
+//      } else if ([obj respondsToSelector:@selector(JSONValue)])   {
+//        id jsonValue = [obj valueForKey:@"JSONValue"];
+//
+//        if ([JSONSerialization isValidJSONValue:jsonValue])
+//          dictionary[keyString] = jsonValue;
+//        else
+//          MSLogDebug(@"object of type %@ returned invalid JSON Value",
+//                     ClassTagStringForInstance(obj));
+//      }
+//
+//      NSAssert(![dictionary count] || [NSJSONSerialization isValidJSONObject:dictionary],
+//               @"Only valid JSON values should have been added to dictionary");
+//    }
+//
+//  }];
+//
+//  return dictionary;
+//
+//}
 
 /// topLevelObjects
 /// @return NSArray *

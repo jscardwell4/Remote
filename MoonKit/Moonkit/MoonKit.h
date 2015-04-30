@@ -34,7 +34,6 @@ FOUNDATION_EXPORT const unsigned char MoonKitVersionString[];
 #import <MoonKit/MSLongPressGestureRecognizer.h>
 #import <MoonKit/NSHashTable+MSKitAdditions.h>
 #import <MoonKit/MSMultiselectGestureRecognizer.h>
-#import <MoonKit/NSLayoutConstraint+MSKitAdditions.h>
 #import <MoonKit/MSPinchGestureRecognizer.h>
 #import <MoonKit/NSManagedObject+MSKitAdditions.h>
 #import <MoonKit/MSSwipeGestureRecognizer.h>
@@ -60,7 +59,6 @@ FOUNDATION_EXPORT const unsigned char MoonKitVersionString[];
 #import <MoonKit/NSMutableString+MSKitAdditions.h>
 #import <MoonKit/NSURL+MSKitAdditions.h>
 #import <MoonKit/NSUserDefaults+MSKitAdditions.h>
-#import <MoonKit/MSJSONSerialization.h>
 #import <MoonKit/NSValue+MSKitAdditions.h>
 #import <MoonKit/MSKVOReceptionist.h>
 #import <MoonKit/MSLog.h>

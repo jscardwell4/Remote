@@ -18,64 +18,35 @@ import MoonKit
 public final class PowerCommand: Command {
 
   @NSManaged public var device: ComponentDevice
-  @NSManaged var primitiveState: NSNumber
-  public var state: State {
-    get {
-      willAccessValueForKey("state")
-      let state = primitiveState
-      didAccessValueForKey("state")
-      return state.boolValue ? .On : .Off
-    }
-    set {
-      willChangeValueForKey("state")
-      primitiveState = newValue == .On ? true : false
-      didChangeValueForKey("state")
-    }
-  }
 
-  @objc public enum State: Int { case On = 1, Off = 0 }
+  public typealias State = Bool
+  @NSManaged public var state: State
+
 
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let stateJSON = data["state"] as? String { state = State(JSONValue: stateJSON) }
-    updateRelationshipFromData(data, forKey: "device")
+    if let stateJSON = String(data["state"]) { state = stateJSON ~= "on" ? true : false }
+    updateRelationshipFromData(data, forAttribute: "device")
   }
 
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    dictionary["class"] = "power"
-    dictionary["device.uuid"] = device.commentedUUID
-    dictionary["state"] = state.JSONValue
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+  override public var description: String {
+    var result = super.description
+    result += "\n\tstate = " + (state ? "on" : "off")
+    result += "\n\tdevice = \(device.index.rawValue)"
+    return result
   }
 
-  override var operation: CommandOperation {
-    return (state == .On ? device.onCommand?.operation : device.offCommand?.operation)!
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["device.index"] = device.index.jsonValue
+    obj["state"] = (state ? "on" : "off").jsonValue
+    return obj.jsonValue
   }
 
-}
-
-extension PowerCommand.State: JSONValueConvertible {
-  public var JSONValue: String { return rawValue == 1 ? "on" : "off" }
-  public init(JSONValue: String) {
-    switch JSONValue {
-      case "on": self = .On
-      default: self = .Off
-    }
-  }
+  override var operation: CommandOperation { return (state ? device.onCommand?.operation : device.offCommand?.operation)! } 
 }

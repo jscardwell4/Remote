@@ -12,24 +12,95 @@ import MoonKit
 
 @objc public final class DataManager {
 
-  /** initialize */
+  // MARK: - Setup
+
+  /** Process any arguments passed in via the command line */
   class func initialize() {
-    MSLogDebug("performing \(dataFlag)\nmodel flags…\n" + "\n".join(modelFlags.map({$0.description})))
-
-    if databaseStoreURL.checkResourceIsReachableAndReturnError(nil)
-      && dataFlag.remove
-    {
-      var error: NSError?
-      NSFileManager.defaultManager().removeItemAtURL(databaseStoreURL, error: &error)
-      if !MSHandleError(error) { MSLogDebug("previous database store has been removed") }
-    }
-
-    if dataFlag.load {
-      loadData { if !MSHandleError($1, message: "data load failed") && self.dataFlag.dump { self.dumpData() } }
-    } else if dataFlag.dump { dumpData() }
+    MSLogDebug("bundle path: '\(dataModelBundle.bundlePath)'\nperforming \(dataFlag)\nwith model flags…\n"
+                + "\n".join(modelFlags.map({$0.description})))
+    initializeDatabase()
   }
 
-  /** URL for the user's persistent store */
+  /** initializeDatabase */
+  private static func initializeDatabase() {
+    if databaseInitialized { return }
+
+    // Check for remove operation
+    if dataFlag.remove {
+      if databaseStoreURL.checkResourceIsReachableAndReturnError(nil) {
+        var error: NSError?
+        NSFileManager.defaultManager().removeItemAtURL(databaseStoreURL, error: &error)
+        if !MSHandleError(error) { MSLogDebug("previous database store has been removed") }
+      }
+      dataFlag.remove = false
+    }
+
+    // Check for copy operation
+    if dataFlag.copy {
+      copyBundledDatabase()
+      dataFlag.copy = false
+    }
+
+    // Force lazy instatiation of stack here
+    if stack == nil { fatalError("failed to instantiate core data stack, aborting…") }
+
+    // Check for model logging operation
+    if dataFlag.logModel {
+      MSLogDebug("managed object model:\n\(stack.managedObjectModel.description)")
+      dataFlag.logModel = false
+    }
+
+    // Check for load operation and wrap check for data dump operation inside the completion block
+    if dataFlag.load {
+      loadData {
+        MSHandleError($1, message: "data load failed")
+        DataManager.dataFlag.load = false
+        if DataManager.dataFlag.dump {
+          DataManager.dumpData()
+          DataManager.dataFlag.dump = false
+          DataManager.databaseInitialized = true
+        } else {
+          DataManager.databaseInitialized = true
+        }
+      }
+    }
+
+    // Otherwise check and dump data now
+    else if dataFlag.dump {
+      dumpData()
+      dataFlag.dump = false
+      databaseInitialized = true
+    }
+
+    else {
+      databaseInitialized = true
+    }
+  }
+
+  public static let DatabaseInitializedNotificationName = "DataManagerDatabaseInitializedNotificationName"
+
+  private(set) public static var databaseInitialized = false {
+    didSet {
+      if databaseInitialized && !oldValue {
+        assert(!(dataFlag.remove || dataFlag.load || dataFlag.logModel || dataFlag.dump || dataFlag.copy))
+        MSLogDebug("posting database initialized notification")
+        NSNotificationCenter.defaultCenter().postNotificationName(DatabaseInitializedNotificationName, object: self)
+      }
+    }
+  }
+
+  /** Stores a reference to the `DataModel` bundle */
+  private static let dataModelBundle = NSBundle(forClass: DataManager.self)
+
+  public static let databaseOperations: DataFlag = DataFlag()
+
+  /** Database operation flags parsed from command line */
+  static private(set) public var dataFlag = DataManager.databaseOperations
+
+  /** Model flags parsed from command line */
+  static public let modelFlags: [ModelFlag] = ModelFlag.all
+
+   /** URL for the user's persistent store */
   public static let databaseStoreURL: NSURL = {
     let fileManager = NSFileManager.defaultManager()
     var error: NSError?
@@ -39,7 +110,7 @@ import MoonKit
                                                       create: true,
                                                        error: &error)
       where !MSHandleError(error, message: "failed to retrieve application support directory"),
-      let identifier = NSBundle(forClass: DataManager.self).bundleIdentifier
+      let identifier = dataModelBundle.bundleIdentifier
     {
       let bundleSupportDirectoryURL = supportDirectoryURL.URLByAppendingPathComponent(identifier)
 
@@ -55,33 +126,325 @@ import MoonKit
     fatalError("aborting")
   }()
 
-  /** URL for the preloaded persistent store located in the bundle */
-  public static let databaseBundleURL: NSURL = {
-    if let url = NSBundle(forClass: DataManager.self).URLForResource(DataManager.resourceBaseName, withExtension: "sqlite") {
+ /** URL for the preloaded persistent store located in the bundle */
+  private static let databaseBundleURL: NSURL = {
+    if let url = dataModelBundle.URLForResource(DataManager.resourceBaseName, withExtension: "sqlite") {
       return url
     } else { fatalError("Unable to locate database bundle resource") }
   }()
 
+  /**
+  The method programatically modifies the specified model to add more detail to various attributes,
+  i.e. default values, class names, etc. The model passed to this method must be as-of-yet unused or
+  an internal inconsistency will be introduced and the application will crash.
+
+  :param: model NSManagedObjectModel The model to modify
+  :returns: NSManagedObjectModel The augmented model
+  */
+  class func augmentModel(model: NSManagedObjectModel) -> NSManagedObjectModel {
+
+    let augmentedModel = model.mutableCopy() as! NSManagedObjectModel
+
+    // Create common `uuid` attribute
+    let uuid: Void -> NSAttributeDescription = {
+      let uuid = NSAttributeDescription()
+      uuid.name = "uuid"
+      uuid.attributeType = .StringAttributeType
+      uuid.optional = false
+      uuid.setValidationPredicates([∀"SELF MATCHES '(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?'"],
+            withValidationWarnings: [NSValidationStringPatternMatchingError])
+      return uuid
+    }
+
+    // Process each entity for common operations
+    for entity in augmentedModel.entities as! [NSEntityDescription] {
+      if entity.superentity == nil { entity.properties.append(uuid()) }
+      (entity.attributesByName.values.array as! [NSAttributeDescription]).filter({$0.userInfo != nil}) ➤ {
+        (attribute: NSAttributeDescription) -> Void in
+        if let n = attribute.userInfo?["attributeValueClassName"] as? String {
+          attribute.attributeValueClassName = n
+          if !attribute.optional {
+            switch n {
+              case "MSDictionary": attribute.defaultValue = MSDictionary()
+              case "NSDictionary": attribute.defaultValue = NSDictionary()
+              case "UIColor": attribute.defaultValue = UIColor.clearColor()
+              case "NSAttributedString": attribute.defaultValue = NSAttributedString()
+              case "NSURL": attribute.defaultValue = NSURL(string: "http://about:blank")
+              case "NSValue":
+                if let valueType = attribute.userInfo?["NSValueType"] as? String {
+                  switch valueType {
+                    case "CGSize": attribute.defaultValue = NSValue(CGSize: CGSize.zeroSize)
+                    case "UIEdgeInsets": attribute.defaultValue = NSValue(UIEdgeInsets: UIEdgeInsets.zeroInsets)
+                    default: break
+                  }
+                }
+              default: break
+            }
+          }
+        }
+      }
+    }
+
+    return augmentedModel
+  }
 
   /** The core data stack, if this is nil we may as well shutdown */
-  public static let stack: CoreDataStack = {
-    if let modelURL = NSBundle(forClass:DataManager.self).URLForResource(DataManager.resourceBaseName, withExtension: "momd"),
+  private static let stack: CoreDataStack! = {
+    if let modelURL = dataModelBundle.URLForResource(DataManager.resourceBaseName, withExtension: "momd"),
       mom = NSManagedObjectModel(contentsOfURL: modelURL),
       stack = CoreDataStack(managedObjectModel: DataManager.augmentModel(mom),
-                            persistentStoreURL: databaseStoreURL,
+                            persistentStoreURL: dataFlag.inMemory ? nil : databaseStoreURL,
                             options: [NSMigratePersistentStoresAutomaticallyOption: true,
                                       NSInferMappingModelAutomaticallyOption: true])
     {
-      if dataFlag.logModel { MSLogDebug("managed object model:\n\(stack.managedObjectModel.description)") }
+      MSLogDebug("persistent store url: '\(databaseStoreURL)'")
       return stack
-    } else { fatalError("failed to instantiate core data stack, aborting…") }
+    } else { return nil }
 
   }()
 
   static private let resourceBaseName = "Remote"
-  static public let dataFlag: DataFlag = DataFlag()
-  static public let modelFlags: [ModelFlag] = ModelFlag.all
 
+  // MARK: - Data operations
+
+  /** Attempts to copy sqlite resources from the main bundle to the database store location */
+  private static func copyBundledDatabase() {
+    let fileManager = NSFileManager.defaultManager()
+    let mainBundle = NSBundle.mainBundle()
+    let storeBaseNameURL: NSURL! = databaseStoreURL.URLByDeletingPathExtension
+    assert(storeBaseNameURL != nil)
+    let storeURL = databaseStoreURL
+    let storeShmURL: NSURL! = storeBaseNameURL.URLByAppendingPathExtension("sqlite-shm")
+    assert(storeShmURL != nil)
+    let storeWalURL: NSURL! = storeBaseNameURL.URLByAppendingPathExtension("sqlite-wal")
+    assert(storeWalURL != nil)
+
+    var error: NSError?
+    // Try getting and copying the resources to copy from the main bundle
+    if let sqliteURL = mainBundle.URLForResource(resourceBaseName, withExtension: "sqlite"),
+      sqliteShmURL = mainBundle.URLForResource(resourceBaseName, withExtension: "sqlite-shm"),
+      sqliteWalURL = mainBundle.URLForResource(resourceBaseName, withExtension: "sqlite-wal")
+      where (fileManager.copyItemAtURL(sqliteURL, toURL: databaseStoreURL, error: &error)
+        || !MSHandleError(error, message: "copy from \(sqliteURL) to \(databaseStoreURL) failed")) == true,
+      let databaseStoreShmURL = databaseStoreURL.URLByDeletingPathExtension?.URLByAppendingPathExtension("sqlite-shm")
+      where (fileManager.copyItemAtURL(sqliteShmURL, toURL: databaseStoreShmURL, error: &error)
+        || !MSHandleError(error, message: "copy from \(sqliteShmURL) to \(databaseStoreShmURL) failed")) == true,
+      let databaseStoreWalURL = databaseStoreURL.URLByDeletingPathExtension?.URLByAppendingPathExtension("sqlite-wal")
+      where (fileManager.copyItemAtURL(sqliteWalURL, toURL: databaseStoreWalURL, error: &error)
+        || !MSHandleError(error, message: "copy from \(sqliteWalURL) to \(databaseStoreWalURL) failed")) == true
+    {
+      MSLogDebug("sqlite(-shm/-wal) files copied successfully")
+    }
+
+    // Failed to get resources
+    else {
+      MSLogError("sqlite(-shm/-wal) file copy operation unsuccessful")
+    }
+
+  }
+
+  /**
+  loadJSONFileAtPath:forModel:context:logFlags:completion:
+
+  :param: path String
+  :param: type T.Type
+  :param: context NSManagedObjectContext
+  :param: logFlags LogFlags = .Default
+  :param: completion ((Bool, NSError?) -> Void)? = nil
+  */
+  public class func loadJSONFileAtPath<T:ModelObject>(path: String,
+                                             forModel type: T.Type,
+                                              context: NSManagedObjectContext,
+                                             logFlags: LogFlags = .Default,
+                                           completion: ((Bool, NSError?) -> Void)? = nil)
+  {
+    MSLogDebug("parsing file '\(path)'")
+
+    var error: NSError?
+    context.performBlockAndWait {
+
+      if isOptionSet(LogFlags.File, logFlags),
+        let contents = String(contentsOfFile: path, encoding: NSUTF8StringEncoding, error: nil)
+      {
+        MSLogDebug("content of file to parse:\n\(contents)")
+      }
+
+      let json: JSONValue?
+      if isOptionSet(LogFlags.Preparsed, logFlags) {
+        let preparsedString = JSONSerialization.stringByParsingDirectivesForFile(path, options: .InflateKeypaths, error: &error)
+        if preparsedString != nil && MSHandleError(error) == false {
+          MSLogDebug("preparsed content of file to parse:\n\(preparsedString!)")
+          json = JSONSerialization.objectByParsingString(preparsedString, options: .InflateKeypaths, error: &error)
+        } else {
+          json = nil
+        }
+      } else {
+        json = JSONSerialization.objectByParsingFile(path, options: .InflateKeypaths, error: &error)
+      }
+      
+      if MSHandleError(error) == false && json != nil
+      {
+        if isOptionSet(LogFlags.Parsed, logFlags) { MSLogDebug("json objects from parsed file:\n\(json)") }
+
+        if let data = ObjectJSONValue(json), importedObject = type(data: data, context: context) {
+
+          MSLogDebug("imported \(type.className()) from file '\(path)'")
+
+          if isOptionSet(LogFlags.Imported, logFlags) {
+            MSLogDebug("json output for imported object:\n\(importedObject.jsonValue)")
+          }
+
+        } else if let data = ArrayJSONValue(json) {
+
+          let importedObjects = type.importObjectsWithData(data, context: context)
+
+          MSLogDebug("\(importedObjects.count) \(type.className()) objects imported from file '\(path)'")
+
+          if isOptionSet(LogFlags.Imported, logFlags) {
+            MSLogDebug("json output for imported object:\n\(JSONValue.Array(importedObjects.map({$0.jsonValue})).prettyRawValue)")
+          }
+
+        } else { MSLogError("file content must resolve into [String:AnyObject] or [[String:AnyObject]]") }
+
+      } else { MSLogError("failed to parse file '\(path)'") }
+
+    }
+    completion?(error == nil, error)
+  }
+
+  /**
+  loadJSONFileNamed:forModel:context:logFlags:completion:
+
+  :param: name String
+  :param: type T.Type
+  :param: context NSManagedObjectContext
+  :param: logFlags LogFlags = .Default
+  :param: completion ((Bool, NSError?) -> Void)? = nil
+  */
+  public class func loadJSONFileNamed<T:ModelObject>(var name: String,
+                                             forModel type: T.Type,
+                                             context: NSManagedObjectContext,
+                                            logFlags: LogFlags = .Default,
+                                          completion: ((Bool, NSError?) -> Void)? = nil)
+  {
+    var error: NSError?
+    var path: String?
+
+    // Check if we are given an absolute path
+    if name.hasPrefix("/") && name.hasSuffix(".json") { path = name }
+
+    // Otherwise, treat as a bundle resource
+    else {
+      if name.hasSuffix(".json") { name = name.stringByDeletingPathExtension }
+      if let p = self.dataModelBundle.pathForResource(name, ofType: "json") { path = p }
+      else if let p = NSBundle.mainBundle().pathForResource(name, ofType: "json") { path = p }
+      else {
+        MSLogError("unable to resolve the name '\(name)' into a bundled file path")
+        error = NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil)
+      }
+    }
+    
+    if path != nil { loadJSONFileAtPath(path!, forModel: type, context: context, logFlags: logFlags, completion: completion) }
+    else { completion?(false, error) }
+  }
+
+  /**
+  Load data from files parsed from command line arguments and save the root context
+
+  :param: completion ((Bool, NSError?) -> Void)? = nil
+  */
+  private class func loadData(completion: ((Bool, NSError?) -> Void)? = nil) {
+
+    rootContext.performBlock {[rootContext = self.rootContext] in
+
+      self.modelFlags ➤ {
+        var fileName: String?
+        var logFlags = LogFlags.Default
+        var logFile = false
+        var logParsed = false
+        var logImported = false
+        var removeExisting = false
+        for marker in $0.markers {
+          switch marker {
+            case .Remove: removeExisting = true
+            case .LoadFile(let f): fileName = f
+            case .Log(let values):
+              if values ∋ .Parsed { logFlags |= LogFlags.Parsed }
+              if values ∋ .Imported { logFlags |= LogFlags.Imported }
+              if values ∋ .File { logFlags |= LogFlags.File }
+          default: break
+          }
+        }
+        if removeExisting { rootContext.deleteObjects(Set($0.modelType.objectsInContext(rootContext))) }
+        if fileName != nil {
+          self.loadJSONFileNamed(fileName!, forModel: $0.modelType, context: rootContext, logFlags: logFlags)
+        }
+      }
+    }
+
+    saveRootContext(completion: completion)
+
+  }
+
+  /** 
+  Save the root context 
+  
+  :param: completion ((Bool, NSError?) -> Void)? = nil
+  */
+  public class func saveRootContext(completion: ((Bool, NSError?) -> Void)? = nil) {
+    rootContext.performBlock {
+      var error: NSError?
+      MSLogDebug("saving context…")
+      if self.rootContext.save(&error) && !MSHandleError(error, message: "error occurred while saving context") {
+        MSLogDebug("context saved successfully")
+        completion?(true, nil)
+      } else {
+        MSHandleError(error, message: "failed to save context")
+        completion?(false, error)
+      }
+    }
+  }
+
+  /** dumpData */
+  private class func dumpData(completion: ((Void) -> Void)? = nil ) {
+    rootContext.performBlock {
+
+      self.modelFlags ➤ {
+        for marker in $0.markers {
+          switch marker {
+          case .Dump: self.dumpJSONForModelType($0.modelType)
+          default: break
+          }
+        }
+      }
+    }
+
+    completion?()
+
+  }
+
+  /**
+  dumpJSONForModelType:
+
+  :param: modelType ModelObject.Type
+  */
+  public class func dumpJSONForModelType(modelType: ModelObject.Type, context: NSManagedObjectContext = rootContext) {
+    let className = (modelType.self as AnyObject).className
+    let objects: [ModelObject]
+    switch className {
+    case "ImageCategory", "PresetCategory":
+      objects = modelType.objectsMatchingPredicate(∀"parentCategory = NULL", context: context)
+    default:
+      objects = modelType.objectsInContext(context)
+    }
+    if objects.isEmpty { MSLogWarn("fetch turned up empty for '\(modelType)'") }
+    let json: JSONValue = .Array(objects.map({$0.jsonValue}))
+    MSLogDebug("\(className) objects: \n\(json.prettyRawValue)\n")
+  }
+
+  // MARK: - Data stack related accessors and methods
+
+  static public var managedObjectModel: NSManagedObjectModel { return stack.managedObjectModel }
 
   /**
   Creates a new main queue context as a child of the `rootContext` (via `stack`)
@@ -89,6 +452,13 @@ import MoonKit
   :returns: NSManagedObjectContext
   */
   public class func mainContext() -> NSManagedObjectContext { return stack.mainContext() }
+
+  /**
+  isolatedContext
+
+  :returns: NSManagedObjectContext
+  */
+  public class func isolatedContext() -> NSManagedObjectContext { return stack.isolatedContext() }
 
   /** The primary, private-queue managed object context maintained by `stack`.  */
   public class var rootContext: NSManagedObjectContext { return stack.rootContext }
@@ -117,220 +487,29 @@ import MoonKit
                    completion: completion)
   }
 
-  /**
-  The method programatically modifies the specified model to add more detail to various attributes,
-  i.e. default values, class names, etc. The model passed to this method must be as-of-yet unused or
-  an internal inconsistency will be introduced and the application will crash.
 
-  :param: model NSManagedObjectModel The model to modify
-  :returns: NSManagedObjectModel The augmented model
-  */
-  class func augmentModel(model: NSManagedObjectModel) -> NSManagedObjectModel {
-
-    let augmentedModel = model.mutableCopy() as! NSManagedObjectModel
-    let entities = augmentedModel.entitiesByName as! [String:NSEntityDescription]
-
-    /**
-    Helper for modifiying the class and default value for the same attribute on multiple entities
-
-    :param: attribute String Name of attribute to modify
-    :param: entities [NSEntityDescription] An array of `NSEntityDescription *` whose attribute shall be modified
-    :param: className String? = nil Class name for the value of the attribute to modify
-    :param: defaultValue AnyObject? = nil The default value for the attribute to modify
-    :param: info [NSObject:AnyObject]? = nil Entries to add to the user info dictionary of attribute to modify
-     */
-     func modifyAttribute(attribute: String,
-             forEntities entities: [NSEntityDescription],
-          valueClassName: String? = nil,
-            defaultValue: AnyObject? = nil,
-                userInfo: [NSObject:AnyObject]? = nil)
-    {
-      for entity in entities {
-        if let attributeDescription = entity.attributesByName[attribute] as? NSAttributeDescription {
-          if valueClassName != nil  { attributeDescription.attributeValueClassName = valueClassName }
-          if defaultValue != nil { attributeDescription.defaultValue = defaultValue }
-          if userInfo != nil {
-            var info = attributeDescription.userInfo ?? [:]
-            extend(&info, userInfo!)
-            attributeDescription.userInfo = info
-          }
-        }
-      }
-    }
-    /**
-    Helper for modifying the class and default value of multiple attributes on the same entity
-
-    :param: attributes [String] An array of `NSAttributeDescription *` objects to modify
-    :param: entity NSEntityDescription The entity to modify
-    :param: className String? = nil The class name of the value type of attributes to modify
-    :param: defaultValue AnyObject? = nil The default value of the attributes to modify
-    :param: info [NSObject:AnyObject]? = nil Entries to add to the user info dictionary of attributes to modify
-    */
-    func modifyAttributes(attributes: [String],
-                forEntity entity: NSEntityDescription,
-          valueClassName: String? = nil,
-            defaultValue: AnyObject? = nil,
-                userInfo: [NSObject:AnyObject]? = nil)
-    {
-      for attribute in attributes.map({entity.attributesByName[$0] as? NSAttributeDescription})‽ {
-        if valueClassName != nil { attribute.attributeValueClassName = valueClassName }
-        if defaultValue != nil { attribute.defaultValue = defaultValue }
-        if userInfo != nil { var info = attribute.userInfo ?? [:]; extend(&info, userInfo!); attribute.userInfo = info }
-      }
-    }
-
-    /**
-    Helper for setting a different default value for an attribute of an entity than is set for its parent
-
-    :param: attribute String The name of the attribute of the entity whose attribute shall be modified.
-    :param: entity NSEntityDescription The entity whose attribute shall have its default value set.
-    :param: defaultValue AnyObject? The value to set as default for the specified attribute of the entity.
-    */
-    func overrideDefaultValueOfAttribute(attribute: String,
-                            forSubentity entity: NSEntityDescription,
-                               withValue defaultValue: AnyObject?)
-    {
-        var superentity: NSEntityDescription? = entity
-        do { superentity = entity.superentity } while superentity?.superentity != nil
-
-        if let attributeDescription = superentity?.attributesByName[attribute] as? NSAttributeDescription {
-          var userInfo = attributeDescription.userInfo ?? [:]
-          userInfo["\(MSDefaultValueForContainingClassKey).\(entity.name)"] = defaultValue ?? NSNull()
-          attributeDescription.userInfo = userInfo
-          let keypath = "attributesByName.\(attribute).userInfo"
-          var subentities = superentity!.subentities as! [NSEntityDescription]
-          while subentities.count > 0 {
-            apply(subentities) { _ = ($0.attributesByName[attribute] as? NSAttributeDescription)?.userInfo = userInfo }
-            subentities = flattened(subentities.map{$0.subentities as! [NSEntityDescription]})
-          }
-
-          superentity!.setValue(userInfo, forKeyPath: keypath) // ???: Pretty sure this is redundant
-        }
-
-    }
-
-    let componentDevice      = entities["ComponentDevice"]!
-    let manufacturer         = entities["Manufacturer"]!
-    let imageCategory        = entities["ImageCategory"]!
-    let presetCategory       = entities["PresetCategory"]!
-    let iRCodeSet            = entities["IRCodeSet"]!
-    let image                = entities["Image"]!
-    let remoteElement        = entities["RemoteElement"]!
-    let remote               = entities["Remote"]!
-    let buttonGroup          = entities["ButtonGroup"]!
-    let button               = entities["Button"]!
-    let preset               = entities["Preset"]!
-    let dictionaryStorage    = entities["DictionaryStorage"]!
-    let commandContainer     = entities["CommandContainer"]!
-    let commandSet           = entities["CommandSet"]!
-    let commandSetCollection = entities["CommandSetCollection"]!
-    let hTTPCommand          = entities["HTTPCommand"]!
-    let controlStateColorSet = entities["ControlStateColorSet"]!
-    let imageView            = entities["ImageView"]!
-    let activityCommand      = entities["ActivityCommand"]!
-
-    // set `user` default value
-    modifyAttribute("user", forEntities: [componentDevice], defaultValue: true)
-
-    // indicator attribute on activity commands
-    overrideDefaultValueOfAttribute("indicator", forSubentity: activityCommand, withValue: true)
-
-    // create some default sets
-    modifyAttribute("devices", forEntities: [manufacturer, iRCodeSet], defaultValue: NSSet())
-    modifyAttribute("childCategories", forEntities: [imageCategory, presetCategory], defaultValue: NSSet())
-    modifyAttribute("codeSets", forEntities: [manufacturer], defaultValue: NSSet())
-    modifyAttribute("codes", forEntities: [iRCodeSet], defaultValue: NSSet())
-    modifyAttribute("images", forEntities: [imageCategory], defaultValue: NSSet())
-    modifyAttribute("presets", forEntities: [presetCategory], defaultValue: NSSet())
-
-    // size attributes on images
-    modifyAttribute("size",
-        forEntities: [image],
-     valueClassName: "NSValue",
-       defaultValue: NSValue(CGSize: CGSize.zeroSize))
-
-
-    // background color attributes on remote elements
-    modifyAttribute("backgroundColor",
-        forEntities: [remoteElement, remote, buttonGroup, button],
-     valueClassName: "UIColor",
-       defaultValue: UIColor.clearColor())
-
-    // edge insets attributes on buttons
-    modifyAttributes(["titleEdgeInsets", "contentEdgeInsets", "imageEdgeInsets"],
-           forEntity: button,
-      valueClassName: "NSValue",
-        defaultValue: NSValue(UIEdgeInsets: UIEdgeInsets.zeroInsets))
-
-    // configurations attribute on remote elements
-    modifyAttribute("configurations",
-        forEntities: [remoteElement, remote, buttonGroup, button],
-     valueClassName: "NSDictionary",
-       defaultValue: NSDictionary())
-
-    // panels for RERemote
-    modifyAttribute("panels", forEntities: [remote], valueClassName: "NSDictionary", defaultValue: NSDictionary())
-
-    // label attribute on button groups
-    modifyAttribute("label", forEntities: [buttonGroup], valueClassName: "NSAttributedString")
-
-     modifyAttribute("title", forEntities: [button], valueClassName: "NSAttributedString")
-
-    // settings attribute on Preset
-    modifyAttribute("attributes", forEntities: [preset], valueClassName: "NSDictionary", defaultValue: NSDictionary())
-
-    modifyAttribute("dictionary",
-      forEntities: [dictionaryStorage],
-   valueClassName: "NSDictionary",
-     defaultValue: NSDictionary())
-
-    // containerIndex attribute on command containers
-    modifyAttribute("containerIndex",
-        forEntities: [commandContainer, commandSet, commandSetCollection],
-     valueClassName: "MSDictionary",
-       defaultValue: MSDictionary())
-
-    // url attribute on http command
-    modifyAttribute("url",
-        forEntities: [hTTPCommand],
-     valueClassName: "NSURL",
-       defaultValue: NSURL(string: "http://about:blank"))
-
-    // color attributes on control state color set
-    modifyAttributes(["disabled",
-                      "selectedDisabled",
-                      "highlighted",
-                      "highlightedDisabled",
-                      "highlightedSelected",
-                      "normal",
-                      "selected",
-                      "highlightedSelectedDisabled"],
-           forEntity: controlStateColorSet,
-      valueClassName: "UIColor")
-
-    // color attribute on image view
-    modifyAttribute("color", forEntities: [imageView], valueClassName: "UIColor")
-
-    return augmentedModel
-  }
-
-  /**
-  Type for parsing database-related arguments passed to application
-
-  :example: -manufacturers load=Manufacturer_Test,dump,log=parsed-imported
-  */
+  // MARK: - Marker type
 
   /** The type of action marked by a flag */
-  public enum Marker: Printable, Equatable {
+  public enum Marker: Printable, Equatable, Hashable {
     case Copy
     case Load
     case Remove
+    case InMemory
     case LoadFile (String)
     case Dump
     case Log ([LogValue])
 
+    /** Function to parse markers out of a string */
+    public static func markersFromString(string: String) -> [Marker] {
+      let maybeMarkers = ",".split(string).map({Marker(argValue: $0)})
+      let markers = compressed(maybeMarkers)
+      return markers
+    }
+
     /** Type of value marked for logging */
     public enum LogValue: String {
+      case File     = "file"
       case Model    = "model"
       case Parsed   = "parsed"
       case Imported = "imported"
@@ -341,6 +520,7 @@ import MoonKit
       switch self {
         case .Copy:            return "copy"
         case .Remove:          return "remove"
+        case .InMemory:        return "inMemory"
         case .Load, .LoadFile: return "load"
         case .Dump:            return "dump"
         case .Log:             return "log"
@@ -362,11 +542,14 @@ import MoonKit
     */
     init?(argValue: String) {
       switch argValue {
-        case "copy": self = .Copy
+        case "copy":
+          self = Marker.Copy
         case "load":
           self = Marker.Load
         case "remove":
           self = Marker.Remove
+        case "inMemory":
+          self = Marker.InMemory
         case "dump":
           self = Marker.Dump
         case ~/"load=.+":
@@ -380,48 +563,86 @@ import MoonKit
 
     public var description: String {
       switch self {
-        case .Copy, .Load, .Dump, .Remove: return key
+        case .Copy, .Load, .Dump, .Remove, .InMemory: return key
         case .Log(let values): return "\(key): " + ", ".join(values.map({$0.rawValue}))
         case .LoadFile(let file): return "\(key): \(file)"
       }
     }
+
+    public var hashValue: Int {
+      switch self {
+        case .Copy, .Remove, .InMemory, .Dump, .Load: return key.hashValue
+        case .LoadFile(let s): return s.hashValue
+        case .Log(let logValues): return reduce(logValues, 0, {$0 + $1.rawValue.hashValue})
+      }
+    }
   }
 
-  /** 
+  // MARK: - DataFlag type
+
+  /**
   Type for parsing database operations command line arguments
   */
   public struct DataFlag: Printable {
-    let load: Bool
-    let dump: Bool
-    let remove: Bool
-    let copy: Bool
-    let logModel: Bool
+    public var load: Bool
+    public var dump: Bool
+    public var remove: Bool
+    public var inMemory: Bool
+    public var copy: Bool
+    public var logModel: Bool
 
     static let key = "databaseOperations"
 
     /** Initializes a new flag using command line argument if present */
     init() {
-      if let arg = NSUserDefaults.standardUserDefaults().volatileDomainForName(NSArgumentDomain)[DataFlag.key] as? String {
-        let markers = compressed(",".split(arg).map({Marker(argValue: $0)}))
+      var load = false
+      var dump = false
+      var remove = false
+      var inMemory = false
+      var copy = false
+      var logModel = false
+
+      if let env = String.fromCString(getenv(DataFlag.key)) {
+        let markers = Marker.markersFromString(env)
         load =  markers ∋ .Load
         dump =  markers ∋ .Dump
         logModel =  markers ∋ .Log([.Model])
         copy = markers ∋ .Copy
         remove =  markers ∋ .Remove
-      } else {
-        load = false
-        dump = false
-        logModel = false
-        copy = false
-        remove = false
+        inMemory = markers ∋ .InMemory
       }
+
+      if let arg = NSUserDefaults.standardUserDefaults().volatileDomainForName(NSArgumentDomain)[DataFlag.key] as? String {
+        let markers = Marker.markersFromString(arg)
+        load =  load || markers ∋ .Load
+        dump = dump ||  markers ∋ .Dump
+        logModel = logModel || markers ∋ .Log([.Model])
+        copy = copy || markers ∋ .Copy
+        remove = remove || markers ∋ .Remove
+        inMemory = inMemory || markers ∋ .InMemory
+      }
+
+      self.load = load
+      self.dump = dump
+      self.remove = remove
+      self.inMemory = inMemory
+      self.copy = copy
+      self.logModel = logModel
     }
 
     public var description: String {
-      return "database operations:\n\tload: \(load)\n\tdump: \(dump)\n\tremove: \(remove)\n\tlog model: \(logModel)"
+      return "database operations:\n\t" + "\n\t".join(
+        "load: \(load)",
+        "dump: \(dump)",
+        "remove: \(remove)",
+        "inMemory: \(inMemory)",
+        "copy: \(copy)",
+        "log model: \(logModel)"
+      )
     }
   }
 
+  // MARK: - ModelFlag type
 
   /** Flags used as the base of a supported command line argument whose value should resolve into a valid `Marker` */
   public enum ModelFlag: String, EnumerableType, Printable {
@@ -443,7 +664,7 @@ import MoonKit
     /** Array of markers created by parsing associated command line argument */
     var markers: [Marker] {
       if let argValue = ModelFlag.arguments[rawValue] as? String {
-        return compressed(",".split(argValue).map({Marker(argValue: $0)}))
+        return Marker.markersFromString(argValue)
       } else { return [] }
     }
 
@@ -463,7 +684,7 @@ import MoonKit
 
     /** An array of all possible flag keys for which an argument has been passed */
     static public var all: [ModelFlag] = [.Manufacturers, .ComponentDevices, .Images, .Activities,
-                                   .NetworkDevices, .Controller, .Presets, .Remotes].filter {
+                                   .NetworkDevices, .Presets, .Remotes, .Controller].filter {
                                     ModelFlag.arguments[$0.rawValue] != nil
                                   }
 
@@ -478,126 +699,31 @@ import MoonKit
     public var description: String { return "\(rawValue):\n\t" + "\n\t".join(markers.map({$0.description})) }
   }
 
-  /** loadData */
-  class func loadData(completion: ((Bool, NSError?) -> Void)? = nil) {
+  // MARK: - LogFlags type
 
-    rootContext.performBlock {[rootContext = self.rootContext] in
-
-      self.modelFlags ➤ {
-        var fileName: String?
-        var logParsed = false
-        var logImported = false
-        var removeExisting = false
-        for marker in $0.markers {
-          switch marker {
-            case .Remove: removeExisting = true
-            case .LoadFile(let f): fileName = f
-            case .Log(let values): logParsed = values ∋ .Parsed; logImported = values ∋ .Imported
-          default: break
-          }
-        }
-        if removeExisting { rootContext.deleteObjects(Set($0.modelType.objectsInContext(rootContext))) }
-        if fileName != nil {
-          self.loadDataFromFile(fileName!,
-                           type: $0.modelType,
-                        context: rootContext,
-                      logParsed: logParsed,
-                    logImported: logImported)
-        }
-      }
-
-      var error: NSError?
-      MSLogDebug("saving context…")
-      if rootContext.save(&error) && !MSHandleError(error, message: "error occurred while saving context") {
-        MSLogDebug("context saved successfully")
-        completion?(true, nil)
-      } else {
-        MSHandleError(error, message: "failed to save context")
-        completion?(false, error)
-      }
-    }
+  public struct LogFlags: RawOptionSetType {
+    private(set) public var rawValue: Int
+    public init(rawValue: Int) { self.rawValue = rawValue }
+    public init(nilLiteral: ()) { rawValue = 0 }
+    public static var allZeros: LogFlags { return LogFlags.Default }
+    public static var Default: LogFlags = LogFlags(rawValue: 0b0000)
+    public static var File: LogFlags = LogFlags(rawValue: 0b0001)
+    public static var Parsed: LogFlags = LogFlags(rawValue: 0b0010)
+    public static var Preparsed: LogFlags = LogFlags(rawValue: 0b0100)
+    public static var Imported: LogFlags = LogFlags(rawValue: 0b1000)
   }
 
-  /** dumpData */
-  class func dumpData(completion: ((Void) -> Void)? = nil ) {
-    rootContext.performBlock {
+  public class func loadResourceForURL(url: NSURL) {
+    let fm = NSFileManager.defaultManager()
 
-      self.modelFlags ➤ {
-        for marker in $0.markers {
-          switch marker {
-          case .Dump: self.dumpJSONForModelType($0.modelType)
-          default: break
-          }
-        }
-      }
+    if let path = url.path where fm.isReadableFileAtPath(path) {
+
     }
-
-    completion?()
-
-  }
-
-  /**
-  dumpJSONForModelType:
-
-  :param: modelType ModelObject.Type
-  */
-  private class func dumpJSONForModelType(modelType: ModelObject.Type) {
-    let className = (modelType.self as AnyObject).className
-    let objects: [ModelObject]
-    switch className {
-    case "ImageCategory", "PresetCategory":
-      objects = modelType.objectsMatchingPredicate(∀"parentCategory = NULL", context: rootContext)
-    default:
-      objects = modelType.objectsInContext(rootContext)
-    }
-    let json = (objects as NSArray).JSONString
-    MSLogDebug("\(className) objects: \n\(json)\n")
-  }
-
-  /**
-  loadDataFromFile:type:context:
-
-  :param: file String
-  :param: type T.Type
-  :param: context NSManagedObjectContext
-  */
-  private class func loadDataFromFile<T:ModelObject>(file: String,
-                                                type: T.Type,
-                                             context: NSManagedObjectContext,
-                                           logParsed: Bool,
-                                         logImported: Bool)
-  {
-    MSLogDebug("parsing file '\(file).json'")
-
-    var error: NSError?
-    if let filePath = NSBundle(forClass: self).pathForResource(file, ofType: "json"),
-      data: AnyObject = JSONSerialization.objectByParsingFile(filePath, options: 1, error: &error)
-      where MSHandleError(error) == false
-    {
-
-      if logParsed { MSLogDebug("json objects from parsed file:\n\(data)") }
-
-      if let dataDictionary = data as? [String:AnyObject],
-        importedObject = type(data: dataDictionary, context: context) {
-
-        MSLogDebug("imported \(type.className()) from file '\(file).json'")
-
-        if logImported { MSLogDebug("json output for imported object:\n\(importedObject.JSONString)") }
-
-      } else if let dataArray = data as? [[String:AnyObject]] {
-
-        let importedObjects = type.importObjectsFromData(dataArray, context: context)
-
-        MSLogDebug("\(importedObjects.count) \(type.className()) objects imported from file '\(file).json'")
-
-        if logImported { MSLogDebug("json output for imported object:\n\((importedObjects as NSArray).JSONString)") }
-
-      } else { MSLogError("file content must resolve into [String:AnyObject] or [[String:AnyObject]]") }
-
-    } else { MSLogError("failed to parse file '\(file).json'") }
   }
 
 }
+
+// MARK: - Support functions
 
 /**
 Equatable operator for `DataManager.Marker`
@@ -609,7 +735,7 @@ Equatable operator for `DataManager.Marker`
 */
 public func ==(lhs: DataManager.Marker, rhs: DataManager.Marker) -> Bool {
   switch (lhs, rhs) {
-    case (.Load, .Load), (.Dump, .Dump), (.Remove, .Remove): return true
+    case (.Load, .Load), (.Copy, .Copy), (.InMemory, .InMemory), (.Dump, .Dump), (.Remove, .Remove): return true
     case (.LoadFile(let f1), .LoadFile(let f2)) where f1 == f2: return true
     case (.Log(let v1), .Log(let v2)) where v1 == v2: return true
     default: return false

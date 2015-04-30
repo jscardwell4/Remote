@@ -24,6 +24,7 @@ class TitleAttributesDetailController: DetailController {
   }
 
   private struct RowKey {
+    static let Temp               = "Temp"
     static let Text               = "Text"
     static let Icon               = "Icon"
     static let Order              = "Order"
@@ -73,11 +74,12 @@ class TitleAttributesDetailController: DetailController {
 
     // text
     contentSection.addRow({
-      var row = DetailTextFieldRow()
+      var row = DetailTextViewRow()
       row.name = "Text"
       row.info = attributesDelegate.text
-      row.placeholderText = "No Text"
+      row.displayStyle = .Condensed
       row.valueDidChange = { attributesDelegate.text = $0 as? String ?? "" }
+      row.didEndEditing = { if self.didCancel { attributesDelegate.rollback(); $0.currentText = attributesDelegate.text } }
       return row
     }, forKey: RowKey.Text)
 
@@ -114,17 +116,17 @@ class TitleAttributesDetailController: DetailController {
     contentSection.addRow({
       var row = DetailButtonRow()
       row.name = "Order"
-      row.info = attributesDelegate.iconTextOrder.JSONValue.capitalizedString
+      row.info = String(attributesDelegate.iconTextOrder.jsonValue)!.capitalizedString
 
       var pickerRow = DetailPickerRow()
-      pickerRow.data = TitleAttributes.IconTextOrderSpecification.all.map{$0.JSONValue}
-      pickerRow.info = attributesDelegate.iconTextOrder.JSONValue
+      pickerRow.data = TitleAttributes.IconTextOrderSpecification.all.map{String($0.jsonValue)!}
+      pickerRow.info = String(attributesDelegate.iconTextOrder.jsonValue)!
       pickerRow.titleForInfo = {($0 as! String).capitalizedString}
       pickerRow.didSelectItem = {
         if !self.didCancel {
-          attributesDelegate.iconTextOrder = TitleAttributes.IconTextOrderSpecification(JSONValue: ($0 as! String))
-          self.cellDisplayingPicker?.info = attributesDelegate.iconTextOrder.JSONValue.capitalizedString
-          pickerRow.info = attributesDelegate.iconTextOrder.JSONValue
+          attributesDelegate.iconTextOrder = TitleAttributes.IconTextOrderSpecification(($0 as! String).jsonValue)!
+          self.cellDisplayingPicker?.info = String(attributesDelegate.iconTextOrder.jsonValue)!.capitalizedString
+          pickerRow.info = String(attributesDelegate.iconTextOrder.jsonValue)!
         }
       }
 
@@ -283,15 +285,15 @@ class TitleAttributesDetailController: DetailController {
     underlineSection.addRow({
       var row = DetailButtonRow()
       row.name = "Style"
-      row.info = attributesDelegate.underlineStyle.JSONValue.titlecaseString
+      row.info = String(attributesDelegate.underlineStyle.jsonValue)!.titlecaseString
 
       var pickerRow = DetailPickerRow()
-      pickerRow.data = NSUnderlineStyle.all.map{$0.JSONValue}
-      pickerRow.info = attributesDelegate.underlineStyle.JSONValue.titlecaseString
+      pickerRow.data = NSUnderlineStyle.all.map{String($0.jsonValue)!}
+      pickerRow.info = String(attributesDelegate.underlineStyle.jsonValue)!.titlecaseString
       pickerRow.didSelectItem = { [unowned pickerRow] in
         if !self.didCancel {
-          attributesDelegate.underlineStyle = NSUnderlineStyle(JSONValue: $0 as? String ?? "none")
-          self.cellDisplayingPicker?.info = attributesDelegate.underlineStyle.JSONValue.titlecaseString
+          attributesDelegate.underlineStyle = NSUnderlineStyle(($0 as? String)?.jsonValue) ?? .StyleNone
+          self.cellDisplayingPicker?.info = String(attributesDelegate.underlineStyle.jsonValue)!.titlecaseString
           pickerRow.info = $0
         }
       }
@@ -330,15 +332,15 @@ class TitleAttributesDetailController: DetailController {
     strikethroughSection.addRow({
       var row = DetailButtonRow()
       row.name = "Style"
-      row.info = attributesDelegate.strikethroughStyle.JSONValue.titlecaseString
+      row.info = String(attributesDelegate.strikethroughStyle.jsonValue)!.titlecaseString
 
       var pickerRow = DetailPickerRow()
-      pickerRow.data = NSUnderlineStyle.all.map{$0.JSONValue}
-      pickerRow.info = attributesDelegate.strikethroughStyle.JSONValue.titlecaseString
+      pickerRow.data = NSUnderlineStyle.all.map{String($0.jsonValue)!}
+      pickerRow.info = String(attributesDelegate.strikethroughStyle.jsonValue)!.titlecaseString
       pickerRow.didSelectItem = { [unowned pickerRow] in
         if !self.didCancel {
-          attributesDelegate.strikethroughStyle = NSUnderlineStyle(JSONValue: $0 as? String ?? "none")
-          self.cellDisplayingPicker?.info = attributesDelegate.strikethroughStyle.JSONValue.titlecaseString
+          attributesDelegate.strikethroughStyle = NSUnderlineStyle(($0 as? String)?.jsonValue) ?? .StyleNone
+          self.cellDisplayingPicker?.info = String(attributesDelegate.strikethroughStyle.jsonValue)!.titlecaseString
           pickerRow.info = $0
         }
       }
@@ -376,15 +378,15 @@ class TitleAttributesDetailController: DetailController {
     paragraphStyleSection.addRow({
       var row = DetailButtonRow()
       row.name = "Alignment"
-      row.info = attributesDelegate.alignment.JSONValue.titlecaseString
+      row.info = String(attributesDelegate.alignment.jsonValue)!.titlecaseString
 
       var pickerRow = DetailPickerRow()
-      pickerRow.data = NSTextAlignment.all.map{$0.JSONValue}
-      pickerRow.info = attributesDelegate.alignment.JSONValue.titlecaseString
+      pickerRow.data = NSTextAlignment.all.map{String($0.jsonValue)!}
+      pickerRow.info = String(attributesDelegate.alignment.jsonValue)!.titlecaseString
       pickerRow.didSelectItem = { [unowned pickerRow] in
         if !self.didCancel {
-          attributesDelegate.alignment = NSTextAlignment(JSONValue: $0 as? String ?? "natural")
-          self.cellDisplayingPicker?.info = attributesDelegate.alignment.JSONValue.titlecaseString
+          attributesDelegate.alignment = NSTextAlignment(($0 as? String)?.jsonValue) ?? .Natural
+          self.cellDisplayingPicker?.info = String(attributesDelegate.alignment.jsonValue)!.titlecaseString
           pickerRow.info = $0
         }
       }

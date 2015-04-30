@@ -39,6 +39,8 @@ class DetailImageCell: DetailCell {
   /** prepareForReuse */
   override func prepareForReuse() {
     super.prepareForReuse()
+    backgroundColor = UIColor.clearColor()
+    contentView.backgroundColor = UIColor.clearColor()
     preview.image = nil
     preview.contentMode = .ScaleAspectFit
   }

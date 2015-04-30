@@ -12,7 +12,5 @@ import MoonKit
 
 @objc(SendCommand)
 public class SendCommand: Command {
-  override var operation: CommandOperation {
-    return SendCommandOperation(command: self)
-  }
+  override var operation: CommandOperation { return SendCommandOperation(command: self) }
 }

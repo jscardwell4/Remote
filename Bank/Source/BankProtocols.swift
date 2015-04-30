@@ -50,7 +50,7 @@ extension Preset: Detailable {
 }
 
 // MARK: - Previewable protocol and extensions
-@objc protocol Previewable { var preview: UIImage { get }; var thumbnail: UIImage { get } }
+@objc protocol Previewable { var preview: UIImage? { get }; var thumbnail: UIImage? { get } }
 
 extension Image: Previewable {}
 extension Preset: Previewable {}
@@ -60,12 +60,17 @@ extension Preset: Previewable {}
 @objc protocol BankModelCollection: Named {
   optional var items: [NamedModel] { get }
   optional var collections: [ModelCollection] { get }
+  optional var previewable: Bool { get }
 }
 
 extension Manufacturer: BankModelCollection {}
 extension IRCodeSet: BankModelCollection {}
-extension ImageCategory: BankModelCollection {}
-extension PresetCategory: BankModelCollection {}
+extension ImageCategory: BankModelCollection {
+  var previewable: Bool { return true }
+}
+extension PresetCategory: BankModelCollection {
+  var previewable: Bool { return true }
+}
 
 // MARK: - View controller related protocols
 
@@ -76,7 +81,7 @@ protocol BankItemSelectionDelegate {
 /** Protocol for types that want to display Bank toolbars, or other assets */
 protocol BankController: class {
 
-  var exportSelection: [MSJSONExport] { get }
+  var exportSelection: [JSONValueConvertible] { get }
   var exportSelectionMode: Bool { get set }
 
   func selectAllExportableItems() // Called from select all bar button action
@@ -89,4 +94,3 @@ protocol SearchableBankController: BankController {
   func searchBankObjects()  // Called from search bar button action
   
 }
-

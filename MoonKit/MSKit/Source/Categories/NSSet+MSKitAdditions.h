@@ -9,9 +9,12 @@
 @import Foundation;
 #import "MSKitProtocols.h"
 
-@interface NSSet (MSKitAdditions) <MSJSONExport, MSKeySearchable>
+#pragma clang assume_nonnull begin
+@interface NSSet (MSKitAdditions) <MSKeySearchable>
 
 @property (nonatomic, readonly) BOOL isEmpty;
+//@property (nonatomic, weak, readonly, nonnull) id JSONObject;
+//@property (nonatomic, weak, readonly, nonnull) NSString * JSONString;
 
 + (NSSet *)setWithArrays:(NSArray *)arrays;
 
@@ -37,7 +40,7 @@
 
 - (BOOL)containsObjectWithValue:(id)value forKey:(NSString *)key;
 
-- (id)objectWithValue:(id)value forKey:(NSString *)key;
+- (nullable id)objectWithValue:(id)value forKey:(NSString *)key;
 
 - (NSSet *)objectsWithValue:(id)value forKey:(NSString *)key;
 
@@ -48,3 +51,5 @@
 - (void)addOrRemoveObject:(id)object;
 
 @end
+
+#pragma clang assume_nonnull end

@@ -14,6 +14,11 @@ extension MSKeyPath: SequenceType {
   }
 }
 
+//extension MSDictionary: JSONExport {
+//  public var JSONString: String { return JSONSerialization.JSONFromObject(JSONObject) ?? "" }
+//  public var JSONObject: AnyObject { return self }
+//}
+
 //extension MSDictionary: DictionaryLiteralConvertible {
 //
 //  /**
@@ -36,10 +41,21 @@ extension MSKeyPath: SequenceType {
 
 extension MSDictionary: Printable {
 
-  convenience init(orderedDictionary: OrderedDictionary<NSObject,AnyObject>) {
-    self.init(values: orderedDictionary.values, forKeys: orderedDictionary.keys)
-  }
+  /**
+  initWithOrderedDictionary:AnyObject>:
 
+  :param: orderedDictionary OrderedDictionary<NSObject
+  :param: AnyObject>
+  */
+  public convenience init<K:Hashable, V:AnyObject where K:AnyObject>(_ orderedDictionary: OrderedDictionary<K,V>) {
+    self.init(values: Array(orderedDictionary.values), forKeys: Array(orderedDictionary.keys))
+  }
+  
+//  public convenience init(_ orderedDictionary: OrderedDictionary<String,AnyObject>) {
+//    self.init(values: Array(orderedDictionary.values), forKeys: Array(orderedDictionary.keys))
+//  }
+
+  /** inflate */
   @objc public func inflate() {
 
     // First gather a list of keys to inflate

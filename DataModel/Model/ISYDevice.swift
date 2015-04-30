@@ -73,53 +73,27 @@ public class ISYDevice: NetworkDevice {
     @NSManaged public var modelDescription: String
     @NSManaged public var modelName: String
     @NSManaged public var modelNumber: String
-    @NSManaged var primitiveGroups: NSMutableSet?
-    public var groups: [ISYDeviceGroup] {
-      get {
-        willAccessValueForKey("groups")
-        let groups = primitiveGroups?.allObjects as? [ISYDeviceGroup]
-        didAccessValueForKey("groups")
-        return groups ?? []
-      }
-      set {
-        willChangeValueForKey("groups")
-        primitiveGroups = NSMutableSet(array: newValue)
-        didChangeValueForKey("groups")
-      }
-    }
-    @NSManaged var primitiveNodes: NSMutableSet?
-    public var nodes: [ISYDeviceNode] {
-      get {
-        willAccessValueForKey("nodes")
-        let nodes = primitiveNodes?.allObjects as? [ISYDeviceNode]
-        didAccessValueForKey("nodes")
-        return nodes ?? []
-      }
-      set {
-        willChangeValueForKey("nodes")
-        primitiveNodes = NSMutableSet(array: newValue)
-        didChangeValueForKey("nodes")
-      }
-    }
+    @NSManaged public var groups: Set<ISYDeviceGroup>
+    @NSManaged public var nodes: Set<ISYDeviceNode>
 
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let modelNumber       = data["model-number"]      as? String { self.modelNumber = modelNumber }
-    if let modelName         = data["model-name"]        as? String { self.modelName = modelName }
-    if let modelDescription  = data["model-description"] as? String { self.modelDescription = modelDescription }
-    if let manufacturerURL   = data["manufacturer-url"]  as? String { self.manufacturerURL = manufacturerURL }
-    if let manufacturer      = data["manufacturer"]      as? String { self.manufacturer = manufacturer }
-    if let friendlyName      = data["friendly-name"]     as? String { self.friendlyName = friendlyName }
-    if let deviceType        = data["device-type"]       as? String { self.deviceType = deviceType }
-    if let baseURL           = data["base-url"]          as? String { self.baseURL = baseURL }
+    if let modelNumber       = String(data["modelNumber"]) { self.modelNumber = modelNumber }
+    if let modelName         = String(data["modelName"]) { self.modelName = modelName }
+    if let modelDescription  = String(data["modelDescription"]) { self.modelDescription = modelDescription }
+    if let manufacturerURL   = String(data["manufacturerURL"]) { self.manufacturerURL = manufacturerURL }
+    if let manufacturer      = String(data["manufacturer"]) { self.manufacturer = manufacturer }
+    if let friendlyName      = String(data["friendlyName"]) { self.friendlyName = friendlyName }
+    if let deviceType        = String(data["deviceType"]) { self.deviceType = deviceType }
+    if let baseURL           = String(data["baseURL"]) { self.baseURL = baseURL }
 
-    updateRelationshipFromData(data, forKey: "nodes")
-    updateRelationshipFromData(data, forKey: "groups")
+    updateRelationshipFromData(data, forAttribute: "nodes")
+    updateRelationshipFromData(data, forAttribute: "groups")
   }
 
   /**
@@ -129,30 +103,20 @@ public class ISYDevice: NetworkDevice {
   */
 //  func detailController() -> UIViewController { return ISYDeviceDetailController(model: self) }
 
-}
-
-extension ISYDevice: MSJSONExport {
-
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-      appendValueForKey("modelNumber", toDictionary: dictionary)
-      appendValueForKey("modelName", toDictionary: dictionary)
-      appendValueForKey("modelDescription", toDictionary: dictionary)
-      appendValueForKey("manufacturerURL", toDictionary: dictionary)
-      appendValueForKey("manufacturer", toDictionary: dictionary)
-      appendValueForKey("friendlyName", toDictionary: dictionary)
-      appendValueForKey("deviceType", toDictionary: dictionary)
-      appendValueForKey("baseURL", toDictionary: dictionary)
-      appendValueForKeyPath("nodes.JSONDictionary",  forKey: "nodes", toDictionary: dictionary)
-      appendValueForKeyPath("groups.JSONDictionary", forKey: "groups", toDictionary: dictionary)
-      dictionary.compact()
-      dictionary.compress()
-      return dictionary
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["modelNumber"] = modelNumber.jsonValue
+    obj["modelName"] = modelName.jsonValue
+    obj["modelDescription"] = modelDescription.jsonValue
+    obj["manufacturerURL"] = manufacturerURL.jsonValue
+    obj["manufacturer"] = manufacturer.jsonValue
+    obj["friendlyName"] = friendlyName.jsonValue
+    obj["deviceType"] = deviceType.jsonValue
+    obj["baseURL"] = baseURL.jsonValue
+    obj["nodes"] = JSONValue(nodes)
+    obj["groups"] = JSONValue(groups)
+    obj["type"] = "isy"
+    return obj.jsonValue
   }
 
 }

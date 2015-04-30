@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import MoonKit
-import DataModel
 
 final class DetailButtonRow: DetailRow {
 
@@ -25,48 +24,14 @@ final class DetailButtonRow: DetailRow {
   :param: cell DetailCell
   */
   override func configureCell(cell: DetailCell) {
-    if detailPickerRow != nil { (cell as? DetailButtonCell)?.detailPickerRow = detailPickerRow }
-    super.configureCell(cell)
-    if showPickerRow != nil { (cell as? DetailButtonCell)?.showPickerRow = showPickerRow }
-    if hidePickerRow != nil { (cell as? DetailButtonCell)?.hidePickerRow = hidePickerRow }
-  }
+    if let buttonCell = cell as? DetailButtonCell {
+      // Set picker row first so data is there when `info` gets set by `super`
+      buttonCell.detailPickerRow = detailPickerRow
 
-  /** init */
-  override init() { super.init() }
-
-  /**
-  initWithPushableCategory:
-
-  :param: pushableCategory BankItemCategory
-  */
-  convenience init(pushableCollection: BankModelCollection?) {
-    self.init()
-    info = pushableCollection
-    select = {
-      if let collection = pushableCollection {
-        if let controller = BankCollectionController(collection: collection) {
-          if let nav = UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController {
-            nav.pushViewController(controller, animated: true)
-          }
-        }
-      }
-    }
-  }
-
-  /**
-  initWithPushableItem:
-
-  :param: pushableItem EditableModel?
-  */
-  convenience init(pushableItem: protocol<EditableModel,Detailable>?) {
-    self.init()
-    info = pushableItem
-    select = {
-      if let item = pushableItem {
-        if let nav =  UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController {
-          nav.pushViewController(item.detailController(), animated: true)
-        }
-      }
+      super.configureCell(cell)
+      
+      buttonCell.showPickerRow = showPickerRow
+      buttonCell.hidePickerRow = hidePickerRow
     }
   }
 

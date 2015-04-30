@@ -1,0 +1,140 @@
+{
+  "name": "Home Screen",
+  "constraints": {
+    "index": {
+      "activityButtons": "F358CB82-496C-446D-8833-D4373777D23E",
+      "bottomToolbar": "B81FFF61-4F56-43C1-9E60-3C399EB31C1B"
+    },
+    "format": [
+      "activityButtons.centerX = self",
+      "activityButtons.centerY = self.centerY - 22",
+      "bottomToolbar.bottom = self.bottom",
+      "bottomToolbar.left = self.left",
+      "bottomToolbar.right = self.right"
+    ]
+  },
+  "backgroundColor.default": "black",
+  "backgroundImage.default.path": "Backgrounds/Pro Dots",
+  "subelements": [
+    {
+      "uuid": "F358CB82-496C-446D-8833-D4373777D23E",
+      "name": "Activity Buttons",
+      "constraints": {
+        "index": {
+          "activityButtons": "F358CB82-496C-446D-8833-D4373777D23E",
+          "appleTV": "58A7D2DB-9635-486A-9336-43D6292674BA",
+          "dish": "92E33ABD-9893-47A9-8922-86146A94C0E4",
+          "playstation": "DB1C794B-A3BB-4C9E-91EC-88A1D3FB401A",
+          "sonos": "19F3F351-AB2B-435D-A31A-ECB703DDE993"
+        },
+        "format": [
+          "activityButtons.height = activityButtons.width",
+          "activityButtons.width = 300",
+          "appleTV.centerX = activityButtons.centerX * 0.5",
+          "appleTV.centerY = activityButtons.centerY * 1.5",
+          "appleTV.width = dish.width",
+          "dish.centerX = activityButtons.centerX * 0.5",
+          "dish.centerY = activityButtons.centerY * 0.5",
+          "dish.width = activityButtons.width * 0.5",
+          "playstation.centerX = activityButtons.centerX * 1.5",
+          "playstation.centerY = activityButtons.centerY * 0.5",
+          "playstation.width = dish.width",
+          "sonos.centerX = activityButtons.centerX * 1.5",
+          "sonos.centerY = activityButtons.centerY * 1.5",
+          "sonos.width = dish.width"
+        ]
+      },
+      "subelements": [
+        {
+          "uuid": "92E33ABD-9893-47A9-8922-86146A94C0E4",
+          "name": "Dish",
+          "shape": "rounded-rectangle",
+          "style": "gloss2",
+          "constraints": {
+            "index.dish": "92E33ABD-9893-47A9-8922-86146A94C0E4",
+            "format": "dish.height = dish.width"
+          },
+          "commands.default": {            "activity.index": "Dish%20Hopper%20Activity"
+          },
+          "titles.default": {
+            "normal": {
+              "font": "Helvetica Neue@20",
+              "foregroundColor": "white",
+              "strokeColor": "white@50%",
+              "strokeWidth": -2,
+              "alignment": "center",
+              "text": "Dish"
+            },
+            "highlighted.foreground-color": "#00AFFFFF"
+          },
+          "backgroundColors.default.normal": "#060606FF",
+          "titleEdgeInsets": "{20, 20, 20, 20}"
+        }
+      ]
+    },
+    {
+      "uuid": "B81FFF61-4F56-43C1-9E60-3C399EB31C1B",
+      "name": "Bottom Toolbar",
+      "role": "toolbar",
+      "shape": "rectangle",
+      "constraints": {
+        "index": {
+          "bottomToolbar": "B81FFF61-4F56-43C1-9E60-3C399EB31C1B",
+          "lightsOff": "085F92D0-7D04-4586-BD2E-BCD0F0AFB729",
+          "lightsOn": "65E065E6-2976-4726-99E4-9D4D932804E4"
+        },
+        "format": [
+          "bottomToolbar.height = 44",
+          "lightsOff.bottom = bottomToolbar.bottom",
+          "lightsOff.left = lightsOn.right + 40",
+          "lightsOff.top = bottomToolbar.top",
+          "lightsOff.width = lightsOn.width",
+          "lightsOn.bottom = bottomToolbar.bottom",
+          "lightsOn.left = bottomToolbar.left + 20",
+          "lightsOn.top = bottomToolbar.top"
+        ]
+      },
+      "backgroundColor.default": "gray@50%",
+      "subelements": [
+        {
+          "uuid": "65E065E6-2976-4726-99E4-9D4D932804E4",
+          "name": "Lights On",
+          "role": "toolbar",
+          "constraints": {
+            "index.lightsOn": "65E065E6-2976-4726-99E4-9D4D932804E4",
+            "format": "lightsOn.width = 44"
+          },
+          "commands.default": {            "url": "http://10.0.1.27/0?1201=I=0"
+          },
+          "icons.default": {
+            "normal": {
+              "path": "Icons/Glyphish 4/Light Switch",
+              "color": "white"
+            },
+            "highlighted": {
+              "path": "Icons/Glyphish 4/Light Switch",
+              "color": "#00AFFFFF"
+            }
+          }
+        },
+        {
+          "uuid": "085F92D0-7D04-4586-BD2E-BCD0F0AFB729",
+          "name": "Lights Off",
+          "role": "toolbar",
+          "commands.default": {            "url": "http://10.0.1.27/0?1401=I=0"
+          },
+          "icons.default": {
+            "normal": {
+              "path": "Icons/Glyphish 4/Light Switch",
+              "color": "#7F7F7FFF"
+            },
+            "highlighted": {
+              "path": "Icons/Glyphish 4/Light Switch",
+              "color": "#00AFFFFF"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

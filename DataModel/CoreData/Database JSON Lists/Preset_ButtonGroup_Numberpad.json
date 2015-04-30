@@ -1,8 +1,8 @@
 {
   "name": "Numberpad",
-  "base-type": "button-group",
+  "baseType": "button-group",
   "role": "numberpad",
-  "background-color": "white@75%",
+  "backgroundColor": "white@75%",
   "autohide": true,
   "constraints": [
     "$1.bottom = $2.bottom :: $1.left = $0.left :: $1.top = $0.top",
@@ -21,243 +21,243 @@
   ],
   "subelements": [
     {
-      "base-type": "button",
+      "baseType": "button",
       "role": "one",
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@32",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": 1
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "role": "two",
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@32",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": 2
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "role": "three",
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@32",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": 3
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "role": "four",
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@32",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": 4
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "role": "five",
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@32",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": 5
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "role": "six",
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@32",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": 6
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "role": "seven",
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@32",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": 7
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "role": "eight",
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@32",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": 8
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "role": "nine",
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@32",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": 9
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "role": "zero",
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@32",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": 0
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "role": "aux1",
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@20",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": "Exit"
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "role": "aux2",
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@20",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": "Enter"
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "role": "tuck",
       "titles.normal": {
         "font": "FontAwesome@24",
-        "foreground-color": "gray@75%",
-        "text-effect": "letter-press",
-        "icon-name": "chevron-up"
+        "foregroundColor": "gray@75%",
+        "textEffect": "letter-press",
+        "iconName": "chevron-up"
       },
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     }
   ]
 }

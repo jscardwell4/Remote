@@ -7,10 +7,10 @@
 //
 
 import Foundation
+
 import UIKit
 
 extension NSAttributedString {
-
   public var font: UIFont? { return attribute(NSFontAttributeName, atIndex: 0, effectiveRange: nil) as? UIFont }
 
   public var foregroundColor: UIColor? {
@@ -20,7 +20,6 @@ extension NSAttributedString {
   public var backgroundColor: UIColor? {
     return length > 0 ? attribute(NSBackgroundColorAttributeName, atIndex: 0, effectiveRange: nil) as? UIColor : nil
   }
-
 
 }
 
@@ -44,7 +43,6 @@ extension NSMutableAttributedString {
   public func setFont(font: UIFont, range: Range<Int>? = nil) {
     if length > 0 { addAttribute(NSFontAttributeName, value: font, range: NSRange(range ?? 0..<length)) }
   }
-
 
 }
 

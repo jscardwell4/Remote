@@ -10,30 +10,7 @@ import Foundation
 import CoreData
 import MoonKit
 
-//public protocol ModelCollection {
-//  typealias ItemType: PathIndexedModel
-//  var items: [ItemType] { get set }
-//  func itemWithIndex(index: PathModelIndex) -> ItemType?
-//}
-
-//public protocol NestingModelCollection: ModelCollection {
-//   typealias NestedType: PathIndexedModel
-//  var subcategories: [NestedType] { get set }
-//  func subcategoryWithIndex(index: PathModelIndex) -> NestedType?
-//}
-
-//public protocol ModelCollectionItem: EditableModel {
-//  typealias CollectionType
-//  var collection: CollectionType? { get set }
-//}
-
-//public protocol RootedModel: PathIndexedModel {
-//  static func itemWithIndex<T:PathIndexedModel>(index: PathModelIndex, context: NSManagedObjectContext) -> T?
-//  static func rootItemWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self?
-//}
-
-// MARK: - Base editable model classes
-public class EditableModelObject: NamedModelObject, EditableModel {
+public class EditableModelObject: IndexedModelObject, EditableModel {
   @NSManaged public var user: Bool
 
   /** save */
@@ -55,67 +32,18 @@ public class EditableModelObject: NamedModelObject, EditableModel {
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let user = data["user"] as? NSNumber { self.user = user.boolValue }
+    if let user = Bool(data["user"]) { self.user = user }
   }
 
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    appendValueForKey("user", toDictionary: dictionary)
-
-    dictionary.compact()
-    dictionary.compress()
-    
-    return dictionary
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["user"] = user.jsonValue
+    return obj.jsonValue
   }
 
+  override public var description: String { return "\(super.description)\n\tuser = \(user)" }
 }
-
-// MARK: - Support functions
-
-/**
-findByIndex:idx:
-
-:param: c C
-:param: idx String
-
-:returns: C.Generator.Element?
-*/
-//public func findByIndex<C:CollectionType where C.Generator.Element:PathIndexedModel>(c: C, idx: PathModelIndex) -> C.Generator.Element? {
-//  return findFirst(c, {$0.index == idx})
-//}
-
-//func indexForItem<T:PathIndexedModel>(model: T) -> ModelIndex { return "\(model.name)" }
-
-/**
-itemWithIndex:withRoot:
-
-:param: index ModelIndex
-:param: root U
-
-:returns: T?
-*/
-//public func itemWithIndexFromRoot<T:PathIndexedModel, U:RootedModel
-//  where U:NestingModelCollection, U.NestedType == U>(index:PathModelIndex, root: U) -> T?
-//{
-//  if root.index == index { return root as? T }
-//  var i = 2
-//  var currentCategory = root
-//  while i < index.count - 1 {
-//    if let category = currentCategory.subcategoryWithIndex(index[0..<i++]) { currentCategory = category } else { return nil }
-//  }
-//  if let category = currentCategory.subcategoryWithIndex(index) { return category as? T }
-//  if let categoryItem = currentCategory.itemWithIndex(index) { return categoryItem as? T }
-//
-//  return nil
-//}
-

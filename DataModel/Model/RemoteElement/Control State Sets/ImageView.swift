@@ -11,11 +11,11 @@ import CoreData
 import MoonKit
 
 @objc(ImageView)
-public final class ImageView: ModelObject {
+public final class ImageView: ModelObject, NSCopying {
 
   @NSManaged public var color: UIColor?
-  @NSManaged public var image: Image
-  @NSManaged public var imagePath: String
+  @NSManaged public var image: Image?
+  @NSManaged public var alpha: NSNumber?
 
   @NSManaged public var buttonIcon: Button?
   @NSManaged public var buttonImage: Button?
@@ -28,8 +28,14 @@ public final class ImageView: ModelObject {
   @NSManaged public var imageSetSelected: ControlStateImageSet?
   @NSManaged public var imageSetSelectedHighlightedDisabled: ControlStateImageSet?
 
-
-  public var rawImage: UIImage? { return image.image }
+  public func copyWithZone(zone: NSZone) -> AnyObject {
+    let copiedImageView = ImageView(context: managedObjectContext)
+    copiedImageView.color = color
+    copiedImageView.image = image
+    copiedImageView.alpha = alpha
+    return copiedImageView
+  }
+  public var rawImage: UIImage? { return image?.image }
 
   public var colorImage: UIImage? {
     if let img = rawImage {
@@ -41,38 +47,54 @@ public final class ImageView: ModelObject {
   }
 
   /**
-  updateWithData:
+  initWithImage:
 
-  :param: data [String:AnyObject]
+  :param: image Image
   */
-  override public func updateWithData(data: [String:AnyObject]) {
-    super.updateWithData(data)
-
-    updateRelationshipFromData(data, forKey: "image")
-
-    if let colorJSON = data["color"] as? String, color = UIColor(JSONValue: colorJSON) {
-      self.color = color
-    }
-
+  public convenience init(image: Image) {
+    self.init(context: image.managedObjectContext)
+    self.image = image
   }
 
   /**
-  JSONDictionary
+  updateWithData:
 
-  :returns: MSDictionary!
+  :param: data ObjectJSONValue
   */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
+  override public func updateWithData(data: ObjectJSONValue) {
+    super.updateWithData(data)
 
-    dictionary["image"] = image.commentedUUID
-    if let color = self.color { dictionary["color"] = color.JSONValue }
+    updateRelationshipFromData(data, forAttribute: "image")
+    color = UIColor(data["color"])
+    alpha = Float(data["alpha"])
 
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
   }
 
+  override public var description: String {
+    var result = super.description
+    result += "\n\timage = \(toString(image?.index))"
+    result += "\n\tcolor = \(toString(color?.string))"
+    result += "\n\talpha = \(toString(alpha))"
+    return result
+  }
 
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["color"] = color?.jsonValue
+    obj["image.index"] = image?.index.jsonValue
+    obj["alpha"] = alpha?.jsonValue
+    return obj.jsonValue
+  }
 
 }
+
+/**
+`Equatable` support for `ImageView`
+
+:param: lhs ImageView
+:param: rhs ImageView
+
+:returns: Bool
+*/
+public func ==(lhs: ImageView, rhs: ImageView) -> Bool { return lhs.isEqual(rhs) }
+

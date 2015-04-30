@@ -16,70 +16,89 @@ final public class IRCodeSet: EditableModelObject {
 
   @NSManaged public var devices: Set<ComponentDevice>
   @NSManaged public var codes: Set<IRCode>
-  @NSManaged public var manufacturer: Manufacturer
 
-//  public typealias ItemType = IRCode
-//  public var items: [ItemType] { get { return Array(codes) } set { codes = Set(newValue) } }
-//  public func itemWithIndex(index: PathModelIndex) -> ItemType? { return findByIndex(codes, index) }
-
-//  public typealias CollectionType = Manufacturer
-//  public var collection: CollectionType? { get { return manufacturer } set { if newValue != nil { manufacturer = newValue! } } }
-
+  public var manufacturer: Manufacturer {
+    get {
+      willAccessValueForKey("manufacturer")
+      var manufacturer = primitiveValueForKey("manufacturer") as? Manufacturer
+      didAccessValueForKey("manufacturer")
+      if manufacturer == nil {
+        manufacturer = Manufacturer.defaultCollectionInContext(managedObjectContext!)
+        setPrimitiveValue(manufacturer, forKey: "manufacturer")
+      }
+      return manufacturer!
+    }
+    set {
+      willChangeValueForKey("manufacturer")
+      setPrimitiveValue(newValue, forKey: "manufacturer")
+      didChangeValueForKey("manufacturer")
+    }
+  }
 
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
-    updateRelationshipFromData(data, forKey: "codes")
-    updateRelationshipFromData(data, forKey: "devices")
-    updateRelationshipFromData(data, forKey: "manufacturer")
+//    MSLogDebug("self.codes before updating codes = \(self.codes)")
+    updateRelationshipFromData(data, forAttribute: "codes")
+//    MSLogDebug("self.codes after updating codes = \(self.codes)")
+    updateRelationshipFromData(data, forAttribute: "devices")
+//    updateRelationshipFromData(data, forAttribute: "manufacturer")
   }
 
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    appendValue(manufacturer.index.rawValue, forKey: "manufacturer.index", ifNotDefault: false, toDictionary: dictionary)
-    appendValueForKeyPath("codes.JSONDictionary", forKey: "codes", toDictionary: dictionary)
-    appendValueForKeyPath("devices.commentedUUID", forKey: "devices", toDictionary: dictionary)
-
-    dictionary.compact()
-    dictionary.compress()
-    
-    return dictionary
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["manufacturer.index"] = manufacturer.index.jsonValue
+    obj["codes"] = JSONValue(codes)
+    obj["devices.uuid"] = .Array(map(devices, {$0.uuid.jsonValue}))
+    return obj.jsonValue
   }
 
-}
+  override public var description: String {
+    return "\(super.description)\n\t" + "\n\t".join(
+      "manufacturer = \(manufacturer.index)",
+      "code count = \(codes.count)",
+      "devices = [" + ", ".join(map(devices, {$0.name})) + "]"
+    )
+  }
 
-extension IRCodeSet: PathIndexedModel {
-  public var pathIndex: PathModelIndex { return manufacturer.pathIndex + "\(name)" }
+  public override var pathIndex: PathIndex { return manufacturer.pathIndex + indexedName }
 
   /**
   modelWithIndex:context:
 
-  :param: index PathModelIndex
+  :param: index PathIndex
   :param: context NSManagedObjectContext
 
   :returns: IRCodeSet?
   */
-  public static func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> IRCodeSet? {
-    if let manufacturerName = index.first, codeSetName = index.last where index.count == 2,
-      let manufacturer = Manufacturer.modelWithIndex("\(manufacturerName)", context: context)
-    {
-      return findFirst(manufacturer.codeSets, {$0.name == codeSetName})
-    } else { return nil }
+  public override static func modelWithIndex(var index: PathIndex, context: NSManagedObjectContext) -> IRCodeSet? {
+    if index.count != 2 { return nil }
+    else {
+      let codeSetName = index.removeLast().pathDecoded
+      return findFirst(Manufacturer.modelWithIndex(index, context: context)?.codeSets, {$0.name == codeSetName})
+    }
   }
-  
+
 }
 
 extension IRCodeSet: ModelCollection {
   public var items: [NamedModel] { return sortedByName(codes) }
+}
+
+extension IRCodeSet: DefaultingModelCollection {
+  public static func defaultCollectionInContext(context: NSManagedObjectContext) -> IRCodeSet {
+    let name = "Unspecified"
+    if let codeSet = modelWithIndex(PathIndex("\(name)/\(name)"), context: context) {
+      return codeSet
+    } else {
+      var codeSet = self(context: context)
+      codeSet.name = name
+      return codeSet
+    }
+  }
 }

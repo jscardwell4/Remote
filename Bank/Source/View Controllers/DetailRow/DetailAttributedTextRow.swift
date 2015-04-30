@@ -16,7 +16,4 @@ final class DetailAttributedTextRow: DetailRow {
 
   override var infoDataType: DetailCell.DataType? { get { return .AttributedStringData } set {} }
 
-  /** init */
-  override init() { super.init() }
-
 }

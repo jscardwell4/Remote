@@ -9,9 +9,10 @@
 import Foundation
 import CoreData
 import MoonKit
+import ObjectiveC
 
 @objc(ModelObject)
-public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equatable {
+public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable, Equatable {
 
 
   /// MARK: - Initializers
@@ -55,11 +56,11 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
   /**
   initWithData:context:
 
-  :param: data [String AnyObject]
+  :param: data ObjectJSONValue
   :param: context NSManagedObjectContext
   */
-  required public init?(data: [String:AnyObject], context: NSManagedObjectContext) {
-    if let uuid = data["uuid"] as? String {
+  required public init?(data: ObjectJSONValue, context: NSManagedObjectContext) {
+    if let uuid = String(data["uuid"]) {
       super.init(entity: self.dynamicType.entityDescription, insertIntoManagedObjectContext: nil)
       if self.dynamicType.objectWithUUID(uuid, context: context) == nil && self.dynamicType.isValidUUID(uuid) {
         context.insertObject(self)
@@ -71,12 +72,12 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
     }
     updateWithData(data)
   }
-  
+
 
   // MARK: - Properties
 
 
-  /** 
+  /**
   The one property all core data entities need to have in the model to be representable as a `ModelObject`. The value
   of an object's `uuid` attribute serves as a unique identifier for the lifetime of the object.
   */
@@ -96,15 +97,17 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
     }
   }
 
-  /** Accessor for the model's `uuid` as a `UUIDModelIndex` */
+  /** Accessor for the model's `uuid` as a `UUIDIndex` */
   public var index: ModelIndex {
-    if let uuidIndex = UUIDModelIndex(rawValue: uuid) { return uuidIndex }
+    if let uuidIndex = UUIDIndex(rawValue: uuid) { return ModelIndex(uuidIndex) }
     else { fatalError("unable to generate uuid index for model, is uuid nil?") }
   }
 
+  /** Entity description retrieved from the managed object model */
   public class var entityDescription: NSEntityDescription {
-    let entities = DataManager.stack.managedObjectModel.entities as! [NSEntityDescription]
-    if let entity = findFirst(entities, {$0.managedObjectClassName == self.className()}) { return  entity }
+    let entities = DataManager.managedObjectModel.entities as! [NSEntityDescription]
+    let name = className().substringForCapture(1, inFirstMatchFor: ~/"^([^_0-9]+)")
+    if let entity = findFirst(entities, {$0.managedObjectClassName == name}) { return entity }
     else { fatalError("unable to locate entity for class '\(className())'") }
   }
 
@@ -116,7 +119,7 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
   :returns: String
   */
   public class var entityName: String { return entityDescription.name! }
-
+  public var entityName: String { return self.dynamicType.entityName }
 
   /// MARK: - Validation
   ////////////////////////////////////////////////////////////////////////////////
@@ -149,15 +152,43 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
   }
 
   /**
-  Returns the existing object matched by `data` or nil if no match exists
+  objectWithUUIDIndex:context:
 
-  :param: data [String AnyObject]
+  :param: uuidIndex UUIDIndex
   :param: context NSManagedObjectContext
 
   :returns: Self?
   */
-  public class func objectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Self? {
-    if let uuid = data["uuid"] as? String, object = objectWithUUID(uuid, context: context) { return object }
+  public class func objectWithUUID(uuidIndex: UUIDIndex, context: NSManagedObjectContext) -> Self? {
+    return objectWithUUID(uuidIndex.rawValue, context: context)
+  }
+
+  /**
+  objectWithIndex:context:
+
+  :param: index ModelIndex
+  :param: context NSManagedObjectContext
+
+  :returns: Self?
+  */
+  public class func objectWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Self? {
+    if let uuidIndex = index.uuidIndex { return objectWithUUID(uuidIndex.rawValue, context: context) }
+    else { return nil }
+  }
+
+  /**
+  Returns the existing object matched by `data` or nil if no match exists
+
+  :param: data ObjectJSONValue
+  :param: context NSManagedObjectContext
+
+  :returns: Self?
+  */
+  public class func objectWithData(data: ObjectJSONValue, context: NSManagedObjectContext) -> Self? {
+    if let uuid = String(data["uuid"]), object = objectWithUUID(uuid, context: context) { return object }
+    else if let rawIndex = String(data["index"]) {
+      return objectWithIndex(ModelIndex(rawIndex), context: context)
+    }
     else { return nil }
   }
 
@@ -170,7 +201,10 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
 
   :returns: Self?
   */
-  public class func objectWithValue(value: AnyObject, forAttribute attribute: String, context: NSManagedObjectContext) -> Self? {
+  public class func objectWithValue(value: AnyObject,
+                       forAttribute attribute: String,
+                            context: NSManagedObjectContext) -> Self?
+  {
     return objectMatchingPredicate(NSPredicate(format: "%K == %@", argumentArray: [attribute, value]), context: context)
   }
 
@@ -187,31 +221,30 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
   }
 
   /**
-  objectsMatchingPredicate:fetchLimit:sortBy:ascending:context:
+  objectsMatchingPredicate:fetchLimit:sortBy:ascending:context:error:
 
   :param: predicate NSPredicate
   :param: fetchLimit Int = 0
   :param: sortBy String? = nil
   :param: ascending Bool = true
   :param: context NSManagedObjectContext
+  :param: error NSErrorPointer = nil
 
   :returns: [ModelObject]
   */
   public class func objectsMatchingPredicate(predicate: NSPredicate,
-                           fetchLimit: Int = 0,
-                             sortBy: String? = nil,
-                            ascending: Bool = true,
-                              context: NSManagedObjectContext) -> [ModelObject]
+                                  fetchLimit: Int = 0,
+                                      sortBy: String? = nil,
+                                   ascending: Bool = true,
+                                     context: NSManagedObjectContext,
+                                       error: NSErrorPointer = nil) -> [ModelObject]
   {
     let request = NSFetchRequest(entityName: entityName, predicate: predicate)
     request.fetchLimit = fetchLimit
     if sortBy != nil {
       request.sortDescriptors = ",".split(sortBy!).map{NSSortDescriptor(key: $0, ascending: ascending)}
     }
-    var error: NSError?
-    let results = context.executeFetchRequest(request, error: &error) as? [ModelObject]
-    MSHandleError(error)
-    return results ?? []
+    return context.executeFetchRequest(request, error: error) as? [ModelObject] ?? []
   }
 
   /**
@@ -279,7 +312,7 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
     MSHandleError(error)
     return results ?? []
   }
-  
+
 
   /// MARK: - Importing
   ////////////////////////////////////////////////////////////////////////////////
@@ -288,28 +321,30 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
   /**
   Attempts to fetch an existing object using `data` and if that fails a new object is created
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   :param: context NSManagedObjectContext
 
   :returns: Self?
   */
-  public class func importObjectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Self? {
+  public class func importObjectWithData(data: ObjectJSONValue, context: NSManagedObjectContext) -> Self? {
     if let object = objectWithData(data, context: context) { return object }
     else { return self(data: data, context: context) }
   }
 
-  /**
-  importObjectsFromData:context:
+  public class func importObjectWithData(data: ObjectJSONValue?, context: NSManagedObjectContext) -> Self? {
+    if let d = data { return importObjectWithData(d, context: context) } else { return nil }
+  }
 
-  :param: data AnyObject
+  /**
+  importObjectsWithData:context:
+
+  :param: data ArrayJSONValue
   :param: context NSManagedObjectContext
 
   :returns: [ModelObject]
   */
-  public class func importObjectsFromData(data: AnyObject, context: NSManagedObjectContext) -> [ModelObject] {
-    if let dataArray = data as? [[String:AnyObject]] {
-      return compressed(dataArray.map{self.importObjectWithData($0, context: context)})
-    } else { return [] }
+  public class func importObjectsWithData(data: ArrayJSONValue, context: NSManagedObjectContext) -> [ModelObject] {
+    return compressedMap(compressedMap(data, {ObjectJSONValue($0)}), {self.importObjectWithData($0, context: context)})
   }
 
 
@@ -320,76 +355,121 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  public func updateWithData(data: [String:AnyObject]) {}
+  public func updateWithData(data:ObjectJSONValue) {}
 
   /**
-  updateRelationshipFromData:forKey:ofType:
+  updateRelationship:withData:
 
-  :param: data [String AnyObject]
-  :param: key String
-  :param: type ModelObject.Type
+  :param: relationship NSRelationshipDescription
+  :param: data ObjectJSONValue
 
   :returns: Bool
   */
-  private func updateRelationshipFromData(data: [String:AnyObject],
-                                   forKey key: String,
-                                lookupKey: String? = nil,
-                                   ofType type: ModelObject.Type) -> Bool
-  {
-    if let moc = managedObjectContext,
-      objectData = data[lookupKey ?? key.dashcaseString] as? [String:AnyObject],
-      object = type.importObjectWithData(objectData, context: moc)
+  private func updateRelationship(relationship: NSRelationshipDescription, withData data: ObjectJSONValue) -> Bool {
+    if !relationship.toMany, let moc = managedObjectContext,
+      relatedTypeName = relationship.destinationEntity?.managedObjectClassName,
+      relatedType = NSClassFromString(relatedTypeName) as? ModelObject.Type
     {
-      setValue(object, forKey: key)
-      return true
-    } else { return false }
+      let relatedObject: ModelObject?
+      if let index = String(data["index"]) { relatedObject = relatedType.objectWithIndex(ModelIndex(index), context: moc) }
+      else { relatedObject = relatedType.importObjectWithData(data, context: moc) }
+      if relatedObject == nil { return false }
+      setPrimitiveValue(relatedObject!, forKey: relationship.name)
+      if let inverse = relationship.inverseRelationship {
+        if inverse.toMany {
+          if inverse.ordered {
+            let inverseRelatedSet = relatedObject!.mutableOrderedSetValueForKey(inverse.name)
+            inverseRelatedSet.addObject(self)
+          } else {
+            let inverseRelatedSet = relatedObject!.mutableSetValueForKey(inverse.name)
+            inverseRelatedSet.addObject(self)
+          }
+        } else {
+          relatedObject!.setPrimitiveValue(self, forKey: inverse.name)
+        }
+        return true
+      }
+    }
+
+    return false
   }
 
   /**
-  updateToManyRelationshipFromData:forKey:ofType:
+  updateRelationship:withData:
 
-  :param: data [String AnyObject]
-  :param: key String
-  :param: type ModelObject.Type
+  :param: relationship NSRelationshipDescription
+  :param: data ArrayJSONValue
 
   :returns: Bool
   */
-  private func updateToManyRelationshipFromData(data: [String:AnyObject],
-                                         forKey key: String,
-                                      lookupKey: String? = nil,
-                                         ofType type: ModelObject.Type,
-                                        ordered: Bool = false) -> Bool
-  {
-    if let moc = managedObjectContext, objectData = data[lookupKey ?? key.dashcaseString] as? [[String:AnyObject]] {
-      let objects = type.importObjectsFromData(objectData, context: moc)
-      setValue(ordered ? NSOrderedSet(array: objects) : NSSet(array: objects), forKey: key)
-      return true
-    } else { return false }
+  private func updateRelationship(relationship: NSRelationshipDescription, withData data: ArrayJSONValue) -> Bool {
+    if let moc = managedObjectContext,
+      relatedTypeName = relationship.destinationEntity?.managedObjectClassName,
+      relatedType = NSClassFromString(relatedTypeName) as? ModelObject.Type where relationship.toMany
+    {
+      let relatedObjects = relatedType.importObjectsWithData(data, context: moc)
+      setPrimitiveValue(relationship.ordered ? NSOrderedSet(array: relatedObjects) : NSSet(array: relatedObjects), forKey: relationship.name)
+      if let inverseRelationship = relationship.inverseRelationship {
+        if inverseRelationship.toMany {
+          if inverseRelationship.ordered {
+            apply(relatedObjects, {$0.mutableOrderedSetValueForKey(inverseRelationship.name).addObject(self)})
+          } else {
+            apply(relatedObjects, {$0.mutableSetValueForKey(inverseRelationship.name).addObject(self)})
+          }
+        } else {
+          apply(relatedObjects, {$0.setPrimitiveValue(self, forKey: inverseRelationship.name)})
+        }
+        return true
+      }
+    }
+
+    return false
+  }
+
+  /**
+  relatedObjectWithData:forKey:lookupKey:
+
+  :param: data ObjectJSONValue
+  :param: key String
+  :param: lookupKey String? = nil
+
+  :returns: T?
+  */
+  public func relatedObjectWithData<T:ModelObject>(data: ObjectJSONValue, forAttribute attribute: String, lookupKey: String? = nil) -> T? {
+    if let relationshipDescription = entity.relationshipsByName[attribute] as? NSRelationshipDescription,
+      relatedTypeName = relationshipDescription.destinationEntity?.managedObjectClassName,
+      relatedType = NSClassFromString(relatedTypeName) as? ModelObject.Type,
+      relatedObjectData = ObjectJSONValue(data[lookupKey ?? attribute]),
+      moc = managedObjectContext
+    {
+      return relatedType.objectWithData(relatedObjectData, context: moc) as? T
+    } else { return nil }
   }
 
   /**
   updateRelationshipFromData:forKey:
 
-  :param: data [String AnyObject]
+  :param: data ObjectJSONValue
   :param: key String
 
   :returns: Bool
   */
-  public func updateRelationshipFromData(data: [String:AnyObject], forKey key: String, lookupKey: String? = nil) -> Bool {
-    if let relationshipDescription = entity.relationshipsByName[key] as? NSRelationshipDescription,
-      relatedTypeName = relationshipDescription.destinationEntity?.managedObjectClassName,
-      relatedType = NSClassFromString(relatedTypeName) as? ModelObject.Type
-    {
-      return relationshipDescription.toMany
-        ? updateToManyRelationshipFromData(data,
-                                    forKey: key,
-                                 lookupKey: lookupKey,
-                                    ofType: relatedType,
-                                   ordered: relationshipDescription.ordered)
-        : updateRelationshipFromData(data, forKey: key, lookupKey: lookupKey, ofType: relatedType)
-    } else { return false }
+  public func updateRelationshipFromData(data: ObjectJSONValue, forAttribute attribute: String, lookupKey: String? = nil) -> Bool {
+
+    // Retrieve the relationship description
+    if let relationshipDescription = entity.relationshipsByName[attribute] as? NSRelationshipDescription {
+      // Obtain relationship data
+      let key = lookupKey ?? attribute
+      if let relationshipData = ObjectJSONValue(data[key] ?? .Null) where !relationshipDescription.toMany {
+        return updateRelationship(relationshipDescription, withData: relationshipData)
+      } else if let relationshipData = ArrayJSONValue(data[key] ?? .Null) where relationshipDescription.toMany {
+        return updateRelationship(relationshipDescription, withData: relationshipData)
+      }
+    }
+
+    return false
   }
 
 
@@ -443,77 +523,108 @@ public class ModelObject: NSManagedObject, Model, MSJSONExport, Hashable, Equata
 
 
   /**
-  attributeValueIsDefault:
+  hasDefaultValue:
 
   :param: attribute String
 
   :returns: Bool
   */
-  public func attributeValueIsDefault(attribute: String) -> Bool {
+  public func hasDefaultValue(attribute: String) -> Bool {
     if let value: AnyObject = valueForKey(attribute),
       let defaultValue: AnyObject = defaultValueForAttribute(attribute) where value.isEqual(defaultValue) { return true }
     else { return valueForKey(attribute) == nil && defaultValueForAttribute(attribute) == nil }
   }
 
   /**
-  appendValueForKey:forKey:ifNotDefault:inDictionary:
+  hasNonDefaultValue:
+
+  :param: attribute String
+
+  :returns: Bool
+  */
+  public func hasNonDefaultValue(attribute: String) -> Bool {
+    return !hasDefaultValue(attribute)
+  }
+
+
+  /**
+  appendValueForKey:forKey:ifNotDefault:toObject:
 
   :param: key String
   :param: forKey String? = nil
   :param: nonDefault Bool = true
-  :param: dictionary MSDictionary
+  :param: object ObjectJSONValue
   */
   public func appendValueForKey(key: String,
                   forKey: String? = nil,
             ifNotDefault nonDefault: Bool = false,
-            toDictionary dictionary: MSDictionary)
+            inout toObject object: ObjectJSONValue)
   {
-    if !(nonDefault && attributeValueIsDefault(key)), let value: AnyObject = valueForKey(key) {
-      dictionary[(forKey ?? key).dashcaseString] = value
+    let value: Any?
+    if let attributeDescription = entity.attributesByName[key] as? NSAttributeDescription
+      where attributeDescription.attributeType == .BooleanAttributeType
+    {
+      value = (valueForKey(key) as? NSNumber)?.boolValue
+    } else { value = valueForKey(key) }
+    appendValue(value,
+         forKey: forKey ?? key,
+   ifNotDefault: nonDefault,
+       toObject: &object)
+  }
+
+  /**
+  appendValueForKeyPath:forKey:ifNotDefault:toObject:
+
+  :param: keypath String
+  :param: key String
+  :param: object ObjectJSONValue
+  */
+  public func appendValueForKeyPath(keypath: String,
+                             forKey key: String? = nil,
+            ifNotDefault nonDefault: Bool = false,
+                 inout toObject object: ObjectJSONValue)
+  {
+    appendValue(valueForKeyPath(keypath),
+         forKey: key ?? keypath,
+   ifNotDefault: nonDefault,
+       toObject: &object)
+  }
+
+  /**
+  appendValue:forKey:ifNotDefault:toObject:
+
+  :param: keypath String
+  :param: key String
+  :param: object ObjectJSONValue
+  */
+  public func appendValue(value: Any?,
+                   forKey key: String,
+             ifNotDefault nonDefault: Bool = false,
+       inout toObject object: ObjectJSONValue)
+  {
+    if !(nonDefault && hasDefaultValue(key)) {
+      if let convertibleValue = value as? JSONValueConvertible {
+        object[key] = convertibleValue.jsonValue
+      } else if let convertibleValues = value as? [JSONValueConvertible] {
+        object[key] = .Array(convertibleValues.map({$0.jsonValue}))
+      } else if let convertibleValues = value as? Set<ModelObject> {
+        object[key] = .Array(Array(convertibleValues).map({$0.jsonValue}))
+      } else {
+        object[key] = JSONValue(value)
+      }
+
     }
   }
 
-  /**
-  appendValueForKeyPath:forKey:inDictionary:
-
-  :param: keypath String
-  :param: key String
-  :param: dictionary MSDictionary
-  */
-  public func appendValueForKeyPath(keypath: String, forKey key: String? = nil, toDictionary dictionary: MSDictionary) {
-    dictionary[(key ?? keypath).dashcaseString] = NSNull.collectionSafeValue(valueForKeyPath(keypath))
+  public var jsonValue: JSONValue { return .Object(["uuid": uuid.jsonValue] as OrderedDictionary) }
+  
+  override public var description: String {
+    return "\(className):\n\t" + "\n\t".join(
+      "entity = \(entityName)",
+      "index = \(index.rawValue)" + (self is PathIndexedModel ? "\n\tuuid = \(uuid)" : "")
+    )
   }
-
-  /**
-  appendValueForKeyPath:forKey:inDictionary:
-
-  :param: keypath String
-  :param: key String
-  :param: dictionary MSDictionary
-  */
-  public func appendValue(value: AnyObject?,
-            forKey key: String,
-      ifNotDefault nonDefault: Bool = false,
- toDictionary dictionary: MSDictionary)
-  {
-    if !(nonDefault && attributeValueIsDefault(key)) && value != nil { dictionary[key.dashcaseString] = value! }
-  }
-
-  public var JSONString: String {
-    return JSONDictionary().JSONString.stringByReplacingOccurrencesOfString("\\/", withString: "\\")
-  }
-
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary
-  */
-  public func JSONDictionary() -> MSDictionary { return MSDictionary(object: uuid, forKey: "uuid") }
-
-  public var JSONObject: AnyObject { return JSONDictionary().JSONObject }
-
 }
-
 
 /**
 `Equatable` support for `ModelObject`

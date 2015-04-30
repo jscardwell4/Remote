@@ -10,10 +10,20 @@ import Foundation
 import UIKit
 
 extension UIColor: JSONValueConvertible {
-  typealias JSONValueType = String!
-  public var JSONValue: String! { return string }
-  public convenience init?(JSONValue: String) { self.init(string: JSONValue) }
+  public var jsonValue: JSONValue { return JSONValue.String(string!) }
 }
+extension UIColor /*: JSONValueInitializable */ {
+  public convenience init?(_ jsonValue: JSONValue?) {
+    if let string = String(jsonValue) {
+      self.init(string: string)
+    } else {
+      self.init()
+      return nil
+    }
+  }
+}
+
+extension UIColor: StringValueConvertible { public var stringValue: String { return string ?? "" } }
 
 extension UIColor {
 
@@ -127,7 +137,7 @@ extension UIColor {
   public var string: String? {
     if let name = colorName {
       let a = alpha ?? 1.0
-      return a == 1.0 ? name : "\(name)@\(a * 100.0)%"
+      return a == 1.0 ? name : "\(name)@\(Int(a * 100.0))%"
     } else if rgba != nil {
       return rgbaHexString
     } else {
@@ -483,4 +493,24 @@ extension UIColor {
     }
   }
 
+  /**
+  blendedColorWithFraction:ofColor:
+
+  :param: fraction CGFloat
+  :param: color UIColor
+
+  :returns: UIColor
+  */
+  public func blendedColorWithFraction(fraction: CGFloat, ofColor color: UIColor) -> UIColor {
+    var r1: CGFloat = 1.0, g1: CGFloat = 1.0, b1: CGFloat = 1.0, a1: CGFloat = 1.0
+    var r2: CGFloat = 1.0, g2: CGFloat = 1.0, b2: CGFloat = 1.0, a2: CGFloat = 1.0
+
+    self.getRed(&r1, green: &g1, blue: &b1, alpha: &a1)
+    color.getRed(&r2, green: &g2, blue: &b2, alpha: &a2)
+
+    return UIColor(red: r1 * (1 - fraction) + r2 * fraction,
+                   green: g1 * (1 - fraction) + g2 * fraction,
+                   blue: b1 * (1 - fraction) + b2 * fraction,
+                   alpha: a1 * (1 - fraction) + a2 * fraction)
+  }
 }

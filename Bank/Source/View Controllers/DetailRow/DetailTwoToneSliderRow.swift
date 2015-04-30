@@ -25,12 +25,11 @@ final class DetailTwoToneSliderRow: DetailRow {
   */
   override func configureCell(cell: DetailCell) {
     super.configureCell(cell)
-    if lowerColor != nil         { (cell as? DetailTwoToneSliderCell)?.lowerColor = lowerColor!                }
-    if upperColor != nil         { (cell as? DetailTwoToneSliderCell)?.upperColor = upperColor!                }
-    if generatedColorType != nil { (cell as? DetailTwoToneSliderCell)?.generatedColorType = generatedColorType!}
+    if let sliderCell = cell as? DetailTwoToneSliderCell {
+      if lowerColor != nil         { sliderCell.lowerColor = lowerColor!                }
+      if upperColor != nil         { sliderCell.upperColor = upperColor!                }
+      if generatedColorType != nil { sliderCell.generatedColorType = generatedColorType!}
+    }
   }
-
-  /** init */
-  override init() { super.init() }
 
 }

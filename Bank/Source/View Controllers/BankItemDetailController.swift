@@ -15,31 +15,18 @@ class BankItemDetailController: NamedItemDetailController {
 
 
   var model: EditableModel! { return item as? EditableModel }
-  let context: NSManagedObjectContext!
+  private(set) var context: NSManagedObjectContext!
 
-  /**
-  init:bundle:
-
-  :param: nibNameOrNil String?
-  :param: nibBundleOrNil NSBundle?
-  */
-//  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-//    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-//  }
-
-  /**
-  initWithStyle:
-
-  :param: style UITableViewStyle
-  */
-//  override init(style: UITableViewStyle) { super.init(style: style) }
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+  }
 
   /**
   initWithCoder:
 
   :param: aDecoder NSCoder
   */
-  required init(coder aDecoder: NSCoder) { context = nil; super.init(coder: aDecoder) }
+  required init(coder aDecoder: NSCoder) { fatalError("must use init(model:") }
 
   /**
   initWithModel:
@@ -59,21 +46,5 @@ class BankItemDetailController: NamedItemDetailController {
     }
     super.init(namedItem: model)
   }
-
-  /**
-  initWithModel:
-
-  :param: model BankableModelObject
-  */
-//  init(model: BankableModelObject) {
-//    assert(model.managedObjectContext != nil, "initializing controller with deleted model")
-//    context = DataManager.childContextForContext(model.managedObjectContext!)
-//    context.nametag = "bank item detail controller"
-//    let objectID = model.objectID
-//    var error: NSError?
-//    let existingObject = context.existingObjectWithID(objectID, error: &error)
-//    if MSHandleError(error, message: "failed to retrieve existing object by ID") { fatalError("aborting…") }
-//    super.init(namedItem: existingObject as! BankableModelObject)
-//  }
 
 }

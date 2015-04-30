@@ -1,0 +1,6 @@
+{
+    "name": "Dish Hopper",
+    "alwaysOn": true,
+    "codeSet.index": "Dish/Dish",
+    "manufacturer.index": "Dish"
+}

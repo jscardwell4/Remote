@@ -89,10 +89,19 @@ public class BlockActionGesture: UIGestureRecognizer {
     self.handler = handler
   }
 
+  /**
+  dispatchHandler:
+
+  :param: sender BlockActionGesture
+  */
+  public func dispatchHandler(sender: BlockActionGesture) {
+    sender.handlerTarget.dispatchHandler(sender)
+  }
+
   public override var state: UIGestureRecognizerState { didSet { handlerTarget.dispatchHandler(self) } }
 
   /** init */
-  public init() { super.init(target: handlerTarget, action: "dispatchHandler") }
+//  public init() { super.init(target: self, action: "dispatchHandler") }
 
   /**
   initWithTarget:action:

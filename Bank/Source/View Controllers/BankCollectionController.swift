@@ -10,13 +10,16 @@ import Foundation
 import UIKit
 import MoonKit
 import DataModel
+import Settings
 
 // TODO: Viewing mode changes need to respect whether category items are `previewable`
 
-class BankCollectionController: UICollectionViewController, BankController {
+final class BankCollectionController: UICollectionViewController, BankController {
 
-	private let itemCellIdentifier = "ItemCell"
-	private let categoryCellIdentifier = "CategoryCell"
+	private static let ItemCellIdentifier = "ItemCell"
+	private static let CategoryCellIdentifier = "CategoryCell"
+
+  override var description: String { return "\(super.description), collection = {\n\(toString(collection).indentedBy(4))\n}" }
 
   var collection: BankModelCollection!
 
@@ -41,7 +44,8 @@ class BankCollectionController: UICollectionViewController, BankController {
 
   private var layout: BankCollectionLayout { return collectionViewLayout as! BankCollectionLayout }
 
-  private(set) var exportSelection: [MSJSONExport] = []
+  private(set) var exportSelection: [JSONValueConvertible] = []
+  private(set) var exportSelectionIndices: [NSIndexPath] = []
 
   var exportButton: BlockBarButtonItem!
   var selectAllButton: BlockBarButtonItem!
@@ -57,6 +61,7 @@ class BankCollectionController: UICollectionViewController, BankController {
       if exportSelectionMode {
 
         exportSelection.removeAll(keepCapacity: false)  // If entering, make sure our export items collection is empty
+        exportSelectionIndices.removeAll(keepCapacity: false)
 
         // And, make sure no cells are selected
         if let indexPaths = collectionView?.indexPathsForSelectedItems() as? [NSIndexPath] {
@@ -67,13 +72,9 @@ class BankCollectionController: UICollectionViewController, BankController {
         rightBarButtonItems = [exportButton, selectAllButton]
 
         showIndicator = true
-
-
-      } else {
-
-        rightBarButtonItems = [ Bank.dismissButton ]
-
       }
+      else if let dismissButton = Bank.dismissButton { rightBarButtonItems = [dismissButton] }
+      else { rightBarButtonItems = [] }
 
       collectionView?.allowsMultipleSelection = exportSelectionMode  // Update selection mode
 
@@ -87,7 +88,7 @@ class BankCollectionController: UICollectionViewController, BankController {
     }
   }
 
-  var viewingMode: BankCollectionAttributes.ViewingMode = .List {
+  var viewingMode: Bank.ViewingMode = .List {
     didSet { layout.viewingMode = viewingMode; displayOptionsControl?.selectedSegmentIndex = viewingMode.rawValue }
   }
 
@@ -128,8 +129,11 @@ class BankCollectionController: UICollectionViewController, BankController {
       collectionView.backgroundColor = Bank.backgroundColor
 
       // Register header and cell classes
-      collectionView.registerClass(BankCollectionCategoryCell.self, forCellWithReuseIdentifier: self.categoryCellIdentifier)
-      collectionView.registerClass(BankCollectionItemCell.self, forCellWithReuseIdentifier: self.itemCellIdentifier)
+      collectionView.registerClass(BankCollectionCategoryCell.self,
+        forCellWithReuseIdentifier: BankCollectionController.CategoryCellIdentifier)
+      collectionView.registerClass(BankCollectionItemCell.self,
+        forCellWithReuseIdentifier: BankCollectionController.ItemCellIdentifier)
+
       return collectionView
 
     }()
@@ -139,26 +143,24 @@ class BankCollectionController: UICollectionViewController, BankController {
 	    toolbarItems = {
 
 	      // Check if we should include viewing mode control
-        // FIXME:
-//	      if self.collection is PreviewableCategory {
-//
-//	        // Create the segmented control
-//	        let displayOptions = ToggleImageSegmentedControl(items: [UIImage(named: "1073-grid-1-toolbar")!,
-//	                                                                 UIImage(named: "1073-grid-1-toolbar-selected")!,
-//	                                                                 UIImage(named: "1076-grid-4-toolbar")!,
-//	                                                                 UIImage(named: "1076-grid-4-toolbar-selected")!])
-//	        displayOptions.selectedSegmentIndex = self.viewingMode.rawValue
-//	        displayOptions.toggleAction = {[unowned self] control in
-//	          self.viewingMode = BankCollectionAttributes.ViewingMode(rawValue: control.selectedSegmentIndex)!
-//            //FIXME: Circular dependency
-////	          SettingsManager.setValue(self.viewingMode.rawValue, forSetting: .BankViewingMode)
-//	        }
-//	        let displayOptionsItem = UIBarButtonItem(customView: displayOptions)
-//	        self.displayOptionsControl = displayOptions
-//
-//	        // Return the toolbar with segmented control added
-//	        return Bank.toolbarItemsForController(self, addingItems: [displayOptionsItem])
-//	      }
+	      if self.collection.previewable == true {
+
+	        // Create the segmented control
+	        let displayOptions = ToggleImageSegmentedControl(items: [Bank.listBarItemImage,
+	                                                                 Bank.listBarItemImageSelected,
+	                                                                 Bank.thumbnailBarItemImage,
+	                                                                 Bank.thumbnailBarItemImageSelected])
+          displayOptions.selectedSegmentIndex = self.viewingMode.rawValue
+          displayOptions.toggleAction = {[unowned self] control in
+            self.viewingMode = Bank.ViewingMode(rawValue: control.selectedSegmentIndex)
+	          SettingsManager.setValue(self.viewingMode, forSetting: Bank.viewingModeKey)
+	        }
+	        let displayOptionsItem = UIBarButtonItem(customView: displayOptions)
+	        self.displayOptionsControl = displayOptions
+
+	        // Return the toolbar with segmented control added
+	        return Bank.toolbarItemsForController(self, addingItems: [displayOptionsItem])
+	      }
 
 	      // Otherwise return the default toolbar items
 	      return Bank.toolbarItemsForController(self)
@@ -178,11 +180,10 @@ class BankCollectionController: UICollectionViewController, BankController {
     exportSelectionMode = false
     navigationItem.rightBarButtonItem = Bank.dismissButton
 
-    //FIXME: Circular dependency
-//    if !(category is PreviewableCategory) { viewingMode = .List }
-//    else if let modeSettingValue = SettingsManager.valueForSetting(.BankViewingMode) as? NSNumber {
-//      viewingMode = BankCollectionAttributes.ViewingMode(rawValue: modeSettingValue.integerValue) ?? .List
-//    }
+    if collection.previewable != true { viewingMode = .List }
+    else if let viewingModeSetting: Bank.ViewingMode = SettingsManager.valueForSetting(Bank.viewingModeKey) {
+      viewingMode = viewingModeSetting
+    }
   }
 
 
@@ -214,10 +215,7 @@ class BankCollectionController: UICollectionViewController, BankController {
   :returns: ModelCollection?
   */
   private func nestedCollectionForIndexPath(indexPath: NSIndexPath) -> ModelCollection? {
-    if indexPath.section == 0,
-      let nestingCollection = collection as? NestingModelCollection,
-      collections = nestingCollection.collections where collections.count > indexPath.row
-    {
+    if indexPath.section == 0, let collections = collection.collections where collections.count > indexPath.row {
       return collections[indexPath.row]
     } else { return nil }
   }
@@ -420,18 +418,20 @@ extension BankCollectionController {
     if exportSelectionMode && mode == .Default{
 
       exportSelection.removeAll(keepCapacity: true)
+      exportSelectionIndices.removeAll(keepCapacity: true)
       var capacity = 0
-      if let nestingCollection = collection as? NestingModelCollection, collections = nestingCollection.collections {
-        capacity += collections.count
-      }
+      if let collections = collection.collections { capacity += collections.count }
       if let items = collection.items { capacity += items.count }
       exportSelection.reserveCapacity(capacity)
+      exportSelectionIndices.reserveCapacity(capacity)
 
-      if let nestingCollection = collection as? NestingModelCollection, collections = nestingCollection.collections {
+      if let collections = collection.collections {
         for (i, collection) in enumerate(collections) {
-          if let exportCollection = collection as? MSJSONExport {
+          if let exportCollection = collection as? JSONValueConvertible {
             exportSelection.append(exportCollection)
-            if let cell = collectionView?.cellForItemAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as? BankCollectionCell {
+            let indexPath = NSIndexPath(forRow: i, inSection: 0)
+            exportSelectionIndices.append(indexPath)
+            if let cell = collectionView?.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
               cell.showIndicator(true, selected: true)
             }
           }
@@ -440,9 +440,11 @@ extension BankCollectionController {
 
       if let items = collection.items {
         for (i, item) in enumerate(items) {
-          if let exportItem = item as? MSJSONExport {
+          if let exportItem = item as? JSONValueConvertible {
             exportSelection.append(exportItem)
-            if let cell = collectionView?.cellForItemAtIndexPath(NSIndexPath(forRow: i, inSection: 1)) as? BankCollectionCell {
+            let indexPath = NSIndexPath(forRow: i, inSection: 1)
+            exportSelectionIndices.append(indexPath)
+            if let cell = collectionView?.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
               cell.showIndicator(true, selected: true)
             }
           }
@@ -465,6 +467,7 @@ extension BankCollectionController {
 
       // Remove all the items from export selection
       exportSelection.removeAll(keepCapacity: false)
+      exportSelectionIndices.removeAll(keepCapacity: false)
 
       // Enumerate the selected index paths
       for indexPath in collectionView?.indexPathsForSelectedItems() as! [NSIndexPath] {
@@ -498,7 +501,7 @@ extension BankCollectionController: UICollectionViewDataSource {
   :returns: Int
   */
   override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return (section == 0 ? (collection as? NestingModelCollection)?.collections?.count  : collection.items?.count) ?? 0
+    return (section == 0 ? collection.collections?.count  : collection.items?.count) ?? 0
   }
 
   /**
@@ -514,7 +517,7 @@ extension BankCollectionController: UICollectionViewDataSource {
   {
     switch indexPath.section {
       case 0:
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(categoryCellIdentifier,
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(BankCollectionController.CategoryCellIdentifier,
                                                             forIndexPath: indexPath) as! BankCollectionCategoryCell
         if let collection = nestedCollectionForIndexPath(indexPath) {
           cell.collection = collection
@@ -528,7 +531,7 @@ extension BankCollectionController: UICollectionViewDataSource {
         return cell
 
       default:
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(itemCellIdentifier,
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(BankCollectionController.ItemCellIdentifier,
                                                             forIndexPath: indexPath) as! BankCollectionItemCell
         if let item = itemForIndexPath(indexPath) {
           cell.item = item
@@ -587,9 +590,10 @@ extension BankCollectionController: UICollectionViewDelegate {
   override func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
     if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
       // Check if we are selecting items to export
-      if exportSelectionMode {
+      if exportSelectionMode, let idx = find(exportSelectionIndices, indexPath) {
         // Remove the item and update the cell's indicator image
-        exportSelection.removeAtIndex((exportSelection as NSArray).indexOfObject(cell.exportItem!))
+        exportSelection.removeAtIndex(idx)
+        exportSelectionIndices.removeAtIndex(idx)
         cell.showIndicator(true)
         if exportSelection.count == 0 { exportButton.enabled = false }
       } else if mode == .Selection {
@@ -617,6 +621,7 @@ extension BankCollectionController: UICollectionViewDelegate {
 
       	assert(mode == .Default)
         exportSelection.append(cell.exportItem!)
+        exportSelectionIndices.append(indexPath)
         cell.showIndicator(true, selected: true)
         if !exportButton.enabled { exportButton.enabled = true }
 

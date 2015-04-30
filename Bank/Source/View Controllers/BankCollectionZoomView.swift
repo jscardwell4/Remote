@@ -18,10 +18,10 @@ protocol BankCollectionZoomViewDelegate {
 
 }
 
-class BankCollectionZoomView: UIView {
+final class BankCollectionZoomView: UIView {
 
-  class var LabelHeight: CGFloat { return 21.0 }
-  class var ButtonSize: CGSize { return CGSize(width: 44.0, height: 44.0) }
+  static let LabelHeight: CGFloat = 21.0
+  static let ButtonSize = CGSize(width: 44.0, height: 44.0)
 
   var item: Previewable? {
     didSet {
@@ -51,10 +51,10 @@ class BankCollectionZoomView: UIView {
     set { backgroundImageView?.image = newValue }
   }
 
-  var maxImageWidth: CGFloat { return width - BankCollectionZoomView.ButtonSize.width * 3.0 }
+  var maxImageWidth: CGFloat { return w - BankCollectionZoomView.ButtonSize.width * 3.0 }
 
   var maxImageHeight: CGFloat {
-    return height - BankCollectionZoomView.ButtonSize.height * 3.0 - BankCollectionZoomView.LabelHeight
+    return h - BankCollectionZoomView.ButtonSize.height * 3.0 - BankCollectionZoomView.LabelHeight
   }
   var imageSize: CGSize = CGSize.zeroSize
 

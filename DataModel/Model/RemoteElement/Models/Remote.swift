@@ -10,133 +10,94 @@ import Foundation
 import CoreData
 import MoonKit
 
+
 @objc(Remote)
 public final class Remote: RemoteElement {
 
   override public var elementType: BaseType { return .Remote }
 
-  public var topBarHidden: Bool {
-    get {
-      willAccessValueForKey("topBarHidden")
-      let topBarHidden = (primitiveValueForKey("topBarHidden") as? NSNumber)?.boolValue ?? false
-      didAccessValueForKey("topBarHidden")
-      return topBarHidden
-    }
-    set {
-      willChangeValueForKey("topBarHidden")
-      setPrimitiveValue(newValue, forKey: "topBarHidden")
-      didChangeValueForKey("topBarHidden")
-    }
-  }
+  @NSManaged public var topBarHidden: Bool
   @NSManaged public var activity: Activity?
 
-  public var panels: [NSNumber:String] {
+  public typealias PanelAssignment = ButtonGroup.PanelAssignment
+
+  /** Index mapping panel assignments to button group uuids */
+  public var panels: [PanelAssignment:UUIDIndex] {
     get {
       willAccessValueForKey("panels")
-      let panels = primitiveValueForKey("panels") as? [NSNumber:String]
+      let panels = primitiveValueForKey("panels") as! [Int:String]
       didAccessValueForKey("panels")
-      return panels ?? [:]
+
+      let keys = map(panels.keys) {PanelAssignment(rawValue: $0)}
+      let values = map(panels.values) {UUIDIndex(rawValue: $0)!}
+      return zip(keys, values)
     }
     set {
+      let keys = map(newValue.keys) {$0.rawValue}
+      let values = map(newValue.values) {$0.rawValue}
       willChangeValueForKey("panels")
-      setPrimitiveValue(newValue, forKey: "panels")
+      setPrimitiveValue(zip(keys,values), forKey: "panels")
       didChangeValueForKey("panels")
     }
   }
 
-  override public var parentElement: RemoteElement? { get { return nil } set {} }
+  override public class var subelementType: RemoteElement.Type? { return ButtonGroup.self }
 
   /**
-  initWithPreset:
+  updateWithPreset:
 
   :param: preset Preset
   */
-  override public init(preset: Preset) {
-    super.init(preset: preset)
-
+  override func updateWithPreset(preset: Preset) {
+    super.updateWithPreset(preset)
     topBarHidden = preset.topBarHidden ?? false
+    // ???: Panel assignments?
   }
-
-  required public init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-      fatalError("init(entity:insertIntoManagedObjectContext:) has not been implemented")
-  }
-
-  required public init(context: NSManagedObjectContext?) {
-      fatalError("init(context:) has not been implemented")
-  }
-
-  required public init?(data: [String : AnyObject], context: NSManagedObjectContext) {
-      fatalError("init(data:context:) has not been implemented")
-  }
-
-  /**
-  initWithEntity:insertIntoManagedObjectContext:
-
-  :param: entity NSEntityDescription
-  :param: context NSManagedObjectContext?
-  */
-//  override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-//    super.init(entity: entity, insertIntoManagedObjectContext: context)
-//  }
-
-  /**
-  initWithContext:
-
-  :param: context NSManagedObjectContext
-  */
-//  override init(context: NSManagedObjectContext) {
-//    super.init(context: context)
-//  }
 
   /**
   setButtonGroup:forPanelAssignment:
 
   :param: buttonGroup ButtonGroup?
-  :param: assignment ButtonGroup.PanelAssignment
+  :param: assignment PanelAssignment
   */
-  public func setButtonGroup(buttonGroup: ButtonGroup?, forPanelAssignment assignment: ButtonGroup.PanelAssignment) {
+  public func setButtonGroup(buttonGroup: ButtonGroup?, forPanelAssignment assignment: PanelAssignment) {
     var assignments = panels
-    if assignment != ButtonGroup.PanelAssignment.Unassigned { assignments[assignment.rawValue] = buttonGroup?.uuid }
+    if assignment != PanelAssignment.Unassigned { assignments[assignment] = UUIDIndex(buttonGroup?.uuid) }
     panels = assignments
   }
 
   /**
   buttonGroupForPanelAssignment:
 
-  :param: assignment ButtonGroup.PanelAssignment
+  :param: assignment PanelAssignment
 
   :returns: ButtonGroup?
   */
-  public func buttonGroupForPanelAssignment(assignment: ButtonGroup.PanelAssignment) -> ButtonGroup? {
-    var buttonGroup: ButtonGroup?
-    if managedObjectContext != nil {
-      if let uuid = panels[assignment.rawValue] {
-        buttonGroup = ButtonGroup.objectWithUUID(uuid, context: managedObjectContext!)
-      }
-    }
-    return buttonGroup
+  public func buttonGroupForPanelAssignment(assignment: PanelAssignment) -> ButtonGroup? {
+    if let moc = managedObjectContext, uuid = panels[assignment] { return ButtonGroup.objectWithUUID(uuid, context: moc) }
+    else { return nil }
   }
 
 
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
     if let moc = managedObjectContext {
 
-      if let topBarHidden = data["top-bar-hidden"] as? NSNumber { self.topBarHidden = topBarHidden.boolValue }
+      if let topBarHidden = Bool(data["topBarHidden"]) { self.topBarHidden = topBarHidden }
 
-      if let panels = data["panels"] as? [String:String] {
-        for (key, uuid) in panels {
-          if let buttonGroup = subelements.objectPassingTest({($0.0 as! RemoteElement).uuid == uuid}) as? ButtonGroup {
-            let assignment = ButtonGroup.PanelAssignment(JSONValue: key)
-            if assignment != ButtonGroup.PanelAssignment.Unassigned {
+      if let panels = ObjectJSONValue(data["panels"]) {
+        for (_, key, json) in panels {
+          if let uuid = UUIDIndex(String(json)),
+            buttonGroup = ButtonGroup.objectWithUUID(uuid, context: moc) where subelements ∋ buttonGroup,
+            let assignment = PanelAssignment(key.jsonValue) where assignment != PanelAssignment.Unassigned
+          {
               setButtonGroup(buttonGroup, forPanelAssignment: assignment)
-            }
           }
         }
       }
@@ -145,29 +106,23 @@ public final class Remote: RemoteElement {
 
   }
 
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    let panels = MSDictionary()
-
-    for (number, uuid) in panels {
-      let assignment = ButtonGroup.PanelAssignment(rawValue: number.integerValue)
-      if let commentedUUID = buttonGroupForPanelAssignment(assignment)?.commentedUUID {
-        panels[assignment.JSONValue] = commentedUUID
-      }
+  override public var description: String {
+    var result = super.description
+    result += "\n\ttopBarHidden = \(topBarHidden)"
+    result += "\n\tactivity = \(toString(activity?.index))"
+    result += "\n\tpanels = {"
+    let panelEntries = keyValuePairs(panels)
+    if panelEntries.count == 0 { result += "}" }
+    else {
+      result += "\n\t\t" + "\n\t\t".join(panelEntries.map({"\($0.stringValue) = \($1.rawValue)"})) + "\n\t}"
     }
+    return result
+  }
 
-    if panels.count > 0 { dictionary["panels"] = panels }
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["panels"] = .Object(OrderedDictionary(zip(map(panels.keys, {$0.stringValue}), map(panels.values, {$0.jsonValue}))))
+    return obj.jsonValue
   }
 
 }

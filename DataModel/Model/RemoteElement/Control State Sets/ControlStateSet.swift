@@ -13,17 +13,21 @@ import MoonKit
 
 /** Add JSON conversion to `UIControlState` */
 extension UIControlState: JSONValueConvertible {
-  public var JSONValue: String {
+  public var jsonValue: JSONValue {
     var flags: [String] = []
     if self & UIControlState.Highlighted != nil { flags.append("highlighted") }
     if self & UIControlState.Selected    != nil { flags.append("selected")    }
     if self & UIControlState.Disabled    != nil { flags.append("disabled")    }
     if flags.count == 0 { flags.append("normal") }
-    return " ".join(flags)
+    var s = flags.removeAtIndex(0)
+    s += "".join(flags.map({$0.capitalizedString}))
+    return s.jsonValue
   }
+}
 
-  public init?(JSONValue: String) {
-    let flags = split(JSONValue){$0 == " "}
+extension UIControlState: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue?) {
+    let flags = "-".split(String(jsonValue)?.dashcaseString ?? "")
     if !contains(1...3, flags.count) { return nil }
     var state = UIControlState.Normal
     for flag in flags {
@@ -42,11 +46,21 @@ extension UIControlState: JSONValueConvertible {
 /** Add type enumeration to `UIControlState` */
 extension UIControlState: EnumerableType {
   public static var all: [UIControlState] {
-    return [.Normal, .Highlighted, .Selected, .Disabled,
-      .Highlighted | .Selected, .Highlighted | .Disabled,
-      .Highlighted | .Selected | .Disabled]
+    return [.Normal,
+            .Highlighted,
+            .Selected,
+            .Disabled,
+            .Selected | .Disabled,
+            .Highlighted | .Selected,
+            .Highlighted | .Disabled,
+            .Highlighted | .Selected | .Disabled]
   }
   public static func enumerate(block: (UIControlState) -> Void) { apply(all, block) }
+}
+
+extension UIControlState: StringValueConvertible {
+  /** Convenience accessor for the `jsonValue` as a `String` */
+  public var stringValue: String { return String(jsonValue)! }
 }
 
 /** Add `ControlStateSet` specific methods and properties to `UIControlState` */
@@ -54,8 +68,8 @@ extension UIControlState {
 
   /** Corresponding property name suitable for use in methods such as `valueForKey:` */
   public var controlStateSetProperty: String? {
-    let jsonValue = JSONValue
-    return count(jsonValue) > 0 ? jsonValue.camelcaseString : nil
+    let string = jsonValue.value as! String
+    return count(string) > 0 ? string.camelcaseString : nil
   }
 
   /**
@@ -77,6 +91,8 @@ extension UIControlState {
     }
   }
 }
+
+//extension UIControlState: Hashable { public var hashValue: Int { return Int(rawValue) } }
 
 @objc(ControlStateSet)
 public class ControlStateSet: ModelObject {
@@ -105,15 +121,9 @@ public class ControlStateSet: ModelObject {
   public subscript(idx: UInt) -> AnyObject? {
     get {
       let state = UIControlState(rawValue: idx)
-      if let property = state.controlStateSetProperty, let value: AnyObject = self[property] {
-        return value
-      }
-      if let property = (state & .Selected).controlStateSetProperty, let value: AnyObject = self[property] {
-        return value
-      }
-      if let property = (state & .Highlighted).controlStateSetProperty, let value: AnyObject = self[property] {
-        return value
-      }
+      if let property = state.controlStateSetProperty, let value: AnyObject = self[property] { return value }
+      if let property = (state & .Selected).controlStateSetProperty, let value: AnyObject = self[property] { return value }
+      if let property = (state & .Highlighted).controlStateSetProperty, let value: AnyObject = self[property] { return value }
       return self["normal"]
     }
     set { if let property = UIControlState(rawValue: UInt(idx)).controlStateSetProperty { self[property] = newValue } }
@@ -129,6 +139,18 @@ public class ControlStateSet: ModelObject {
   public subscript(property: String) -> AnyObject? {
     get { return UIControlState(controlStateSetProperty: property) != nil ? valueForKey(property) : nil }
     set { if UIControlState(controlStateSetProperty: property) != nil { setValue(newValue, forKey: property) } }
+  }
+
+  public override var description: String {
+    var result = super.description
+    UIControlState.enumerate {
+      if let propertyName = $0.controlStateSetProperty {
+        let value: AnyObject? = self.valueForKey(propertyName)
+        if value == nil { result += "\n\t\(propertyName) = nil" }
+        else { result += "\n\t\(propertyName) = {\n\(toString(value!).indentedBy(8))\n\t}" }
+      }
+    }
+    return result
   }
 
 }

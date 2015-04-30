@@ -15,37 +15,28 @@ public final class ActivityCommand: Command {
 
   @NSManaged public var activity: Activity?
 
-  /**
-  JSONDictionary
+  override public var indicator: Bool { return true }
 
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    dictionary["class"] = "activity"
-    appendValue(activity?.commentedUUID, forKey: "activity.uuid", toDictionary: dictionary)
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["activity.index"] = activity?.index.jsonValue
+    return obj.jsonValue
   }
 
-  /** awakeFromInsert */
-  override public func awakeFromInsert() {
-    super.awakeFromInsert()
-    indicator = true
+  override public var description: String {
+    var result = super.description
+    result += "\n\tactivity = \(toString(activity?.index.rawValue))"
+    return result
   }
 
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    updateRelationshipFromData(data, forKey: "activity")
+    updateRelationshipFromData(data, forAttribute: "activity")
   }
 
   override var operation: CommandOperation {

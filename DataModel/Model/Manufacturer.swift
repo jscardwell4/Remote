@@ -16,93 +16,55 @@ final public class Manufacturer: EditableModelObject {
   @NSManaged public var codeSets: Set<IRCodeSet>
   @NSManaged public var devices: Set<ComponentDevice>
 
-//  public typealias NestedType = IRCodeSet
-//  public var subcategories: [NestedType] { get { return Array(codeSets) } set { codeSets = Set(newValue) } }
-//  public func subcategoryWithIndex(index: PathModelIndex) -> IRCodeSet? { return findByIndex(codeSets, index) }
-
-//  public typealias ItemType = IRCode
-//  public var items: [ItemType] { get { return [] } set {} }
-//  public func itemWithIndex(index: PathModelIndex) -> ItemType? { return nil }
-
   /**
-  itemWithIndex:context:
+  requiresUniqueNaming
 
-  :param: index String
-  :param: context NSManagedObjectContext
-
-  :returns: T?
+  :returns: Bool
   */
-//  public class func itemWithIndex<T:PathIndexedModel>(var index: PathModelIndex, context: NSManagedObjectContext) -> T? {
-//    if index.isEmpty || index.count > 3 { return nil }
-//
-//    let manufacturerIndex = index.removeAtIndex(0)
-//    if let manufacturer = rootItemWithIndex(PathModelIndex(manufacturerIndex), context: context) {
-//      if index.isEmpty { return manufacturer as? T }
-//      let codeSetIndex = index.removeAtIndex(0)
-//      if let codeSet = manufacturer.subcategoryWithIndex("\(manufacturerIndex)/\(codeSetIndex)") {
-//        if index.isEmpty { return codeSet as? T }
-//        let codeIndex = index.removeLast()
-//        return codeSet.itemWithIndex("\(manufacturerIndex)/\(codeSetIndex)/\(codeIndex)") as? T
-//      }
-//    }
-//    return nil
-//  }
-
-  /**
-  rootItemWithIndex:context:
-
-  :param: index String
-  :param: context NSManagedObjectContext
-
-  :returns: Self?
-  */
-//  public class func rootItemWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self? {
-//    return objectWithValue(index.rawValue, forAttribute: "name", context: context)
-//  }
+  public override class func requiresUniqueNaming() -> Bool { return true }
 
   /**
   updateWithData:
 
-  :param: data [String AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    updateRelationshipFromData(data, forKey: "codeSets", lookupKey: "code-sets")
-    updateRelationshipFromData(data, forKey: "devices")
+
+    updateRelationshipFromData(data, forAttribute: "codeSets")
+    updateRelationshipFromData(data, forAttribute: "devices")
   }
 
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    appendValueForKeyPath("devices.commentedUUID",   forKey: "devices", toDictionary: dictionary)
-    appendValueForKeyPath("codeSets.JSONDictionary", forKey: "code-sets", toDictionary: dictionary)
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["devices.index"] = .Array(map(devices, {$0.index.jsonValue}))
+    obj["codeSets"] = JSONValue(codeSets)
+    return obj.jsonValue
   }
 
-}
-
-extension Manufacturer: PathIndexedModel {
-  public var pathIndex: PathModelIndex { return "\(name)" }
-
-  /**
-  modelWithIndex:context:
-
-  :param: index PathModelIndex
-  :param: context NSManagedObjectContext
-
-  :returns: Self?
-  */
-  public static func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self? {
-    return index.count == 1 ? objectWithValue(index.rawValue, forAttribute: "name", context: context) : nil
+  override public var description: String {
+    return "\(super.description)\n\t" + "\n\t".join(
+      "code sets = [" + ", ".join(map(codeSets, {$0.name})) + "]",
+      "devices = [" + ", ".join(map(devices, {$0.name})) + "]"
+    )
   }
   
 }
 
 extension Manufacturer: NestingModelCollection {
   public var collections: [ModelCollection] { return sortedByName(codeSets) }
+}
+
+extension Manufacturer: DefaultingModelCollection {
+  public static func defaultCollectionInContext(context: NSManagedObjectContext) -> Manufacturer {
+    let name = "Unspecified"
+    if let manufacturer = modelWithIndex(PathIndex(name), context: context) {
+      return manufacturer
+    } else {
+      var manufacturer = self(context: context)
+      manufacturer.name = name
+      return manufacturer
+    }
+  }
 }
 

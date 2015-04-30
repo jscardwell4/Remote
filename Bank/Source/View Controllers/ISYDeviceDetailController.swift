@@ -61,8 +61,18 @@ private func loadIDSection() {
     ////////////////////////////////////////////////////////////////////////////////
 
     var idSection = DetailSection(section: 0)
-    idSection.addRow({ DetailLabelRow(label: "Identifier", value: iSYDevice.uniqueIdentifier) }, forKey: RowKey.Identifier)
-    idSection.addRow({ DetailLabelRow(label: "Base URL", value: iSYDevice.baseURL) }, forKey: RowKey.BaseURL)
+    idSection.addRow({
+      let row = DetailLabelRow()
+      row.name = "Identifier"
+      row.info = iSYDevice.uniqueIdentifier
+      return row
+    }, forKey: RowKey.Identifier)
+    idSection.addRow({
+      let row = DetailLabelRow()
+      row.name = "Base URL"
+      row.info = iSYDevice.baseURL
+      return row
+    }, forKey: RowKey.BaseURL)
 
     sections[SectionKey.ID] = idSection
 }
@@ -76,10 +86,30 @@ private func loadModelSection() {
     ////////////////////////////////////////////////////////////////////////////////
 
     var modelSection = DetailSection(section: 1, title: "Model")
-    modelSection.addRow({ DetailLabelRow(label: "Name", value: iSYDevice.modelName) }, forKey: RowKey.ModelName)
-    modelSection.addRow({ DetailLabelRow(label: "Number", value: iSYDevice.modelNumber) }, forKey: RowKey.Number)
-    modelSection.addRow({ DetailLabelRow(label: "Description", value: iSYDevice.modelDescription) }, forKey: RowKey.Description)
-    modelSection.addRow({ DetailLabelRow(label: "Friendly Name", value: iSYDevice.friendlyName) }, forKey: RowKey.FriendlyName)
+    modelSection.addRow({
+      let row = DetailLabelRow()
+      row.name = "Name"
+      row.info = iSYDevice.modelName
+      return row
+    }, forKey: RowKey.ModelName)
+    modelSection.addRow({
+      let row = DetailLabelRow()
+      row.name = "Number"
+      row.info = iSYDevice.modelNumber
+      return row
+    }, forKey: RowKey.Number)
+    modelSection.addRow({
+      let row = DetailLabelRow()
+      row.name = "Description"
+      row.info = iSYDevice.modelDescription
+      return row
+    }, forKey: RowKey.Description)
+    modelSection.addRow({
+      let row = DetailLabelRow()
+      row.name = "Friendly Name"
+      row.info = iSYDevice.friendlyName
+      return row
+    }, forKey: RowKey.FriendlyName)
 
     sections[SectionKey.Model] = modelSection
 }
@@ -93,8 +123,18 @@ private func loadManufacturerSection() {
     ////////////////////////////////////////////////////////////////////////////////
 
     var manufacturerSection = DetailSection(section: 2, title: "Manufacturer")
-    manufacturerSection.addRow({ DetailLabelRow(label: "Name", value: iSYDevice.manufacturer) }, forKey: RowKey.ManufacturerName)
-    manufacturerSection.addRow({ DetailLabelRow(label: "URL", value: iSYDevice.manufacturerURL) }, forKey: RowKey.URL)
+    manufacturerSection.addRow({
+      let row = DetailLabelRow()
+      row.name = "Name"
+      row.info = iSYDevice.manufacturer
+      return row
+    }, forKey: RowKey.ManufacturerName)
+    manufacturerSection.addRow({
+      let row = DetailLabelRow()
+      row.name = "URL"
+      row.info = iSYDevice.manufacturerURL
+      return row
+    }, forKey: RowKey.URL)
 
     sections[SectionKey.Manufacturer] = manufacturerSection
 }
@@ -108,7 +148,13 @@ private func loadNodesSection() {
     ////////////////////////////////////////////////////////////////////////////////
 
     var nodesSection = DetailSection(section: 3, title: "Nodes")
-    for (idx, node) in enumerate(sortedByName(iSYDevice.nodes)) { nodesSection.addRow({ DetailListRow(namedItem: node) }, forKey: "\(RowKey.Nodes)\(idx)") }
+    for (idx, node) in enumerate(sortedByName(iSYDevice.nodes)) {
+      nodesSection.addRow({
+        let row = DetailListRow()
+        row.info = node
+        return row
+        }, forKey: "\(RowKey.Nodes)\(idx)")
+    }
 
     sections[SectionKey.Nodes] = nodesSection
 }
@@ -122,7 +168,13 @@ private func loadGroupsSection() {
     ////////////////////////////////////////////////////////////////////////////////
 
     var groupsSection = DetailSection(section: 4, title: "Groups")
-    for (idx, group) in enumerate(sortedByName(iSYDevice.groups)) { groupsSection.addRow({ DetailListRow(namedItem: group) }, forKey: "\(RowKey.Groups)\(idx)") }
+    for (idx, group) in enumerate(sortedByName(iSYDevice.groups)) {
+      groupsSection.addRow({
+        let row = DetailListRow()
+        row.info = group
+        return row
+        }, forKey: "\(RowKey.Groups)\(idx)")
+    }
 
     sections[SectionKey.Groups] = groupsSection
 }
@@ -136,8 +188,13 @@ private func loadComponentDevicesSection() {
     ////////////////////////////////////////////////////////////////////////////////
 
     var componentDevicesSection = DetailSection(section: 5, title: "Component Devices")
-    for (idx, device) in enumerate(sortedByName(iSYDevice.componentDevices?.allObjects as? [ComponentDevice] ?? [])) {
-      componentDevicesSection.addRow({ DetailListRow(pushableItem: device) }, forKey: "\(RowKey.ComponentDevices)\(idx)")
+    for (idx, device) in enumerate(sortedByName(iSYDevice.componentDevices)) {
+      componentDevicesSection.addRow({
+        let row = DetailListRow()
+        row.info = device
+        row.select = DetailRow.selectPushableItem(device)
+        return row
+        }, forKey: "\(RowKey.ComponentDevices)\(idx)")
     }
 
     sections[SectionKey.ComponentDevices] = componentDevicesSection

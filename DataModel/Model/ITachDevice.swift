@@ -79,18 +79,18 @@ public class ITachDevice: NetworkDevice {
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let pcbPN     = data["pcb-pn"]     as? String { self.pcbPN = pcbPN }
-    if let pkgLevel  = data["pkg-level"]  as? String { self.pkgLevel = pkgLevel }
-    if let sdkClass  = data["sdk-class"]  as? String { self.sdkClass = sdkClass }
-    if let make      = data["make"]       as? String { self.make = make }
-    if let model     = data["model"]      as? String { self.model = model }
-    if let status    = data["status"]     as? String { self.status = status }
-    if let configURL = data["config-url"] as? String { self.configURL = configURL }
-    if let revision  = data["revision"]   as? String { self.revision = revision }
+    if let pcbPN     = String(data["pcbPN"]) { self.pcbPN = pcbPN }
+    if let pkgLevel  = String(data["pkgLevel"]) { self.pkgLevel = pkgLevel }
+    if let sdkClass  = String(data["sdkClass"]) { self.sdkClass = sdkClass }
+    if let make      = String(data["make"]) { self.make = make }
+    if let model     = String(data["model"]) { self.model = model }
+    if let status    = String(data["status"]) { self.status = status }
+    if let configURL = String(data["configURL"]) { self.configURL = configURL }
+    if let revision  = String(data["revision"]) { self.revision = revision }
   }
 
   /**
@@ -100,23 +100,19 @@ public class ITachDevice: NetworkDevice {
   */
 //  func detailController() -> UIViewController { return ITachDeviceDetailController(model: self) }
 
-}
 
-extension ITachDevice: MSJSONExport {
-
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-    appendValueForKey("pcbPN", toDictionary: dictionary)
-    appendValueForKey("pkgLevel", toDictionary: dictionary)
-    appendValueForKey("sdkClass", toDictionary: dictionary)
-    appendValueForKey("make", toDictionary: dictionary)
-    appendValueForKey("model", toDictionary: dictionary)
-    appendValueForKey("status", toDictionary: dictionary)
-    appendValueForKey("configURL", toDictionary: dictionary)
-    appendValueForKey("revision", toDictionary: dictionary)
-    dictionary.compact()
-    dictionary.compress()
-    return dictionary
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["type"] = "itach"
+    obj["pcbPN"] = pcbPN.jsonValue
+    obj["pkgLevel"] = pkgLevel.jsonValue
+    obj["sdkClass"] = sdkClass.jsonValue
+    obj["make"] = make.jsonValue
+    obj["model"] = model.jsonValue
+    obj["status"] = status.jsonValue
+    obj["configURL"] = configURL.jsonValue
+    obj["revision"] = revision.jsonValue
+    return obj.jsonValue
   }
 
 }

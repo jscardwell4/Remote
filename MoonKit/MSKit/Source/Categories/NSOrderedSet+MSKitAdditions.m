@@ -10,6 +10,7 @@
 #import "NSArray+MSKitAdditions.h"
 #import "NSMutableString+MSKitAdditions.h"
 #import "MSLog.h"
+#import "MoonKit/MoonKit-Swift.h"
 
 static int ddLogLevel = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -44,28 +45,28 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
     return [[self array] componentsJoinedByString:string];
 }
 
-- (NSString *)JSONString
-{
-    id jsonObject = self.JSONObject;
-    NSError * error;
-    NSData * jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject
-                                                        options:NSJSONWritingPrettyPrinted
-                                                          error:&error];
-    if (error || !jsonData)
-    {
-        MSHandleErrors(error);
-        return nil;
-    }
+//- (NSString *)JSONString
+//{
+//    id jsonObject = self.JSONObject;
+//    NSError * error;
+//    NSData * jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject
+//                                                        options:NSJSONWritingPrettyPrinted
+//                                                          error:&error];
+//    if (error || !jsonData)
+//    {
+//        MSHandleErrors(error);
+//        return @"";
+//    }
+//
+//    else
+//    {
+//        NSMutableString * jsonString = [[NSString stringWithData:jsonData] mutableCopy];
+//        [jsonString replaceRegEx:@"^(\\s*\"[^\"]+\") :" withString:@"$1:"];
+//        return jsonString;
+//    }
+//}
 
-    else
-    {
-        NSMutableString * jsonString = [[NSString stringWithData:jsonData] mutableCopy];
-        [jsonString replaceRegEx:@"^(\\s*\"[^\"]+\") :" withString:@"$1:"];
-        return jsonString;
-    }
-}
 
-
-- (id)JSONObject { return [self array].JSONObject; }
+//- (id)JSONObject { return [self array].JSONObject; }
 
 @end

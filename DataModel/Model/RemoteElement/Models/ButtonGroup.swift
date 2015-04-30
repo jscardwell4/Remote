@@ -19,147 +19,255 @@ use an instance of the `ButtonGroup` class to govern their style, behavior, etc.
 @objc(ButtonGroup)
 public final class ButtonGroup: RemoteElement {
 
-  public struct PanelAssignment: RawOptionSetType, JSONValueConvertible {
-
-    private(set) public var rawValue: Int
-    public init(rawValue: Int) { self.rawValue = rawValue & 0b0001_1111 }
-    public init(nilLiteral:()) { rawValue = 0 }
-
-    public enum Location: Int, JSONValueConvertible {
-      case Undefined, Top, Bottom, Left, Right
-      public var JSONValue: String {
-        switch self {
-          case .Undefined: return "undefined"
-          case .Top:       return "top"
-          case .Bottom:    return "bottom"
-          case .Left:      return "left"
-          case .Right:     return "right"
-        }
-      }
-      public init(JSONValue: String) {
-        switch JSONValue {
-          case "top":    self = .Top
-          case "bottom": self = .Bottom
-          case "left":   self = .Left
-          case "right":  self = .Right
-          default:       self = .Undefined
-        }
-      }
-    }
-    public enum Trigger: Int, JSONValueConvertible  {
-      case Undefined, OneFinger, TwoFinger, ThreeFinger
-      public var JSONValue: String {
-        switch self {
-          case .Undefined:   return "undefined"
-          case .OneFinger:   return "1"
-          case .TwoFinger:   return "2"
-          case .ThreeFinger: return "3"
-        }
-      }
-     public init(JSONValue: String) {
-       switch JSONValue {
-         case "1": self = .OneFinger
-         case "2": self = .TwoFinger
-         case "3": self = .ThreeFinger
-         default:  self = .Undefined
-       }
-    }
-    }
-
-    public var location: Location {
-      get { return Location(rawValue: rawValue & 0b0111) ?? .Undefined }
-      set { rawValue = newValue.rawValue | (trigger.rawValue >> 3) }
-    }
-    public var trigger: Trigger {
-      get { return Trigger(rawValue: (rawValue << 3) & 0b0011) ?? .Undefined }
-      set { rawValue = location.rawValue | (newValue.rawValue >> 3) }
-    }
-
-    /**
-    initWithLocation:trigger:
-
-    :param: location Location
-    :param: trigger Trigger
-    */
-    public init(location: Location, trigger: Trigger) { rawValue = location.rawValue | (trigger.rawValue >> 3) }
-
-    public static var Unassigned: PanelAssignment = PanelAssignment(location: .Undefined, trigger: .Undefined)
-
-    public init(JSONValue: String) {
-      rawValue = 0
-      let length = count(JSONValue)
-      if length > 3 {
-        location = Location(JSONValue: String(JSONValue[0 ..< (length - 1)]))
-        trigger = Trigger(JSONValue: String(JSONValue[(length - 1) ..< length]))
-      }
-    }
-    public var JSONValue: String { return "\(location.JSONValue)\(trigger.JSONValue)"}
-
-  }
-
+  // MARK: - Type overrides
   override public var elementType: BaseType { return .ButtonGroup }
+  override public class var parentElementType: RemoteElement.Type? { return Remote.self }
+  override public class var subelementType: RemoteElement.Type? { return Button.self }
 
-  /** awakeFromInsert */
-  override public func awakeFromInsert() {
-    super.awakeFromInsert()
-    labelAttributes = DictionaryStorage(context: managedObjectContext!)
+  // MARK: - Updating the ButtonGroup
+
+  /**
+  updateWithData:
+
+  :param: data ObjectJSONValue
+  */
+  override public func updateWithData(data: ObjectJSONValue) {
+    super.updateWithData(data)
+
+    if let moc = managedObjectContext {
+
+      if let autohide = Bool(data["autohide"]) { self.autohide = autohide }
+
+      applyMaybe(ObjectJSONValue(data["commandSet"])) {
+        if let values = ObjectJSONValue($2),
+          commandSet = CommandSet.importObjectWithData(values, context: moc)
+        {
+          self.setCommandContainer(commandSet, forMode: $1)
+        }
+      }
+
+      applyMaybe(ObjectJSONValue(data["commandSetCollection"])) {
+        if let values = ObjectJSONValue($2),
+          commandSetCollection = CommandSetCollection.importObjectWithData(values, context: moc)
+        {
+          self.setCommandContainer(commandSetCollection, forMode: $1)
+        }
+      }
+
+      labelConstraints = String(data["labelConstraints"])
+
+      applyMaybe(ObjectJSONValue(data["labelAttributes"])) {
+        if let attributes = TitleAttributes($2) { self.setLabelAttributes(attributes, forMode: $1) }
+      }
+
+    }
+
   }
 
   /**
-  initWithPreset:
+  updateWithPreset:
 
   :param: preset Preset
   */
-  override public init(preset: Preset) {
-    super.init(preset: preset)
+  override func updateWithPreset(preset: Preset) {
+    super.updateWithPreset(preset)
 
     autohide = preset.autohide ?? false
-
-    if let labelAttributes = preset.labelAttributes { self.labelAttributes.dictionary = labelAttributes }
+    if let attributes = preset.labelAttributes { setLabelAttributes(attributes, forMode: RemoteElement.DefaultMode) }
     labelConstraints = preset.labelConstraints
     // if let panelAssignment = preset.panelAssignment { self.panelAssignment = panelAssignment }
   }
 
-  required public init(context: NSManagedObjectContext, insert: Bool) {
-      fatalError("init(context:insert:) has not been implemented")
-  }
-
-  required public init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-      fatalError("init(entity:insertIntoManagedObjectContext:) has not been implemented")
-  }
-
-  required public init(context: NSManagedObjectContext?) {
-      fatalError("init(context:) has not been implemented")
-  }
-
-  required public init?(data: [String : AnyObject], context: NSManagedObjectContext) {
-      fatalError("init(data:context:) has not been implemented")
-  }
-
-  /**
-  initWithEntity:insertIntoManagedObjectContext:
-
-  :param: entity NSEntityDescription
-  :param: context NSManagedObjectContext?
-  */
-//  override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-//    super.init(entity: entity, insertIntoManagedObjectContext: context)
-//  }
-
-  /**
-  initWithContext:
-
-  :param: context NSManagedObjectContext
-  */
-//  override init(context: NSManagedObjectContext) {
-//    super.init(context: context)
-//  }
-
-  @NSManaged public var commandContainer: CommandContainer?
   @NSManaged public var autohide: Bool
-  // @NSManaged var label: NSAttributedString?
-  @NSManaged public var labelAttributes: DictionaryStorage
+
+  // MARK: - Configurations
+
+  /**
+  updateForMode:
+
+  :param: mode String
+  */
+  override public func updateForMode(mode: String) {
+    super.updateForMode(mode)
+    updateButtons()
+  }
+
+  /** updateButtons */
+  public func updateButtons() {
+    if let commands = (commandSet ?? commandSetCollection?[commandSetIndex])?.faultedObject() {
+      for button in subelements.map({$0 as! Button}) {
+         if button.role == RemoteElement.Role.Tuck { continue }
+         button.setCommand(commands[button.role], forMode: currentMode)
+         button.enabled = button.command != nil
+      }
+    }
+  }
+
+  // MARK: Labels
+
+  var label: NSAttributedString? {
+    return (labelAttributesForMode(currentMode) ?? labelAttributesForMode(RemoteElement.DefaultMode))?.string
+  }
+
+  private(set) var labelAttributes: ModalStorage {
+    get {
+      var storage: ModalStorage!
+      willAccessValueForKey("labelAttributes")
+      storage = primitiveValueForKey("labelAttributes") as? ModalStorage
+      didAccessValueForKey("labelAttributes")
+      if storage == nil {
+        storage = ModalStorage(context: managedObjectContext)
+        setPrimitiveValue(storage, forKey: "labelAttributes")
+      }
+      return storage
+    }
+    set {
+      willChangeValueForKey("labelAttributes")
+      setPrimitiveValue(newValue, forKey: "labelAttributes")
+      didChangeValueForKey("labelAttributes")
+    }
+  }
+
   @NSManaged public var labelConstraints: String?
+
+  /**
+  setLabel:forMode:
+
+  :param: label NSAttributedString?
+  :param: mode String
+  */
+  public func setLabel(label: NSAttributedString?, forMode mode: Mode) {
+    setObject(label, forKey: "label", forMode: mode)
+  }
+
+  /**
+  labelAttributesForMode:
+
+  :param: mode Mode
+
+  :returns: TitleAttributes?
+  */
+  public func labelAttributesForMode(mode: Mode) -> TitleAttributes? {
+    if let storage: JSONStorage = labelAttributes[mode] { return TitleAttributes(storage: storage.dictionary) }
+    else { return nil }
+  }
+
+  /**
+  setLabelAttributes:forMode:
+
+  :param: attributes TitleAttributes
+  :param: mode Mode
+  */
+  public func setLabelAttributes(attributes: TitleAttributes, forMode mode: Mode) {
+    let modeStorage: JSONStorage
+    if let storage: JSONStorage = labelAttributes[mode] { modeStorage = storage }
+    else {
+      modeStorage = JSONStorage(context: managedObjectContext)
+      labelAttributes[mode] = modeStorage
+    }
+    modeStorage.dictionary = attributes.storage
+  }
+
+  /**
+  labelForCommandSetAtIndex:
+
+  :param: idx Int
+
+  :returns: NSAttributedString?
+  */
+  public func labelForCommandSetAtIndex(idx: Int) -> NSAttributedString? {
+    let commandSetLabel: NSAttributedString?
+    if let collection = commandContainer as? CommandSetCollection where contains(0 ..< Int(collection.count), idx),
+      let text = collection.labelAtIndex(idx),
+      var titleAttributes = labelAttributesForMode(currentMode)
+    {
+      titleAttributes.text = text
+      commandSetLabel = titleAttributes.string
+    } else { commandSetLabel = nil }
+    return commandSetLabel
+  }
+
+  // MARK: CommandSet(Collection)s
+
+  public var commandContainer: CommandContainer? {
+    return commandContainers[currentMode] ?? commandContainers[RemoteElement.DefaultMode]
+  }
+  public var commandSet: CommandSet? { return commandContainer as? CommandSet }
+  public var commandSetCollection: CommandSetCollection? { return commandContainer as? CommandSetCollection }
+
+  private(set) var commandContainers: ModalStorage {
+    get {
+      var storage: ModalStorage!
+      willAccessValueForKey("commandContainers")
+      storage = primitiveValueForKey("commandContainers") as? ModalStorage
+      didAccessValueForKey("commandContainers")
+      if storage == nil {
+        storage = ModalStorage(context: managedObjectContext)
+        setPrimitiveValue(storage, forKey: "commandContainers")
+      }
+      return storage
+    }
+    set {
+      willChangeValueForKey("commandContainers")
+      setPrimitiveValue(newValue, forKey: "commandContainers")
+      didChangeValueForKey("commandContainers")
+    }
+  }
+
+  /**
+  setCommandContainer:forMode:
+
+  :param: container CommandContainer?
+  :param: mode String
+  */
+  public func setCommandContainer(container: CommandContainer?, forMode mode: Mode) { commandContainers[mode] = container }
+
+  /**
+  commandContainerForMode:
+
+  :param: mode String
+
+  :returns: CommandContainer?
+  */
+  public func commandContainerForMode(mode: Mode) -> CommandContainer? { return commandContainers[mode] }
+
+  /** Holds the index for the current `CommandSet` when the `CommandContainer` is a `CommandSetCollection` */
+  public var commandSetIndex: Int = 0 {
+    didSet {
+      if let collection = commandSetCollection {
+        if !contains((0 ..< Int(collection.count)), commandSetIndex) { commandSetIndex = 0 }
+        updateButtons()
+      }
+    }
+  }
+
+  // MARK: - JSONValue override
+
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+
+    var commandSets           : JSONValue.ObjectValue = [:]
+    var commandSetCollections : JSONValue.ObjectValue = [:]
+    var labels                : JSONValue.ObjectValue = [:]
+
+    for mode in modes {
+      if let container = commandContainerForMode(mode) {
+        let d = container.jsonValue
+        if container is CommandSetCollection { commandSetCollections[mode] = d }
+        else if container is CommandSet { commandSets[mode] = d }
+      }
+    }
+
+    if commandSetCollections.count > 0 { obj["commandSet-collection"] = .Object(commandSetCollections) }
+    if commandSets.count > 0 { obj["commandSet"] = .Object(commandSets) }
+    if labels.count > 0 { obj["label"] = .Object(labels) }
+    if let constraints = labelConstraints { obj["labelConstraints"] = constraints.jsonValue }
+    obj["labelAttributes"] = labelAttributes.jsonValue
+
+    return obj.jsonValue
+  }
+
+  // MARK: - Panel assignments
 
   public var isPanel: Bool { return panelLocation != .Undefined && panelTrigger != .Undefined }
 
@@ -188,177 +296,115 @@ public final class ButtonGroup: RemoteElement {
     }
   }
 
-  /**
-  setCommandContainer:forMode:
+  public struct PanelAssignment: RawOptionSetType, Hashable, StringValueConvertible,
+                                 JSONValueConvertible, JSONValueInitializable
+  {
 
-  :param: container CommandContainer?
-  :param: mode String
-  */
-  public func setCommandContainer(container: CommandContainer?, forMode mode: String) {
-    setURIForObject(container, forKey: "commandContainer", forMode: mode)
-  }
+    private(set) public var rawValue: Int
+    public init(rawValue: Int) { self.rawValue = rawValue & 0b0001_1111 }
+    public init(nilLiteral:()) { rawValue = 0 }
 
-  /**
-  commandContainerForMode:
+    /** Enumeration to hold the location associated with a panel assignment */
+    public enum Location: Int, JSONValueConvertible, JSONValueInitializable {
+      case Undefined, Top, Bottom, Left, Right
+      public var jsonValue: JSONValue {
+        switch self {
+          case .Undefined: return "undefined"
+          case .Top:       return "top"
+          case .Bottom:    return "bottom"
+          case .Left:      return "left"
+          case .Right:     return "right"
+        }
+      }
+      public init?(_ jsonValue: JSONValue?) {
+        switch jsonValue ?? Location.Undefined.jsonValue {
+          case Location.Top.jsonValue:    self = .Top
+          case Location.Bottom.jsonValue: self = .Bottom
+          case Location.Left.jsonValue:   self = .Left
+          case Location.Right.jsonValue:  self = .Right
+          default:                        self = .Undefined
+        }
+      }
+    }
 
-  :param: mode String
+    /** Enumeration to hold the number of touches to associate with a panel assignment */
+    public enum Trigger: Int, JSONValueConvertible  {
+      case Undefined, OneFinger, TwoFinger, ThreeFinger
+      public var jsonValue: JSONValue {
+        switch self {
+          case .Undefined:   return "undefined"
+          case .OneFinger:   return "1"
+          case .TwoFinger:   return "2"
+          case .ThreeFinger: return "3"
+        }
+      }
+      public init?(_ jsonValue: JSONValue?) {
+        switch jsonValue ?? Trigger.Undefined.jsonValue {
+          case Trigger.OneFinger.jsonValue:   self = .OneFinger
+          case Trigger.TwoFinger.jsonValue:   self = .TwoFinger
+          case Trigger.ThreeFinger.jsonValue: self = .ThreeFinger
+          default:                            self = .Undefined
+        }
+      }
+    }
 
-  :returns: CommandContainer?
-  */
-  public func commandContainerForMode(mode: String) -> CommandContainer? {
-    return faultedObjectForKey("commandContainer", forMode: mode) as? CommandContainer
-  }
-
-  /**
-  setLabel:forMode:
-
-  :param: label NSAttributedString?
-  :param: mode String
-  */
-  public func setLabel(label: NSAttributedString?, forMode mode: String) {
-    setObject(label, forKey: "label", forMode: mode)
-  }
-
-  /**
-  labelForMode:
-
-  :param: mode String
-
-  :returns: NSAttributedString?
-  */
-  public func labelForMode(mode: String) -> NSAttributedString? {
-    return objectForKey("label", forMode: mode) as? NSAttributedString
-  }
+    public var location: Location {
+      get { return Location(rawValue: rawValue & 0b0111) ?? .Undefined }
+      set { rawValue = newValue.rawValue | (trigger.rawValue >> 3) }
+    }
+    public var trigger: Trigger {
+      get { return Trigger(rawValue: (rawValue << 3) & 0b0011) ?? .Undefined }
+      set { rawValue = location.rawValue | (newValue.rawValue >> 3) }
+    }
 
     /**
-  updateForMode:
+    initWithLocation:trigger:
 
-  :param: mode String
-  */
-  override public func updateForMode(mode: String) {
-    super.updateForMode(mode)
-    commandContainer = commandContainerForMode(mode) ?? commandContainerForMode(RemoteElement.DefaultMode)
+    :param: location Location
+    :param: trigger Trigger
+    */
+    public init(location: Location, trigger: Trigger) { rawValue = location.rawValue | (trigger.rawValue >> 3) }
 
-    updateButtons()
-  }
+    public static var Unassigned: PanelAssignment = PanelAssignment(location: .Undefined, trigger: .Undefined)
 
-  public var commandSetIndex: Int = 0 {
-    didSet {
-      if let collection = commandContainer as? CommandSetCollection {
-        if !contains((0 ..< Int(collection.count)), commandSetIndex) { commandSetIndex = 0 }
-        updateButtons()
-      }
+    public init?(_ jsonValue: JSONValue?) {
+      if let string = String(jsonValue) {
+        rawValue = 0
+        let length = count(string)
+        if length > 3,
+          let l = Location(string[0 ..< (length - 1)].jsonValue),
+          t = Trigger(string[(length - 1) ..< length].jsonValue)
+        {
+          location = l
+          trigger = t
+        } else { return nil }
+      } else { return nil }
     }
-  }
 
-  /** updateButtons */
-  public func updateButtons() {
-    var commandSet: CommandSet?
-    if commandContainer != nil && commandContainer! is CommandSet { commandSet = commandContainer! as? CommandSet }
-    else if let collection = commandContainer as? CommandSetCollection {
-      commandSet = collection.commandSetAtIndex(commandSetIndex)
-    }
-    commandSet = commandSet?.faultedObject()
-    if commandSet != nil {
-      for button in childElements.array as! [Button] {
-         if button.role == RemoteElement.Role.Tuck { continue }
-         button.command = commandSet![button.role]
-         button.enabled = button.command != nil
-      }
-    }
-  }
+    public var stringValue: String { return "\(String(location.jsonValue)!)\(String(trigger.jsonValue)!)" }
+    public var jsonValue: JSONValue { return stringValue.jsonValue }
 
-  /**
-  labelForCommandSetAtIndex:
-
-  :param: idx Int
-
-  :returns: NSAttributedString?
-  */
-  public func labelForCommandSetAtIndex(idx: Int) -> NSAttributedString? {
-    var commandSetLabel: NSAttributedString?
-    if let collection = commandContainer as? CommandSetCollection {
-      if contains(0 ..< Int(collection.count), idx) {
-        if let text = collection.labelAtIndex(idx) {
-          if let storage = labelAttributes.dictionary as? [String:AnyObject] {
-            var titleAttributes = TitleAttributes(storage: storage)
-            titleAttributes.text = text
-            commandSetLabel = titleAttributes.string
-          }
-        }
-      }
-    }
-    return commandSetLabel
-  }
-
-  /**
-  updateWithData:
-
-  :param: data [String:AnyObject]
-  */
-  override public func updateWithData(data: [String:AnyObject]) {
-    super.updateWithData(data)
-
-    if let moc = managedObjectContext {
-
-      if let autohide = data["autohide"] as? NSNumber { self.autohide = autohide.boolValue }
-
-      if let commandSetData = data["command-set"] as? [String:[String:AnyObject]] {
-        for (mode, values) in commandSetData {
-          setCommandContainer(CommandSet.importObjectWithData(values, context: moc), forMode: mode)
-        }
-      }
-
-      else if let collectionData = data["command-set-collection"] as? [String:[String:AnyObject]] {
-        for (mode, values) in collectionData {
-          setCommandContainer(CommandSetCollection.importObjectWithData(values, context: moc), forMode: mode)
-        }
-      }
-
-      labelConstraints = data["label-constraints"] as? String
-
-      if let labelAttributesData = data["label-attributes"] as? [String:AnyObject] {
-        labelAttributes.dictionary = labelAttributesData
-      }
-
-    }
+    public var hashValue: Int { return rawValue }
 
   }
 
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    let commandSets = MSDictionary()
-    let commandSetCollections = MSDictionary()
-    let labels = MSDictionary()
-
-    for mode in modes as [String] {
-      if let container = commandContainerForMode(mode) {
-        let dict = container.JSONDictionary()
-        if container is CommandSetCollection { commandSetCollections[mode] = dict }
-        else if container is CommandSet { commandSets[mode] = dict }
-      }
-      if let label = labelForMode(mode) { labels[mode] = label }
-    }
-
-    if commandSetCollections.count > 0 { dictionary["command-set-collection"] = commandSetCollections }
-    if commandSets.count > 0 { dictionary["command-set"] = commandSets }
-    if labels.count > 0 { dictionary["label"] = labels }
-    if let constraints = labelConstraints { dictionary["label-constraints"] = constraints }
-    if !labelAttributes.dictionary.isEmpty { dictionary["label-attributes"] = labelAttributes.dictionary }
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+  // MARK: - Printable
+  override public var description: String {
+    var result = super.description
+    result += "\n\tautohide = \(autohide)"
+    result += "\n\tlabelAttributes = {\n\(labelAttributes.description.indentedBy(8))\n\t}"
+    result += "\n\tlabel = \(toString(label))"
+    result += "\n\tcommandContainers = {\n\(commandContainers.description.indentedBy(8))\n\t}"
+    if let container = commandContainer { result += "\n\tcommandContainer = {\n\(container.description.indentedBy(8))\n\t}" }
+    else { result += "\n\tcommandContainer = nil" }
+    result += "\n\tcommandSetIndex = \(commandSetIndex)"
+    result += "\n\tpanelAssignment = \(panelAssignment.stringValue)"
+    return result
   }
 
 }
+
+// MARK: - PanelAssignment extensions
 
 extension ButtonGroup.PanelAssignment: Equatable {}
 public func ==(lhs: ButtonGroup.PanelAssignment, rhs: ButtonGroup.PanelAssignment) -> Bool { return lhs.rawValue == rhs.rawValue }

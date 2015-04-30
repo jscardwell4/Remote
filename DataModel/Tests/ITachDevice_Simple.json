@@ -1,0 +1,14 @@
+{
+  "uuid": "A7582E04-16F3-4319-9F21-41A17C922AC9",
+  "name": "GlobalCache-iTachIP2IR",
+  "uniqueIdentifier": "GlobalCache_000C1E022AED",
+  "type": "itach",
+  "pcbPN": "025-0028-03",
+  "pkgLevel": "GCPK002",
+  "sdkClass": "Utility",
+  "make": "GlobalCache",
+  "model": "iTachIP2IR",
+  "status": "Ready",
+  "configURL": "192.168.1.45",
+  "revision": "710-1005-05"
+}

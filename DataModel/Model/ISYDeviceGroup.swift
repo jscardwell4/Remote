@@ -11,36 +11,33 @@ import CoreData
 import MoonKit
 
 @objc(ISYDeviceGroup)
-public class ISYDeviceGroup: NamedModelObject {
+public class ISYDeviceGroup: IndexedModelObject {
 
   @NSManaged public var address: String
-  @NSManaged public var family: NSNumber
-  @NSManaged public var flag: NSNumber
-  @NSManaged public var device: ISYDevice
-  @NSManaged public var members: NSSet
+  @NSManaged public var family: Int16
+  @NSManaged public var flag: Int16
+  @NSManaged public var device: ISYDevice!
+  @NSManaged public var members: Set<ISYDeviceNode>
 
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let flag = data["flag"] as? NSNumber { self.flag = flag }
-    if let address = data["address"] as? String { self.address = address }
-    if let family = data["family"] as? NSNumber { self.family = family }
-    updateRelationshipFromData(data, forKey: "members")
+    if let flag = Int16(data["flag"]) { self.flag = flag }
+    if let address = String(data["address"]) { self.address = address }
+    if let family = Int16(data["family"]) { self.family = family }
+//    if let membersJSON = ArrayJSONValue(data["members"]) {
+//
+//    }
+    updateRelationshipFromData(data, forAttribute: "members")
   }
 
-}
-
-extension ISYDeviceGroup: MSJSONExport {
-
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-    appendValueForKey("flag", toDictionary: dictionary)
-    appendValueForKey("address", toDictionary: dictionary)
-    appendValueForKey("family", toDictionary: dictionary)
-    appendValueForKeyPath("members.uuid", forKey: "members.uuid", toDictionary: dictionary)
-    appendValueForKeyPath("device.uuid",  forKey: "device.uuid", toDictionary: dictionary)
-    dictionary.compact()
-    dictionary.compress()
-    return dictionary
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["flag"] = flag.jsonValue
+    obj["address"] = address.jsonValue
+    obj["family"] = family.jsonValue
+    obj["device.index"] = device?.index.jsonValue
+    obj["members.index"] = JSONValue(map(members, {$0.index}))
+    return obj.jsonValue
   }
 
 }

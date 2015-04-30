@@ -11,7 +11,7 @@ import UIKit
 import ObjectiveC
 import MoonKit
 
-public class BankRootController: UITableViewController, BankController {
+final public class BankRootController: UITableViewController, BankController {
 
   static let RootCellIdentifier = "RootCell"
 
@@ -33,7 +33,7 @@ public class BankRootController: UITableViewController, BankController {
 
   }
 
-  private(set) var exportSelection: [MSJSONExport] = []
+  private(set) var exportSelection: [JSONValueConvertible] = []
   var exportSelectionMode: Bool = false
 
   /** selectAllExportableItems */
@@ -92,9 +92,8 @@ extension BankRootController: UITableViewDelegate {
 
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
 // MARK: - Table view data source
-////////////////////////////////////////////////////////////////////////////////////////////////////
+
 extension BankRootController: UITableViewDataSource {
 
   /**
@@ -128,7 +127,7 @@ extension BankRootController: UITableViewDataSource {
   :returns: UITableViewCell
   */
   override public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier(self.dynamicType.RootCellIdentifier,
+    let cell = tableView.dequeueReusableCellWithIdentifier(BankRootController.RootCellIdentifier,
                                               forIndexPath: indexPath) as! BankRootCell
     cell.rootCategory = rootCategories[indexPath.row]
     return cell

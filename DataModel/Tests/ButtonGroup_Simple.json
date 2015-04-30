@@ -1,0 +1,129 @@
+{
+  "name": "DVR Activity 1x3",
+  "constraints": {
+    "index": {
+      "dVRInternetTV": "6EB0A6D1-992C-4F1D-816B-83E75187FCEB",
+      "guideTools": "037BB6A2-A4AF-408A-9F45-E48E0AA20E1E",
+      "info": "2E48E207-00B8-481A-A57E-4FA84B51A02C"
+    },
+    "format": [
+      "self.height ≥ 150",
+      "self.width ≥ 132",
+      "dVRInternetTV.height = guideTools.height",
+      "dVRInternetTV.left = self.left",
+      "dVRInternetTV.right = self.right",
+      "dVRInternetTV.top = guideTools.bottom + 4",
+      "guideTools.left = self.left",
+      "guideTools.right = self.right",
+      "guideTools.top = self.top",
+      "info.bottom = self.bottom",
+      "info.height = guideTools.height",
+      "info.left = self.left",
+      "info.right = self.right",
+      "info.top = dVRInternetTV.bottom + 4"
+    ]
+  },
+  "subelements": [
+    {
+      "uuid": "037BB6A2-A4AF-408A-9F45-E48E0AA20E1E",
+      "name": "Guide / Tools",
+      "shape": "rounded-rectangle",
+      "style": "gloss2",
+      "commands": {
+        "default": {           "code.index": "Dish/Dish/Guide"
+        },
+        "tv": {           "code.index": "Samsung/Samsung%20TV/Tools"
+        }
+      },
+      "titles": {
+        "default": {
+          "normal": {
+            "font": "Helvetica Neue@20",
+            "foregroundColor": "white",
+            "strokeColor": "white@50%",
+            "strokeWidth": -2,
+            "alignment": "center",
+            "text": "Guide"
+          },
+          "highlighted.foreground-color": "#00AFFFFF"
+        },
+        "tv": {
+          "normal": {
+            "font": "Helvetica Neue@20",
+            "foregroundColor": "white",
+            "strokeColor": "white@50%",
+            "strokeWidth": -2,
+            "alignment": "center",
+            "text": "Tools"
+          },
+          "highlighted.foreground-color": "#00AFFFFF"
+        }
+      },
+      "backgroundColors.default.normal": "#060606FF",
+      "titleEdge-insets": "{20, 20, 20, 20}"
+    },
+    {
+      "uuid": "6EB0A6D1-992C-4F1D-816B-83E75187FCEB",
+      "name": "DVR / Internet@TV",
+      "shape": "rounded-rectangle",
+      "style": "gloss2",
+      "commands": {
+        "default": {           "code.index": "Dish/Dish/DVR"
+        },
+        "tv": {           "code.index": "Samsung/Samsung%20TV/Internet@TV"
+        }
+      },
+      "titles": {
+        "default": {
+          "normal": {
+            "font": "Helvetica Neue@20",
+            "foregroundColor": "white",
+            "strokeColor": "white@50%",
+            "strokeWidth": -2,
+            "alignment": "center",
+            "text": "DVR"
+          },
+          "highlighted.foreground-color": "#00AFFFFF"
+        },
+        "tv": {
+          "normal": {
+            "font": "Helvetica Neue@20",
+            "foregroundColor": "white",
+            "strokeColor": "white@50%",
+            "strokeWidth": -2,
+            "alignment": "center",
+            "text": "Internet@TV"
+          },
+          "highlighted.foreground-color": "#00AFFFFF"
+        }
+      },
+      "backgroundColors.default.normal": "#060606FF",
+      "titleEdge-insets": "{20, 20, 20, 20}"
+    },
+    {
+      "uuid": "2E48E207-00B8-481A-A57E-4FA84B51A02C",
+      "name": "Info",
+      "shape": "rounded-rectangle",
+      "style": "gloss2",
+      "commands": {
+        "default": {           "code.index": "Dish/Dish/Info"
+        },
+        "tv": {           "code.index": "Samsung/Samsung%20TV/Info"
+        }
+      },
+      "titles.default": {
+        "normal": {
+          "font": "Helvetica Neue@20",
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
+          "alignment": "center",
+          "text": "Info"
+        },
+        "highlighted.foreground-color": "#00AFFFFF"
+      },
+      "backgroundColors.default.normal": "#060606FF",
+      "titleEdge-insets": "{20, 20, 20, 20}"
+    }
+  ]
+}

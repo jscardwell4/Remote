@@ -1,0 +1,65 @@
+[
+  {
+    "name": "Dish Hopper Activity",
+    "remote.index": "Dish%20Hopper%20Activity",
+    "launchMacro": {
+      "commands": [
+        {"code.index": "Sony/AV%20Receiver/TV%2FSAT"},
+        {"device.index": "Samsung%20TV", "state": "on"},
+        {"duration": 1 },
+        {"code.index": "Samsung/Samsung%20TV/HDMI%204"}
+      ]
+    },
+    "haltMacro": {
+      "commands": [
+        {"device.index": "Samsung%20TV", "state": "off"},
+        {"device.index": "AV%20Receiver", "state": "off"}
+      ]
+    }
+  },
+  {
+    "name": "Playstation Activity",
+    "launchMacro": {
+      "commands": [
+        {"code.index": "Sony/AV%20Receiver/Video%202"},
+        {"device.index": "Samsung%20TV", "state": "on"},
+        {"duration": 1 },
+        {"code.index": "Samsung/Samsung%20TV/HDMI%203"},
+        {"device.index": "PS3", "state": "on"}
+      ]
+    },
+    "haltMacro": {
+      "commands": [
+        {"device.index": "Samsung%20TV", "state": "off"},
+        {"device.index": "PS3", "state": "off"},
+        {"device.index": "AV%20Receiver", "state": "off"}
+      ]
+    }
+  },
+  {
+    "name": "Sonos Activity",
+    "launchMacro": {
+      "commands": [{"code.index": "Sony/AV%20Receiver/MD%2FTape"}]
+    },
+    "haltMacro": {
+      "commands": [{"device.index": "AV%20Receiver", "state": "off"}]
+    }
+  },
+  {
+    "name": " TV Activity",
+    "launchMacro": {
+      "commands": [
+        {"code.index": "Sony/AV%20Receiver/DVD"},
+        {"device.index": "Samsung%20TV", "state": "on"},
+        {"duration": 1 },
+        {"code.index": "Samsung/Samsung%20TV/HDMI%202"}
+      ]
+    },
+    "haltMacro": {
+      "commands": [
+        {"device.index": "Samsung%20TV", "state": "off"},
+        {"device.index": "AV%20Receiver", "state": "off"}
+      ]
+    }
+  }
+]

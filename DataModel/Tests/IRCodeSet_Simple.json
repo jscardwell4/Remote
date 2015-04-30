@@ -1,0 +1,7 @@
+{
+  "name": "Dish",
+  "user": true,
+  "codes": [
+    <@include IRCode_Simple.json>
+  ]
+}

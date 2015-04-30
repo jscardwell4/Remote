@@ -11,7 +11,7 @@
 #import "NSOrderedSet+MSKitAdditions.h"
 #import "NSString+MSKitAdditions.h"
 #import "NSValue+MSKitAdditions.h"
-#import "MSJSONSerialization.h"
+//#import "MSJSONSerialization.h"
 #import "NSPointerArray+MSKitAdditions.h"
 #import "NSNumber+MSKitAdditions.h"
 #import "MSKitMacros.h"
@@ -20,14 +20,15 @@
 #import "MSStack.h"
 #import "MSKeyPath.h"
 #import "NSMutableString+MSKitAdditions.h"
+#import "MoonKit/MoonKit-Swift.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
 #pragma unused(ddLogLevel,msLogContext)
 
-@interface NSObject ()
-@property (nonatomic, readonly) id         JSONValue;
-@end
+//@interface NSObject ()
+//@property (nonatomic, readonly) id         JSONValue;
+//@end
 
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - MSDictionary
@@ -352,12 +353,13 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 /// @return NSString *
 - (NSString *)formattedDescriptionWithOptions:(NSUInteger)options levelIndent:(NSUInteger)levelIndent {
 
-  NSMutableString * description = [self.JSONString mutableCopy];
-  [description replaceRegEx:@"(?<=\\s)[\\{\\[]|[\\]\\}],?$|,$|\\b\\\"|\\\"\\b|\\\",?$|(?<=: )\\\"|^[\\{\\[]"
-                 withString:@""];
-  [description shiftRight:levelIndent];
+//  NSMutableString * description = [self.JSONString mutableCopy];
+//  [description replaceRegEx:@"(?<=\\s)[\\{\\[]|[\\]\\}],?$|,$|\\b\\\"|\\\"\\b|\\\",?$|(?<=: )\\\"|^[\\{\\[]"
+//                 withString:@""];
+//  [description shiftRight:levelIndent];
 
-  return description;
+//  return description;
+  return [self description];
 
 }
 
@@ -693,52 +695,52 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 /// JSONObject
 /// @return id
-- (id)JSONObject {
-
-  if ([NSJSONSerialization isValidJSONObject:self]) return self;
-
-  MSDictionary * dictionary = [MSDictionary dictionaryWithCapacity:[self count]];
-
-  [self enumerateKeysAndObjectsUsingBlock:
-   ^(id key, id obj, BOOL * stop)
-   {
-     NSString * keyString = [key description];
-     dictionary[keyString] = obj;
-
-     if (![NSJSONSerialization isValidJSONObject:dictionary]) {
-       [dictionary removeObjectForKey:keyString];
-
-       if ([obj respondsToSelector:@selector(JSONObject)]) {
-         id jsonObj = [obj JSONObject];
-
-         if ([NSJSONSerialization isValidJSONObject:jsonObj])
-           dictionary[keyString] = jsonObj;
-
-         else
-           MSLogDebug(@"object of type %@ returned invalid JSON object",
-                      ClassTagStringForInstance(obj));
-       } else if ([obj respondsToSelector:@selector(JSONValue)])   {
-         id jsonValue = [obj valueForKey:@"JSONValue"];
-
-         if ([MSJSONSerialization isValidJSONValue:jsonValue])
-           dictionary[keyString] = jsonValue;
-
-         else
-           MSLogDebug(@"object of type %@ returned invalid JSON Value",
-                      ClassTagStringForInstance(obj));
-       }
-
-       NSAssert(![dictionary count] || [NSJSONSerialization isValidJSONObject:dictionary],
-                @"Only valid JSON values should have been added to dictionary");
-     }
-   }];
-
-  return dictionary;
-}
+//- (id)JSONObject {
+//
+//  if ([NSJSONSerialization isValidJSONObject:self]) return self;
+//
+//  MSDictionary * dictionary = [MSDictionary dictionaryWithCapacity:[self count]];
+//
+//  [self enumerateKeysAndObjectsUsingBlock:
+//   ^(id key, id obj, BOOL * stop)
+//   {
+//     NSString * keyString = [key description];
+//     dictionary[keyString] = obj;
+//
+//     if (![NSJSONSerialization isValidJSONObject:dictionary]) {
+//       [dictionary removeObjectForKey:keyString];
+//
+//       if ([obj respondsToSelector:@selector(JSONObject)]) {
+//         id jsonObj = [obj JSONObject];
+//
+//         if ([NSJSONSerialization isValidJSONObject:jsonObj])
+//           dictionary[keyString] = jsonObj;
+//
+//         else
+//           MSLogDebug(@"object of type %@ returned invalid JSON object",
+//                      ClassTagStringForInstance(obj));
+//       } else if ([obj respondsToSelector:@selector(JSONValue)])   {
+//         id jsonValue = [obj valueForKey:@"JSONValue"];
+//
+//         if ([MSJSONSerialization isValidJSONValue:jsonValue])
+//           dictionary[keyString] = jsonValue;
+//
+//         else
+//           MSLogDebug(@"object of type %@ returned invalid JSON Value",
+//                      ClassTagStringForInstance(obj));
+//       }
+//
+//       NSAssert(![dictionary count] || [NSJSONSerialization isValidJSONObject:dictionary],
+//                @"Only valid JSON values should have been added to dictionary");
+//     }
+//   }];
+//
+//  return dictionary;
+//}
 
 /// JSONString
 /// @return NSString *
-- (NSString *)JSONString { return [MSJSONSerialization JSONFromObject:self.JSONObject]; }
+//- (NSString *)JSONString { return [MSJSONSerialization JSONFromObject:self.JSONObject options:MSJSONWriteFormatOptionsDefault]; }
 
 /// JSONDictionary
 /// @return MSDictionary *

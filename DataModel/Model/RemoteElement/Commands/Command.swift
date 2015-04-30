@@ -19,25 +19,12 @@ import MoonKit
   <SystemCommand>, <SendIRCommand>, <HTTPCommand>, <SwitchToRemoteCommand>.
 */
 @objc(Command)
-public class Command: NamedModelObject {
+public class Command: ModelObject {
 
   /** Simple enumeration for specifying execution behavior. */
   public enum Option { case Default, LongPress }
 
-  @NSManaged var primitiveIndicator: NSNumber
-  public var indicator: Bool {
-    get {
-      willAccessValueForKey("indicator")
-      let indicator = primitiveIndicator
-      didAccessValueForKey("indicator")
-      return indicator.boolValue
-    }
-    set {
-      willChangeValueForKey("indicator")
-      primitiveIndicator = newValue
-      didChangeValueForKey("indicator")
-    }
-  }
+  public var indicator: Bool { return false }
 
   /**
   execute:error:
@@ -50,25 +37,45 @@ public class Command: NamedModelObject {
     operation.start()
   }
 
+  private static let ActivityCommandKeys  = Set(["activity"])
+  private static let DelayCommandKeys     = Set(["delay"])
+  private static let HTTPCommandKeys      = Set(["url"])
+  private static let PowerCommandKeys     = Set(["device", "state"])
+  private static let SendIRCommandKeys    = Set(["code"])
+  private static let SwitchCommandKeys    = Set(["targetType", "target"])
+  private static let SystemCommandKeys    = Set(["type"])
+  private static let MacroCommandKeys     = Set(["commands"])
+
+  /**
+  importTypeForKeys:
+
+  :param: keys [String]
+
+  :returns: Command.Type
+  */
+  private static func importTypeForKeys(keys: [String]) -> Command.Type? {
+    if ActivityCommandKeys ⊇ keys { return ActivityCommand.self}
+    if DelayCommandKeys ⊇ keys { return DelayCommand.self}
+    if HTTPCommandKeys ⊇ keys { return HTTPCommand.self}
+    if PowerCommandKeys ⊇ keys { return PowerCommand.self}
+    if SendIRCommandKeys ⊇ keys { return SendIRCommand.self}
+    if SwitchCommandKeys ⊇ keys { return SwitchCommand.self}
+    if SystemCommandKeys ⊇ keys { return SystemCommand.self}
+    if MacroCommandKeys ⊇ keys { return MacroCommand.self}
+    return nil
+  }
+
   /**
   importObjectWithData:context:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   :param: context NSManagedObjectContext!
 
   :returns: Command?
   */
-  override public class func importObjectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> Command? {
-    if self === Command.self, let classJSONValue = data["class"] as? String {
-      switch classJSONValue {
-        case "power":  return PowerCommand(data: data, context: context)
-        case "delay":  return DelayCommand(data: data, context: context)
-        case "sendir": return SendIRCommand(data: data, context: context)
-        case "http":   return HTTPCommand(data: data, context: context)
-        case "system": return SystemCommand(data: data, context: context)
-        case "macro":  return MacroCommand(data: data, context: context)
-        default:       return nil
-      }
+  override public class func importObjectWithData(data: ObjectJSONValue, context: NSManagedObjectContext) -> Command? {
+    if self === Command.self, let type = importTypeForKeys(data.keys.array) {
+      return type.importObjectWithData(data, context: context)
     } else {
       return super.importObjectWithData(data, context: context) as? Command
     }

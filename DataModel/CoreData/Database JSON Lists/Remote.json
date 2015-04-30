@@ -50,23 +50,21 @@
             "name": "Mute Button",
             "shape": "rounded-rectangle",
             "style": "gloss2",
-            "commands.default": {
-              "class": "sendir",
-              "code.uuid": "DE4E3022-06CB-451F-B19C-CB8F26A84619"
+            "commands.default": {               "code.uuid": "DE4E3022-06CB-451F-B19C-CB8F26A84619"
             },
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@20",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": "Mute"
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           }
         ]
       },
@@ -139,21 +137,17 @@
         "command-set-collection.default": {
           "VOL": {
             "type": "rocker",
-            "top": {
-              "class": "sendir",
-              "code.uuid": "DFBB376D-E061-448C-922C-32B20F69D11C"
+            "top": {               "code.uuid": "DFBB376D-E061-448C-922C-32B20F69D11C"
             },
-            "bottom": {
-              "class": "sendir",
-              "code.uuid": "C27992CE-912E-4D75-8938-AE80A0C2F9F0"
+            "bottom": {               "code.uuid": "C27992CE-912E-4D75-8938-AE80A0C2F9F0"
             }
           }
         },
-        "label-attributes": {
+        "labelAttributes": {
           "font": "Helvetica Neue@20",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center"
         }
       },
@@ -222,9 +216,7 @@
                 "powerOffAndExitActivity.width = 50"
               ]
             },
-            "commands.default": {
-              "class": "activity",
-              "activity.uuid": "8C1918C0-300F-4DBF-AC09-B8DB9CF55290"
+            "commands.default": {              "activity.uuid": "8C1918C0-300F-4DBF-AC09-B8DB9CF55290"
             },
             "icons.default": {
               "normal": {
@@ -250,7 +242,7 @@
     "uuid": "F668F0D5-80E4-46A4-A703-EF5A1601C645",
     "name": "Dish Hopper Activity",
     "key": "activity1",
-    "top-bar-hidden": true,
+    "topBar-hidden": true,
     "constraints": {
       "index": {
         "dishHopperActivity": "F668F0D5-80E4-46A4-A703-EF5A1601C645",
@@ -325,22 +317,18 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "commands": {
-              "default": {
-                "class": "sendir",
-                "code.uuid": "CC3DAB57-1897-44CB-AA05-6B48CBE96A6D"
+              "default": {                 "code.uuid": "CC3DAB57-1897-44CB-AA05-6B48CBE96A6D"
               },
-              "tv": {
-                "class": "sendir",
-                "code.uuid": "A32C02D7-6CE0-46C0-8469-8F074C6D96E5"
+              "tv": {                 "code.uuid": "A32C02D7-6CE0-46C0-8469-8F074C6D96E5"
               }
             },
             "titles": {
               "default": {
                 "normal": {
                   "font": "Helvetica Neue@20",
-                  "foreground-color": "white",
-                  "stroke-color": "white@50%",
-                  "stroke-width": -2,
+                  "foregroundColor": "white",
+                  "strokeColor": "white@50%",
+                  "strokeWidth": -2,
                   "alignment": "center",
                   "text": "Guide"
                 },
@@ -349,9 +337,9 @@
               "tv": {
                 "normal": {
                   "font": "Helvetica Neue@20",
-                  "foreground-color": "white",
-                  "stroke-color": "white@50%",
-                  "stroke-width": -2,
+                  "foregroundColor": "white",
+                  "strokeColor": "white@50%",
+                  "strokeWidth": -2,
                   "alignment": "center",
                   "text": "Tools"
                 },
@@ -359,7 +347,7 @@
               }
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "6EB0A6D1-992C-4F1D-816B-83E75187FCEB",
@@ -367,22 +355,18 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "commands": {
-              "default": {
-                "class": "sendir",
-                "code.uuid": "A4A417A0-F5AA-45E4-839E-F0727EC81A3F"
+              "default": {                 "code.uuid": "A4A417A0-F5AA-45E4-839E-F0727EC81A3F"
               },
-              "tv": {
-                "class": "sendir",
-                "code.uuid": "31E6CBAC-BA05-42DD-827D-45496EBDC78B"
+              "tv": {                 "code.uuid": "31E6CBAC-BA05-42DD-827D-45496EBDC78B"
               }
             },
             "titles": {
               "default": {
                 "normal": {
                   "font": "Helvetica Neue@20",
-                  "foreground-color": "white",
-                  "stroke-color": "white@50%",
-                  "stroke-width": -2,
+                  "foregroundColor": "white",
+                  "strokeColor": "white@50%",
+                  "strokeWidth": -2,
                   "alignment": "center",
                   "text": "DVR"
                 },
@@ -391,9 +375,9 @@
               "tv": {
                 "normal": {
                   "font": "Helvetica Neue@20",
-                  "foreground-color": "white",
-                  "stroke-color": "white@50%",
-                  "stroke-width": -2,
+                  "foregroundColor": "white",
+                  "strokeColor": "white@50%",
+                  "strokeWidth": -2,
                   "alignment": "center",
                   "text": "Internet@TV"
                 },
@@ -401,7 +385,7 @@
               }
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "2E48E207-00B8-481A-A57E-4FA84B51A02C",
@@ -409,28 +393,24 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "commands": {
-              "default": {
-                "class": "sendir",
-                "code.uuid": "456D6184-88CF-473C-BF42-16ABF13D1F10"
+              "default": {                 "code.uuid": "456D6184-88CF-473C-BF42-16ABF13D1F10"
               },
-              "tv": {
-                "class": "sendir",
-                "code.uuid": "30B1392A-7827-48AB-81DE-CA17439BC738"
+              "tv": {                 "code.uuid": "30B1392A-7827-48AB-81DE-CA17439BC738"
               }
             },
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@20",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": "Info"
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           }
         ]
       },
@@ -503,43 +483,31 @@
         "command-set-collection.default": {
           "CH": {
             "type": "rocker",
-            "top": {
-              "class": "sendir",
-              "code.uuid": "11B0541B-5C94-49A0-853A-D8C94A76998B"
+            "top": {               "code.uuid": "11B0541B-5C94-49A0-853A-D8C94A76998B"
             },
-            "bottom": {
-              "class": "sendir",
-              "code.uuid": "034EC537-9817-45BE-A66E-E58C7EC3AEF9"
+            "bottom": {               "code.uuid": "034EC537-9817-45BE-A66E-E58C7EC3AEF9"
             }
           },
           "PAGE": {
             "type": "rocker",
-            "top": {
-              "class": "sendir",
-              "code.uuid": "8F9E00ED-FAFA-40B3-A1FA-01B0DF073A75"
+            "top": {               "code.uuid": "8F9E00ED-FAFA-40B3-A1FA-01B0DF073A75"
             },
-            "bottom": {
-              "class": "sendir",
-              "code.uuid": "8A77DAEA-8B71-4525-917F-916AA636AEBA"
+            "bottom": {               "code.uuid": "8A77DAEA-8B71-4525-917F-916AA636AEBA"
             }
           },
           "VOL": {
             "type": "rocker",
-            "top": {
-              "class": "sendir",
-              "code.uuid": "DFBB376D-E061-448C-922C-32B20F69D11C"
+            "top": {               "code.uuid": "DFBB376D-E061-448C-922C-32B20F69D11C"
             },
-            "bottom": {
-              "class": "sendir",
-              "code.uuid": "C27992CE-912E-4D75-8938-AE80A0C2F9F0"
+            "bottom": {               "code.uuid": "C27992CE-912E-4D75-8938-AE80A0C2F9F0"
             }
           }
         },
-        "label-attributes": {
+        "labelAttributes": {
           "font": "Helvetica Neue@20",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center"
         }
       },
@@ -595,15 +563,15 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@28",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": "OK"
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "DAAF0866-265A-41C8-AA68-CAFF633E1190",
@@ -684,25 +652,15 @@
         ],
         "command-set.default": {
           "type": "dpad",
-          "up": {
-            "class": "sendir",
-            "code.uuid": "1C8D165D-4BCD-4CC7-B89F-8FAF9047B0A5"
+          "up": {             "code.uuid": "1C8D165D-4BCD-4CC7-B89F-8FAF9047B0A5"
           },
-          "down": {
-            "class": "sendir",
-            "code.uuid": "EE477ADE-805D-46BF-958E-711561A0E621"
+          "down": {             "code.uuid": "EE477ADE-805D-46BF-958E-711561A0E621"
           },
-          "left": {
-            "class": "sendir",
-            "code.uuid": "7CB204B0-2837-4612-BF3D-6638D8B3D93B"
+          "left": {             "code.uuid": "7CB204B0-2837-4612-BF3D-6638D8B3D93B"
           },
-          "right": {
-            "class": "sendir",
-            "code.uuid": "0BBC99B9-E435-490E-ACE7-DF53DDD4E2F7"
+          "right": {             "code.uuid": "0BBC99B9-E435-490E-ACE7-DF53DDD4E2F7"
           },
-          "center": {
-            "class": "sendir",
-            "code.uuid": "E551D890-CFC0-4000-BE8C-06873C8AECDB"
+          "center": {             "code.uuid": "E551D890-CFC0-4000-BE8C-06873C8AECDB"
           }
         }
       },
@@ -771,9 +729,7 @@
                 "powerOffAndExitActivity.width = 50"
               ]
             },
-            "commands.default": {
-              "class": "activity",
-              "activity.uuid": "D6993345-F209-4CBD-A39C-C912BF550AC5"
+            "commands.default": {              "activity.uuid": "D6993345-F209-4CBD-A39C-C912BF550AC5"
             },
             "icons.default": {
               "normal": {
@@ -880,16 +836,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": 1
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "FD25B8D7-B6A3-46F5-A14D-BA66EC9B6624",
@@ -900,16 +856,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": 2
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "26D4A4EA-AD0A-4A4F-8F19-AD2EBDF2B4DD",
@@ -920,16 +876,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": 3
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "F7E72BB6-7C56-4D71-8B09-4FE29EF76EB6",
@@ -940,16 +896,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": 4
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "FD56CF91-26C4-47A2-9052-7D3504C85F59",
@@ -960,16 +916,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": 5
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "A9A11EB5-341F-42BB-A482-D81EED4D6436",
@@ -980,16 +936,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": 6
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "8C750F21-4D8D-4F5A-8E1B-0B9294AF2A7C",
@@ -1000,16 +956,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": 7
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "789737C2-D0D7-401B-B079-D305C65DA5F9",
@@ -1020,16 +976,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": 8
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "2F310C3B-37A8-4AE0-B652-21160A3DBB00",
@@ -1040,16 +996,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": 9
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "07B126DA-A7BE-4B1C-ACD1-5DD5F551DDF7",
@@ -1060,16 +1016,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": 0
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "6F2F49AE-EC61-404B-A544-468A8D9EB74A",
@@ -1080,16 +1036,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@20",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": "Exit"
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "D7E718BE-7E0D-4C19-8A75-625C8C5445A1",
@@ -1100,16 +1056,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@20",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": "Enter"
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "E9D65885-43D4-4DFA-A3A6-C4ADCF70D94A",
@@ -1117,62 +1073,38 @@
             "role": "tuck",
             "titles.default.normal": {
               "font": "FontAwesome@24",
-              "foreground-color": "gray@75%",
-              "text-effect": "letter-press",
-              "icon-name": "chevron-up"
+              "foregroundColor": "gray@75%",
+              "textEffect": "letter-press",
+              "iconName": "chevron-up"
             },
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           }
         ],
         "command-set.default": {
           "type": "numberpad",
-          "one": {
-            "class": "sendir",
-            "code.uuid": "0313E4A0-996F-4968-8DAB-0C799BD4D2A6"
+          "one": {             "code.uuid": "0313E4A0-996F-4968-8DAB-0C799BD4D2A6"
           },
-          "two": {
-            "class": "sendir",
-            "code.uuid": "1B86BE5A-F8D6-4798-895A-B881E6E623D1"
+          "two": {             "code.uuid": "1B86BE5A-F8D6-4798-895A-B881E6E623D1"
           },
-          "three": {
-            "class": "sendir",
-            "code.uuid": "266FC2EF-2EDB-4A41-A42D-2BC1129DFECA"
+          "three": {             "code.uuid": "266FC2EF-2EDB-4A41-A42D-2BC1129DFECA"
           },
-          "four": {
-            "class": "sendir",
-            "code.uuid": "4D24C204-E3FC-4473-A438-38E5B6EE3FE6"
+          "four": {             "code.uuid": "4D24C204-E3FC-4473-A438-38E5B6EE3FE6"
           },
-          "five": {
-            "class": "sendir",
-            "code.uuid": "40BCAC68-BC65-4AD4-A5F9-39A541AEF71E"
+          "five": {             "code.uuid": "40BCAC68-BC65-4AD4-A5F9-39A541AEF71E"
           },
-          "six": {
-            "class": "sendir",
-            "code.uuid": "E57C7D62-3597-45B0-9B80-45F5559F7C18"
+          "six": {             "code.uuid": "E57C7D62-3597-45B0-9B80-45F5559F7C18"
           },
-          "seven": {
-            "class": "sendir",
-            "code.uuid": "B9007475-33AA-4CD7-87E7-3EEF413486FD"
+          "seven": {             "code.uuid": "B9007475-33AA-4CD7-87E7-3EEF413486FD"
           },
-          "eight": {
-            "class": "sendir",
-            "code.uuid": "E6195194-F7FE-42C2-962A-13A6AA6858E0"
+          "eight": {             "code.uuid": "E6195194-F7FE-42C2-962A-13A6AA6858E0"
           },
-          "nine": {
-            "class": "sendir",
-            "code.uuid": "019887BD-C57E-4CBD-A8C0-62C1167601D9"
+          "nine": {             "code.uuid": "019887BD-C57E-4CBD-A8C0-62C1167601D9"
           },
-          "zero": {
-            "class": "sendir",
-            "code.uuid": "4D359D0D-BBE0-4BF5-85D3-9BF2CD338563"
+          "zero": {             "code.uuid": "4D359D0D-BBE0-4BF5-85D3-9BF2CD338563"
           },
-          "aux1": {
-            "class": "sendir",
-            "code.uuid": "60500AB6-9450-4BEA-86AD-CDB74E90A768"
+          "aux1": {             "code.uuid": "60500AB6-9450-4BEA-86AD-CDB74E90A768"
           },
-          "aux2": {
-            "class": "sendir",
-            "code.uuid": "E551D890-CFC0-4000-BE8C-06873C8AECDB"
+          "aux2": {             "code.uuid": "E551D890-CFC0-4000-BE8C-06873C8AECDB"
           }
         }
       },
@@ -1244,17 +1176,17 @@
             "titles.default": {
               "normal": {
                 "font": "FontAwesome@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
-                "icon-name": "play"
+                "iconName": "play"
               },
               "disabled.foreground-color": "#7F7F7FFF",
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "7754F230-C17E-4333-AD7F-202A34AB71E1",
@@ -1265,17 +1197,17 @@
             "titles.default": {
               "normal": {
                 "font": "FontAwesome@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
-                "icon-name": "pause"
+                "iconName": "pause"
               },
               "disabled.foreground-color": "#7F7F7FFF",
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "D4F04A8A-C2CA-4235-8C6E-080AD7DA5A3B",
@@ -1286,17 +1218,17 @@
             "titles.default": {
               "normal": {
                 "font": "FontAwesome@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
-                "icon-name": "backward"
+                "iconName": "backward"
               },
               "disabled.foreground-color": "#7F7F7FFF",
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "804894ED-2BA4-467D-A7E2-43E45ECC946B",
@@ -1307,17 +1239,17 @@
             "titles.default": {
               "normal": {
                 "font": "FontAwesome@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
-                "icon-name": "fast-forward"
+                "iconName": "fast-forward"
               },
               "disabled.foreground-color": "#7F7F7FFF",
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "5996C324-C978-4AE8-97BA-4F5468CCDEFB",
@@ -1328,17 +1260,17 @@
             "titles.default": {
               "normal": {
                 "font": "FontAwesome@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
-                "icon-name": "stop"
+                "iconName": "stop"
               },
               "disabled.foreground-color": "#7F7F7FFF",
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "4BD189E1-996D-4667-B1C0-80C43BC27445",
@@ -1349,17 +1281,17 @@
             "titles.default": {
               "normal": {
                 "font": "FontAwesome@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
-                "icon-name": "step-backward"
+                "iconName": "step-backward"
               },
               "disabled.foreground-color": "#7F7F7FFF",
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "051E7613-FE45-47CE-AE8A-F50B776348AC",
@@ -1367,11 +1299,11 @@
             "role": "tuck",
             "titles.default.normal": {
               "font": "FontAwesome@24",
-              "foreground-color": "gray@75%",
-              "text-effect": "letter-press",
-              "icon-name": "chevron-down"
+              "foregroundColor": "gray@75%",
+              "textEffect": "letter-press",
+              "iconName": "chevron-down"
             },
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "08FF87FF-685F-4A56-A40C-BF954852152B",
@@ -1382,17 +1314,17 @@
             "titles.default": {
               "normal": {
                 "font": "FontAwesome@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
-                "icon-name": "step-forward"
+                "iconName": "step-forward"
               },
               "disabled.foreground-color": "#7F7F7FFF",
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "FC1F0B10-D228-48E5-940E-997D6DD3ED67",
@@ -1403,52 +1335,36 @@
             "titles.default": {
               "normal": {
                 "font": "FontAwesome@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
-                "icon-name": "circle"
+                "iconName": "circle"
               },
               "disabled.foreground-color": "#7F7F7FFF",
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           }
         ],
         "command-set.default": {
           "type": "transport",
-          "record": {
-            "class": "sendir",
-            "code.uuid": "C613F7A8-5089-4440-B427-C121165DE70C"
+          "record": {             "code.uuid": "C613F7A8-5089-4440-B427-C121165DE70C"
           },
-          "play": {
-            "class": "sendir",
-            "code.uuid": "7EE63EAB-1054-4DF7-A66B-9E51816AB8D0"
+          "play": {             "code.uuid": "7EE63EAB-1054-4DF7-A66B-9E51816AB8D0"
           },
-          "pause": {
-            "class": "sendir",
-            "code.uuid": "5AA092F8-2D93-437F-B3D0-4006E52DC371"
+          "pause": {             "code.uuid": "5AA092F8-2D93-437F-B3D0-4006E52DC371"
           },
-          "stop": {
-            "class": "sendir",
-            "code.uuid": "4376CED6-A57A-4930-B3A7-1A234B86291D"
+          "stop": {             "code.uuid": "4376CED6-A57A-4930-B3A7-1A234B86291D"
           },
-          "skip": {
-            "class": "sendir",
-            "code.uuid": "4DDE9552-4EE5-492E-98F4-8EF6600CED85"
+          "skip": {             "code.uuid": "4DDE9552-4EE5-492E-98F4-8EF6600CED85"
           },
-          "replay": {
-            "class": "sendir",
-            "code.uuid": "FEA29DF1-DA83-4775-9C73-85291A51961C"
+          "replay": {             "code.uuid": "FEA29DF1-DA83-4775-9C73-85291A51961C"
           },
-          "rewind": {
-            "class": "sendir",
-            "code.uuid": "3A8A1370-8842-42C7-9FB3-F01BDCCA9475"
+          "rewind": {             "code.uuid": "3A8A1370-8842-42C7-9FB3-F01BDCCA9475"
           },
-          "fast-forward": {
-            "class": "sendir",
-            "code.uuid": "502E0C1F-9524-4271-893C-089A45FF4BCF"
+          "fastForward": {             "code.uuid": "502E0C1F-9524-4271-893C-089A45FF4BCF"
           }
         }
       },
@@ -1487,16 +1403,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": "STB"
               },
               "selected.foreground-color": "yellow",
               "highlighted.foreground-color": "yellow"
             },
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "DDF69EC8-CE1A-45A0-8721-CD91DBEA2135",
@@ -1506,16 +1422,16 @@
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@32",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": "TV"
               },
               "selected.foreground-color": "yellow",
               "highlighted.foreground-color": "yellow"
             },
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           }
         ]
       },
@@ -1579,22 +1495,18 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "commands": {
-              "default": {
-                "class": "sendir",
-                "code.uuid": "B665AE8E-B376-476E-AED5-471294F06ABB"
+              "default": {                 "code.uuid": "B665AE8E-B376-476E-AED5-471294F06ABB"
               },
-              "tv": {
-                "class": "sendir",
-                "code.uuid": "F39821FE-3AA2-44B9-84C5-BBC275C4623F"
+              "tv": {                 "code.uuid": "F39821FE-3AA2-44B9-84C5-BBC275C4623F"
               }
             },
             "titles": {
               "default": {
                 "normal": {
                   "font": "Helvetica Neue@18",
-                  "foreground-color": "white",
-                  "stroke-color": "white@50%",
-                  "stroke-width": -2,
+                  "foregroundColor": "white",
+                  "strokeColor": "white@50%",
+                  "strokeWidth": -2,
                   "alignment": "center",
                   "text": "On Demand"
                 }
@@ -1602,16 +1514,16 @@
               "tv": {
                 "normal": {
                   "font": "Helvetica Neue@18",
-                  "foreground-color": "white",
-                  "stroke-color": "white@50%",
-                  "stroke-width": -2,
+                  "foregroundColor": "white",
+                  "strokeColor": "white@50%",
+                  "strokeWidth": -2,
                   "alignment": "center",
                   "text": "Source"
                 }
               }
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "84B5AAD7-F716-49E4-B2DC-F9654CD5EA83",
@@ -1619,25 +1531,21 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "commands": {
-              "default": {
-                "class": "sendir",
-                "code.uuid": "C2DDF628-8E2B-40C3-B1E2-6DA3AA65E191"
+              "default": {                 "code.uuid": "C2DDF628-8E2B-40C3-B1E2-6DA3AA65E191"
               },
-              "tv": {
-                "class": "sendir",
-                "code.uuid": "C2DDF628-8E2B-40C3-B1E2-6DA3AA65E191"
+              "tv": {                 "code.uuid": "C2DDF628-8E2B-40C3-B1E2-6DA3AA65E191"
               }
             },
             "titles.default.normal": {
               "font": "Helvetica Neue@18",
-              "foreground-color": "white",
-              "stroke-color": "white@50%",
-              "stroke-width": -2,
+              "foregroundColor": "white",
+              "strokeColor": "white@50%",
+              "strokeWidth": -2,
               "alignment": "center",
               "text": "Menu"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "1490C210-7F20-4276-810D-232396713B76",
@@ -1645,22 +1553,18 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "commands": {
-              "default": {
-                "class": "sendir",
-                "code.uuid": "C7CA9E3E-D0A5-42D2-95C7-5F24CC27A565"
+              "default": {                 "code.uuid": "C7CA9E3E-D0A5-42D2-95C7-5F24CC27A565"
               },
-              "tv": {
-                "class": "sendir",
-                "code.uuid": "C7CA9E3E-D0A5-42D2-95C7-5F24CC27A565"
+              "tv": {                 "code.uuid": "C7CA9E3E-D0A5-42D2-95C7-5F24CC27A565"
               }
             },
             "titles": {
               "default": {
                 "normal": {
                   "font": "Helvetica Neue@18",
-                  "foreground-color": "white",
-                  "stroke-color": "white@50%",
-                  "stroke-width": -2,
+                  "foregroundColor": "white",
+                  "strokeColor": "white@50%",
+                  "strokeWidth": -2,
                   "alignment": "center",
                   "text": "Last"
                 }
@@ -1668,16 +1572,16 @@
               "tv": {
                 "normal": {
                   "font": "Helvetica Neue@18",
-                  "foreground-color": "white",
-                  "stroke-color": "white@50%",
-                  "stroke-width": -2,
+                  "foregroundColor": "white",
+                  "strokeColor": "white@50%",
+                  "strokeWidth": -2,
                   "alignment": "center",
                   "text": "Return"
                 }
               }
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "5EBDC469-0E9E-4720-A65E-86F6EF652635",
@@ -1685,85 +1589,75 @@
             "shape": "rounded-rectangle",
             "style": "gloss2",
             "commands": {
-              "default": {
-                "class": "sendir",
-                "code.uuid": "3140A2C4-3795-497D-8660-3D1B87267648"
+              "default": {                 "code.uuid": "3140A2C4-3795-497D-8660-3D1B87267648"
               },
-              "tv": {
-                "class": "sendir",
-                "code.uuid": "3140A2C4-3795-497D-8660-3D1B87267648"
+              "tv": {                 "code.uuid": "3140A2C4-3795-497D-8660-3D1B87267648"
               }
             },
             "titles.default.normal": {
               "font": "Helvetica Neue@18",
-              "foreground-color": "white",
-              "stroke-color": "white@50%",
-              "stroke-width": -2,
+              "foregroundColor": "white",
+              "strokeColor": "white@50%",
+              "strokeWidth": -2,
               "alignment": "center",
               "text": "Exit"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "447B0C03-6390-47B3-8F66-FA58E79AAE81",
             "name": "DVR Audio Input",
             "shape": "rounded-rectangle",
             "style": "gloss2",
-            "commands.default": {
-              "class": "sendir",
-              "code.uuid": "DB4BE36E-6E24-4331-A3BA-616F1AEA0883"
+            "commands.default": {               "code.uuid": "DB4BE36E-6E24-4331-A3BA-616F1AEA0883"
             },
             "titles.default.normal": {
               "font": "Helvetica Neue@18",
-              "foreground-color": "white",
-              "stroke-color": "white@50%",
-              "stroke-width": -2,
+              "foregroundColor": "white",
+              "strokeColor": "white@50%",
+              "strokeWidth": -2,
               "alignment": "center",
               "text": "DVR Audio"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "CA88D652-A7F3-4EBE-ABC0-E559CE6AF337",
             "name": "TV Audio Input",
             "shape": "rounded-rectangle",
             "style": "gloss2",
-            "commands.default": {
-              "class": "sendir",
-              "code.uuid": "076B62D3-50D1-4112-A6FE-F540A366D9E9"
+            "commands.default": {               "code.uuid": "076B62D3-50D1-4112-A6FE-F540A366D9E9"
             },
             "titles.default.normal": {
               "font": "Helvetica Neue@18",
-              "foreground-color": "white",
-              "stroke-color": "white@50%",
-              "stroke-width": -2,
+              "foregroundColor": "white",
+              "strokeColor": "white@50%",
+              "strokeWidth": -2,
               "alignment": "center",
               "text": "TV Audio"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "66E58C75-BC33-4E25-A4AE-876E37FA991E",
             "name": "Mute",
             "shape": "rounded-rectangle",
             "style": "gloss2",
-            "commands.default": {
-              "class": "sendir",
-              "code.uuid": "DE4E3022-06CB-451F-B19C-CB8F26A84619"
+            "commands.default": {               "code.uuid": "DE4E3022-06CB-451F-B19C-CB8F26A84619"
             },
             "titles.default.normal": {
               "font": "Helvetica Neue@18",
-              "foreground-color": "white",
-              "stroke-color": "white@50%",
-              "stroke-width": -2,
+              "foregroundColor": "white",
+              "strokeColor": "white@50%",
+              "strokeWidth": -2,
               "alignment": "center",
               "text": "Mute"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "E205BA81-90BD-4943-B2F5-6230AD2D95E9",
@@ -1771,11 +1665,11 @@
             "role": "tuck",
             "titles.default.normal": {
               "font": "FontAwesome@24",
-              "foreground-color": "gray@75%",
-              "text-effect": "letter-press",
-              "icon-name": "chevron-left"
+              "foregroundColor": "gray@75%",
+              "textEffect": "letter-press",
+              "iconName": "chevron-left"
             },
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           }
         ]
       }
@@ -1845,23 +1739,21 @@
               "index.dish": "92E33ABD-9893-47A9-8922-86146A94C0E4",
               "format": "dish.height = dish.width"
             },
-            "commands.default": {
-              "class": "activity",
-              "activity.uuid": "D6993345-F209-4CBD-A39C-C912BF550AC5"
+            "commands.default": {              "activity.uuid": "D6993345-F209-4CBD-A39C-C912BF550AC5"
             },
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@20",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": "Dish"
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "DB1C794B-A3BB-4C9E-91EC-88A1D3FB401A",
@@ -1872,23 +1764,21 @@
               "index.playstation": "DB1C794B-A3BB-4C9E-91EC-88A1D3FB401A",
               "format": "playstation.height = playstation.width"
             },
-            "commands.default": {
-              "class": "activity",
-              "activity.uuid": "863844ED-4BCD-4B75-AD67-DEE8A23233D1"
+            "commands.default": {              "activity.uuid": "863844ED-4BCD-4B75-AD67-DEE8A23233D1"
             },
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@20",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": "Playstation"
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "58A7D2DB-9635-486A-9336-43D6292674BA",
@@ -1899,23 +1789,21 @@
               "index.appleTV": "58A7D2DB-9635-486A-9336-43D6292674BA",
               "format": "appleTV.height = appleTV.width"
             },
-            "commands.default": {
-              "class": "activity",
-              "activity.uuid": "DEB5EAC1-7040-4CA1-A309-423BACB533A4"
+            "commands.default": {              "activity.uuid": "DEB5EAC1-7040-4CA1-A309-423BACB533A4"
             },
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@20",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": " TV"
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           },
           {
             "uuid": "19F3F351-AB2B-435D-A31A-ECB703DDE993",
@@ -1926,23 +1814,21 @@
               "index.sonos": "19F3F351-AB2B-435D-A31A-ECB703DDE993",
               "format": "sonos.height = sonos.width"
             },
-            "commands.default": {
-              "class": "activity",
-              "activity.uuid": "8C1918C0-300F-4DBF-AC09-B8DB9CF55290"
+            "commands.default": {              "activity.uuid": "8C1918C0-300F-4DBF-AC09-B8DB9CF55290"
             },
             "titles.default": {
               "normal": {
                 "font": "Helvetica Neue@20",
-                "foreground-color": "white",
-                "stroke-color": "white@50%",
-                "stroke-width": -2,
+                "foregroundColor": "white",
+                "strokeColor": "white@50%",
+                "strokeWidth": -2,
                 "alignment": "center",
                 "text": "Sonos"
               },
               "highlighted.foreground-color": "#00AFFFFF"
             },
             "background-colors.default.normal": "#060606FF",
-            "title-edge-insets": "{20, 20, 20, 20}"
+            "titleEdge-insets": "{20, 20, 20, 20}"
           }
         ]
       },
@@ -1978,9 +1864,7 @@
               "index.lightsOn": "65E065E6-2976-4726-99E4-9D4D932804E4",
               "format": "lightsOn.width = 44"
             },
-            "commands.default": {
-              "class": "http",
-              "url": "http://10.0.1.27/0?1201=I=0"
+            "commands.default": {              "url": "http://10.0.1.27/0?1201=I=0"
             },
             "icons.default": {
               "normal": {
@@ -1997,9 +1881,7 @@
             "uuid": "085F92D0-7D04-4586-BD2E-BCD0F0AFB729",
             "name": "Lights Off",
             "role": "toolbar",
-            "commands.default": {
-              "class": "http",
-              "url": "http://10.0.1.27/0?1401=I=0"
+            "commands.default": {              "url": "http://10.0.1.27/0?1401=I=0"
             },
             "icons.default": {
               "normal": {

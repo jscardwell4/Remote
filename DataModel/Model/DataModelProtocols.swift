@@ -17,8 +17,8 @@ import MoonKit
 }
 
 public protocol PathIndexedModel: Model {
-  var pathIndex: PathModelIndex { get }
-  static func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self?
+  var pathIndex: PathIndex { get }
+  static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Self?
 }
 
 public typealias NamedModel = protocol<Model, DynamicallyNamed>
@@ -40,4 +40,13 @@ public typealias NamedModel = protocol<Model, DynamicallyNamed>
 
 @objc public protocol NestingModelCollection: ModelCollection {
   optional var collections: [ModelCollection] { get }
+}
+
+@objc public protocol DefaultingModelCollection: ModelCollection {
+  static func defaultCollectionInContext(context: NSManagedObjectContext) -> Self
+}
+
+public protocol ModelStorage: Model {
+  typealias VendedType
+  subscript(key: String) -> VendedType? { get set }
 }

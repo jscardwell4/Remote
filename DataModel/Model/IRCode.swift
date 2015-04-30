@@ -12,21 +12,35 @@ import MoonKit
 
 @objc(IRCode)
 final public class IRCode: EditableModelObject {
-  
+
   @NSManaged public var frequency: Int64
   @NSManaged public var offset: Int16
   @NSManaged public var onOffPattern: String?
   @NSManaged public var prontoHex: String?
   @NSManaged public var repeatCount: Int16
   @NSManaged public var setsDeviceInput: Bool
-  @NSManaged public var device: ComponentDevice!
+  @NSManaged public var device: ComponentDevice?
   @NSManaged public var sendCommands: NSSet
-  @NSManaged public var codeSet: IRCodeSet
+
+  public var codeSet: IRCodeSet {
+    get {
+      willAccessValueForKey("codeSet")
+      var codeSet = primitiveValueForKey("codeSet") as? IRCodeSet
+      didAccessValueForKey("codeSet")
+      if codeSet == nil {
+        codeSet = IRCodeSet.defaultCollectionInContext(managedObjectContext!)
+        setPrimitiveValue(codeSet, forKey: "codeSet")
+      }
+      return codeSet!
+    }
+    set {
+      willChangeValueForKey("codeSet")
+      setPrimitiveValue(newValue, forKey: "codeSet")
+      didChangeValueForKey("codeSet")
+    }
+  }
 
   public var manufacturer: Manufacturer { return codeSet.manufacturer }
-
-//  public typealias CollectionType = IRCodeSet
-//  public var collection: CollectionType? { get { return codeSet } set { if newValue != nil { codeSet = newValue! } } }
 
   /**
   isValidOnOffPattern:
@@ -83,60 +97,60 @@ final public class IRCode: EditableModelObject {
   /**
   updateWithData:
 
-  :param: data [String AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    updateRelationshipFromData(data, forKey: "category")
-    if let frequency = data["frequencey"] as? NSNumber { self.frequency = frequency.longLongValue }
-    if let offset = data["offset"] as? NSNumber { self.offset = offset.shortValue }
-    if let repeatCount = data["repeatCount"] as? NSNumber { self.repeatCount = repeatCount.shortValue }
-    if let onOffPattern = data["on-off-pattern"] as? String { self.onOffPattern = onOffPattern }
+//    updateRelationshipFromData(data, forAttribute: "codeSet")
+    if let frequency = Int64(data["frequency"]) { self.frequency = frequency }
+    if let offset = Int16(data["offset"]) { self.offset = offset }
+    if let repeatCount = Int16(data["repeatCount"]) { self.repeatCount = repeatCount }
+    if let onOffPattern = String(data["onOffPattern"]) { self.onOffPattern = onOffPattern }
   }
 
-}
-
-extension IRCode: MSJSONExport {
-
-  override public func JSONDictionary() -> MSDictionary {
-
-    let dictionary = super.JSONDictionary()
-
-    appendValueForKeyPath("device.commentedUUID", forKey: "device", toDictionary: dictionary)
-    appendValue(codeSet.index.rawValue, forKey: "code-set.index", ifNotDefault: false, toDictionary: dictionary)
-    appendValueForKey("setsDeviceInput", toDictionary: dictionary)
-    appendValueForKey("repeatCount", toDictionary: dictionary)
-
-    appendValueForKey("offset", toDictionary: dictionary)
-    appendValueForKey("frequency", toDictionary: dictionary)
-
-    appendValue(onOffPattern, forKey: "on-off-pattern", toDictionary: dictionary)
-    appendValue(prontoHex,    forKey: "pronto-hex", toDictionary: dictionary)
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary;
+  override public var description: String {
+    return "\(super.description)\n\t" + "\n\t".join(
+      "code set = \(codeSet.index)",
+      "device = \(toString(device?.name))",
+      "sets device input = \(setsDeviceInput)",
+      "frequency = \(frequency)",
+      "offset = \(offset)",
+      "repeat count = \(repeatCount)",
+      "on-off pattern = \(onOffPattern)"
+    )
   }
-}
 
-extension IRCode: PathIndexedModel {
-  public var pathIndex: PathModelIndex { return codeSet.pathIndex + "\(name)" }
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["device.index"] = device?.index.jsonValue
+    obj["codeSet.index"] = codeSet.index.jsonValue
+    obj["setsDeviceInput"] = setsDeviceInput.jsonValue
+    obj["repeatCount"] = repeatCount.jsonValue
+    obj["offset"] = offset.jsonValue
+    obj["frequency"] = frequency.jsonValue
+    obj["onOffPattern"] = onOffPattern?.jsonValue
+    obj["prontoHex"] = prontoHex?.jsonValue
+    return obj.jsonValue
+  }
+
+  public override var pathIndex: PathIndex { return codeSet.pathIndex + indexedName }
 
   /**
   modelWithIndex:context:
 
-  :param: index PathModelIndex
+  :param: index PathIndex
   :param: context NSManagedObjectContext
 
   :returns: IRCode?
   */
-  public static func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> IRCode? {
+  public override static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> IRCode? {
     if index.count != 3 { return nil }
-    let (manufacturerName, codeSetName, codeName) = disperse3(index.pathComponents)
-    if let codeSet = IRCodeSet.modelWithIndex([manufacturerName, codeSetName], context: context) {
-      return findFirst(codeSet.codes, {$0.name == codeName})
-    } else { return nil }
+    if let codeSet = IRCodeSet.modelWithIndex(index[0...1], context: context) {
+      return objectMatchingPredicate(∀"codeSet.uuid == '\(codeSet.uuid)' AND name == '\(index[2].pathDecoded)'", context: context)
+    } else {
+      MSLogVerbose("failed to locate code set for index '\(index[0...1])'")
+      return nil
+    }
   }
-  
+
 }

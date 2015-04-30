@@ -44,7 +44,12 @@ class ManufacturerDetailController: BankItemDetailController {
 
     let devicesSection = DetailSection(section: 0, title: "Devices")
     for (idx, device) in enumerate(sortedByName(manufacturer.devices)) {
-      devicesSection.addRow({ DetailListRow(pushableItem: device) }, forKey: "\(RowKey.Devices)\(idx)")
+      devicesSection.addRow({
+        let row = DetailListRow()
+        row.info = device
+        row.select = DetailRow.selectPushableItem(device)
+        return row
+        }, forKey: "\(RowKey.Devices)\(idx)")
     }
 
     sections[SectionKey.Devices] = devicesSection
@@ -61,7 +66,12 @@ class ManufacturerDetailController: BankItemDetailController {
 
     let codeSetsSection = DetailSection(section: 1, title: "Code Sets")
     for (idx, codeSet) in enumerate(sortedByName(manufacturer.codeSets)) {
-      codeSetsSection.addRow({ DetailListRow(pushableCollection: codeSet) }, forKey: "\(RowKey.CodeSets)\(idx)")
+      codeSetsSection.addRow({
+        let row = DetailListRow()
+        row.info = codeSet
+        row.select = DetailRow.selectPushableCollection(codeSet)
+        return row
+        }, forKey: "\(RowKey.CodeSets)\(idx)")
     }
 
     /// Create the sections

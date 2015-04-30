@@ -23,22 +23,7 @@ final class DetailLabeledImageRow: DetailRow {
   */
   override func configureCell(cell: DetailCell) {
     super.configureCell(cell)
-    if placeholderImage != nil { (cell as? DetailLabeledImageCell)?.placeholderImage = placeholderImage! }
+    (cell as? DetailLabeledImageCell)?.placeholderImage = placeholderImage
   }
-
-  /**
-  initWithLabel:previewableItem:
-
-  :param: label String
-  :param: previewableItem Previewable?
-  */
-  convenience init(label: String, previewableItem: Previewable?) {
-    self.init()
-    name = label
-    info = previewableItem?.preview
-  }
-
-  /** init */
-  override init() { super.init() }
 
 }

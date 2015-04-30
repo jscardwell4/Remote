@@ -11,10 +11,9 @@ import UIKit
 import MoonKit
 import DataModel
 
-@objc(NamedItemDetailController)
 class NamedItemDetailController: DetailController {
 
-  var namedItem: protocol<Named, Detailable>! { return item as? protocol<Named, Detailable> }
+  var namedItem: protocol<Named, Detailable> { return item as! protocol<Named, Detailable> }
 
   /**
   init:bundle:
@@ -22,9 +21,9 @@ class NamedItemDetailController: DetailController {
   :param: nibNameOrNil String?
   :param: nibBundleOrNil NSBundle?
   */
-//  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-//    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-//  }
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+  }
 
   /**
   initWithStyle:

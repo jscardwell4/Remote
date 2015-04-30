@@ -14,33 +14,31 @@ import MoonKit
 @objc(ActivityController)
 public final class ActivityController: ModelObject {
 
-  @NSManaged var primitiveCurrentActivity: Activity?
   public var currentActivity: Activity? {
     get {
       willAccessValueForKey("currentActivity")
-      let activity = primitiveCurrentActivity
+      let activity = primitiveValueForKey("currentActivity") as? Activity
       didAccessValueForKey("currentActivity")
       return activity
     }
     set {
       willChangeValueForKey("currentActivity")
-      primitiveCurrentActivity = newValue
+      setPrimitiveValue(newValue, forKey: "currentActivity")
       didChangeValueForKey("currentActivity")
       if let remote = newValue?.remote { currentRemote = remote }
     }
   }
 
-  @NSManaged var primitiveCurrentRemote: Remote?
   public var currentRemote: Remote {
     get {
       willAccessValueForKey("currentRemote")
-      let remote = primitiveCurrentRemote
+      let remote = primitiveValueForKey("currentRemote") as? Remote
       didAccessValueForKey("currentRemote")
       return remote ?? homeRemote
     }
     set {
       willChangeValueForKey("currentRemote")
-      primitiveCurrentRemote = newValue
+      setPrimitiveValue(newValue, forKey: "currentRemote")
       didChangeValueForKey("currentRemote")
     }
   }
@@ -60,36 +58,37 @@ public final class ActivityController: ModelObject {
     return findFirstInContext(context) ?? ActivityController(context: context)
   }
 
-  /**
-  JSONDictionary
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["homeRemote.index"] = homeRemote.index.jsonValue
+    obj["currentRemote.index"] = currentRemote.index.jsonValue
+    obj["currentActivity.index"] = currentActivity?.index.jsonValue
+    obj["topToolbar"] = topToolbar.jsonValue
+    obj["activities"] = Optional(JSONValue(activities))
+    return obj.jsonValue
+  }
 
-  :returns: MSDictionary
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    appendValue(homeRemote.commentedUUID, forKey: "homeRemote.uuid", toDictionary: dictionary)
-    appendValue(currentRemote.commentedUUID, forKey: "currentRemote.uuid", toDictionary: dictionary)
-    appendValue(currentActivity?.commentedUUID, forKey: "currentActivity.uuid", toDictionary: dictionary)
-    appendValue(topToolbar.JSONDictionary(), forKey: "top-toolbar", toDictionary: dictionary)
-    appendValue(activities, forKey: "activities", toDictionary: dictionary)
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+  override public var description: String {
+    var description = super.description
+    description += "\n\t".join(
+      "home remote = \(homeRemote.index)",
+      "top toolbar = {\(topToolbar.description.indentedBy(4))\n\t}",
+      "activities = " + toString(activities.map {$0.name}),
+      "current activity = \(toString(currentActivity?.name))"
+    )
+    return description
   }
 
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
-    updateRelationshipFromData(data, forKey: "homeRemote")
-    updateRelationshipFromData(data, forKey: "topToolbar")
+    updateRelationshipFromData(data, forAttribute: "homeRemote")
+    updateRelationshipFromData(data, forAttribute: "topToolbar")
   }
 
 }

@@ -11,53 +11,47 @@ import CoreData
 import MoonKit
 
 @objc(ISYDeviceNode)
-public class ISYDeviceNode: NamedModelObject {
+public class ISYDeviceNode: IndexedModelObject {
 
     @NSManaged public var address: String
-    @NSManaged public var enabled: NSNumber
-    @NSManaged public var flag: NSNumber
+    @NSManaged public var enabled: Bool
+    @NSManaged public var flag: Int16
     @NSManaged public var pnode: String
     @NSManaged public var propertyFormatted: String
     @NSManaged public var propertyID: String
     @NSManaged public var propertyUOM: String
-    @NSManaged public var propertyValue: NSNumber
+    @NSManaged public var propertyValue: Int16
     @NSManaged public var type: String
     @NSManaged public var device: ISYDevice
-    @NSManaged public var groups: NSSet
+    @NSManaged public var groups: Set<ISYDeviceGroup>
 
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let flag              = data["flag"]               as? NSNumber { self.flag = flag }
-    if let address           = data["address"]            as? String   { self.address = address }
-    if let type              = data["type"]               as? String   { self.type = type }
-    if let enabled           = data["enabled"]            as? NSNumber { self.enabled = enabled }
-    if let pnode             = data["pnode"]              as? String   { self.pnode = pnode }
-    if let propertyFormatted = data["property-formatted"] as? String   { self.propertyFormatted = propertyFormatted }
-    if let propertyID        = data["property-id"]        as? String   { self.propertyID = propertyID }
-    if let propertyUOM       = data["property-uom"]       as? String   { self.propertyUOM = propertyUOM }
-    if let propertyValue     = data["property-value"]     as? NSNumber { self.propertyValue = propertyValue }
-    updateRelationshipFromData(data, forKey: "groups")
+    if let flag = Int16(data["flag"]) { self.flag = flag }
+    if let address = String(data["address"]) { self.address = address }
+    if let type = String(data["type"]) { self.type = type }
+    if let enabled = Bool(data["enabled"]) { self.enabled = enabled }
+    if let pnode = String(data["pnode"]) { self.pnode = pnode }
+    if let propertyFormatted = String(data["propertyFormatted"]) { self.propertyFormatted = propertyFormatted }
+    if let propertyID = String(data["propertyID"]) { self.propertyID = propertyID }
+    if let propertyUOM = String(data["propertyUOM"]) { self.propertyUOM = propertyUOM }
+    if let propertyValue = Int16(data["propertyValue"]) { self.propertyValue = propertyValue }
+    updateRelationshipFromData(data, forAttribute: "groups")
   }
 
-}
-
-extension ISYDeviceNode: MSJSONExport {
-
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-    appendValueForKey("flag", toDictionary: dictionary)
-    appendValueForKey("address", toDictionary: dictionary)
-    appendValueForKey("type", toDictionary: dictionary)
-    appendValueForKey("enabled", toDictionary: dictionary)
-    appendValueForKey("pnode", toDictionary: dictionary)
-    appendValueForKey("propertyFormatted", toDictionary: dictionary)
-    appendValueForKey("propertyID", toDictionary: dictionary)
-    appendValueForKey("propertyUOM", toDictionary: dictionary)
-    appendValueForKey("propertyValue", toDictionary: dictionary)
-    appendValueForKeyPath("groups.uuid", forKey: "groups", toDictionary: dictionary)
-    dictionary.compact()
-    dictionary.compress()
-    return dictionary
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["flag"] = flag.jsonValue
+    obj["address"] = address.jsonValue
+    obj["type"] = type.jsonValue
+    obj["enabled"] = enabled.jsonValue
+    obj["pnode"] = pnode.jsonValue
+    obj["propertyFormatted"] = propertyFormatted.jsonValue
+    obj["propertyID"] = propertyID.jsonValue
+    obj["propertyUOM"] = propertyUOM.jsonValue
+    obj["propertyValue"] = propertyValue.jsonValue
+    obj["groups.index"] = JSONValue(map(groups, {$0.index}))
+    return obj.jsonValue
   }
 
 }

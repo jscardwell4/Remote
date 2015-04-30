@@ -49,3 +49,23 @@ extension UIFont {
 
 }
 
+extension UIFont: JSONValueConvertible {
+  public var jsonValue: JSONValue { return "\(fontName)@\(pointSize)".jsonValue }
+}
+
+extension UIFont /*: JSONValueInitializable */ {
+  public convenience init?(_ jsonValue: JSONValue?) {
+    if let string = String(jsonValue),
+      (name, capturedSize) = disperse2(string.matchFirst("^([^@]*)@?([0-9]*\\.?[0-9]*)")) as? (String, String?)
+      where UIFont.familyNames() as! [String] ∋ name
+    {
+      let size: CGFloat
+      if let sizeString = capturedSize, parsedSize = CGFloat(JSONSerialization.objectByParsingString(sizeString)) {
+        size = parsedSize
+      } else if capturedSize == nil { size = UIFont.systemFontSize() }
+      else { self.init(); return nil }
+      self.init(name: name, size: size)
+    } else { self.init(); return nil }
+  }
+}
+

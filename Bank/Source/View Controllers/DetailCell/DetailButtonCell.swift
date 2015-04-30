@@ -64,10 +64,10 @@ class DetailButtonCell: DetailCell {
   private let buttonView: UIButton =  {
     let view = UIButton(autolayout: true)
     view.userInteractionEnabled = false
-    view.titleLabel?.font = DetailController.infoFont;
+    view.titleLabel?.font = Bank.infoFont;
     view.titleLabel?.textAlignment = .Right;
     view.constrain("|[title]| :: V:|[title]|", views: ["title": view.titleLabel!])
-    view.setTitleColor(DetailController.infoColor, forState:.Normal)
+    view.setTitleColor(Bank.infoColor, forState:.Normal)
     return view
   }()
 

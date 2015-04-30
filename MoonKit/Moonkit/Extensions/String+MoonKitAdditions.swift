@@ -22,14 +22,14 @@ public extension String {
   public var dashcaseString: String {
     if isDashcase { return self }
     else if isCamelcase {
-      var s = String(self[startIndex])
-      for c in String(dropFirst(self)).unicodeScalars {
-        switch c.value {
-          case 65...90: s += "-"; s += String(UnicodeScalar(c.value + 32))
-          default: s.append(c)
-        }
+      var s = ""
+      var offset = 0
+      for range in compressed(rangesForCapture(0, byMatching: ~/"[a-z][A-Z]")) {
+        s += self[offset...range.startIndex] + "-" + self[range.startIndex + 1...range.endIndex]
+        offset = range.endIndex + 1
       }
-      return s
+      s += self[offset..<length]
+      return s.lowercaseString
     } else { return String(map(self){$0 == " " ? "-" : $0}).lowercaseString }
   }
 
@@ -74,9 +74,42 @@ public extension String {
     }
   }
 
+  public var isQuoted: Bool { return hasPrefix("\"") && hasSuffix("\"") }
+  public var quoted: String { return isQuoted ? self : "\"\(self)\"" }
+  public var unquoted: String { return isQuoted ? self[1..<length - 1] : self }
+
   public var isCamelcase: Bool { return ~/"^\\p{Ll}+(\\p{Lu}+\\p{Ll}*)*$" ~= self }
   public var isDashcase: Bool { return ~/"^\\p{Ll}+(-\\p{Ll}*)*$" ~= self }
   public var isTitlecase: Bool { return ~/"^\\p{Lu}\\p{Ll}*(\\P{L}+\\p{Lu}\\p{Ll}*)*$" ~= self }
+
+  public var pathEncoded: String { return self.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding) ?? self }
+  public var urlFragmentEncoded: String {
+    return self.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLFragmentAllowedCharacterSet())
+      ?? self
+  }
+  public var urlPathEncoded: String {
+    return self.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())
+      ?? self
+  }
+  public var urlQueryEncoded: String {
+    return self.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
+      ?? self
+  }
+
+  public var urlUserEncoded: String {
+    return self.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLUserAllowedCharacterSet())
+      ?? self
+  }
+
+  public var pathDecoded: String { return self.stringByRemovingPercentEncoding ?? self }
+
+  public var forwardSlashEncoded: String { return sub("/", "%2F") }
+  public var forwardSlashDecoded: String { return sub("%2F", "/").sub("%2f", "/") }
+
+  public func indentedBy(indent: Int) -> String {
+    let spacer = " " * indent
+    return spacer + "\n\(spacer)".join("\n".split(self))
+  }
 
   /**
   join:
@@ -88,6 +121,15 @@ public extension String {
   public func join(strings: String...) -> String { return join(strings) }
 
   /**
+  sandwhich:
+
+  :param: string String
+
+  :returns: String
+  */
+  public func sandwhich(string: String) -> String { return self + string + self }
+
+  /**
   split:
 
   :param: string String
@@ -96,7 +138,8 @@ public extension String {
   */
   public func split(string: String) -> [String] { return string.componentsSeparatedByString(self) }
 
-  public var pathStack: Stack<String> { return Stack(objects: pathComponents.reverse()) }
+  public var pathStack: Stack<String> { return Stack(pathComponents.reverse()) }
+  public var keypathStack: Stack<String> { return Stack(".".split(self).reverse()) }
 
   /**
   initWithContentsOfFile:error:
@@ -126,6 +169,21 @@ public extension String {
   }
 
   /**
+  sub:replacement:
+
+  :param: target String
+  :param: replacement String
+
+  :returns: String
+  */
+  public func sub(target: String, _ replacement: String) -> String {
+    return stringByReplacingOccurrencesOfString(target,
+                                     withString: replacement,
+                                        options: nil,
+                                          range: startIndex..<endIndex)
+  }
+
+  /**
   substringFromRange:
 
   :param: range Range<Int>
@@ -142,8 +200,19 @@ public extension String {
   :returns: Character
   */
   public subscript (i: Int) -> Character {
-    let index: String.Index = advance(i < 0 ? self.endIndex : self.startIndex, i)
-    return self[index]
+    get { return self[advance(i < 0 ? self.endIndex : self.startIndex, i)] }
+    mutating set { replaceRange(i...i, with: [newValue]) }
+  }
+
+  /**
+  replaceRange:with:
+
+  :param: subRange Range<Int>
+  :param: newElements C
+  */
+  public mutating func replaceRange<C : CollectionType where C.Generator.Element == Character>(subRange: Range<Int>, with newElements: C) {
+    let range = indexRangeFromIntRange(subRange)
+    replaceRange(range, with: newElements)
   }
 
   /**
@@ -154,13 +223,17 @@ public extension String {
   :returns: String
   */
   public subscript (r: Range<Int>) -> String {
-    let rangeStart: String.Index = advance(startIndex, r.startIndex)
-    let rangeEnd:   String.Index = advance(r.endIndex < 0 ? endIndex : startIndex, r.endIndex)
-    let range: Range<String.Index> = Range<String.Index>(start: rangeStart, end: rangeEnd)
-    return self[range]
+    get { return self[indexRangeFromIntRange(r)] }
+    mutating set { replaceRange(r, with: newValue) }
   }
 
+  /**
+  subscript:
 
+  :param: r Range<UInt>
+
+  :returns: String
+  */
   public subscript (r: Range<UInt>) -> String {
     let rangeStart: String.Index = advance(startIndex, Int(r.startIndex))
     let rangeEnd:   String.Index = advance(startIndex, Int(distance(r.startIndex, r.endIndex)))
@@ -383,6 +456,33 @@ public extension String {
 
     return captures
   }
+
+  /**
+  matchAll:
+
+  :param: regex RegularExpression
+
+  :returns: [[String?]]
+  */
+  public func matchAll(regex: RegularExpression) -> [[String?]] {
+    var result: [[String?]] = []
+    if let matches = regex.regex?.matchesInString(self, options: nil, range: NSRange(0..<length)) as? [NSTextCheckingResult],
+      captureCount = regex.regex?.numberOfCaptureGroups
+    {
+      for match in matches {
+        var matchCaptures: [String?] = []
+        for i in 1...captureCount {
+          let range = match.rangeAtIndex(i)
+          let substring: String? = range.location == NSNotFound ? nil : self[range]
+          matchCaptures.append(substring)
+        }
+        result.append(matchCaptures)
+      }
+    }
+
+    return result
+  }
+
 
   /**
   indexRangeFromIntRange:

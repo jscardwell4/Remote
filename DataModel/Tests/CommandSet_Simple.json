@@ -1,0 +1,7 @@
+{
+  "type": "rocker",
+  "top": {     "code.index": "Dish/Dish/Channel%20Up"
+  },
+  "bottom": {     "code.index": "Dish/Dish/Channel%20Down"
+  }
+}

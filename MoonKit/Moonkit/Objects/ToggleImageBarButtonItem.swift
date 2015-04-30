@@ -48,7 +48,8 @@ public class ToggleImageBarButtonItem: ToggleBarButtonItem {
     containingView.addSubview(imageView)
 
     // add constraints
-    containingView.constrain("image.center = self.center :: V:|-(>=8)-[image]-(>=8)-|", views: ["image": imageView])
+    containingView.constrain("image.center = self.center :: image.top ≥ self.top + 8 :: image.bottom ≤ self.bottom - 8",
+                       views: ["image": imageView])
 
     // call super's initializer with our custom view
     super.init(customView: containingView)

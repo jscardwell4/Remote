@@ -1,0 +1,11 @@
+{
+  "normal": {
+    "font": "Helvetica Neue@20",
+    "foregroundColor": "white",
+    "strokeColor": "white@50%",
+    "strokeWidth": -2,
+    "alignment": "center",
+    "text": "Dish"
+  },
+  "highlighted.foreground-color": "#00AFFFFF"
+}

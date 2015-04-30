@@ -20,102 +20,52 @@ final public class ImageCategory: EditableModelObject {
   public let previewableItems = true
   public let editableItems = true
 
-//  public typealias ItemType = Image
-//  public var items: [ItemType] { get { return Array(images) } set { images = Set(newValue) } }
-//  public func itemWithIndex(index: PathModelIndex) -> ItemType? { return findByIndex(images, index) }
-
-//  public typealias NestedType = ImageCategory
-//  public var subcategories: [NestedType] { get { return Array(childCategories) } set { childCategories = Set(newValue) } }
-//  public func subcategoryWithIndex(index: PathModelIndex) -> NestedType? { return findByIndex(childCategories, index) }
-
-//  public typealias CollectionType = NestedType
-//  public var collection: CollectionType? { get { return parentCategory } set { parentCategory = newValue } }
-
-
-  /**
-  itemWithIndex:context:
-
-  :param: index String
-  :param: context NSManagedObjectContext
-
-  :returns: T?
-  */
-//  public class func itemWithIndex<T:PathIndexedModel>(index: PathModelIndex, context: NSManagedObjectContext) -> T? {
-//    if index.isEmpty { return nil }
-//    var i = 1
-//    if let rootCategory = rootItemWithIndex(index[0..<i], context: context) {
-//      return itemWithIndexFromRoot(index, rootCategory)
-//    } else { return nil }
-//  }
-
-  /**
-  rootItemWithIndex:context:
-
-  :param: index PathModelIndex
-  :param: context NSManagedObjectContext
-
-  :returns: Self?
-  */
-//  public class func rootItemWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Self? {
-//    if let name = index.first {
-//      return objectMatchingPredicate(∀"parentCategory = NULL AND name = '\(name)'", context: context)
-//    } else { return nil }
-//  }
-
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    updateRelationshipFromData(data, forKey: "parentCategory", lookupKey: "category")
-    updateRelationshipFromData(data, forKey: "images")
-    updateRelationshipFromData(data, forKey: "childCategories", lookupKey: "subcategories")
+    updateRelationshipFromData(data, forAttribute: "parentCategory", lookupKey: "category")
+    updateRelationshipFromData(data, forAttribute: "images")
+    updateRelationshipFromData(data, forAttribute: "childCategories", lookupKey: "subcategories")
   }
 
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    appendValueForKeyPath("parentCategory.index", forKey: "category.index", toDictionary: dictionary)
-    appendValueForKeyPath("images.JSONDictionary", forKey: "images", toDictionary: dictionary)
-    appendValueForKeyPath("childCategories.JSONDictionary", forKey: "subcategories", toDictionary: dictionary)
-    
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["category.index"] = parentCategory?.index.jsonValue
+    obj["images"] = Optional(JSONValue(images))
+    obj["subcategories"] = Optional(JSONValue(childCategories))
+    return obj.jsonValue
   }
-  
-}
 
-extension ImageCategory: PathIndexedModel {
-  public var pathIndex: PathModelIndex { return parentCategory != nil ? parentCategory!.pathIndex + "\(name)" : "\(name)" }
+  override public var description: String {
+    let description = "\(super.description)\n\t" + "\n\t".join(
+      "image count = \(images.count)",
+      "subcategories = [" + ", ".join(map(childCategories, {$0.name})) + "]",
+      "parent = " + (toString(parentCategory?.name))
+    )
+    return description
+  }
+  public override var pathIndex: PathIndex { return parentCategory?.pathIndex + indexedName }
 
   /**
   modelWithIndex:context:
 
-  :param: index PathModelIndex
+  :param: index PathIndex
   :param: context NSManagedObjectContext
 
   :returns: ImageCategory?
   */
-  public static func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> ImageCategory? {
-    if index.count < 1 { return nil }
-    var pathComponents = index.pathComponents.reverse()
-    var name = pathComponents.removeLast()
-    var currentCategory = objectMatchingPredicate(∀"parentCategory == NULL AND name == '\(name)'", context: context)
-
-    while currentCategory != nil && pathComponents.count > 0 {
-      name = pathComponents.removeLast()
-      currentCategory = findFirst(currentCategory!.childCategories, {$0.name == name})
+  public override static func modelWithIndex(var index: PathIndex, context: NSManagedObjectContext) -> ImageCategory? {
+    if index.isEmpty { return nil }
+    else if index.count == 1 {
+      return objectMatchingPredicate(∀"parentCategory == NULL && name == '\(index.rawValue.pathDecoded)'", context: context)
+    } else {
+      let name = index.removeLast().pathDecoded
+      return findFirst(modelWithIndex(index, context: context)?.childCategories, {$0.name == name})
     }
-    return currentCategory
   }
 }
 
@@ -126,3 +76,16 @@ extension ImageCategory: ModelCollection {
 extension ImageCategory: NestingModelCollection {
   public var collections: [ModelCollection] { return sortedByName(childCategories) }
 }
+
+extension ImageCategory: DefaultingModelCollection {
+  public static func defaultCollectionInContext(context: NSManagedObjectContext) -> ImageCategory {
+    let categoryName = "Uncategorized"
+    if let category = modelWithIndex(PathIndex(categoryName), context: context) { return category }
+    else {
+      let category = self(context: context)
+      category.name = categoryName
+      return category
+    }
+  }
+}
+

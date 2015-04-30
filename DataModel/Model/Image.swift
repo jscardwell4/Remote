@@ -13,33 +13,30 @@ import MoonKit
 @objc(Image)
 final public class Image: EditableModelObject {
 
-  public var assetName: String {
-    get {
-      var assetName: String!
-      willAccessValueForKey("assetName")
-      assetName = primitiveValueForKey("assetName") as? String
-      didAccessValueForKey("assetName")
-      return assetName
-    }
-    set {
-      let img: UIImage? = UIImage(named: newValue)
-      if img != nil {
-        willChangeValueForKey("assetName")
-        setPrimitiveValue(newValue, forKey: "assetName")
-        didChangeValueForKey("assetName")
-        size = img!.size
-      }
-    }
+  static var resourceRegistration: [String:NSBundle] = [:]
 
+  /**
+  Public api for registering a bundle for a corresponding `Asset.location` value so that `Image` objects may use
+  bundle-based resources not representable by a file url, i.e. 'Assets.car'
+
+  :param: bundle NSBundle?
+  :param: locationValue String
+  */
+  public class func registerBundle(bundle: NSBundle?, forLocationValue locationValue: String) {
+    resourceRegistration[locationValue] = bundle
   }
+
+  @NSManaged public var asset: Asset?
+
   @NSManaged public var leftCap: Int32
+  @NSManaged public var topCap: Int32
+
   public var size: CGSize {
     get {
-      var sizeValue: NSValue?
       willAccessValueForKey("size")
-      sizeValue = primitiveValueForKey("size") as? NSValue
+      let size = (primitiveValueForKey("size") as! NSValue).CGSizeValue()
       didAccessValueForKey("size")
-      return sizeValue?.CGSizeValue() ?? CGSize.zeroSize
+      return size
     }
     set {
       willChangeValueForKey("size")
@@ -48,71 +45,85 @@ final public class Image: EditableModelObject {
     }
   }
 
-  @NSManaged public var topCap: Int32
-  @NSManaged public var remoteElements: NSSet
-  @NSManaged public var views: NSSet
-  @NSManaged public var imageCategory: ImageCategory
+  @NSManaged public var remoteElements: Set<RemoteElement>
+  @NSManaged public var views: Set<ImageView>
 
-//  public typealias CollectionType = ImageCategory
-//  public var collection: CollectionType? { get { return imageCategory } set { if newValue != nil { imageCategory = newValue! } } }
+  public var imageCategory: ImageCategory {
+    get {
+      willAccessValueForKey("imageCategory")
+      var category = primitiveValueForKey("imageCategory") as? ImageCategory
+      didAccessValueForKey("imageCategory")
+      if category == nil {
+        category = ImageCategory.defaultCollectionInContext(managedObjectContext!)
+        setPrimitiveValue(category, forKey: "imageCategory")
+      }
+      return category!
+    }
+    set {
+      willChangeValueForKey("imageCategory")
+      setPrimitiveValue(newValue, forKey: "imageCategory")
+      didChangeValueForKey("imageCategory")
+    }
+  }
 
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    updateRelationshipFromData(data, forKey: "imageCategory", lookupKey: "category")
-
-    if let assetName = data["asset-name"] as? String { self.assetName = assetName }
-    if let leftCap = data["left-cap"] as? NSNumber { self.leftCap = leftCap.intValue }
-    if let topCap = data["top-cap"] as? NSNumber { self.topCap = topCap.intValue }
+    updateRelationshipFromData(data, forAttribute: "imageCategory", lookupKey: "category")
+    updateRelationshipFromData(data, forAttribute: "asset")
+    if let leftCap = Int32(data["leftCap"]) { self.leftCap = leftCap }
+    if let topCap = Int32(data["topCap"]) { self.topCap = topCap }
   }
 
-  public var image: UIImage? { return UIImage(named: assetName) }
+  public var image: UIImage? {
+    var img: UIImage? = nil
+    if let location = asset?.location {
+      img = UIImage(contentsOfFile: location)
+      if img == nil, let imageBundle = Image.resourceRegistration[location], assetName = asset?.name {
+        img = UIImage(named: assetName, inBundle: imageBundle, compatibleWithTraitCollection: nil)
+      }
+    }
+    return img
+  }
   public var templateImage: UIImage? { return image?.imageWithRenderingMode(.AlwaysTemplate) }
-  override public var commentedUUID: String {
-    var uuidCopy: NSString = uuid
-    uuidCopy.comment = " // \(assetName)"
-    return uuidCopy as String
+
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["category.index"] = imageCategory.index.jsonValue
+    obj["asset"] = asset?.jsonValue
+    obj["leftCap"] = leftCap.jsonValue
+    obj["topCap"] = topCap.jsonValue
+    return obj.jsonValue
   }
 
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-    appendValueForKeyPath("imageCategory.index", forKey: "category.index", toDictionary: dictionary)
-    appendValue(assetName, forKey: "asset-name", toDictionary: dictionary)
-    appendValueForKey("leftCap", toDictionary: dictionary)
-    appendValueForKey("topCap", toDictionary: dictionary)
-    dictionary.compact()
-    dictionary.compress()
-    return dictionary
+  public var stretchableImage: UIImage? {
+    return image?.stretchableImageWithLeftCapWidth(Int(leftCap), topCapHeight: Int(topCap))
   }
 
-  public var stretchableImage: UIImage? { return image?.stretchableImageWithLeftCapWidth(Int(leftCap), topCapHeight: Int(topCap)) }
+  public var preview: UIImage? { return image }
+  public var thumbnail: UIImage? { return preview }
 
-  public var preview: UIImage { return image ?? UIImage() }
-  public var thumbnail: UIImage { return preview }
+  override public var description: String {
+    return "\(super.description)\n\t" + "\n\t".join(
+      "asset = \(toString(asset))",
+      "left cap = \(leftCap)",
+      "top cap = \(topCap)",
+      "category = \(imageCategory.index)"
+    )
+  }
 
-}
-
-extension Image: PathIndexedModel {
-  public var pathIndex: PathModelIndex { return imageCategory.pathIndex + "\(name)" }
+  public override var pathIndex: PathIndex { return imageCategory.pathIndex + indexedName }
 
   /**
   modelWithIndex:context:
 
-  :param: index PathModelIndex
+  :param: index PathIndex
   :param: context NSManagedObjectContext
 
   :returns: Image?
   */
-  public static func modelWithIndex(index: PathModelIndex, context: NSManagedObjectContext) -> Image? {
-    if index.count < 1 { return nil }
-    var pathComponents = index.pathComponents
-    let imageName = pathComponents.removeLast()
-    if let imageCategory = ImageCategory.modelWithIndex(PathModelIndex(array: pathComponents), context: context) {
-      return findFirst(imageCategory.images, {$0.name == imageName})
-    } else { return nil }
+  public override static func modelWithIndex(var index: PathIndex, context: NSManagedObjectContext) -> Image? {
+    if index.count < 2 { return nil }
+    let imageName = index.removeLast().pathDecoded
+    return findFirst(ImageCategory.modelWithIndex(index, context: context)?.images, {$0.name == imageName})
   }
 }

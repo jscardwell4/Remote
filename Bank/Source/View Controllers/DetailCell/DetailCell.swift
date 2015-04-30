@@ -10,9 +10,6 @@ import Foundation
 import UIKit
 import MoonKit
 
-// TODO: Add creation row option for table style cells as well as ability to delete member rows
-// TODO: Create a specific cell type for the cells of a table style cell
-
 class DetailCell: UITableViewCell {
 
   /// MARK: Identifiers
@@ -269,15 +266,16 @@ class DetailCell: UITableViewCell {
 
   lazy var nameLabel: Label = {
     let label = Label(autolayout: true)
-    label.font      = DetailController.labelFont
-    label.textColor = DetailController.labelColor
+    label.font      = Bank.labelFont
+    label.textColor = Bank.labelColor
+    label.setContentCompressionResistancePriority(1000, forAxis: .Horizontal)
     return label
   }()
 
   lazy var infoLabel: Label = {
     let label = Label(autolayout: true)
-    label.font = DetailController.infoFont
-    label.textColor = DetailController.infoColor
+    label.font = Bank.infoFont
+    label.textColor = Bank.infoColor
     label.textAlignment = .Right
     return label
   }()

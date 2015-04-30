@@ -1,6 +1,6 @@
 {
   "name": "Dpad",
-  "base-type": "button-group",
+  "baseType": "button-group",
   "role": "dpad",
   "shape": "oval",
   "style": "gloss2",
@@ -12,27 +12,27 @@
     "$4.bottom = $3.top :: $4.left = $0.left :: $4.right = $1.left :: $4.top = $2.bottom",
     "$5.bottom = $3.top :: $5.left = $1.right :: $5.right = $0.right :: $5.top = $2.bottom"
   ],
-  "background-color": "#666666FF",
+  "backgroundColor": "#666666FF",
   "subelements": [
     {
-      "base-type": "button",
+      "baseType": "button",
       "role": "center",
       "constraints": "$0.width = $0.height",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@28",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": "OK"
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "role": "up",
       "icons": {
         "normal": {
@@ -50,7 +50,7 @@
       }
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "role": "down",
       "icons": {
         "normal": {
@@ -68,7 +68,7 @@
       }
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "role": "left",
       "icons": {
         "normal": {
@@ -86,7 +86,7 @@
       }
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "role": "right",
       "icons": {
         "normal": {

@@ -9,10 +9,29 @@
 import Foundation
 
 public protocol JSONValueConvertible {
-  typealias JSONValueType
-  var JSONValue: JSONValueType { get }
-  init?(JSONValue: JSONValueType)
+  var jsonValue: JSONValue { get }
 }
+
+public protocol JSONValueInitializable {
+  init?(_ jsonValue: JSONValue?)
+}
+
+public protocol JSONExport {
+  var jsonString: String { get }
+}
+
+public protocol KeyValueCollectionType: CollectionType {
+  typealias Key: Hashable
+  typealias Value
+  subscript (key: Key) -> Value? { get }
+  typealias KeysLazyCollectionType: CollectionType
+  typealias ValuesLazyCollectionType: CollectionType
+  var keys: LazyForwardCollection<KeysLazyCollectionType> { get }
+  var values: LazyForwardCollection<ValuesLazyCollectionType> { get }
+}
+
+extension Dictionary: KeyValueCollectionType {}
+
 
 public protocol Presentable {
   var title: String { get }
@@ -72,6 +91,10 @@ public protocol Unpackable4 {
 /** Protocol for an object that may have a name and for which a name may be set */
 @objc public protocol Renameable: Nameable {
   var name: String? { get set }
+}
+
+public protocol StringValueConvertible {
+  var stringValue: String { get }
 }
 
 /**

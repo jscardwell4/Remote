@@ -43,7 +43,7 @@ class BankCollectionCell: UICollectionViewCell {
 
   var showingDelete: Bool { return contentView.transform.tx == -100.0 }
 
-  var exportItem: MSJSONExport? { return nil }
+  var exportItem: JSONValueConvertible? { return nil }
 
   private(set) var contentSize = CGSize.zeroSize
 
@@ -59,9 +59,6 @@ class BankCollectionCell: UICollectionViewCell {
 
   var animateIndicator: ((Void) -> Void)?
 
-  private let indicatorImageNormal = UIImage(named:"1040-checkmark-toolbar")!
-  private let indicatorImageSelected = UIImage(named:"1040-checkmark-toolbar-selected")!
-
   /**
   showIndicator:selected:
 
@@ -69,7 +66,7 @@ class BankCollectionCell: UICollectionViewCell {
   :param: selected Bool = false
   */
   func showIndicator(show: Bool, selected: Bool = false) {
-    indicatorImage = (show ? (selected ? indicatorImageSelected : indicatorImageNormal) : nil)
+    indicatorImage = (show ? (selected ? Bank.indicatorImageSelected : Bank.indicatorImage) : nil)
   }
 
 
@@ -218,6 +215,7 @@ class BankCollectionCell: UICollectionViewCell {
       self.addGestureRecognizer(gesture)
       return gesture
       }()
+    
     insertSubview(deleteButton, belowSubview: contentView)
     deleteButton.addTarget(self, action: "deleteButtonAction", forControlEvents: .TouchUpInside)
     contentView.addSubview(indicator)

@@ -71,6 +71,9 @@ MSEXTERN_KEY(MSLogContext);
 + (NSOperationQueue const *)loggingQueue;
 + (BOOL)isRegisteredClass:(Class)class;
 
++ (void)enableColor;
++ (void)disableColor;
+
 @end
 
 
@@ -115,6 +118,7 @@ MSEXTERN_KEY(MSLogContext);
 @property (nonatomic, getter = shouldCollapseTrailingReturns) BOOL       collapseTrailingReturns;
 @property (nonatomic, getter = shouldIndentMessageBody)       BOOL       indentMessageBody;
 @property (nonatomic, getter = shouldIncludeSEL)              BOOL       includeSEL;
+@property (nonatomic, getter = shouldUseFileInsteadOfSEL)     BOOL       useFileInsteadOfSEL;
 @property (nonatomic, getter = shouldIncludeObjectName)       BOOL       includeObjectName;
 @property (nonatomic, copy)                                   NSString * includePrompt;
 

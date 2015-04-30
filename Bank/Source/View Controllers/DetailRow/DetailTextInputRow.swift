@@ -20,6 +20,15 @@ class DetailTextInputRow: DetailRow {
   var enablesReturnKeyAutomatically: Bool?
   var keyboardAppearance: UIKeyboardAppearance?
   var secureTextEntry: Bool?
+  var shouldBeginEditing: ((DetailTextInputCell) -> Bool)?
+  var shouldEndEditing: ((DetailTextInputCell) -> Bool)?
+  var didBeginEditing: ((DetailTextInputCell) -> Void)?
+  var didEndEditing: ((DetailTextInputCell) -> Void)?
+  var shouldChangeText: ((DetailTextInputCell, NSRange, String?) -> Bool)?
+  var shouldClear: ((DetailTextInputCell) -> Bool)?
+  var shouldReturn: ((DetailTextInputCell) -> Bool)?
+  var allowEmptyString: Bool?
+  var allowableCharacters: NSCharacterSet?
 
   /**
   configureCell:forTableView:
@@ -29,14 +38,25 @@ class DetailTextInputRow: DetailRow {
   */
   override func configureCell(cell: DetailCell) {
   	super.configureCell(cell)
-    if returnKeyType != nil                 { (cell as? DetailTextInputCell)?.returnKeyType = returnKeyType!                                 }
-    if keyboardType != nil                  { (cell as? DetailTextInputCell)?.keyboardType = keyboardType!                                   }
-    if autocapitalizationType != nil        { (cell as? DetailTextInputCell)?.autocapitalizationType = autocapitalizationType!               }
-    if autocorrectionType != nil            { (cell as? DetailTextInputCell)?.autocorrectionType = autocorrectionType!                       }
-    if spellCheckingType != nil             { (cell as? DetailTextInputCell)?.spellCheckingType = spellCheckingType!                         }
-    if enablesReturnKeyAutomatically != nil { (cell as? DetailTextInputCell)?.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically! }
-    if keyboardAppearance != nil            { (cell as? DetailTextInputCell)?.keyboardAppearance = keyboardAppearance!                       }
-    if secureTextEntry != nil               { (cell as? DetailTextInputCell)?.secureTextEntry = secureTextEntry!                             }
+    if let textInputCell = cell as? DetailTextInputCell {
+      if returnKeyType != nil                 { textInputCell.returnKeyType = returnKeyType!                                 }
+      if keyboardType != nil                  { textInputCell.keyboardType = keyboardType!                                   }
+      if autocapitalizationType != nil        { textInputCell.autocapitalizationType = autocapitalizationType!               }
+      if autocorrectionType != nil            { textInputCell.autocorrectionType = autocorrectionType!                       }
+      if spellCheckingType != nil             { textInputCell.spellCheckingType = spellCheckingType!                         }
+      if enablesReturnKeyAutomatically != nil { textInputCell.enablesReturnKeyAutomatically = enablesReturnKeyAutomatically! }
+      if keyboardAppearance != nil            { textInputCell.keyboardAppearance = keyboardAppearance!                       }
+      if secureTextEntry != nil               { textInputCell.secureTextEntry = secureTextEntry!                             }
+      textInputCell.shouldBeginEditing = shouldBeginEditing
+      textInputCell.shouldEndEditing = shouldEndEditing
+      textInputCell.didBeginEditing = didBeginEditing
+      textInputCell.didEndEditing = didEndEditing
+      textInputCell.shouldChangeText = shouldChangeText
+      textInputCell.shouldClear = shouldClear
+      textInputCell.shouldReturn = shouldReturn
+      if allowableCharacters != nil { textInputCell.allowableCharacters = allowableCharacters! }
+      if allowEmptyString != nil { textInputCell.allowEmptyString = allowEmptyString! }
+    }
   }
 
 }

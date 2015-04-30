@@ -11,7 +11,7 @@ import UIKit
 import MoonKit
 
 
-class BankCollectionItemCell: BankCollectionCell {
+final class BankCollectionItemCell: BankCollectionCell {
 
   weak var item: protocol<Named>? {
     didSet {
@@ -20,7 +20,7 @@ class BankCollectionItemCell: BankCollectionCell {
     }
   }
 
-  override var exportItem: MSJSONExport? { return item as? MSJSONExport }
+  override var exportItem: JSONValueConvertible? { return item as? JSONValueConvertible }
 
   private let thumbnailImageView: UIImageView = {
     let view = UIImageView()
@@ -56,7 +56,7 @@ class BankCollectionItemCell: BankCollectionCell {
     }
   }
 
-  private var viewingMode: BankCollectionAttributes.ViewingMode = .List {
+  private var viewingMode: Bank.ViewingMode = .List {
     didSet {
       previewGesture.enabled = (viewingMode == .List && previewable)
       swipeToDelete = (viewingMode == .List)

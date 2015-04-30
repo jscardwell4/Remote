@@ -13,7 +13,19 @@ import MoonKit
 @objc(CommandSetCollection)
 public final class CommandSetCollection: CommandContainer {
 
-  @NSManaged public var commandSets: NSOrderedSet?
+  public var commandSets: OrderedSet<CommandSet> {
+    get {
+      willAccessValueForKey("commandSets")
+      let commandSets = primitiveValueForKey("commandSets") as? OrderedSet<CommandSet>
+      didAccessValueForKey("commandSets")
+      return commandSets ?? []
+    }
+    set {
+      willChangeValueForKey("commandSets")
+      setPrimitiveValue(newValue as NSOrderedSet, forKey: "commandSets")
+      didChangeValueForKey("commandSets")
+    }
+  }
 
   /**
   subscript:
@@ -23,23 +35,11 @@ public final class CommandSetCollection: CommandContainer {
   :returns: CommandSet?
   */
   public subscript(label: String) -> CommandSet? {
-    get {
-      if let commandSetUUID = containerIndex[label] as? String,
-        let moc = managedObjectContext,
-        let commandSet = CommandSet.objectWithUUID(commandSetUUID, context: moc) {
-      return commandSet }
-      else { return nil }
-    }
-    set {
-      if let existingUUID = containerIndex[label] as? String where newValue == nil,
-        let moc = managedObjectContext,
-        let existingCommandSet = CommandSet.objectWithUUID(existingUUID, context: moc) {
-          let mutableCommandSets = mutableOrderedSetValueForKey("commandSets")
-          mutableCommandSets.removeObject(existingCommandSet)
-      }
-      containerIndex[label] = newValue?.uuid
-    }
+    get { return (containerIndex[label] ?>> managedObjectContext!.objectForURI) as? CommandSet }
+    set { containerIndex[label] = newValue?.permanentURI() }
   }
+
+  public subscript(index: Int) -> CommandSet? { return commandSetAtIndex(index) }
 
   /**
   labelForCommandSet:
@@ -48,7 +48,9 @@ public final class CommandSetCollection: CommandContainer {
 
   :returns: String?
   */
-  public func labelForCommandSet(commandSet: CommandSet) -> String? { return containerIndex.keyForObject(commandSet.uuid) as? String }
+  public func labelForCommandSet(commandSet: CommandSet) -> String? {
+    return findFirst(containerIndex.keyValuePairs, {$1 as! String == commandSet.uuid})?.0
+  }
 
   /**
   commandSetAtIndex:
@@ -57,11 +59,7 @@ public final class CommandSetCollection: CommandContainer {
 
   :returns: CommandSet?
   */
-  public func commandSetAtIndex(idx: Int) -> CommandSet? {
-    if let commandSetCount = commandSets?.count where idx < commandSetCount {
-      return commandSets![idx] as? CommandSet
-    } else { return nil }
-  }
+  public func commandSetAtIndex(idx: Int) -> CommandSet? { return commandSets.count > idx ? commandSets[idx] : nil }
 
   /**
   labelAtIndex:
@@ -70,19 +68,21 @@ public final class CommandSetCollection: CommandContainer {
 
   :returns: String?
   */
-  public func labelAtIndex(idx: Int) -> String? { return idx < Int(count) ? containerIndex.keyAtIndex(UInt(idx)) as? String : nil }
+  public func labelAtIndex(idx: Int) -> String? { return idx < commandSets.count ? labelForCommandSet(commandSets[idx]) : nil }
 
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
-    if let commandSetsData = data as? [String:[String:AnyObject]], let moc = managedObjectContext {
-      for (label, commandSetData) in commandSetsData {
-        if let commandSet = CommandSet.importObjectWithData(commandSetData, context: moc) {
+    if let moc = managedObjectContext {
+      for (_, label, jsonValue) in data {
+        if let commandSetData = ObjectJSONValue(jsonValue),
+          commandSet: CommandSet = CommandSet.importObjectWithData(commandSetData, context: moc)
+        {
           self[label] = commandSet
         }
       }
@@ -90,20 +90,10 @@ public final class CommandSetCollection: CommandContainer {
 
   }
 
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+    containerIndex ➤ {_, k, _ in obj[k] = self[k]?.jsonValue}
+    return obj.jsonValue
   }
 
 

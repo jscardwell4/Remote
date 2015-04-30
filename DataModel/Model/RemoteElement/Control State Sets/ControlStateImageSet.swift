@@ -25,39 +25,32 @@ public final class ControlStateImageSet: ControlStateSet {
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
-    if let jsonData = data as? [String:[String:AnyObject]], let moc = managedObjectContext {
-      for (stateKey, dictionary) in jsonData {
-        if let controlState = UIControlState(JSONValue: stateKey),
-          let imageView = ImageView.importObjectWithData(dictionary, context: moc) {
-            self[controlState.rawValue] = imageView
+    if let moc = managedObjectContext {
+      for (_, stateKey, jsonValue) in data {
+        if let dictionary = ObjectJSONValue(jsonValue),
+          controlState = UIControlState(stateKey.jsonValue),
+          imageView = ImageView.importObjectWithData(dictionary, context: moc)
+        {
+          self[controlState.rawValue] = imageView
         }
       }
     }
   }
 
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
 
     UIControlState.enumerate {
       if let imageView = self[$0.rawValue] as? ImageView {
-        dictionary[$0.JSONValue] = imageView.JSONDictionary()
+        obj[String($0.jsonValue)!] = imageView.jsonValue
       }
     }
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+    return obj.jsonValue
   }
 
 

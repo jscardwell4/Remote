@@ -10,32 +10,74 @@ import Foundation
 import UIKit
 import MoonKit
 import DataModel
+import Settings
 
-final class Bank {
+@objc final public class Bank {
 
+  enum ViewingMode: Int {
+    case List, Thumbnail
+    init(rawValue: Int) { self = rawValue == 1 ? .Thumbnail : .List }
+  }
+
+  class func initialize() {
+    SettingsManager.registerSettingWithKey(Bank.viewingModeKey,
+                          withDefaultValue: .List,
+                              fromDefaults: {ViewingMode(rawValue: ($0 as? NSNumber)?.integerValue ?? 0)},
+                                toDefaults: {$0.rawValue})
+    Image.registerBundle(Bank.bankBundle, forLocationValue: Bank.imageLocation)
+
+  }
+
+  public static let viewingModeKey = "BankViewingModeKey"
+  private static let imageLocation = "$bank"
   private static let bankBundle = NSBundle(forClass: Bank.self)
+
+  /**
+  bankImageNamed:
+
+  :param: named String
+
+  :returns: UIImage?
+  */
+  public static func bankImageNamed(named: String) -> UIImage? {
+    return UIImage(named: named, inBundle: bankBundle, compatibleWithTraitCollection: nil)
+  }
 
   /// The bank's constant class properties
   ////////////////////////////////////////////////////////////////////////////////
 
   // Fonts
-  static let labelFont                  = UIFont(name: "Elysio-Medium", size: 15.0)!
-  static let boldLabelFont              = UIFont(name: "Elysio-Bold",   size: 17.0)!
-  static let largeBoldLabelFont         = UIFont(name: "Elysio-Bold",   size: 18.0)!
-  static let infoFont                   = UIFont(name: "Elysio-Light",  size: 15.0)!
+  static let labelFont          = UIFont(name: "Elysio-Medium", size: 15.0)!
+  static let boldLabelFont      = UIFont(name: "Elysio-Bold",   size: 17.0)!
+  static let largeBoldLabelFont = UIFont(name: "Elysio-Bold",   size: 18.0)!
+  static let infoFont           = UIFont(name: "Elysio-Light",  size: 15.0)!
+  static let actionFont         = UIFont(name: "Elysio-RegularItalic", size: 15.0)!
 
   // Colors
-  static let labelColor                 = UIColor(r: 59, g: 60, b: 64, a:255)!
-  static let infoColor                  = UIColor(r:159, g:160, b:164, a:255)!
-  static let backgroundColor            = UIColor.whiteColor()
+  static let labelColor      = UIColor(r: 59, g: 60, b: 64, a:255)!
+  static let infoColor       = UIColor(r:159, g:160, b:164, a:255)!
+  static let backgroundColor = UIColor.whiteColor()
+  static let actionColor     = UIColor(r: 0,   g: 175, b: 255, a: 255)!
 
   // Images
-  static let exportBarItemImage         = UIImage(named:"702-share-toolbar", inBundle: bankBundle, compatibleWithTraitCollection: nil)!
-  static let exportBarItemImageSelected = UIImage(named:"702-share-toolbar-selected", inBundle: bankBundle, compatibleWithTraitCollection: nil)!
-  static let importBarItemImage         = UIImage(named:"703-download-toolbar", inBundle: bankBundle, compatibleWithTraitCollection: nil)!
-  static let importBarItemImageSelected = UIImage(named:"703-download-toolbar-selected", inBundle: bankBundle, compatibleWithTraitCollection: nil)!
-  static let searchBarItemImage         = UIImage(named:"708-search-toolbar", inBundle: bankBundle, compatibleWithTraitCollection: nil)!
-  static let searchBarItemImageSelected = UIImage(named:"708-search-toolbar-selected", inBundle: bankBundle, compatibleWithTraitCollection: nil)!
+  static let exportBarItemImage            = Bank.bankImageNamed("702-share-toolbar")!
+  static let exportBarItemImageSelected    = Bank.bankImageNamed("702-share-toolbar-selected")!
+  static let importBarItemImage            = Bank.bankImageNamed("703-download-toolbar")!
+  static let importBarItemImageSelected    = Bank.bankImageNamed("703-download-toolbar-selected")!
+  static let searchBarItemImage            = Bank.bankImageNamed("708-search-toolbar")!
+  static let searchBarItemImageSelected    = Bank.bankImageNamed("708-search-toolbar-selected")!
+  static let listBarItemImage              = Bank.bankImageNamed("1073-grid-1-toolbar")!
+  static let listBarItemImageSelected      = Bank.bankImageNamed("1073-grid-1-toolbar-selected")!
+  static let thumbnailBarItemImage         = Bank.bankImageNamed("1076-grid-4-toolbar")!
+  static let thumbnailBarItemImageSelected = Bank.bankImageNamed("1076-grid-4-toolbar-selected")!
+  static let indicatorImage                = Bank.bankImageNamed("1040-checkmark-toolbar")!
+  static let indicatorImageSelected        = Bank.bankImageNamed("1040-checkmark-toolbar-selected")!
+  static let componentDevicesImage         = Bank.bankImageNamed("969-television")!
+  static let irCodesImage                  = Bank.bankImageNamed("tv-remote")!
+  static let imagesImage                   = Bank.bankImageNamed("926-photos")!
+  static let manufacturersImage            = Bank.bankImageNamed("1022-factory")!
+  static let networkDevicesImage           = Bank.bankImageNamed("937-wifi-signal")!
+  static let presetsImage                  = Bank.bankImageNamed("1059-sliders")!
 
   static let defaultRowHeight: CGFloat = 38.0
   static let separatorStyle: UITableViewCellSeparatorStyle = .None
@@ -179,26 +221,23 @@ final class Bank {
   :returns: BlockBarButtonItem
   */
   class func selectAllBarButtonItemForController(controller: BankController) -> BlockBarButtonItem {
-    return BlockBarButtonItem(title: "Select All", style: .Plain, action: {
-      () -> Void in
-        controller.selectAllExportableItems()
-    })
+    return BlockBarButtonItem(title: "Select All", style: .Plain, action: { controller.selectAllExportableItems() })
   }
 
-  #if BANKTEST
-  static let dismissButton = UIBarButtonItem.flexibleSpace()
-  #else
   /** A bar button item that asks the application to return to the main menu */
-  static let dismissButton = BlockBarButtonItem(barButtonSystemItem: .Done, action: {
-    () -> Void in
-    if let url = NSURL(string: "mainmenu") {
-      UIApplication.sharedApplication().openURL(url)
-    }
-  })
-  #endif
+  static let dismissButton: UIBarButtonItem? = {
+    var dismissButton: UIBarButtonItem? = nil
+      let isBankTest = Bool(string: NSProcessInfo.processInfo().environment["BANK_TEST"] as? String)
+      if !isBankTest {
+        dismissButton = BlockBarButtonItem(barButtonSystemItem: .Done, action: {
+          if let url = NSURL(string: "mainmenu") { UIApplication.sharedApplication().openURL(url) }
+        })
+      }
+      return dismissButton
+    }()
 
   /** A simple structure for packaging top level bank category data for consumption by `BankRootController` */
-  struct RootCategory {
+  struct RootCategory: Printable {
     let label: String
     let icon: UIImage
     let collections: [ModelCollection]
@@ -214,40 +253,53 @@ final class Bank {
       self.collections = collections
       self.items = items
     }
+
+    var description: String {
+      var result = "RootCategory:\n"
+      result += "\tlabel = \(label)\n"
+      result += "\ticon = \(icon)\n"
+      result += "\tcollections = "
+      if collections.count == 0 { result += "[]\n" }
+      else { result += "{\n" + "\n\n".join(collections.map({toString($0)})).indentedBy(8) + "\n\t}\n" }
+      result += "items = "
+      if items.count == 0 { result += "[]\n" }
+      else { result += "{\n" + "\n\n".join(items.map({toString($0)})).indentedBy(8) + "\n\t}\n" }
+      return result
+    }
   }
 
   class var rootCategories: [RootCategory] {
     let context = DataManager.rootContext
     let componentDeviceRoot = RootCategory(
       label: "Component Devices",
-      icon: UIImage(named: "969-television", inBundle: bankBundle, compatibleWithTraitCollection: nil)!,
+      icon: componentDevicesImage,
       items: ComponentDevice.objectsInContext(context, sortBy: "name") as? [ComponentDevice] ?? []
     )
     let irCodeRoot = RootCategory(
       label: "IR Codes",
-      icon: UIImage(named: "tv-remote", inBundle: bankBundle, compatibleWithTraitCollection: nil)!,
+      icon: irCodesImage,
       collections: IRCodeSet.objectsInContext(context, sortBy: "name") as? [IRCodeSet] ?? []
     )
     let imageRoot = RootCategory(
       label: "Images",
-      icon: UIImage(named: "926-photos", inBundle: bankBundle, compatibleWithTraitCollection: nil)!,
+      icon: imagesImage,
       collections: ImageCategory.objectsMatchingPredicate(∀"parentCategory == NULL",
                                                     sortBy: "name",
                                                    context: context) as? [ImageCategory] ?? []
     )
     let manufacturerRoot = RootCategory(
       label: "Manufacturers",
-      icon: UIImage(named: "1022-factory", inBundle: bankBundle, compatibleWithTraitCollection: nil)!,
+      icon: manufacturersImage,
       items: Manufacturer.objectsInContext(context, sortBy: "name") as? [Manufacturer] ?? []
     )
     let networkDeviceRoot = RootCategory(
       label: "Network Devices",
-      icon: UIImage(named: "937-wifi-signal", inBundle: bankBundle, compatibleWithTraitCollection: nil)!,
+      icon: networkDevicesImage,
       items: NetworkDevice.objectsInContext(context, sortBy: "name") as? [NetworkDevice] ?? []
     )
     let presetRoot = RootCategory(
       label: "Presets",
-      icon: UIImage(named: "1059-sliders", inBundle: bankBundle, compatibleWithTraitCollection: nil)!,
+      icon: presetsImage,
       collections: PresetCategory.objectsMatchingPredicate(∀"parentCategory == NULL",
                                                     sortBy: "name",
                                                    context: context) as? [PresetCategory] ?? []

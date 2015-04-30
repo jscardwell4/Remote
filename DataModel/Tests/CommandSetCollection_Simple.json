@@ -1,0 +1,17 @@
+{
+  "CH": <@include CommandSet_Simple.json>,
+  "PAGE": {
+    "type": "rocker",
+    "top": {       "code.index": "Dish/Dish/Page%20Up"
+    },
+    "bottom": {       "code.index": "Dish/Dish/Page%20Down"
+    }
+  },
+  "VOL": {
+    "type": "rocker",
+    "top": {       "code.index": "Sony/AV%20Receiver/Volume%20Up"
+    },
+    "bottom": {       "code.index": "Sony/AV%20Receiver/Volume%20Down"
+    }
+  }
+}

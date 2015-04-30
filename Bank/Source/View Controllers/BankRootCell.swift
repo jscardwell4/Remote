@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class BankRootCell: UITableViewCell {
+final class BankRootCell: UITableViewCell {
 
   var rootCategory: Bank.RootCategory? {
     didSet {
@@ -47,9 +47,22 @@ class BankRootCell: UITableViewCell {
   override func updateConstraints() {
     let identifier = "Internal"
     if constraintsWithIdentifier(identifier).count == 0 {
-      let format = "|-20-[icon]-20-[label]-8-[chevron]-20-| :: V:|-8-[icon]-8-| :: V:|[label]| :: V:|-8-[chevron]-8-|"
-      let views = ["icon": icon, "label": label, "chevron": chevron, "content": contentView]
-      constrain(format, views: views, identifier: identifier)
+      constrain(identifier: identifier,
+        icon.left => contentView.left + 20,
+        label.left => icon.right + 20,
+        chevron.left => label.right + 8,
+        chevron.right => contentView.right - 20,
+        icon.top => contentView.top + 8,
+        icon.bottom => contentView.bottom - 8,
+        label.top => contentView.top,
+        label.bottom => contentView.bottom,
+        chevron.top => contentView.top + 8,
+        chevron.bottom => contentView.bottom - 8,
+        contentView.left => self.left,
+        contentView.right => self.right,
+        contentView.top => self.top,
+        contentView.bottom => self.bottom
+      )
     }
     super.updateConstraints()
   }
@@ -62,7 +75,6 @@ class BankRootCell: UITableViewCell {
   */
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-    setTranslatesAutoresizingMaskIntoConstraints(false)
     contentView.addSubview(icon)
     contentView.addSubview(label)
     contentView.addSubview(chevron)

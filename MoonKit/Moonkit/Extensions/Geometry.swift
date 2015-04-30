@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 extension CGPoint {
+  public init?(_ string: String?) { if let s = string { self = CGPointFromString(s) } else { return nil } }
   public static var nullPoint: CGPoint = CGPoint(x: CGFloat.NaN, y: CGFloat.NaN)
   public var isNull: Bool { return self == CGPoint.nullPoint }
   public func xDelta(point: CGPoint) -> CGFloat { return point.isNull ? x : x - point.x }
@@ -36,6 +37,8 @@ extension CGPoint: Unpackable2 {
   public func unpack() -> (CGFloat, CGFloat) { return (x, y) }
 }
 
+extension CGPoint: Printable { public var description: String { return NSStringFromCGPoint(self) } }
+
 public func -(lhs: CGPoint, rhs: CGPoint) -> CGPoint {
   return lhs.isNull ? rhs : (rhs.isNull ? lhs : CGPoint(x: lhs.x - rhs.x, y: lhs.y - rhs.y))
 }
@@ -50,6 +53,7 @@ public func *(lhs: CGPoint, rhs: CGFloat) -> CGPoint { return CGPoint(x: lhs.x *
 public func *=(inout lhs: CGPoint, rhs: CGFloat) { lhs = lhs * rhs }
 
 extension CGVector {
+  public init?(_ string: String?) { if let s = string { self = CGVectorFromString(s) } else { return nil } }
   public static var nullVector: CGVector = CGVector(dx: CGFloat.NaN, dy: CGFloat.NaN)
   public var isNull: Bool { return self == CGVector.nullVector }
   public func dxDelta(vector: CGVector) -> CGFloat { return vector.isNull ? dx : dx - vector.dx }
@@ -61,13 +65,12 @@ extension CGVector {
   public var absolute: CGVector { return isNull ? self : CGVector(dx: abs(dx), dy: abs(dy)) }
   public init(_ point: CGPoint) { dx = point.x; dy = point.y }
 }
-
 extension CGVector: NilLiteralConvertible {
   public init(nilLiteral: ()) { self = CGVector.nullVector }
 }
 
 extension CGVector: Printable {
-  public var description: String { return "(\(dx), \(dy))"}
+  public var description: String { return NSStringFromCGVector(self) }
 }
 
 extension CGVector: Unpackable2 {
@@ -88,6 +91,7 @@ public func *(lhs: CGVector, rhs: CGFloat) -> CGVector { return CGVector(dx: lhs
 public func *=(inout lhs: CGVector, rhs: CGFloat) { lhs = lhs * rhs }
 
 extension CGSize {
+  public init?(_ string: String?) { if let s = string { self = CGSizeFromString(s) } else { return nil } }
   public init(square: CGFloat) { self = CGSize(width: square, height: square) }
   public func contains(size: CGSize) -> Bool { return width >= size.width && height >= size.height }
   public var minAxis: CGFloat { return min(width, height) }
@@ -121,6 +125,7 @@ extension CGSize {
     return CGSizeApplyAffineTransform(self, transform)
   }
 }
+extension CGSize: Printable { public var description: String { return NSStringFromCGSize(self) } }
 extension CGSize: Unpackable2 {
   public func unpack() -> (CGFloat, CGFloat) { return (width, height) }
 }
@@ -154,13 +159,24 @@ extension UIEdgeInsets {
   public func insetRect(rect: CGRect) -> CGRect {
     return UIEdgeInsetsInsetRect(rect, self)
   }
+  public init?(_ string: String?) { if let s = string { self = UIEdgeInsetsFromString(s) } else { return nil } }
   public static var zeroInsets: UIEdgeInsets { return UIEdgeInsets(inset: 0) }
   public init(inset: CGFloat) { self = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset) }
+}
+
+extension UIEdgeInsets: Printable {
+  public var description: String { return NSStringFromUIEdgeInsets(self) }
 }
 
 extension UIEdgeInsets: Unpackable4 {
   public func unpack() -> (CGFloat, CGFloat, CGFloat, CGFloat) { return (top, left, bottom, right) }
 }
+
+extension UIOffset {
+  public init?(_ string: String?) { if let s = string { self = UIOffsetFromString(s) } else { return nil } }
+}
+
+extension UIOffset: Printable { public var description: String { return NSStringFromUIOffset(self) } }
 
 extension CGAffineTransform {
   public init(tx: CGFloat, ty: CGFloat) { self = CGAffineTransformMakeTranslation(tx, ty) }
@@ -177,13 +193,17 @@ extension CGAffineTransform {
   public mutating func invert() { self = inverted }
   public var inverted: CGAffineTransform { return CGAffineTransformInvert(self) }
   public static var identityTransform: CGAffineTransform { return CGAffineTransformIdentity }
+  public init?(_ string: String?) { if let s = string { self = CGAffineTransformFromString(s) } else { return nil } }
 }
+
+extension CGAffineTransform: Printable { public var description: String { return NSStringFromCGAffineTransform(self) } }
 
 public func +(lhs: CGAffineTransform, rhs: CGAffineTransform) -> CGAffineTransform { return CGAffineTransformConcat(lhs, rhs) }
 public func +=(inout lhs: CGAffineTransform, rhs: CGAffineTransform) { lhs = lhs + rhs }
 public func ==(lhs: CGAffineTransform, rhs: CGAffineTransform) -> Bool { return CGAffineTransformEqualToTransform(lhs, rhs) }
 
 extension CGRect {
+  public init?(_ string: String?) { if let s = string { self = CGRectFromString(s) } else { return nil } }
   public init(size: CGSize) { self = CGRect(x: 0, y: 0, width: size.width, height: size.height) }
   public init(size: CGSize, center: CGPoint) {
   	self = CGRect(x: center.x - size.width / CGFloat(2.0),
@@ -233,6 +253,8 @@ extension CGRect {
                   height: min(size.height + pushY + pullY, size.height))
   }
 }
+
+extension CGRect: Printable { public var description: String { return NSStringFromCGRect(self) } }
 
 extension CGRect: Unpackable4 {
   public func unpack() -> (CGFloat, CGFloat, CGFloat, CGFloat) { return (origin.x, origin.y, size.width, size.height) }

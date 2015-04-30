@@ -10,8 +10,9 @@
 #import "NSString+MSKitAdditions.h"
 #import "MSKitMacros.h"
 #import "NSObject+MSKitAdditions.h"
-#import "MSJSONSerialization.h"
+//#import "MSJSONSerialization.h"
 #import "NSMutableString+MSKitAdditions.h"
+#import "MoonKit/MoonKit-Swift.h"
 
 static int ddLogLevel   = LOG_LEVEL_DEBUG;
 static int msLogContext = LOG_CONTEXT_CONSOLE;
@@ -97,76 +98,77 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 /// JSONString
 /// @return NSString *
-- (NSString *)JSONString {
-  id        jsonObject = self.JSONObject;
-  NSError * error;
-  NSData  * jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject
-                                                       options:NSJSONWritingPrettyPrinted
-                                                         error:&error];
-
-  if (error || !jsonData) {
-    MSHandleErrors(error);
-    return nil;
-  } else {
-    NSMutableString * jsonString = [[NSString stringWithData:jsonData] mutableCopy];
-    [jsonString replaceRegEx:@"^(\\s*\"[^\"]+\") :" withString:@"$1:"];
-    [jsonString replaceOccurrencesOfString:@"\\" withString:@"" options:0 range:NSMakeRange(0, jsonString.length)];
-    return jsonString;
-  }
-}
+//- (NSString *)JSONString {
+//  return [MSJSONSerialization JSONFromObject:self.JSONObject options:MSJSONWriteFormatOptionsDefault];
+//  id        jsonObject = self.JSONObject;
+//  NSError * error;
+//  NSData  * jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject
+//                                                       options:NSJSONWritingPrettyPrinted
+//                                                         error:&error];
+//
+//  if (error || !jsonData) {
+//    MSHandleErrors(error);
+//    return nil;
+//  } else {
+//    NSMutableString * jsonString = [[NSString stringWithData:jsonData] mutableCopy];
+//    [jsonString replaceRegEx:@"^(\\s*\"[^\"]+\") :" withString:@"$1:"];
+//    [jsonString replaceOccurrencesOfString:@"\\" withString:@"" options:0 range:NSMakeRange(0, jsonString.length)];
+//    return jsonString;
+//  }
+//}
 
 /// writeJSONToFile:
 /// @param file
 /// @return BOOL
-- (BOOL)writeJSONToFile:(NSString *)file {
-  NSString * json = self.JSONString;
-  return StringIsEmpty(json) ? NO : [json writeToFile:file];
-}
+//- (BOOL)writeJSONToFile:(NSString *)file {
+//  NSString * json = self.JSONString;
+//  return StringIsEmpty(json) ? NO : [json writeToFile:file];
+//}
 
 /// JSONObject
 /// @return id
-- (id)JSONObject {
-  if ([NSJSONSerialization isValidJSONObject:self])
-    return self;
-
-  else if (![self count])
-    return NullObject;
-
-  NSMutableArray * array = [NSMutableArray arrayWithCapacity:[self count]];
-
-  [self enumerateObjectsUsingBlock:
-   ^(id obj, NSUInteger idx, BOOL * stop)
-  {
-    array[idx] = obj;
-
-    if (![NSJSONSerialization isValidJSONObject:array]) {
-      [array removeObjectAtIndex:idx];
-
-      if ([obj respondsToSelector:@selector(JSONObject)]) {
-        id jsonObj = [obj JSONObject];
-
-        if ([NSJSONSerialization isValidJSONObject:jsonObj])
-          array[idx] = jsonObj;
-        else
-          MSLogDebug(@"object of type %@ returned invalid JSON object",
-                     ClassTagStringForInstance(obj));
-      } else if ([obj respondsToSelector:@selector(JSONValue)]) {
-        id jsonValue = [obj valueForKey:@"JSONValue"];
-
-        if ([MSJSONSerialization isValidJSONValue:jsonValue])
-          array[idx] = jsonValue;
-        else
-          MSLogDebug(@"object of type %@ returned invalid JSON Value",
-                     ClassTagStringForInstance(obj));
-      }
-
-      NSAssert(![array count] || [NSJSONSerialization isValidJSONObject:array],
-               @"Only valid JSON values should have been added to array");
-    }
-  }];
-
-  return array;
-}
+//- (id)JSONObject {
+//  if ([NSJSONSerialization isValidJSONObject:self])
+//    return self;
+//
+//  else if (![self count])
+//    return NullObject;
+//
+//  NSMutableArray * array = [NSMutableArray arrayWithCapacity:[self count]];
+//
+//  [self enumerateObjectsUsingBlock:
+//   ^(id obj, NSUInteger idx, BOOL * stop)
+//  {
+//    array[idx] = obj;
+//
+//    if (![NSJSONSerialization isValidJSONObject:array]) {
+//      [array removeObjectAtIndex:idx];
+//
+//      if ([obj respondsToSelector:@selector(JSONObject)]) {
+//        id jsonObj = [obj JSONObject];
+//
+//        if ([NSJSONSerialization isValidJSONObject:jsonObj])
+//          array[idx] = jsonObj;
+//        else
+//          MSLogDebug(@"object of type %@ returned invalid JSON object",
+//                     ClassTagStringForInstance(obj));
+//      } else if ([obj respondsToSelector:@selector(JSONValue)]) {
+//        id jsonValue = [obj valueForKey:@"JSONValue"];
+//
+//        if ([MSJSONSerialization isValidJSONValue:jsonValue])
+//          array[idx] = jsonValue;
+//        else
+//          MSLogDebug(@"object of type %@ returned invalid JSON Value",
+//                     ClassTagStringForInstance(obj));
+//      }
+//
+//      NSAssert(![array count] || [NSJSONSerialization isValidJSONObject:array],
+//               @"Only valid JSON values should have been added to array");
+//    }
+//  }];
+//
+//  return array;
+//}
 
 /// uniqued
 /// @return NSArray *

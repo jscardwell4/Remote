@@ -12,7 +12,7 @@ import CoreData
 import MoonKit
 
 @objc(Activity)
-public final class Activity: NamedModelObject {
+public final class Activity: IndexedModelObject {
 
   @NSManaged public var launchMacro: MacroCommand?
   @NSManaged public var haltMacro: MacroCommand?
@@ -87,33 +87,22 @@ public final class Activity: NamedModelObject {
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-
-    updateRelationshipFromData(data, forKey: "remote")
-    updateRelationshipFromData(data, forKey: "launchMacro")
-    updateRelationshipFromData(data, forKey: "haltMacro")
+    updateRelationshipFromData(data, forAttribute: "remote")
+    updateRelationshipFromData(data, forAttribute: "launchMacro")
+    updateRelationshipFromData(data, forAttribute: "haltMacro")
   }
 
 
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    appendValue(remote?.commentedUUID, forKey: "remote.uuid", toDictionary: dictionary)
-    appendValue(launchMacro?.JSONDictionary(), forKey: "launch-macro", toDictionary: dictionary)
-    appendValue(haltMacro?.JSONDictionary(), forKey: "halt-macro", toDictionary: dictionary)
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["remote.uuid"] = remote?.uuid.jsonValue
+    obj["launchMacro"] = launchMacro?.jsonValue
+    obj["haltMacro"] = haltMacro?.jsonValue
+    return obj.jsonValue
   }
 
 }

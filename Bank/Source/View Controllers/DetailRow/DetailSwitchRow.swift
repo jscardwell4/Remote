@@ -14,14 +14,4 @@ final class DetailSwitchRow: DetailRow {
 
   override var identifier: DetailCell.Identifier { return .Switch }
 
-  // /**
-  // configure:
-
-  // :param: cell DetailCell
-  // */
-  // override func configureCell(cell: DetailCell) { super.configureCell(cell) }
-
-  // /** init */
-  // override init() { super.init() }
-
 }

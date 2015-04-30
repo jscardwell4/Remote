@@ -9,6 +9,37 @@
 import Foundation
 import CocoaLumberjack
 
+public struct ColorLog {
+  public static let ESCAPE = "\u{001b}["
+
+  public static let RESET_FG = ESCAPE + "fg;" // Clear any foreground color
+  public static let RESET_BG = ESCAPE + "bg;" // Clear any background color
+  public static let RESET = ESCAPE + ";"   // Clear any foreground or background color
+
+  public static func red<T>(object:T) {
+    println("\(ESCAPE)fg255,0,0;\(object)\(RESET)")
+  }
+
+  public static func green<T>(object:T) {
+    println("\(ESCAPE)fg0,255,0;\(object)\(RESET)")
+  }
+
+  public static func blue<T>(object:T) {
+    println("\(ESCAPE)fg0,0,255;\(object)\(RESET)")
+  }
+
+  public static func yellow<T>(object:T) {
+    println("\(ESCAPE)fg255,255,0;\(object)\(RESET)")
+  }
+
+  public static func purple<T>(object:T) {
+    println("\(ESCAPE)fg255,0,255;\(object)\(RESET)")
+  }
+
+  public static func cyan<T>(object:T) {
+    println("\(ESCAPE)fg0,255,255;\(object)\(RESET)")
+  }
+}
 
 public class LogManager {
 
@@ -42,14 +73,9 @@ public class LogManager {
 
 
 
-  private struct LogManagerGlobals {
+  public static var logLevel: LogLevel = .Debug
 
-    static var logLevel: LogLevel = .Debug
-    static var registeredLogLevels: [String:LogLevel] = [:]
-
-  }
-
-  public class var logLevel: LogLevel { get { return LogManagerGlobals.logLevel } set { LogManagerGlobals.logLevel = newValue } }
+  static var registeredLogLevels: [String:LogLevel] = [:]
 
   /**
   logLevelForFile:
@@ -59,7 +85,7 @@ public class LogManager {
   :returns: LogLevel
   */
   public class func logLevelForFile(file: String) -> LogManager.LogLevel {
-    return LogManagerGlobals.registeredLogLevels[file] ?? LogManagerGlobals.logLevel
+    return registeredLogLevels[file] ?? logLevel
   }
 
   /**
@@ -69,32 +95,55 @@ public class LogManager {
   :param: file String = __FILE__
   */
   public class func setLogLevel(level: LogManager.LogLevel, forFile file: String = __FILE__) {
-    LogManagerGlobals.registeredLogLevels[file] = level
+    registeredLogLevels[file] = level
+  }
+
+  public static func addConsoleLoggers() {
+    addTTYLogger()
+    addASLLogger()
+  }
+
+  public static func addTTYLogger() {
+    MSLog.enableColor()
+    MSLog.addTaggingTTYLogger()
+    (DDTTYLogger.sharedInstance().logFormatter() as! MSLogFormatter).useFileInsteadOfSEL = true
+  }
+
+  public static func addASLLogger() {
+    MSLog.enableColor()
+    MSLog.addTaggingASLLogger()
+    (DDASLLogger.sharedInstance().logFormatter() as! MSLogFormatter).useFileInsteadOfSEL = true
   }
 
 }
 
 /**
-MSLogMessage:flag:function:line:level:context:
+MSLogMessage:flag:function:line:file:className:context:
 
 :param: message String
 :param: flag LogManager.LogFlag
 :param: function String = __FUNCTION__
-:param: line Int = __LINE__
+:param: line Int32 = __LINE__
+:param: file String = __FILE__
+:param: className String? = nil
 :param: context Int32 = LOG_CONTEXT_CONSOLE
 */
 public func MSLogMessage(message: String,
+            asynchronous: Bool,
                     flag: LogManager.LogFlag,
                 function: String = __FUNCTION__,
                     line: Int32 = __LINE__,
                     file: String = __FILE__,
                  context: Int32 = LOG_CONTEXT_CONSOLE)
 {
-  MSLog.log(false,
+  MSLog.log(asynchronous,
       level: LogManager.logLevelForFile(file).rawValue,
        flag: flag.rawValue,
     context: context,
+       file: file,
    function: function,
+       line: line,
+        tag: nil,
     message: message)
 }
 
@@ -113,7 +162,7 @@ public func MSLogDebug(message: String,
                   file: String = __FILE__,
                context: Int32 = LOG_CONTEXT_CONSOLE)
 {
-  MSLogMessage(message, .Debug, function: function, file: file, line: line, context: context)
+  MSLogMessage(message, false, .Debug, function: function, file: file, line: line, context: context)
 }
 
 /**
@@ -130,7 +179,7 @@ public func MSLogError(message: String,
                   file: String = __FILE__,
                context: Int32 = LOG_CONTEXT_CONSOLE)
 {
-  MSLogMessage(message, .Error, function: function, file: file, line: line, context: context)
+  MSLogMessage(message, false, .Error, function: function, file: file, line: line, context: context)
 }
 
 /**
@@ -147,7 +196,7 @@ public func MSLogInfo(message: String,
                  file: String = __FILE__,
               context: Int32 = LOG_CONTEXT_CONSOLE)
 {
-  MSLogMessage(message, .Info, function: function, file: file, line: line, context: context)
+  MSLogMessage(message, true, .Info, function: function, file: file, line: line, context: context)
 }
 
 /**
@@ -164,7 +213,7 @@ public func MSLogWarn(message: String,
                  file: String = __FILE__,
               context: Int32 = LOG_CONTEXT_CONSOLE)
 {
-  MSLogMessage(message, .Warn, function: function, file: file, line: line, context: context)
+  MSLogMessage(message, true, .Warn, function: function, file: file, line: line, context: context)
 }
 
 /**
@@ -181,7 +230,7 @@ public func MSLogVerbose(message: String,
                     file: String = __FILE__,
                  context: Int32 = LOG_CONTEXT_CONSOLE)
 {
-  MSLogMessage(message, .Verbose, function: function, file: file, line: line, context: context)
+  MSLogMessage(message, true, .Verbose, function: function, file: file, line: line, context: context)
 }
 
 /**

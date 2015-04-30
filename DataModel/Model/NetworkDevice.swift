@@ -14,7 +14,7 @@ import MoonKit
 public class NetworkDevice: EditableModelObject {
 
   @NSManaged public var uniqueIdentifier: String!
-  @NSManaged public var componentDevices: NSSet?
+  @NSManaged public var componentDevices: Set<ComponentDevice>
 
   /**
   deviceExistsWithIdentifier:
@@ -27,53 +27,55 @@ public class NetworkDevice: EditableModelObject {
     return objectWithValue(identifier, forAttribute: "uniqueIdentifier", context: DataManager.rootContext) != nil
   }
 
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let uniqueIdentifier = data["unique-identifier"] as? String { self.uniqueIdentifier = uniqueIdentifier }
+    if let uniqueIdentifier = String(data["uniqueIdentifier"]) { self.uniqueIdentifier = uniqueIdentifier }
+  }
+
+  override public var description: String {
+    return "\(super.description)\n\t" + "\n\t".join(
+      "unique identifier = \(uniqueIdentifier)",
+      "component devices = [" + ", ".join(map(componentDevices, {$0.name})) + "]"
+    )
   }
 
   /**
   importObjectWithData:context:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   :param: context NSManagedObjectContext
 
   :returns: NetworkDevice?
   */
-//  override class func importObjectWithData(data: [String:AnyObject], context: NSManagedObjectContext) -> NetworkDevice? {
-//
-//    var device: NetworkDevice?
-//
-//    // Try getting the type of device to import
-//    if let type = data["type"] as? String {
-//
-//      var entityName: String?
-//      var deviceType: NetworkDevice.Type = NetworkDevice.self
-//
-//      // Import with parameters derived from specified type
-//      switch type {
-//        case "itach":
-//          device = importObjectForEntity("ITachDevice", forType: ITachDevice.self, fromData: data, context: context) as? NetworkDevice
-//        case "isy":
-//          device = importObjectForEntity("ISYDevice", forType: ISYDevice.self, fromData: data, context: context) as? NetworkDevice
-//        default:
-//          break
-//      }
-//    }
-//
-//    return device
-//  }
+  override public class func importObjectWithData(data: ObjectJSONValue, context: NSManagedObjectContext) -> NetworkDevice? {
 
-}
+    if self !== NetworkDevice.self {
+      return typeCast(super.importObjectWithData(data, context: context), self)
+    }
 
-extension NetworkDevice: MSJSONExport {
+    var device: NetworkDevice?
 
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-      appendValue(uniqueIdentifier, forKey: "unique-identifier", toDictionary: dictionary)
-      dictionary.compact()
-      dictionary.compress()
-      return dictionary
+    // Try getting the type of device to import
+    if let type = String(data["type"]) {
+
+      // Import with parameters derived from specified type
+      switch type {
+        case "itach":
+          device = ITachDevice.importObjectWithData(data, context: context)
+        case "isy":
+          device = ISYDevice.importObjectWithData(data, context: context)
+        default:
+          break
+      }
+    }
+
+    return device
+  }
+
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["uniqueIdentifier"] = uniqueIdentifier.jsonValue
+    return obj.jsonValue
   }
 
 }

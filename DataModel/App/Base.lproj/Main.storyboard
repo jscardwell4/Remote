@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7528.3" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7518.3"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="ufC-wZ-h7g">
+            <objects>
+                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="DataModelApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
+                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Entity" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Aq-Qf-1g0">
+                                <rect key="frame" x="16" y="20" width="44" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RhE-5A-Pr2">
+                                <rect key="frame" x="71" y="20" width="325" height="30"/>
+                                <state key="normal" title="Select Entity">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="toggleEntityPicker" destination="vXZ-lx-hvc" eventType="touchUpInside" id="4Hc-Vl-aKu"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Query" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9pq-7b-Tcl">
+                                <rect key="frame" x="16" y="128" width="47" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="No errors" translatesAutoresizingMaskIntoConstraints="NO" id="TGg-M6-yaD">
+                                <rect key="frame" x="16" y="264" width="568" height="315"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="No results" translatesAutoresizingMaskIntoConstraints="NO" id="93k-uv-qCf">
+                                <rect key="frame" x="16" y="264" width="568" height="316"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Gva-Xn-zOc">
+                                <rect key="frame" x="241" y="228" width="119" height="29"/>
+                                <segments>
+                                    <segment title="Results"/>
+                                    <segment title="Errors"/>
+                                </segments>
+                                <connections>
+                                    <action selector="selectPane:" destination="vXZ-lx-hvc" eventType="valueChanged" id="wS4-r9-awk"/>
+                                </connections>
+                            </segmentedControl>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="geo-qd-jZg">
+                                <rect key="frame" x="71" y="58" width="513" height="162"/>
+                                <color key="backgroundColor" red="0.98376256227493286" green="0.98373311758041382" blue="0.98374980688095093" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="162" id="HVe-LS-qh5"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
+                                <connections>
+                                    <outlet property="delegate" destination="vXZ-lx-hvc" id="LUl-gr-tgs"/>
+                                </connections>
+                            </textView>
+                            <pickerView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J71-Ry-emH">
+                                <rect key="frame" x="71" y="58" width="513" height="162"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="vXZ-lx-hvc" id="gz4-yh-Bm8"/>
+                                    <outlet property="delegate" destination="vXZ-lx-hvc" id="xQ8-fe-IUE"/>
+                                </connections>
+                            </pickerView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rdQ-h6-XWu">
+                                <rect key="frame" x="404" y="20" width="180" height="30"/>
+                                <state key="normal" title="Dump JSON">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="dumpJSON" destination="vXZ-lx-hvc" eventType="touchUpInside" id="8L1-Hl-Wmc"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="9pq-7b-Tcl" firstAttribute="top" secondItem="5Aq-Qf-1g0" secondAttribute="bottom" constant="78" id="1dV-2d-mI2"/>
+                            <constraint firstItem="J71-Ry-emH" firstAttribute="top" secondItem="5Aq-Qf-1g0" secondAttribute="bottom" constant="8" symbolic="YES" id="5Mo-Dj-hOk"/>
+                            <constraint firstItem="9pq-7b-Tcl" firstAttribute="leading" secondItem="5Aq-Qf-1g0" secondAttribute="leading" id="AOs-u3-ma6"/>
+                            <constraint firstItem="TGg-M6-yaD" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="BoU-Su-aoJ"/>
+                            <constraint firstItem="geo-qd-jZg" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="Dut-Vu-EBT"/>
+                            <constraint firstItem="RhE-5A-Pr2" firstAttribute="leading" secondItem="J71-Ry-emH" secondAttribute="leading" id="FmR-dO-6p1"/>
+                            <constraint firstItem="RhE-5A-Pr2" firstAttribute="trailing" secondItem="geo-qd-jZg" secondAttribute="trailing" id="Ldx-BQ-sSm"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="TGg-M6-yaD" secondAttribute="bottom" constant="21" id="M9L-fA-M9G"/>
+                            <constraint firstItem="rdQ-h6-XWu" firstAttribute="leading" secondItem="RhE-5A-Pr2" secondAttribute="trailing" constant="8" id="MVO-a5-6gX"/>
+                            <constraint firstItem="9pq-7b-Tcl" firstAttribute="centerY" secondItem="geo-qd-jZg" secondAttribute="centerY" id="NZd-gv-Vo3"/>
+                            <constraint firstItem="TGg-M6-yaD" firstAttribute="trailing" secondItem="93k-uv-qCf" secondAttribute="trailing" id="OXO-1H-I6q"/>
+                            <constraint firstItem="5Aq-Qf-1g0" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="Odi-30-dMW"/>
+                            <constraint firstItem="rdQ-h6-XWu" firstAttribute="height" secondItem="RhE-5A-Pr2" secondAttribute="height" id="STJ-wg-cXO"/>
+                            <constraint firstItem="TGg-M6-yaD" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="Sra-vG-pji"/>
+                            <constraint firstItem="RhE-5A-Pr2" firstAttribute="leading" secondItem="5Aq-Qf-1g0" secondAttribute="trailing" constant="11" id="TWb-Sr-6pV"/>
+                            <constraint firstAttribute="centerX" secondItem="Gva-Xn-zOc" secondAttribute="centerX" id="Ujq-B7-vzN"/>
+                            <constraint firstItem="93k-uv-qCf" firstAttribute="top" secondItem="Gva-Xn-zOc" secondAttribute="bottom" constant="8" symbolic="YES" id="V23-xa-4cc"/>
+                            <constraint firstItem="J71-Ry-emH" firstAttribute="top" secondItem="RhE-5A-Pr2" secondAttribute="bottom" constant="8" id="Vc6-BF-LcQ"/>
+                            <constraint firstItem="Gva-Xn-zOc" firstAttribute="top" secondItem="J71-Ry-emH" secondAttribute="bottom" constant="8" symbolic="YES" id="WXE-uB-rlV"/>
+                            <constraint firstItem="RhE-5A-Pr2" firstAttribute="baseline" secondItem="5Aq-Qf-1g0" secondAttribute="baseline" constant="-5" id="WoQ-OT-J1H"/>
+                            <constraint firstItem="rdQ-h6-XWu" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="Xde-nI-lc5"/>
+                            <constraint firstItem="RhE-5A-Pr2" firstAttribute="leading" secondItem="geo-qd-jZg" secondAttribute="leading" id="YgY-C5-pZ9"/>
+                            <constraint firstItem="Gva-Xn-zOc" firstAttribute="top" secondItem="geo-qd-jZg" secondAttribute="bottom" constant="8" symbolic="YES" id="boy-L7-JPo"/>
+                            <constraint firstItem="geo-qd-jZg" firstAttribute="leading" secondItem="9pq-7b-Tcl" secondAttribute="trailing" constant="8" symbolic="YES" id="djH-J2-Cpa"/>
+                            <constraint firstItem="RhE-5A-Pr2" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="e89-tF-btl"/>
+                            <constraint firstItem="93k-uv-qCf" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="fCa-f0-3UR"/>
+                            <constraint firstItem="TGg-M6-yaD" firstAttribute="trailing" secondItem="geo-qd-jZg" secondAttribute="trailing" id="fYB-9k-HRJ"/>
+                            <constraint firstItem="rdQ-h6-XWu" firstAttribute="centerY" secondItem="RhE-5A-Pr2" secondAttribute="centerY" id="fYx-3y-TNI"/>
+                            <constraint firstItem="geo-qd-jZg" firstAttribute="top" secondItem="RhE-5A-Pr2" secondAttribute="bottom" constant="8" symbolic="YES" id="gSH-Ob-uan"/>
+                            <constraint firstItem="RhE-5A-Pr2" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" constant="-188" id="gwt-Bp-dQC"/>
+                            <constraint firstItem="9pq-7b-Tcl" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="k48-be-md7"/>
+                            <constraint firstItem="Gva-Xn-zOc" firstAttribute="centerX" secondItem="geo-qd-jZg" secondAttribute="centerX" constant="-2" id="lXS-qz-0fC"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="TGg-M6-yaD" secondAttribute="bottom" constant="21" id="mis-p2-dY5"/>
+                            <constraint firstAttribute="bottom" secondItem="93k-uv-qCf" secondAttribute="bottom" constant="20" symbolic="YES" id="nRN-aR-UrR"/>
+                            <constraint firstItem="93k-uv-qCf" firstAttribute="leading" secondItem="TGg-M6-yaD" secondAttribute="leading" id="pK9-fD-TKK"/>
+                            <constraint firstItem="geo-qd-jZg" firstAttribute="top" secondItem="RhE-5A-Pr2" secondAttribute="bottom" constant="8" id="q5c-yV-FL5"/>
+                            <constraint firstItem="geo-qd-jZg" firstAttribute="bottom" secondItem="J71-Ry-emH" secondAttribute="bottom" id="rm0-lw-gQu"/>
+                            <constraint firstItem="5Aq-Qf-1g0" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="sFy-0j-T6k"/>
+                            <constraint firstItem="93k-uv-qCf" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="upL-5O-Oqn"/>
+                            <constraint firstItem="RhE-5A-Pr2" firstAttribute="trailing" secondItem="J71-Ry-emH" secondAttribute="trailing" constant="-188" id="wN5-Dz-nF2"/>
+                            <constraint firstItem="TGg-M6-yaD" firstAttribute="top" secondItem="Gva-Xn-zOc" secondAttribute="bottom" constant="8" symbolic="YES" id="y9v-pu-IUE"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="Ldx-BQ-sSm"/>
+                                <exclude reference="djH-J2-Cpa"/>
+                                <exclude reference="1dV-2d-mI2"/>
+                                <exclude reference="fYB-9k-HRJ"/>
+                                <exclude reference="lXS-qz-0fC"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="entityButton" destination="RhE-5A-Pr2" id="pSp-eS-vQx"/>
+                        <outlet property="entityPicker" destination="J71-Ry-emH" id="R0R-HS-fDk"/>
+                        <outlet property="errorsTextView" destination="TGg-M6-yaD" id="bMn-jg-woJ"/>
+                        <outlet property="queryTextView" destination="geo-qd-jZg" id="Jbd-yB-JjE"/>
+                        <outlet property="resultsTextView" destination="93k-uv-qCf" id="jIv-Wx-ijl"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>

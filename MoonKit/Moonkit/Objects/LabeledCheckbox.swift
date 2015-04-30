@@ -11,12 +11,16 @@ import UIKit
 
 public class LabeledCheckbox: Checkbox {
 
+  /** Text displayed beside the checkbox */
   public var title: String  = "" { didSet { invalidateIntrinsicContentSize() } }
 
+  /** The color to use for the displayed text */
   public var titleColor: UIColor = UIColor.blackColor() { didSet { setNeedsDisplay() } }
 
+  /** Color used for drawing the checkbox */
   public var checkboxColor: UIColor = UIColor.blackColor() { didSet { setNeedsDisplay() } }
 
+  /** Font to use when drawing the text */
   public var titleFont: UIFont = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline) {
     didSet { invalidateIntrinsicContentSize() }
   }

@@ -18,43 +18,37 @@ import MoonKit
 @objc(SendIRCommand)
 public final class SendIRCommand: SendCommand {
 
-  @NSManaged public var portOverride: NSNumber
-
   @NSManaged public var code: IRCode
 
-  public var componentDevice: ComponentDevice { return code.device }
-  public var networkDevice: NetworkDevice? { return componentDevice.networkDevice }
+  public var port: Int16 { return componentDevice?.port ?? 0 }
+  public var componentDevice: ComponentDevice? { return code.device }
+  public var networkDevice: NetworkDevice? { return componentDevice?.networkDevice }
 
   public var commandString: String {
-    return "sendir,1:\(componentDevice.port),<tag>,\(code.frequency),\(code.repeatCount),\(code.offset),\(code.onOffPattern)"
+    return "sendir,1:\(port),<tag>,\(code.frequency),\(code.repeatCount),\(code.offset),\(code.onOffPattern)"
   }
 
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    updateRelationshipFromData(data, forKey: "code")
+  
+    updateRelationshipFromData(data, forAttribute: "code")
   }
 
-  /**
-  JSONDictionary
+  override public var description: String {
+    var result = super.description
+    result += "\n\tcode = \(code.index.rawValue)"
+    return result
+  }
 
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    dictionary["class"] = "sendir"
-    dictionary["code.uuid"] = code.uuid
-    appendValueForKey("portOverride", toDictionary: dictionary)
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["code.index"] = code.index.jsonValue
+    return obj.jsonValue
   }
 
 }

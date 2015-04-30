@@ -12,6 +12,11 @@ import MoonKit
 
 final class DetailTextViewCell: DetailTextInputCell, UITextViewDelegate {
 
+  enum DisplayStyle: String { case Default = "default", Condensed = "condensed" }
+
+  private static let defaultIdentifier = createIdentifier(DetailTextViewCell.self, ["Internal", "Default"])
+  private static let condensedIdentifier = createIdentifier(DetailTextViewCell.self, ["Internal", "Condensed"])
+
   /**
   initWithStyle:reuseIdentifier:
 
@@ -26,14 +31,25 @@ final class DetailTextViewCell: DetailTextInputCell, UITextViewDelegate {
     let textView = UITextView(autolayout: true)
     textView.userInteractionEnabled = false
     textView.scrollEnabled = false
-    textView.font = DetailController.infoFont
-    textView.textColor = DetailController.infoColor
+    textView.font = Bank.infoFont
+    textView.textColor = Bank.infoColor
+    textView.setContentHuggingPriority(750, forAxis: .Horizontal)
+    textView.setContentHuggingPriority(750, forAxis: .Vertical)
+    textView.setContentCompressionResistancePriority(750, forAxis: .Horizontal)
+    textView.setContentCompressionResistancePriority(750, forAxis: .Vertical)
     textView.textContainer.widthTracksTextView = true
+    textView.textContainer.heightTracksTextView = true
     textView.delegate = self
     contentView.addSubview(textView)
 
-    let format = "|-[name]-| :: |-[text]-| :: V:|-[name]-[text]-|"
-    contentView.constrain(format, views: ["name": nameLabel, "text": textView])
+    contentView.constrain(identifier: self.dynamicType.defaultIdentifier,
+              nameLabel.left => contentView.left + 20,
+              nameLabel.right => contentView.right - 20,
+              nameLabel.top => contentView.top + 8,
+              textView.left => contentView.left + 20,
+              textView.right => contentView.right - 20,
+              textView.bottom => contentView.bottom - 8,
+              nameLabel.bottom => textView.top - 8)
 
     textInput = textView
   }
@@ -45,97 +61,42 @@ final class DetailTextViewCell: DetailTextInputCell, UITextViewDelegate {
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
-  /// Storing pre-edited text field/view content
-  private var beginStateAttributedText: NSAttributedString?
-  private var beginStateText: String?
+  override func updateConstraints() {
+    let defaultIdentifier = self.dynamicType.defaultIdentifier
+    let condensedIdentifier = self.dynamicType.condensedIdentifier
 
-  var shouldAllowReturnsInTextView: Bool = false
-  var shouldBeginEditing: ((UITextView) -> Bool)?
-  var shouldEndEditing: ((UITextView) -> Bool)?
-  var didBeginEditing: ((UITextView) -> Void)?
-  var didEndEditing: ((UITextView) -> Void)?
-  var shouldChangeText: ((UITextView, NSRange, String?) -> Bool)?
+    contentView.removeConstraintsWithIdentifier(defaultIdentifier)
+    contentView.removeConstraintsWithIdentifier(condensedIdentifier)
 
-  /// UITextViewDelegate
-  ////////////////////////////////////////////////////////////////////////////////
+    super.updateConstraints()
 
-  /**
-  textViewShouldBeginEditing:
-
-  :param: textView UITextView
-
-  :returns: Bool
-  */
-  func textViewShouldBeginEditing(textView: UITextView) -> Bool { return shouldBeginEditing?(textView) ?? true }
-
-  /**
-  textViewDidBeginEditing:
-
-  :param: textView UITextView
-  */
-  func textViewDidBeginEditing(textView: UITextView) {
-    beginStateText = textView.text
-    beginStateAttributedText = textView.attributedText
-    didBeginEditing?(textView)
-  }
-
-  /**
-  textViewDidEndEditing:
-
-  :param: textView UITextView
-  */
-  func textViewDidEndEditing(textView: UITextView) {
-    if textView.text != beginStateText {
-      valueDidChange?(infoDataType.objectFromText(textView.text, attributedText: textView.attributedText))
-    }
-    didEndEditing?(textView)
-  }
-
-  /**
-  textViewShouldEndEditing:
-
-  :param: textView UITextView
-
-  :returns: Bool
-  */
-  func textViewShouldEndEditing(textView: UITextView) -> Bool {
-    if valueIsValid?(textView.text) == false { textView.text = beginStateText }
-    return true
-  }
-
-  /**
-  textView:shouldChangeTextInRange:replacementText:
-
-  :param: textView UITextView
-  :param: range NSRange
-  :param: text String?
-
-  :returns: Bool
-  */
-  func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-    if Array(text ?? "") ∋ Character("\n") && !shouldAllowReturnsInTextView {
-      textView.resignFirstResponder()
-      return false
-    } else {
-      return shouldChangeText?(textView, range, text) ??  true
+    if let textView = textInput as? UITextView {
+      switch displayStyle {
+      case .Condensed:
+        contentView.constrain(identifier: condensedIdentifier,
+          nameLabel.left => contentView.left + 20,
+          nameLabel.top => contentView.top + 8,
+          nameLabel.bottom => contentView.bottom - 8,
+          nameLabel.right => textView.left - 20,
+          textView.top => contentView.top + 8,
+          textView.bottom => contentView.bottom - 8,
+          textView.height => Float(Bank.defaultRowHeight * 2.0),
+          textView.right => contentView.right - 20
+        )
+      case .Default:
+        contentView.constrain(identifier: defaultIdentifier,
+          nameLabel.left => contentView.left + 20,
+          nameLabel.right => contentView.right - 20,
+          nameLabel.top => contentView.top + 8,
+          textView.left => contentView.left + 20,
+          textView.right => contentView.right - 20,
+          textView.bottom => contentView.bottom - 8,
+          nameLabel.bottom => textView.top - 8)
+      }
     }
   }
 
-  /**
-  textViewDidChange:
+  /// Configuring how the label and text view are displayed
+  var displayStyle: DisplayStyle = .Default { didSet { setNeedsUpdateConstraints() } }
 
-  :param: textView UITextView
-  */
-  func textViewDidChange(textView: UITextView) {
-    MSLogDebug("")
-    // let height = textView.bounds.size.height
-    // textView.sizeToFit()
-    // let isFirstResponder = textView.isFirstResponder()
-    // if textView.bounds.size.height != height {
-    //   sizeDidChange?(self)
-    //   if isFirstResponder {
-    //     textView.becomeFirstResponder()
-    //   }
-    // }
-  }
 }

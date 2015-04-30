@@ -19,7 +19,7 @@ public final class SwitchCommand: Command {
   @objc public enum SwitchType: Int { case Undefined = 0, Remote = 1, Mode = 2 }
 
   @NSManaged var primitiveType: NSNumber
-  public var type: SwitchType {
+  public var targetType: SwitchType {
     get {
       willAccessValueForKey("type")
       let type = primitiveType
@@ -33,41 +33,29 @@ public final class SwitchCommand: Command {
     }
   }
 
-  /**
-  JSONDictionary
+  override public var description: String {
+    var result = super.description
+    result += "\n\ttargetType = \(targetType.stringValue)"
+    result += "\n\ttarget = \(target)"
+    return result
+  }
 
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    dictionary["class"] = "switch"
-    appendValueForKey("type", toDictionary: dictionary)
-    switch type {
-      case .Remote:
-        if let targetRemote = Remote.objectWithUUID(target, context: managedObjectContext!) {
-          dictionary["target"] = target
-        }
-      case .Mode:
-        dictionary["target"] = target
-      default: break
-    }
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["targetType"] = targetType.jsonValue
+    obj["target"] = target.jsonValue
+    return obj.jsonValue
   }
 
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-    if let typeJSON = data["type"] as? String { self.type = SwitchType(JSONValue: typeJSON) }
-    if let target = data["target"] as? String { self.target = target }
+    if let type = SwitchType(data["targetType"]) { self.targetType = type }
+    if let target = String(data["target"]) { self.target = target }
   }
 
   override var operation: CommandOperation {
@@ -75,20 +63,28 @@ public final class SwitchCommand: Command {
   }
 }
 
+extension SwitchCommand.SwitchType: StringValueConvertible {
+  public var stringValue: String { return String(jsonValue)! }
+}
+
 extension SwitchCommand.SwitchType: JSONValueConvertible {
-  public var JSONValue: String {
+  public var jsonValue: JSONValue {
     switch self {
       case .Undefined: return "undefined"
       case .Remote:    return "remote"
       case .Mode:      return "mode"
     }
   }
+}
 
-  public init(JSONValue: String) {
-    switch JSONValue {
-      case SwitchCommand.SwitchType.Remote.JSONValue: self = .Remote
-      case SwitchCommand.SwitchType.Mode.JSONValue:   self = .Mode
-      default:                                        self = .Undefined
-    }
+extension SwitchCommand.SwitchType: JSONValueInitializable {
+  public init?(_ jsonValue: JSONValue?) {
+    if let string = String(jsonValue) {
+      switch string {
+        case String(SwitchCommand.SwitchType.Remote.jsonValue)!: self = .Remote
+        case String(SwitchCommand.SwitchType.Mode.jsonValue)!:   self = .Mode
+        default:                                                 self = .Undefined
+      }
+    } else { return nil }
   }
 }

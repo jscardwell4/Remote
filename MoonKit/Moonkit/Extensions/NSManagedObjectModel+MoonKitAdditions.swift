@@ -36,7 +36,7 @@ extension NSManagedObjectModel {
           var propertyNametagAttributes: [String] = []
 
           var propertyDescription: OrderedDictionary<String, String> = [:]
-          if property.optional { propertyNametagAttributes.append("optional") }
+          if !property.optional { propertyNametagAttributes.append("required") }
           if property.transient { propertyNametagAttributes.append("transient") }
           if !property.validationPredicates.isEmpty {
             propertyDescription["validation"] = "'" + ", ".join(property.validationPredicates) + "'"
@@ -50,6 +50,7 @@ extension NSManagedObjectModel {
           if let attributeDescription = property as? NSAttributeDescription {
             let attributeTypeString = NSStringFromNSAttributeType(attributeDescription.attributeType)
             var typeDescription = attributeTypeString[2..<attributeTypeString.length - 13].lowercaseString
+            if let attributeClassName = attributeDescription.attributeValueClassName { typeDescription += ",\(attributeClassName)" }
             if let defaultValue: AnyObject = attributeDescription.defaultValue { typeDescription += " (\(defaultValue))" }
             propertyNametagAttributes.append(typeDescription)
             if attributeDescription.allowsExternalBinaryDataStorage { propertyNametagAttributes.append("externalBinary") }

@@ -260,6 +260,49 @@ extension OrderedSet : Printable, DebugPrintable {
   public var debugDescription: String { return storage.debugDescription }
 }
 
+// MARK: _ObjectiveBridgeable
+extension OrderedSet: _ObjectiveCBridgeable {
+  static public func _isBridgedToObjectiveC() -> Bool {
+    return true
+  }
+  public typealias _ObjectiveCType = NSOrderedSet
+  static public func _getObjectiveCType() -> Any.Type { return _ObjectiveCType.self }
+  public func _bridgeToObjectiveC() -> _ObjectiveCType {
+    var objects: [AnyObject] = []
+    for object in storage {
+      if object is AnyObject {
+        objects.append(object as! AnyObject)
+      }
+    }
+    if objects.count == self.count {
+      return NSOrderedSet(array: objects)
+    } else {
+      return NSOrderedSet()
+    }
+  }
+
+  static public func _forceBridgeFromObjectiveC(source: NSOrderedSet, inout result: OrderedSet?) {
+    var s = OrderedSet()
+    for o in source {
+      if let object = typeCast(o, T.self) { s.append(object) }
+    }
+    if s.count == source.count {
+      result = s
+    }
+  }
+  static public func _conditionallyBridgeFromObjectiveC(source: NSOrderedSet, inout result: OrderedSet?) -> Bool {
+    var s = OrderedSet()
+    for o in source {
+      if let object = typeCast(o, T.self) { s.append(object) }
+    }
+    if s.count == source.count {
+      result = s
+      return true
+    }
+    return false
+  }
+}
+
 extension OrderedSet : Equatable {}
 
 /**

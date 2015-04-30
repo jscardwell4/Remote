@@ -1,0 +1,70 @@
+{
+  "name": "Home",
+  "baseType": "button",
+  "role": "toolbar-button",
+  "command.type": "return-to-launch-screen",
+  "icons": {
+    "normal": {
+      "image.index": "Icons/Glyphish%206/Large/Normal/Home",
+      "color": <@include ForegroundColor_Normal.json>
+    },
+    "highlighted": {
+      "image.index": "Icons/Glyphish%206/Large/Normal/Home",
+      "color": <@include ForegroundColor_Highlighted.json>
+    },
+    "disabled": {
+      "image.index": "Icons/Glyphish%206/Large/Normal/Home",
+      "color": <@include ForegroundColor_Disabled.json>
+    }
+  }
+},
+{
+  "name": "Settings",
+  "baseType": "button",
+  "role": "toolbar-button",
+  "command.type": "open-settings",
+  "icons": {
+    "normal": {
+      "image.index": "Icons/Glyphish%206/Large/Normal/Gear",
+      "color": <@include ForegroundColor_Normal.json>
+    },
+    "highlighted": {
+      "image.index": "Icons/Glyphish%206/Large/Normal/Gear",
+      "color": <@include ForegroundColor_Highlighted.json>
+    },
+    "disabled": {
+      "image.index": "Icons/Glyphish%206/Large/Normal/Gear",
+      "color": <@include ForegroundColor_Disabled.json>
+    }
+  }
+},
+{
+  "name": "Edit",
+  "baseType": "button",
+  "role": "toolbar-button",
+  "command.type": "open-editor",
+  "icons": {
+    "normal": {
+      "image.index": "Icons/Glyphish%206/Large/Normal/Pencil",
+      "color": <@include ForegroundColor_Normal.json>
+    },
+    "highlighted": {
+      "image.index": "Icons/Glyphish%206/Large/Normal/Pencil",
+      "color": <@include ForegroundColor_Highlighted.json>
+    },
+    "disabled": {
+      "image.index": "Icons/Glyphish%206/Large/Normal/Pencil",
+      "color": <@include ForegroundColor_Disabled.json>
+    }
+  }
+},
+{
+  "name": "Battery Status",
+  "baseType": "button",
+  "role": "battery-status"
+},
+{
+  "name": "Connection Status",
+  "baseType": "button",
+  "role": "connection-status"
+}

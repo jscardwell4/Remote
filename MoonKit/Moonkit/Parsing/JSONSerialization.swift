@@ -1,358 +1,139 @@
 //
-//  MSJSONSerialization.swift
-//  MSKit
+//  JSONSerializationRedux.swift
+//  MoonKit
 //
-//  Created by Jason Cardwell on 10/20/13.
-//  Copyright (c) 2013 Jason Cardwell. All rights reserved.
+//  Created by Jason Cardwell on 4/3/15.
+//  Copyright (c) 2015 Jason Cardwell. All rights reserved.
 //
 
 import Foundation
 
-public class JSONSerialization: NSObject {
+public class JSONSerialization {
 
   /**
-  JSONFromObject:options:
+  objectByParsingDirectivesForFile:options:error:
 
-  :param: object AnyObject
-  :param: options WriteOptions.Raw
+  :param: filePath String
+  :param: options ReadOptions = .None
+  :param: error NSErrorPointer = nil
 
-  :returns: String?
+  :returns: JSONValue?
   */
-  public class func JSONFromObject(object: AnyObject, options: WriteOptions.RawValue) -> String? {
-    return JSONFromObject(object, options: WriteOptions.fromMask(options))
-  }
-
-	/**
-	JSONFromObject:options:
-
-	:param: object AnyObject
-	:param: options WriteOptions = .None
-
-	:returns: String
-	*/
-  class func JSONFromObject(object: AnyObject, options: WriteOptions = .None) -> String? {
-    // TODO: Add options support
-
-		var json: String?
-
-    var weakStringFromObject: ((AnyObject, Int) -> String)?
-
-		let stringFromObject: (AnyObject, Int) -> String =
-		{(object, depth) in
-
-			let indent = " " * (depth * 4)
-			var string = indent
-
-			if let array = object as? NSArray {
-
-				string += "["
-				if let comment = array.comment { string += " \(comment)" }
-
-				let objectCount = array.count
-
-				for var i = 0; i < objectCount; i++ {
-
-          var valueString = weakStringFromObject!(array[i], depth + 1).stringByTrimmingTrailingWhitespace()
-          string += "\n\(valueString)"
-
-					if i + 1 < objectCount { string += "," }
-					if let comment = (array[i] as! NSObject).comment { string += comment }
-
-				}
-
-				if objectCount > 0 { string += "\n\(indent)" }
-
-				string += "]"
-
-			}
-
-			else if let dict = object as? NSDictionary {
-
-				string += "{"
-
-
-				if let comment = dict.comment { string += comment }
-
-				let keys = dict.allKeys
-				let keyCount = keys.count
-
-				for var i = 0; i < keyCount; i++ {
-
-          let key: AnyObject = keys[i]
-          let value: AnyObject = dict[key as! NSCopying]!
-					let keyString = weakStringFromObject!(key, depth + 1)
-          let valueString = weakStringFromObject!(value, depth + 1).stringByTrimmingWhitespace()
-
-          string += "\n\(keyString): \(valueString)"
-
-          if i + 1 < keyCount { string += "," }
-
-          if let comment = (value as! NSObject).comment { string += comment }
-
-				}
-
-				if keyCount > 0 { string += "\n\(indent)" }
-
-				string += "}"
-
-			}
-
-			else if let number = object as? NSNumber {
-				if number === kCFBooleanFalse || number === kCFBooleanTrue { string += number.boolValue ? "true" : "false" }
-				else { string += "\(number)" }
-			}
-
-			else if let nullObject = object as? NSNull { string += "null" }
-
-			else if let stringObject = object as? NSString { string += "\"\(stringObject.stringByEscapingControlCharacters())\"" }
-
-			return string
-
-		}
-
-    weakStringFromObject = stringFromObject
-
-		if NSJSONSerialization.isValidJSONObject(object) { json = stringFromObject(object, 0) }
-		json?.extend("\n")
-
-		return json
-
-	}
-
-
-	/**
-	parseFile:options:error:
-
-	:param: filePath String
-	:param: options WriteOptions.Raw
-	:param: error NSErrorPointer
-
-	:returns: String?
-	*/
-	public class func parseFile(filePath: String, options: WriteOptions.RawValue, error: NSErrorPointer) -> String? {
-		return parseFile(filePath, options: WriteOptions.fromMask(options), error: error)
-	}
-
-	/**
-	parseFile:options:error:
-
-	:param: filePath String
-	:param: options JSONSerializationWriteOptions = .None
-	:param: error NSErrorPointer = nil
-
-	:returns: String?
-	*/
-	class func parseFile(filePath: String, options: WriteOptions = .None, error: NSErrorPointer = nil) -> String?	{
-
-    var returnString: String?
-
-		// Get the file's contents as a string
-    var localError: NSError?
-    let string = NSString(contentsOfFile: filePath, encoding: NSUTF8StringEncoding, error: &localError)
-
-    if localError != nil /*MSHandleError(localError, message: "failed to create string from file")*/ || string == nil {
-      if error != nil { error.memory = localError }
-    }
-
-    else { returnString = parseString(string! as String, options: options, error: error) }
-
-    return returnString
-	}
-
-	/**
-	parseString:options:error:
-
-	:param: string String
-	:param: options WriteOptions.Raw
-	:param: error NSErrorPointer
-
-	:returns: String?
-	*/
-	public class func parseString(string: String, options: WriteOptions.RawValue, error: NSErrorPointer) -> String? {
-		return parseString(string, options: WriteOptions.fromMask(options), error: error)
-	}
-
-
-	/**
-	parseString:options:error:
-
-	:param: string String
-	:param: options JSONSerializationWriteOptions = .None
-	:param: error NSErrorPointer = nil
-
-	:returns: String?
-	*/
-	class func parseString(string: String, options: WriteOptions = .None, error: NSErrorPointer = nil) -> String? {
-    var json: String?
-    if let object: AnyObject = objectByParsingString(string, error: error) { json = JSONFromObject(object, options: options) }
-    return json
-	}
-
-	/**
-	objectByParsingString:options:error:
-
-	:param: string String
-	:param: options ReadOptions.Raw
-	:param: error NSErrorPointer
-
-	:returns: AnyObject?
-	*/
-	public class func objectByParsingString(string: String, options: ReadOptions.RawValue, error: NSErrorPointer) -> AnyObject? {
-		return objectByParsingString(string, options:(ReadOptions(rawValue: options) ?? .None), error: error)
-	}
-
-	/**
-	objectByParsingString:options:error:
-
-	:param: string String
-	:param: options JSONSerializationReadOptions = .None
-	:param: error NSErrorPointer = nil
-
-	:returns: AnyObject?
-	*/
-	class func objectByParsingString(string: String, options: ReadOptions = .None, error: NSErrorPointer = nil) -> AnyObject? {
-
-    var object: AnyObject? // Our return object
-
-    // Create the parser with the provided string
-    let parser = JSONParser(string: string)
-    object = parser.parse(error: error)
-
-    if options == .InflateKeypaths {
-      if let container = object as? MSObjectContaining {
-        if let dict = container as? MSDictionary {
-          dict.inflate()
-        }
-        if var dicts = container.allObjectsOfKind(MSDictionary.self) as? [MSDictionary] {
-          for dict in dicts { dict.inflate() }
-//          dicts.apply{$0.inflate()}
-        }
-      }
-    }
-
-		return object
-	}
-
-
-	/**
-	objectByParsingFile:options:error:
-
-	:param: filePath String
-	:param: options ReadOptions.Raw
-	:param: error NSErrorPointer
-
-	:returns: AnyObject?
-	*/
-	public class func objectByParsingFile(filePath: String, options: ReadOptions.RawValue, error: NSErrorPointer) -> AnyObject? {
-    return objectByParsingFile(filePath, options: (ReadOptions(rawValue: options) ?? .None), error: error)
-	}
-
-	/**
-	objectByParsingFile:options:error:
-
-	:param: filePath String
-	:param: options JSONSerializationReadOptions = .None
-	:param: error NSErrorPointer = nil
-
-	:returns: AnyObject?
-	*/
-	class func objectByParsingFile(filePath: String, options: ReadOptions = .None, error: NSErrorPointer = nil) -> AnyObject? {
-
-    var returnObject: AnyObject?  // The object we will be passing back to the caller
+  public class func stringByParsingDirectivesForFile(filePath: String,
+                                             options: ReadOptions = .None,
+                                               error: NSErrorPointer = nil) -> String?
+  {
     var localError: NSError?      // So we can intercept errors before passing them along to caller
 
-    // Create a block for logging local errors and setting error pointer
-    let handleError: (String) -> Bool = { s in
-      if localError != nil /*MSHandleError(localError, message: $0)*/ {
-        if error != nil { error.memory = localError }
-        return true
-      } else { return false }
-    }
-
     // Get the contents of the file to parse
-    if var string = NSString(contentsOfFile: filePath, encoding: NSUTF8StringEncoding, error: &localError) as? String {
-
-      // If no error than we look for any "@include" statements
-      if !handleError("failed to get file content for '\(filePath)") {
-
-        // Look for include entries in the file-loaded string
-        let pattern = ~/"<@include ([^>]+)>"
-
-        // Get the path to the provided file's directory so we can use it when looking for include files
-        let directory = filePath.stringByDeletingLastPathComponent
-
-        var offset = 0 // Holds the over/under from making substitutions in string
-
-        // Iterate through matches for pattern
-        for match in pattern /…≈ string {
-
-          // Make sure we have a valid range
-          if var range = match {
-
-            // Advance our range by the offset
-            let 𝘥 = distance(range.startIndex, range.endIndex)
-            let end = advance(range.startIndex, offset + 𝘥)
-            let start = advance(range.startIndex, offset)
-
-            range.endIndex = end
-            range.startIndex = start
-            let s = String.Space
-            let r = NSRange(location: range.startIndex, length: distance(range.startIndex, range.endIndex))
-
-            // Get the name of the file to include
-            let substring = (string as NSString).substringWithRange(r)
-            if let includeFile = pattern /~ (substring, 1) {
-
-              // Create the file path by combining the directory with the name
-              let includePath = "\(directory)/\(includeFile)"
-              let includeText = NSString(contentsOfFile: includePath, encoding: NSUTF8StringEncoding, error: &localError) as? String
-
-              // Move on to next if error
-              if handleError("failed to get file content for include directive '\(includePath)'") || includeText == nil { continue }
-
-              // Replace include directive with the text
-              string.replaceRange(string.indexRangeFromIntRange(range), with: includeText!)
-
-              // Update `offset`
-              offset += includeText!.length - count(range)
-
-            }
-
-          }
-
-        }
-
-      }
-      
-      returnObject = objectByParsingString(string, options: options, error: error)
-
+    if var string = String(contentsOfFile: filePath, encoding: NSUTF8StringEncoding, error: &localError)
+      where !handledError(localError, errorCode: NSFileReadUnknownError, error: error)
+    {
+      // Look for include entries in the file-loaded string
+      let directory = filePath.stringByDeletingLastPathComponent
+      let result = JSONIncludeDirective.stringByParsingDirectivesInString(string, directory: directory)
+      if JSONIncludeDirective.cacheSize > 100 { JSONIncludeDirective.emptyCache() }
+      return result
     }
 
-    return returnObject
-
-	}
-
-  // MARK: - Enumeration for read format options
+    return nil
+  }
 
 
-  enum ReadOptions: Int { case None, InflateKeypaths }
+  /**
+  objectByParsingString:options:error:
 
-  // MARK: - Enumeration for write format options
+  :param: string String
+  :param: options JSONSerializationReadOptions = .None
+  :param: error NSErrorPointer = nil
 
+  :returns: AnyObject?
+  */
+  public class func objectByParsingString(string: String?,
+                                  options: ReadOptions = .None,
+                                    error: NSErrorPointer = nil) -> JSONValue?
+  {
+    if string == nil { return nil }
+    var object: JSONValue? // Our return object
 
-  struct WriteOptions: RawOptionSetType {
+    // Create the parser with the provided string
+    let ignoreExcess = isOptionSet(options, ReadOptions.IgnoreExcess)
+    let parser = JSONParser(string: string!, ignoreExcess: ignoreExcess)
+    object = parser.parse(error: error)
 
-    var rawValue: UInt = 0
+    // Inflate key paths
+    if isOptionSet(options, ReadOptions.InflateKeypaths) { object = object?.inflatedValue }
 
-    var boolValue: Bool { return rawValue != 0 }
+    return object
+  }
 
-    static var allZeros: WriteOptions { return WriteOptions.None }
+  /**
+  handledError:errorCode:error:
 
-    init(rawValue: UInt) { self.rawValue = rawValue }
-    init(nilLiteral: Void) { self.rawValue = 0 }
-    static func fromRaw(raw: UInt)      -> WriteOptions? { return self(rawValue: raw) }
-    static func fromMask(raw: UInt)     -> WriteOptions  { return self(rawValue: raw) }
-    static func convertFromNilLiteral() -> WriteOptions  { return self(rawValue: 0)   }
+  :param: localError NSError?
+  :param: errorCode Int
+  :param: error NSErrorPointer
+
+  :returns: Bool
+  */
+  private class func handledError(localError: NSError?, errorCode: Int, error: NSErrorPointer) -> Bool {
+    if localError == nil { return false }
+    if error != nil {
+      error.memory = NSError(domain: "MSJSONSerializationErrorDomain",
+        code: errorCode,
+        underlyingErrors: [localError!])
+    }
+    return true
+  }
+
+  /**
+  This method calls `objectByParsingString:options:error` with the content of the specified file after attempting to replace
+  any '<@include file/to/include.json>' directives with their respective file content.
+
+  :param: filePath String
+  :param: options JSONSerializationReadOptions = .None
+  :param: error NSErrorPointer = nil
+
+  :returns: JSONValue?
+  */
+  public class func objectByParsingFile(filePath: String, options: ReadOptions = .None, error: NSErrorPointer = nil) -> JSONValue? {
+    var localError: NSError?      // So we can intercept errors before passing them along to caller
+
+    if let string = stringByParsingDirectivesForFile(filePath, options: options, error: error)
+      where !handledError(localError, errorCode: NSFileReadUnknownError, error: error)
+    {
+      return objectByParsingString(string, options: options, error: error)
+    } else { return nil }
+  }
+
+}
+
+// Mark - Read/Write options type definitions
+extension JSONSerialization {
+
+  /** Enumeration for read format options */
+  public struct ReadOptions: RawOptionSetType {
+
+    public var rawValue: UInt = 0
+
+    public init(rawValue: UInt) { self.rawValue = rawValue }
+    public init(nilLiteral: Void) { self = ReadOptions.None }
+
+    public static var None            : ReadOptions = ReadOptions(rawValue: 0b0)
+    public static var InflateKeypaths : ReadOptions = ReadOptions(rawValue: 0b1)
+    public static var IgnoreExcess    : ReadOptions = ReadOptions(rawValue: 0b01)
+
+    public static var allZeros        : ReadOptions { return None }
+
+  }
+
+  /** Option set for write format options */
+  public struct WriteOptions: RawOptionSetType {
+
+    public var rawValue: UInt = 0
+
+    public init(rawValue: UInt) { self.rawValue = rawValue }
+    public init(nilLiteral: Void) { self.rawValue = 0 }
 
     static var None                          : WriteOptions = WriteOptions(rawValue: 0b0000_0000_0000_0000)
     static var PreserveWhitespace            : WriteOptions = WriteOptions(rawValue: 0b0000_0000_0000_0001)
@@ -370,27 +151,8 @@ public class JSONSerialization: NSObject {
     static var BreakAfterComma               : WriteOptions = WriteOptions(rawValue: 0b0000_0100_0000_0000)
     static var BreakBetweenColonAndArray     : WriteOptions = WriteOptions(rawValue: 0b0000_1000_0000_0000)
     static var BreakBetweenColonAndObject    : WriteOptions = WriteOptions(rawValue: 0b0001_0000_0000_0000)
-
+    
+    public static var allZeros               : WriteOptions { return WriteOptions.None }
   }
-
+  
 }
-
-func ==(lhs:JSONSerialization.WriteOptions, rhs:JSONSerialization.WriteOptions) -> Bool { return lhs.rawValue == rhs.rawValue }
-
-func &(lhs:JSONSerialization.WriteOptions, rhs:JSONSerialization.WriteOptions) -> JSONSerialization.WriteOptions {
-  return JSONSerialization.WriteOptions.fromMask(lhs.rawValue & rhs.rawValue)
-}
-
-func |(lhs:JSONSerialization.WriteOptions, rhs:JSONSerialization.WriteOptions) -> JSONSerialization.WriteOptions {
-  return JSONSerialization.WriteOptions.fromMask(lhs.rawValue | rhs.rawValue)
-}
-
-func ^(lhs:JSONSerialization.WriteOptions, rhs:JSONSerialization.WriteOptions) -> JSONSerialization.WriteOptions {
-  return JSONSerialization.WriteOptions.fromMask(lhs.rawValue ^ rhs.rawValue)
-}
-
-prefix func ~(value:JSONSerialization.WriteOptions) -> JSONSerialization.WriteOptions {
-  return JSONSerialization.WriteOptions.fromMask(~value.rawValue)
-}
-
-

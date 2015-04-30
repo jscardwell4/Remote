@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class DocumentSelectionController: UIViewController {
+final class DocumentSelectionController: UIViewController {
 
   var didSelectFile: ((DocumentSelectionController) -> Void)?
   var didDismiss: ((DocumentSelectionController) -> Void)?

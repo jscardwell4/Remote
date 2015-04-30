@@ -22,23 +22,22 @@ public final class CommandSet: CommandContainer {
     .Rocker: Set<RemoteElement.Role>([.Top, .Bottom])
   ]
 
-  @objc public enum CommandSetType: Int { case Unspecified, Dpad, Transport, Numberpad, Rocker }
-  @NSManaged var primitiveType: NSNumber
+  @objc public enum CommandSetType: Int16 { case Unspecified, Dpad, Transport, Numberpad, Rocker }
   public var type: CommandSetType {
     get {
       willAccessValueForKey("type")
-      let type = primitiveType
+      let type = (primitiveValueForKey("type")  as! NSNumber).shortValue
       didAccessValueForKey("type")
-      return CommandSetType(rawValue: type.integerValue) ?? .Unspecified
+      return CommandSetType(rawValue: type)!
     }
     set {
       willChangeValueForKey("type")
-      primitiveType = newValue.rawValue
+      setPrimitiveValue(NSNumber(short: newValue.rawValue), forKey: "type")
       didChangeValueForKey("type")
       if let sharedKeys = CommandSet.sharedKeysByType[newValue] {
-        containerIndex = MSDictionary(sharedKeys: Array(map(sharedKeys){$0.rawValue}))
+        containerIndex = MSDictionary(sharedKeys: map(sharedKeys){Int($0.rawValue)}) as! OrderedDictionary<String, NSURL>
       } else {
-        containerIndex = MSDictionary()
+        containerIndex = [:]
       }
     }
   }
@@ -50,61 +49,60 @@ public final class CommandSet: CommandContainer {
 
   :returns: Command?
   */
-  public subscript(key: RemoteElement.Role) -> Command? {
-    get { return containerIndex[key.rawValue] as? Command }
-    set { containerIndex[key.rawValue] = newValue }
+  public subscript(role: RemoteElement.Role) -> Command? {
+    get { return self[String(role.jsonValue)!]}
+    set { self[String(role.jsonValue)!] = newValue }
+  }
+
+  /**
+  subscript:
+
+  :param: key String
+
+  :returns: Command?
+  */
+  public subscript(key: String) -> Command? {
+    get { return (containerIndex[key] ?>> managedObjectContext!.objectForURI) as? Command }
+    set { containerIndex[key] = newValue?.permanentURI() }
   }
 
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
     if let moc = managedObjectContext,
-      let typeJSON = data["type"] as? String {
-      let type = CommandSetType(JSONValue: typeJSON)
+      let typeJSON = data["type"] {
+      let type = CommandSetType(jsonValue: typeJSON)
       if type != .Unspecified {
         self.type = type
-        let commands = data - "type"
-        for (roleJSON, roleData) in commands {
-          if let commandData = roleData as? [String:AnyObject],
-            let command = Command.importObjectWithData(commandData, context: moc) {
-              self[RemoteElement.Role(JSONValue: roleJSON)] = command
+        for (_, roleJSON, jsonValue) in data {
+          if let role = RemoteElement.Role(roleJSON.jsonValue),
+            commandData = ObjectJSONValue(jsonValue),
+            command = Command.importObjectWithData(commandData, context: moc)
+          {
+              self[role] = command
           }
         }
       }
     }
   }
 
-  /**
-  JSONDictionary
-
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    dictionary["type"] = type.JSONValue
-    containerIndex.enumerateKeysAndObjectsUsingBlock { (key, uri, _) -> Void in
-      if let command = self.managedObjectContext?.objectForURI(uri as! NSURL) as? Command {
-        dictionary[RemoteElement.Role(rawValue: (key as! NSNumber).integerValue).JSONValue] = command.JSONDictionary()
-      }
-    }
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["type"] = type.jsonValue
+    obj += containerIndex.compressedMap({_, k, _ in self[k]?.jsonValue})
+    return obj.jsonValue
   }
 
 
 }
 
-extension CommandSet.CommandSetType: JSONValueConvertible {
-  public var JSONValue: String {
+extension CommandSet.CommandSetType: StringValueConvertible {
+  public var stringValue: String {
     switch self {
       case .Dpad:      return "dpad"
       case .Transport: return "transport"
@@ -113,14 +111,18 @@ extension CommandSet.CommandSetType: JSONValueConvertible {
       default:         return "unspecified"
     }
   }
+}
 
-  public init(JSONValue: String) {
-    switch JSONValue {
-      case "dpad":      self = .Dpad
-      case "transport": self = .Transport
-      case "numberpad": self = .Numberpad
-      case "rocker":    self = .Rocker
-      default:          self = .Unspecified
+extension CommandSet.CommandSetType: JSONValueConvertible {
+  public var jsonValue: JSONValue { return stringValue.jsonValue }
+
+  public init(jsonValue: JSONValue) {
+    switch String(jsonValue) {
+      case let s where s == "dpad":      self = .Dpad
+      case let s where s == "transport": self = .Transport
+      case let s where s == "numberpad": self = .Numberpad
+      case let s where s == "rocker":    self = .Rocker
+      default:                           self = .Unspecified
     }
   }
 }

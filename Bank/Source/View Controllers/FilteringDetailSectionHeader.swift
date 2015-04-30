@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-class FilteringDetailSectionHeader: DetailSectionHeader {
+final class FilteringDetailSectionHeader: DetailSectionHeader {
 
   private var checkBoxContainer = UIView(autolayout: true)
 
@@ -48,8 +48,7 @@ class FilteringDetailSectionHeader: DetailSectionHeader {
           return view
         }
         apply(labeledCheckboxes){self.checkBoxContainer.addSubview($0)}
-        let views: OrderedDictionary<String, UIView> = OrderedDictionary(keys: (0..<labeledCheckboxes.count).map{"view\($0)"},
-                                                                         values: labeledCheckboxes)
+        let views = OrderedDictionary(keys: (0..<labeledCheckboxes.count).map{"view\($0)"}, values: labeledCheckboxes)
         let horizontalFormat = "|-" + "-8-".join(views.keys.map{"[\($0)]"}) + "-|"
         let verticalForamt = "::".join(views.keys.map{"V:|-[\($0)]|"})
         let format = "::".join(horizontalFormat, verticalForamt)

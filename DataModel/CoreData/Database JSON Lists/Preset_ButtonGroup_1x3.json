@@ -1,6 +1,6 @@
 {
   "name": "1 x 3",
-  "base-type": "button-group",
+  "baseType": "button-group",
   "constraints": [
     "$0.height ≥ 150",
     "$0.width ≥ 132",
@@ -10,58 +10,58 @@
   ],
   "subelements": [
     {
-      "base-type": "button",
+      "baseType": "button",
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@20",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": "Button 1"
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@20",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": "Button 2"
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     },
     {
-      "base-type": "button",
+      "baseType": "button",
       "shape": "rounded-rectangle",
       "style": "gloss2",
       "titles": {
         "normal": {
           "font": "Helvetica Neue@20",
-          "foreground-color": "white",
-          "stroke-color": "white@50%",
-          "stroke-width": -2,
+          "foregroundColor": "white",
+          "strokeColor": "white@50%",
+          "strokeWidth": -2,
           "alignment": "center",
           "text": "Button 3"
         },
-        "highlighted.foreground-color": "#00AFFFFF"
+        "highlighted.foregroundColor": "#00AFFFFF"
       },
-      "background-colors.normal": "#666666FF",
-      "title-edge-insets": "{20, 20, 20, 20}"
+      "backgroundColors.normal": "#666666FF",
+      "titleEdgeInsets": "{20, 20, 20, 20}"
     }
   ]
 }

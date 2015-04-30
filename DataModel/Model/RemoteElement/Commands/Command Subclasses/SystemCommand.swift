@@ -40,36 +40,35 @@ public final class SystemCommand: Command {
   /**
   updateWithData:
 
-  :param: data [String:AnyObject]
+  :param: data ObjectJSONValue
   */
-  override public func updateWithData(data: [String:AnyObject]) {
+  override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
-    if let typeJSON = data["type"] as? String { type = SystemCommandType(JSONValue: typeJSON) }
+    if let typeJSON = String(data["type"]) { type = SystemCommandType(jsonValue: typeJSON.jsonValue) }
   }
 
-  /**
-  JSONDictionary
+  override public var description: String {
+    var result = super.description
+    result += "\n\ttype = \(type.stringValue)"
+    return result
+  }
 
-  :returns: MSDictionary!
-  */
-  override public func JSONDictionary() -> MSDictionary {
-    let dictionary = super.JSONDictionary()
-
-    dictionary["class"] = "system"
-    appendValueForKey("type", toDictionary: dictionary)
-
-    dictionary.compact()
-    dictionary.compress()
-
-    return dictionary
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["type"] = type.jsonValue
+    return obj.jsonValue
   }
 
   override var operation: CommandOperation { return SystemCommandOperation(command: self) }
 }
 
+extension SystemCommand.SystemCommandType: StringValueConvertible {
+  public var stringValue: String { return String(jsonValue)! }
+}
+
 extension SystemCommand.SystemCommandType: JSONValueConvertible {
-  public var JSONValue: String {
+  public var jsonValue: JSONValue {
     switch self {
       case .ProximitySensor: return "proximity-sensor"
       case .URLRequest:      return "url-request"
@@ -80,14 +79,14 @@ extension SystemCommand.SystemCommandType: JSONValueConvertible {
     }
   }
 
-  public init(JSONValue: String) {
-    switch JSONValue {
-      case "proximity-sensor": self = .ProximitySensor
-      case "url-request":      self = .URLRequest
-      case "launch-screen":    self = .LaunchScreen
-      case "open-settings":    self = .OpenSettings
-      case "open-editor":      self = .OpenEditor
-      default:                 self = .Undefined
+  public init(jsonValue: JSONValue) {
+    switch jsonValue.value as? String ?? "" {
+      case String(SystemCommand.SystemCommandType.ProximitySensor.jsonValue)!: self = .ProximitySensor
+      case String(SystemCommand.SystemCommandType.URLRequest.jsonValue)!:      self = .URLRequest
+      case String(SystemCommand.SystemCommandType.LaunchScreen.jsonValue)!:    self = .LaunchScreen
+      case String(SystemCommand.SystemCommandType.OpenSettings.jsonValue)!:    self = .OpenSettings
+      case String(SystemCommand.SystemCommandType.OpenEditor.jsonValue)!:      self = .OpenEditor
+      default:                                                                 self = .Undefined
     }
   }
 }
