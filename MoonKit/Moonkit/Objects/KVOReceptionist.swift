@@ -63,7 +63,7 @@ public final class KVOReceptionist: NSObject {
                                       context: UnsafeMutablePointer<Void>)
   {
     if self.keyPath == keyPath && self.object === object && context == observingContext {
-      queue.addOperationWithBlock { [unowned self] in self.change = change; self.handler(self); self.change = nil }
+      queue.addOperationWithBlock { [unowned self] in self.change = change; self.handler(self) }
     }
   }
 

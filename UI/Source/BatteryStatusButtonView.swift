@@ -67,7 +67,7 @@ public final class BatteryStatusButtonView: ButtonView {
 	/** initializeViewFromModel */
 	override func initializeViewFromModel() {
 		super.initializeViewFromModel()
-    let icons = button.iconsForMode(button.currentMode) ?? button.iconsForMode(RemoteElement.DefaultMode)
+    let icons = button.iconSet
     batteryFrame     = icons?[UIControlState.Normal.rawValue] as? ImageView
     batteryPlug      = icons?[UIControlState.Selected.rawValue] as? ImageView
     batteryLightning = icons?[UIControlState.Disabled.rawValue] as? ImageView
@@ -100,7 +100,7 @@ public final class BatteryStatusButtonView: ButtonView {
 	  }
 
     let baseColor: UIColor
-    if let color = backgroundColor where color != UIColor.clearColor() { baseColor = color }
+    if let color = button.iconSet?.normal?.color { baseColor = color }
     else { baseColor = Painter.defaultBackgroundColor }
 
     let hasPower = [.Charging, .Full] ∋ batteryState

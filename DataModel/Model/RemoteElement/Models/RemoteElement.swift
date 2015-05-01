@@ -114,6 +114,8 @@ public class RemoteElement: IndexedModelObject {
 
   // MARK: - Background
 
+  public typealias Background = ImageView
+
   private(set) var backgrounds: ModalStorage {
     get {
       var storage: ModalStorage!
@@ -123,7 +125,7 @@ public class RemoteElement: IndexedModelObject {
       if storage == nil {
         storage = ModalStorage(context: managedObjectContext)
         setPrimitiveValue(storage, forKey: "backgrounds")
-      } else { storage.fireFault() }
+      }
       return storage
     }
     set {
@@ -133,11 +135,7 @@ public class RemoteElement: IndexedModelObject {
     }
   }
 
-  @NSManaged private(set) public var backgroundColor: UIColor?
-  @NSManaged private(set) public var backgroundImageView: ImageView?
-
-  private(set) public dynamic var backgroundImage: Image?
-
+  @NSManaged private(set) public var background: Background?
 
   // MARK: - Parent and subelements
 
@@ -227,6 +225,7 @@ public class RemoteElement: IndexedModelObject {
   :param: storage ModalStorage
   */
   func setValue<T:ModelObject>(value: T?, forMode mode: Mode, inStorage storage: ModalStorage) {
+    // TODO: Possibly add some form of KVO compliance?
     let action = storage.setValue(value, forMode: mode)
     switch action {
       case .ValueAdded:                           modes ∪= [mode]
@@ -237,103 +236,39 @@ public class RemoteElement: IndexedModelObject {
   }
 
   /**
-  updateForMode:
+  setBackground:forMode:
 
-  :param: mode String
-  */
-  public func updateForMode(mode: Mode) {
-    backgroundColor = backgroundColorForMode(mode) ?? backgroundColorForMode(RemoteElement.DefaultMode)
-    backgroundImageView = backgroundImageViewForMode(mode) ?? backgroundImageViewForMode(RemoteElement.DefaultMode)
-    backgroundImage = backgroundImageView?.image
-  }
-
-  /**
-  backgroundColorForMode:
-
-  :param: mode String
-
-  :returns: UIColor?
-  */
-  public func backgroundColorForMode(mode: Mode) -> UIColor? { return backgrounds[mode]?.color }
-
-  /**
-  setBackgroundColor:forMode:
-
-  :param: color UIColor?
-  :param: mode String
-  */
-  public func setBackgroundColor(color: UIColor?, forMode mode: Mode) { imageViewForMode(mode).color = color }
-
-  /**
-  backgroundImageAlphaForMode:
-
-  :param: mode String
-
-  :returns: NSNumber?
-  */
-  public func backgroundImageAlphaForMode(mode: Mode) -> Float? { return backgrounds[mode]?.alpha?.floatValue }
-
-  /**
-  setBackgroundImageAlpha:forMode:
-
-  :param: alpha NSNumber?
-  :param: mode String
-  */
-  public func setBackgroundImageAlpha(alpha: Float?, forMode mode: Mode) { imageViewForMode(mode).alpha = alpha }
-
-  /**
-  backgroundImageForMode:
-
-  :param: mode String
-
-  :returns: ImageView?
-  */
-  public func backgroundImageViewForMode(mode: Mode) -> ImageView? { return backgrounds[mode] }
-
-  /**
-  setBackgroundImageView:forMode:
-
-  :param: imageView ImageView?
+  :param: bg Background?
   :param: mode Mode
   */
-  public func setBackgroundImageView(imageView: ImageView?, forMode mode: Mode) {
-    setValue(imageView, forMode: mode, inStorage: backgrounds)
-  }
+  public func setBackground(bg: Background?, forMode mode: Mode) { setValue(bg, forMode: mode, inStorage: backgrounds) }
 
   /**
-  backgroundImageForMode:
+  backgroundForMode:
 
   :param: mode Mode
 
-  :returns: Image?
+  :returns: Background?
   */
-  public func backgroundImageForMode(mode: Mode) -> Image? { return backgroundImageViewForMode(mode)?.image }
+  public func backgroundForMode(mode: Mode) -> Background? { return backgrounds[mode] }
 
   /**
-  setBackgroundImage:forMode:
-
-  :param: image Image?
-  :param: mode String
-  */
-  public func setBackgroundImage(image: Image?, forMode mode: Mode) { imageViewForMode(mode).image = image }
-
-  /**
-  Accessor for the `ImageView` associated with the specified `Mode`. If one does not exist a copy is made of the 
-  `ImageView` for `RemoteElement.Default`. If that does not exist a new `ImageView` is created and returned.
+  Accessor for the `Background` associated with the specified `Mode`. If one does not exist a copy is made of the 
+  `Background` for `RemoteElement.Default`. If that does not exist a new `Background` is created and returned.
 
   :param: mode Mode
 
-  :returns: ImageView
+  :returns: Background
   */
-  private func imageViewForMode(mode: Mode) -> ImageView {
-    let imageView: ImageView
-    if let i: ImageView = backgrounds[mode] {
+  private func imageViewForMode(mode: Mode) -> Background {
+    let imageView: Background
+    if let i: Background = backgrounds[mode] {
       imageView = i
-    } else if mode != RemoteElement.DefaultMode, let i: ImageView = backgrounds[RemoteElement.DefaultMode] {
-      imageView = i.copy() as! ImageView
+    } else if mode != RemoteElement.DefaultMode, let i: Background = backgrounds[RemoteElement.DefaultMode] {
+      imageView = i.copy() as! Background
       setValue(imageView, forMode: mode, inStorage: backgrounds)
     } else {
-      imageView = ImageView(context: managedObjectContext)
+      imageView = Background(context: managedObjectContext)
       setValue(imageView, forMode: mode, inStorage: backgrounds)
     }
     return imageView
@@ -497,13 +432,14 @@ public class RemoteElement: IndexedModelObject {
   public struct Style: RawOptionSetType {
 
     private(set) public var rawValue: Int16
-    public init(rawValue: Int16) { self.rawValue = rawValue & 0b111 }
+    public init(rawValue: Int16) { self.rawValue = rawValue & 0b1111 }
     public init(nilLiteral:()) { rawValue = 0 }
     public static var allZeros:       Style { return Style.None }
-    public static var None:           Style = Style(rawValue: 0b000)
-    public static var ApplyGloss:     Style = Style(rawValue: 0b001)
-    public static var DrawBorder:     Style = Style(rawValue: 0b010)
-    public static var Stretchable:    Style = Style(rawValue: 0b100)
+    public static var None:           Style = Style(rawValue: 0b0000)
+    public static var ApplyGloss:     Style = Style(rawValue: 0b0001)
+    public static var DrawBorder:     Style = Style(rawValue: 0b0010)
+    public static var Stretchable:    Style = Style(rawValue: 0b0100)
+    public static var DrawBackground: Style = Style(rawValue: 0b1000)
 
   }
 
@@ -524,7 +460,9 @@ public class RemoteElement: IndexedModelObject {
   // MARK: - Lifecycle
 
   /** refresh */
-  public func refresh() { updateForMode(currentMode) }
+  public func refresh() {
+    updateForMode(currentMode)
+  }
 
   /** awakeFromFetch */
   override public func awakeFromFetch() {
@@ -532,18 +470,16 @@ public class RemoteElement: IndexedModelObject {
     refresh()
   }
 
-  /** prepareForDeletion */
-//  override public func prepareForDeletion() {
-    //TODO: Make sure this works as expected
-//    if let moc = managedObjectContext {
-//      let uris: [NSURL] = flattened(configurations.values)
-//      let objects = compressedMap(uris, {moc.objectForURI($0) as? NSManagedObject})
-//      moc.deleteObjects(Set(objects))
-//      moc.processPendingChanges()
-//    }
-//  }
-
   // MARK: - Updating the remote element
+
+  /**
+  updateForMode:
+
+  :param: mode String
+  */
+  func updateForMode(mode: Mode) {
+    background = backgrounds[mode] ?? backgrounds[RemoteElement.DefaultMode]
+  }
 
   /**
   updateWithPreset:
@@ -554,9 +490,18 @@ public class RemoteElement: IndexedModelObject {
     role = preset.role
     shape = preset.shape
     style = preset.style
-    setBackgroundColor(preset.backgroundColor, forMode: RemoteElement.DefaultMode)
-    setBackgroundImage(preset.backgroundImage, forMode: RemoteElement.DefaultMode)
-    setBackgroundImageAlpha(preset.backgroundImageAlpha, forMode: RemoteElement.DefaultMode)
+
+    let color = preset.backgroundColor
+    let image = preset.backgroundImage
+    let alpha = preset.backgroundImageAlpha
+
+    if color != nil || image != nil || alpha != nil {
+      let imageView = imageViewForMode(RemoteElement.DefaultMode)
+      imageView.color = color
+      imageView.image = image
+      imageView.alpha = alpha
+    }
+
     var elements: OrderedSet<RemoteElement> = []
     if let subelementPresets = preset.subelements {
       for subelementPreset in subelementPresets {
@@ -587,18 +532,9 @@ public class RemoteElement: IndexedModelObject {
       style = Style(data["style"]) ?? .None
       tag = Int16(data["tag"]) ?? 0
 
-      applyMaybe(ObjectJSONValue(data["backgroundColor"])) { self.setBackgroundColor(UIColor($2), forMode: $1) }
-      applyMaybe(ObjectJSONValue(data["backgroundImage-alpha"])) { self.setBackgroundImageAlpha(Float($2), forMode: $1) }
-      applyMaybe(ObjectJSONValue(data["backgroundImage"])) {
-        let image: Image?
-        if let imageData = ObjectJSONValue($2), imageIndex = ModelIndex(imageData["index"]) {
-          image = Image.objectWithIndex(imageIndex, context: moc)
-        } else if let imageData = ObjectJSONValue($2), importedImage = Image.importObjectWithData(imageData, context: moc) {
-          image = importedImage
-        } else {
-          image = nil
-        }
-        self.setBackgroundImage(image, forMode: $1)
+
+      applyMaybe(ObjectJSONValue(data["backgrounds"])?.compressedMap({ObjectJSONValue($2)})) {
+        self.setBackground(Background.importObjectWithData($2, context: moc), forMode: $1)
       }
 
       if let subType = self.dynamicType.subelementType, subelementsJSON = ArrayJSONValue(data["subelements"]) {
@@ -626,21 +562,9 @@ public class RemoteElement: IndexedModelObject {
     if hasNonDefaultValue("shape") { obj["shape"] = shape.jsonValue }
     if hasNonDefaultValue("style") { obj["style"] = style.jsonValue }
 
-    let bgColors = OrderedDictionary(compressedMap(modes) { mode -> (Mode, JSONValue)? in
-        if let color = self.backgroundColorForMode(mode)?.jsonValue { return (mode, color) } else { return nil }
-    })
-
-    let bgImages = OrderedDictionary(compressedMap(modes) { mode -> (Mode, JSONValue)? in
-      if let image = self.backgroundImageViewForMode(mode)?.jsonValue { return (mode, image) } else { return nil }
-    })
-
-    let bgImageAlphas = OrderedDictionary(compressedMap(modes) { mode -> (Mode, JSONValue)? in
-      if let alpha = self.backgroundImageAlphaForMode(mode)?.jsonValue { return (mode, alpha) } else { return nil }
-    })
-
-    if bgColors.count > 0      { obj["backgroundColor"]       = .Object(bgColors)      }
-    if bgImages.count > 0      { obj["backgroundImage"]       = .Object(bgImages)      }
-    if bgImageAlphas.count > 0 { obj["backgroundImage-alpha"] = .Object(bgImageAlphas) }
+    var backgrounds: JSONValue.ObjectValue = [:]
+    apply(modes) { if let background: Background = self.backgrounds[$0] { backgrounds[$0] = background.jsonValue } }
+    obj["backgrounds"] = .Object(backgrounds)
 
     let subelementJSON = subelements.map({$0.jsonValue})
     if subelementJSON.count > 0 { obj["subelements"] = Optional(JSONValue(subelementJSON)) }
@@ -700,39 +624,6 @@ public class RemoteElement: IndexedModelObject {
     }
   }
 
-  /**
-  subscript:
-
-  :param: key String
-
-  :returns: RemoteElement?
-  */
-//  public subscript(key: String) -> AnyObject? {
-//    get {
-//      let keypath = split(key){$0 == "."}
-//      if keypath.count == 2 {
-//        let mode = keypath.first!
-//        let property = keypath.last!
-//        return hasMode(mode) ? configurations[mode]?[property] : configurations[RemoteElement.DefaultMode]?[property]
-//      } else {
-//        return subelements.filter{$0.isIdentifiedByString(key)}.first
-//      }
-//    }
-//    set {
-//      let keypath = split(key){$0 == "."}
-//      if keypath.count == 2 {
-//        let mode = keypath.first!
-//        let property = keypath.last!
-//
-//        var configs = configurations
-//        var values: [String:AnyObject] = configs[mode] ?? [:]
-//        values[property] = newValue
-//        configs[mode] = values
-//        configurations = configs
-//      }
-//    }
-//  }
-
   // MARK: - Printable
 
   override public var description: String {
@@ -743,15 +634,15 @@ public class RemoteElement: IndexedModelObject {
     result += "\n\t"
     result += "\n\t".join(reduce(modes,
                                  [String](),
-                                 {$0 + ["\($1).backgroundColor = \(toString(self.backgroundColorForMode($1)?.string))"]}))
+                                 {$0 + ["\($1).backgroundColor = \(toString(self.backgroundForMode($1)?.color?.string))"]}))
     result += "\n\t"
     result += "\n\t".join(reduce(modes,
                                  [String](),
-                                 {$0 + ["\($1).backgroundImage = \(toString(self.backgroundImageViewForMode($1)?.index.rawValue))"]}))
+                                 {$0 + ["\($1).backgroundImage = \(toString(self.backgroundForMode($1)?.image?.index))"]}))
     result += "\n\t"
     result += "\n\t".join(reduce(modes,
                                  [String](),
-                                 {$0 + ["\($1).backgroundImageAlpha = \(toString(self.backgroundImageAlphaForMode($1)))"]}))
+                                 {$0 + ["\($1).backgroundImageAlpha = \(toString(self.backgroundForMode($1)?.alpha))"]}))
     result += "\n\tsubelement count = \(subelements.count)"
     result += "\n\tconstraints = "
     if constraints.count == 0 { result += "nil" }
@@ -850,9 +741,10 @@ extension RemoteElement.Style: JSONValueConvertible {
 
   public var jsonValue: JSONValue {
     var segments: [String] = []
-    if self & RemoteElement.Style.ApplyGloss  != nil { segments.append("gloss")       }
-    if self & RemoteElement.Style.DrawBorder  != nil { segments.append("border")      }
-    if self & RemoteElement.Style.Stretchable != nil { segments.append("stretchable") }
+    if self & RemoteElement.Style.ApplyGloss  != nil    { segments.append("gloss")       }
+    if self & RemoteElement.Style.DrawBorder  != nil    { segments.append("border")      }
+    if self & RemoteElement.Style.Stretchable != nil    { segments.append("stretchable") }
+    if self & RemoteElement.Style.DrawBackground != nil { segments.append("background") }
     if segments.isEmpty { segments.append("none") }
     return " ".join(segments).jsonValue
   }
@@ -868,6 +760,7 @@ extension RemoteElement.Style: JSONValueInitializable {
           case "border":      style = style | RemoteElement.Style.DrawBorder
           case "stretchable": style = style | RemoteElement.Style.Stretchable
           case "gloss":       style = style | RemoteElement.Style.ApplyGloss
+          case "background":  style = style | RemoteElement.Style.DrawBackground
           default: break
         }
       }

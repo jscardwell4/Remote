@@ -212,7 +212,7 @@
 		C2381FA219A7EE3B00135DAB /* WoodPlanks-1024x768-iPad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2381EB119A7EE3B00135DAB /* WoodPlanks-1024x768-iPad.jpg */; };
 		C2381FA319A7EE3B00135DAB /* WoodPlanks-2048x1536-iPad@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2381EB219A7EE3B00135DAB /* WoodPlanks-2048x1536-iPad@2x.jpg */; };
 		C23E73611ADE983700867028 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C23E73601ADE983700867028 /* Nimble.framework */; };
-		C23E73631ADEB0A600867028 /* DataModel_LoadedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23E73621ADEB0A600867028 /* DataModel_LoadedTests.swift */; };
+		C23E73631ADEB0A600867028 /* DataModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23E73621ADEB0A600867028 /* DataModelTests.swift */; };
 		C23E73651ADEB23700867028 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C23E73641ADEB23700867028 /* Quick.framework */; };
 		C23F07111AD5A54F003BD28B /* Activity_Simple.json in Resources */ = {isa = PBXBuildFile; fileRef = C23F07021AD5A54F003BD28B /* Activity_Simple.json */; };
 		C23F07121AD5A54F003BD28B /* ActivityController_Simple.json in Resources */ = {isa = PBXBuildFile; fileRef = C23F07031AD5A54F003BD28B /* ActivityController_Simple.json */; };
@@ -521,7 +521,6 @@
 		C2874FC41AE6A5A400BD7634 /* UI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C24A05D11AE5C65C00C9255E /* UI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C2874FC71AE6A5A500BD7634 /* Networking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C24A06041AE5CB4900C9255E /* Networking.framework */; };
 		C2874FC81AE6A5A500BD7634 /* Networking.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C24A06041AE5CB4900C9255E /* Networking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C28E98F81AD1A4B000E78711 /* DataModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28E98F71AD1A4B000E78711 /* DataModelTests.swift */; };
 		C28E98F91AD1A4B000E78711 /* DataModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* DataModel.framework */; };
 		C293C7491AC3164700408D35 /* Bank.h in Headers */ = {isa = PBXBuildFile; fileRef = C293C7481AC3164700408D35 /* Bank.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C293C7751AC318EB00408D35 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C7691AC318EB00408D35 /* Image.swift */; };
@@ -1200,7 +1199,7 @@
 		C2381EB119A7EE3B00135DAB /* WoodPlanks-1024x768-iPad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "WoodPlanks-1024x768-iPad.jpg"; sourceTree = "<group>"; };
 		C2381EB219A7EE3B00135DAB /* WoodPlanks-2048x1536-iPad@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "WoodPlanks-2048x1536-iPad@2x.jpg"; sourceTree = "<group>"; };
 		C23E73601ADE983700867028 /* Nimble.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = Nimble.framework; path = "../Debug-iphonesimulator/Nimble.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C23E73621ADEB0A600867028 /* DataModel_LoadedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModel_LoadedTests.swift; sourceTree = "<group>"; };
+		C23E73621ADEB0A600867028 /* DataModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModelTests.swift; sourceTree = "<group>"; };
 		C23E73641ADEB23700867028 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = "../Debug-iphonesimulator/Quick.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C23F07021AD5A54F003BD28B /* Activity_Simple.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Activity_Simple.json; sourceTree = "<group>"; };
 		C23F07031AD5A54F003BD28B /* ActivityController_Simple.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ActivityController_Simple.json; sourceTree = "<group>"; };
@@ -1447,9 +1446,8 @@
 		C2817C401AEC101B00C60C07 /* ModalStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalStorage.swift; sourceTree = "<group>"; };
 		C285D8691AC4C0E800C527F6 /* DataModelProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataModelProtocols.swift; path = Model/DataModelProtocols.swift; sourceTree = "<group>"; };
 		C2874FB91AE68CD100BD7634 /* Painter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Painter.swift; sourceTree = "<group>"; };
-		C28E98F31AD1A4B000E78711 /* DataModel Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "DataModel Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C28E98F31AD1A4B000E78711 /* DataModelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DataModelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C28E98F61AD1A4B000E78711 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C28E98F71AD1A4B000E78711 /* DataModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModelTests.swift; sourceTree = "<group>"; };
 		C293C7441AC3164700408D35 /* Bank.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bank.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C293C7471AC3164700408D35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C293C7481AC3164700408D35 /* Bank.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bank.h; sourceTree = "<group>"; };
@@ -2257,7 +2255,7 @@
 				C2E9F3E71ABC9797007581F2 /* BankApp.app */,
 				C293C7441AC3164700408D35 /* Bank.framework */,
 				C2F4C58B1AC6E95300DB3695 /* DataModelApp.app */,
-				C28E98F31AD1A4B000E78711 /* DataModel Tests.xctest */,
+				C28E98F31AD1A4B000E78711 /* DataModelTests.xctest */,
 				C24A059D1AE5806100C9255E /* Settings.framework */,
 				C24A05A71AE5806200C9255E /* SettingsTests.xctest */,
 				C24A05D11AE5C65C00C9255E /* UI.framework */,
@@ -2649,9 +2647,8 @@
 		C28E98F41AD1A4B000E78711 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				C28E98F71AD1A4B000E78711 /* DataModelTests.swift */,
 				C28E98F51AD1A4B000E78711 /* Supporting Files */,
-				C23E73621ADEB0A600867028 /* DataModel_LoadedTests.swift */,
+				C23E73621ADEB0A600867028 /* DataModelTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -3445,9 +3442,9 @@
 			productReference = C26BAEA816DC10FE0093D5B4 /* Remote.app */;
 			productType = "com.apple.product-type.application";
 		};
-		C28E98F21AD1A4B000E78711 /* DataModel Tests */ = {
+		C28E98F21AD1A4B000E78711 /* DataModelTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C28E98FC1AD1A4B000E78711 /* Build configuration list for PBXNativeTarget "DataModel Tests" */;
+			buildConfigurationList = C28E98FC1AD1A4B000E78711 /* Build configuration list for PBXNativeTarget "DataModelTests" */;
 			buildPhases = (
 				C28E98EF1AD1A4B000E78711 /* Sources */,
 				C28E98F01AD1A4B000E78711 /* Frameworks */,
@@ -3458,9 +3455,9 @@
 			dependencies = (
 				C28E98FB1AD1A4B000E78711 /* PBXTargetDependency */,
 			);
-			name = "DataModel Tests";
+			name = DataModelTests;
 			productName = DataModelTests;
-			productReference = C28E98F31AD1A4B000E78711 /* DataModel Tests.xctest */;
+			productReference = C28E98F31AD1A4B000E78711 /* DataModelTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		C293C7431AC3164700408D35 /* Bank */ = {
@@ -3667,7 +3664,7 @@
 				C2E9F3E61ABC9797007581F2 /* BankApp */,
 				C293C7431AC3164700408D35 /* Bank */,
 				C2F4C58A1AC6E95300DB3695 /* DataModelApp */,
-				C28E98F21AD1A4B000E78711 /* DataModel Tests */,
+				C28E98F21AD1A4B000E78711 /* DataModelTests */,
 				C24A059C1AE5806100C9255E /* Settings */,
 				C24A05A61AE5806200C9255E /* SettingsTests */,
 				C24A05D01AE5C65C00C9255E /* UI */,
@@ -4435,8 +4432,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C23E73631ADEB0A600867028 /* DataModel_LoadedTests.swift in Sources */,
-				C28E98F81AD1A4B000E78711 /* DataModelTests.swift in Sources */,
+				C23E73631ADEB0A600867028 /* DataModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7872,7 +7868,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C28E98FC1AD1A4B000E78711 /* Build configuration list for PBXNativeTarget "DataModel Tests" */ = {
+		C28E98FC1AD1A4B000E78711 /* Build configuration list for PBXNativeTarget "DataModelTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C28E98FD1AD1A4B000E78711 /* Debug */,

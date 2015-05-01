@@ -26,6 +26,7 @@
         <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Image" inverseName="asset" inverseEntity="Image" syncable="YES"/>
     </entity>
     <entity name="Button" representedClassName="Button" parentEntity="RemoteElement" syncable="YES">
+        <attribute name="backgroundColor" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="contentEdgeInsets" attributeType="Transformable" defaultValueString="{0, 0, 0, 0}" syncable="YES">
             <userInfo>
                 <entry key="attributeValueClassName" value="NSValue"/>
@@ -50,16 +51,19 @@
                 <entry key="NSValueType" value="UIEdgeInsets"/>
             </userInfo>
         </attribute>
-        <relationship name="backgroundColors" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ModalStorage" inverseName="storageForButtonBackgroundColors" inverseEntity="ModalStorage" syncable="YES"/>
+        <relationship name="backgroundColorSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateColorSet" inverseName="backgroundColorSetForButton" inverseEntity="ControlStateColorSet" syncable="YES"/>
+        <relationship name="backgroundColorSets" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ModalStorage" inverseName="storageForButtonBackgroundColors" inverseEntity="ModalStorage" syncable="YES"/>
+        <relationship name="backgroundSet" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ControlStateImageSet" inverseName="backgroundSetForButton" inverseEntity="ControlStateImageSet" syncable="YES"/>
+        <relationship name="backgroundSets" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ModalStorage" inverseName="storageForButtonImages" inverseEntity="ModalStorage" syncable="YES"/>
         <relationship name="command" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="Command" inverseName="button" inverseEntity="Command" indexed="YES" syncable="YES"/>
         <relationship name="commands" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ModalStorage" inverseName="storageForButtonCommands" inverseEntity="ModalStorage" syncable="YES"/>
         <relationship name="icon" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ImageView" inverseName="buttonIcon" inverseEntity="ImageView" syncable="YES"/>
-        <relationship name="icons" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ModalStorage" inverseName="storageForButtonIcons" inverseEntity="ModalStorage" syncable="YES"/>
-        <relationship name="image" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ImageView" inverseName="buttonImage" inverseEntity="ImageView" syncable="YES"/>
-        <relationship name="images" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ModalStorage" inverseName="storageForButtonImages" inverseEntity="ModalStorage" syncable="YES"/>
+        <relationship name="iconSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="iconSetForButton" inverseEntity="ControlStateImageSet" syncable="YES"/>
+        <relationship name="iconSets" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ModalStorage" inverseName="storageForButtonIcons" inverseEntity="ModalStorage" syncable="YES"/>
         <relationship name="longPressCommand" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="Command" inverseName="longPressButton" inverseEntity="Command" syncable="YES"/>
         <relationship name="longPressCommands" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ModalStorage" inverseName="storageForButtonLongPressCommands" inverseEntity="ModalStorage" syncable="YES"/>
-        <relationship name="titles" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ModalStorage" inverseName="storageForButtonTitles" inverseEntity="ModalStorage" syncable="YES"/>
+        <relationship name="titleSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateTitleSet" inverseName="titleSetForButton" inverseEntity="ControlStateTitleSet" syncable="YES"/>
+        <relationship name="titleSets" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ModalStorage" inverseName="storageForButtonTitles" inverseEntity="ModalStorage" syncable="YES"/>
     </entity>
     <entity name="ButtonGroup" representedClassName="ButtonGroup" parentEntity="RemoteElement" syncable="YES">
         <attribute name="autohide" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -171,14 +175,17 @@
                 <entry key="attributeValueClassName" value="UIColor"/>
             </userInfo>
         </attribute>
+        <relationship name="backgroundColorSetForButton" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="backgroundColorSet" inverseEntity="Button" syncable="YES"/>
         <relationship name="modalStorage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ModalStorage" inverseName="controlStateColorSetSet" inverseEntity="ModalStorage" syncable="YES"/>
     </entity>
     <entity name="ControlStateImageSet" representedClassName="ControlStateImageSet" syncable="YES">
+        <relationship name="backgroundSetForButton" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="backgroundSet" inverseEntity="Button" syncable="YES"/>
         <relationship name="disabled" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ImageView" inverseName="imageSetDisabled" inverseEntity="ImageView" syncable="YES"/>
         <relationship name="highlighted" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ImageView" inverseName="imageSetHighlighted" inverseEntity="ImageView" syncable="YES"/>
         <relationship name="highlightedDisabled" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ImageView" inverseName="imageSetHighlightedDisabled" inverseEntity="ImageView" syncable="YES"/>
         <relationship name="highlightedSelected" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ImageView" inverseName="imageSetHighlightedSelected" inverseEntity="ImageView" syncable="YES"/>
         <relationship name="highlightedSelectedDisabled" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ImageView" inverseName="imageSetSelectedHighlightedDisabled" inverseEntity="ImageView" syncable="YES"/>
+        <relationship name="iconSetForButton" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="iconSet" inverseEntity="Button" syncable="YES"/>
         <relationship name="modalStorage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ModalStorage" inverseName="controlStateImageSetSet" inverseEntity="ModalStorage" syncable="YES"/>
         <relationship name="normal" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ImageView" inverseName="imageSetNormal" inverseEntity="ImageView" syncable="YES"/>
         <relationship name="selected" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ImageView" inverseName="imageSetSelected" inverseEntity="ImageView" syncable="YES"/>
@@ -194,6 +201,7 @@
         <relationship name="normal" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="JSONStorage" inverseName="storageForTitleSetNormal" inverseEntity="JSONStorage" syncable="YES"/>
         <relationship name="selected" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="JSONStorage" inverseName="storageForTitleSetSelected" inverseEntity="JSONStorage" syncable="YES"/>
         <relationship name="selectedDisabled" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="JSONStorage" inverseName="storageForTitleSetSelectedDisabled" inverseEntity="JSONStorage" syncable="YES"/>
+        <relationship name="titleSetForButton" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="titleSet" inverseEntity="Button" syncable="YES"/>
     </entity>
     <entity name="DelayCommand" representedClassName="DelayCommand" parentEntity="Command" syncable="YES">
         <attribute name="duration" attributeType="Float" defaultValueString="0.25">
@@ -249,7 +257,6 @@
             </userInfo>
         </attribute>
         <relationship name="buttonIcon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="icon" inverseEntity="Button" syncable="YES"/>
-        <relationship name="buttonImage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="image" inverseEntity="Button" syncable="YES"/>
         <relationship name="image" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Image" inverseName="views" inverseEntity="Image" syncable="YES"/>
         <relationship name="imageSetDisabled" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="disabled" inverseEntity="ControlStateImageSet" syncable="YES"/>
         <relationship name="imageSetDisabledSelected" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="selectedDisabled" inverseEntity="ControlStateImageSet" syncable="YES"/>
@@ -260,7 +267,7 @@
         <relationship name="imageSetSelected" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="selected" inverseEntity="ControlStateImageSet" syncable="YES"/>
         <relationship name="imageSetSelectedHighlightedDisabled" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="highlightedSelectedDisabled" inverseEntity="ControlStateImageSet" syncable="YES"/>
         <relationship name="modalStorage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ModalStorage" inverseName="imageViewSet" inverseEntity="ModalStorage" syncable="YES"/>
-        <relationship name="remoteElements" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="backgroundImageView" inverseEntity="RemoteElement" syncable="YES"/>
+        <relationship name="remoteElements" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="background" inverseEntity="RemoteElement" syncable="YES"/>
     </entity>
     <entity name="IRCode" representedClassName="IRCode" syncable="YES">
         <attribute name="autoGeneratedName" optional="YES" attributeType="String" syncable="YES"/>
@@ -377,14 +384,14 @@
         <relationship name="controlStateTitleSetSet" toMany="YES" deletionRule="Cascade" destinationEntity="ControlStateTitleSet" inverseName="modalStorage" inverseEntity="ControlStateTitleSet" syncable="YES"/>
         <relationship name="imageViewSet" toMany="YES" deletionRule="Cascade" destinationEntity="ImageView" inverseName="modalStorage" inverseEntity="ImageView" syncable="YES"/>
         <relationship name="jSONStorageSet" toMany="YES" deletionRule="Cascade" destinationEntity="JSONStorage" inverseName="modalStorage" inverseEntity="JSONStorage" syncable="YES"/>
-        <relationship name="storageForButtonBackgroundColors" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="backgroundColors" inverseEntity="Button" syncable="YES"/>
+        <relationship name="storageForButtonBackgroundColors" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="backgroundColorSets" inverseEntity="Button" syncable="YES"/>
         <relationship name="storageForButtonCommands" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="commands" inverseEntity="Button" syncable="YES"/>
         <relationship name="storageForButtonGroupCommandContainers" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ButtonGroup" inverseName="commandContainers" inverseEntity="ButtonGroup" syncable="YES"/>
         <relationship name="storageForButtonGroupLabelAttributes" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ButtonGroup" inverseName="labelAttributes" inverseEntity="ButtonGroup" syncable="YES"/>
-        <relationship name="storageForButtonIcons" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="icons" inverseEntity="Button" syncable="YES"/>
-        <relationship name="storageForButtonImages" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="images" inverseEntity="Button" syncable="YES"/>
+        <relationship name="storageForButtonIcons" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="iconSets" inverseEntity="Button" syncable="YES"/>
+        <relationship name="storageForButtonImages" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="backgroundSets" inverseEntity="Button" syncable="YES"/>
         <relationship name="storageForButtonLongPressCommands" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="longPressCommands" inverseEntity="Button" syncable="YES"/>
-        <relationship name="storageForButtonTitles" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="titles" inverseEntity="Button" syncable="YES"/>
+        <relationship name="storageForButtonTitles" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="titleSets" inverseEntity="Button" syncable="YES"/>
         <relationship name="storageForRemoteElementBackgrounds" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteElement" inverseName="backgrounds" inverseEntity="RemoteElement" syncable="YES"/>
     </entity>
     <entity name="NetworkDevice" representedClassName="NetworkDevice" syncable="YES">
@@ -436,11 +443,6 @@
     </entity>
     <entity name="RemoteElement" representedClassName="RemoteElement" isAbstract="YES" syncable="YES">
         <attribute name="autoGeneratedName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="backgroundColor" optional="YES" attributeType="Transformable" syncable="YES">
-            <userInfo>
-                <entry key="attributeValueClassName" value="UIColor"/>
-            </userInfo>
-        </attribute>
         <attribute name="currentMode" attributeType="String" defaultValueString="default" syncable="YES"/>
         <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="modes" attributeType="Transformable" syncable="YES">
@@ -455,7 +457,7 @@
         <attribute name="shape" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="style" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="tag" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <relationship name="backgroundImageView" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ImageView" inverseName="remoteElements" inverseEntity="ImageView" syncable="YES"/>
+        <relationship name="background" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ImageView" inverseName="remoteElements" inverseEntity="ImageView" syncable="YES"/>
         <relationship name="backgrounds" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ModalStorage" inverseName="storageForRemoteElementBackgrounds" inverseEntity="ModalStorage" syncable="YES"/>
         <relationship name="constraints" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Constraint" inverseName="owner" inverseEntity="Constraint" syncable="YES"/>
         <relationship name="firstItemConstraints" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Constraint" inverseName="firstItem" inverseEntity="Constraint" syncable="YES"/>
@@ -481,7 +483,7 @@
         <element name="ActivityCommand" positionX="0" positionY="0" width="128" height="60"/>
         <element name="ActivityController" positionX="0" positionY="0" width="128" height="105"/>
         <element name="Asset" positionX="36" positionY="153" width="128" height="30"/>
-        <element name="Button" positionX="0" positionY="0" width="128" height="270"/>
+        <element name="Button" positionX="0" positionY="0" width="128" height="330"/>
         <element name="ButtonGroup" positionX="0" positionY="0" width="128" height="150"/>
         <element name="Command" positionX="0" positionY="0" width="128" height="120"/>
         <element name="CommandContainer" positionX="0" positionY="0" width="128" height="120"/>
@@ -489,15 +491,15 @@
         <element name="CommandSetCollection" positionX="0" positionY="0" width="128" height="60"/>
         <element name="ComponentDevice" positionX="0" positionY="0" width="128" height="285"/>
         <element name="Constraint" positionX="0" positionY="0" width="128" height="240"/>
-        <element name="ControlStateColorSet" positionX="0" positionY="0" width="128" height="195"/>
-        <element name="ControlStateImageSet" positionX="0" positionY="0" width="128" height="180"/>
-        <element name="ControlStateTitleSet" positionX="0" positionY="0" width="128" height="180"/>
+        <element name="ControlStateColorSet" positionX="0" positionY="0" width="128" height="210"/>
+        <element name="ControlStateImageSet" positionX="0" positionY="0" width="128" height="210"/>
+        <element name="ControlStateTitleSet" positionX="0" positionY="0" width="128" height="195"/>
         <element name="DelayCommand" positionX="0" positionY="0" width="128" height="60"/>
         <element name="DictionaryStorage" positionX="36" positionY="153" width="128" height="60"/>
         <element name="HTTPCommand" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Image" positionX="0" positionY="0" width="128" height="180"/>
         <element name="ImageCategory" positionX="36" positionY="180" width="128" height="135"/>
-        <element name="ImageView" positionX="0" positionY="0" width="128" height="270"/>
+        <element name="ImageView" positionX="0" positionY="0" width="128" height="255"/>
         <element name="IRCode" positionX="0" positionY="0" width="128" height="240"/>
         <element name="IRCodeSet" positionX="9" positionY="153" width="128" height="135"/>
         <element name="ISYDevice" positionX="0" positionY="0" width="128" height="195"/>
@@ -514,7 +516,7 @@
         <element name="Preset" positionX="0" positionY="0" width="128" height="165"/>
         <element name="PresetCategory" positionX="63" positionY="189" width="128" height="135"/>
         <element name="Remote" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="RemoteElement" positionX="0" positionY="0" width="128" height="300"/>
+        <element name="RemoteElement" positionX="0" positionY="0" width="128" height="285"/>
         <element name="SendIRCommand" positionX="0" positionY="0" width="128" height="105"/>
         <element name="SwitchCommand" positionX="0" positionY="0" width="128" height="75"/>
         <element name="SystemCommand" positionX="0" positionY="0" width="128" height="60"/>

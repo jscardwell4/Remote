@@ -124,7 +124,7 @@ final class ModalStorage: ModelObject {
   func valueForMode<T: ModelObject>(mode: Mode) -> T? {
     if let uuidIndex = dictionary[mode],
       values = setInUse,
-      v = findFirst(values, {$0.uuid == uuidIndex.rawValue})
+      v = findFirst(values, {$0.fireFault(); return $0.uuid == uuidIndex.rawValue})
     {
       return typeCast(v, T.self)
     } else { return nil }

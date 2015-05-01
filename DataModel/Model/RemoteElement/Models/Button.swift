@@ -16,6 +16,10 @@ public final class Button: RemoteElement {
   override public var elementType: BaseType { return .Button }
   override public class var parentElementType: RemoteElement.Type? { return ButtonGroup.self }
 
+  override var modalStorageContainers: Set<ModalStorage> {
+    return super.modalStorageContainers ∪ [titleSets, backgroundColorSets, iconSets, commands, longPressCommands, backgroundSets]
+  }
+
   // MARK: - Updating the button
 
   /**
@@ -28,27 +32,27 @@ public final class Button: RemoteElement {
 
     if let moc = managedObjectContext {
 
-      applyMaybe(ObjectJSONValue(data["titles"])?.compressedMap({ObjectJSONValue($2)})) {
+      applyMaybe(ObjectJSONValue(data["titleSets"])?.compressedMap({ObjectJSONValue($2)})) {
         self.setTitles(ControlStateTitleSet.importObjectWithData($2, context: moc), forMode: $1)
       }
 
-      applyMaybe(ObjectJSONValue(data["icons"])?.compressedMap({ObjectJSONValue($2)})) {
-        self.setIcons(ControlStateImageSet.importObjectWithData($2, context: moc), forMode: $1)
+      applyMaybe(ObjectJSONValue(data["iconSets"])?.compressedMap({ObjectJSONValue($2)})) {
+        self.setIconSet(ControlStateImageSet.importObjectWithData($2, context: moc), forMode: $1)
       }
 
-      applyMaybe(ObjectJSONValue(data["images"])?.compressedMap({ObjectJSONValue($2)})) {
-        self.setImages(ControlStateImageSet.importObjectWithData($2, context: moc), forMode: $1)
+      applyMaybe(ObjectJSONValue(data["backgroundSets"])?.compressedMap({ObjectJSONValue($2)})) {
+        self.setBackgroundSet(ControlStateImageSet.importObjectWithData($2, context: moc), forMode: $1)
       }
 
-      applyMaybe(ObjectJSONValue(data["backgroundColors"])?.compressedMap({ObjectJSONValue($2)})) {
-        self.setBackgroundColors(ControlStateColorSet.importObjectWithData($2, context: moc), forMode: $1)
+      applyMaybe(ObjectJSONValue(data["backgroundColorSets"])?.compressedMap({ObjectJSONValue($2)})) {
+        self.setBackgroundColorSet(ControlStateColorSet.importObjectWithData($2, context: moc), forMode: $1)
       }
 
       applyMaybe(ObjectJSONValue(data["commands"])?.compressedMap({ObjectJSONValue($2)})) {
           self.setCommand( Command.importObjectWithData($2, context: moc), forMode: $1)
       }
 
-      applyMaybe(ObjectJSONValue(data["longPress-commands"])?.compressedMap({ObjectJSONValue($2)})) {
+      applyMaybe(ObjectJSONValue(data["longPressCommands"])?.compressedMap({ObjectJSONValue($2)})) {
         self.setLongPressCommand(Command.importObjectWithData($2, context: moc), forMode: $1)
       }
 
@@ -75,15 +79,15 @@ public final class Button: RemoteElement {
       }
 
       if let iconsData = preset.icons {
-        setIcons(ControlStateImageSet.importObjectWithData(iconsData, context: moc), forMode: mode)
+        setIconSet(ControlStateImageSet.importObjectWithData(iconsData, context: moc), forMode: mode)
       }
 
       if let imagesData = preset.images {
-        setImages(ControlStateImageSet.importObjectWithData(imagesData, context: moc), forMode: mode)
+        setBackgroundSet(ControlStateImageSet.importObjectWithData(imagesData, context: moc), forMode: mode)
       }
 
       if let backgroundColorsData = preset.backgroundColors {
-        setBackgroundColors(ControlStateColorSet.importObjectWithData(backgroundColorsData, context: moc), forMode: mode)
+        setBackgroundColorSet(ControlStateColorSet.importObjectWithData(backgroundColorsData, context: moc), forMode: mode)
       }
 
       titleEdgeInsets = preset.titleEdgeInsets
@@ -98,35 +102,60 @@ public final class Button: RemoteElement {
 
   }
 
-  override public func updateForMode(mode: Mode) {
+  /**
+  updateForMode:
+
+  :param: mode Mode
+  */
+  override func updateForMode(mode: Mode) {
     super.updateForMode(mode)
-    title = (titlesForMode(currentMode) ?? titlesForMode(RemoteElement.DefaultMode))?.attributedStringForState(state)
-    icon = (iconsForMode(currentMode) ?? iconsForMode(RemoteElement.DefaultMode))?[state.rawValue] as? ImageView
-    image = (imagesForMode(currentMode) ?? imagesForMode(RemoteElement.DefaultMode))?[state.rawValue] as? ImageView
+    titleSet = titlesForMode(currentMode) ?? titlesForMode(RemoteElement.DefaultMode)
+    iconSet = iconSetForMode(currentMode) ?? iconSetForMode(RemoteElement.DefaultMode)
+    backgroundSet = backgroundSetForMode(currentMode) ?? backgroundSetForMode(RemoteElement.DefaultMode)
+    backgroundColorSet = backgroundColorSetForMode(currentMode) ?? backgroundColorSetForMode(RemoteElement.DefaultMode)
     command = commands[currentMode] ?? commands[RemoteElement.DefaultMode]
     longPressCommand = longPressCommands[currentMode] ?? longPressCommands[RemoteElement.DefaultMode]
+
+    updateForState(state)
+  }
+
+  /**
+  updateForState:
+
+  :param: state UIControlState
+  */
+  func updateForState(state: UIControlState) {
+    title = titleSet?.attributedStringForState(state)
+    icon = iconSet?.imageViewForState(state)
+    backgroundColor = backgroundColorSet?.colorForState(state)
+    let bg = backgroundSet?.imageViewForState(state)
+    background?.image = bg?.image
+    background?.color = bg?.color
+    background?.alpha = bg?.alpha
   }
 
   // MARK: - Titles
 
   @NSManaged public private(set) var title: NSAttributedString?
 
-  private(set) var titles: ModalStorage {
+  @NSManaged public private(set) var titleSet: ControlStateTitleSet?
+
+  private(set) var titleSets: ModalStorage {
     get {
       var storage: ModalStorage!
-      willAccessValueForKey("titles")
-      storage = primitiveValueForKey("titles") as? ModalStorage
-      didAccessValueForKey("titles")
+      willAccessValueForKey("titleSets")
+      storage = primitiveValueForKey("titleSets") as? ModalStorage
+      didAccessValueForKey("titleSets")
       if storage == nil {
         storage = ModalStorage(context: managedObjectContext)
-        setPrimitiveValue(storage, forKey: "titles")
+        setPrimitiveValue(storage, forKey: "titleSets")
       }
       return storage
     }
     set {
-      willChangeValueForKey("titles")
-      setPrimitiveValue(newValue, forKey: "titles")
-      didChangeValueForKey("titles")
+      willChangeValueForKey("titleSets")
+      setPrimitiveValue(newValue, forKey: "titleSets")
+      didChangeValueForKey("titleSets")
     }
   }
 
@@ -137,7 +166,7 @@ public final class Button: RemoteElement {
   :param: mode String
   */
   public func setTitles(titleSet: ControlStateTitleSet?, forMode mode: Mode) {
-    setValue(titleSet, forMode: mode, inStorage: titles)
+    setValue(titleSet, forMode: mode, inStorage: titleSets)
   }
 
   /**
@@ -147,93 +176,97 @@ public final class Button: RemoteElement {
 
   :returns: ControlStateTitleSet?
   */
-  public func titlesForMode(mode: Mode) -> ControlStateTitleSet? { return titles[mode] }
+  public func titlesForMode(mode: Mode) -> ControlStateTitleSet? { return titleSets[mode] }
 
 
   // MARK: - Icons
 
-  @NSManaged public private(set) var icon: ImageView?
+  public typealias Icon = ImageView
 
-  private(set) var icons: ModalStorage {
+  @NSManaged public private(set) var icon: Icon?
+
+  private(set) var iconSets: ModalStorage {
     get {
       var storage: ModalStorage!
-      willAccessValueForKey("icons")
-      storage = primitiveValueForKey("icons") as? ModalStorage
-      didAccessValueForKey("icons")
+      willAccessValueForKey("iconSets")
+      storage = primitiveValueForKey("iconSets") as? ModalStorage
+      didAccessValueForKey("iconSets")
       if storage == nil {
         storage = ModalStorage(context: managedObjectContext)
-        setPrimitiveValue(storage, forKey: "icons")
+        setPrimitiveValue(storage, forKey: "iconSets")
       }
       return storage
     }
     set {
-      willChangeValueForKey("icons")
-      setPrimitiveValue(newValue, forKey: "icons")
-      didChangeValueForKey("icons")
+      willChangeValueForKey("iconSets")
+      setPrimitiveValue(newValue, forKey: "iconSets")
+      didChangeValueForKey("iconSets")
     }
   }
 
-  /**
-  setIcons:forMode:
+  @NSManaged public private(set) var iconSet: ControlStateImageSet?
 
-  :param: imageSet ControlStateImageSet?
+  /**
+  setIconSet:forMode:
+
+  :param: iconSet ControlStateImageSet?
   :param: mode String
   */
-  public func setIcons(imageSet: ControlStateImageSet?, forMode mode: Mode) {
-    setValue(imageSet, forMode: mode, inStorage: icons)
+  public func setIconSet(iconSet: ControlStateImageSet?, forMode mode: Mode) {
+    setValue(iconSet, forMode: mode, inStorage: iconSets)
   }
 
 
   /**
-  iconsForMode:
+  iconSetForMode:
 
   :param: mode String
 
   :returns: ControlStateImageSet?
   */
-  public func iconsForMode(mode: Mode) -> ControlStateImageSet? { return icons[mode] }
+  public func iconSetForMode(mode: Mode) -> ControlStateImageSet? { return iconSets[mode] }
 
-  // MARK: - Images
+  // MARK: - Backgrounds
 
-  @NSManaged public private(set) var image: ImageView?
+  @NSManaged public private(set) var backgroundSet: ControlStateImageSet?
 
-  private(set) var images: ModalStorage {
+  private(set) var backgroundSets: ModalStorage {
     get {
       var storage: ModalStorage!
-      willAccessValueForKey("images")
-      storage = primitiveValueForKey("images") as? ModalStorage
-      didAccessValueForKey("images")
+      willAccessValueForKey("backgroundSets")
+      storage = primitiveValueForKey("backgroundSets") as? ModalStorage
+      didAccessValueForKey("backgroundSets")
       if storage == nil {
         storage = ModalStorage(context: managedObjectContext)
-        setPrimitiveValue(storage, forKey: "images")
+        setPrimitiveValue(storage, forKey: "backgroundSets")
       }
       return storage
     }
     set {
-      willChangeValueForKey("images")
-      setPrimitiveValue(newValue, forKey: "images")
-      didChangeValueForKey("images")
+      willChangeValueForKey("backgroundSets")
+      setPrimitiveValue(newValue, forKey: "backgroundSets")
+      didChangeValueForKey("backgroundSets")
     }
   }
 
   /**
-  setImages:forMode:
+  setBackgroundSet:forMode:
 
-  :param: imageSet ControlStateImageSet?
+  :param: backgroundSet ControlStateImageSet?
   :param: mode String
   */
-  public func setImages(imageSet: ControlStateImageSet?, forMode mode: Mode) {
-    setValue(imageSet, forMode: mode, inStorage: images)
+  public func setBackgroundSet(backgroundSet: ControlStateImageSet?, forMode mode: Mode) {
+    setValue(backgroundSet, forMode: mode, inStorage: backgroundSets)
   }
 
   /**
-  imagesForMode:
+  backgroundSetForMode:
 
   :param: mode String
 
   :returns: ControlStateImageSet?
   */
-  public func imagesForMode(mode: Mode) -> ControlStateImageSet? { return images[mode] }
+  public func backgroundSetForMode(mode: Mode) -> ControlStateImageSet? { return backgroundSets[mode] }
 
   // MARK: - Commands
 
@@ -337,33 +370,37 @@ public final class Button: RemoteElement {
 
   // MARK: - Background colors
 
-  private(set) var backgroundColors: ModalStorage {
+  @NSManaged public private(set) var backgroundColor: UIColor?
+
+  @NSManaged public private(set) var backgroundColorSet: ControlStateColorSet?
+
+  private(set) var backgroundColorSets: ModalStorage {
     get {
       var storage: ModalStorage!
-      willAccessValueForKey("backgroundColors")
-      storage = primitiveValueForKey("backgroundColors") as? ModalStorage
-      didAccessValueForKey("backgroundColors")
+      willAccessValueForKey("backgroundColorSets")
+      storage = primitiveValueForKey("backgroundColorSets") as? ModalStorage
+      didAccessValueForKey("backgroundColorSets")
       if storage == nil {
         storage = ModalStorage(context: managedObjectContext)
-        setPrimitiveValue(storage, forKey: "backgroundColors")
+        setPrimitiveValue(storage, forKey: "backgroundColorSets")
       }
       return storage
     }
     set {
-      willChangeValueForKey("backgroundColors")
-      setPrimitiveValue(newValue, forKey: "backgroundColors")
-      didChangeValueForKey("backgroundColors")
+      willChangeValueForKey("backgroundColorSets")
+      setPrimitiveValue(newValue, forKey: "backgroundColorSets")
+      didChangeValueForKey("backgroundColorSets")
     }
   }
 
   /**
-  setBackgroundColors:forMode:
+  setBackgroundColorSet:forMode:
 
   :param: colorSet ControlStateColorSet?
   :param: mode String
   */
-  public func setBackgroundColors(colorSet: ControlStateColorSet?, forMode mode: Mode) {
-    setValue(colorSet, forMode: mode, inStorage: backgroundColors)
+  public func setBackgroundColorSet(colorSet: ControlStateColorSet?, forMode mode: Mode) {
+    setValue(colorSet, forMode: mode, inStorage: backgroundColorSets)
   }
 
   /**
@@ -373,7 +410,7 @@ public final class Button: RemoteElement {
 
   :returns: ControlStateColorSet?
   */
-  public func backgroundColorsForMode(mode: Mode) -> ControlStateColorSet? { return backgroundColors[mode] }
+  public func backgroundColorSetForMode(mode: Mode) -> ControlStateColorSet? { return backgroundColorSets[mode] }
 
   /**
   backgroundColorForMode:
@@ -382,17 +419,9 @@ public final class Button: RemoteElement {
 
   :returns: UIColor?
   */
-  override public func backgroundColorForMode(mode: Mode) -> UIColor? {
-    return backgroundColorsForMode(currentMode)?[state.rawValue] as? UIColor
-  }
-
-  /**
-  setBackgroundColor:forMode:
-
-  :param: color UIColor?
-  :param: mode Mode
-  */
-  override public func setBackgroundColor(color: UIColor?, forMode mode: Mode) {}
+//  override public func backgroundColorForMode(mode: Mode) -> UIColor? {
+//    return backgroundColorsForMode(currentMode)?[state.rawValue] as? UIColor
+//  }
 
   // MARK: - State
 
@@ -500,7 +529,6 @@ public final class Button: RemoteElement {
 
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
-    obj["backgroundColor"] = nil
 
     var titles            : JSONValue.ObjectValue = [:]
     var backgroundColors  : JSONValue.ObjectValue = [:]
@@ -511,22 +539,22 @@ public final class Button: RemoteElement {
 
     for mode in modes {
       if let modeTitles = titlesForMode(mode)?.jsonValue { titles[mode] = modeTitles }
-      if let modeBackgroundColors = backgroundColorsForMode(mode)?.jsonValue {
+      if let modeBackgroundColors = backgroundColorSetForMode(mode)?.jsonValue {
         backgroundColors[mode] = modeBackgroundColors
       }
-      if let modeIcons = iconsForMode(mode)?.jsonValue { icons[mode] = modeIcons }
-      if let modeImages = imagesForMode(mode)?.jsonValue { images[mode] = modeImages }
+      if let modeIcons = iconSetForMode(mode)?.jsonValue { icons[mode] = modeIcons }
+      if let modeImages = backgroundSetForMode(mode)?.jsonValue { images[mode] = modeImages }
       if let modeCommand = commandForMode(mode)?.jsonValue { commands[mode] = modeCommand }
       if let modeLongPressCommand = longPressCommandForMode(mode)?.jsonValue {
         longPressCommands[mode] = modeLongPressCommand
       }
     }
 
-    obj["commands"]           = .Object(commands)
-    obj["titles"]             = .Object(titles)
-    obj["icons"]              = .Object(icons)
-    obj["backgroundColors"]   = .Object(backgroundColors)
-    obj["images"]             = .Object(images)
+    obj["commands"]              = .Object(commands)
+    obj["titleSets"]             = .Object(titles)
+    obj["iconSets"]              = .Object(icons)
+    obj["backgroundColorSets"]   = .Object(backgroundColors)
+    obj["backgroundSets"]        = .Object(images)
 
     obj["titleEdgeInsets"]   = titleEdgeInsets.jsonValue
     obj["imageEdgeInsets"]   = imageEdgeInsets.jsonValue
@@ -539,14 +567,13 @@ public final class Button: RemoteElement {
 
   override public var description: String {
     var result = super.description
-    result += "\n\ttitles = {\n\(titles.description.indentedBy(8))\n\t}"
+    result += "\n\ttitleSets = {\n\(titleSets.description.indentedBy(8))\n\t}"
     result += "\n\ttitle = \(toString(title))"
-    result += "\n\ticons = {\n\(icons.description.indentedBy(8))\n\t}"
+    result += "\n\ticonSets = {\n\(iconSets.description.indentedBy(8))\n\t}"
     result += "\n\ticon = \(toString(icon))"
-    result += "\n\tbackgroundColors = {\n\(backgroundColors.description.indentedBy(8))\n\t}"
-    result += "\n\tbackgroundColor = \(toString(backgroundColor))"
-    result += "\n\timages = {\n\(images.description.indentedBy(8))\n\t}"
-    result += "\n\timage = \(toString(image))"
+    result += "\n\tbackgroundColorSets = {\n\(backgroundColorSets.description.indentedBy(8))\n\t}"
+    result += "\n\tbackgroundColor = \(toString((backgroundSet?[state.rawValue] as? UIColor)?.string))"
+    result += "\n\tbackgroundSets = {\n\(backgroundSets.description.indentedBy(8))\n\t}"
     result += "\n\tcommands = {\n\(commands.description.indentedBy(8))\n\t}"
     result += "\n\tcommand = \(toString(command))"
     result += "\n\tlongPressCommands = {\n\(longPressCommands.description.indentedBy(8))\n\t}"

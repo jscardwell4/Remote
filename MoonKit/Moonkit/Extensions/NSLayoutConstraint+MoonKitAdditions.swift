@@ -24,6 +24,19 @@ extension NSLayoutConstraint {
       .filter(invert(isEmpty))
   }
 
+  public convenience init(_ pseudoConstraint: PseudoConstraint) {
+    assert(pseudoConstraint.valid)
+    self.init(item: pseudoConstraint.firstObject!,
+              attribute: pseudoConstraint.firstAttribute.NSLayoutAttributeValue,
+              relatedBy: pseudoConstraint.relation.NSLayoutRelationValue,
+              toItem: pseudoConstraint.secondObject,
+              attribute: pseudoConstraint.secondAttribute.NSLayoutAttributeValue,
+              multiplier: CGFloat(pseudoConstraint.multiplier),
+              constant: CGFloat(pseudoConstraint.constant))
+    identifier = pseudoConstraint.identifier
+    priority = pseudoConstraint.priority
+  }
+
   /**
   constraintsByParsingFormat:options:metrics:views:
 

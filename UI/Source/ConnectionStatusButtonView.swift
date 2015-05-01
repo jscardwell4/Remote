@@ -40,7 +40,7 @@ public final class ConnectionStatusButtonView: ButtonView {
 
   override func drawContentInContext(ctx: CGContextRef, inRect rect: CGRect) {
     let iconColor: UIColor
-    if let color = backgroundColor where color != UIColor.clearColor() { iconColor = color }
+    if let color = button.iconSet?.normal?.color { iconColor = color }
     else { iconColor = Painter.defaultBackgroundColor }
     Painter.drawWifiStatus(color: iconColor, connected: connected, frame: rect)
   }

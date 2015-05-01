@@ -25,58 +25,11 @@ public class ButtonView: RemoteElementView {
   var pressAction: ((Void) -> Void)?
   var button: Button { return model as! Button }
 
-  /** init */
-//  override init() { super.init() }
-
-  /**
-  initWithFrame:
-
-  :param: frame CGRect
-  */
-//  override init(frame: CGRect) { super.init(frame: frame) }
-
-  /**
-  Overridden properties prevent synthesized initializers
-
-  :param: model RemoteElement
-  */
-//  required public init(model: RemoteElement) { super.init(model: model) }
-
-  /**
-  Overridden properties prevent synthesized initializers
-
-  :param: aDecoder NSCoder
-  */
-//  required public init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-
-	/**
-	addSubelementView:
-
-	:param: view RemoteElementView
-	*/
+  // Prevent subelement views for the button
 	override public func addSubelementView(view: RemoteElementView) {}
-
-	/**
-	removeSubelementView:
-
-	:param: view RemoteElementView
-	*/
 	override public func removeSubelementView(view: RemoteElementView) {}
-
-	/**
-	addSubelementViews:
-
-	:param: views NSSet
-	*/
 	override public func addSubelementViews(views: Set<RemoteElementView>) {}
-
-	/**
-	removeSubelementViews:
-
-	:param: views NSSet
-	*/
 	override public func removeSubelementViews(views: Set<RemoteElementView>) {}
-
 	override public var subelementViews: OrderedSet<RemoteElementView> { return [] }
 
 	/**
@@ -236,20 +189,25 @@ public class ButtonView: RemoteElementView {
 	*/
 	override func kvoRegistration() -> [Property:KVOReceptionist.Observation] {
 		var registry = super.kvoRegistration()
-    registry["title"] = {($0.observer as? ButtonView)?.title = ($0.object as? Button)?.title}
-		registry["icon"] = {($0.observer as? ButtonView)?.icon = ($0.object as? Button)?.icon?.colorImage}
+    registry["title"] = {
+      RemoteElementView.dumpObservation($0)
+      ($0.observer as? ButtonView)?.title = ($0.object as? Button)?.title
+    }
+		registry["icon"] = {
+      RemoteElementView.dumpObservation($0)
+      ($0.observer as? ButtonView)?.icon = ($0.object as? Button)?.icon?.colorImage
+    }
 		return registry
 	}
 
-	/** initializeViewFromModel */
-	override func initializeViewFromModel() {
-		super.initializeViewFromModel()
-		longPressGesture.enabled = button.longPressCommand != nil
-		title = button.title
+  /** updateViewFromModel */
+  override func updateViewFromModel() {
+    longPressGesture.enabled = button.longPressCommand != nil
+    title = button.title
     icon  = button.icon?.colorImage
-		invalidateIntrinsicContentSize()
-		setNeedsDisplay()
-	}
+    invalidateIntrinsicContentSize()
+    super.updateViewFromModel()
+  }
 
 	override public var editingMode: RemoteElement.BaseType {
 		didSet {

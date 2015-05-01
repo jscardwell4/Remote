@@ -37,81 +37,67 @@
         "settingsButton.width = homeButton.width"
       ]
     },
-    "backgroundColor.default": "gray@50%",
+    "backgrounds.default.color": "gray@50%",
     "subelements": [
       {
         "uuid": "FA623A4E-AA5D-4796-B606-359A8909ABF9",
         "name": "Home Button",
         "role": "top-toolbar-button",
+        "shape": "rectangle",
         "constraints": {
           "index.homeButton": "FA623A4E-AA5D-4796-B606-359A8909ABF9",
           "format": "homeButton.width ≥ 44"
         },
-        "commands.default.type": "return-to-launch-screen",
+        "commands.default.type": "launch-screen",
         "contentEdgeInsets": "{4, 4, 4, 4}",
-        "icons.default": {
+        "iconSets.default": {
           "normal": {
             "image.index": "Icons/Glyphish%206/Large/Normal/Home",
             "color": <@include ForegroundColor_Normal.json>
           },
-          "highlighted": {
-            "image.index": "Icons/Glyphish%206/Large/Normal/Home",
-            "color":  <@include ForegroundColor_Highlighted.json>
-          },
-          "disabled": {
-            "image.index": "Icons/Glyphish%206/Large/Normal/Home",
-            "color": <@include ForegroundColor_Disabled.json>
-          }
+          "highlighted.color":  <@include ForegroundColor_Highlighted.json>,
+          "disabled.color": <@include ForegroundColor_Disabled.json>
         }
       },
       {
         "uuid": "7613EC8B-13A5-4836-9715-5931D72E2D72",
         "name": "Settings Button",
         "role": "top-toolbar-button",
+        "shape": "rectangle",
         "commands.default.type": "open-settings",
         "contentEdgeInsets": "{4, 4, 4, 4}",
-        "icons.default": {
+        "iconSets.default": {
           "normal": {
             "image.index": "Icons/Glyphish%206/Large/Normal/Gear",
             "color": <@include ForegroundColor_Normal.json>
           },
-          "highlighted": {
-            "image.index": "Icons/Glyphish%206/Large/Normal/Gear",
-            "color":  <@include ForegroundColor_Highlighted.json>
-          },
-          "disabled": {
-            "image.index": "Icons/Glyphish%206/Large/Normal/Gear",
-            "color": <@include ForegroundColor_Disabled.json>
-          }
+          "highlighted.color":  <@include ForegroundColor_Highlighted.json>,
+          "disabled.color": <@include ForegroundColor_Disabled.json>
         }
       },
       {
         "uuid": "586B3D79-3766-42EA-95AE-AC7F4DDEBDF9",
         "name": "Edit Remote Button",
         "role": "top-toolbar-button",
+        "shape": "rectangle",
         "commands.default.type": "open-editor",
         "contentEdgeInsets": "{4, 4, 4, 4}",
-        "icons.default": {
+        "iconSets.default": {
           "normal": {
             "image.index": "Icons/Glyphish%206/Large/Normal/Pencil",
             "color": <@include ForegroundColor_Normal.json>
           },
-          "highlighted": {
-            "image.index": "Icons/Glyphish%206/Large/Normal/Pencil",
-            "color":  <@include ForegroundColor_Highlighted.json>
-          },
-          "disabled": {
-            "image.index": "Icons/Glyphish%206/Large/Normal/Pencil",
-            "color": <@include ForegroundColor_Disabled.json>
-          }
+          "highlighte.color":  <@include ForegroundColor_Highlighted.json>,
+          "disabled.color": <@include ForegroundColor_Disabled.json>
         }
       },
       {
         "uuid": "8B75639D-9209-4AE8-BB2A-A76262FBA644",
         "name": "Battery Status Button",
         "role": "battery-status",
+        "shape": "rectangle",
         "contentEdgeInsets": "{4, 4, 4, 4}",
-        "icons.default": {
+        "iconSets.default": {
           "normal.color": <@include ForegroundColor_Normal.json>,
           "highlighted.color":  <@include ForegroundColor_Highlighted.json>,
           "disabled.color": <@include ForegroundColor_Disabled.json>,
@@ -122,8 +108,9 @@
         "uuid": "56157095-5D4A-4A58-971A-2E1B6D214E3B",
         "name": "Connection Status Button",
         "role": "connection-status",
+        "shape": "rectangle",
         "contentEdgeInsets": "{4, 4, 4, 4}",
-        "icons.default": {
+        "iconSets.default": {
           "normal.color": <@include ForegroundColor_Normal.json>,
           "highlighted.color":  <@include ForegroundColor_Highlighted.json>,
           "disabled.color": <@include ForegroundColor_Disabled.json>

@@ -201,28 +201,20 @@ public final class ActivityViewController: UIViewController {
   /** updateViewConstraints */
   override public func updateViewConstraints() {
     super.updateViewConstraints()
-    let identifier = createIdentifier(self, "Internal")
 
+    let identifier = createIdentifier(self, "Internal")
     view.removeConstraintsWithIdentifier(identifier)
 
     if remoteView != nil && topToolbarView != nil {
-      let format = "\n".join(
-        "remote.centerX = self.centerX",
-        "remote.bottom = self.bottom",
-        "remote.top = self.top",
-        "toolbar.centerX = self.centerX"
+      view.constrain(identifier: identifier,
+        remoteView.centerX => view.centerX,
+        remoteView.bottom => view.bottom,
+        remoteView.top => view.top,
+        topToolbarView.centerX => view.centerX
       )
-      view.constrain(format, views: ["remote": remoteView, "toolbar": topToolbarView], identifier: identifier)
     }
 
-    let topToolbarConstraint = NSLayoutConstraint(item: topToolbarView,
-                                                  attribute: .Top,
-                                                  relatedBy: .Equal,
-                                                  toItem: view,
-                                                  attribute: .Top,
-                                                  multiplier: 1.0,
-                                                  constant: 0.0)
-    topToolbarConstraint.identifier = identifier
+    let topToolbarConstraint = NSLayoutConstraint(topToolbarView.top => view.top --> identifier)
     view.addConstraint(topToolbarConstraint)
     self.topToolbarConstraint = topToolbarConstraint
 

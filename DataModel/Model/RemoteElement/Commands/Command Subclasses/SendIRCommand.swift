@@ -18,7 +18,7 @@ import MoonKit
 @objc(SendIRCommand)
 public final class SendIRCommand: SendCommand {
 
-  @NSManaged public var code: IRCode
+  @NSManaged public var code: IRCode!
 
   public var port: Int16 { return componentDevice?.port ?? 0 }
   public var componentDevice: ComponentDevice? { return code.device }
@@ -35,19 +35,18 @@ public final class SendIRCommand: SendCommand {
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
-  
     updateRelationshipFromData(data, forAttribute: "code")
   }
 
   override public var description: String {
     var result = super.description
-    result += "\n\tcode = \(code.index.rawValue)"
+    result += "\n\tcode = \(toString(code?.index.rawValue))"
     return result
   }
 
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
-    obj["code.index"] = code.index.jsonValue
+    obj["code.index"] = code?.index.jsonValue
     return obj.jsonValue
   }
 

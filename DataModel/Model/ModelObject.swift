@@ -81,21 +81,7 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   The one property all core data entities need to have in the model to be representable as a `ModelObject`. The value
   of an object's `uuid` attribute serves as a unique identifier for the lifetime of the object.
   */
-  private(set) public var uuid: String {
-    get {
-      willAccessValueForKey("uuid")
-      let uuid = primitiveValueForKey("uuid") as? String
-      didAccessValueForKey("uuid")
-      return uuid ?? ""
-    }
-    set {
-      if primitiveValueForKey("uuid") == nil {
-        willChangeValueForKey("uuid")
-        setPrimitiveValue(newValue, forKey: "uuid")
-        didChangeValueForKey("uuid")
-      }
-    }
-  }
+  @NSManaged private(set) public var uuid: String
 
   public var uuidIndex: UUIDIndex {
     if let uuidIndex = UUIDIndex(rawValue: uuid) { return uuidIndex }

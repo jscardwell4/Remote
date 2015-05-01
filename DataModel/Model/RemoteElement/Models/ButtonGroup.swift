@@ -38,27 +38,17 @@ public final class ButtonGroup: RemoteElement {
 
       if let autohide = Bool(data["autohide"]) { self.autohide = autohide }
 
-      applyMaybe(ObjectJSONValue(data["commandSet"])) {
-        if let values = ObjectJSONValue($2),
-          commandSet = CommandSet.importObjectWithData(values, context: moc)
-        {
-          self.setCommandContainer(commandSet, forMode: $1)
-        }
-      }
-
-      applyMaybe(ObjectJSONValue(data["commandSetCollection"])) {
-        if let values = ObjectJSONValue($2),
-          commandSetCollection = CommandSetCollection.importObjectWithData(values, context: moc)
-        {
-          self.setCommandContainer(commandSetCollection, forMode: $1)
+      applyMaybe(ObjectJSONValue(data["commandContainers"])?.compressedMap({ObjectJSONValue($2)})) {
+        if $2["type"] != nil {
+          self.setCommandContainer(CommandSet.importObjectWithData($2, context: moc), forMode: $1)
+        } else {
+          self.setCommandContainer(CommandSetCollection.importObjectWithData($2, context: moc), forMode: $1)
         }
       }
 
       labelConstraints = String(data["labelConstraints"])
 
-      applyMaybe(ObjectJSONValue(data["labelAttributes"])) {
-        if let attributes = TitleAttributes($2) { self.setLabelAttributes(attributes, forMode: $1) }
-      }
+      applyMaybe(ObjectJSONValue(data["labelAttributes"])) { self.setLabelAttributes(TitleAttributes($2), forMode: $1) }
 
     }
 
@@ -87,7 +77,7 @@ public final class ButtonGroup: RemoteElement {
 
   :param: mode String
   */
-  override public func updateForMode(mode: String) {
+  override func updateForMode(mode: String) {
     super.updateForMode(mode)
     label = (labelAttributesForMode(currentMode) ?? labelAttributesForMode(RemoteElement.DefaultMode))?.string
     commandContainer = commandContainers[currentMode] ?? commandContainers[RemoteElement.DefaultMode]

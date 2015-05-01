@@ -42,6 +42,16 @@ public final class ControlStateImageSet: ControlStateSet {
     }
   }
 
+  /**
+  imageViewForState:
+
+  :param: state UIControlState
+
+  :returns: ImageView?
+  */
+  public func imageViewForState(state: UIControlState) -> ImageView? { return self[state.rawValue] as? ImageView }
+
+
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
 

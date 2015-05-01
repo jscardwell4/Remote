@@ -2,7 +2,7 @@
 //  DataModelTests.swift
 //  DataModelTests
 //
-//  Created by Jason Cardwell on 4/5/15.
+//  Created by Jason Cardwell on 4/15/15.
 //  Copyright (c) 2015 Moondeer Studios. All rights reserved.
 //
 
@@ -11,529 +11,645 @@ import XCTest
 import CoreData
 import DataModel
 import MoonKit
+import Quick
 import Nimble
 
-class DataModelTests: XCTestCase {
+infix operator ⊇ {}
 
-  var context: NSManagedObjectContext!
 
-  override class func initialize() {
-    super.initialize()
-    if self === DataModelTests.self {
-      LogManager.addASLLogger()
-      LogManager.addTTYLogger()
-      LogManager.logLevel = .Error
+class DataModelTests: QuickSpec {
+
+  static let context = DataManager.isolatedContext()
+
+  override func spec() {
+
+    let moc = self.dynamicType.context
+
+    beforeSuite {
+      LogManager.logLevel = .Debug
+      let rootDir = "/Users/Moondeer/Projects/MSRemote/Remote/Bank/Resources/JSON/"
+
+      let loadInfo: [(String,ModelObject.Type,DataManager.LogFlags)] =  [
+        ("Manufacturer",       Manufacturer.self,         DataManager.LogFlags.Default),
+        ("ComponentDevice",    ComponentDevice.self,      DataManager.LogFlags.Default),
+        ("ImageCategory",      ImageCategory.self,        DataManager.LogFlags.Default),
+        ("Activity",           Activity.self,             DataManager.LogFlags.Default),
+        ("NetworkDevice",      NetworkDevice.self,        DataManager.LogFlags.Default),
+        ("PresetCategory",     PresetCategory.self,       DataManager.LogFlags.Default),
+        ("Remote",             Remote.self,               DataManager.LogFlags.Default),
+        ("ActivityController", ActivityController.self,   DataManager.LogFlags.Default)
+      ]
+      for (file, type, flags) in loadInfo {
+        DataManager.loadJSONFileAtPath(rootDir + file + ".json", forModel: type, context: moc, logFlags:flags)
+      }
     }
-  }
 
-  override func setUp() {
-    super.setUp()
-    context = DataManager.isolatedContext()
-  }
-
-  func assertJSONEquality(data: ObjectJSONValue,
-              forObject object: JSONValueConvertible?,
-          excludingKeys excluded: [String] = [])
-  {
-    if let actualData = ObjectJSONValue(object?.jsonValue) {
-      assertJSONEquality(data, forObject: actualData, excludingKeys: excluded)
-    } else { XCTFail("failed to get object json value for specified object") }
-  }
-
-  func assertJSONEquality(data: ObjectJSONValue,
-                forObject object: ObjectJSONValue,
-            excludingKeys excluded: [String] = [])
-  {
-    let expectedData = data.filter({(_, k, _) in excluded ∌ k})
-    if !object.contains(expectedData) {
-      var foundTheProblem = false
-      for (_, key, expectedValue) in expectedData {
-        if let actualValue = object[key] {
-          let equalValues = actualValue == expectedValue
-          XCTAssertTrue(equalValues,
-            "actual value '\(actualValue)' does not equal expected value '\(expectedValue)' for key '\(key)'")
-          if !equalValues { foundTheProblem = true; break }
-        } else {
-          XCTFail("missing value for key '\(key)'")
-          foundTheProblem = true
-          break
+    describe("the manufacturers") {
+      describe("the Dish manufacturer") {
+        var manufacturer: Manufacturer?
+        it("can be retrieved by index") {
+          manufacturer = Manufacturer.objectWithIndex(ModelIndex("Dish"), context: moc)
+          expect(manufacturer) != nil
+        }
+        var codeSet: IRCodeSet?
+        it("has a code set named 'Dish'") {
+          expect(manufacturer?.codeSets.count) == 1
+          codeSet = manufacturer?.codeSets.first
+          expect(codeSet) != nil
+        }
+        describe("the code set") {
+          it("has the expected values") {
+            expect(codeSet?.name) == "Dish"
+            expect(codeSet?.user).to(beTrue())
+            expect(codeSet?.codes.count) == 47
+          }
+          var code: IRCode?
+          it("has a code named 'Favorites'") {
+            code = IRCode.objectWithIndex(ModelIndex("Dish/Dish/Favorites"), context: moc)
+            expect(code) != nil
+          }
+          describe("the code") {
+            it("has the expected values") {
+              expect(code?.name) == "Favorites"
+              expect(code?.frequency) == 38343
+              expect(code?.onOffPattern) == "344,173,19,172,19,86BCBCCCCCCCCBCB19,1183,345,86,19,3834"
+            }
+          }
         }
       }
-      if !foundTheProblem {
-        MSLogDebug("problem detected in `-[ObjectJSONValue contains:]`, false negative reported for actual data '\(object)' with expected data '\(expectedData)'")
+      describe("the Sony manufacturer") {
+        var manufacturer: Manufacturer?
+        it("can be retrieved by index") {
+          manufacturer = Manufacturer.objectWithIndex(ModelIndex("Sony"), context: moc)
+          expect(manufacturer) != nil
+        }
+        var codeSet: IRCodeSet?
+        it("has a code set named 'AV Receiver''") {
+          expect(manufacturer?.codeSets.count) == 1
+          codeSet = manufacturer?.codeSets.first
+          expect(codeSet) != nil
+        }
+        describe("the code set") {
+          it("has the expected values") {
+            expect(codeSet?.name) == "AV Receiver"
+            expect(codeSet?.user).to(beTrue())
+            expect(codeSet?.codes.count) == 14
+          }
+          var code: IRCode?
+          it("has a code named 'Volume Up'") {
+            code = IRCode.objectWithIndex(ModelIndex("Sony/AV%20Receiver/Volume%20Up"), context: moc)
+            expect(code) != nil
+          }
+          describe("the code") {
+            it("has the expected values") {
+              expect(code?.name) == "Volume Up"
+              expect(code?.frequency) == 40192
+              expect(code?.offset) == 5
+              expect(code?.onOffPattern) == "96,24,24,24,48,24BBCBBBBBBCCB24,888ABCBBCBBBBBBCCBDABCBBCBBBBBBCCB24,4019"
+            }
+          }
+        }
       }
-    }
-  }
-
-}
-
-// Currently uses test bundle resource files *_Simple.json
-class IsolatedDataModelTests: DataModelTests {
-
-  static let testJSON: [String:JSONValue] = {
-    var filePaths: [String:JSONValue] = [:]
-    if let bundlePath = NSUserDefaults.standardUserDefaults().stringForKey("XCTestedBundlePath"),
-      let bundle = NSBundle(path: bundlePath)
-    {
-      for s in ["Activity", "ActivityController", "ComponentDevice", "Image", "ImageCategory",
-                "IRCode", "IRCodeSet", "ISYDevice", "ISYDeviceGroup", "ISYDeviceNode",
-                "ITachDevice", "Manufacturer", "Preset", "PresetCategory", "TitleAttributes",
-                "Remote", "ButtonGroup", "Button", "ActivityCommand", "DelayCommand", "HTTPCommand",
-                "MacroCommand", "PowerCommand", "SendIRCommand", "SwitchCommand", "SystemCommand",
-                "CommandSet", "CommandSetCollection", "ControlStateColorSet", "ControlStateImageSet",
-                "ControlStateTitleSet", "ImageView", "Constraint"]
-      {
-        var error: NSError?
-        if let filePath = bundle.pathForResource(s + "_Simple", ofType: "json"),
-        json = JSONSerialization.objectByParsingFile(filePath, options: .InflateKeypaths, error: &error)
-        where !MSHandleError(error)
-        {
-          filePaths[s] = json
+      describe("the Samsung manufacturer") {
+        var manufacturer: Manufacturer?
+        it("can be retrieved by index") {
+          manufacturer = Manufacturer.objectWithIndex(ModelIndex("Samsung"), context: moc)
+          expect(manufacturer) != nil
+        }
+        var codeSet: IRCodeSet?
+        it("has a code set named 'Samsung TV'") {
+          expect(manufacturer?.codeSets.count) == 1
+          codeSet = manufacturer?.codeSets.first
+          expect(codeSet) != nil
+        }
+        describe("the code set") {
+          it("has the expected values") {
+            expect(codeSet?.name) == "Samsung TV"
+            expect(codeSet?.user).to(beTrue())
+            expect(codeSet?.codes.count) == 54
+          }
+          var code: IRCode?
+          it("has a code named 'Mute'") {
+            code = IRCode.objectWithIndex(ModelIndex("Samsung/Samsung%20TV/Mute"), context: moc)
+            expect(code) != nil
+          }
+          describe("the code") {
+            it("has the expected values") {
+              expect(code?.name) == "Mute"
+              expect(code?.frequency) == 38109
+              expect(code?.onOffPattern) == "171,171,21,64BB21,21CCCCBBBCCCCCBBBBCCCCCCCCBBBB21,1776ABBBCCCCCBBBCCCCCBBBBCCCCCC21,22CBBBBDABBBCCCCCBBBCCCCCBBBBCCCCCCCCBBBBDABBBCCCCCBBBCCCCCBBBBCCCCCCCCBBBBDABBBCCCCCBBBCCCCCBBBBCCCCCCCCBBBBDABBBCCCCCBBBCCCCCBBBBCCCCCCCCBBBB21,4878"
+            }
+          }
         }
       }
     }
-    return filePaths
-    }()
 
-  func testDictionaryStorage() {
-    let storage = DictionaryStorage(context: context)
-    XCTAssert(storage.entityName == "DictionaryStorage", "failed to create new instance of `Dictionary Storage`")
-    let key1 = "key1", key2 = "key2", key3 = "key3"
-    let value1 = "value1", value2 = 2, value3 = ["value3"]
-    storage[key1] = value1; storage[key2] = value2; storage[key3] = value3
-    let stored1 = storage[key1] as? String, stored2 = storage[key2] as? Int, stored3 = storage[key3] as? [String]
-    XCTAssertNotNil(stored1); XCTAssertNotNil(stored2); XCTAssertNotNil(stored3)
-    if let s1 = stored1, s2 = stored2, s3 = stored3 {
-      XCTAssert(s1 == value1); XCTAssert(s2 == value2); XCTAssert(s3 == value3)
+    describe("the component devices") {
+      describe("the Dish Hopper device") {
+        var componentDevice: ComponentDevice?
+        it("can be retrieved by index") {
+          componentDevice = ComponentDevice.objectWithIndex(ModelIndex("Dish%20Hopper"), context: moc)
+          expect(componentDevice) != nil
+        }
+        it("has the expected values") {
+          expect(componentDevice?.name) == "Dish Hopper"
+          expect(componentDevice?.codeSet?.name) == "Dish"
+          expect(componentDevice?.manufacturer.name) == "Dish"
+          expect(componentDevice?.alwaysOn).to(beTrue())
+        }
+      }
+      describe("the PS3 device") {
+        var componentDevice: ComponentDevice?
+        it("can be retrieved by index") {
+          componentDevice = ComponentDevice.objectWithIndex(ModelIndex("PS3"), context: moc)
+          expect(componentDevice) != nil
+        }
+        it("has the expected values") {
+          expect(componentDevice?.name) == "PS3"
+          expect(componentDevice?.codeSet?.name).to(beNil())
+          expect(componentDevice?.manufacturer.name) == "Sony"
+          expect(componentDevice?.alwaysOn).to(beFalse())
+        }
+
+      }
+      describe("the Samsung TV device") {
+        var componentDevice: ComponentDevice?
+        it("can be retrieved by index") {
+          componentDevice = ComponentDevice.objectWithIndex(ModelIndex("Samsung%20TV"), context: moc)
+          expect(componentDevice) != nil
+        }
+        it("has the expected values") {
+          expect(componentDevice?.name) == "Samsung TV"
+          expect(componentDevice?.codeSet?.name) == "Samsung TV"
+          expect(componentDevice?.manufacturer.name) == "Samsung"
+          expect(componentDevice?.alwaysOn).to(beFalse())
+        }
+
+      }
+      describe("the AV Receiver device") {
+        var componentDevice: ComponentDevice?
+        it("can be retrieved by index") {
+          componentDevice = ComponentDevice.objectWithIndex(ModelIndex("AV%20Receiver"), context: moc)
+          expect(componentDevice) != nil
+        }
+        it("has the expected values") {
+          expect(componentDevice?.name) == "AV Receiver"
+          expect(componentDevice?.codeSet?.name) == "AV Receiver"
+          expect(componentDevice?.manufacturer.name) == "Sony"
+          expect(componentDevice?.alwaysOn).to(beFalse())
+        }
+
+      }
     }
-  }
 
-  func testJSONStorage() {
-    let storage = JSONStorage(context: context)
-    XCTAssert(storage.entityName == "JSONStorage", "failed to create new instance of `JSON Storage`")
-    let key1 = "key1", key2 = "key2", key3 = "key3"
-    let value1 = "value1", value2 = 2, value3 = ["value3"]
-    storage[key1] = value1.jsonValue; storage[key2] = value2.jsonValue; storage[key3] = JSONValue(value3)
-    let stored1 = String(storage[key1]), stored2 = Int(storage[key2]), stored3 = compressedMap(ArrayJSONValue(storage[key3]), {String($0)})
-    XCTAssertNotNil(stored1); XCTAssertNotNil(stored2); XCTAssertNotNil(stored3)
-    if let s1 = stored1, s2 = stored2, s3 = stored3 {
-      XCTAssert(s1 == value1); XCTAssert(s2 == value2); XCTAssert(s3 == value3)
+    describe("the image categories") {
+      var imageCategory: ImageCategory?
+      describe("the Backgrounds category") {
+        it("can be retrieved by index") {
+          imageCategory = ImageCategory.objectWithIndex(ModelIndex("Backgrounds"), context: moc)
+          expect(imageCategory) != nil
+        }
+        var image: Image?
+        it("has an image") {
+          expect(imageCategory?.images.count) == 1
+          image = imageCategory?.images.first
+        }
+        describe("the image") {
+          it("is named and indexed") {
+            expect(image?.name) == "Pro Dots"
+            expect(image?.index.rawValue) == "Backgrounds/Pro%20Dots"
+          }
+          var asset: Asset?
+          it("has an asset") {
+            expect(image?.asset) != nil
+            asset = image?.asset
+          }
+          describe("the asset") {
+            it("has a name but no location") {
+              expect(asset?.name) == "Pro Dots"
+              expect(asset?.location) == "$bank"
+            }
+          }
+        }
+      }
+      describe("the Icons category") {
+        it("can be retrieved by index") {
+          imageCategory = ImageCategory.objectWithIndex(ModelIndex("Icons"), context: moc)
+          expect(imageCategory) != nil
+        }
+        it("has no images") {
+          expect(imageCategory?.images.count) == 0
+        }
+        it("has child categories") {
+          let names = map(imageCategory!.childCategories, {$0.name})
+          expect(names) ⊇ ["Glyphish 3", "Glyphish 4", "Glyphish 6", "Glyphish 7"]
+        }
+
+        it("has nested images retrievable by index") {
+          expect(Image.objectWithIndex(ModelIndex("Icons/Glyphish%207/Large/Normal/Battery"), context: moc)) != nil
+          expect(Image.objectWithIndex(ModelIndex("Icons/Glyphish%206/Large/Normal/Home"), context: moc)) != nil
+          expect(Image.objectWithIndex(ModelIndex("Icons/Glyphish%206/Large/Normal/Pencil"), context: moc)) != nil
+          expect(Image.objectWithIndex(ModelIndex("Icons/Glyphish%206/Large/Normal/Arrow%20Down"), context: moc)) != nil
+          expect(Image.objectWithIndex(ModelIndex("Icons/Glyphish%204/Power%20Plug"), context: moc)) != nil
+          expect(Image.objectWithIndex(ModelIndex("Icons/Glyphish%203/Outlet"), context: moc)) != nil
+        }
+
+      }
+
     }
-  }
 
-  func testActivity() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["Activity"]) {
-      let activity = Activity(data: data, context: context)
-      XCTAssert(activity != nil)
-      assertJSONEquality(data, forObject: activity, excludingKeys: ["remote", "launchMacro", "haltMacro"])
-      XCTAssertNotNil(activity?.launchMacro)
-      XCTAssertNotNil(activity?.haltMacro)
-    } else { XCTFail("could not retrieve test json for `Activity`") }
-  }
-
-  func testActivityController() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["ActivityController"]) {
-      let activityController = ActivityController(data: data, context: context)
-      XCTAssert(activityController != nil)
-      assertJSONEquality(data, forObject: activityController, excludingKeys: ["homeRemote", "topToolbar"])
-      XCTAssert(activityController?.topToolbar != nil, "missing value for 'topToolbar'")
-    } else { XCTFail("could not retrieve test json for `ActivityController`") }
-  }
-
-  func testComponentDevice() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["ComponentDevice"]) {
-      let componentDevice = ComponentDevice(data: data, context: context)
-      XCTAssert(componentDevice != nil)
-      assertJSONEquality(data, forObject: componentDevice, excludingKeys: ["codeSet", "manufacturer"])
-    } else { XCTFail("could not retrieve test json for `ComponentDevice`") }
-  }
-
-  func testIRCode() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["IRCode"]) {
-      let irCode = IRCode(data: data, context: context)
-      XCTAssert(irCode != nil)
-      assertJSONEquality(data, forObject: irCode)
-    } else { XCTFail("could not retrieve test json for `IRCode`") }
-  }
-
-  func testIRCodeSet() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["IRCodeSet"]) {
-      let irCodeSet = IRCodeSet(data: data, context: context)
-      XCTAssert(irCodeSet != nil)
-      assertJSONEquality(data, forObject: irCodeSet, excludingKeys: ["codes"])
-    } else { XCTFail("could not retrieve test json for `IRCodeSet`") }
-  }
-
-  func testISYDevice() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["ISYDevice"]) {
-      let isyDevice = ISYDevice(data: data, context: context)
-      XCTAssert(isyDevice != nil)
-      assertJSONEquality(data, forObject: isyDevice, excludingKeys: ["nodes", "groups"])
-    } else { XCTFail("could not retrieve test json for `ISYDevice`") }
-  }
-
-  func testISYDeviceGroup() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["ISYDeviceGroup"]) {
-      let isyDeviceGroup = ISYDeviceGroup(data: data, context: context)
-      XCTAssert(isyDeviceGroup != nil)
-      assertJSONEquality(data, forObject: isyDeviceGroup, excludingKeys: ["members", "device"])
-    } else { XCTFail("could not retrieve test json for `ISYDeviceGroup`") }
-  }
-
-  func testISYDeviceNode() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["ISYDeviceNode"]) {
-      let isyDeviceNode = ISYDeviceNode(data: data, context: context)
-      XCTAssert(isyDeviceNode != nil)
-      assertJSONEquality(data, forObject: isyDeviceNode, excludingKeys: ["groups", "device"])
-    } else { XCTFail("could not retrieve test json for `ISYDeviceNode`") }
-  }
-
-  func testITachDevice() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["ITachDevice"]) {
-      let iTachDevice = ITachDevice(data: data, context: context)
-      XCTAssert(iTachDevice != nil)
-      assertJSONEquality(data, forObject: iTachDevice)
-    } else { XCTFail("could not retrieve test json for `ITachDevice`") }
-  }
-
-  func testImage() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["Image"]) {
-      let image = Image(data: data, context: context)
-      XCTAssert(image != nil)
-      assertJSONEquality(data, forObject: image, excludingKeys: [])
-    } else { XCTFail("could not retrieve test json for `Image`") }
-  }
-
-  func testImageCategory() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["ImageCategory"]) {
-      let imageCategory = ImageCategory(data: data, context: context)
-      XCTAssert(imageCategory != nil)
-      assertJSONEquality(data, forObject: imageCategory, excludingKeys: ["images"])
-      if let expectedImageCount = data["images"]?.arrayValue?.count,
-        images = imageCategory?.images
-      {
-        XCTAssertEqual(expectedImageCount, images.count)
+    describe("the activities") {
+      var activity: Activity?
+      describe("the hopper activity") {
+        it("can be retrieved by index") {
+          activity = Activity.objectWithIndex(ModelIndex("Dish%20Hopper%20Activity"), context: moc)
+          expect(activity) != nil
+        }
+        var launchMacro: MacroCommand?
+        it("has a launch macro") {
+          launchMacro = activity?.launchMacro
+          expect(launchMacro) != nil
+        }
+        describe("the macro") {
+          it("has sendir, power, delay, sendir commands") {
+            expect(launchMacro?.commands.count) == 4
+          }
+        }
       }
-    } else { XCTFail("could not retrieve test json for `ImageCategory`") }
-  }
+    }
 
-  func testManufacturer() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["Manufacturer"]) {
-      let manufacturer = Manufacturer(data: data, context: context)
-      XCTAssert(manufacturer != nil)
-      assertJSONEquality(data, forObject: manufacturer, excludingKeys: ["codeSets"])
-      if let expectedCodeSetCount = data["codeSets"]?.arrayValue?.count,
-        codeSets = manufacturer?.codeSets
-      {
-        XCTAssertEqual(expectedCodeSetCount, codeSets.count)
+    describe("the network devices") {
+      it("total of two") {
+        let devices = NetworkDevice.objectsInContext(moc) as! [NetworkDevice]
+        expect(devices.count) == 2
+        describe("the devices are properly modeled") {
+          let (device1, device2) = disperse2(devices)
+          let device1AsItach = device1 as? ITachDevice, device2AsItach = device2 as? ITachDevice
+          expect(device1AsItach == nil && device2AsItach == nil).toNot(beTrue())
+          let device1AsISY = device1 as? ISYDevice, device2AsISY = device2 as? ISYDevice
+          expect(device1AsISY == nil && device2AsISY == nil).toNot(beTrue())
+        }
+
       }
-    } else { XCTFail("could not retrieve test json for `Manufacturer`") }
-  }
-
-  func testModelIndex() {
-    let uuid = "4E9FE3CD-A64C-4D6D-8E3D-F7F5B7D7EB92"
-    let uuidIndex = UUIDIndex(rawValue: uuid)
-    XCTAssert(uuidIndex != nil)
-    XCTAssert(uuidIndex?.rawValue == uuid)
-
-    var modelIndex = ModelIndex(uuid)
-    XCTAssertEqual(modelIndex.rawValue, uuid)
-
-    let path = "I/Am/a%20Path"
-    let pathIndex = PathIndex(path)
-    XCTAssert(pathIndex.rawValue == path)
-    XCTAssert(pathIndex.first == "I")
-    XCTAssert(pathIndex.last == "a%20Path")
-    XCTAssert(pathIndex.count == 3)
-
-    modelIndex = ModelIndex(path)
-    XCTAssertEqual(modelIndex.rawValue, path)
-  }
-
-  func testPreset() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["Preset"]) {
-      let preset = Preset(data: data, context: context)
-      XCTAssert(preset != nil)
-      assertJSONEquality(data, forObject: preset, excludingKeys: ["subelements"])
-      if let expectedSubelementsCount = data["subelements"]?.arrayValue?.count,
-        subelements = preset?.subelements
-      {
-        XCTAssertEqual(expectedSubelementsCount, subelements.count)
+      describe("the iTach device"){
+        var iTachDevice: ITachDevice?
+        it("can be retrieved by index") {
+          iTachDevice = ITachDevice.objectWithIndex(ModelIndex("GlobalCache-iTachIP2IR"), context: moc)
+          expect(iTachDevice) != nil
+        }
+        it("has the expected values") {
+          expect(iTachDevice?.uuid) == "A7582E04-16F3-4319-9F21-41A17C922AC9"
+          expect(iTachDevice?.name) == "GlobalCache-iTachIP2IR"
+          expect(iTachDevice?.uniqueIdentifier) == "GlobalCache_000C1E022AED"
+          expect(iTachDevice?.pcbPN) == "025-0028-03"
+          expect(iTachDevice?.pkgLevel) == "GCPK002"
+          expect(iTachDevice?.sdkClass) == "Utility"
+          expect(iTachDevice?.make) == "GlobalCache"
+          expect(iTachDevice?.model) == "iTachIP2IR"
+          expect(iTachDevice?.status) == "Ready"
+          expect(iTachDevice?.configURL) == "192.168.1.45"
+          expect(iTachDevice?.revision) == "710-1005-05"
+        }
       }
-    } else { XCTFail("could not retrieve test json for `Preset`") }
-  }
-
-  func testPresetCategory() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["PresetCategory"]) {
-      let presetCategory = PresetCategory(data: data, context: context)
-      XCTAssert(presetCategory != nil)
-      assertJSONEquality(data, forObject: presetCategory, excludingKeys: ["presets"])
-      if let expectedPresetsCount = data["presets"]?.arrayValue?.count,
-        presets = presetCategory?.presets
-      {
-        XCTAssertEqual(expectedPresetsCount, presets.count)
+      describe("the isy device"){
+        var isyDevice: ISYDevice?
+        it("can be retrieved by index") {
+          isyDevice = ISYDevice.objectWithIndex(ModelIndex("ISYDevice1"), context: moc)
+          expect(isyDevice) != nil
+        }
+        it("has the expected values") {
+          expect(isyDevice?.name) == "ISYDevice1"
+          expect(isyDevice?.uniqueIdentifier) == "uuid:00:21:b9:01:f2:b6"
+          expect(isyDevice?.modelNumber) == "1120"
+          expect(isyDevice?.modelName) == "ISY 994i 256"
+          expect(isyDevice?.modelDescription) == "X_Insteon_Lighting_Device:1"
+          expect(isyDevice?.manufacturerURL) == "http://www.universal-devices.com"
+          expect(isyDevice?.manufacturer) == "Universal Devices Inc."
+          expect(isyDevice?.friendlyName) == "ISY"
+          expect(isyDevice?.deviceType) == "urn:udi-com:device:X_Insteon_Lighting_Device:1"
+          expect(isyDevice?.baseURL) == "http://192.168.1.9"
+        }
+        describe("the nodes") {
+          var nodes: Set<ISYDeviceNode>?
+          it("has 4 nodes"){
+            nodes = isyDevice?.nodes
+            expect(nodes) != nil
+            expect(nodes?.count) == 4
+          }
+          describe("it has a node named '20.12.40.1'") {
+            var node1: ISYDeviceNode?
+            it("exists") {
+              node1 = findFirst(nodes, {$0.name == "20.12.40.1"})
+              expect(node1) != nil
+            }
+            it("has the expected values") {
+              expect(node1?.name) == "20.12.40.1"
+              expect(node1?.flag) == 128
+              expect(node1?.address) == "20 12 40 1"
+              expect(node1?.type) == "1.58.193.0"
+              expect(node1?.enabled).to(beTrue())
+              expect(node1?.pnode) == "20 12 40 1"
+              expect(node1?.propertyID) == "ST"
+              expect(node1?.propertyValue) == 255
+              expect(node1?.propertyUOM) == "%/on/off"
+              expect(node1?.propertyFormatted) == "On"
+              expect(node1?.groups.count) == 1
+            }
+          }
+          describe("it has a node named '18.F0.08.1'") {
+            var node2: ISYDeviceNode?
+            it("exists") {
+              node2 = findFirst(nodes, {$0.name == "18.F0.08.1"})
+              expect(node2) != nil
+            }
+            it("has the expected values") {
+              expect(node2?.name) == "18.F0.08.1"
+              expect(node2?.flag) == 128
+              expect(node2?.address) == "18 F0 8 1"
+              expect(node2?.type) == "1.7.56.0"
+              expect(node2?.enabled).to(beFalse())
+              expect(node2?.pnode) == "18 F0 8 1"
+              expect(node2?.propertyID) == "ST"
+              expect(node2?.propertyValue) == 0
+              expect(node2?.propertyUOM) == "%/on/off"
+              expect(node2?.propertyFormatted) == ""
+              expect(node2?.groups.count) == 1
+            }
+          }
+          describe("it has a node named 'Sofa Table Lamp'") {
+            var node3: ISYDeviceNode?
+            it("exists") {
+              node3 = findFirst(nodes, {$0.name == "Sofa Table Lamp"})
+              expect(node3) != nil
+            }
+            it("has the expected values") {
+              expect(node3?.name) == "Sofa Table Lamp"
+              expect(node3?.flag) == 128
+              expect(node3?.address) == "23 78 77 1"
+              expect(node3?.type) == "1.14.65.0"
+              expect(node3?.enabled).to(beTrue())
+              expect(node3?.pnode) == "23 78 77 1"
+              expect(node3?.propertyID) == "ST"
+              expect(node3?.propertyValue) == 255
+              expect(node3?.propertyUOM) == "%/on/off"
+              expect(node3?.propertyFormatted) == "On"
+              expect(node3?.groups.count) == 1
+            }
+          }
+          describe("it has a node named 'Front Door Table Lamp'") {
+            var node4: ISYDeviceNode?
+            it("exists") {
+              node4 = findFirst(nodes, {$0.name == "Front Door Table Lamp"})
+              expect(node4) != nil
+            }
+            it("has the expected values") {
+              expect(node4?.name) == "Front Door Table Lamp"
+              expect(node4?.flag) == 128
+              expect(node4?.address) == "1B 6E B2 1"
+              expect(node4?.type) == "2.23.57.0"
+              expect(node4?.enabled).to(beTrue())
+              expect(node4?.pnode) == "1B 6E B2 1"
+              expect(node4?.propertyID) == "ST"
+              expect(node4?.propertyValue) == 255
+              expect(node4?.propertyUOM) == "on/off"
+              expect(node4?.propertyFormatted) == "On"
+              expect(node4?.groups.count) == 1
+            }
+          }
+        }
+        describe("the device's groups") {
+          var groups: Set<ISYDeviceGroup>?
+          it("contains two groups") {
+            groups = isyDevice?.groups
+            expect(groups) != nil
+          }
+          describe("the isy group") {
+            var isyGroup: ISYDeviceGroup?
+            it("exists") {
+              isyGroup = findFirst(groups, {$0.name == "ISY"})
+              expect(isyGroup) != nil
+            }
+            it("has the expected values") {
+              expect(isyGroup?.name) == "ISY"
+              expect(isyGroup?.flag) == 12
+              expect(isyGroup?.address) == "00:21:b9:01:f2:b6"
+              expect(isyGroup?.family) == 6
+              expect(map(isyGroup?.members ?? [], {$0.name})) ⊇ ["20.12.40.1", "Front Door Table Lamp",
+                                                                 "18.F0.08.1", "Sofa Table Lamp"]
+            }
+          }
+          describe("the auto dr group") {
+            var autoDRGroup: ISYDeviceGroup?
+            it("exists") {
+              autoDRGroup = findFirst(groups, {$0.name == "Auto DR"})
+              expect(autoDRGroup) != nil
+            }
+            it("has the expected values") {
+              expect(autoDRGroup?.name) == "Auto DR"
+              expect(autoDRGroup?.flag) == 132
+              expect(autoDRGroup?.address) == "ADR0001"
+              expect(autoDRGroup?.family) == 5
+              expect(autoDRGroup?.members.count) == 0
+            }
+          }
+        }
       }
-    } else { XCTFail("could not retrieve test json for `PresetCategory`") }
+    }
+
+    describe("the activity controller") {
+      var activityController: ActivityController?
+      it("can be retrieved") {
+        activityController = ActivityController.sharedController(moc)
+        expect(activityController) != nil
+      }
+      it("has a home remote") {
+        expect(activityController?.homeRemote) != nil
+      }
+      var topToolbar: ButtonGroup?
+      it("has a top toolbar") {
+        topToolbar = activityController?.topToolbar
+        expect(topToolbar) != nil
+      }
+      describe("the top toolbar") {
+        it("has the expected values") {
+          expect(topToolbar?.name) == "Top Toolbar"
+          expect(topToolbar?.role) == RemoteElement.Role.TopToolbar
+          expect(topToolbar?.shape) == RemoteElement.Shape.Rectangle
+          expect(topToolbar?.constraints.count) == 14
+          expect(topToolbar?.backgroundForMode(RemoteElement.DefaultMode)?.color?.jsonValue) == "gray@50%"
+          expect(topToolbar?.subelements.count) == 5
+        }
+        var subelements: OrderedSet<RemoteElement>?
+        describe("the toolbar buttons") {
+          it("can be retrieved") {
+            subelements = topToolbar?.subelements
+            expect(subelements) != nil
+            expect(subelements?.count) == 5
+          }
+          var button: Button?
+          describe("the home button") {
+            it("is the first button") {
+              button = subelements?[0] as? Button
+              expect(button) != nil
+            }
+            it("has the expected values") {
+              expect(button?.name) == "Home Button"
+              expect(button?.role) == RemoteElement.Role.TopToolbarButton
+              expect(button?.constraints.count) == 1
+              expect(button?.commandForMode(RemoteElement.DefaultMode)) != nil
+              expect(button?.iconSetForMode(RemoteElement.DefaultMode)?.normal?.image?.name) == "Home"
+            }
+          }
+          describe("the settings button") {
+            it("is the second button") {
+              button = subelements?[1] as? Button
+              expect(button) != nil
+            }
+            it("has the expected values") {
+              expect(button?.name) == "Settings Button"
+              expect(button?.role) == RemoteElement.Role.TopToolbarButton
+              expect(button?.commandForMode(RemoteElement.DefaultMode)) != nil
+              expect(button?.iconSetForMode(RemoteElement.DefaultMode)?.normal?.image?.name) == "Gear"
+            }
+          }
+          describe("the edit remote button") {
+            it("is the third button") {
+              button = subelements?[2] as? Button
+              expect(button) != nil
+            }
+            it("has the expected values") {
+              expect(button?.name) == "Edit Remote Button"
+              expect(button?.role) == RemoteElement.Role.TopToolbarButton
+              expect(button?.commandForMode(RemoteElement.DefaultMode)) != nil
+              expect(button?.iconSetForMode(RemoteElement.DefaultMode)?.normal?.image?.name) == "Pencil"
+            }
+          }
+          describe("the battery status button") {
+            it("is the fourth button") {
+              button = subelements?[3] as? Button
+              expect(button) != nil
+            }
+            it("has the expected values") {
+              expect(button?.name) == "Battery Status Button"
+              expect(button?.role) == RemoteElement.Role.BatteryStatus
+            }
+          }
+          describe("the connection status button") {
+            it("is the fifth button") {
+              button = subelements?[4] as? Button
+              expect(button) != nil
+            }
+            it("has the expected values") {
+              expect(button?.name) == "Connection Status Button"
+              expect(button?.role) == RemoteElement.Role.ConnectionStatus
+            }
+          }
+        }
+      }
+    }
+
+    describe("the presets") {
+      it("can be fetched") {
+        let presetCategories = PresetCategory.objectsInContext(moc) as? [PresetCategory]
+        expect(presetCategories) != nil
+        expect(presetCategories?.count) > 0
+      }
+
+      var presetCategory: PresetCategory?
+      describe("the Remote category") {
+        it("can be retrieved by index") {
+          presetCategory = PresetCategory.objectWithIndex(ModelIndex("Remote"), context: moc)
+          expect(presetCategory) != nil
+        }
+      }
+      describe("the Button Group category") {
+        it("can be retrieved by index") {
+          presetCategory = PresetCategory.objectWithIndex(ModelIndex("Button%20Group"), context: moc)
+          expect(presetCategory) != nil
+        }
+        it("contains 8 presets") {
+          expect(presetCategory?.presets.count) == 8
+        }
+
+        var preset: Preset?
+        it("has a preset named '1 x 3'") {
+          preset = Preset.objectWithIndex(ModelIndex("Button%20Group/1%20x%203"), context: moc)
+          expect(preset) != nil
+        }
+        describe("the '1 x 3' preset") {
+          it("has the expected values") {
+            expect(preset?.name) == "1 x 3"
+            expect(preset?.baseType) == RemoteElement.BaseType.ButtonGroup
+            expect(preset?.constraints) ==  "$0.height ≥ 150\n$0.width ≥ 132\n$1.left = $0.left :: $1.right = $0.right :: $1.top = $0.top\n$2.height = $1.height :: $2.left = $0.left :: $2.right = $0.right :: $2.top = $1.bottom + 4\n$3.bottom = $0.bottom :: $3.height = $1.height :: $3.left = $0.left :: $3.right = $0.right :: $3.top = $2.bottom + 4"
+            expect(preset?.subelements?.count) == 3
+          }
+        }
+
+      }
+    }
+
+    describe("the remotes") {
+      it("can be fetched") {
+        let remotes = Remote.objectsInContext(moc) as? [Remote]
+        expect(remotes) != nil
+        expect(remotes?.count) == 2
+      }
+      var remote: Remote?
+      describe("the dish hopper remote") {
+        it("can be retrieved by index") {
+          remote = Remote.objectWithIndex(ModelIndex("Dish%20Hopper%20Activity"), context: moc)
+          expect(remote) != nil
+        }
+        it("has the expected values") {
+          expect(remote?.key) == "activity1"
+          expect(remote?.name) == "Dish Hopper Activity"
+          expect(remote?.topBarHidden).to(beTrue())
+          expect(remote?.constraints.count) == 22
+          expect(remote?.backgroundForMode(RemoteElement.DefaultMode)?.color?.jsonValue.rawValue) == "\"black\""
+          expect(remote?.backgroundForMode(RemoteElement.DefaultMode)?.image?.index.rawValue) == "Backgrounds/Pro%20Dots"
+          expect(remote?.subelements.count) == 8
+          expect(remote?.panels.count) == 4
+        }
+      }
+      describe("the home screen remote") {
+        it("can be retrieved by index") {
+          remote = Remote.objectWithIndex(ModelIndex("Home%20Screen"), context: moc)
+          expect(remote) != nil
+        }
+        it("has the expected values") {
+          expect(remote?.name) == "Home Screen"
+          expect(remote?.constraints.count) == 5
+          expect(remote?.subelements.count) == 2
+        }
+        var buttonGroup: ButtonGroup?
+        describe("the activities button group") {
+          it("can be retrieved") {
+            buttonGroup = remote?.subelements[0] as? ButtonGroup
+            expect(buttonGroup) != nil
+          }
+          it("has the expected values") {
+            expect(buttonGroup?.constraints.count) == 14
+            expect(buttonGroup?.subelements.count) == 4
+          }
+
+          var button: Button?
+          describe("the Dish button") {
+            it("can be retrieved") {
+              button = buttonGroup?.subelements[0] as? Button
+              expect(button) != nil
+            }
+            it("has the expected values") {
+              let titles = button?.titlesForMode(RemoteElement.DefaultMode)
+              expect(titles) != nil
+              let titleAttributes: TitleAttributes? = titles?.titleAttributesForState(.Normal)
+              expect(titleAttributes == nil) == false
+              expect(titleAttributes?.text) == "Dish"
+            }
+          }
+        }
+      }
+    }
+
   }
 
-  func testTitleAttributes() {
-    if let data = self.dynamicType.testJSON["TitleAttributes"] {
-      let titleAttributes = TitleAttributes(data)
-      XCTAssert(titleAttributes != nil)
-      assertJSONEquality(ObjectJSONValue(data)!, forObject: titleAttributes)
-    } else { XCTFail("could not retrieve test json for `TitleAttributes`") }
-  }
-
-  func testButton() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["Button"]) {
-      if let button = Button(data: data, context: context) {
-        assertJSONEquality(data, forObject: button, excludingKeys: ["commands", "titles", "backgroundColors"])
-      } else { XCTFail("failed to create button") }
-    } else { XCTFail("could not retrieve test json for `Button`") }
-  }
-
-  func testButtonGroup() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["ButtonGroup"]) {
-      if let buttonGroup = ButtonGroup(data: data, context: context) {
-        assertJSONEquality(data, forObject: buttonGroup, excludingKeys: ["subelements"])
-      } else { XCTFail("failed to create buttonGroup") }
-    } else { XCTFail("could not retrieve test json for `ButtonGroup`") }
-  }
-
-  func testRemote() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["Remote"]) {
-      if let remote = Remote(data: data, context: context) {
-        assertJSONEquality(data, forObject: remote, excludingKeys: ["subelements", "constraints", "backgroundImage"])
-      } else { XCTFail("failed to create remote") }
-    } else { XCTFail("could not retrieve test json for `Remote`") }
-  }
-
-  func testActivityCommand() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["ActivityCommand"]) {
-      if let activityCommand = ActivityCommand(data: data, context: context) {
-        assertJSONEquality(data, forObject: activityCommand, excludingKeys: ["activity"])
-      } else { XCTFail("failed to create activityCommand") }
-    } else { XCTFail("could not retrieve test json for `ActivityCommand`") }
-  }
-
-  func testDelayCommand() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["DelayCommand"]) {
-      if let delayCommand = DelayCommand(data: data, context: context) {
-        assertJSONEquality(data, forObject: delayCommand, excludingKeys: [])
-      } else { XCTFail("failed to create delayCommand") }
-    } else { XCTFail("could not retrieve test json for `DelayCommand`") }
-  }
-
-  func testHTTPCommand() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["HTTPCommand"]) {
-      if let hTTPCommand = HTTPCommand(data: data, context: context) {
-        assertJSONEquality(data, forObject: hTTPCommand, excludingKeys: [])
-      } else { XCTFail("failed to create hTTPCommand") }
-    } else { XCTFail("could not retrieve test json for `HTTPCommand`") }
-  }
-
-  func testMacroCommand() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["MacroCommand"]) {
-      if let macroCommand = MacroCommand(data: data, context: context) {
-        assertJSONEquality(data, forObject: macroCommand, excludingKeys: ["commands"])
-        XCTAssert(macroCommand.commands.count == data["commands"]?.arrayValue?.count, "unexpected number of commands in macro")
-      } else { XCTFail("failed to create macroCommand") }
-    } else { XCTFail("could not retrieve test json for `MacroCommand`") }
-  }
-
-  func testPowerCommand() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["PowerCommand"]) {
-      if let powerCommand = PowerCommand(data: data, context: context) {
-        assertJSONEquality(data, forObject: powerCommand, excludingKeys: ["device"])
-      } else { XCTFail("failed to create powerCommand") }
-    } else { XCTFail("could not retrieve test json for `PowerCommand`") }
-  }
-
-  func testSendIRCommand() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["SendIRCommand"]) {
-      if let sendIRCommand = SendIRCommand(data: data, context: context) {
-        assertJSONEquality(data, forObject: sendIRCommand, excludingKeys: ["code"])
-      } else { XCTFail("failed to create sendIRCommand") }
-    } else { XCTFail("could not retrieve test json for `SendIRCommand`") }
-  }
-
-  func testSwitchCommand() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["SwitchCommand"]) {
-      if let switchCommand = SwitchCommand(data: data, context: context) {
-        assertJSONEquality(data, forObject: switchCommand, excludingKeys: [])
-      } else { XCTFail("failed to create switchCommand") }
-    } else { XCTFail("could not retrieve test json for `SwitchCommand`") }
-  }
-
-  func testSystemCommand() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["SystemCommand"]) {
-      if let systemCommand = SystemCommand(data: data, context: context) {
-        assertJSONEquality(data, forObject: systemCommand, excludingKeys: [])
-      } else { XCTFail("failed to create systemCommand") }
-    } else { XCTFail("could not retrieve test json for `SystemCommand`") }
-  }
-
-  func testCommandSet() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["CommandSet"]) {
-      if let commandSet = CommandSet(data: data, context: context) {
-        if let commandSetJSONObject = ObjectJSONValue(commandSet.jsonValue) {
-          XCTAssert(commandSetJSONObject["type"] == data["type"], "unexpected 'type' value")
-          XCTAssert(commandSetJSONObject["top"] != nil, "missing value for 'top'")
-          XCTAssert(commandSetJSONObject["bottom"] != nil, "missing value for 'bottom'")
-        } else { XCTFail("failed to create object json for created command set") }
-      } else { XCTFail("failed to create commandSet") }
-    } else { XCTFail("could not retrieve test json for `CommandSet`") }
-  }
-
-  func testCommandSetCollection() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["CommandSetCollection"]) {
-      if let commandSetCollection = CommandSetCollection(data: data, context: context) {
-        assertJSONEquality(data, forObject: commandSetCollection, excludingKeys: ["CH", "PAGE", "VOL"])
-        XCTAssertNotNil(commandSetCollection["CH"], "missing command set for 'CH' label")
-        XCTAssertNotNil(commandSetCollection["PAGE"], "missing command set for 'PAGE' label")
-        XCTAssertNotNil(commandSetCollection["VOL"], "missing command set for 'VOL' label")
-      } else { XCTFail("failed to create commandSetCollection") }
-    } else { XCTFail("could not retrieve test json for `CommandSetCollection`") }
-  }
-
-  func testControlStateColorSet() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["ControlStateColorSet"]) {
-      if let controlStateColorSet = ControlStateColorSet(data: data, context: context) {
-        assertJSONEquality(data, forObject: controlStateColorSet, excludingKeys: ["disabled", "selected", "highlightedDisabled"])
-        XCTAssert(controlStateColorSet.disabled?.rgbHexString == String(data["disabled"]), "unexpected value for 'disabled'")
-        XCTAssert(controlStateColorSet.selected?.rgbHexString == String(data["selected"]), "unexpected value for 'selected'")
-        XCTAssert(controlStateColorSet.highlightedDisabled?.jsonValue == "white".jsonValue, "unexpected value for 'highlightedDisabled")
-      } else { XCTFail("failed to create controlStateColorSet") }
-    } else { XCTFail("could not retrieve test json for `ControlStateColorSet`") }
-  }
-
-  func testControlStateImageSet() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["ControlStateImageSet"]) {
-      if let controlStateImageSet = ControlStateImageSet(data: data, context: context) {
-        assertJSONEquality(data, forObject: controlStateImageSet, excludingKeys: ["normal", "highlighted", "disabled"])
-        expect(controlStateImageSet.normal).toNot(beNil())
-        expect(controlStateImageSet.highlighted).toNot(beNil())
-        expect(controlStateImageSet.disabled).toNot(beNil())
-      } else { XCTFail("failed to create controlStateImageSet") }
-    } else { XCTFail("could not retrieve test json for `ControlStateImageSet`") }
-  }
-
-  func testControlStateTitleSet() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["ControlStateTitleSet"]) {
-      if let controlStateTitleSet = ControlStateTitleSet(data: data, context: context) {
-        assertJSONEquality(data, forObject: controlStateTitleSet, excludingKeys: [])
-      } else { XCTFail("failed to create controlStateTitleSet") }
-    } else { XCTFail("could not retrieve test json for `ControlStateTitleSet`") }
-  }
-
-  func testImageView() {
-    if let data = ObjectJSONValue(self.dynamicType.testJSON["ImageView"]) {
-      if let imageView = ImageView(data: data, context: context) {
-        assertJSONEquality(data, forObject: imageView, excludingKeys: ["image"])
-      } else { XCTFail("failed to create imageView") }
-    } else { XCTFail("could not retrieve test json for `ImageView`") }
-  }
-
-  func testConstraint() {
-    if let data = ArrayJSONValue(self.dynamicType.testJSON["Constraint"]) {
-      let constraints = Constraint.importObjectsWithData(data, context: context)
-      expect(constraints.count).to(beGreaterThan(0))
-    } else { XCTFail("could not retrieve test json for `Constraint`") }
-  }
-
-
-}
-
-// Currently uses DataModel bundle files
-class InterdependentDataModelTests: DataModelTests {
-
-  func expectFileLoad(name: String, type: ModelObject.Type) {
-    let expectation = expectationWithDescription("load \(name)")
-    DataManager.loadJSONFileNamed(name,
-                         forModel: type,
-                          context: context,
-                       completion: {(success: Bool, error: NSError?) -> Void in
-                        XCTAssertTrue(success, "loading data from file triggered an error")
-                        DataManager.saveRootContext(completion: { (success: Bool, error: NSError?) -> Void in
-                          XCTAssertTrue(success, "saving context triggered an error")
-                          expectation.fulfill()
-                        })
-    })
-    waitForExpectationsWithTimeout(10, handler: {(error: NSError?) -> Void in _ = MSHandleError(error)})
-  }
-
-  func testLoadManufacturersFromFile() {
-    expectFileLoad("Manufacturer_Test", type: Manufacturer.self)
-    let manufacturers = Manufacturer.objectsInContext(context) as! [Manufacturer]
-    expect(manufacturers.count).to(equal(3))
-    expect(manufacturers.map{$0.name}).to(contain("Dish", "Sony", "Samsung"))
-    expect(manufacturers.map{$0.codeSets.count}).to(contain(1, 3))
-    let codeSet = IRCodeSet.objectMatchingPredicate(∀"manufacturer.name == 'Dish'", context: context)
-    expect(codeSet).toNot(beNil())
-    expect(codeSet?.codes.count).to(equal(47))
-  }
-
-  func testLoadComponentDevicesFromFile() {
-    expectFileLoad("ComponentDevice", type: ComponentDevice.self)
-    let componentDevices = ComponentDevice.objectsInContext(context) as! [ComponentDevice]
-    expect(componentDevices.count).to(equal(4))
-    expect(componentDevices.map{$0.name}).to(contain("Dish Hopper", "PS3", "AV Receiver", "Samsung TV"))
-  }
-
-  func testLoadImagesFromFile() {
-    expectFileLoad("Glyphish", type: ImageCategory.self)
-    let imageCategories = ImageCategory.objectsInContext(context) as! [ImageCategory]
-    expect(imageCategories.count).to(beGreaterThanOrEqualTo(19))
-  }
-
-  func testLoadNetworkDevicesFromFile() {
-    expectFileLoad("NetworkDevice", type: NetworkDevice.self)
-    let networkDevices = NetworkDevice.objectsInContext(context) as! [NetworkDevice]
-    expect(networkDevices.count).to(equal(2))
-    expect(networkDevices.map{$0.name}).to(contain("GlobalCache-iTachIP2IR", "ISYDevice1"))
-  }
-
-  func testLoadActivitiesFromFile() {
-    expectFileLoad("Activity", type: Activity.self)
-    let activities = Activity.objectsInContext(context) as! [Activity]
-    expect(activities.count).to(equal(4))
-    expect(activities.map{$0.name}).to(contain("Dish Hopper Activity", "Playstation Activity", "Sonos Activity", " TV Activity"))
-  }
-
-  func testLoadPresetsFromFile() {
-    expectFileLoad("Preset", type: PresetCategory.self)
-    let presetCategories = PresetCategory.objectsInContext(context) as! [PresetCategory]
-    expect(presetCategories.count).to(equal(7))
-  }
-
-  func testLoadRemotesFromFile() {
-    expectFileLoad("Remote_Demo", type: Remote.self)
-    let remotes = Remote.objectsInContext(context) as! [Remote]
-    expect(remotes.count).to(equal(2))
-  }
-
-  func testLoadActivityControllerFromFile() {
-    expectFileLoad("ActivityController", type: ActivityController.self)
-    let activityController = ActivityController.objectsInContext(context) as! [ActivityController]
-    expect(activityController.count).to(equal(1))
-  }
-
-  func testLoadAllFiles() {
-    expectFileLoad("Manufacturer_Test", type: Manufacturer.self)
-    expectFileLoad("ComponentDevice", type: ComponentDevice.self)
-    expectFileLoad("Glyphish", type: ImageCategory.self)
-    expectFileLoad("NetworkDevice", type: NetworkDevice.self)
-    expectFileLoad("Activity", type: Activity.self)
-    expectFileLoad("Preset", type: PresetCategory.self)
-    expectFileLoad("Remote_Demo", type: Remote.self)
-    expectFileLoad("ActivityController", type: ActivityController.self)
-//    DataManager.dumpJSONForModelType(Manufacturer.self, context: context)
-//    DataManager.dumpJSONForModelType(ComponentDevice.self, context: context)
-//    DataManager.dumpJSONForModelType(ImageCategory.self, context: context)
-//    DataManager.dumpJSONForModelType(NetworkDevice.self, context: context)
-//    DataManager.dumpJSONForModelType(Activity.self, context: context)
-//    DataManager.dumpJSONForModelType(PresetCategory.self, context: context)
-//    DataManager.dumpJSONForModelType(Remote.self, context: context)
-//    DataManager.dumpJSONForModelType(ActivityController.self, context: context)
-  }
 }

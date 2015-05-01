@@ -37,6 +37,15 @@ public final class ControlStateColorSet: ControlStateSet {
     }
   }
 
+  /**
+  colorForState:
+
+  :param: state UIControlState
+
+  :returns: UIColor?
+  */
+  public func colorForState(state: UIControlState) -> UIColor? { return self[state.rawValue] as? UIColor }
+
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
 

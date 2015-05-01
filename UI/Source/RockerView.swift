@@ -76,7 +76,10 @@ public final class RockerView: ButtonGroupView {
   */
   override func kvoRegistration() -> [Property:KVOReceptionist.Observation] {
     var registry = super.kvoRegistration()
-    registry["commandContainer"] = { ($0.observer as? RockerView)?.buildLabels() }
+    registry["commandContainer"] = {
+      RemoteElementView.dumpObservation($0)
+      ($0.observer as? RockerView)?.buildLabels()
+    }
     return registry
   }
 

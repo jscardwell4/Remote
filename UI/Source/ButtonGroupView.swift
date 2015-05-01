@@ -116,7 +116,10 @@ public class ButtonGroupView: RemoteElementView {
   */
   override func kvoRegistration() -> [Property:KVOReceptionist.Observation] {
     var registry = super.kvoRegistration()
-    registry["label"] = { ($0.observer as? ButtonGroupView)?.labelString = ($0.object as? ButtonGroup)?.label }
+    registry["label"] = {
+      RemoteElementView.dumpObservation($0)
+      ($0.observer as? ButtonGroupView)?.labelString = ($0.object as? ButtonGroup)?.label
+    }
     return registry
   }
 
@@ -132,9 +135,10 @@ public class ButtonGroupView: RemoteElementView {
     }
   }
 
-  override func initializeViewFromModel() {
-    super.initializeViewFromModel()
+  /** updateViewFromModel */
+  override func updateViewFromModel() {
     labelString = buttonGroup?.label
+    super.updateViewFromModel()
   }
 
   /** didMoveToSuperview */

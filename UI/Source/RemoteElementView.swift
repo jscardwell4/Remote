@@ -35,7 +35,7 @@ public class RemoteElementView: UIView {
   :returns: RemoteElementView
   */
   class func viewWithModel(model: RemoteElement) -> RemoteElementView? {
-    MSLogDebug(model.description)
+    MSLogVerbose(model.description)
     switch model.elementType {
       case .Remote: return RemoteView(model: model)
       case .ButtonGroup:
@@ -431,10 +431,10 @@ public class RemoteElementView: UIView {
 
   // MARK: - Display
 
-  override public var backgroundColor: UIColor? {
-    get { return super.backgroundColor ?? model?.backgroundColor }
-    set { super.backgroundColor = newValue }
-  }
+//  override public var backgroundColor: UIColor? {
+//    get { return super.backgroundColor ?? model?.backgroundColor }
+//    set { super.backgroundColor = newValue }
+//  }
 
  /** setNeedsDisplay */
  override public func setNeedsDisplay() {
@@ -451,15 +451,16 @@ public class RemoteElementView: UIView {
 
   /** initializeViewFromModel */
   func initializeViewFromModel() {
-    updateViewFromModel()
     apply(compressedMap(model.subelements) {RemoteElementView.viewWithModel($0)}) {self.addSubelementView($0)}
+    updateViewFromModel()
   }
 
   /** updateViewFromModel */
   func updateViewFromModel() {
-    backgroundColor = model.backgroundColor
-    backgroundImage = model.backgroundImage?.image
+    backgroundColor = model.background?.color
+    backgroundImage = model.background?.rawImage
     refreshBorderPath()
+    setNeedsDisplay()
   }
 
   /** updateSubelementOrderFromView */
@@ -468,37 +469,47 @@ public class RemoteElementView: UIView {
   typealias Property = String
   private var kvoReceptionists: [Property:KVOReceptionist] = [:]
 
+  static let dumpObservation: (KVOReceptionist) -> Void = { receptionist in
+    let element = (receptionist.observer as! RemoteElementView).model
+    let name = element.name
+    let type = element.elementType.stringValue
+    let property = receptionist.keyPath
+    let value: AnyObject? = receptionist.change?[NSKeyValueChangeNewKey]
+    let valueString: String
+    if let namedValue = value as? Named { valueString = namedValue.name }
+    else { valueString = toString(value) }
+    var string = "observed new value '\(valueString)' for property '\(property)' "
+    string += " for \(type) named '\(name)' with faulting state '\(element.faultingState)', fault = \(element.fault)'"
+    MSLogDebug(string)
+  }
+
   /**
   kvoRegistration
 
   :returns: [Property:KVOReceptionist.Observation]
   */
   func kvoRegistration() -> [Property:KVOReceptionist.Observation] {
-
     var registry: [Property:KVOReceptionist.Observation] = [:]
 
-    registry["backgroundColor"] = {
-      let faultingState = ($0.object as? RemoteElement)?.faultingState
-      ($0.observer as? RemoteElementView)?.backgroundColor = ($0.object as? RemoteElement)?.backgroundColor
+    registry["background"] = {
+      RemoteElementView.dumpObservation($0)
+      let element = $0.object as? RemoteElement
+      let view = $0.observer as? RemoteElementView
+      view?.backgroundColor = element?.background?.color
+      view?.backgroundImage = element?.background?.rawImage
     }
     registry["constraints"] = {
-      let faultingState = ($0.object as? RemoteElement)?.faultingState
+      RemoteElementView.dumpObservation($0)
       ($0.observer as? RemoteElementView)?.setNeedsUpdateConstraints()
     }
-
-//    registry["backgroundImageAlpha"] = updateDisplay
-    registry["backgroundImage"] = {
-      let faultingState = ($0.object as? RemoteElement)?.faultingState
-      ($0.observer as? RemoteElementView)?.backgroundImage = ($0.object as? RemoteElement)?.backgroundImage?.image
-    }
     registry["style"] = {
-      let faultingState = ($0.object as? RemoteElement)?.faultingState
+      RemoteElementView.dumpObservation($0)
       ($0.observer as? RemoteElementView)?.setNeedsDisplay()
     }
     registry["shape"] = {
-      let faultingState = ($0.object as? RemoteElement)?.faultingState
-      ($0.observer as? RemoteElementView)?.setNeedsDisplay()
+      RemoteElementView.dumpObservation($0)
       ($0.observer as? RemoteElementView)?.refreshBoundary()
+      ($0.observer as? RemoteElementView)?.setNeedsDisplay()
     }
     registry["currentMode"] = {($0.observer as? RemoteElementView)?.updateViewFromModel()}
 
@@ -509,7 +520,7 @@ public class RemoteElementView: UIView {
   /** registerForChangeNotification */
   func registerForChangeNotification() {
     precondition(model != nil, "why are we calling this without a valid model object?")
-    kvoReceptionists = map(kvoRegistration()) { KVOReceptionist(observer: self, keyPath: $0, object: self.model, handler: $1) }
+//    kvoReceptionists = map(kvoRegistration()) { KVOReceptionist(observer: self, keyPath: $0, object: self.model, handler: $1) }
   }
 
   // MARK: Cached model values
@@ -584,23 +595,13 @@ public class RemoteElementView: UIView {
   */
   func drawBackdropInContext(ctx: CGContextRef, inRect rect: CGRect) {
 
-    switch model.shape {
-      case .Undefined:
-        if let color = backgroundColor ?? model.backgroundColor {
-          color.setFill()
-          UIRectFill(rect)
-        }
-      default:
-        var attrs = Painter.Attributes(rect: rect)
-        attrs.color = backgroundColor ?? model.backgroundColor ?? Painter.defaultBackgroundColor
-        Painter.drawBackgroundWithShape(model.shape, attributes: attrs)
+    if model.style & .DrawBackground != nil && model.shape != .Undefined {
+      var attrs = Painter.Attributes(rect: rect)
+      attrs.color = backgroundColor ?? Painter.defaultBackgroundColor
+      Painter.drawBackgroundWithShape(model.shape, attributes: attrs)
     }
 
-    // Draw background image
-//    if let r = model as? Remote {
-//      MSLogDebug("remote description…\n\(r)")
-//    }
-    if let image = backgroundImage ?? model?.backgroundImage?.image {
+    if let image = backgroundImage {
       if rect.size <= image.size { image.drawInRect(rect) }
       else { image.drawAsPatternInRect(rect) }
     }
