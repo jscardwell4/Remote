@@ -397,6 +397,13 @@ public struct TitleAttributes {
   public init(storage: JSONValue.ObjectValue) { self.storage = storage.filter({(_, k, _) in PropertyKey(rawValue: k) != nil}) }
 
   /**
+  initWithStorage:
+
+  :param: storage JSONValue.ObjectValue?
+  */
+  public init?(storage: JSONValue.ObjectValue?) { if let s = storage { self.init(storage: s) } else { return nil } }
+
+  /**
   initWithAttributedString:
 
   :param: attributedString NSAttributedString

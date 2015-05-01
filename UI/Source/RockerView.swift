@@ -72,18 +72,11 @@ public final class RockerView: ButtonGroupView {
   /**
   kvoRegistration
 
-  :returns: [String:(MSKVOReceptionist) -> Void]
+  :returns: [Property:KVOReceptionist.Observation]
   */
-  override func kvoRegistration() -> [String:(MSKVOReceptionist!) -> Void] {
+  override func kvoRegistration() -> [Property:KVOReceptionist.Observation] {
     var registry = super.kvoRegistration()
-    registry["commandContainer"] = {
-      (receptionist: MSKVOReceptionist!) -> Void in
-        if let v = receptionist.observer as? RockerView {
-          v.labelIndex = 0
-          v.buttonGroup.commandSetIndex = 0
-          v.buildLabels()
-        }
-    }
+    registry["commandContainer"] = { ($0.observer as? RockerView)?.buildLabels() }
     return registry
   }
 
@@ -149,17 +142,16 @@ public final class RockerView: ButtonGroupView {
   to the `scrollingLabels` are removed first.
   */
   func buildLabels() {
+    labelIndex = 0
+    buttonGroup.commandSetIndex = 0
     apply(labelContainer.subviews as! [UIView]){$0.removeFromSuperview()}
-    if let collection = buttonGroup.commandContainer as? CommandSetCollection {
-      labelCount = Int(collection.count)
-      if labelCount > 0 {
-        for i in 0 ..< labelCount {
-          if let title = buttonGroup.labelForCommandSetAtIndex(i) {
-            let label = UILabel.newForAutolayout()
-            label.attributedText = title
-            label.backgroundColor = UIColor.clearColor()
-            labelContainer.addSubview(label)
-          }
+    if let collection = buttonGroup.commandSetCollection where collection.count > 0 {
+      for i in 0 ..< collection.count {
+        if let title = buttonGroup.labelForCommandSetAtIndex(i) {
+          let label = UILabel.newForAutolayout()
+          label.attributedText = title
+          label.backgroundColor = UIColor.clearColor()
+          labelContainer.addSubview(label)
         }
       }
     }

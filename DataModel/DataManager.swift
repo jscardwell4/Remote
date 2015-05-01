@@ -178,6 +178,15 @@ import MoonKit
                     default: break
                   }
                 }
+              case "NSSet":
+                if let valueType = attribute.userInfo?["NSSetValueType"] as? String,
+                  defaultValues = attribute.userInfo?["NSSetDefaultValues"] as? String
+                {
+                  switch valueType {
+                    case "String": attribute.defaultValue = Set(",".split(defaultValues))
+                    default:       attribute.defaultValue = NSSet()
+                  }
+                } else { attribute.defaultValue = NSSet() }
               default: break
             }
           }

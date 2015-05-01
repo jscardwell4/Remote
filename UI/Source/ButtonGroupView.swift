@@ -25,33 +25,9 @@ public class ButtonGroupView: RemoteElementView {
 
   var buttonGroup: ButtonGroup! { return model as! ButtonGroup }
 
-  /** init */
-//  override init() { super.init() }
+  // Cached model values
 
-  /**
-  initWithFrame:
-
-  :param: frame CGRect
-  */
-//  override init(frame: CGRect) { super.init(frame: frame) }
-
-  /**
-  Overridden properties prevent synthesized initializers
-
-  :param: model RemoteElement
-  */
-//  required public init(model: RemoteElement) {
-//    super.init(model: model)
-//  }
-
-  /**
-  Overridden properties prevent synthesized initializers
-
-  :param: aDecoder NSCoder
-  */
-//  required public init(coder aDecoder: NSCoder) {
-//      fatalError("init(coder:) has not been implemented")
-//  }
+  private(set) public var labelString: NSAttributedString? { didSet { label?.attributedText = labelString } }
 
   /** tuck */
   func tuck() {
@@ -138,15 +114,9 @@ public class ButtonGroupView: RemoteElementView {
 
   :returns: [String:(MSKVOReceptionist) -> Void]
   */
-  override func kvoRegistration() -> [String:(MSKVOReceptionist!) -> Void] {
+  override func kvoRegistration() -> [Property:KVOReceptionist.Observation] {
     var registry = super.kvoRegistration()
-    registry["label"] = {
-      (receptionist: MSKVOReceptionist!) -> Void in
-        if let v = receptionist.observer as? ButtonGroupView {
-          if let text = receptionist.change[NSKeyValueChangeNewKey] as? NSAttributedString { v.label.attributedText = text }
-          else { v.label.attributedText = nil }
-        }
-    }
+    registry["label"] = { ($0.observer as? ButtonGroupView)?.labelString = ($0.object as? ButtonGroup)?.label }
     return registry
   }
 
@@ -160,6 +130,11 @@ public class ButtonGroupView: RemoteElementView {
       setContentCompressionResistancePriority(1000.0, forAxis: .Horizontal)
       setContentCompressionResistancePriority(1000.0, forAxis: .Vertical)
     }
+  }
+
+  override func initializeViewFromModel() {
+    super.initializeViewFromModel()
+    labelString = buttonGroup?.label
   }
 
   /** didMoveToSuperview */

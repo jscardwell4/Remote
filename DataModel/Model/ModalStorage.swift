@@ -15,14 +15,19 @@ final class ModalStorage: ModelObject {
 
   typealias Mode = RemoteElement.Mode
 
-  @NSManaged private var imageViewSet: Set<ImageView>
-  @NSManaged private var jSONStorageSet: Set<JSONStorage>
-  @NSManaged private var commandContainerSet: Set<CommandContainer>
-  @NSManaged private var controlStateTitleSetSet: Set<ControlStateTitleSet>
-  @NSManaged private var controlStateImageSetSet: Set<ControlStateImageSet>
-  @NSManaged private var controlStateColorSetSet: Set<ControlStateColorSet>
-  @NSManaged private var commandSet: Set<Command>
-  private var storageType: StorageType {
+  // MARK: - Relationships
+
+  @NSManaged var imageViewSet:            Set<ImageView>
+  @NSManaged var jSONStorageSet:          Set<JSONStorage>
+  @NSManaged var commandContainerSet:     Set<CommandContainer>
+  @NSManaged var controlStateTitleSetSet: Set<ControlStateTitleSet>
+  @NSManaged var controlStateImageSetSet: Set<ControlStateImageSet>
+  @NSManaged var controlStateColorSetSet: Set<ControlStateColorSet>
+  @NSManaged var commandSet:              Set<Command>
+
+  // MARK: - Storage type
+
+  private(set) var storageType: StorageType {
     get {
       willAccessValueForKey("storageType")
       let storageType = primitiveValueForKey("storageType") as? String ?? ""
@@ -36,7 +41,6 @@ final class ModalStorage: ModelObject {
     }
   }
 
-
   enum StorageType: String, Printable {
     case None                    = ""
     case ImageViewSet            = "imageViewSet"
@@ -46,6 +50,22 @@ final class ModalStorage: ModelObject {
     case ControlStateImageSetSet = "controlStateImageSetSet"
     case ControlStateColorSetSet = "controlStateColorSetSet"
     case CommandSet              = "commandSet"
+
+    var property: String? { switch self { case .None: return nil; default: return rawValue } }
+
+    /** Class type associated with the `StorageType` */
+    var type: ModelObject.Type? {
+      switch self {
+        case .ImageViewSet:            return ImageView.self
+        case .JSONStorageSet:          return JSONStorage.self
+        case .CommandContainerSet:     return CommandContainer.self
+        case .ControlStateTitleSetSet: return ControlStateTitleSet.self
+        case .ControlStateImageSetSet: return ControlStateImageSet.self
+        case .ControlStateColorSetSet: return ControlStateColorSet.self
+        case .CommandSet:              return Command.self
+        case .None:                    return nil
+      }
+    }
 
     var description: String {
       switch self {
@@ -59,7 +79,89 @@ final class ModalStorage: ModelObject {
         case .CommandSet:              return "CommandSet"
       }
     }
+
+    /**
+    Initialize with a compatible storage type class
+
+    :param: type ModelObject.Type
+    */
+    init?(type: ModelObject.Type) {
+      switch type {
+        case let t where t === ImageView.self:            self = .ImageViewSet
+        case let t where t === JSONStorage.self:          self = .JSONStorageSet
+        case let t where t === CommandContainer.self:     self = .CommandContainerSet
+        case let t where t === ControlStateTitleSet.self: self = .ControlStateTitleSetSet
+        case let t where t === ControlStateImageSet.self: self = .ControlStateImageSetSet
+        case let t where t === ControlStateColorSet.self: self = .ControlStateColorSetSet
+        case let t where t === Command.self:              self = .CommandSet
+        default:                                          return nil
+      }
+    }
+
   }
+
+  /** Accessory for the relationship object being used for storage or nil if nothing is being stored */
+  private var setInUse: Set<ModelObject>? {
+    switch storageType {
+      case .None:                    return nil
+      case .ImageViewSet:            return imageViewSet
+      case .JSONStorageSet:          return jSONStorageSet
+      case .CommandContainerSet:     return commandContainerSet
+      case .ControlStateTitleSetSet: return controlStateTitleSetSet
+      case .ControlStateImageSetSet: return controlStateImageSetSet
+      case .ControlStateColorSetSet: return controlStateColorSetSet
+      case .CommandSet:              return commandSet
+    }
+  }
+
+  /**
+  Returns the value for the specified `mode` if it exists and is of type `T`
+
+  :param: mode Mode
+
+  :returns: T?
+  */
+  func valueForMode<T: ModelObject>(mode: Mode) -> T? {
+    if let uuidIndex = dictionary[mode],
+      values = setInUse,
+      v = findFirst(values, {$0.uuid == uuidIndex.rawValue})
+    {
+      return typeCast(v, T.self)
+    } else { return nil }
+  }
+
+  enum SetValueResult { case NoAction, ValueAdded, ValueRemoved }
+
+  /**
+  Sets the specified value for `mode` if its type and `storageType` match, if `storageType` is `.None` and value is 
+  of a compatible type than both the value and `storageType` are set
+
+  :param: value T?
+  :param: mode Mode
+
+  :returns: SetValueResult
+  */
+  func setValue<T: ModelObject>(value: T?, forMode mode: Mode) -> SetValueResult {
+    if value == nil, let existingValue: T = valueForMode(mode), property = storageType.property {
+      mutableSetValueForKey(property).removeObject(existingValue)
+      dictionary[mode] = nil
+      return .ValueRemoved
+    } else if storageType == .None, let v = value, storageType = StorageType(type: T.self), property = storageType.property {
+      self.storageType = storageType
+      mutableSetValueForKey(property).addObject(v)
+      dictionary[mode] = v.uuidIndex
+      return .ValueAdded
+    } else if let type = storageType.type, v = typeCast(value, type), property = storageType.property {
+      mutableSetValueForKey(property).addObject(v)
+      dictionary[mode] = v.uuidIndex
+      return .ValueAdded
+    } else {
+      return .NoAction
+    }
+  }
+
+
+  // MARK: - Lifecycle
 
   /**
   awakeFromSnapshotEvents:
@@ -77,6 +179,8 @@ final class ModalStorage: ModelObject {
     let mapped = map(dictionary) {$1.rawValue}
     setPrimitiveValue(mapped, forKey: "dictionary")
   }
+
+  // MARK: - Dictionary accessors
 
   /** Accessors for CoreData compatible dictionary representation */
   private var rawDictionary: [String:String] {
@@ -97,176 +201,65 @@ final class ModalStorage: ModelObject {
   private var convertedRawDictionary: [Mode:UUIDIndex] { return compressedMap(rawDictionary) {UUIDIndex(rawValue: $1)} }
 
   /** Used to map mode values to the uuid of an element in `elementSet` */
-  lazy var dictionary: [Mode:UUIDIndex] = { return self.convertedRawDictionary }()
+  lazy var dictionary: [Mode:UUIDIndex] = {
+    self.willAccessValueForKey("dictionary")
+    let d = self.convertedRawDictionary
+    self.didAccessValueForKey("dictionary")
+    return d
+    }()
 
-  private func validateStorageType(type: StorageType) -> Bool {
-    if storageType == type { return true }
-    else if storageType == .None { storageType = type; return true }
-    else { return false }
-  }
+    // MARK: - Subscriptting
 
   /** Accessors for an `ImageView` keyed by `Mode` value */
-  subscript(key: Mode) -> ImageView? {
-    @objc(imageViewForKeyedSubscript:)
-    get {
-      if !validateStorageType(.ImageViewSet) { return nil }
-      if let uuid = dictionary[key] { return findFirst(imageViewSet, {$0.uuid == uuid.rawValue}) }
-      else { return nil }
-    }
-    @objc(setImageView:forKeyedSubscript:)
-    set {
-      if !validateStorageType(.ImageViewSet) { return }
-      if let element = newValue, uuid = UUIDIndex(rawValue: element.uuid) {
-        dictionary[key] = uuid
-        mutableSetValueForKey("imageViewSet").addObject(element)
-      } else if newValue == nil, let existingElement: ImageView = self[key] {
-        mutableSetValueForKey("imageViewSet").removeObject(existingElement)
-        dictionary[key] = nil
-      }
-    }
+  subscript(mode: Mode) -> ImageView? {
+    @objc(imageViewForKeyedSubscript:) get { return storageType == .ImageViewSet ? valueForMode(mode) : nil }
+    @objc(setImageView:forKeyedSubscript:) set { setValue(newValue, forMode: mode) }
   }
 
   /** Accessors for an `JSONStorage` keyed by `Mode` value */
-  subscript(key: Mode) -> JSONStorage? {
-    @objc(jsonStorageForKeyedSubscript:)
-    get {
-      if !validateStorageType(.JSONStorageSet) { return nil }
-      if let uuid = dictionary[key] { return findFirst(jSONStorageSet, {$0.uuid == uuid.rawValue}) }
-      else { return nil }
-    }
-    @objc(setJSONStorage:forKeyedSubscript:)
-    set {
-      if !validateStorageType(.JSONStorageSet) { return }
-      if let element = newValue, uuid = UUIDIndex(rawValue: element.uuid) {
-        dictionary[key] = uuid
-        mutableSetValueForKey("jSONStorageSet").addObject(element)
-      } else if newValue == nil, let existingElement: JSONStorage = self[key] {
-        mutableSetValueForKey("jSONStorageSet").removeObject(existingElement)
-        dictionary[key] = nil
-      }
-    }
+  subscript(mode: Mode) -> JSONStorage? {
+    @objc(jsonStorageForKeyedSubscript:) get { return storageType == .JSONStorageSet ? valueForMode(mode) : nil }
+    @objc(setJSONStorage:forKeyedSubscript:) set { setValue(newValue, forMode: mode) }
   }
 
   /** Accessors for an `CommandContainer` keyed by `Mode` value */
-  subscript(key: Mode) -> CommandContainer? {
+  subscript(mode: Mode) -> CommandContainer? {
     @objc(commandContainerForKeyedSubscript:)
-    get {
-      if !validateStorageType(.CommandContainerSet) { return nil }
-      if let uuid = dictionary[key] { return findFirst(commandContainerSet, {$0.uuid == uuid.rawValue}) }
-      else { return nil }
-    }
-    @objc(setCommandContainer:forKeyedSubscript:)
-    set {
-      if !validateStorageType(.CommandContainerSet) { return }
-      if let element = newValue, uuid = UUIDIndex(rawValue: element.uuid) {
-        dictionary[key] = uuid
-        mutableSetValueForKey("commandContainerSet").addObject(element)
-      } else if newValue == nil, let existingElement: JSONStorage = self[key] {
-        mutableSetValueForKey("commandContainerSet").removeObject(existingElement)
-        dictionary[key] = nil
-      }
-    }
+    get { return storageType == .CommandContainerSet ? valueForMode(mode) : nil }
+    @objc(setCommandContainer:forKeyedSubscript:) set { setValue(newValue, forMode: mode) }
   }
 
   /** Accessors for an `ControlStateColorSet` keyed by `Mode` value */
-  subscript(key: Mode) -> ControlStateColorSet? {
+  subscript(mode: Mode) -> ControlStateColorSet? {
     @objc(controlStateColorSetForKeyedSubscript:)
-    get {
-      if !validateStorageType(.ControlStateColorSetSet) { return nil }
-      if let uuid = dictionary[key] { return findFirst(controlStateColorSetSet, {$0.uuid == uuid.rawValue}) }
-      else { return nil }
-    }
-    @objc(setControlStateColorSet:forKeyedSubscript:)
-    set {
-      if !validateStorageType(.ControlStateColorSetSet) { return }
-      if let element = newValue, uuid = UUIDIndex(rawValue: element.uuid) {
-        dictionary[key] = uuid
-        mutableSetValueForKey("controlStateColorSetSet").addObject(element)
-      } else if newValue == nil, let existingElement: JSONStorage = self[key] {
-        mutableSetValueForKey("controlStateColorSetSet").removeObject(existingElement)
-        dictionary[key] = nil
-      }
-    }
+    get { return storageType == .ControlStateColorSetSet ? valueForMode(mode) : nil }
+    @objc(setControlStateColorSet:forKeyedSubscript:) set { setValue(newValue, forMode: mode) }
   }
 
   /** Accessors for an `ControlStateImageSet` keyed by `Mode` value */
-  subscript(key: Mode) -> ControlStateImageSet? {
+  subscript(mode: Mode) -> ControlStateImageSet? {
     @objc(controlStateImageSetForKeyedSubscript:)
-    get {
-      if !validateStorageType(.ControlStateImageSetSet) { return nil }
-      if let uuid = dictionary[key] { return findFirst(controlStateImageSetSet, {$0.uuid == uuid.rawValue}) }
-      else { return nil }
-    }
-    @objc(setControlStateImageSet:forKeyedSubscript:)
-    set {
-      if !validateStorageType(.ControlStateImageSetSet) { return }
-      if let element = newValue, uuid = UUIDIndex(rawValue: element.uuid) {
-        dictionary[key] = uuid
-        mutableSetValueForKey("controlStateImageSetSet").addObject(element)
-      } else if newValue == nil, let existingElement: JSONStorage = self[key] {
-        mutableSetValueForKey("controlStateImageSetSet").removeObject(existingElement)
-        dictionary[key] = nil
-      }
-    }
+    get { return storageType == .ControlStateImageSetSet ? valueForMode(mode) : nil }
+    @objc(setControlStateImageSet:forKeyedSubscript:) set { setValue(newValue, forMode: mode) }
   }
 
   /** Accessors for an `ControlStateTitleSet` keyed by `Mode` value */
-  subscript(key: Mode) -> ControlStateTitleSet? {
+  subscript(mode: Mode) -> ControlStateTitleSet? {
     @objc(controlStateTitleSetForKeyedSubscript:)
-    get {
-      if !validateStorageType(.ControlStateTitleSetSet) { return nil }
-      if let uuid = dictionary[key] { return findFirst(controlStateTitleSetSet, {$0.uuid == uuid.rawValue}) }
-      else { return nil }
-    }
-    @objc(setControlStateTitleSet:forKeyedSubscript:)
-    set {
-      if !validateStorageType(.ControlStateTitleSetSet) { return }
-      if let element = newValue, uuid = UUIDIndex(rawValue: element.uuid) {
-        dictionary[key] = uuid
-        mutableSetValueForKey("controlStateTitleSetSet").addObject(element)
-      } else if newValue == nil, let existingElement: JSONStorage = self[key] {
-        mutableSetValueForKey("controlStateTitleSetSet").removeObject(existingElement)
-        dictionary[key] = nil
-      }
-    }
+    get { return storageType == .ControlStateTitleSetSet ? valueForMode(mode) : nil }
+    @objc(setControlStateTitleSet:forKeyedSubscript:) set { setValue(newValue, forMode: mode) }
   }
 
   /** Accessors for an `Command` keyed by `Mode` value */
-  subscript(key: Mode) -> Command? {
-    @objc(commandForKeyedSubscript:)
-    get {
-      if !validateStorageType(.CommandSet) { return nil }
-      if let uuid = dictionary[key] { return findFirst(commandSet, {$0.uuid == uuid.rawValue}) }
-      else { return nil }
-    }
-    @objc(setCommand:forKeyedSubscript:)
-    set {
-      if !validateStorageType(.CommandSet) { return }
-      if let element = newValue, uuid = UUIDIndex(rawValue: element.uuid) {
-        dictionary[key] = uuid
-        mutableSetValueForKey("commandSet").addObject(element)
-      } else if newValue == nil, let existingElement: JSONStorage = self[key] {
-        mutableSetValueForKey("commandSet").removeObject(existingElement)
-        dictionary[key] = nil
-      }
-    }
+  subscript(mode: Mode) -> Command? {
+    @objc(commandForKeyedSubscript:) get { return storageType == .CommandSet ? valueForMode(mode) : nil }
+    @objc(setCommand:forKeyedSubscript:) set { setValue(newValue, forMode: mode) }
   }
 
-  private var setInUse: Set<ModelObject>? {
-    switch storageType {
-      case .None:                    return nil
-      case .ImageViewSet:            return imageViewSet
-      case .JSONStorageSet:          return jSONStorageSet
-      case .CommandContainerSet:     return commandContainerSet
-      case .ControlStateTitleSetSet: return controlStateTitleSetSet
-      case .ControlStateImageSetSet: return controlStateImageSetSet
-      case .ControlStateColorSetSet: return controlStateColorSetSet
-      case .CommandSet:              return commandSet
-    }
-  }
+  // MARK: - Descriptions
 
   override var description: String {
-    var result = super.description
+     var result = super.description
     result += "\n\tstorageType = \(storageType)"
     result += "\n\tdictionary = {"
     let dictionaryEntries = keyValuePairs(dictionary)

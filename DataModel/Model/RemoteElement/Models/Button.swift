@@ -98,11 +98,18 @@ public final class Button: RemoteElement {
 
   }
 
+  override public func updateForMode(mode: Mode) {
+    super.updateForMode(mode)
+    title = (titlesForMode(currentMode) ?? titlesForMode(RemoteElement.DefaultMode))?.attributedStringForState(state)
+    icon = (iconsForMode(currentMode) ?? iconsForMode(RemoteElement.DefaultMode))?[state.rawValue] as? ImageView
+    image = (imagesForMode(currentMode) ?? imagesForMode(RemoteElement.DefaultMode))?[state.rawValue] as? ImageView
+    command = commands[currentMode] ?? commands[RemoteElement.DefaultMode]
+    longPressCommand = longPressCommands[currentMode] ?? longPressCommands[RemoteElement.DefaultMode]
+  }
+
   // MARK: - Titles
 
-  public var title: NSAttributedString? {
-    return (titlesForMode(currentMode) ?? titlesForMode(RemoteElement.DefaultMode))?.attributedStringForState(state)
-  }
+  @NSManaged public private(set) var title: NSAttributedString?
 
   private(set) var titles: ModalStorage {
     get {
@@ -129,7 +136,9 @@ public final class Button: RemoteElement {
   :param: titleSet ControlStateTitleSet?
   :param: mode String
   */
-  public func setTitles(titleSet: ControlStateTitleSet?, forMode mode: Mode) { titles[mode] = titleSet }
+  public func setTitles(titleSet: ControlStateTitleSet?, forMode mode: Mode) {
+    setValue(titleSet, forMode: mode, inStorage: titles)
+  }
 
   /**
   titlesForMode:
@@ -143,9 +152,7 @@ public final class Button: RemoteElement {
 
   // MARK: - Icons
 
-  public var icon: ImageView? {
-    return (iconsForMode(currentMode) ?? iconsForMode(RemoteElement.DefaultMode))?[state.rawValue] as? ImageView
-  }
+  @NSManaged public private(set) var icon: ImageView?
 
   private(set) var icons: ModalStorage {
     get {
@@ -172,7 +179,9 @@ public final class Button: RemoteElement {
   :param: imageSet ControlStateImageSet?
   :param: mode String
   */
-  public func setIcons(imageSet: ControlStateImageSet?, forMode mode: Mode) { icons[mode] = imageSet }
+  public func setIcons(imageSet: ControlStateImageSet?, forMode mode: Mode) {
+    setValue(imageSet, forMode: mode, inStorage: icons)
+  }
 
 
   /**
@@ -186,9 +195,7 @@ public final class Button: RemoteElement {
 
   // MARK: - Images
 
-  public var image: ImageView? {
-    return (imagesForMode(currentMode) ?? imagesForMode(RemoteElement.DefaultMode))?[state.rawValue] as? ImageView
-  }
+  @NSManaged public private(set) var image: ImageView?
 
   private(set) var images: ModalStorage {
     get {
@@ -215,7 +222,9 @@ public final class Button: RemoteElement {
   :param: imageSet ControlStateImageSet?
   :param: mode String
   */
-  public func setImages(imageSet: ControlStateImageSet?, forMode mode: Mode) { images[mode] = imageSet }
+  public func setImages(imageSet: ControlStateImageSet?, forMode mode: Mode) {
+    setValue(imageSet, forMode: mode, inStorage: images)
+  }
 
   /**
   imagesForMode:
@@ -228,7 +237,7 @@ public final class Button: RemoteElement {
 
   // MARK: - Commands
 
-  public var command: Command? { return commands[currentMode] ?? commands[RemoteElement.DefaultMode] }
+  @NSManaged public private(set) var command: Command?
 
   private(set) var commands: ModalStorage {
     get {
@@ -258,8 +267,16 @@ public final class Button: RemoteElement {
   */
   public func commandForMode(mode: Mode) -> Command? { return commands[mode] }
 
+  /**
+  setCommand:forMode:
 
-  public var longPressCommand: Command? { return longPressCommands[currentMode] ?? longPressCommands[RemoteElement.DefaultMode] }
+  :param: command Command?
+  :param: mode Mode
+  */
+  public func setCommand(command: Command?, forMode mode: Mode) { setValue(command, forMode: mode, inStorage: commands) }
+  
+
+  @NSManaged public private(set) var longPressCommand: Command?
 
   private(set) var longPressCommands: ModalStorage {
     get {
@@ -291,6 +308,16 @@ public final class Button: RemoteElement {
   public func longPressCommandForMode(mode: Mode) -> Command? { return longPressCommands[mode] }
 
   /**
+  setLongPressCommand:forMode:
+
+  :param: command Command?
+  :param: mode Mode
+  */
+  public func setLongPressCommand(command: Command?, forMode mode: Mode) {
+    setValue(command, forMode: mode, inStorage: longPressCommands)
+  }
+  
+  /**
    executeCommandWithOption:
 
    :param: options CommandOptions
@@ -307,29 +334,8 @@ public final class Button: RemoteElement {
      if c != nil { c!.execute(completion: completion) } else { completion?(true, nil) }
    }
 
-  /**
-  setCommand:forMode:
-
-  :param: command Command?
-  :param: mode Mode
-  */
-  public func setCommand(command: Command?, forMode mode: Mode) { commands[mode] = command }
-
-  /**
-  setLongPressCommand:forMode:
-
-  :param: command Command?
-  :param: mode Mode
-  */
-  public func setLongPressCommand(command: Command?, forMode mode: Mode) { longPressCommands[mode] = command }
-
 
   // MARK: - Background colors
-
-  public override var backgroundColor: UIColor? {
-    return (backgroundColorsForMode(currentMode)
-            ?? backgroundColorsForMode(RemoteElement.DefaultMode))?[state.rawValue] as? UIColor
-  }
 
   private(set) var backgroundColors: ModalStorage {
     get {
@@ -356,7 +362,9 @@ public final class Button: RemoteElement {
   :param: colorSet ControlStateColorSet?
   :param: mode String
   */
-  public func setBackgroundColors(colorSet: ControlStateColorSet?, forMode mode: Mode) { backgroundColors[mode] = colorSet }
+  public func setBackgroundColors(colorSet: ControlStateColorSet?, forMode mode: Mode) {
+    setValue(colorSet, forMode: mode, inStorage: backgroundColors)
+  }
 
   /**
   backgroundColorsForMode:
@@ -366,6 +374,25 @@ public final class Button: RemoteElement {
   :returns: ControlStateColorSet?
   */
   public func backgroundColorsForMode(mode: Mode) -> ControlStateColorSet? { return backgroundColors[mode] }
+
+  /**
+  backgroundColorForMode:
+
+  :param: mode Mode
+
+  :returns: UIColor?
+  */
+  override public func backgroundColorForMode(mode: Mode) -> UIColor? {
+    return backgroundColorsForMode(currentMode)?[state.rawValue] as? UIColor
+  }
+
+  /**
+  setBackgroundColor:forMode:
+
+  :param: color UIColor?
+  :param: mode Mode
+  */
+  override public func setBackgroundColor(color: UIColor?, forMode mode: Mode) {}
 
   // MARK: - State
 

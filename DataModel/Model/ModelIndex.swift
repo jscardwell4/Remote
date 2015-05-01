@@ -9,7 +9,7 @@
 import Foundation
 import MoonKit
 
-@objc public class ModelIndex: RawRepresentable, JSONValueConvertible, JSONValueInitializable, StringValueConvertible {
+@objc public class ModelIndex: RawRepresentable, JSONValueConvertible, JSONValueInitializable, StringValueConvertible, Printable {
   public let pathIndex: PathIndex?
   public let uuidIndex: UUIDIndex?
   public init(_ index: PathIndex) { pathIndex = index; uuidIndex = nil }
@@ -30,6 +30,7 @@ import MoonKit
       return nil
     }
   }
+  public var description: String { return rawValue }
 }
 
 /**

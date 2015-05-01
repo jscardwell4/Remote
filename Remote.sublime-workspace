@@ -968,6 +968,9 @@
 	"expanded_folders":
 	[
 		"/Users/Moondeer/Projects/MSRemote/Remote",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects",
 		"/Users/Moondeer/Projects/MSRemote/Remote/UI",
 		"/Users/Moondeer/Projects/MSRemote/Remote/UI/Source"
 	],
@@ -2006,7 +2009,7 @@
 	"show_minimap": false,
 	"show_open_files": true,
 	"show_tabs": true,
-	"side_bar_visible": false,
+	"side_bar_visible": true,
 	"side_bar_width": 251.0,
 	"status_bar_visible": true,
 	"template_settings":

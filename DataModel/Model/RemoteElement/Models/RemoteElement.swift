@@ -40,10 +40,7 @@ public class RemoteElement: IndexedModelObject {
 
   :param: preset Preset
   */
-  public init(preset: Preset) {
-    super.init(context: preset.managedObjectContext)
-    updateWithPreset(preset)
-  }
+  public init(preset: Preset) { super.init(context: preset.managedObjectContext); updateWithPreset(preset) }
 
   /**
   initWithEntity:insertIntoManagedObjectContext:
@@ -61,9 +58,7 @@ public class RemoteElement: IndexedModelObject {
   :param: data ObjectJSONValue
   :param: context NSManagedObjectContext
   */
-  required public init?(data: ObjectJSONValue, context: NSManagedObjectContext) {
-    super.init(data: data, context: context)
-  }
+  required public init?(data: ObjectJSONValue, context: NSManagedObjectContext) { super.init(data: data, context: context) }
 
   // MARK: - Identification
 
@@ -92,9 +87,7 @@ public class RemoteElement: IndexedModelObject {
 
   /** autoGenerateName */
   override func autoGenerateName() -> String {
-    let roleName = (role != RemoteElement.Role.Undefined
-                   ? String(map(role.jsonValue.value as! String){(c:Character) -> Character in c == "-" ? " " : c}).capitalizedString + " "
-                   : "")
+    let roleName = (role != .Undefined ? String(map(role.stringValue){$0 == "-" ? " " : $0}).capitalizedString + " " : "")
     let baseName = entity.managedObjectClassName
     let generatedName = roleName + baseName
     return generatedName
@@ -130,7 +123,7 @@ public class RemoteElement: IndexedModelObject {
       if storage == nil {
         storage = ModalStorage(context: managedObjectContext)
         setPrimitiveValue(storage, forKey: "backgrounds")
-      }
+      } else { storage.fireFault() }
       return storage
     }
     set {
@@ -140,16 +133,11 @@ public class RemoteElement: IndexedModelObject {
     }
   }
 
-  public var backgroundImageAlpha: Float? {
-    return backgroundImageAlphaForMode(currentMode) ?? backgroundImageAlphaForMode(RemoteElement.DefaultMode)
-  }
+  @NSManaged private(set) public var backgroundColor: UIColor?
+  @NSManaged private(set) public var backgroundImageView: ImageView?
 
-  public var backgroundColor: UIColor? {
-    return backgroundColorForMode(currentMode) ?? backgroundColorForMode(RemoteElement.DefaultMode)
-  }
-  public var backgroundImage: Image? {
-    return backgroundImageForMode(currentMode) ?? backgroundImageForMode(RemoteElement.DefaultMode)
-  }
+  private(set) public dynamic var backgroundImage: Image?
+
 
   // MARK: - Parent and subelements
 
@@ -200,48 +188,52 @@ public class RemoteElement: IndexedModelObject {
 
   public static let DefaultMode: Mode = "default"
 
-  public var modes: Set<Mode> { return Set(configurations.keys) ∪ [RemoteElement.DefaultMode] }
+  @NSManaged public private(set) var modes: Set<Mode>
 
-  /**
-  addMode:
-
-  :param: mode String
-  */
-  public func addMode(mode: Mode) {
-    if !hasMode(mode) { var configs = configurations; configs[mode] = [:]; configurations = configs }
+  public dynamic var currentMode: Mode {
+    get {
+      willAccessValueForKey("currentMode")
+      let currentMode = primitiveValueForKey("currentMode") as! Mode
+      didAccessValueForKey("currentMode")
+      return currentMode
+    }
+    set {
+      willChangeValueForKey("currentMode")
+      setPrimitiveValue(newValue, forKey: "currentMode")
+      didChangeValueForKey("currentMode")
+      updateForMode(newValue)
+      apply(subelements){[mode = newValue] in $0.currentMode = mode}
+    }
   }
 
-  /**
-  hasMode:
 
-  :param: mode String
+  /**
+  Method for determining whether any of the element's modal containers have a value for the specified `Mode`
+
+  :param: mode Mode
 
   :returns: Bool
   */
-  public func hasMode(mode: Mode) -> Bool { return Set(configurations.keys) ∋ mode }
+  func isEmptyMode(mode: Mode) -> Bool { return findFirst(modalStorageContainers, {$0.dictionary[mode] != nil}) == nil }
 
-  public var currentMode: Mode = RemoteElement.DefaultMode {
-    didSet {
-      if !hasMode(currentMode) { addMode(currentMode) }
-      updateForMode(currentMode)
-      apply(subelements){[mode = currentMode] in $0.currentMode = mode}
-    }
-  }
+  /** All modal containers, intended for subclass overrides to provide the necessary collections for `Mode` operations */
+  var modalStorageContainers: Set<ModalStorage> { return Set([backgrounds]) }
 
-  public typealias Configuration = [String:AnyObject]
+  /**
+  setValue:forMode:inStorage:
 
-  public var configurations: [Mode:Configuration] {
-    get {
-      willAccessValueForKey("configurations")
-      let configurations = primitiveValueForKey("configurations") as? [Mode:Configuration]
-      didAccessValueForKey("configurations")
-      return configurations ?? [:]
+  :param: value T?
+  :param: mode Mode
+  :param: storage ModalStorage
+  */
+  func setValue<T:ModelObject>(value: T?, forMode mode: Mode, inStorage storage: ModalStorage) {
+    let action = storage.setValue(value, forMode: mode)
+    switch action {
+      case .ValueAdded:                           modes ∪= [mode]
+      case .ValueRemoved where isEmptyMode(mode): modes ∖= [mode]
+      default:                                    break
     }
-    set {
-      willChangeValueForKey("configurations")
-      setPrimitiveValue(newValue, forKey: "configurations")
-      didChangeValueForKey("configurations")
-    }
+
   }
 
   /**
@@ -249,58 +241,10 @@ public class RemoteElement: IndexedModelObject {
 
   :param: mode String
   */
-  public func updateForMode(mode: Mode) {}
-
-  /**
-  faultedObjectForKey:mode:
-
-  :param: key String
-  :param: mode String
-
-  :returns: NSManagedObject?
-  */
-  public func faultedObjectForKey(key: String, forMode mode: Mode) -> NSManagedObject? {
-    var object: NSManagedObject?
-    if let uri = objectForKey(key, forMode: mode) as? NSURL {
-      if let obj = managedObjectContext?.objectForURI(uri) as? NSManagedObject {
-        object = obj.faultedObject()
-      }
-    }
-    return object
-  }
-
-  /**
-  objectForKey:forMode:
-
-  :param: key String
-  :param: mode String
-
-  :returns: NSObject?
-  */
-  public func objectForKey(key: String, forMode mode: Mode) -> NSObject? {
-    return self["\(mode).\(key)"] as? NSObject
-  }
-
-  /**
-  setURIForObject:key:mode:
-
-  :param: object NSManagedObject?
-  :param: key String
-  :param: mode String
-  */
-  public func setURIForObject(object: NSManagedObject?, forKey key: String, forMode mode: Mode) {
-    setObject(object?.permanentURI(), forKey: key, forMode: mode)
-  }
-
-  /**
-  setObject:forKey:forMode:
-
-  :param: object NSObject?
-  :param: key String
-  :param: mode String
-  */
-  public func setObject(object: NSObject?, forKey key: String, forMode mode: Mode) {
-    self["\(mode).\(key)"] = object
+  public func updateForMode(mode: Mode) {
+    backgroundColor = backgroundColorForMode(mode) ?? backgroundColorForMode(RemoteElement.DefaultMode)
+    backgroundImageView = backgroundImageViewForMode(mode) ?? backgroundImageViewForMode(RemoteElement.DefaultMode)
+    backgroundImage = backgroundImageView?.image
   }
 
   /**
@@ -344,7 +288,26 @@ public class RemoteElement: IndexedModelObject {
 
   :returns: ImageView?
   */
-  public func backgroundImageForMode(mode: Mode) -> Image? { return backgrounds[mode]?.image }
+  public func backgroundImageViewForMode(mode: Mode) -> ImageView? { return backgrounds[mode] }
+
+  /**
+  setBackgroundImageView:forMode:
+
+  :param: imageView ImageView?
+  :param: mode Mode
+  */
+  public func setBackgroundImageView(imageView: ImageView?, forMode mode: Mode) {
+    setValue(imageView, forMode: mode, inStorage: backgrounds)
+  }
+
+  /**
+  backgroundImageForMode:
+
+  :param: mode Mode
+
+  :returns: Image?
+  */
+  public func backgroundImageForMode(mode: Mode) -> Image? { return backgroundImageViewForMode(mode)?.image }
 
   /**
   setBackgroundImage:forMode:
@@ -368,9 +331,10 @@ public class RemoteElement: IndexedModelObject {
       imageView = i
     } else if mode != RemoteElement.DefaultMode, let i: ImageView = backgrounds[RemoteElement.DefaultMode] {
       imageView = i.copy() as! ImageView
+      setValue(imageView, forMode: mode, inStorage: backgrounds)
     } else {
       imageView = ImageView(context: managedObjectContext)
-      backgrounds[mode] = imageView
+      setValue(imageView, forMode: mode, inStorage: backgrounds)
     }
     return imageView
   }
@@ -517,7 +481,7 @@ public class RemoteElement: IndexedModelObject {
   public var shape: Shape {
     get {
       willAccessValueForKey("shape")
-      let shape = (primitiveValueForKey("shape")  as! NSNumber).shortValue
+      let shape = (primitiveValueForKey("shape")  as? NSNumber)?.shortValue ?? 0
       didAccessValueForKey("shape")
       return Shape(rawValue: shape)
     }
@@ -569,15 +533,15 @@ public class RemoteElement: IndexedModelObject {
   }
 
   /** prepareForDeletion */
-  override public func prepareForDeletion() {
+//  override public func prepareForDeletion() {
     //TODO: Make sure this works as expected
-    if let moc = managedObjectContext {
-      let uris: [NSURL] = flattened(configurations.values)
-      let objects = compressedMap(uris, {moc.objectForURI($0) as? NSManagedObject})
-      moc.deleteObjects(Set(objects))
-      moc.processPendingChanges()
-    }
-  }
+//    if let moc = managedObjectContext {
+//      let uris: [NSURL] = flattened(configurations.values)
+//      let objects = compressedMap(uris, {moc.objectForURI($0) as? NSManagedObject})
+//      moc.deleteObjects(Set(objects))
+//      moc.processPendingChanges()
+//    }
+//  }
 
   // MARK: - Updating the remote element
 
@@ -667,7 +631,7 @@ public class RemoteElement: IndexedModelObject {
     })
 
     let bgImages = OrderedDictionary(compressedMap(modes) { mode -> (Mode, JSONValue)? in
-      if let image = self.backgroundImageForMode(mode)?.jsonValue { return (mode, image) } else { return nil }
+      if let image = self.backgroundImageViewForMode(mode)?.jsonValue { return (mode, image) } else { return nil }
     })
 
     let bgImageAlphas = OrderedDictionary(compressedMap(modes) { mode -> (Mode, JSONValue)? in
@@ -743,31 +707,31 @@ public class RemoteElement: IndexedModelObject {
 
   :returns: RemoteElement?
   */
-  public subscript(key: String) -> AnyObject? {
-    get {
-      let keypath = split(key){$0 == "."}
-      if keypath.count == 2 {
-        let mode = keypath.first!
-        let property = keypath.last!
-        return hasMode(mode) ? configurations[mode]?[property] : configurations[RemoteElement.DefaultMode]?[property]
-      } else {
-        return subelements.filter{$0.isIdentifiedByString(key)}.first
-      }
-    }
-    set {
-      let keypath = split(key){$0 == "."}
-      if keypath.count == 2 {
-        let mode = keypath.first!
-        let property = keypath.last!
-
-        var configs = configurations
-        var values: [String:AnyObject] = configs[mode] ?? [:]
-        values[property] = newValue
-        configs[mode] = values
-        configurations = configs
-      }
-    }
-  }
+//  public subscript(key: String) -> AnyObject? {
+//    get {
+//      let keypath = split(key){$0 == "."}
+//      if keypath.count == 2 {
+//        let mode = keypath.first!
+//        let property = keypath.last!
+//        return hasMode(mode) ? configurations[mode]?[property] : configurations[RemoteElement.DefaultMode]?[property]
+//      } else {
+//        return subelements.filter{$0.isIdentifiedByString(key)}.first
+//      }
+//    }
+//    set {
+//      let keypath = split(key){$0 == "."}
+//      if keypath.count == 2 {
+//        let mode = keypath.first!
+//        let property = keypath.last!
+//
+//        var configs = configurations
+//        var values: [String:AnyObject] = configs[mode] ?? [:]
+//        values[property] = newValue
+//        configs[mode] = values
+//        configurations = configs
+//      }
+//    }
+//  }
 
   // MARK: - Printable
 
@@ -783,7 +747,7 @@ public class RemoteElement: IndexedModelObject {
     result += "\n\t"
     result += "\n\t".join(reduce(modes,
                                  [String](),
-                                 {$0 + ["\($1).backgroundImage = \(toString(self.backgroundImageForMode($1)?.index.rawValue))"]}))
+                                 {$0 + ["\($1).backgroundImage = \(toString(self.backgroundImageViewForMode($1)?.index.rawValue))"]}))
     result += "\n\t"
     result += "\n\t".join(reduce(modes,
                                  [String](),

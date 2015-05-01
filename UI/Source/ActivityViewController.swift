@@ -85,7 +85,7 @@ public final class ActivityViewController: UIViewController {
     view.addGestureRecognizer(UIPinchGestureRecognizer(target: self, action: "handlePinch:"))
 
     let topToolbarView = ButtonGroupView(model: activityController.topToolbar)
-    MSLogDebug(topToolbarView.model.description)
+    MSLogVerbose(topToolbarView.model.description)
     view.addSubview(topToolbarView)
     self.topToolbarView = topToolbarView
 

@@ -72,7 +72,7 @@
 		C2345AD01AE3005A000AA262 /* ImageCategory.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AB41AE3005A000AA262 /* ImageCategory.json */; };
 		C2345AD11AE3005A000AA262 /* Manufacturer.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AB51AE3005A000AA262 /* Manufacturer.json */; };
 		C2345AD21AE3005A000AA262 /* NetworkDevice.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AB61AE3005A000AA262 /* NetworkDevice.json */; };
-		C2345AD31AE3005A000AA262 /* Preset.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AB71AE3005A000AA262 /* Preset.json */; };
+		C2345AD31AE3005A000AA262 /* PresetCategory.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AB71AE3005A000AA262 /* PresetCategory.json */; };
 		C2345AD41AE3005A000AA262 /* Preset_Button_Rectangular.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AB81AE3005A000AA262 /* Preset_Button_Rectangular.json */; };
 		C2345AD51AE3005A000AA262 /* Preset_Button_Round.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345AB91AE3005A000AA262 /* Preset_Button_Round.json */; };
 		C2345AD61AE3005A000AA262 /* Preset_Button_Roundish.json in Resources */ = {isa = PBXBuildFile; fileRef = C2345ABA1AE3005A000AA262 /* Preset_Button_Roundish.json */; };
@@ -1051,7 +1051,7 @@
 		C2345AB41AE3005A000AA262 /* ImageCategory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ImageCategory.json; sourceTree = "<group>"; };
 		C2345AB51AE3005A000AA262 /* Manufacturer.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Manufacturer.json; sourceTree = "<group>"; };
 		C2345AB61AE3005A000AA262 /* NetworkDevice.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = NetworkDevice.json; sourceTree = "<group>"; };
-		C2345AB71AE3005A000AA262 /* Preset.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset.json; sourceTree = "<group>"; };
+		C2345AB71AE3005A000AA262 /* PresetCategory.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PresetCategory.json; sourceTree = "<group>"; };
 		C2345AB81AE3005A000AA262 /* Preset_Button_Rectangular.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_Button_Rectangular.json; sourceTree = "<group>"; };
 		C2345AB91AE3005A000AA262 /* Preset_Button_Round.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_Button_Round.json; sourceTree = "<group>"; };
 		C2345ABA1AE3005A000AA262 /* Preset_Button_Roundish.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_Button_Roundish.json; sourceTree = "<group>"; };
@@ -2005,7 +2005,7 @@
 				C2345AB41AE3005A000AA262 /* ImageCategory.json */,
 				C2345AB51AE3005A000AA262 /* Manufacturer.json */,
 				C2345AB61AE3005A000AA262 /* NetworkDevice.json */,
-				C2345AB71AE3005A000AA262 /* Preset.json */,
+				C2345AB71AE3005A000AA262 /* PresetCategory.json */,
 				C2345AB81AE3005A000AA262 /* Preset_Button_Rectangular.json */,
 				C2345AB91AE3005A000AA262 /* Preset_Button_Round.json */,
 				C2345ABA1AE3005A000AA262 /* Preset_Button_Roundish.json */,
@@ -4110,7 +4110,7 @@
 				C22115B81AC59CD30071F2D0 /* Type Dynamic - Elysio Bold Italic.otf in Resources */,
 				C2345AD21AE3005A000AA262 /* NetworkDevice.json in Resources */,
 				C22115C21AC59CD30071F2D0 /* Type Dynamic - Elysio Thin.otf in Resources */,
-				C2345AD31AE3005A000AA262 /* Preset.json in Resources */,
+				C2345AD31AE3005A000AA262 /* PresetCategory.json in Resources */,
 				C2345ADA1AE3005A000AA262 /* Preset_ButtonGroup_ModeSelectionPanel.json in Resources */,
 				C2345AD51AE3005A000AA262 /* Preset_Button_Round.json in Resources */,
 				C2345ADB1AE3005A000AA262 /* Preset_ButtonGroup_Numberpad.json in Resources */,
@@ -5043,7 +5043,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = NO;
 			};
 			name = Debug;
 		};
@@ -5084,7 +5084,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = NO;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Info;
@@ -5126,7 +5126,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = NO;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Verbose;
@@ -5168,7 +5168,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = NO;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -5219,7 +5219,6 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -5270,7 +5269,6 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
@@ -5321,7 +5319,6 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
@@ -5372,7 +5369,6 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;

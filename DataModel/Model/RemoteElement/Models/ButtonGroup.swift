@@ -89,7 +89,13 @@ public final class ButtonGroup: RemoteElement {
   */
   override public func updateForMode(mode: String) {
     super.updateForMode(mode)
+    label = (labelAttributesForMode(currentMode) ?? labelAttributesForMode(RemoteElement.DefaultMode))?.string
+    commandContainer = commandContainers[currentMode] ?? commandContainers[RemoteElement.DefaultMode]
     updateButtons()
+  }
+
+  override var modalStorageContainers: Set<ModalStorage> {
+    return super.modalStorageContainers ∪ Set([labelAttributes, commandContainers])
   }
 
   /** updateButtons */
@@ -105,8 +111,18 @@ public final class ButtonGroup: RemoteElement {
 
   // MARK: Labels
 
-  var label: NSAttributedString? {
-    return (labelAttributesForMode(currentMode) ?? labelAttributesForMode(RemoteElement.DefaultMode))?.string
+  public private(set) var label: NSAttributedString? {
+    get {
+      willAccessValueForKey("label")
+      let label = primitiveValueForKey("label") as? NSAttributedString
+      didAccessValueForKey("label")
+      return label
+    }
+    set {
+      willChangeValueForKey("label")
+      setPrimitiveValue(newValue, forKey: "label")
+      didChangeValueForKey("label")
+    }
   }
 
   private(set) var labelAttributes: ModalStorage {
@@ -131,16 +147,6 @@ public final class ButtonGroup: RemoteElement {
   @NSManaged public var labelConstraints: String?
 
   /**
-  setLabel:forMode:
-
-  :param: label NSAttributedString?
-  :param: mode String
-  */
-  public func setLabel(label: NSAttributedString?, forMode mode: Mode) {
-    setObject(label, forKey: "label", forMode: mode)
-  }
-
-  /**
   labelAttributesForMode:
 
   :param: mode Mode
@@ -148,8 +154,7 @@ public final class ButtonGroup: RemoteElement {
   :returns: TitleAttributes?
   */
   public func labelAttributesForMode(mode: Mode) -> TitleAttributes? {
-    if let storage: JSONStorage = labelAttributes[mode] { return TitleAttributes(storage: storage.dictionary) }
-    else { return nil }
+    return TitleAttributes(storage: labelAttributes[mode]?.dictionary)
   }
 
   /**
@@ -158,14 +163,18 @@ public final class ButtonGroup: RemoteElement {
   :param: attributes TitleAttributes
   :param: mode Mode
   */
-  public func setLabelAttributes(attributes: TitleAttributes, forMode mode: Mode) {
-    let modeStorage: JSONStorage
-    if let storage: JSONStorage = labelAttributes[mode] { modeStorage = storage }
-    else {
-      modeStorage = JSONStorage(context: managedObjectContext)
-      labelAttributes[mode] = modeStorage
+  public func setLabelAttributes(attributes: TitleAttributes?, forMode mode: Mode) {
+    if attributes == nil {
+      setValue(nil, forMode: mode, inStorage: labelAttributes)
+    } else {
+      let modeStorage: JSONStorage
+      if let storage: JSONStorage = labelAttributes[mode] { modeStorage = storage }
+      else  {
+        modeStorage = JSONStorage(context: managedObjectContext)
+        setValue(modeStorage, forMode: mode, inStorage: labelAttributes)
+      }
+      modeStorage.dictionary = attributes!.storage
     }
-    modeStorage.dictionary = attributes.storage
   }
 
   /**
@@ -176,22 +185,17 @@ public final class ButtonGroup: RemoteElement {
   :returns: NSAttributedString?
   */
   public func labelForCommandSetAtIndex(idx: Int) -> NSAttributedString? {
-    let commandSetLabel: NSAttributedString?
-    if let collection = commandContainer as? CommandSetCollection where contains(0 ..< Int(collection.count), idx),
-      let text = collection.labelAtIndex(idx),
-      var titleAttributes = labelAttributesForMode(currentMode)
+    if let collection = commandSetCollection where contains(0 ..< Int(collection.count), idx),
+     let text = collection.labelAtIndex(idx), var titleAttributes = labelAttributesForMode(currentMode)
     {
       titleAttributes.text = text
-      commandSetLabel = titleAttributes.string
-    } else { commandSetLabel = nil }
-    return commandSetLabel
+      return titleAttributes.string
+    } else { return nil }
   }
 
   // MARK: CommandSet(Collection)s
 
-  public var commandContainer: CommandContainer? {
-    return commandContainers[currentMode] ?? commandContainers[RemoteElement.DefaultMode]
-  }
+  @NSManaged public private(set) var commandContainer: CommandContainer?
   public var commandSet: CommandSet? { return commandContainer as? CommandSet }
   public var commandSetCollection: CommandSetCollection? { return commandContainer as? CommandSetCollection }
 
@@ -220,7 +224,9 @@ public final class ButtonGroup: RemoteElement {
   :param: container CommandContainer?
   :param: mode String
   */
-  public func setCommandContainer(container: CommandContainer?, forMode mode: Mode) { commandContainers[mode] = container }
+  public func setCommandContainer(container: CommandContainer?, forMode mode: Mode) {
+    setValue(container, forMode: mode, inStorage: commandContainers)
+  }
 
   /**
   commandContainerForMode:

@@ -85,16 +85,6 @@ public class RemoteElementView: UIView {
   /** attachGestureRecognizers */
   func attachGestureRecognizers() {}
 
-  /** registerForChangeNotification */
-  func registerForChangeNotification() {
-    precondition(model != nil, "why are we calling this without a valid model object?")
-    kvoReceptionists = map(kvoRegistration()) {
-      (key: String, value: (MSKVOReceptionist!) -> Void) -> MSKVOReceptionist in
-        MSKVOReceptionist(observer: self, forObject: self.model, keyPath: key, options: .New,
-                          queue: NSOperationQueue.mainQueue(), handler: value)
-    }
-  }
-
   /** initializeIVARs */
   func initializeIVARs() {
     clipsToBounds = false
@@ -104,17 +94,6 @@ public class RemoteElementView: UIView {
     addInternalSubviews()
     attachGestureRecognizers()
     initializeViewFromModel()
-  }
-
-  /** initializeViewFromModel */
-  func initializeViewFromModel() {
-    super.backgroundColor = model.backgroundColor
-    refreshBorderPath()
-    for element in model.subelements {
-      if let subelementView = self.dynamicType.viewWithModel(element) {
-        addSubelementView(subelementView)
-      }
-    }
   }
 
 
@@ -131,7 +110,7 @@ public class RemoteElementView: UIView {
     var identifier = createIdentifier(self, ["Internal", "Base"])
     if constraintsWithIdentifier(identifier).count == 0 {
       constrain("|[b]| :: V:|[b]| :: |[c]| :: V:|[c]| :: |[s]| :: V:|[s]| :: |[o]| :: V:|[o]|",
-                    views: ["b": backdropView, "c": contentView, "s": subelementsView, "o": overlayView],
+                    views: ["b": backdrop, "c": content, "s": subelements, "o": overlay],
                identifier: identifier)
     }
 
@@ -181,7 +160,7 @@ public class RemoteElementView: UIView {
     for subelementView in subelementViews {
       let maxSize = subelementView.maximumSize
       let minSize = subelementView.minimumSize
-      let scaledSize = subelementsView.bounds.size * scale
+      let scaledSize = subelements.bounds.size * scale
       let newSize = maxSize.contains(scaledSize) ? (scaledSize.contains(minSize) ? scaledSize : minSize) : maxSize
       model.constraintManager.resizeElement(subelementView.model,
                                    fromSize: subelementView.bounds.size,
@@ -297,11 +276,11 @@ public class RemoteElementView: UIView {
   :returns: RemoteElementView?
   */
   public subscript(idx: Int) -> RemoteElementView? {
-    return idx < subelementsView.subviews.count ? subelementsView.subviews[idx] as? RemoteElementView : nil
+    return idx < subelements.subviews.count ? subelements.subviews[idx] as? RemoteElementView : nil
   }
 
   public var subelementViews: OrderedSet<RemoteElementView> {
-    return OrderedSet(subelementsView.subviews as? [RemoteElementView] ?? [])
+    return OrderedSet(subelements.subviews as? [RemoteElementView] ?? [])
   }
 
   /**
@@ -309,20 +288,21 @@ public class RemoteElementView: UIView {
 
   :param: views NSSet
   */
-  public func addSubelementViews(views: Set<RemoteElementView>) {
-    apply(subelementViews){self.subelementsView.addSubview($0)}
-  }
+  public func addSubelementViews(views: Set<RemoteElementView>) { apply(subelementViews){self.subelements.addSubview($0)} }
 
   /**
   addSubelementView:
 
   :param: view RemoteElementView
   */
-  public func addSubelementView(view: RemoteElementView) { subelementsView.addSubview(view) }
+  public func addSubelementView(view: RemoteElementView) { subelements.addSubview(view) }
 
-  public func removeSubelementViews(views: Set<RemoteElementView>) {
-    apply(subelementViews){$0.removeFromSuperview()}
-  }
+  /**
+  removeSubelementViews:
+
+  :param: views Set<RemoteElementView>
+  */
+  public func removeSubelementViews(views: Set<RemoteElementView>) { apply(subelementViews){$0.removeFromSuperview()} }
 
   /**
   removeSubelementView:
@@ -337,7 +317,7 @@ public class RemoteElementView: UIView {
   :param: subelementView RemoteElementView
   */
   public func bringSubelementViewToFront(subelementView: RemoteElementView) {
-    subelementsView.bringSubviewToFront(subelementView)
+    subelements.bringSubviewToFront(subelementView)
   }
 
   /**
@@ -346,7 +326,7 @@ public class RemoteElementView: UIView {
   :param: subelementView RemoteElementView
   */
   public func sendSubelementViewToBack(subelementView: RemoteElementView) {
-    subelementsView.sendSubviewToBack(subelementView)
+    subelements.sendSubviewToBack(subelementView)
   }
 
   /**
@@ -356,7 +336,7 @@ public class RemoteElementView: UIView {
   :param: siblingSubelementView RemoteElementView
   */
   public func insertSubelementView(subelementView: RemoteElementView, aboveSubelementView siblingSubelementView: RemoteElementView) {
-    subelementsView.insertSubview(subelementView, aboveSubview: siblingSubelementView)
+    subelements.insertSubview(subelementView, aboveSubview: siblingSubelementView)
   }
 
   /**
@@ -366,7 +346,7 @@ public class RemoteElementView: UIView {
   :param: index Int
   */
   public func insertSubelementView(subelementView: RemoteElementView, atIndex index: Int) {
-    subelementsView.insertSubview(subelementView, atIndex: index)
+    subelements.insertSubview(subelementView, atIndex: index)
   }
 
   /**
@@ -376,7 +356,7 @@ public class RemoteElementView: UIView {
   :param: siblingSubelementView RemoteElementView
   */
   public func insertSubelementView(subelementView: RemoteElementView, belowSubelementView siblingSubelementView: RemoteElementView) {
-    subelementsView.insertSubview(subelementView, belowSubview: siblingSubelementView)
+    subelements.insertSubview(subelementView, belowSubview: siblingSubelementView)
   }
 
   // MARK: - Parent view
@@ -459,64 +439,90 @@ public class RemoteElementView: UIView {
  /** setNeedsDisplay */
  override public func setNeedsDisplay() {
    super.setNeedsDisplay()
-   backdropView.setNeedsDisplay()
-   contentView.setNeedsDisplay()
-   subelementsView.setNeedsDisplay()
-   overlayView.setNeedsDisplay()
+   backdrop.setNeedsDisplay()
+   content.setNeedsDisplay()
+   subelements.setNeedsDisplay()
+   overlay.setNeedsDisplay()
  }
 
   // MARK: - Model
 
-  public var model: RemoteElement!
+  public var model: RemoteElement! { didSet { model?.fireFault() } }
+
+  /** initializeViewFromModel */
+  func initializeViewFromModel() {
+    updateViewFromModel()
+    apply(compressedMap(model.subelements) {RemoteElementView.viewWithModel($0)}) {self.addSubelementView($0)}
+  }
+
+  /** updateViewFromModel */
+  func updateViewFromModel() {
+    backgroundColor = model.backgroundColor
+    backgroundImage = model.backgroundImage?.image
+    refreshBorderPath()
+  }
 
   /** updateSubelementOrderFromView */
   public func updateSubelementOrderFromView() { model.subelements = subelementViews.map{$0.model} }
 
-  var kvoReceptionists: [String:MSKVOReceptionist] = [:]
+  typealias Property = String
+  private var kvoReceptionists: [Property:KVOReceptionist] = [:]
 
   /**
   kvoRegistration
 
-  :returns: [String:(MSKVOReceptionist!) -> Void]
+  :returns: [Property:KVOReceptionist.Observation]
   */
-  func kvoRegistration() -> [String:(MSKVOReceptionist!) -> Void] {
+  func kvoRegistration() -> [Property:KVOReceptionist.Observation] {
 
-    var registry: [String:(MSKVOReceptionist!) -> Void] = [:]
+    var registry: [Property:KVOReceptionist.Observation] = [:]
 
     registry["backgroundColor"] = {
-        if let v = $0.observer as? RemoteElementView {
-          let currentColor = v.backgroundColor
-          let changeColor = $0.change[NSKeyValueChangeNewKey] as? UIColor
-          if currentColor != changeColor {
-            v.backgroundColor = changeColor
-            v.setNeedsDisplay()
-          }
-        }
+      let faultingState = ($0.object as? RemoteElement)?.faultingState
+      ($0.observer as? RemoteElementView)?.backgroundColor = ($0.object as? RemoteElement)?.backgroundColor
     }
-    registry["constraints"] = {($0.observer as? RemoteElementView)?.setNeedsUpdateConstraints()}
+    registry["constraints"] = {
+      let faultingState = ($0.object as? RemoteElement)?.faultingState
+      ($0.observer as? RemoteElementView)?.setNeedsUpdateConstraints()
+    }
 
-    let updateDisplay: (MSKVOReceptionist!) -> Void = {($0.observer as? RemoteElementView)?.setNeedsDisplay() }
-    registry["backgroundImageAlpha"] = updateDisplay
-    registry["backgroundImage"] = updateDisplay
-    registry["style"] = updateDisplay
-    registry["shape"] = updateDisplay
-    registry["currentMode"] = updateDisplay
+//    registry["backgroundImageAlpha"] = updateDisplay
+    registry["backgroundImage"] = {
+      let faultingState = ($0.object as? RemoteElement)?.faultingState
+      ($0.observer as? RemoteElementView)?.backgroundImage = ($0.object as? RemoteElement)?.backgroundImage?.image
+    }
+    registry["style"] = {
+      let faultingState = ($0.object as? RemoteElement)?.faultingState
+      ($0.observer as? RemoteElementView)?.setNeedsDisplay()
+    }
+    registry["shape"] = {
+      let faultingState = ($0.object as? RemoteElement)?.faultingState
+      ($0.observer as? RemoteElementView)?.setNeedsDisplay()
+      ($0.observer as? RemoteElementView)?.refreshBoundary()
+    }
+    registry["currentMode"] = {($0.observer as? RemoteElementView)?.updateViewFromModel()}
 
     return registry
   }
 
-  // MARK: - Editing
 
-  public var locked: Bool = false {
-    didSet {
-      apply(subelementViews){$0.resizable = !self.locked; $0.moveable = !self.locked}
-    }
+  /** registerForChangeNotification */
+  func registerForChangeNotification() {
+    precondition(model != nil, "why are we calling this without a valid model object?")
+    kvoReceptionists = map(kvoRegistration()) { KVOReceptionist(observer: self, keyPath: $0, object: self.model, handler: $1) }
   }
 
+  // MARK: Cached model values
+
+  public private(set) var backgroundImage: UIImage? { didSet { setNeedsDisplay() } }
+
+
+  // MARK: - Editing
+
+  public var locked: Bool = false { didSet { apply(subelementViews){$0.resizable = !self.locked; $0.moveable = !self.locked} } }
+
   public var editingMode: RemoteElement.BaseType = .Undefined {
-    didSet {
-      apply(subelementViews){$0.editingMode = self.editingMode}
-    }
+    didSet { apply(subelementViews){$0.editingMode = self.editingMode} }
   }
 
   public var isEditing: Bool { return editingMode != .None }
@@ -539,8 +545,8 @@ public class RemoteElementView: UIView {
       showContentBoundary = editingState != .None
       refreshBoundary()
       boundaryColor = editingState.color
-      overlayView.layer.setNeedsDisplay()
-      overlayView.layer.displayIfNeeded()
+      overlay.layer.setNeedsDisplay()
+      overlay.layer.displayIfNeeded()
     }
   }
   public var resizable = false
@@ -550,17 +556,9 @@ public class RemoteElementView: UIView {
 
   private var boundaryColor: UIColor = UIColor.clearColor() { didSet { boundaryOverlay.strokeColor = boundaryColor.CGColor } }
   private var showAlignmentIndicators: Bool = false {
-    didSet {
-      alignmentOverlay.hidden = !showAlignmentIndicators
-      renderAlignmentOverlayIfNeeded()
-    }
+    didSet { alignmentOverlay.hidden = !showAlignmentIndicators; renderAlignmentOverlayIfNeeded() }
   }
-  private var showContentBoundary: Bool = false {
-    didSet {
-      refreshBoundary()
-      boundaryOverlay.hidden = !showContentBoundary
-    }
-  }
+  private var showContentBoundary: Bool = false { didSet { refreshBoundary(); boundaryOverlay.hidden = !showContentBoundary } }
   private var lineWidth: CGFloat = 2.0 { didSet { boundaryOverlay.lineWidth = lineWidth } }
 
   /** refreshBoundary */
@@ -588,19 +586,21 @@ public class RemoteElementView: UIView {
 
     switch model.shape {
       case .Undefined:
-        break
-//        if let color = backgroundColor {
-//          color.setFill()
-//          UIRectFill(rect)
-//        }
+        if let color = backgroundColor ?? model.backgroundColor {
+          color.setFill()
+          UIRectFill(rect)
+        }
       default:
         var attrs = Painter.Attributes(rect: rect)
-        attrs.color = backgroundColor ?? Painter.defaultBackgroundColor
+        attrs.color = backgroundColor ?? model.backgroundColor ?? Painter.defaultBackgroundColor
         Painter.drawBackgroundWithShape(model.shape, attributes: attrs)
     }
 
     // Draw background image
-    if let image = model.backgroundImage?.image {
+//    if let r = model as? Remote {
+//      MSLogDebug("remote description…\n\(r)")
+//    }
+    if let image = backgroundImage ?? model?.backgroundImage?.image {
       if rect.size <= image.size { image.drawInRect(rect) }
       else { image.drawAsPatternInRect(rect) }
     }
@@ -626,7 +626,7 @@ public class RemoteElementView: UIView {
 
   /** refreshBorderPath */
   private func refreshBorderPath() {
-    switch model.shape {
+    switch model?.shape ?? .Undefined {
       case _ where bounds.isEmpty: fallthrough
       case .Undefined: borderPath = nil
       default: borderPath = Painter.pathForShape(model.shape, withAttributes: Painter.Attributes(rect: bounds))
@@ -635,13 +635,7 @@ public class RemoteElementView: UIView {
 
   public var borderPath: UIBezierPath? {
     didSet {
-      if borderPath != nil {
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.path = borderPath!.CGPath
-        layer.mask = shapeLayer
-      } else {
-        layer.mask = nil
-      }
+      if let p = borderPath?.CGPath { let s = CAShapeLayer(); s.path = p; layer.mask = s } else { layer.mask = nil }
       refreshBoundary()
     }
   }
@@ -963,7 +957,7 @@ public class RemoteElementView: UIView {
 
   // MARK: - Internal views
 
-  private lazy var subelementsView: ViewProxy = {
+  private lazy var subelements: ViewProxy = {
     let view = ViewProxy(frame: self.bounds, draw: {_, _ in })
     view.userInteractionEnabled = false
     view.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -974,7 +968,8 @@ public class RemoteElementView: UIView {
     view.subviewType = RemoteElementView.self
     return view
     }()
-  private lazy var contentView: ViewProxy = {
+
+  private lazy var content: ViewProxy = {
     let view = ViewProxy(frame: self.bounds, draw: self.drawContentInContext)
     view.userInteractionEnabled = false
     view.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -985,7 +980,8 @@ public class RemoteElementView: UIView {
     view.autoresizesSubviews = false
     return view
     }()
-  private lazy var backdropView: ViewProxy = {
+
+  private lazy var backdrop: ViewProxy = {
     let view = ViewProxy(frame: self.bounds, draw: self.drawBackdropInContext)
     view.userInteractionEnabled = false
     view.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -996,7 +992,8 @@ public class RemoteElementView: UIView {
     view.autoresizesSubviews = false
     return view
     }()
-  private lazy var overlayView: ViewProxy = {
+
+  private lazy var overlay: ViewProxy = {
     let view = ViewProxy(frame: self.bounds, draw: self.drawOverlayInContext)
     view.userInteractionEnabled = false
     view.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -1030,73 +1027,68 @@ public class RemoteElementView: UIView {
     }()
 
   /** addInternalSubviews */
-  func addInternalSubviews() {
-    addSubview(backdropView)
-    addSubview(contentView)
-    addSubview(subelementsView)
-    addSubview(overlayView)
-  }
+  func addInternalSubviews() { addSubview(backdrop); addSubview(content); addSubview(subelements); addSubview(overlay) }
 
   /**
   addViewToContent:
 
   :param: view UIView
   */
-  public func addViewToContent(view: UIView) { contentView.addSubview(view) }
+  public func addViewToContent(view: UIView) { content.addSubview(view) }
 
   /**
   addLayerToContent:
 
   :param: layer CALayer
   */
-  public func addLayerToContent(layer: CALayer) { contentView.layer.addSublayer(layer) }
+  public func addLayerToContent(layer: CALayer) { content.layer.addSublayer(layer) }
 
   /**
   addViewToOverlay:
 
   :param: view UIView
   */
-  public func addViewToOverlay(view: UIView) { overlayView.addSubview(view) }
+  public func addViewToOverlay(view: UIView) { overlay.addSubview(view) }
 
   /**
   addLayerToOverlay:
 
   :param: layer CALayer
   */
-  public func addLayerToOverlay(layer: CALayer) { overlayView.layer.addSublayer(layer) }
+  public func addLayerToOverlay(layer: CALayer) { overlay.layer.addSublayer(layer) }
 
   /**
   addViewToBackdrop:
 
   :param: view UIView
   */
-  public func addViewToBackdrop(view: UIView) { backdropView.addSubview(view) }
+  public func addViewToBackdrop(view: UIView) { backdrop.addSubview(view) }
 
   /**
   addLayerToBackdrop:
 
   :param: layer CALayer
   */
-  public func addLayerToBackdrop(layer: CALayer) { backdropView.layer.addSublayer(layer) }
+  public func addLayerToBackdrop(layer: CALayer) { backdrop.layer.addSublayer(layer) }
 
   public var contentInteractionEnabled: Bool {
-    get { return contentView.userInteractionEnabled }
-    set { contentView.userInteractionEnabled = newValue }
+    get { return content.userInteractionEnabled }
+    set { content.userInteractionEnabled = newValue }
   }
 
   public var subelementInteractionEnabled: Bool {
-    get { return subelementsView.userInteractionEnabled }
-    set { subelementsView.userInteractionEnabled = newValue }
+    get { return subelements.userInteractionEnabled }
+    set { subelements.userInteractionEnabled = newValue }
   }
 
   public var contentClipsToBounds: Bool {
-    get { return contentView.clipsToBounds }
-    set { contentView.clipsToBounds = newValue }
+    get { return content.clipsToBounds }
+    set { content.clipsToBounds = newValue }
   }
 
   public var overlayClipsToBounds: Bool {
-    get { return overlayView.clipsToBounds }
-    set { overlayView.clipsToBounds = newValue }
+    get { return overlay.clipsToBounds }
+    set { overlay.clipsToBounds = newValue }
   }
 
 }

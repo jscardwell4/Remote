@@ -35,7 +35,7 @@ class DataModel_LoadedTests: QuickSpec {
         ("ImageCategory",      ImageCategory.self,        DataManager.LogFlags.Default),
         ("Activity",           Activity.self,             DataManager.LogFlags.Default),
         ("NetworkDevice",      NetworkDevice.self,        DataManager.LogFlags.Default),
-        ("Preset",             PresetCategory.self,       DataManager.LogFlags.Default),
+        ("PresetCategory",     PresetCategory.self,       DataManager.LogFlags.Default),
         ("Remote",             Remote.self,               DataManager.LogFlags.Default),
         ("ActivityController", ActivityController.self,   DataManager.LogFlags.Default)
       ]

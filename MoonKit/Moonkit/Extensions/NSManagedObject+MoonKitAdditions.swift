@@ -12,6 +12,8 @@ import Swift
 
 extension NSManagedObject {
 
+  public func fireFault() { willAccessValueForKey(nil) }
+
   /**
   entityDescription:
 

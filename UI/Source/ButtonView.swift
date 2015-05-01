@@ -18,6 +18,9 @@ public class ButtonView: RemoteElementView {
 	weak var labelView: UILabel!
 	weak var activityIndicator: UIActivityIndicatorView!
 
+  public private(set) var title: NSAttributedString? { didSet { labelView?.attributedText = title } }
+  public private(set) var icon: UIImage? { didSet { invalidateIntrinsicContentSize(); setNeedsDisplay() } }
+
   var tapAction: ((Void) -> Void)?
   var pressAction: ((Void) -> Void)?
   var button: Button { return model as! Button }
@@ -229,25 +232,12 @@ public class ButtonView: RemoteElementView {
 	/**
 	kvoRegistration
 
-	:returns: [String:(MSKVOReceptionist) -> Void]
+	:returns: [Property:KVOReceptionist.Observation]
 	*/
-	override func kvoRegistration() -> [String:(MSKVOReceptionist!) -> Void] {
+	override func kvoRegistration() -> [Property:KVOReceptionist.Observation] {
 		var registry = super.kvoRegistration()
-		registry["title"] = {
-			(receptionist: MSKVOReceptionist!) -> Void in
-				if let v = receptionist.observer as? ButtonView {
-					v.labelView.attributedText = receptionist.change[NSKeyValueChangeNewKey] as? NSAttributedString
-					v.invalidateIntrinsicContentSize()
-					v.setNeedsDisplay()
-				}
-		}
-		registry["icon"] = {
-			(receptionist: MSKVOReceptionist!) -> Void in
-				if let v = receptionist.observer as? ButtonView {
-					v.invalidateIntrinsicContentSize()
-					v.setNeedsDisplay()
-				}
-		}
+    registry["title"] = {($0.observer as? ButtonView)?.title = ($0.object as? Button)?.title}
+		registry["icon"] = {($0.observer as? ButtonView)?.icon = ($0.object as? Button)?.icon?.colorImage}
 		return registry
 	}
 
@@ -255,7 +245,8 @@ public class ButtonView: RemoteElementView {
 	override func initializeViewFromModel() {
 		super.initializeViewFromModel()
 		longPressGesture.enabled = button.longPressCommand != nil
-		labelView.attributedText = button.title
+		title = button.title
+    icon  = button.icon?.colorImage
 		invalidateIntrinsicContentSize()
 		setNeedsDisplay()
 	}
