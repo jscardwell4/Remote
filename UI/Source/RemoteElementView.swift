@@ -469,6 +469,8 @@ public class RemoteElementView: UIView {
   /** updateSubelementOrderFromView */
   public func updateSubelementOrderFromView() { model.subelements = subelementViews.map{$0.model} }
 
+  // MARK: - KVO
+
   typealias Property = String
   private var kvoReceptionists: [Property:KVOReceptionist] = [:]
 
@@ -524,7 +526,7 @@ public class RemoteElementView: UIView {
   /** registerForChangeNotification */
   func registerForChangeNotification() {
     precondition(model != nil, "why are we calling this without a valid model object?")
-//    kvoReceptionists = map(kvoRegistration()) { KVOReceptionist(observer: self, keyPath: $0, object: self.model, handler: $1) }
+    kvoReceptionists = map(kvoRegistration()) { KVOReceptionist(observer: self, keyPath: $0, object: self.model, handler: $1) }
   }
 
   // MARK: Cached model values

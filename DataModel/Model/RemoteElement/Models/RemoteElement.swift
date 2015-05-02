@@ -186,6 +186,8 @@ public class RemoteElement: IndexedModelObject {
 
   public static let DefaultMode: Mode = "default"
 
+  public var defaultMode: Mode { return RemoteElement.DefaultMode }
+
   @NSManaged public private(set) var modes: Set<Mode>
 
   public dynamic var currentMode: Mode {
@@ -264,7 +266,7 @@ public class RemoteElement: IndexedModelObject {
     let imageView: Background
     if let i: Background = backgrounds[mode] {
       imageView = i
-    } else if mode != RemoteElement.DefaultMode, let i: Background = backgrounds[RemoteElement.DefaultMode] {
+    } else if mode != defaultMode, let i: Background = backgrounds[defaultMode] {
       imageView = i.copy() as! Background
       setValue(imageView, forMode: mode, inStorage: backgrounds)
     } else {
@@ -478,7 +480,7 @@ public class RemoteElement: IndexedModelObject {
   :param: mode String
   */
   func updateForMode(mode: Mode) {
-    background = backgrounds[mode] ?? backgrounds[RemoteElement.DefaultMode]
+    background = backgrounds[mode] ?? backgrounds[defaultMode]
   }
 
   /**
@@ -496,7 +498,7 @@ public class RemoteElement: IndexedModelObject {
     let alpha = preset.backgroundImageAlpha
 
     if color != nil || image != nil || alpha != nil {
-      let imageView = imageViewForMode(RemoteElement.DefaultMode)
+      let imageView = imageViewForMode(defaultMode)
       imageView.color = color
       imageView.image = image
       imageView.alpha = alpha

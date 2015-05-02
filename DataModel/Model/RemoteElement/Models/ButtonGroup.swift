@@ -63,7 +63,7 @@ public final class ButtonGroup: RemoteElement {
     super.updateWithPreset(preset)
 
     autohide = preset.autohide ?? false
-    if let attributes = preset.labelAttributes { setLabelAttributes(attributes, forMode: RemoteElement.DefaultMode) }
+    if let attributes = preset.labelAttributes { setLabelAttributes(attributes, forMode: defaultMode) }
     labelConstraints = preset.labelConstraints
     // if let panelAssignment = preset.panelAssignment { self.panelAssignment = panelAssignment }
   }
@@ -79,8 +79,8 @@ public final class ButtonGroup: RemoteElement {
   */
   override func updateForMode(mode: String) {
     super.updateForMode(mode)
-    label = (labelAttributesForMode(currentMode) ?? labelAttributesForMode(RemoteElement.DefaultMode))?.string
-    commandContainer = commandContainers[currentMode] ?? commandContainers[RemoteElement.DefaultMode]
+    label = (labelAttributesForMode(currentMode) ?? labelAttributesForMode(defaultMode))?.string
+    commandContainer = commandContainers[currentMode] ?? commandContainers[defaultMode]
     updateButtons()
   }
 

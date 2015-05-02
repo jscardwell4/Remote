@@ -42,8 +42,20 @@ extension CGPoint: Printable { public var description: String { return NSStringF
 public func -(lhs: CGPoint, rhs: CGPoint) -> CGPoint {
   return lhs.isNull ? rhs : (rhs.isNull ? lhs : CGPoint(x: lhs.x - rhs.x, y: lhs.y - rhs.y))
 }
+public func -(lhs: CGPoint, rhs: (CGFloat, CGFloat)) -> CGPoint {
+  return lhs.isNull ? CGPoint(x: rhs.0, y: rhs.1) : CGPoint(x: lhs.x - rhs.0, y: lhs.y - rhs.1)
+}
+public func -<T:Unpackable2 where T.Element == CGFloat>(lhs: CGPoint, rhs: T) -> CGPoint {
+  return lhs - rhs.unpack()
+}
+public func +(lhs: CGPoint, rhs: (CGFloat, CGFloat)) -> CGPoint {
+  return lhs.isNull ? CGPoint(x: rhs.0, y: rhs.1) : CGPoint(x: lhs.x + rhs.0, y: lhs.y + rhs.1)
+}
 public func +(lhs: CGPoint, rhs: CGPoint) -> CGPoint {
   return lhs.isNull ? rhs : (rhs.isNull ? lhs : CGPoint(x: lhs.x + rhs.x, y: lhs.y + rhs.y))
+}
+public func +<T:Unpackable2 where T.Element == CGFloat>(lhs: CGPoint, rhs: T) -> CGPoint {
+  return lhs + rhs.unpack()
 }
 public func -=(inout lhs: CGPoint, rhs: CGPoint) { lhs = lhs - rhs }
 public func +=(inout lhs: CGPoint, rhs: CGPoint) { lhs = lhs + rhs }
@@ -315,4 +327,22 @@ public func -(lhs: UIOffset, rhs: UIOffset) -> UIOffset {
 
 public func +(lhs: UIOffset, rhs: UIOffset) -> UIOffset {
 	return UIOffset(horizontal: lhs.horizontal + rhs.horizontal, vertical: lhs.vertical + rhs.vertical)
+}
+
+public func +(lhs: UIEdgeInsets, rhs: UIEdgeInsets) -> UIEdgeInsets {
+  return UIEdgeInsets(
+    top: lhs.top + rhs.top,
+    left: lhs.left + rhs.left,
+    bottom: lhs.bottom + rhs.bottom,
+    right: lhs.right + rhs.right
+  )
+}
+
+public func -(lhs: UIEdgeInsets, rhs: UIEdgeInsets) -> UIEdgeInsets {
+  return UIEdgeInsets(
+    top: lhs.top - rhs.top,
+    left: lhs.left - rhs.left,
+    bottom: lhs.bottom - rhs.bottom,
+    right: lhs.right - rhs.right
+  )
 }

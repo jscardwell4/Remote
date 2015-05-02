@@ -27,6 +27,7 @@ public final class Painter {
   public struct Attributes {
     public var color: UIColor?
     public var accentColor: UIColor?
+    public var foregroundColor: UIColor?
     public var rect: CGRect
     public var lineWidth: CGFloat = 0
     public var corners = Painter.defaultCorners
@@ -41,6 +42,7 @@ public final class Painter {
     public var text: String?
     public var attributedText: NSAttributedString?
     public var fontAttributes: [NSObject:AnyObject]?
+    public var adjustFontSize = false
 
     public func attributesWithShadow(shadow: NSShadow?) -> Attributes {
       var attrs = self
@@ -48,17 +50,77 @@ public final class Painter {
       return attrs
     }
 
-    public init(rect: CGRect) {
+    /**
+    Initialize with `rect` and any other options desired
+
+    :param: rect CGRect
+    :param: color UIColor? = nil
+    :param: accentColor UIColor? = nil
+    :param: foregroundColor UIColor? = nil
+    :param: shadow NSShadow? = nil
+    :param: accentShadow NSShadow? = nil
+    :param: lineWidth CGFloat = 0
+    :param: corners UIRectCorner = Painter.defaultCorners
+    :param: radii CGSize = Painter.defaultRadii
+    :param: blendMode CGBlendMode = kCGBlendModeNormal
+    :param: stroke Bool = false
+    :param: fill Bool = true
+    :param: alpha CGFloat = 1.0
+    :param: image UIImage? = nil
+    :param: text String? = nil
+    :param: attributedText NSAttributedString? = nil
+    :param: fontAttributes [NSObject AnyObject]? = nil
+    :param: adjustFontSize Bool = false
+    */
+    public init(
+      rect: CGRect,
+      color: UIColor? = nil,
+      accentColor: UIColor? = nil,
+      foregroundColor: UIColor? = nil,
+      shadow: NSShadow? = nil,
+      accentShadow: NSShadow? = nil,
+      lineWidth: CGFloat = 0,
+      corners: UIRectCorner = Painter.defaultCorners,
+      radii: CGSize = Painter.defaultRadii,
+      blendMode: CGBlendMode = kCGBlendModeNormal,
+      stroke: Bool = false,
+      fill: Bool = true,
+      alpha: CGFloat = 1.0,
+      image: UIImage? = nil,
+      text: String? = nil,
+      attributedText: NSAttributedString? = nil,
+      fontAttributes: [NSObject:AnyObject]? = nil,
+      adjustFontSize: Bool = false)
+    {
       self.rect = rect
+      self.color = color
+      self.accentColor = accentColor
+      self.foregroundColor = foregroundColor
+      self.shadow = shadow
+      self.accentShadow = accentShadow
+      self.lineWidth = lineWidth
+      self.corners = corners
+      self.radii = radii
+      self.blendMode = blendMode
+      self.stroke = stroke
+      self.fill = fill
+      self.alpha = alpha
+      self.image = image
+      self.text = text
+      self.attributedText = attributedText
+      self.fontAttributes = fontAttributes
+      self.adjustFontSize = adjustFontSize
     }
   }
 
   public typealias Shape = RemoteElement.Shape
 
   public static let defaultBackgroundColor = UIColor(r: 41, g: 40, b: 39, a: 255)!
-  public static let defaultAccentColor = UIColor(r: 50, g: 143, b: 239, a: 255)!
+  public static let defaultForegroundColor = white
+  public static let blueAccentColor = UIColor(r: 50, g: 143, b: 239, a: 255)!
   public static let defaultRadii = CGSize(width: 10, height: 20)
   public static let defaultCorners: UIRectCorner = .AllCorners
+  public static let defaultFont = UIFont.systemFontOfSize(24.0)
 
   public static let verticalGloss: CGGradient = CGGradientCreateWithColors(
     CGColorSpaceCreateDeviceRGB(),
@@ -124,28 +186,18 @@ public final class Painter {
     attrs.shadow?.setShadow()
     attrs.accentShadow?.setShadow()
 
-    let textAttributes: [NSObject:AnyObject]
-
-    if let fontAttributes = attrs.fontAttributes {
-
-      var attrs = fontAttributes
-      if let f = attrs[NSFontAttributeName] as? UIFont { attrs[NSFontAttributeName] = f.fontWithSize(appliedFontSize) }
-      else { attrs[NSFontAttributeName] = UIFont(name: "HelveticaNeue-Bold", size: appliedFontSize)! }
-
-      textAttributes = attrs
-
-    } else {
-
-      let paragraphStyle = NSParagraphStyle.paragraphStyleWithAttributes(alignment: .Center)
-      let font = UIFont(name: "HelveticaNeue-Bold", size: appliedFontSize)!
-      let fg = attrs.color ?? UIColor.grayColor()
-      textAttributes = [ NSFontAttributeName           : font,
-                         NSForegroundColorAttributeName: fg,
-                         NSParagraphStyleAttributeName : paragraphStyle ]
-
+    var textAttributes: [NSObject:AnyObject] = attrs.fontAttributes ?? [:]
+    if let font = textAttributes[NSFontAttributeName] as? UIFont where attrs.adjustFontSize {
+      textAttributes[NSFontAttributeName] = font.fontWithSize(appliedFontSize)
+    } else if textAttributes[NSFontAttributeName] == nil {
+      textAttributes[NSFontAttributeName] = defaultFont.fontWithSize(appliedFontSize)
     }
-
-
+    if textAttributes[NSParagraphStyleAttributeName] == nil {
+      textAttributes[NSParagraphStyleAttributeName] = NSParagraphStyle.paragraphStyleWithAttributes(alignment: .Center)
+    }
+    if let textColor = attrs.foregroundColor ?? attrs.color {
+      textAttributes[NSForegroundColorAttributeName] = textColor
+    }
 
     let textHeight: CGFloat = (text as NSString).boundingRectWithSize(CGSize(width: bounds.width, height: CGFloat.infinity),
                                                               options: NSStringDrawingOptions.UsesLineFragmentOrigin,
@@ -174,17 +226,15 @@ public final class Painter {
   public class func drawImage(image: UIImage, withAttributes attrs: Attributes, boundByShape shape: Shape = .Rectangle) {
     let path = pathForShape(shape != .Undefined ? shape : .Rectangle, withAttributes: attrs)
     let bounds = path.bounds
-    let actualImageSize = image.size
-    let boundingSize = bounds.size
-    let imageSize = boundingSize.contains(actualImageSize)
-                      ? actualImageSize
-                      : actualImageSize.aspectMappedToSize(boundingSize, binding: true)
-    let imageOffset = CGPoint(x: bounds.midX - imageSize.width * 0.5, y: bounds.midY - imageSize.height * 0.5)
+    if bounds.isEmpty { return }
+    let imageSize = bounds.size.contains(image.size)
+                      ? image.size
+                      : image.size.aspectMappedToSize(bounds.size, binding: true)
 
+    let imageRect = CGRect(origin: bounds.center - (imageSize * 0.5), size: imageSize)
     let context = UIGraphicsGetCurrentContext()
 
     CGContextSaveGState(context)                                                          // context: •
-    CGContextTranslateCTM(context, imageOffset.x, imageOffset.y)
 
     attrs.shadow?.setShadow()
     CGContextSetAlpha(context, attrs.alpha)
@@ -197,19 +247,13 @@ public final class Painter {
 
     CGContextSaveGState(context)                                                          // context: •••
 
-
-    let imageRect = CGRect(size: imageSize)
     path.addClip()
     image.drawInRect(imageRect)
 
     CGContextRestoreGState(context)                                                       // context: ••
     CGContextEndTransparencyLayer(context)                                                // transparency: •
     CGContextRestoreGState(context)                                                       // context: •
-
-
-
     CGContextEndTransparencyLayer(context)                                                // transparency:
-
     CGContextRestoreGState(context)                                                       // context:
   }
 
@@ -348,7 +392,7 @@ public final class Painter {
 
     let bleedRect = baseRect.rectByInsetting(dx: 4, dy: 4)
 
-    let accentColor = attributes.accentColor ?? defaultAccentColor
+    let accentColor = attributes.accentColor ?? defaultForegroundColor
     let accentShadow: NSShadow? = highlighted ? NSShadow(color: accentColor, offset: CGSize.zeroSize, blurRadius: 5) : nil
 
     // Draw shape filled with accent color

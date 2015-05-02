@@ -37,14 +37,18 @@ public final class ImageView: ModelObject, NSCopying {
   }
   public var rawImage: UIImage? { return image?.image }
 
-  public var colorImage: UIImage? {
-    if let img = rawImage {
-      if let imgColor = color { return UIImage(fromAlphaOfImage: img, color: imgColor) }
-      else { return img }
-    } else {
-      return nil
-    }
+  /**
+  imageWithColor:
+
+  :param: color UIColor?
+
+  :returns: UIImage?
+  */
+  public func imageWithColor(color: UIColor?) -> UIImage? {
+    if let img = rawImage { return color == nil ? img : UIImage(fromAlphaOfImage: img, color: color) } else { return nil }
   }
+
+  public var colorImage: UIImage? { return imageWithColor(color) }
 
   /**
   initWithImage:

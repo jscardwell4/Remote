@@ -26,11 +26,20 @@
         <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Image" inverseName="asset" inverseEntity="Image" syncable="YES"/>
     </entity>
     <entity name="Button" representedClassName="Button" parentEntity="RemoteElement" syncable="YES">
-        <attribute name="backgroundColor" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="backgroundColor" optional="YES" attributeType="Transformable" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueClassName" value="UIColor"/>
+            </userInfo>
+        </attribute>
         <attribute name="contentEdgeInsets" attributeType="Transformable" defaultValueString="{0, 0, 0, 0}" syncable="YES">
             <userInfo>
                 <entry key="attributeValueClassName" value="NSValue"/>
                 <entry key="NSValueType" value="UIEdgeInsets"/>
+            </userInfo>
+        </attribute>
+        <attribute name="foregroundColor" optional="YES" attributeType="Transformable" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueClassName" value="UIColor"/>
             </userInfo>
         </attribute>
         <attribute name="imageEdgeInsets" attributeType="Transformable" defaultValueString="{0, 0, 0, 0}" syncable="YES">
@@ -57,6 +66,8 @@
         <relationship name="backgroundSets" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ModalStorage" inverseName="storageForButtonImages" inverseEntity="ModalStorage" syncable="YES"/>
         <relationship name="command" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="Command" inverseName="button" inverseEntity="Command" indexed="YES" syncable="YES"/>
         <relationship name="commands" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ModalStorage" inverseName="storageForButtonCommands" inverseEntity="ModalStorage" syncable="YES"/>
+        <relationship name="foregroundColorSet" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ControlStateColorSet" inverseName="foregroundColorSetForButton" inverseEntity="ControlStateColorSet" syncable="YES"/>
+        <relationship name="foregroundColorSets" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ModalStorage" inverseName="storageForButtonForegroundColors" inverseEntity="ModalStorage" syncable="YES"/>
         <relationship name="icon" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ImageView" inverseName="buttonIcon" inverseEntity="ImageView" syncable="YES"/>
         <relationship name="iconSet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ControlStateImageSet" inverseName="iconSetForButton" inverseEntity="ControlStateImageSet" syncable="YES"/>
         <relationship name="iconSets" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ModalStorage" inverseName="storageForButtonIcons" inverseEntity="ModalStorage" syncable="YES"/>
@@ -176,6 +187,7 @@
             </userInfo>
         </attribute>
         <relationship name="backgroundColorSetForButton" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="backgroundColorSet" inverseEntity="Button" syncable="YES"/>
+        <relationship name="foregroundColorSetForButton" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="foregroundColorSet" inverseEntity="Button" syncable="YES"/>
         <relationship name="modalStorage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ModalStorage" inverseName="controlStateColorSetSet" inverseEntity="ModalStorage" syncable="YES"/>
     </entity>
     <entity name="ControlStateImageSet" representedClassName="ControlStateImageSet" syncable="YES">
@@ -386,6 +398,7 @@
         <relationship name="jSONStorageSet" toMany="YES" deletionRule="Cascade" destinationEntity="JSONStorage" inverseName="modalStorage" inverseEntity="JSONStorage" syncable="YES"/>
         <relationship name="storageForButtonBackgroundColors" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="backgroundColorSets" inverseEntity="Button" syncable="YES"/>
         <relationship name="storageForButtonCommands" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="commands" inverseEntity="Button" syncable="YES"/>
+        <relationship name="storageForButtonForegroundColors" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="foregroundColorSets" inverseEntity="Button" syncable="YES"/>
         <relationship name="storageForButtonGroupCommandContainers" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ButtonGroup" inverseName="commandContainers" inverseEntity="ButtonGroup" syncable="YES"/>
         <relationship name="storageForButtonGroupLabelAttributes" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ButtonGroup" inverseName="labelAttributes" inverseEntity="ButtonGroup" syncable="YES"/>
         <relationship name="storageForButtonIcons" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Button" inverseName="iconSets" inverseEntity="Button" syncable="YES"/>
@@ -454,7 +467,7 @@
         </attribute>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="role" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="shape" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="shape" attributeType="Integer 16" defaultValueString="3" syncable="YES"/>
         <attribute name="style" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="tag" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="background" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ImageView" inverseName="remoteElements" inverseEntity="ImageView" syncable="YES"/>
@@ -483,7 +496,7 @@
         <element name="ActivityCommand" positionX="0" positionY="0" width="128" height="60"/>
         <element name="ActivityController" positionX="0" positionY="0" width="128" height="105"/>
         <element name="Asset" positionX="36" positionY="153" width="128" height="30"/>
-        <element name="Button" positionX="0" positionY="0" width="128" height="330"/>
+        <element name="Button" positionX="0" positionY="0" width="128" height="375"/>
         <element name="ButtonGroup" positionX="0" positionY="0" width="128" height="150"/>
         <element name="Command" positionX="0" positionY="0" width="128" height="120"/>
         <element name="CommandContainer" positionX="0" positionY="0" width="128" height="120"/>
@@ -491,7 +504,7 @@
         <element name="CommandSetCollection" positionX="0" positionY="0" width="128" height="60"/>
         <element name="ComponentDevice" positionX="0" positionY="0" width="128" height="285"/>
         <element name="Constraint" positionX="0" positionY="0" width="128" height="240"/>
-        <element name="ControlStateColorSet" positionX="0" positionY="0" width="128" height="210"/>
+        <element name="ControlStateColorSet" positionX="0" positionY="0" width="128" height="225"/>
         <element name="ControlStateImageSet" positionX="0" positionY="0" width="128" height="210"/>
         <element name="ControlStateTitleSet" positionX="0" positionY="0" width="128" height="195"/>
         <element name="DelayCommand" positionX="0" positionY="0" width="128" height="60"/>
@@ -509,7 +522,7 @@
         <element name="JSONStorage" positionX="36" positionY="153" width="128" height="210"/>
         <element name="MacroCommand" positionX="0" positionY="0" width="128" height="90"/>
         <element name="Manufacturer" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="ModalStorage" positionX="36" positionY="153" width="128" height="315"/>
+        <element name="ModalStorage" positionX="36" positionY="153" width="128" height="330"/>
         <element name="NetworkDevice" positionX="0" positionY="0" width="128" height="120"/>
         <element name="PNG" positionX="36" positionY="153" width="128" height="75"/>
         <element name="PowerCommand" positionX="0" positionY="0" width="128" height="75"/>

@@ -44,7 +44,7 @@
     },
     "backgrounds.default": {
       "color": "black",
-      "image.index": "Backgrounds/Real%20Real%20Carbon"
+      "image.index": "Backgrounds/Real%20Carbon"
     },
     "subelements": [
       {
@@ -79,6 +79,7 @@
             "uuid": "037BB6A2-A4AF-408A-9F45-E48E0AA20E1E",
             "name": "Guide / Tools",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "commands": {
               "default.code.index": "Dish/Dish/Guide",
@@ -95,6 +96,7 @@
             "uuid": "6EB0A6D1-992C-4F1D-816B-83E75187FCEB",
             "name": "DVR / Internet@TV",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "commands": {
               "default.code.index": "Dish/Dish/DVR",
@@ -111,6 +113,7 @@
             "uuid": "2E48E207-00B8-481A-A57E-4FA84B51A02C",
             "name": "Info",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "commands": {
               "default.code.index": "Dish/Dish/Info",
@@ -154,6 +157,7 @@
             "name": "Button Top",
             "role": "top",
             "shape": "rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "iconSets.default": {
               "normal": {
                 "image.index": "Icons/Glyphish%204/Plus",
@@ -168,6 +172,7 @@
             "name": "Button Bottom",
             "role": "bottom",
             "shape": "rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "iconSets.default": {
               "normal": {
                 "image.index": "Icons/Glyphish%204/Minus",
@@ -249,6 +254,7 @@
             "name": "Button Center",
             "role": "center",
             "shape": "rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "constraints": {
               "index.buttonCenter": "83B25E99-F70E-45DF-9831-FCBE2C34F6ED",
               "format": "buttonCenter.height = buttonCenter.width"
@@ -264,6 +270,7 @@
             "name": "Button Up",
             "role": "up",
             "shape": "rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "iconSets.default": {
               "normal": {
                 "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Up",
@@ -278,6 +285,7 @@
             "name": "Button Down",
             "role": "down",
             "shape": "rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "iconSets.default": {
               "normal": {
                 "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Down",
@@ -292,6 +300,7 @@
             "name": "Button Left",
             "role": "left",
             "shape": "rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "iconSets.default": {
               "normal": {
                 "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Left",
@@ -306,6 +315,7 @@
             "name": "Button Right",
             "role": "right",
             "shape": "rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "iconSets.default": {
               "normal": {
                 "image.index": "Icons/Glyphish%206/Large/Normal/Arrow%20Right",
@@ -479,6 +489,7 @@
             "name": "Button 1",
             "role": "one",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "titleSets.default":<@include TitleAttributes_Default_Text.json,TEXT=1,SIZE=32>,
             "backgroundColorSets.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -489,6 +500,7 @@
             "name": "Button 2",
             "role": "two",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "titleSets.default":<@include TitleAttributes_Default_Text.json,TEXT=2,SIZE=32>,
             "backgroundColorSets.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -499,6 +511,7 @@
             "name": "Button 3",
             "role": "three",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "titleSets.default":<@include TitleAttributes_Default_Text.json,TEXT=3,SIZE=32>,
             "backgroundColorSets.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -509,6 +522,7 @@
             "name": "Button 4",
             "role": "four",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "titleSets.default":<@include TitleAttributes_Default_Text.json,TEXT=4,SIZE=32>,
             "backgroundColorSets.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -519,6 +533,7 @@
             "name": "Button 5",
             "role": "five",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "titleSets.default":<@include TitleAttributes_Default_Text.json,TEXT=5,SIZE=32>,
             "backgroundColorSets.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -529,6 +544,7 @@
             "name": "Button 6",
             "role": "six",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "titleSets.default":<@include TitleAttributes_Default_Text.json,TEXT=6,SIZE=32>,
             "backgroundColorSets.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -539,6 +555,7 @@
             "name": "Button 7",
             "role": "seven",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "titleSets.default":<@include TitleAttributes_Default_Text.json,TEXT=7,SIZE=32>,
             "backgroundColorSets.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -549,6 +566,7 @@
             "name": "Button 8",
             "role": "eight",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "titleSets.default":<@include TitleAttributes_Default_Text.json,TEXT=8,SIZE=32>,
             "backgroundColorSets.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -559,6 +577,7 @@
             "name": "Button 9",
             "role": "nine",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "titleSets.default":<@include TitleAttributes_Default_Text.json,TEXT=9,SIZE=32>,
             "backgroundColorSets.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -569,6 +588,7 @@
             "name": "Button 0",
             "role": "zero",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "titleSets.default":<@include TitleAttributes_Default_Text.json,TEXT=0,SIZE=32>,
             "backgroundColorSets.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -579,6 +599,7 @@
             "name": "Button Aux 1",
             "role": "aux1",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "titleSets.default":<@include TitleAttributes_Default_Text.json,TEXT=Exit,SIZE=20>,
             "backgroundColorSets.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -589,6 +610,7 @@
             "name": "Button Aux 2",
             "role": "aux2",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "titleSets.default":<@include TitleAttributes_Default_Text.json,TEXT=Enter,SIZE=20>,
             "backgroundColorSets.default.normal": <@include BackgroundColor_Dark_Normal.json>,
@@ -688,6 +710,7 @@
             "name": "Button Play",
             "role": "play",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "titleSets.default": {
               "normal": <@include TitleAttributes_Default_Icon.json,ICON=play,SIZE=32>,
@@ -702,6 +725,7 @@
             "name": "Button Pause",
             "role": "pause",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "titleSets.default": {
               "normal": <@include TitleAttributes_Default_Icon.json,ICON=pause,SIZE=32>,
@@ -716,6 +740,7 @@
             "name": "Button Rewind",
             "role": "rewind",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "titleSets.default": {
               "normal": <@include TitleAttributes_Default_Icon.json,ICON=backward,SIZE=32>,
@@ -730,6 +755,7 @@
             "name": "Button Fast Forward",
             "role": "fast-forward",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "titleSets.default": {
               "normal": <@include TitleAttributes_Default_Icon.json,ICON=fast-forward,SIZE=32>,
@@ -744,6 +770,7 @@
             "name": "Button Stop",
             "role": "stop",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "titleSets.default": {
               "normal": <@include TitleAttributes_Default_Icon.json,ICON=stop,SIZE=32>,
@@ -758,6 +785,7 @@
             "name": "Button Replay",
             "role": "replay",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "titleSets.default": {
               "normal": <@include TitleAttributes_Default_Icon.json,ICON=step-backward,SIZE=32>,
@@ -784,6 +812,7 @@
             "name": "Button Skip",
             "role": "skip",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "titleSets.default": {
               "normal": <@include TitleAttributes_Default_Icon.json,ICON=step-forward,SIZE=32>,
@@ -798,6 +827,7 @@
             "name": "Button Record",
             "role": "record",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "titleSets.default": {
               "normal": <@include TitleAttributes_Default_Icon.json,ICON=circle,SIZE=32>,
@@ -853,6 +883,7 @@
             "key": "default",
             "role": "selection-panel-button",
             "shape": "rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "titleSets.default": {
               "normal": {
                 "font": "Helvetica Neue32>",
@@ -873,6 +904,7 @@
             "key": "tv",
             "role": "selection-panel-button",
             "shape": "rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "titleSets.default": {
               "normal": {
                 "font": "Helvetica Neue32>",
@@ -949,6 +981,7 @@
             "role": "panel-button",
             "name": "On Demand / Source",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "commands": {
               "default.code.index": "Dish/Dish/On%20Demand",
@@ -966,6 +999,7 @@
             "role": "panel-button",
             "name": "Menu",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "commands": {
               "default.code.index": "Dish/Dish/Menu",
@@ -980,6 +1014,7 @@
             "role": "panel-button",
             "name": "Last / Return",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "commands": {
               "default.code.index": "Dish/Dish/Last",
@@ -997,6 +1032,7 @@
             "role": "panel-button",
             "name": "Exit",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "commands": {
               "default.code.index": "Dish/Dish/Exit",
@@ -1011,6 +1047,7 @@
             "role": "panel-button",
             "name": "DVR Audio Input",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "commands.default.code.index": "Sony/AV%20Receiver/TV%2FSAT",
             "titleSets.default": <@include TitleAttributes_Default_Text.json,TEXT=DVR Audio,SIZE=18>,
@@ -1022,6 +1059,7 @@
             "role": "panel-button",
             "name": "TV Audio Input",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "commands.default.code.index": "Sony/AV%20Receiver/Video%201",
             "titleSets.default": <@include TitleAttributes_Default_Text.json,TEXT=TV Audio,SIZE=18>,
@@ -1033,6 +1071,7 @@
             "role": "panel-button",
             "name": "Mute",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "commands.default.code.index": "Sony/AV%20Receiver/Mute",
             "titleSets.default": <@include TitleAttributes_Default_Text.json,TEXT=Mute,SIZE=18>,
@@ -1081,7 +1120,7 @@
     "shape": "rectangle",
     "backgrounds.default": {
       "color": "black",
-      "image.index": "Backgrounds/Real%20Real%20Carbon"
+      "image.index": "Backgrounds/Real%20Carbon"
     },
     "subelements": [
       {
@@ -1118,6 +1157,7 @@
             "uuid": "92E33ABD-9893-47A9-8922-86146A94C0E4",
             "name": "Dish",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "constraints": {
               "index.dish": "92E33ABD-9893-47A9-8922-86146A94C0E4",
@@ -1127,7 +1167,7 @@
               "targetType": "remote",
               "target": "F668F0D5-80E4-46A4-A703-EF5A1601C645"
             },
-            "titleSets.default": <@include TitleAttributes_Default_Text.json,TEXT=Dish,SIZE=20>,
+            "titleSets.default": <@include TitleAttributes_Default_Text.json,TEXT=Dish,SIZE=32>,
             "backgroundColorSets.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -1135,12 +1175,13 @@
             "uuid": "DB1C794B-A3BB-4C9E-91EC-88A1D3FB401A",
             "name": "PS3",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "constraints": {
               "index.playstation": "DB1C794B-A3BB-4C9E-91EC-88A1D3FB401A",
               "format": "playstation.height = playstation.width"
             },
-            "titleSets.default":<@include TitleAttributes_Default_Text.json,TEXT=PS3,SIZE=20>,
+            "titleSets.default":<@include TitleAttributes_Default_Text.json,TEXT=PS3,SIZE=32>,
             "backgroundColorSets.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -1148,12 +1189,13 @@
             "uuid": "58A7D2DB-9635-486A-9336-43D6292674BA",
             "name": "Apple TV",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "constraints": {
               "index.appleTV": "58A7D2DB-9635-486A-9336-43D6292674BA",
               "format": "appleTV.height = appleTV.width"
             },
-            "titleSets.default": <@include TitleAttributes_Default_Text.json,TEXT= TV,SIZE=20>,
+            "titleSets.default": <@include TitleAttributes_Default_Text.json,TEXT= TV,SIZE=32>,
             "backgroundColorSets.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
@@ -1161,12 +1203,13 @@
             "uuid": "19F3F351-AB2B-435D-A31A-ECB703DDE993",
             "name": "Sonos",
             "shape": "rounded-rectangle",
+            "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "style": "gloss background",
             "constraints": {
               "index.sonos": "19F3F351-AB2B-435D-A31A-ECB703DDE993",
               "format": "sonos.height = sonos.width"
             },
-            "titleSets.default": <@include TitleAttributes_Default_Text.json,TEXT=Sonos,SIZE=20>,
+            "titleSets.default": <@include TitleAttributes_Default_Text.json,TEXT=Sonos,SIZE=32>,
             "backgroundColorSets.default.normal": <@include BackgroundColor_Dark_Normal.json>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           }
