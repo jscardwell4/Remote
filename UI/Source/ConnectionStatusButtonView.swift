@@ -38,7 +38,12 @@ public final class ConnectionStatusButtonView: ButtonView {
       })
   }
 
-  override func drawContentInContext(ctx: CGContextRef, inRect rect: CGRect) {
+  /**
+  drawRect:
+
+  :param: rect CGRect
+  */
+  override public func drawRect(rect: CGRect) {
     let iconColor: UIColor
     if let color = button.iconSet?.normal?.color { iconColor = color }
     else { iconColor = Painter.defaultBackgroundColor }

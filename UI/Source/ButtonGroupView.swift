@@ -209,17 +209,19 @@ public class ButtonGroupView: RemoteElementView {
 
   :param: view RemoteElementView
   */
-  override public func addSubelementView(view: RemoteElementView) {
-    if locked {
-      view.resizable = false
-      view.moveable = false
-    }
-    if let buttonView = view as? ButtonView {
-      if buttonView.model.role == .Tuck {
-        buttonView.tapAction = {self.tuck()}
+  override public func addSubview(view: UIView) {
+    if let elementView = view as? RemoteElementView {
+      if locked {
+        elementView.resizable = false
+        elementView.moveable = false
+      }
+      if let buttonView = elementView as? ButtonView {
+        if buttonView.model.role == .Tuck {
+          buttonView.tapAction = {self.tuck()}
+        }
       }
     }
-    super.addSubelementView(view)
+    super.addSubview(view)
   }
 
   /** addInternalSubviews */
@@ -227,7 +229,7 @@ public class ButtonGroupView: RemoteElementView {
     super.addInternalSubviews()
     let label = UILabel.newForAutolayout()
     label.backgroundColor = UIColor.clearColor()
-    addViewToContent(label)
+    addSubview(label)/*addViewToContent(label)*/
     self.label = label
   }
 
@@ -235,7 +237,7 @@ public class ButtonGroupView: RemoteElementView {
     didSet {
       resizable = editingMode == .Undefined
       moveable = editingMode == .Undefined
-      subelementInteractionEnabled = editingMode != .Remote
+      /*subelementInteractionEnabled = editingMode != .Remote*/
     }
   }
 
@@ -256,6 +258,33 @@ public class ButtonGroupView: RemoteElementView {
   */
   func buttonViewDidExecute(buttonView: ButtonView) {
     if buttonGroup.autohide { MSRunAsyncOnMain{self.tuck()} }
+  }
+
+  /**
+  drawRect:
+
+  :param: rect CGRect
+  */
+  override public func drawRect(rect: CGRect) {
+    if model.style & .DrawBackground != nil && model.shape != .Undefined {
+      var attrs = Painter.Attributes(rect: rect)
+      attrs.color = backgroundColor ?? Painter.defaultBackgroundColor
+      Painter.drawBackgroundWithShape(model.shape, attributes: attrs)
+    }
+
+    if let image = backgroundImage {
+      var attrs = Painter.Attributes(rect: rect)
+      attrs.alpha = CGFloat(backgroundImageAlpha)
+      Painter.drawImage(image, withAttributes: attrs)
+    }
+
+    if model.style & RemoteElement.Style.ApplyGloss != nil && model.shape != .Undefined {
+      var attrs = Painter.Attributes(rect: rect)
+      attrs.alpha = 0.15
+      attrs.blendMode = kCGBlendModeSoftLight
+      Painter.drawGlossWithShape(model.shape, attributes: attrs)
+    }
+
   }
 
 }

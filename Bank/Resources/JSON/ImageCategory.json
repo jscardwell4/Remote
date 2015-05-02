@@ -8,6 +8,20 @@
           "location": "$bank"
         },
         "name": "Pro Dots"
+      },
+      {
+        "asset": {
+          "name": "RealRealCarbon",
+          "location": "$bank"
+        },
+        "name": "Real Real Carbon"
+      },
+      {
+        "asset": {
+          "name": "RealCarbon",
+          "location": "$bank"
+        },
+        "name": "Real Carbon"
       }
     ],
     "subcategories": []

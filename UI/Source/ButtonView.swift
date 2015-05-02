@@ -18,7 +18,7 @@ public class ButtonView: RemoteElementView {
 	weak var labelView: UILabel!
 	weak var activityIndicator: UIActivityIndicatorView!
 
-  public private(set) var title: NSAttributedString? { didSet { labelView?.attributedText = title } }
+  public private(set) var title: NSAttributedString? { didSet { invalidateIntrinsicContentSize(); setNeedsDisplay() } }
   public private(set) var icon: UIImage? { didSet { invalidateIntrinsicContentSize(); setNeedsDisplay() } }
 
   var tapAction: ((Void) -> Void)?
@@ -26,11 +26,11 @@ public class ButtonView: RemoteElementView {
   var button: Button { return model as! Button }
 
   // Prevent subelement views for the button
-	override public func addSubelementView(view: RemoteElementView) {}
-	override public func removeSubelementView(view: RemoteElementView) {}
-	override public func addSubelementViews(views: Set<RemoteElementView>) {}
-	override public func removeSubelementViews(views: Set<RemoteElementView>) {}
-	override public var subelementViews: OrderedSet<RemoteElementView> { return [] }
+	/* override public func addSubelementView(view: RemoteElementView) {}*/
+	/* override public func removeSubelementView(view: RemoteElementView) {}*/
+	/* override public func addSubelementViews(views: Set<RemoteElementView>) {}*/
+	/* override public func removeSubelementViews(views: Set<RemoteElementView>) {}*/
+	/* override public var subelementViews: OrderedSet<RemoteElementView> { return [] }*/
 
 	/**
 	executeActionWithOption:
@@ -100,17 +100,17 @@ public class ButtonView: RemoteElementView {
 	override func addInternalSubviews() {
 		super.addInternalSubviews()
 
-		subelementInteractionEnabled = false
-		contentInteractionEnabled    = false
+		/*subelementInteractionEnabled = false*/
+		/*contentInteractionEnabled    = false*/
 
-		let labelView = UILabel.newForAutolayout()
-		addViewToContent(labelView)
-		self.labelView = labelView
+		/*let labelView = UILabel.newForAutolayout()*/
+		/*addViewToContent(labelView)*/
+		/*self.labelView = labelView*/
 
 		let activityIndicator = UIActivityIndicatorView.newForAutolayout()
 		activityIndicator.activityIndicatorViewStyle = .WhiteLarge
 		activityIndicator.color = UIColor.whiteColor()
-		addViewToOverlay(activityIndicator)
+		addSubview(activityIndicator) /** addViewToOverlay(activityIndicator) */
 		self.activityIndicator = activityIndicator
 	}
 
@@ -121,12 +121,12 @@ public class ButtonView: RemoteElementView {
     let identifier = createIdentifier(self, ["Button", "Internal"])
     if constraintsWithIdentifier(identifier).count == 0 {
       let titleInsets = button.titleEdgeInsets
-      let format = "\n".join("label.left = self.left + \(titleInsets.left) @900",
-                             "label.top = self.top + \(titleInsets.top) @900",
-                             "label.bottom = self.bottom - \(titleInsets.bottom) @900",
-                             "label.right = self.right - \(titleInsets.right) @900",
+      let format = "\n".join(/*"label.left = self.left + \(titleInsets.left) @900",*/
+                             /*"label.top = self.top + \(titleInsets.top) @900",*/
+                             /*"label.bottom = self.bottom - \(titleInsets.bottom) @900",*/
+                             /*"label.right = self.right - \(titleInsets.right) @900",*/
                              "activity.center = self.center")
-      constrain(format, views: ["label": labelView, "activity": activityIndicator], identifier: identifier)
+      constrain(format, views: [/*"label": labelView,*/ "activity": activityIndicator], identifier: identifier)
     }
 	}
 
@@ -217,31 +217,102 @@ public class ButtonView: RemoteElementView {
 	}
 
   /** setNeedsDisplay */
-  override public func setNeedsDisplay() {
+  /*override public func setNeedsDisplay() {
     labelView?.attributedText = button.title
     super.setNeedsDisplay()
-  }
+  }*/
 
 	/**
-	drawContentInContext:inRect:
+	drawRect:
 
-	:param: ctx CGContextRef
 	:param: rect CGRect
 	*/
-	override func drawContentInContext(ctx: CGContextRef, inRect rect: CGRect) {
-		if let icon = button.icon?.colorImage {
-			UIGraphicsPushContext(ctx)
-			let insetRect = button.contentEdgeInsets.insetRect(bounds)
+	override public func drawRect(rect: CGRect) {
+
+    let drawBackground = button.style & .DrawBackground != nil
+    let shape = button.shape == .Undefined ? .Rectangle : button.shape
+    var attrs = Painter.Attributes(rect: rect)
+    let context = UIGraphicsGetCurrentContext()
+
+    // TODO: Check points against path for the sides of min/max font height, i.e. shrink more for diamond/triangle shapes
+    let baseRect = rect.rectByInsetting(dx: 4, dy: 4).integerRect
+
+    let bleedRect = baseRect.rectByInsetting(dx: 4, dy: 4)
+
+    let accentColor = attrs.accentColor ?? Painter.defaultAccentColor
+    let accentShadow: NSShadow? = button.highlighted ? NSShadow(color: accentColor, offset: CGSize.zeroSize, blurRadius: 5) : nil
+
+    // Draw background
+    if drawBackground {
+
+    // Draw shape filled with accent color
+    attrs = Painter.Attributes(rect: bleedRect)
+    attrs.color = accentColor
+    Painter.drawShape(shape, withAttributes: attrs)
+
+    CGContextSaveGState(context)                                                            // context: •
+    accentShadow?.setShadow()
+    CGContextBeginTransparencyLayer(context, nil)                                           // transparency: •
+
+      attrs.color = backgroundColor ?? Painter.defaultBackgroundColor
+      attrs.accentColor = accentColor
+      attrs.rect = baseRect
+      attrs.stroke = button.style & .DrawBorder != nil
+      Painter.drawBaseWithShape(shape, attributes: attrs)
+
+      CGContextSaveGState(context)                                                            // context: ••
+      CGContextSetBlendMode(context, kCGBlendModeDestinationOut)
+      CGContextBeginTransparencyLayer(context, nil)                                           // transparency: ••
+
+      if let image = icon {
+
+        var imageAttrs = attrs
+        imageAttrs.rect = baseRect
+        imageAttrs.alpha = 0.9
+        imageAttrs.shadow = Painter.innerShadow
+        imageAttrs.accentShadow = accentShadow
+
+        Painter.drawImage(image, withAttributes: imageAttrs, boundByShape: shape)
+      }
+
+      if let attributedText = title {
+
+        var txtAttrs = attrs
+        txtAttrs.rect = baseRect
+        txtAttrs.shadow = accentShadow
+        txtAttrs.fontAttributes = attributedText.attributesAtIndex(0, effectiveRange: nil)
+
+        Painter.drawText(attributedText.string, withAttributes: txtAttrs, boundByShape: shape)
+      }
+      
+      CGContextEndTransparencyLayer(context)                                                  // transparency: •
+      CGContextRestoreGState(context)                                                         // context: •
+
+      CGContextEndTransparencyLayer(context)                                                  // transparency:
+      CGContextRestoreGState(context)                                                         // context:
+    } else if let icon = button.icon?.colorImage {
+      let insetRect = button.contentEdgeInsets.insetRect(bounds)
       let imageSize = insetRect.size.contains(icon.size)
-                        ? icon.size
-                        : icon.size.aspectMappedToSize(insetRect.size, binding: true)
-			let imageRect = CGRect(x: insetRect.midX - imageSize.width / 2.0,
-				                     y: insetRect.midY - imageSize.height / 2.0,
-				                     width: imageSize.width,
-				                     height: imageSize.height)
-			icon.drawInRect(imageRect)
-			UIGraphicsPopContext()
-		}
+        ? icon.size
+        : icon.size.aspectMappedToSize(insetRect.size, binding: true)
+      let imageRect = CGRect(x: insetRect.midX - imageSize.width / 2.0,
+        y: insetRect.midY - imageSize.height / 2.0,
+        width: imageSize.width,
+        height: imageSize.height)
+      icon.drawInRect(imageRect)
+    }
+
+
+
+    if button.style & .ApplyGloss != nil {
+
+      var glossAttrs = Painter.Attributes(rect: baseRect)
+      glossAttrs.alpha = 0.1
+      glossAttrs.blendMode = kCGBlendModeSoftLight
+      
+      Painter.drawGlossWithShape(shape, attributes: glossAttrs)
+    }
+
 
 	}
 

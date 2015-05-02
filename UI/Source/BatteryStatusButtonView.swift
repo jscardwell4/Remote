@@ -86,12 +86,11 @@ public final class BatteryStatusButtonView: ButtonView {
 
 
 	/**
-	drawContentInContext:inRect:
+	drawRect:
 
-	:param: ctx CGContextRef
 	:param: rect CGRect
 	*/
-	override func drawContentInContext(ctx: CGContextRef, inRect rect: CGRect) {
+	override public func drawRect(rect: CGRect) {
 
 	  if batteryLevel == -1 {
 	  	let device = UIDevice.currentDevice()

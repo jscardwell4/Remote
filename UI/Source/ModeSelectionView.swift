@@ -53,15 +53,16 @@ public final class ModeSelectionView: ButtonGroupView {
   }
 
   /**
-  drawBackdropInContext:inRect:
+  drawRect:
 
-  :param: ctx CGContextRef
-  :param: inRect CGRect
+  :param: rect CGRect
   */
-  override func drawBackdropInContext(ctx: CGContextRef, inRect: CGRect) {
+  override public func drawRect(rect: CGRect) {
     // TODO: Convert to use PaintCode
+    let context = UIGraphicsGetCurrentContext()
+    
     let panelLocation = (model as! ButtonGroup).panelLocation
-    CGContextClearRect(ctx, bounds)
+    CGContextClearRect(context, bounds)
     var roundedCorners: UIRectCorner
     switch panelLocation {
       case .Right: roundedCorners = UIRectCorner.TopLeft | UIRectCorner.BottomLeft

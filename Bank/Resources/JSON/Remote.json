@@ -44,7 +44,7 @@
     },
     "backgrounds.default": {
       "color": "black",
-      "image.index": "Backgrounds/Pro%20Dots"
+      "image.index": "Backgrounds/Real%20Real%20Carbon"
     },
     "subelements": [
       {
@@ -1081,7 +1081,7 @@
     "shape": "rectangle",
     "backgrounds.default": {
       "color": "black",
-      "image.index": "Backgrounds/Pro%20Dots"
+      "image.index": "Backgrounds/Real%20Real%20Carbon"
     },
     "subelements": [
       {

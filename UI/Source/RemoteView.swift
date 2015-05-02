@@ -32,4 +32,17 @@ public final class RemoteView: RemoteElementView {
 		super.initializeIVARs()
 	}
 
+  /**
+  drawRect:
+
+  :param: rect CGRect
+  */
+  override public func drawRect(rect: CGRect) {
+    if let image = backgroundImage {
+      var attrs = Painter.Attributes(rect: rect)
+      attrs.alpha = CGFloat(backgroundImageAlpha)
+      Painter.drawImage(image, withAttributes: attrs)
+    }
+  }
+
 }

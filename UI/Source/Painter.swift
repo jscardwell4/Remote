@@ -172,7 +172,7 @@ public final class Painter {
   :param: shape Shape = .Rectangle
   */
   public class func drawImage(image: UIImage, withAttributes attrs: Attributes, boundByShape shape: Shape = .Rectangle) {
-    let path = pathForShape(shape, withAttributes: attrs)
+    let path = pathForShape(shape != .Undefined ? shape : .Rectangle, withAttributes: attrs)
     let bounds = path.bounds
     let actualImageSize = image.size
     let boundingSize = bounds.size
