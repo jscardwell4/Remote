@@ -486,7 +486,7 @@
     </entity>
     <entity name="SwitchCommand" representedClassName="SwitchCommand" parentEntity="Command" syncable="YES">
         <attribute name="target" attributeType="String" defaultValueString="REDefaultConfiguration" syncable="YES"/>
-        <attribute name="type" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="targetType" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="SystemCommand" representedClassName="SystemCommand" parentEntity="Command" syncable="YES">
         <attribute name="type" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>

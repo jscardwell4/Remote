@@ -290,6 +290,17 @@ public func detailedDescriptionForError(error: NSError, depth: Int = 0) -> Strin
 }
 
 /**
+descriptionForError:
+
+:param: error NSError?
+
+:returns: String?
+*/
+public func descriptionForError(error: NSError?) -> String? {
+  if let e = error { return detailedDescriptionForError(e, depth: 0) } else { return nil }
+}
+
+/**
 MSHandleError:message:function:line:
 
 :param: error NSError?

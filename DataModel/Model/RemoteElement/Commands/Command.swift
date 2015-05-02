@@ -32,8 +32,12 @@ public class Command: ModelObject {
   :param: completion The block to invoke upon completing command execution
   */
   public func execute(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+    MSLogDebug("beginning execution of \(self.dynamicType.className())…")
     let operation = self.operation
-    operation.completionBlock = {completion?(success: operation.success, error: operation.error)}
+    operation.completionBlock = {
+      MSLogDebug("execution complete  - success = \(operation.success) error = \(toString(descriptionForError(operation.error)))")
+      completion?(success: operation.success, error: operation.error)
+    }
     operation.start()
   }
 

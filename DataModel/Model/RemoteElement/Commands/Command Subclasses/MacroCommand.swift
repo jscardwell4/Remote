@@ -50,40 +50,29 @@ public final class MacroCommand: Command {
 
   /**
   execute:
-  
+
   :param: completion Optional block to invoke after command execution completes
   */
-  override public func execute(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
-    if commands.count > 0 {
-      let operations = commands.map {$0.operation}
-      var precedingOperation: CommandOperation?
-      for operation in operations {
-        if precedingOperation != nil { operation.addDependency(precedingOperation!) }
-        precedingOperation = operation
-      }
-      precedingOperation?.completionBlock = {
-        MSLogDebug("command dispatch complete")
-        let success = operations.filter{$0.success == false}.count > 0
-        var error: NSError?
-        let errors = compressedMap(operations, {$0.error})
-        if errors.count == 1 { error = errors.last }
-        else if errors.count > 1 { error = NSError(domain: "MacroCommandExecution", code: -1, underlyingErrors: errors) }
-        completion?(success: success, error: error)
-      }
-      queue.addOperations((operations as NSOrderedSet).array, waitUntilFinished: false)
-    } else { completion?(success: true, error: nil) }
-  }
-
-//  override var name: String? {
-//    get {
-//      willAccessValueForKey("name")
-//      var name = primitiveValueForKey("name") as? String
-//      didAccessValueForKey("name")
-//
-//      return name ?? "\u{2192}".join(commands?.valueForKeyPath("className") as? Array<String> ?? [])
-//    }
-//    set { super.name = newValue }
-//  }
+  // override public func execute(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
+  //   if commands.count > 0 {
+  //     let operations = commands.map {$0.operation}
+  //     var precedingOperation: CommandOperation?
+  //     for operation in operations {
+  //       if precedingOperation != nil { operation.addDependency(precedingOperation!) }
+  //       precedingOperation = operation
+  //     }
+  //     precedingOperation?.completionBlock = {
+  //       MSLogDebug("command dispatch complete")
+  //       let success = operations.filter{$0.success == false}.count > 0
+  //       var error: NSError?
+  //       let errors = compressedMap(operations, {$0.error})
+  //       if errors.count == 1 { error = errors.last }
+  //       else if errors.count > 1 { error = NSError(domain: "MacroCommandExecution", code: -1, underlyingErrors: errors) }
+  //       completion?(success: success, error: error)
+  //     }
+  //     queue.addOperations((operations as NSOrderedSet).array, waitUntilFinished: false)
+  //   } else { completion?(success: true, error: nil) }
+  // }
 
   override public var description: String {
     var result = super.description

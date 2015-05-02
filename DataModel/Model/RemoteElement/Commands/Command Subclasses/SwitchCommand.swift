@@ -18,18 +18,17 @@ public final class SwitchCommand: Command {
 
   @objc public enum SwitchType: Int { case Undefined = 0, Remote = 1, Mode = 2 }
 
-  @NSManaged var primitiveType: NSNumber
   public var targetType: SwitchType {
     get {
-      willAccessValueForKey("type")
-      let type = primitiveType
-      didAccessValueForKey("type")
-      return SwitchType(rawValue: type.integerValue) ?? .Undefined
+      willAccessValueForKey("targetType")
+      let targetType = primitiveValueForKey("targetType") as! NSNumber
+      didAccessValueForKey("targetType")
+      return SwitchType(rawValue: targetType.integerValue)!
     }
     set {
-      willChangeValueForKey("type")
-      primitiveType = newValue.rawValue
-      didChangeValueForKey("type")
+      willChangeValueForKey("targetType")
+      setPrimitiveValue(newValue.rawValue, forKey: "targetType")
+      didChangeValueForKey("targetType")
     }
   }
 

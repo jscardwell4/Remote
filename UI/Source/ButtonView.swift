@@ -36,6 +36,7 @@ public class ButtonView: RemoteElementView {
 	func executeActionWithOption(option: Command.Option) {
 		if !isEditing {
 			if button.command != nil && button.command!.indicator { activityIndicator.startAnimating() }
+      MSLogDebug("executing command for button named '\(button.name)'")
 			button.executeCommandWithOption(option) {
 				(success: Bool, error: NSError?) -> Void in
 					if self.activityIndicator.isAnimating() {
