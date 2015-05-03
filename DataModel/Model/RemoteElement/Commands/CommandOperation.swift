@@ -12,20 +12,23 @@ import class Networking.ConnectionManager
 
 internal class CommandOperation: NSOperation {
 
+  private var _executing = false
   private(set) override var executing: Bool {
-    get {
-      return super.executing
-    }
+    get { return _executing }
     set {
-      self.executing = newValue
+      willChangeValueForKey("isExecuting")
+      _executing = newValue
+      didChangeValueForKey("isExecuting")
     }
   }
+
+  private var _finished = false
   private(set) override var finished: Bool {
-    get {
-      return super.finished
-    }
+    get { return _finished }
     set {
-      self.finished = newValue
+      willChangeValueForKey("isFinished")
+      _finished = newValue
+      didChangeValueForKey("isFinished")
     }
   }
   private(set) var success: Bool = false {
@@ -48,33 +51,23 @@ internal class CommandOperation: NSOperation {
   /** start */
   override func start() {
     if cancelled {
-      willChangeValueForKey("isFinished")
       finished = true
-      didChangeValueForKey("isFinished")
     } else if let dependencies = dependencies as? [CommandOperation],
       unsuccessfulDependency = findFirst(dependencies, {$0.success == false})
     {
       //TODO: wrap error as underlying error
       error = unsuccessfulDependency.error
-      willChangeValueForKey("isFinished")
       finished = true
-      didChangeValueForKey("isFinished")
     } else {
-      willChangeValueForKey("isExecuting")
       NSThread.detachNewThreadSelector("main", toTarget: self, withObject: nil)
       executing = true
-      didChangeValueForKey("isExecuting")
     }
   }
 
   /** main */
   override func main() {
-    willChangeValueForKey("isFinished")
-    willChangeValueForKey("isExecuting")
     executing = false
     finished = true
-    didChangeValueForKey("isExecuting")
-    didChangeValueForKey("isFinished")
   }
 
 }

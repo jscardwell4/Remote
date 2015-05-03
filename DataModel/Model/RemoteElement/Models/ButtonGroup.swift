@@ -101,19 +101,7 @@ public final class ButtonGroup: RemoteElement {
 
   // MARK: Labels
 
-  public private(set) var label: NSAttributedString? {
-    get {
-      willAccessValueForKey("label")
-      let label = primitiveValueForKey("label") as? NSAttributedString
-      didAccessValueForKey("label")
-      return label
-    }
-    set {
-      willChangeValueForKey("label")
-      setPrimitiveValue(newValue, forKey: "label")
-      didChangeValueForKey("label")
-    }
-  }
+  @NSManaged public private(set) var label: NSAttributedString?
 
   private(set) var labelAttributes: ModalStorage {
     get {

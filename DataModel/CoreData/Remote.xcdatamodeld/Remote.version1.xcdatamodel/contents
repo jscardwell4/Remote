@@ -78,6 +78,11 @@
     </entity>
     <entity name="ButtonGroup" representedClassName="ButtonGroup" parentEntity="RemoteElement" syncable="YES">
         <attribute name="autohide" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="label" optional="YES" attributeType="Transformable" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueClassName" value="NSAttributedString"/>
+            </userInfo>
+        </attribute>
         <attribute name="labelConstraints" optional="YES" attributeType="String" defaultValueString="H:|[label] V:|[label]" syncable="YES"/>
         <attribute name="panelAssignment" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="commandContainer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CommandContainer" inverseName="commandContainerForButtonGroup" inverseEntity="CommandContainer" syncable="YES"/>
@@ -497,7 +502,7 @@
         <element name="ActivityController" positionX="0" positionY="0" width="128" height="105"/>
         <element name="Asset" positionX="36" positionY="153" width="128" height="30"/>
         <element name="Button" positionX="0" positionY="0" width="128" height="375"/>
-        <element name="ButtonGroup" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="ButtonGroup" positionX="0" positionY="0" width="128" height="165"/>
         <element name="Command" positionX="0" positionY="0" width="128" height="120"/>
         <element name="CommandContainer" positionX="0" positionY="0" width="128" height="120"/>
         <element name="CommandSet" positionX="0" positionY="0" width="128" height="90"/>

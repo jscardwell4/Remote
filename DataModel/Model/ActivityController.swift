@@ -55,7 +55,11 @@ public final class ActivityController: ModelObject {
   :returns: ActivityController
   */
   public class func sharedController(context: NSManagedObjectContext) -> ActivityController {
-    return findFirstInContext(context) ?? ActivityController(context: context)
+    if let activityController = (objectsInContext(context) as? [ActivityController])?.first {
+      return activityController
+    } else {
+      return findFirstInContext(context) ?? ActivityController(context: context)
+    }
   }
 
   override public var jsonValue: JSONValue {

@@ -620,6 +620,7 @@
             "uuid": "E9D65885-43D4-4DFA-A3A6-C4ADCF70D94A",
             "name": "Tuck",
             "role": "tuck",
+            "shape": "rectangle",
             "titleSets.default.normal": {
               "font": "FontAwesome@24",
               "foregroundColor": "gray@75%",
@@ -799,6 +800,7 @@
             "uuid": "051E7613-FE45-47CE-AE8A-F50B776348AC",
             "name": "Tuck",
             "role": "tuck",
+            "shape": "rectangle",
             "titleSets.default.normal": {
               "font": "FontAwesome@24",
               "foregroundColor": "gray@75%",
@@ -1082,6 +1084,7 @@
             "uuid": "E205BA81-90BD-4943-B2F5-6230AD2D95E9",
             "name": "Tuck Panel",
             "role": "tuck",
+            "shape": "rectangle",
             "titleSets.default.normal": {
               "font": "FontAwesome@24",
               "foregroundColor": "gray@75%",

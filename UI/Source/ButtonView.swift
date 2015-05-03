@@ -251,11 +251,13 @@ public class ButtonView: RemoteElementView {
       Painter.drawImage(image, withAttributes: attrs, boundByShape: button.shape)
     }
 
-    if let attributedText = title {
+    if let attributedText = title where attributedText.length > 0 {
+      MSLogDebug("drawing title '\(attributedText.string)' for button named '\(button.name)'")
       let txtAttrs = Painter.Attributes(
         rect: (button.contentEdgeInsets + button.titleEdgeInsets).insetRect(bounds),
         shadow: shadow,
-        attributedText: attributedText
+        text: attributedText.string,
+        fontAttributes: attributedText.attributesAtIndex(0, effectiveRange: nil)
       )
       Painter.drawText(attributedText.string, withAttributes: txtAttrs, boundByShape: button.shape)
     }
@@ -307,11 +309,14 @@ public class ButtonView: RemoteElementView {
       Painter.drawImage(image, withAttributes: imageAttrs, boundByShape: button.shape)
     }
 
-    if let attributedText = title {
+    if let attributedText = title where attributedText.length > 0 {
+
+      MSLogDebug("drawing title '\(attributedText.string)' for button named '\(button.name)'")
 
       let txtAttrs = Painter.Attributes(rect: baseRect,
         shadow: accentShadow,
-        attributedText: attributedText
+        text: attributedText.string,
+        fontAttributes: attributedText.attributesAtIndex(0, effectiveRange: nil)
       )
       Painter.drawText(attributedText.string, withAttributes: txtAttrs, boundByShape: button.shape)
     }

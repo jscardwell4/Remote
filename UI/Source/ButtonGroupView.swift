@@ -144,6 +144,10 @@ public class ButtonGroupView: RemoteElementView {
   /** didMoveToSuperview */
   override public func didMoveToSuperview() {
     super.didMoveToSuperview()
+    let superIsNil = superview == nil
+    let groupIsPanel = buttonGroup.isPanel
+    let editing = isEditing
+    MSLogDebug("superIsNil = \(superIsNil) groupIsPanel = \(groupIsPanel) editing = \(editing)")
     if superview != nil && buttonGroup.isPanel && !isEditing {
       var attribute1 = NSLayoutAttribute.NotAnAttribute
       var attribute2 = attribute1

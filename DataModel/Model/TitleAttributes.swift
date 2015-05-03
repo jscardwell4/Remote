@@ -28,7 +28,11 @@ public struct TitleAttributes {
   }
 
   public var icon: String {
-    get { if let name = iconName { return UIFont.fontAwesomeIconForName(name) } else { return "" } }
+    get {
+      if let name = iconName {
+        return UIFont.fontAwesomeIconForName(name)
+      } else { return "" }
+    }
     set { iconName = UIFont.fontAwesomeNameForIcon(newValue) }
   }
 

@@ -40,7 +40,6 @@ public final class Painter {
     public var alpha: CGFloat = 1.0
     public var image: UIImage?
     public var text: String?
-    public var attributedText: NSAttributedString?
     public var fontAttributes: [NSObject:AnyObject]?
     public var adjustFontSize = false
 
@@ -68,7 +67,6 @@ public final class Painter {
     :param: alpha CGFloat = 1.0
     :param: image UIImage? = nil
     :param: text String? = nil
-    :param: attributedText NSAttributedString? = nil
     :param: fontAttributes [NSObject AnyObject]? = nil
     :param: adjustFontSize Bool = false
     */
@@ -88,7 +86,6 @@ public final class Painter {
       alpha: CGFloat = 1.0,
       image: UIImage? = nil,
       text: String? = nil,
-      attributedText: NSAttributedString? = nil,
       fontAttributes: [NSObject:AnyObject]? = nil,
       adjustFontSize: Bool = false)
     {
@@ -107,7 +104,6 @@ public final class Painter {
       self.alpha = alpha
       self.image = image
       self.text = text
-      self.attributedText = attributedText
       self.fontAttributes = fontAttributes
       self.adjustFontSize = adjustFontSize
     }
@@ -429,19 +425,11 @@ public final class Painter {
       drawImage(image, withAttributes: imageAttrs, boundByShape: shape)
     }
 
-    if attributes.text != nil || attributes.attributedText != nil {
+    if let text = attributes.text {
 
       var txtAttrs = attributes
       txtAttrs.rect = baseRect
       txtAttrs.shadow = accentShadow
-
-      let text: String
-      if let attributedText = attributes.attributedText {
-        txtAttrs.fontAttributes = attributedText.attributesAtIndex(0, effectiveRange: nil)
-        text = attributedText.string
-      } else {
-        text = attributes.text!
-      }
 
       drawText(text, withAttributes: txtAttrs, boundByShape: shape)
     }

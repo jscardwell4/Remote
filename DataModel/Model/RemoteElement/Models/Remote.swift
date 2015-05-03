@@ -62,7 +62,10 @@ public final class Remote: RemoteElement {
   */
   public func setButtonGroup(buttonGroup: ButtonGroup?, forPanelAssignment assignment: PanelAssignment) {
     var assignments = panels
-    if assignment != PanelAssignment.Unassigned { assignments[assignment] = UUIDIndex(buttonGroup?.uuid) }
+    if assignment != PanelAssignment.Unassigned {
+      assignments[assignment] = UUIDIndex(buttonGroup?.uuid)
+      buttonGroup?.panelAssignment = assignment
+    }
     panels = assignments
   }
 
