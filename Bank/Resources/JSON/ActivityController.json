@@ -24,7 +24,8 @@
         "connectionStatusButton.left = editRemoteButton.right + 20",
         "connectionStatusButton.width = homeButton.width",
 
-        "editRemoteButton.center = topToolbar.center",
+        "editRemoteButton.centerY = homeButton.centerY",
+        "editRemoteButton.centerX = topToolbar.centerX",
         "editRemoteButton.width = homeButton.width",
 
         "homeButton.centerY = topToolbar.centerY",

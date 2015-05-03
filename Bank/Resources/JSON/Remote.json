@@ -150,7 +150,7 @@
             "dVRActivityRocker.width = 70"
           ]
         },
-        "backgrounds.default.color": "black",
+        "backgrounds.default.color": <@include BackgroundColor_Dark_Normal.json>,
         "subelements": [
           {
             "uuid": "91C3F776-6FB3-438F-9657-758A007CC23E",
@@ -247,22 +247,20 @@
             "dVRActivityDPad.width = dVRActivityDPad.height"
           ]
         },
-        "backgrounds.default.color": "black",
+        "backgrounds.default.color": <@include BackgroundColor_Dark_Normal.json>,
         "subelements": [
           {
             "uuid": "83B25E99-F70E-45DF-9831-FCBE2C34F6ED",
             "name": "Button Center",
             "role": "center",
             "shape": "rectangle",
+            "style": "gloss",
             "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "constraints": {
               "index.buttonCenter": "83B25E99-F70E-45DF-9831-FCBE2C34F6ED",
               "format": "buttonCenter.height = buttonCenter.width"
             },
-            "titleSets.default": {
-              "normal": <@include TitleAttributes_Default_Text.json,TEXT=OK,SIZE=28>,
-              "highlighted.foregroundColor": <@include ForegroundColor_Highlighted.json>
-            },
+            "titleSets.default": <@include TitleAttributes_Default_Text.json,TEXT=OK,SIZE=28>,
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
           },
           {
@@ -270,6 +268,7 @@
             "name": "Button Up",
             "role": "up",
             "shape": "rectangle",
+            "style": "gloss",
             "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "iconSets.default": {
               "normal": {
@@ -285,6 +284,7 @@
             "name": "Button Down",
             "role": "down",
             "shape": "rectangle",
+            "style": "gloss",
             "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "iconSets.default": {
               "normal": {
@@ -300,6 +300,7 @@
             "name": "Button Left",
             "role": "left",
             "shape": "rectangle",
+            "style": "gloss",
             "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "iconSets.default": {
               "normal": {
@@ -315,6 +316,7 @@
             "name": "Button Right",
             "role": "right",
             "shape": "rectangle",
+            "style": "gloss",
             "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "iconSets.default": {
               "normal": {
@@ -395,7 +397,7 @@
             },
             "iconSets.default": {
               "normal": {
-                "image.index": "Icons/Glyphish%203/Outlet",
+                "image.index": "Icons/Glyphish%203/Xtras/Power",
                 "color": <@include ForegroundColor_Normal.json>
               },
               "highlighted.color": <@include ForegroundColor_Highlighted.json>,

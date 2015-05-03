@@ -94,8 +94,8 @@ public final class RockerView: ButtonGroupView {
   }
 
   /** initializeViewFromModel */
-  override func initializeViewFromModel() {
-    super.initializeViewFromModel()
+  override func updateViewFromModel() {
+    super.updateViewFromModel()
     buildLabels()
     buttonGroup.commandSetIndex = labelIndex
   }

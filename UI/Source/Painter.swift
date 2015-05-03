@@ -13,6 +13,8 @@ import UIKit
 import MoonKit
 import DataModel
 
+// MARK: - Private globals for convenience
+
 private let white = UIColor.whiteColor()
 private let white0_5 = white.colorWithAlphaComponent(0.5)
 private let white0_0 = UIColor(red: 1, green: 1, blue: 1, alpha: 0)
@@ -24,7 +26,9 @@ private let offset1_neg6 = CGSize(width: 0.1, height: -0.6)
 
 public final class Painter {
 
-  public struct Attributes {
+  // MARK: - Attributes structure to simplify method parameters
+
+  public struct Attributes: DictionaryLiteralConvertible, Printable {
     public var color: UIColor?
     public var accentColor: UIColor?
     public var foregroundColor: UIColor?
@@ -43,10 +47,26 @@ public final class Painter {
     public var fontAttributes: [NSObject:AnyObject]?
     public var adjustFontSize = false
 
-    public func attributesWithShadow(shadow: NSShadow?) -> Attributes {
-      var attrs = self
-      attrs.shadow = shadow
-      return attrs
+    public var description: String {
+      var result = "Painter.Attributes:\n"
+      result += "\tcolor = \(toString(color))\n"
+      result += "\taccentColor = \(toString(accentColor))\n"
+      result += "\tforegroundColor = \(toString(foregroundColor))\n"
+      result += "\trect = \(toString(rect))\n"
+      result += "\tlineWidth = \(toString(lineWidth))\n"
+      result += "\tcorners = \(toString(corners))\n"
+      result += "\tradii = \(toString(radii))\n"
+      result += "\tshadow = \(toString(shadow))\n"
+      result += "\taccentShadow = \(toString(accentShadow))\n"
+      result += "\tblendMode = \(toString(blendMode))\n"
+      result += "\tstroke = \(toString(stroke))\n"
+      result += "\tfill = \(toString(fill))\n"
+      result += "\talpha = \(toString(alpha))\n"
+      result += "\timage = \(toString(image))\n"
+      result += "\ttext = \(toString(text))\n"
+      result += "\tfontAttributes = \(toString(fontAttributes))\n"
+      result += "\tadjustFontSize = \(toString(adjustFontSize))\n"
+      return result
     }
 
     /**
@@ -107,9 +127,81 @@ public final class Painter {
       self.fontAttributes = fontAttributes
       self.adjustFontSize = adjustFontSize
     }
+
+    public enum Parameter: String {
+      case Color = "color"
+      case AccentColor = "accentColor"
+      case ForegroundColor = "foregroundColor"
+      case Rect = "rect"
+      case LineWidth = "lineWidth"
+      case Corners = "corners"
+      case Radii = "radii"
+      case Shadow = "shadow"
+      case AccentShadow = "accentShadow"
+      case BlendMode = "blendMode"
+      case Stroke = "stroke"
+      case Fill = "fill"
+      case Alpha = "alpha"
+      case Image = "image"
+      case Text = "text"
+      case FontAttributes = "fontAttributes"
+      case AdjustFontSize = "adjustFontSize"
+
+      public func value<T>(attrs: Attributes) -> T? {
+        switch self {
+          case .Color: return attrs.color as? T
+          case .AccentColor: return attrs.accentColor as? T
+          case .ForegroundColor: return attrs.foregroundColor as? T
+          case .Rect: return attrs.rect as? T
+          case .LineWidth: return attrs.lineWidth as? T
+          case .Corners: return attrs.corners as? T
+          case .Radii: return attrs.radii as? T
+          case .Shadow: return attrs.shadow as? T
+          case .AccentShadow: return attrs.accentShadow as? T
+          case .BlendMode: return attrs.blendMode as? T
+          case .Stroke: return attrs.stroke as? T
+          case .Fill: return attrs.fill as? T
+          case .Alpha: return attrs.alpha as? T
+          case .Image: return attrs.image as? T
+          case .Text: return attrs.text as? T
+          case .FontAttributes: return attrs.fontAttributes as? T
+          case .AdjustFontSize: return attrs.adjustFontSize as? T
+        }
+      }
+
+      public func setValue<T>(value: T?, inout forAttributes attrs: Attributes) {
+        switch self {
+          case .Color: attrs.color = value as? UIColor
+          case .AccentColor: attrs.accentColor = value as? UIColor
+          case .ForegroundColor: attrs.foregroundColor = value as? UIColor
+          case .Rect: if let r = value as? CGRect { attrs.rect = r }
+          case .LineWidth: if let f = value as? CGFloat { attrs.lineWidth = f }
+          case .Alpha: if let f = value as? CGFloat { attrs.alpha = f }
+          case .Corners: if let c = value as? UIRectCorner { attrs.corners = c }
+          case .Radii: if let s = value as? CGSize { attrs.radii = s }
+          case .Shadow: attrs.shadow = value as? NSShadow
+          case .AccentShadow: attrs.accentShadow = value as? NSShadow
+          case .BlendMode:  if let b = value as? CGBlendMode { attrs.blendMode = b }
+          case .Stroke:  if let b = value as? Bool { attrs.stroke = b }
+          case .Fill:  if let b = value as? Bool { attrs.fill = b }
+          case .AdjustFontSize: if let b = value as? Bool { attrs.adjustFontSize = b }
+          case .Image: attrs.image = value as? UIImage
+          case .Text: attrs.text = value as? String
+          case .FontAttributes: attrs.fontAttributes = value as? [NSObject:AnyObject]
+        }
+      }
+    }
+
+    // ???: Getting different results when using this initializer
+    public init(dictionaryLiteral elements: (Parameter, Any)...) {
+      rect = CGRect.zeroRect
+      apply(elements){$0.setValue($1, forAttributes: &self)}
+    }
   }
 
   public typealias Shape = RemoteElement.Shape
+
+  // MARK: - Static properties
 
   public static let defaultBackgroundColor = UIColor(r: 41, g: 40, b: 39, a: 255)!
   public static let defaultForegroundColor = white
@@ -132,13 +224,14 @@ public final class Painter {
   public static let cutoutShadow:    NSShadow = NSShadow(color: black,     offset: offset1_neg1, blurRadius: 1)
   public static let glowingShadow:   NSShadow = NSShadow(color: white,     offset: offset1_neg1, blurRadius: 5)
 
+
+  // MARK: - Gettings paths for a shape
+
   /**
-  pathForShape:inRect:byRoundingCorners:withRadii:
+  pathForShape:withAttributes:
 
   :param: shape Shape
-  :param: rect CGRect
-  :param: corners UIRectCorner = defaultCorners
-  :param: radii CGSize = defaultRadii
+  :param: attrs Attributes
 
   :returns: UIBezierPath
   */
@@ -163,6 +256,36 @@ public final class Painter {
   }
 
   /**
+  inscribedRectangleForShape:withAttributes:
+
+  :param: shape Shape
+  :param: attrs Attributes
+
+  :returns: UIBezierPath
+  */
+  public class func inscribedRectangleForShape(shape: Shape, withAttributes attrs: Attributes) -> UIBezierPath {
+    switch shape {
+      case .RoundedRectangle:
+        let halfRadii = attrs.radii * 0.5
+        return UIBezierPath(rect: attrs.rect.rectByInsetting(dx: halfRadii.width, dy: halfRadii.height))
+      case .Oval:
+        let (w, h) = attrs.rect.size.unpack()
+        return UIBezierPath(rect: attrs.rect.rectByInsetting(dx: sqrt(w * 2.0) * 0.5, dy: sqrt(h * 2.0) * 0.5))
+      case .Triangle:
+        let size = attrs.rect.size * 0.5
+        let origin = CGPoint(x: 0.5 * size.width, y: size.height)
+        return UIBezierPath(rect: CGRect(origin: origin, size: size))
+      case .Diamond:
+        let (dx, dy) = (attrs.rect.size * 0.25).unpack()
+        return UIBezierPath(rect: attrs.rect.rectByInsetting(dx: dx, dy: dy))
+      default:
+        return UIBezierPath(rect: attrs.rect)
+    }
+  }
+
+  // MARK: - Single element drawing routines
+
+  /**
   drawText:withAttributes:boundByShape:
 
   :param: text String
@@ -171,8 +294,9 @@ public final class Painter {
   */
   public class func drawText(text: String, withAttributes attrs: Attributes, boundByShape shape: Shape = .Rectangle) {
 
-    let path = pathForShape(shape, withAttributes: attrs)
+    let path = inscribedRectangleForShape(shape, withAttributes: attrs)
     let bounds = path.bounds
+    if bounds.isEmpty { return }
 
     let appliedFontSize: CGFloat = min(bounds.width / CGFloat(count(text.utf16)), bounds.height)
 
@@ -180,7 +304,14 @@ public final class Painter {
 
     CGContextSaveGState(context)                                                          // context: •
     attrs.shadow?.setShadow()
+
+    CGContextSetAlpha(context, attrs.alpha)
+    CGContextSetBlendMode(context, attrs.blendMode)
+    CGContextBeginTransparencyLayer(context, nil)                                         // transparency: •
+
+    CGContextSaveGState(context)                                                          // context: ••
     attrs.accentShadow?.setShadow()
+    CGContextBeginTransparencyLayer(context, nil)                                         // transparency: ••
 
     var textAttributes: [NSObject:AnyObject] = attrs.fontAttributes ?? [:]
     if let font = textAttributes[NSFontAttributeName] as? UIFont where attrs.adjustFontSize {
@@ -199,7 +330,7 @@ public final class Painter {
                                                               options: NSStringDrawingOptions.UsesLineFragmentOrigin,
                                                            attributes: textAttributes,
                                                               context: nil).size.height
-    CGContextSaveGState(context)                                                          // context: ••
+    CGContextSaveGState(context)                                                          // context: •••
     path.addClip()
 
     let textRect = CGRect(x: bounds.minX,
@@ -207,7 +338,11 @@ public final class Painter {
                           width: bounds.width,
                           height: textHeight)
     (text as NSString).drawInRect(textRect, withAttributes: textAttributes)
+
+    CGContextRestoreGState(context)                                                       // context: ••
+    CGContextEndTransparencyLayer(context)                                                // transparency: •
     CGContextRestoreGState(context)                                                       // context: •
+    CGContextEndTransparencyLayer(context)                                                // transparency:
     CGContextRestoreGState(context)                                                       // context:
 
   }
@@ -220,7 +355,7 @@ public final class Painter {
   :param: shape Shape = .Rectangle
   */
   public class func drawImage(image: UIImage, withAttributes attrs: Attributes, boundByShape shape: Shape = .Rectangle) {
-    let path = pathForShape(shape != .Undefined ? shape : .Rectangle, withAttributes: attrs)
+    let path = inscribedRectangleForShape(shape, withAttributes: attrs)
     let bounds = path.bounds
     if bounds.isEmpty { return }
     let imageSize = bounds.size.contains(image.size)
@@ -275,12 +410,21 @@ public final class Painter {
 
     let path = pathForShape(shape, withAttributes: attributes)
 
-    if attributes.fill, let c = attributes.color { c.setFill(); path.fill() }
-    if attributes.stroke, let c = attributes.accentColor ?? attributes.color { c.setStroke(); path.stroke() }
+    if attributes.fill, let color = attributes.color {
+      color.setFill()
+      path.fill()
+    }
+
+    if attributes.stroke, let color = attributes.accentColor ?? attributes.foregroundColor ?? attributes.color {
+      color.setStroke()
+      path.stroke()
+    }
 
     CGContextRestoreGState(context)
 
   }
+
+  // MARK: - Composite drawing routines
 
   /**
   drawBackgroundWithShape:attributes:
@@ -296,7 +440,7 @@ public final class Painter {
     attrs.shadow = outerShadow
     drawShape(shape, withAttributes: attrs)
 
-    CGContextBeginTransparencyLayer(context, nil)                                           // transparency: •
+    CGContextBeginTransparencyLayer(context, nil)
 
     let opaqueInnerShadow = innerShadow.shadowWithAlpha(1.0)
     attrs.shadow = opaqueInnerShadow
@@ -305,7 +449,7 @@ public final class Painter {
 
     drawShape(shape, withAttributes: attrs)
 
-    CGContextEndTransparencyLayer(context)                                                  // transparency:
+    CGContextEndTransparencyLayer(context)
   }
 
   /**
@@ -338,7 +482,8 @@ public final class Painter {
     CGContextSetBlendMode(context, attributes.blendMode)
     CGContextSetAlpha(context, attributes.alpha)
 
-    pathForShape(shape, withAttributes: attributes).addClip()
+    let path = pathForShape(shape, withAttributes: attributes)
+    if !path.bounds.isEmpty { path.addClip() }
 
     let bounds = CGContextGetClipBoundingBox(context)
     let p1 = CGPoint(x: bounds.midX, y: bounds.midY + 0.5 * bounds.height)
@@ -361,7 +506,7 @@ public final class Painter {
     drawBackgroundWithShape(shape, attributes: attributes)
 
     // Stroke shape if attributes have stroke set to true
-    if attributes.stroke {strokeShape(shape, withAttributes: attributes) }
+    if attributes.stroke { strokeShape(shape, withAttributes: attributes) }
 
     // Draw glossy overlay
     var glossAttrs = attributes
@@ -383,7 +528,6 @@ public final class Painter {
   public class func drawButtonWithShape(shape: Shape, attributes: Attributes, gloss: Bool = true, highlighted: Bool = false) {
     let context = UIGraphicsGetCurrentContext()
 
-    // TODO: Check points against path for the sides of min/max font height, i.e. shrink more for diamond/triangle shapes
     let baseRect = attributes.rect.rectByInsetting(dx: 4, dy: 4).integerRect
 
     let bleedRect = baseRect.rectByInsetting(dx: 4, dy: 4)
@@ -455,6 +599,8 @@ public final class Painter {
     }
 
   }
+
+  // MARK: - Specialized drawing routines
 
   /**
   drawBatteryStatus:hasPower:chargeLevel:frame:

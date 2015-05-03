@@ -35,7 +35,6 @@ public class RemoteElementView: UIView {
   :returns: RemoteElementView
   */
   class func viewWithModel(model: RemoteElement) -> RemoteElementView? {
-    MSLogVerbose(model.description)
     switch model.elementType {
       case .Remote: return RemoteView(model: model)
       case .ButtonGroup:
@@ -67,6 +66,9 @@ public class RemoteElementView: UIView {
   :param: model RemoteElement
   */
   required public init(model: RemoteElement) {
+    if model.role & .DPad == RemoteElement.Role.DPad {
+      MSLogDebug(model.description)
+    }
     super.init(frame: CGRect.zeroRect)
     setTranslatesAutoresizingMaskIntoConstraints(false)
     self.model = model
@@ -454,6 +456,7 @@ public class RemoteElementView: UIView {
 
   static let dumpObservation: (KVOReceptionist) -> Void = { receptionist in
     let element = (receptionist.observer as! RemoteElementView).model
+    if element.role & .DPad != RemoteElement.Role.DPad { return }
     let name = element.name
     let type = element.elementType.stringValue
     let property = receptionist.keyPath
@@ -463,7 +466,7 @@ public class RemoteElementView: UIView {
     else { valueString = toString(value) }
     var string = "observed new value '\(valueString)' for property '\(property)' "
     string += " for \(type) named '\(name)' with faulting state '\(element.faultingState)', fault = \(element.fault)'"
-    MSLogVerbose(string)
+    MSLogDebug(string)
   }
 
   /**
@@ -561,57 +564,6 @@ public class RemoteElementView: UIView {
   private func refreshBoundary() { boundaryOverlay.path = boundaryPath }
 
   private var boundaryPath: CGPath { return (borderPath ?? UIBezierPath(rect: bounds)).CGPath }
-
-  // MARK: - Drawing
-
-  override public func drawRect(rect: CGRect) {
-    let context = UIGraphicsGetCurrentContext()
-    drawBackdropInContext(context, inRect: rect)
-    drawContentInContext(context, inRect: rect)
-    drawOverlayInContext(context, inRect: rect)
-  }
-
-  /**
-  drawContentInContext:inRect:
-
-  :param: ctx CGContextRef
-  :param: rect CGRect
-  */
-  func drawContentInContext(ctx: CGContextRef, inRect rect: CGRect) {}
-
-  /**
-  drawBackdropInContext:inRect:
-
-  :param: ctx CGContextRef
-  :param: rect CGRect
-  */
-  func drawBackdropInContext(ctx: CGContextRef, inRect rect: CGRect) {
-
-    if model.style & .DrawBackground != nil && model.shape != .Undefined {
-      var attrs = Painter.Attributes(rect: rect)
-      attrs.color = backgroundColor ?? Painter.defaultBackgroundColor
-      Painter.drawBackgroundWithShape(model.shape, attributes: attrs)
-    }
-
-    if let image = backgroundImage { Painter.drawImage(image, withAttributes: Painter.Attributes(rect: rect)) }
-  }
-
-  /**
-  drawOverlayInContext:inRect:
-
-  :param: ctx CGContextRef
-  :param: rect CGRect
-  */
-  func drawOverlayInContext(ctx: CGContextRef, inRect rect: CGRect) {
-
-    if model.style & RemoteElement.Style.ApplyGloss != nil && model.shape != .Undefined {
-      var attrs = Painter.Attributes(rect: rect)
-      attrs.alpha = 0.15
-      attrs.blendMode = kCGBlendModeSoftLight
-      Painter.drawGlossWithShape(model.shape, attributes: attrs)
-    }
-
-  }
 
   /** refreshBorderPath */
   private func refreshBorderPath() {

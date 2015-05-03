@@ -331,6 +331,11 @@ public struct UUIDIndex: RawRepresentable {
   
 }
 
+// MARK: Printable
+extension UUIDIndex: Printable {
+  public var description: String { return rawValue }
+}
+
 // MARK: JSONValueConvertible
 extension UUIDIndex: JSONValueConvertible {
   public var jsonValue: JSONValue { return rawValue.jsonValue }

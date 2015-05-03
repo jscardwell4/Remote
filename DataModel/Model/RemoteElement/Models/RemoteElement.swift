@@ -255,7 +255,7 @@ public class RemoteElement: IndexedModelObject {
   public func backgroundForMode(mode: Mode) -> Background? { return backgrounds[mode] }
 
   /**
-  Accessor for the `Background` associated with the specified `Mode`. If one does not exist a copy is made of the 
+  Accessor for the `Background` associated with the specified `Mode`. If one does not exist a copy is made of the
   `Background` for `RemoteElement.Default`. If that does not exist a new `Background` is created and returned.
 
   :param: mode Mode
@@ -279,38 +279,39 @@ public class RemoteElement: IndexedModelObject {
   // MARK: - Role
 
   /**
-  The `Role` structure encapsulates the role an element fulfills.
+  The `Role` structure encapsulates the role an element fulfills. The currently are not any roles
+  for `Remote` elements.
 
   Encoding:
 
     .0000 000 0000 000 00
     └─┬──┴─┬─┴─┬──┴─┬─┴┬─┘
     . │    │   │    │  │
-    . │    │   │    │  └─────> the element's base type
-    . │    │   │    └────────> the parent's generalized role
-    . │    │   └─────────────> the parent's specialized role
-    . │    └─────────────────> the generalized role
-    . └──────────────────────> the specialized role
+    . │    │   │    │  └─────> `ButtonGroup` or `Button` role
+    . │    │   │    └────────> Generalized `ButtonGroup` role
+    . │    │   └─────────────> Specialized `ButtonGroup` role
+    . │    └─────────────────> Generalized `Button` role
+    . └──────────────────────> Specialized `Button` role
 
   */
   public struct Role: RawOptionSetType {
 
     private(set) public var rawValue: UInt16
-    public init(rawValue: UInt16) { self.rawValue = rawValue & 0b1111_011_0111_011_11 }
+    public init(rawValue: UInt16) { self.rawValue = rawValue & 0b1111_000_0001_111_11 }
     public init(nilLiteral:()) { rawValue = 0 }
     public static var allZeros: Role { return Role.Undefined }
 
     public static var Undefined:            Role = Role(rawValue: 0b0000_000_0000_000_00)
 
     // button group roles
-    public static var Panel:                Role = Role(rawValue: 0b0000_001_0000_000_01)
-    public static var SelectionPanel:       Role = Role(rawValue: 0b0001_001_0000_000_01)
-    public static var Toolbar:              Role = Role(rawValue: 0b0000_010_0000_000_01)
-    public static var TopToolbar:           Role = Role(rawValue: 0b0001_010_0000_000_01)
-    public static var DPad:                 Role = Role(rawValue: 0b0001_000_0000_000_01)
-    public static var Numberpad:            Role = Role(rawValue: 0b0010_000_0000_000_01)
-    public static var Transport:            Role = Role(rawValue: 0b0011_000_0000_000_01)
-    public static var Rocker:               Role = Role(rawValue: 0b0100_000_0000_000_01)
+    public static var Panel:                Role = Role(rawValue: 0b0000_000_0000_001_01)
+    public static var SelectionPanel:       Role = Role(rawValue: 0b0000_000_0001_001_01)
+    public static var Toolbar:              Role = Role(rawValue: 0b0000_000_0000_010_01)
+    public static var TopToolbar:           Role = Role(rawValue: 0b0000_000_0001_010_01)
+    public static var DPad:                 Role = Role(rawValue: 0b0000_000_0000_011_01)
+    public static var Numberpad:            Role = Role(rawValue: 0b0000_000_0000_100_01)
+    public static var Transport:            Role = Role(rawValue: 0b0000_000_0000_101_01)
+    public static var Rocker:               Role = Role(rawValue: 0b0000_000_0000_110_01)
 
     // toolbar buttons
     public static var ToolbarButton:        Role = Role(rawValue: 0b0000_000_0000_010_11)
@@ -320,10 +321,10 @@ public class RemoteElement: IndexedModelObject {
     public static var ToolbarButtonMask:    Role = Role(rawValue: 0b0011_000_0000_010_11)
 
     // picker label buttons
-    public static var RockerButton:         Role = Role(rawValue: 0b0000_000_0100_000_11)
-    public static var Top:                  Role = Role(rawValue: 0b0001_000_0100_000_11)
-    public static var Bottom:               Role = Role(rawValue: 0b0010_000_0100_000_11)
-    public static var RockerButtonMask:     Role = Role(rawValue: 0b0011_000_0100_000_11)
+    public static var RockerButton:         Role = Role(rawValue: 0b0000_000_0000_110_11)
+    public static var Top:                  Role = Role(rawValue: 0b0001_000_0000_110_11)
+    public static var Bottom:               Role = Role(rawValue: 0b0010_000_0000_110_11)
+    public static var RockerButtonMask:     Role = Role(rawValue: 0b0011_000_0000_110_11)
 
     // panel buttons
     public static var PanelButton:          Role = Role(rawValue: 0b0000_000_0000_001_11)
@@ -332,42 +333,42 @@ public class RemoteElement: IndexedModelObject {
     public static var PanelButtonMask:      Role = Role(rawValue: 0b0001_000_0001_001_11)
 
     // dpad buttons
-    public static var DPadButton:           Role = Role(rawValue: 0b0000_000_0001_000_11)
-    public static var Up:                   Role = Role(rawValue: 0b0001_000_0001_000_11)
-    public static var Down:                 Role = Role(rawValue: 0b0010_000_0001_000_11)
-    public static var Left:                 Role = Role(rawValue: 0b0011_000_0001_000_11)
-    public static var Right:                Role = Role(rawValue: 0b0100_000_0001_000_11)
-    public static var Center:               Role = Role(rawValue: 0b0101_000_0001_000_11)
-    public static var DPadButtonMask:       Role = Role(rawValue: 0b0111_000_0001_000_11)
+    public static var DPadButton:           Role = Role(rawValue: 0b0000_000_0000_011_11)
+    public static var Up:                   Role = Role(rawValue: 0b0001_000_0000_011_11)
+    public static var Down:                 Role = Role(rawValue: 0b0010_000_0000_011_11)
+    public static var Left:                 Role = Role(rawValue: 0b0011_000_0000_011_11)
+    public static var Right:                Role = Role(rawValue: 0b0100_000_0000_011_11)
+    public static var Center:               Role = Role(rawValue: 0b0101_000_0000_011_11)
+    public static var DPadButtonMask:       Role = Role(rawValue: 0b0111_000_0000_011_11)
 
 
     // numberpad buttons
-    public static var NumberpadButton:      Role = Role(rawValue: 0b0000_000_0010_000_11)
-    public static var One:                  Role = Role(rawValue: 0b0001_000_0010_000_11)
-    public static var Two:                  Role = Role(rawValue: 0b0010_000_0010_000_11)
-    public static var Three:                Role = Role(rawValue: 0b0011_000_0010_000_11)
-    public static var Four:                 Role = Role(rawValue: 0b0100_000_0010_000_11)
-    public static var Five:                 Role = Role(rawValue: 0b0101_000_0010_000_11)
-    public static var Six:                  Role = Role(rawValue: 0b0110_000_0010_000_11)
-    public static var Seven:                Role = Role(rawValue: 0b0111_000_0010_000_11)
-    public static var Eight:                Role = Role(rawValue: 0b1000_000_0010_000_11)
-    public static var Nine:                 Role = Role(rawValue: 0b1001_000_0010_000_11)
-    public static var Zero:                 Role = Role(rawValue: 0b1010_000_0010_000_11)
-    public static var Aux1:                 Role = Role(rawValue: 0b1011_000_0010_000_11)
-    public static var Aux2:                 Role = Role(rawValue: 0b1100_000_0010_000_11)
-    public static var NumberpadButtonMask:  Role = Role(rawValue: 0b1111_000_0010_000_11)
+    public static var NumberpadButton:      Role = Role(rawValue: 0b0000_000_0000_100_11)
+    public static var One:                  Role = Role(rawValue: 0b0001_000_0000_100_11)
+    public static var Two:                  Role = Role(rawValue: 0b0010_000_0000_100_11)
+    public static var Three:                Role = Role(rawValue: 0b0011_000_0000_100_11)
+    public static var Four:                 Role = Role(rawValue: 0b0100_000_0000_100_11)
+    public static var Five:                 Role = Role(rawValue: 0b0101_000_0000_100_11)
+    public static var Six:                  Role = Role(rawValue: 0b0110_000_0000_100_11)
+    public static var Seven:                Role = Role(rawValue: 0b0111_000_0000_100_11)
+    public static var Eight:                Role = Role(rawValue: 0b1000_000_0000_100_11)
+    public static var Nine:                 Role = Role(rawValue: 0b1001_000_0000_100_11)
+    public static var Zero:                 Role = Role(rawValue: 0b1010_000_0000_100_11)
+    public static var Aux1:                 Role = Role(rawValue: 0b1011_000_0000_100_11)
+    public static var Aux2:                 Role = Role(rawValue: 0b1100_000_0000_100_11)
+    public static var NumberpadButtonMask:  Role = Role(rawValue: 0b1111_000_0000_100_11)
 
     // transport buttons
-    public static var TransportButton:      Role = Role(rawValue: 0b0000_000_0011_000_11)
-    public static var Play:                 Role = Role(rawValue: 0b0001_000_0011_000_11)
-    public static var Stop:                 Role = Role(rawValue: 0b0010_000_0011_000_11)
-    public static var Pause:                Role = Role(rawValue: 0b0011_000_0011_000_11)
-    public static var Skip:                 Role = Role(rawValue: 0b0100_000_0011_000_11)
-    public static var Replay:               Role = Role(rawValue: 0b0101_000_0011_000_11)
-    public static var FF:                   Role = Role(rawValue: 0b0110_000_0011_000_11)
-    public static var Rewind:               Role = Role(rawValue: 0b0111_000_0011_000_11)
-    public static var Record:               Role = Role(rawValue: 0b1000_000_0011_000_11)
-    public static var TransportButtonMask:  Role = Role(rawValue: 0b1111_000_0011_000_11)
+    public static var TransportButton:      Role = Role(rawValue: 0b0000_000_0000_101_11)
+    public static var Play:                 Role = Role(rawValue: 0b0001_000_0000_101_11)
+    public static var Stop:                 Role = Role(rawValue: 0b0010_000_0000_101_11)
+    public static var Pause:                Role = Role(rawValue: 0b0011_000_0000_101_11)
+    public static var Skip:                 Role = Role(rawValue: 0b0100_000_0000_101_11)
+    public static var Replay:               Role = Role(rawValue: 0b0101_000_0000_101_11)
+    public static var FF:                   Role = Role(rawValue: 0b0110_000_0000_101_11)
+    public static var Rewind:               Role = Role(rawValue: 0b0111_000_0000_101_11)
+    public static var Record:               Role = Role(rawValue: 0b1000_000_0000_101_11)
+    public static var TransportButtonMask:  Role = Role(rawValue: 0b1111_000_0000_101_11)
 
     public static var buttonGroupRoles: [Role] {
       return [.Undefined, .SelectionPanel, .Toolbar, .TopToolbar, .DPad, .Numberpad, .Transport, .Rocker]

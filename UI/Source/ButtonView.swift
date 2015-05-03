@@ -187,6 +187,10 @@ public class ButtonView: RemoteElementView {
       RemoteElementView.dumpObservation($0)
       ($0.observer as? ButtonView)?.icon = ($0.object as? Button)?.icon?.colorImage
     }
+    registry["longPressCommand"] = {
+      RemoteElementView.dumpObservation($0)
+      ($0.observer as? ButtonView)?.longPressGesture.enabled = ($0.object as? Button)?.longPressCommand != nil
+    }
     registry["state"] = {
       RemoteElementView.dumpObservation($0)
       ($0.observer as? ButtonView)?.updateStateSensitiveProperties()
@@ -229,7 +233,7 @@ public class ButtonView: RemoteElementView {
 	:param: rect CGRect
 	*/
 	override public func drawRect(rect: CGRect) {
-    if button.style & .DrawBackground != nil { drawWithBackgroundInRect(rect) } else  { drawWithoutBackgroundInRect(rect) }
+    if hasOption(.DrawBackground, button.style) { drawWithBackgroundInRect(rect) } else  { drawWithoutBackgroundInRect(rect) }
 	}
 
   /**
@@ -239,20 +243,31 @@ public class ButtonView: RemoteElementView {
   */
   private func drawWithoutBackgroundInRect(rect: CGRect) {
     let context = UIGraphicsGetCurrentContext()
-    let fg = foregroundColor ?? Painter.defaultForegroundColor
-    let shadow: NSShadow? = button.highlighted ? NSShadow(color: fg, offset: CGSize.zeroSize, blurRadius: 5) : nil
+    let fgColor = foregroundColor ?? Painter.defaultForegroundColor
+    let shadow: NSShadow? = button.highlighted ? NSShadow(color: fgColor, offset: CGSize.zeroSize, blurRadius: 5) : nil
+
+    CGContextSaveGState(context)
+    shadow?.setShadow()
+    CGContextBeginTransparencyLayer(context, nil)
+
+    CGContextSaveGState(context)
+    fgColor.setFill()
+    UIRectFill(rect)
+
+    CGContextSetBlendMode(context, kCGBlendModeDestinationIn)
+    CGContextBeginTransparencyLayer(context, nil)
 
     if let image = icon {
-      let attrs = Painter.Attributes(
+      let imageAttrs = Painter.Attributes(
         rect: (button.contentEdgeInsets + button.imageEdgeInsets).insetRect(bounds),
-        foregroundColor: fg,
+        foregroundColor: fgColor,
         accentShadow: shadow
       )
-      Painter.drawImage(image, withAttributes: attrs, boundByShape: button.shape)
+      Painter.drawImage(image, withAttributes: imageAttrs, boundByShape: button.shape)
     }
 
+
     if let attributedText = title where attributedText.length > 0 {
-      MSLogDebug("drawing title '\(attributedText.string)' for button named '\(button.name)'")
       let txtAttrs = Painter.Attributes(
         rect: (button.contentEdgeInsets + button.titleEdgeInsets).insetRect(bounds),
         shadow: shadow,
@@ -261,6 +276,13 @@ public class ButtonView: RemoteElementView {
       )
       Painter.drawText(attributedText.string, withAttributes: txtAttrs, boundByShape: button.shape)
     }
+
+    CGContextEndTransparencyLayer(context)
+    CGContextRestoreGState(context)
+
+    CGContextEndTransparencyLayer(context)
+    CGContextRestoreGState(context)
+
   }
 
   /**
@@ -274,11 +296,11 @@ public class ButtonView: RemoteElementView {
 
     let context = UIGraphicsGetCurrentContext()
 
-    let baseRect = rect.rectByInsetting(dx: 4, dy: 4).integerRect
+    let baseRect = rect.integerRect
     let bleedRect = baseRect.rectByInsetting(dx: 4, dy: 4)
 
     let bgColor = backgroundColor ?? Painter.defaultBackgroundColor
-    let fgColor = foregroundColor ?? Painter.blueAccentColor
+    let fgColor = foregroundColor ?? Painter.defaultForegroundColor
     let accentShadow: NSShadow? = button.highlighted ? NSShadow(color: fgColor, offset: CGSize.zeroSize, blurRadius: 5) : nil
 
     // Draw shape filled with accent color
@@ -289,7 +311,12 @@ public class ButtonView: RemoteElementView {
     accentShadow?.setShadow()
     CGContextBeginTransparencyLayer(context, nil)                                           // transparency: •
 
-    let baseAttrs = Painter.Attributes(rect: baseRect, color: bgColor, accentColor: fgColor, foregroundColor: fgColor)
+    let baseAttrs = Painter.Attributes(
+      rect: baseRect,
+      color: bgColor,
+      accentColor: fgColor,
+      foregroundColor: fgColor
+    )
     Painter.drawBaseWithShape(button.shape, attributes: baseAttrs)
 
     CGContextSaveGState(context)                                                            // context: ••
@@ -300,10 +327,8 @@ public class ButtonView: RemoteElementView {
     if let image = icon {
 
       let imageAttrs = Painter.Attributes(
-        rect: baseRect,
+        rect: bleedRect,
         color: fgColor,
-        alpha: 0.9,
-        shadow: Painter.innerShadow,
         accentShadow: accentShadow
       )
       Painter.drawImage(image, withAttributes: imageAttrs, boundByShape: button.shape)
@@ -311,9 +336,8 @@ public class ButtonView: RemoteElementView {
 
     if let attributedText = title where attributedText.length > 0 {
 
-      MSLogDebug("drawing title '\(attributedText.string)' for button named '\(button.name)'")
-
-      let txtAttrs = Painter.Attributes(rect: baseRect,
+      let txtAttrs = Painter.Attributes(
+        rect: baseRect,
         shadow: accentShadow,
         text: attributedText.string,
         fontAttributes: attributedText.attributesAtIndex(0, effectiveRange: nil)
@@ -327,7 +351,7 @@ public class ButtonView: RemoteElementView {
     CGContextEndTransparencyLayer(context)                                                  // transparency:
     CGContextRestoreGState(context)                                                         // context:
 
-    if button.style & .ApplyGloss != nil {
+    if hasOption(.ApplyGloss, button.style) {
       let glossAttrs = Painter.Attributes(rect: baseRect, alpha: 0.15, blendMode: kCGBlendModeSoftLight)
       Painter.drawGlossWithShape(button.shape, attributes: glossAttrs)
     }

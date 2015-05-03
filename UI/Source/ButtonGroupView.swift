@@ -133,6 +133,7 @@ public class ButtonGroupView: RemoteElementView {
       setContentCompressionResistancePriority(1000.0, forAxis: .Horizontal)
       setContentCompressionResistancePriority(1000.0, forAxis: .Vertical)
     }
+    MSLogVerbose("button group named '\(buttonGroup.name)' with uuid '\(buttonGroup.uuid)' is panel? \(buttonGroup.isPanel)")
   }
 
   /** updateViewFromModel */
@@ -147,7 +148,6 @@ public class ButtonGroupView: RemoteElementView {
     let superIsNil = superview == nil
     let groupIsPanel = buttonGroup.isPanel
     let editing = isEditing
-    MSLogDebug("superIsNil = \(superIsNil) groupIsPanel = \(groupIsPanel) editing = \(editing)")
     if superview != nil && buttonGroup.isPanel && !isEditing {
       var attribute1 = NSLayoutAttribute.NotAnAttribute
       var attribute2 = attribute1
@@ -270,23 +270,20 @@ public class ButtonGroupView: RemoteElementView {
   :param: rect CGRect
   */
   override public func drawRect(rect: CGRect) {
-    if model.style & .DrawBackground != nil && model.shape != .Undefined {
-      var attrs = Painter.Attributes(rect: rect)
-      attrs.color = backgroundColor ?? Painter.defaultBackgroundColor
-      Painter.drawBackgroundWithShape(model.shape, attributes: attrs)
+    if model.shape == .Undefined { return }
+    if hasOption(.DrawBackground, model.style) {
+      let backgroundAttrs = Painter.Attributes(rect: rect.integerRect, color: backgroundColor ?? Painter.defaultBackgroundColor)
+      Painter.drawBackgroundWithShape(model.shape, attributes: backgroundAttrs)
     }
 
     if let image = backgroundImage {
-      var attrs = Painter.Attributes(rect: rect)
-      attrs.alpha = CGFloat(backgroundImageAlpha)
-      Painter.drawImage(image, withAttributes: attrs)
+      let imageAttrs = Painter.Attributes(rect: rect.integerRect, alpha: CGFloat(backgroundImageAlpha))
+      Painter.drawImage(image, withAttributes: imageAttrs)
     }
 
-    if model.style & RemoteElement.Style.ApplyGloss != nil && model.shape != .Undefined {
-      var attrs = Painter.Attributes(rect: rect)
-      attrs.alpha = 0.15
-      attrs.blendMode = kCGBlendModeSoftLight
-      Painter.drawGlossWithShape(model.shape, attributes: attrs)
+    if hasOption(.ApplyGloss, model.style) {
+      let glossAttrs = Painter.Attributes(rect: rect.integerRect, alpha: 0.15, blendMode: kCGBlendModeSoftLight)
+      Painter.drawGlossWithShape(model.shape, attributes: glossAttrs)
     }
 
   }

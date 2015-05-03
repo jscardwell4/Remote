@@ -30,6 +30,7 @@ public final class RemoteView: RemoteElementView {
 		setContentHuggingPriority(1000.0, forAxis: .Horizontal)
 		setContentHuggingPriority(1000.0, forAxis: .Vertical)
 		super.initializeIVARs()
+    MSLogVerbose("panesl for remote named '\(model.name)': \((model as! Remote).panels)")
 	}
 
   /**
@@ -39,8 +40,7 @@ public final class RemoteView: RemoteElementView {
   */
   override public func drawRect(rect: CGRect) {
     if let image = backgroundImage {
-      var attrs = Painter.Attributes(rect: rect)
-      attrs.alpha = CGFloat(backgroundImageAlpha)
+      let attrs = Painter.Attributes(rect: rect, alpha: CGFloat(backgroundImageAlpha))
       Painter.drawImage(image, withAttributes: attrs)
     }
   }

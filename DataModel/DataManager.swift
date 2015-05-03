@@ -272,14 +272,14 @@ import MoonKit
     var error: NSError?
     context.performBlockAndWait {
 
-      if isOptionSet(LogFlags.File, logFlags),
+      if hasOption(LogFlags.File, logFlags),
         let contents = String(contentsOfFile: path, encoding: NSUTF8StringEncoding, error: nil)
       {
         MSLogDebug("content of file to parse:\n\(contents)")
       }
 
       let json: JSONValue?
-      if isOptionSet(LogFlags.Preparsed, logFlags) {
+      if hasOption(LogFlags.Preparsed, logFlags) {
         let preparsedString = JSONSerialization.stringByParsingDirectivesForFile(path, options: .InflateKeypaths, error: &error)
         if preparsedString != nil && MSHandleError(error) == false {
           MSLogDebug("preparsed content of file to parse:\n\(preparsedString!)")
@@ -293,13 +293,13 @@ import MoonKit
       
       if MSHandleError(error) == false && json != nil
       {
-        if isOptionSet(LogFlags.Parsed, logFlags) { MSLogDebug("json objects from parsed file:\n\(json)") }
+        if hasOption(LogFlags.Parsed, logFlags) { MSLogDebug("json objects from parsed file:\n\(json)") }
 
         if let data = ObjectJSONValue(json), importedObject = type(data: data, context: context) {
 
           MSLogDebug("imported \(type.className()) from file '\(path)'")
 
-          if isOptionSet(LogFlags.Imported, logFlags) {
+          if hasOption(LogFlags.Imported, logFlags) {
             MSLogDebug("json output for imported object:\n\(importedObject.jsonValue)")
           }
 
@@ -309,7 +309,7 @@ import MoonKit
 
           MSLogDebug("\(importedObjects.count) \(type.className()) objects imported from file '\(path)'")
 
-          if isOptionSet(LogFlags.Imported, logFlags) {
+          if hasOption(LogFlags.Imported, logFlags) {
             MSLogDebug("json output for imported object:\n\(JSONValue.Array(importedObjects.map({$0.jsonValue})).prettyRawValue)")
           }
 

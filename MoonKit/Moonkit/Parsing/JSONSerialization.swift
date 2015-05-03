@@ -57,12 +57,12 @@ public class JSONSerialization {
     var object: JSONValue? // Our return object
 
     // Create the parser with the provided string
-    let ignoreExcess = isOptionSet(options, ReadOptions.IgnoreExcess)
+    let ignoreExcess = hasOption(ReadOptions.IgnoreExcess, options)
     let parser = JSONParser(string: string!, ignoreExcess: ignoreExcess)
     object = parser.parse(error: error)
 
     // Inflate key paths
-    if isOptionSet(options, ReadOptions.InflateKeypaths) { object = object?.inflatedValue }
+    if hasOption(ReadOptions.InflateKeypaths, options) { object = object?.inflatedValue }
 
     return object
   }

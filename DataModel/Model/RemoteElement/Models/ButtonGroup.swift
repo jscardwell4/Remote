@@ -281,7 +281,7 @@ public final class ButtonGroup: RemoteElement {
   }
 
   public struct PanelAssignment: RawOptionSetType, Hashable, StringValueConvertible,
-                                 JSONValueConvertible, JSONValueInitializable
+                                 JSONValueConvertible, JSONValueInitializable, Printable
   {
 
     private(set) public var rawValue: Int
@@ -293,7 +293,7 @@ public final class ButtonGroup: RemoteElement {
       case Undefined, Top, Bottom, Left, Right
       public var jsonValue: JSONValue {
         switch self {
-          case .Undefined: return "undefined"
+          case .Undefined: return ""
           case .Top:       return "top"
           case .Bottom:    return "bottom"
           case .Left:      return "left"
@@ -316,7 +316,7 @@ public final class ButtonGroup: RemoteElement {
       case Undefined, OneFinger, TwoFinger, ThreeFinger
       public var jsonValue: JSONValue {
         switch self {
-          case .Undefined:   return "undefined"
+          case .Undefined:   return ""
           case .OneFinger:   return "1"
           case .TwoFinger:   return "2"
           case .ThreeFinger: return "3"
@@ -334,11 +334,11 @@ public final class ButtonGroup: RemoteElement {
 
     public var location: Location {
       get { return Location(rawValue: rawValue & 0b0111) ?? .Undefined }
-      set { rawValue = newValue.rawValue | (trigger.rawValue >> 3) }
+      set { rawValue = (newValue.rawValue & 0b0111) | (trigger.rawValue << 3) }
     }
     public var trigger: Trigger {
-      get { return Trigger(rawValue: (rawValue << 3) & 0b0011) ?? .Undefined }
-      set { rawValue = location.rawValue | (newValue.rawValue >> 3) }
+      get { return Trigger(rawValue: (rawValue >> 3) & 0b0011) ?? .Undefined }
+      set { rawValue = location.rawValue | ((newValue.rawValue & 0b0011) << 3) }
     }
 
     /**
@@ -347,24 +347,30 @@ public final class ButtonGroup: RemoteElement {
     :param: location Location
     :param: trigger Trigger
     */
-    public init(location: Location, trigger: Trigger) { rawValue = location.rawValue | (trigger.rawValue >> 3) }
+    public init(location: Location, trigger: Trigger) { rawValue = location.rawValue | (trigger.rawValue << 3) }
 
     public static var Unassigned: PanelAssignment = PanelAssignment(location: .Undefined, trigger: .Undefined)
 
     public init?(_ jsonValue: JSONValue?) {
-      if let string = String(jsonValue) {
+      if let string = String(jsonValue) where string ~= ~/"(?:left|right|top|bottom)(?:1|2|3)" {
         rawValue = 0
-        let length = count(string)
-        if length > 3,
-          let l = Location(string[0 ..< (length - 1)].jsonValue),
-          t = Trigger(string[(length - 1) ..< length].jsonValue)
-        {
-          location = l
-          trigger = t
-        } else { return nil }
+        switch string[0..<count(string)-1] {
+          case "left":   location = .Left
+          case "right":  location = .Right
+          case "top":    location = .Top
+          case "bottom": location = .Bottom
+          default:       assert(false)
+        }
+        switch string[count(string)-1..<count(string)] {
+          case "1": trigger = .OneFinger
+          case "2": trigger = .TwoFinger
+          case "3": trigger = .ThreeFinger
+          default:  assert(false)
+        }
       } else { return nil }
     }
 
+    public var description: String { return stringValue }
     public var stringValue: String { return "\(String(location.jsonValue)!)\(String(trigger.jsonValue)!)" }
     public var jsonValue: JSONValue { return stringValue.jsonValue }
 

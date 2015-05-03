@@ -39,6 +39,20 @@
             },
             "name": "Outlet"
           }
+        ],
+        "subcategories": [
+          {
+            "name": "Xtras",
+            "images": [
+              {
+                "asset": {
+                  "name": "57-power",
+                  "location": "$bank"
+                },
+                "name": "Power"
+              }
+            ]
+          }
         ]
       },
       {

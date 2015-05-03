@@ -173,6 +173,7 @@ public final class Button: RemoteElement {
   */
   public func setTitles(titleSet: ControlStateTitleSet?, forMode mode: Mode) {
     setValue(titleSet, forMode: mode, inStorage: titleSets)
+    if currentMode == mode { self.titleSet = titleSet; title = titleSet?.attributedStringForState(state) }
   }
 
   /**
@@ -220,6 +221,7 @@ public final class Button: RemoteElement {
   */
   public func setIconSet(iconSet: ControlStateImageSet?, forMode mode: Mode) {
     setValue(iconSet, forMode: mode, inStorage: iconSets)
+    if currentMode == mode { self.iconSet = iconSet; icon = iconSet?.imageViewForState(state) }
   }
 
 
@@ -263,6 +265,13 @@ public final class Button: RemoteElement {
   */
   public func setBackgroundSet(backgroundSet: ControlStateImageSet?, forMode mode: Mode) {
     setValue(backgroundSet, forMode: mode, inStorage: backgroundSets)
+    if currentMode == mode {
+      self.backgroundSet = backgroundSet
+      let bg = backgroundSet?.imageViewForState(state)
+      background?.image = bg?.image
+      background?.color = bg?.color
+      background?.alpha = bg?.alpha
+    }
   }
 
   /**
@@ -312,7 +321,10 @@ public final class Button: RemoteElement {
   :param: command Command?
   :param: mode Mode
   */
-  public func setCommand(command: Command?, forMode mode: Mode) { setValue(command, forMode: mode, inStorage: commands) }
+  public func setCommand(command: Command?, forMode mode: Mode) {
+    setValue(command, forMode: mode, inStorage: commands)
+    if currentMode == mode { self.command = command }
+  }
 
 
   @NSManaged public private(set) var longPressCommand: Command?
@@ -354,6 +366,7 @@ public final class Button: RemoteElement {
   */
   public func setLongPressCommand(command: Command?, forMode mode: Mode) {
     setValue(command, forMode: mode, inStorage: longPressCommands)
+    if currentMode == mode { longPressCommand = command }
   }
 
   /**
@@ -407,6 +420,7 @@ public final class Button: RemoteElement {
   */
   public func setBackgroundColorSet(colorSet: ControlStateColorSet?, forMode mode: Mode) {
     setValue(colorSet, forMode: mode, inStorage: backgroundColorSets)
+    if currentMode == mode { backgroundColorSet = colorSet; backgroundColor = backgroundColorSet?.colorForState(state) }
   }
 
   /**
@@ -451,6 +465,7 @@ public final class Button: RemoteElement {
   */
   public func setForegroundColorSet(colorSet: ControlStateColorSet?, forMode mode: Mode) {
     setValue(colorSet, forMode: mode, inStorage: foregroundColorSets)
+    if currentMode == mode { foregroundColorSet = colorSet; foregroundColor = foregroundColorSet?.colorForState(state) }
   }
 
   /**
