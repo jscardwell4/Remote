@@ -193,8 +193,8 @@ final public class Preset: EditableModelObject {
     set { storage["labelConstraints"] = newValue?.jsonValue }
   }
 
-  public var panelAssignment: ButtonGroup.PanelAssignment? {
-    get { return ButtonGroup.PanelAssignment(storage["panelAssignment"]) }
+  public var panelAssignment: Remote.PanelAssignment? {
+    get { return Remote.PanelAssignment(storage["panelAssignment"]) }
     set { storage["panelAssignment"] = newValue?.jsonValue }
   }
 

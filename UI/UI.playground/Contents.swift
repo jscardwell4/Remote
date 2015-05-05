@@ -5,6 +5,7 @@ import MoonKit
 import DataModel
 import UI
 
+"Home (Selected)".urlUserEncoded
 let dpadRaw = RemoteElement.Role.DPad.rawValue
 let topToolbarRaw = RemoteElement.Role.TopToolbar.rawValue
 13 & 41
@@ -13,14 +14,6 @@ RemoteElement.Role.DPad & RemoteElement.Role.TopToolbar
 let attrs: Painter.Attributes = [.Color: UIColor.redColor(), .Corners: UIRectCorner.AllCorners, .Radii: CGSize(width: 40, height: 20)]
 attrs.description
 
-let pa1 = ButtonGroup.PanelAssignment(rawValue: 0b10011)
-pa1.stringValue
-
-var r = CGRect(size: CGSize(width: 300, height: 100))
-var rr = r
-r.inset(dx: 4, dy: 4)
-rr.proportionallyInsetX(4)
-rr.integerize()
 
 class TestView: UIView {
   var draw: (CGRect) -> Void = { _ in } { didSet { setNeedsDisplay() } }

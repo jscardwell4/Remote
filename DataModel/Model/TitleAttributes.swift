@@ -252,7 +252,10 @@ public struct TitleAttributes {
   public func stringWithFillers(fillers: MSDictionary?) -> NSAttributedString {
     if fillers != nil {
       var attrs = fillers!
+      var attributes = self.attributes
+      if let txt = attributes["text"] as? String where txt.isEmpty { attributes.removeObjectForKey("text") }
       attrs.setValuesForKeysWithDictionary(attributes as [NSObject:AnyObject])
+
       return stringWithAttributes(attrs)
     } else { return string }
   }

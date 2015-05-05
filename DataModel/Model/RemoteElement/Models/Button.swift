@@ -64,6 +64,8 @@ public final class Button: RemoteElement {
       contentEdgeInsets = UIEdgeInsets(data["contentEdgeInsets"]) ?? UIEdgeInsets.zeroInsets
       imageEdgeInsets = UIEdgeInsets(data["imageEdgeInsets"]) ?? UIEdgeInsets.zeroInsets
 
+      if let state = UIControlState(data["state"]) { self.state = state }
+
     }
 
   }
@@ -133,7 +135,7 @@ public final class Button: RemoteElement {
     title = titleSet?.attributedStringForState(state)
     icon = iconSet?.imageViewForState(state)
     backgroundColor = backgroundColorSet?.colorForState(state)
-    foregroundColor = foregroundColorSet?.colorForState(state)
+    foregroundColor = foregroundColorSet?.colorForState(state) ?? icon?.color
     let bg = backgroundSet?.imageViewForState(state)
     background?.image = bg?.image
     background?.color = bg?.color
@@ -496,13 +498,15 @@ public final class Button: RemoteElement {
   public var selected: Bool {
     get {
       willAccessValueForKey("selected")
-      let selected = state & UIControlState.Selected != nil
+      let selected = hasOption(.Selected, state)
       didAccessValueForKey("selected")
       return selected
     }
     set {
       willChangeValueForKey("selected")
-      if newValue { state |= UIControlState.Selected } else { state &= ~UIControlState.Selected }
+      var state = self.state
+      if newValue { setOption(.Selected, &state) } else { unsetOption(.Selected, &state) }
+      self.state = state
       didChangeValueForKey("selected")
     }
   }
@@ -510,13 +514,15 @@ public final class Button: RemoteElement {
   public var highlighted: Bool {
     get {
       willAccessValueForKey("highlighted")
-      let highlighted = state & UIControlState.Highlighted != nil
+      let highlighted = hasOption(.Highlighted, state)
       didAccessValueForKey("highlighted")
       return highlighted
     }
     set {
       willChangeValueForKey("highlighted")
-      if newValue { state |= UIControlState.Highlighted } else { state &= ~UIControlState.Highlighted }
+      var state = self.state
+      if newValue { setOption(.Highlighted, &state) } else { unsetOption(.Highlighted, &state) }
+      self.state = state
       didChangeValueForKey("highlighted")
     }
   }
@@ -524,13 +530,15 @@ public final class Button: RemoteElement {
   public var enabled: Bool {
     get {
       willAccessValueForKey("enabled")
-      let enabled = state & UIControlState.Disabled == nil
+      let enabled = !hasOption(.Disabled, state)
       didAccessValueForKey("enabled")
       return enabled
     }
     set {
       willChangeValueForKey("enabled")
-      if !newValue { state |= UIControlState.Disabled } else { state &= ~UIControlState.Disabled }
+      var state = self.state
+      if !newValue { setOption(.Disabled, &state) } else { unsetOption(.Disabled, &state) }
+      self.state = state
       didChangeValueForKey("enabled")
     }
   }
@@ -613,6 +621,8 @@ public final class Button: RemoteElement {
     obj["titleEdgeInsets"]   = titleEdgeInsets.jsonValue
     obj["imageEdgeInsets"]   = imageEdgeInsets.jsonValue
     obj["contentEdgeInsets"] = contentEdgeInsets.jsonValue
+
+    obj["state"] = state.jsonValue
 
     return obj.jsonValue
   }

@@ -106,6 +106,13 @@
                   },
                   {
                     "asset": {
+                      "name": "750-home-selected",
+                      "location": "$bank"
+                    },
+                    "name": "Home (Selected)"
+                  },
+                  {
+                    "asset": {
                       "name": "740-gear",
                       "location": "$bank"
                     },

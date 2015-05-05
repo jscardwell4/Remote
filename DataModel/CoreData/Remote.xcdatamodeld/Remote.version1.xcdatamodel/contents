@@ -84,7 +84,6 @@
             </userInfo>
         </attribute>
         <attribute name="labelConstraints" optional="YES" attributeType="String" defaultValueString="H:|[label] V:|[label]" syncable="YES"/>
-        <attribute name="panelAssignment" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="commandContainer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CommandContainer" inverseName="commandContainerForButtonGroup" inverseEntity="CommandContainer" syncable="YES"/>
         <relationship name="commandContainers" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ModalStorage" inverseName="storageForButtonGroupCommandContainers" inverseEntity="ModalStorage" syncable="YES"/>
         <relationship name="labelAttributes" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ModalStorage" inverseName="storageForButtonGroupLabelAttributes" inverseEntity="ModalStorage" syncable="YES"/>
@@ -502,7 +501,7 @@
         <element name="ActivityController" positionX="0" positionY="0" width="128" height="105"/>
         <element name="Asset" positionX="36" positionY="153" width="128" height="30"/>
         <element name="Button" positionX="0" positionY="0" width="128" height="375"/>
-        <element name="ButtonGroup" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="ButtonGroup" positionX="0" positionY="0" width="128" height="150"/>
         <element name="Command" positionX="0" positionY="0" width="128" height="120"/>
         <element name="CommandContainer" positionX="0" positionY="0" width="128" height="120"/>
         <element name="CommandSet" positionX="0" positionY="0" width="128" height="90"/>

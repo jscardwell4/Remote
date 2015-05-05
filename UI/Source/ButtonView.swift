@@ -245,6 +245,7 @@ public class ButtonView: RemoteElementView {
     let context = UIGraphicsGetCurrentContext()
     let fgColor = foregroundColor ?? Painter.defaultForegroundColor
     let shadow: NSShadow? = button.highlighted ? NSShadow(color: fgColor, offset: CGSize.zeroSize, blurRadius: 5) : nil
+    let baseRect = rect.rectByInsetting(dx: 4, dy: 4).integerRect
 
     CGContextSaveGState(context)
     shadow?.setShadow()
@@ -259,7 +260,7 @@ public class ButtonView: RemoteElementView {
 
     if let image = icon {
       let imageAttrs = Painter.Attributes(
-        rect: (button.contentEdgeInsets + button.imageEdgeInsets).insetRect(bounds),
+        rect: (button.contentEdgeInsets + button.imageEdgeInsets).insetRect(baseRect),
         foregroundColor: fgColor,
         accentShadow: shadow
       )
@@ -269,10 +270,11 @@ public class ButtonView: RemoteElementView {
 
     if let attributedText = title where attributedText.length > 0 {
       let txtAttrs = Painter.Attributes(
-        rect: (button.contentEdgeInsets + button.titleEdgeInsets).insetRect(bounds),
+        rect: (button.contentEdgeInsets + button.titleEdgeInsets).insetRect(baseRect),
         shadow: shadow,
         text: attributedText.string,
-        fontAttributes: attributedText.attributesAtIndex(0, effectiveRange: nil)
+        fontAttributes: attributedText.attributesAtIndex(0, effectiveRange: nil),
+        adjustFontSize: button.role == .Tuck
       )
       Painter.drawText(attributedText.string, withAttributes: txtAttrs, boundByShape: button.shape)
     }
@@ -296,7 +298,7 @@ public class ButtonView: RemoteElementView {
 
     let context = UIGraphicsGetCurrentContext()
 
-    let baseRect = rect.integerRect
+    let baseRect = rect.rectByInsetting(dx: 4, dy: 4).integerRect
     let bleedRect = baseRect.rectByInsetting(dx: 4, dy: 4)
 
     let bgColor = backgroundColor ?? Painter.defaultBackgroundColor
@@ -340,7 +342,8 @@ public class ButtonView: RemoteElementView {
         rect: baseRect,
         shadow: accentShadow,
         text: attributedText.string,
-        fontAttributes: attributedText.attributesAtIndex(0, effectiveRange: nil)
+        fontAttributes: attributedText.attributesAtIndex(0, effectiveRange: nil),
+        adjustFontSize: button.role == .Tuck
       )
       Painter.drawText(attributedText.string, withAttributes: txtAttrs, boundByShape: button.shape)
     }

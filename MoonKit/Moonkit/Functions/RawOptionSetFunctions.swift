@@ -11,37 +11,37 @@ import Foundation
 /**
 setOption:s:
 
-:param: o T The option
-:param: s T The option set
+:param: option T The option
+:param: optionSet T The option set
 */
-public func setOption<T:RawOptionSetType>(o: T, inout s: T) { s |= o }
+public func setOption<T:RawOptionSetType>(option: T, inout optionSet: T) { optionSet |= option }
 
 /**
-unsetOption:s:
+unsetOption:optionSet:
 
-:param: o T The option
-:param: s T The option set
+:param: option T The option
+:param: optionSet T The option set
 */
-public func unsetOption<T:RawOptionSetType>(o: T, inout s: T) { s &= ~o }
+public func unsetOption<T:RawOptionSetType>(option: T, inout optionSet: T) { optionSet &= ~option }
 
 /**
-isOption:s:
+isOption:optionSet:
 
-:param: o T The option
-:param: s T The option set
+:param: option T The option
+:param: optionSet T The option set
 
 :returns: Bool
 */
-public func hasOption<T:RawOptionSetType>(o: T, s: T) -> Bool { return o & s != nil }
+public func hasOption<T:RawOptionSetType>(option: T, optionSet: T) -> Bool { return optionSet & option == option }
 
 /**
-toggleOption:s:
+toggleOption:optionSet:
 
-:param: o T The option
-:param: s T The option set
+:param: option T The option
+:param: optionSet T The option set
 */
-public func toggleOption<T:RawOptionSetType>(o: T, inout s: T) {
-  if hasOption(o, s) { unsetOption(o, &s) } else { setOption(o, &s) }
+public func toggleOption<T:RawOptionSetType>(option: T, inout optionSet: T) {
+  if hasOption(option, optionSet) { unsetOption(option, &optionSet) } else { setOption(option, &optionSet) }
 }
 
 

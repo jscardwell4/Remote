@@ -44,9 +44,10 @@ public final class ConnectionStatusButtonView: ButtonView {
   :param: rect CGRect
   */
   override public func drawRect(rect: CGRect) {
+    let baseRect = rect.rectByInsetting(dx: 4, dy: 4).integerRect
     let iconColor: UIColor
     if let color = button.iconSet?.normal?.color { iconColor = color }
     else { iconColor = Painter.defaultBackgroundColor }
-    Painter.drawWifiStatus(color: iconColor, connected: connected, frame: rect)
+    Painter.drawWifiStatus(color: iconColor, connected: connected, frame: baseRect)
   }
 }

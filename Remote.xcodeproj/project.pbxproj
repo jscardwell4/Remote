@@ -229,6 +229,7 @@
 		C23F071D1AD5A54F003BD28B /* Preset_Simple.json in Resources */ = {isa = PBXBuildFile; fileRef = C23F070E1AD5A54F003BD28B /* Preset_Simple.json */; };
 		C23F071E1AD5A54F003BD28B /* PresetCategory_Simple.json in Resources */ = {isa = PBXBuildFile; fileRef = C23F070F1AD5A54F003BD28B /* PresetCategory_Simple.json */; };
 		C23F071F1AD5A54F003BD28B /* TitleAttributes_Simple.json in Resources */ = {isa = PBXBuildFile; fileRef = C23F07101AD5A54F003BD28B /* TitleAttributes_Simple.json */; };
+		C23F3BEC1AF853E200626FDC /* PanelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23F3BEB1AF853E200626FDC /* PanelDelegate.swift */; };
 		C2461BDE1AE5CF2D00F123BD /* MessageQueueEntry.h in Headers */ = {isa = PBXBuildFile; fileRef = C2F9414B19BE7EB7007B5CC1 /* MessageQueueEntry.h */; };
 		C2461BDF1AE5CF2D00F123BD /* MessageQueueEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F9414C19BE7EB7007B5CC1 /* MessageQueueEntry.m */; };
 		C2461BE01AE5D3E300F123BD /* IRLearner.h in Headers */ = {isa = PBXBuildFile; fileRef = C240DD5D170485F2005CC390 /* IRLearner.h */; };
@@ -1217,6 +1218,7 @@
 		C23F070E1AD5A54F003BD28B /* Preset_Simple.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Preset_Simple.json; sourceTree = "<group>"; };
 		C23F070F1AD5A54F003BD28B /* PresetCategory_Simple.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PresetCategory_Simple.json; sourceTree = "<group>"; };
 		C23F07101AD5A54F003BD28B /* TitleAttributes_Simple.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TitleAttributes_Simple.json; sourceTree = "<group>"; };
+		C23F3BEB1AF853E200626FDC /* PanelDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanelDelegate.swift; sourceTree = "<group>"; };
 		C240DD5D170485F2005CC390 /* IRLearner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRLearner.h; sourceTree = "<group>"; };
 		C240DD5E170485F2005CC390 /* IRLearner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRLearner.m; sourceTree = "<group>"; };
 		C24844541AE955FB004FCADD /* Remote.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Remote.sqlite; sourceTree = "<group>"; };
@@ -2117,6 +2119,7 @@
 				C235A2F61A0E96B10067E226 /* RemoteElementView.swift */,
 				C235A2F71A0E96B10067E226 /* RemoteView.swift */,
 				C235A2F81A0E96B10067E226 /* RockerView.swift */,
+				C23F3BEB1AF853E200626FDC /* PanelDelegate.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -4341,6 +4344,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C23F3BEC1AF853E200626FDC /* PanelDelegate.swift in Sources */,
 				C2874FBA1AE68CD100BD7634 /* Painter.swift in Sources */,
 				C2461BF21AE5D7DA00F123BD /* ButtonView.swift in Sources */,
 				C2461BF31AE5D7DA00F123BD /* RemoteElementViewConstraint.swift in Sources */,

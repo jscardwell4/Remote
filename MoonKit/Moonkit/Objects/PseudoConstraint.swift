@@ -53,7 +53,7 @@ public struct PseudoConstraint {
     for u in string!.utf16 {
       switch u {
         case whitespaceAndNewline: result += "_"
-        case letters: result += String(u)
+        case letters: result += String(UnicodeScalar(u))
         default: break
       }
     }
@@ -177,16 +177,16 @@ public struct PseudoConstraint {
   :param: constraint NSLayoutConstraint
   :param: replacements [String String]
   */
-  public init(constraint: NSLayoutConstraint, item1: ItemName = "item1", item2: ItemName?) {
+  public init(constraint: NSLayoutConstraint) {
     identifier = constraint.identifier
     firstObject = constraint.firstItem
-    if let nametag = firstObject?.nametag, name = itemNameFromString(nametag) { firstItem = name }
-    if firstItem == nil { firstItem = item1 }
+    if let f = firstObject as? Named { firstItem = itemNameFromString(f.name) }
+    else if let f = firstObject as? UIView, nametag = f.nametag { firstItem = itemNameFromString(nametag) }
     firstAttribute = Attribute(constraint.firstAttribute)
     relation = Relation(constraint.relation)
     secondObject = constraint.secondItem
-    if let nametag = secondObject?.nametag, name = itemNameFromString(nametag) { secondItem = name }
-    if secondItem == nil && secondObject != nil { secondItem == item2 ?? "item2" }
+    if let s = secondObject as? Named { secondItem = itemNameFromString(s.name) }
+    else if let s = secondObject as? UIView, nametag = secondObject?.nametag { secondItem = itemNameFromString(nametag) }
     secondAttribute = Attribute(constraint.secondAttribute)
     multiplier = Float(constraint.multiplier)
     constant = Float(constraint.constant)
@@ -268,19 +268,33 @@ public func ==(lhs: PseudoConstraint, rhs: PseudoConstraint) -> Bool { return lh
 
 extension PseudoConstraint: Printable {
   public var description: String {
-    var s = ""
-    if let i = identifier { s += "'\(i)' " }
-    s += "\(toString(firstItem)).\(firstAttribute.rawValue) \(relation.rawValue)"
-    if let s2 = secondItem {
-      s += " \(s2).\(secondAttribute.rawValue)"
-      if multiplier != 1.0 { s += " * \(multiplier)" }
+    if !valid { return "pseudo invalid" }
+
+    var result = ""
+    if let i = identifier { result += "'\(i)' " }
+
+    let firstItemString: String
+
+    if let f = firstItem { firstItemString = f }
+    else if let f = firstObject as? Named { firstItemString = f.name.camelcaseString }
+    else { firstItemString = "firstItem" }
+
+    result += "\(firstItemString).\(firstAttribute.rawValue) \(relation.rawValue)"
+
+    if secondAttribute != .NotAnAttribute {
+      let secondItemString: String
+      if let s = secondItem { secondItemString = s }
+      else if let s = secondObject as? Named { secondItemString = s.name.camelcaseString }
+      else { secondItemString = "secondItem" }
+      result += " \(secondItemString).\(secondAttribute.rawValue)"
     }
-    if constant != 0.0 {
-      let sign = constant.isSignMinus ? "-" : "+"
-      s += " \(sign) \(abs(constant))"
-    }
-    if priority != UILayoutPriorityRequired { s += " @\(priority)" }
-    return s
+
+    if multiplier != 1.0 { result += " x \(multiplier)" }
+
+    if constant != 0.0 { let sign = constant.isSignMinus ? "-" : "+"; result += " \(sign) \(abs(constant))" }
+    if priority != UILayoutPriorityRequired { result += " @\(priority)" }
+
+    return result
   }
 }
 
@@ -290,7 +304,9 @@ extension PseudoConstraint: DebugPrintable {
   public var debugDescription: String {
     return "\n".join(description,
       "firstItem: \(toString(firstItem))",
+      "firstObject: \(toString(firstObject))",
       "secondItem: \(toString(secondItem))",
+      "secondObject: \(toString(secondObject))",
       "firstAttribute: \(firstAttribute.rawValue)",
       "secondAttribute: \(secondAttribute.rawValue)",
       "relation: \(relation.rawValue)",

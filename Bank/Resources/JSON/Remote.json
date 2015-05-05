@@ -260,8 +260,7 @@
               "index.buttonCenter": "83B25E99-F70E-45DF-9831-FCBE2C34F6ED",
               "format": "buttonCenter.height = buttonCenter.width"
             },
-            "titleSets.default": <@include TitleAttributes_Default_Text.json,TEXT=OK,SIZE=28>,
-            "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
+            "titleSets.default": <@include TitleAttributes_Default_Text.json,TEXT=OK,SIZE=28>
           },
           {
             "uuid": "DAAF0866-265A-41C8-AA68-CAFF633E1190",
@@ -380,6 +379,7 @@
               "highlighted.color": <@include ForegroundColor_Highlighted.json>,
               "disabled.color": <@include ForegroundColor_Disabled.json>
             },
+            "contentEdgeInsets": "{4, 4, 4, 4}",
             "backgroundColorSets.default.normal": <@include BackgroundColor_Dark_Normal.json>
           },
           {
@@ -627,6 +627,7 @@
               "font": "FontAwesome@24",
               "foregroundColor": "gray@75%",
               "textEffect": "letter-press",
+              "alignment": "center",
               "iconName": "chevron-up"
             },
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
@@ -807,6 +808,7 @@
               "font": "FontAwesome@24",
               "foregroundColor": "gray@75%",
               "textEffect": "letter-press",
+              "alignment": "center",
               "iconName": "chevron-down"
             },
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>
@@ -887,10 +889,11 @@
             "key": "default",
             "role": "selection-panel-button",
             "shape": "rectangle",
+            "state": "selected",
             "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "titleSets.default": {
               "normal": {
-                "font": "Helvetica Neue32>",
+                "font": "Helvetica Neue@32>",
                 "foregroundColor": <@include ForegroundColor_Normal.json>,
                 "strokeColor": "white@50%",
                 "strokeWidth": -2,
@@ -911,7 +914,7 @@
             "foregroundColorSets.default.normal": <@include ForegroundColor_Normal.json>,
             "titleSets.default": {
               "normal": {
-                "font": "Helvetica Neue32>",
+                "font": "Helvetica Neue@32>",
                 "foregroundColor": <@include ForegroundColor_Normal.json>,
                 "strokeColor": "white@50%",
                 "strokeWidth": -2,
@@ -1091,6 +1094,7 @@
               "font": "FontAwesome@24",
               "foregroundColor": "gray@75%",
               "textEffect": "letter-press",
+              "alignment": "center",
               "iconName": "chevron-left"
             },
             "titleEdgeInsets": <@include TitleEdgeInsets_Default.json>

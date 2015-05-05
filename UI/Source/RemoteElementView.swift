@@ -11,7 +11,7 @@ import UIKit
 import MoonKit
 import DataModel
 
-public class RemoteElementView: UIView {
+public class RemoteElementView: UIView, Named {
 
   // MARK: - Initialization
 
@@ -66,9 +66,6 @@ public class RemoteElementView: UIView {
   :param: model RemoteElement
   */
   required public init(model: RemoteElement) {
-    if model.role & .DPad == RemoteElement.Role.DPad {
-      MSLogDebug(model.description)
-    }
     super.init(frame: CGRect.zeroRect)
     setTranslatesAutoresizingMaskIntoConstraints(false)
     self.model = model
@@ -109,17 +106,12 @@ public class RemoteElementView: UIView {
   override public func updateConstraints() {
     //TODO: Modify to use model constraint uuids to update only where necessary
 
-    let identifier = createIdentifier(self, ["Internal", "Base"])
-    let modelConstraints = model.constraints
-    let modeledConstraints = self.modeledConstraints
-
-    if modelConstraints.count > modeledConstraints.count {
-      removeConstraints(modeledConstraints)
-      for modelConstraint in modelConstraints {
-        if let constraint = RemoteElementViewConstraint.constraintWithModel(modelConstraint, owningView: self) {
-          constraint.identifier = identifier
-          addConstraint(constraint)
-        }
+    let identifier = createIdentifier(self, "Model")
+    removeConstraintsWithIdentifier(identifier)
+    apply(model.constraints) {
+      if let constraint = RemoteElementViewConstraint.constraintWithModel($0, owningView: self) {
+        constraint.identifier = identifier
+        self.addConstraint(constraint)
       }
     }
 
@@ -282,25 +274,11 @@ public class RemoteElementView: UIView {
   }
 
   /**
-  addSubelementViews:
-
-  :param: views NSSet
-  */
-  public func addSubelementViews(views: Set<RemoteElementView>) { apply(subelementViews){self.addSubview($0)} }
-
-  /**
   addSubelementView:
 
   :param: view RemoteElementView
   */
   public func addSubelementView(view: RemoteElementView) { addSubview(view) }
-
-  /**
-  removeSubelementViews:
-
-  :param: views Set<RemoteElementView>
-  */
-  public func removeSubelementViews(views: Set<RemoteElementView>) { apply(subelementViews){$0.removeFromSuperview()} }
 
   /**
   removeSubelementView:
@@ -312,54 +290,48 @@ public class RemoteElementView: UIView {
   /**
   bringSubelementViewToFront:
 
-  :param: subelementView RemoteElementView
+  :param: view RemoteElementView
   */
-  public func bringSubelementViewToFront(subelementView: RemoteElementView) {
-    bringSubviewToFront(subelementView)
-  }
+  public func bringSubelementViewToFront(view: RemoteElementView) { bringSubviewToFront(view) }
 
   /**
   sendSubelementViewToBack:
 
-  :param: subelementView RemoteElementView
+  :param: view RemoteElementView
   */
-  public func sendSubelementViewToBack(subelementView: RemoteElementView) {
-    sendSubviewToBack(subelementView)
-  }
+  public func sendSubelementViewToBack(view: RemoteElementView) { sendSubviewToBack(view) }
 
   /**
   insertSubelementView:aboveSubelementView:
 
-  :param: subelementView RemoteElementView
-  :param: siblingSubelementView RemoteElementView
+  :param: view RemoteElementView
+  :param: sibling RemoteElementView
   */
-  public func insertSubelementView(subelementView: RemoteElementView, aboveSubelementView siblingSubelementView: RemoteElementView) {
-    insertSubview(subelementView, aboveSubview: siblingSubelementView)
+  public func insertSubelementView(view: RemoteElementView, aboveSubelementView sibling: RemoteElementView) {
+    insertSubview(view, aboveSubview: sibling)
   }
 
   /**
   insertSubelementView:atIndex:
 
-  :param: subelementView RemoteElementView
+  :param: view RemoteElementView
   :param: index Int
   */
-  public func insertSubelementView(subelementView: RemoteElementView, atIndex index: Int) {
-    insertSubview(subelementView, atIndex: index)
-  }
+  public func insertSubelementView(view: RemoteElementView, atIndex index: Int) { insertSubview(view, atIndex: index) }
 
   /**
   insertSubelementView:belowSubelementView:
 
-  :param: subelementView RemoteElementView
-  :param: siblingSubelementView RemoteElementView
+  :param: view RemoteElementView
+  :param: sibling RemoteElementView
   */
-  public func insertSubelementView(subelementView: RemoteElementView, belowSubelementView siblingSubelementView: RemoteElementView) {
-    insertSubview(subelementView, belowSubview: siblingSubelementView)
+  public func insertSubelementView(view: RemoteElementView, belowSubelementView sibling: RemoteElementView) {
+    insertSubview(view, belowSubview: sibling)
   }
 
   // MARK: - Parent view
 
-  public var parentElementView: RemoteElementView? { return (superview as? ViewProxy)?.superview as? RemoteElementView }
+  public var parentElementView: RemoteElementView? { return superview as? RemoteElementView }
 
   // MARK: - Size
 
@@ -456,7 +428,6 @@ public class RemoteElementView: UIView {
 
   static let dumpObservation: (KVOReceptionist) -> Void = { receptionist in
     let element = (receptionist.observer as! RemoteElementView).model
-    if element.role & .DPad != RemoteElement.Role.DPad { return }
     let name = element.name
     let type = element.elementType.stringValue
     let property = receptionist.keyPath
@@ -895,6 +866,10 @@ public class RemoteElementView: UIView {
   // MARK: - Descriptions
 
   public var modeledConstraintsDescription: String { return "\n".join(modeledConstraints.map{$0.description}) }
+
+  override public var description: String { return "\(name)(\(className))" }
+
+  public var name: String { return model.name }
 
   // MARK: - Overlay layers
 

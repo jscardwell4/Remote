@@ -78,6 +78,24 @@ public func disperse4<S:SequenceType,T where S.Generator.Element == T>(s: S) -> 
 }
 
 /**
+Zip together two sequences as an array of tuples formed via cross product
+
+:param: s1 S1
+:param: s2 S2
+
+:returns: [(S1.Generator.Element, S2.Generator.Element)]
+*/
+public func crossZip<S1:SequenceType, S2:SequenceType>(s1: S1, s2: S2) -> [(S1.Generator.Element, S2.Generator.Element)] {
+  var result: [(S1.Generator.Element, S2.Generator.Element)] = []
+  for outter in s1 {
+    for inner in s2 {
+      result.append((outter, inner))
+    }
+  }
+  return result
+}
+
+/**
 unzip:S1>:
 
 :param: z Zip2<S0

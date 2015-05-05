@@ -4,6 +4,9 @@ import UIKit
 import MoonKit
 
 "Helvetica Neue@32".matchFirst("^([^@]*)@?([0-9]*\\.?[0-9]*)")
+let s1 = ["Top", "Bottom", "Left", "Right"]
+let s2 = [1, 2 , 3]
+let s1CrossS2 = crossZip(s1, s2)
 
 //
 //let indicator = UIImageView.newForAutolayout()

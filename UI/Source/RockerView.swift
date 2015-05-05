@@ -22,6 +22,8 @@ public final class RockerView: ButtonGroupView {
   private var panLength: CGFloat = 0.0
   private var blockPan = false
 
+  static let ConstraintIdentifier = createIdentifier(self, ["Internal"])
+
   /** updateConstraints */
   override public func updateConstraints() {
     super.updateConstraints()

@@ -52,6 +52,19 @@ public extension UIView {
   public subscript(nametag: String) -> UIView? { return viewWithNametag(nametag) }
 
   /**
+  constraintsWithIdentifierTag:
+
+  :param: tag String
+
+  :returns: [NSLayoutConstraint]
+  */
+  public func constraintsWithIdentifierTag(tag: String) -> [NSLayoutConstraint] {
+    return (constraints() as! [NSLayoutConstraint]).filter {
+      if let identifier = $0.identifier where tagsFromIdentifier(identifier) ∋ tag { return true } else { return false }
+    }
+  }
+
+  /**
   constrain:views:identifier:
 
   :param: format String

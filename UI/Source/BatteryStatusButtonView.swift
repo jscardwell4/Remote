@@ -92,6 +92,8 @@ public final class BatteryStatusButtonView: ButtonView {
 	*/
 	override public func drawRect(rect: CGRect) {
 
+    let baseRect = rect.rectByInsetting(dx: 4, dy: 4).integerRect
+
 	  if batteryLevel == -1 {
 	  	let device = UIDevice.currentDevice()
 	    batteryLevel = device.batteryLevel
@@ -106,7 +108,7 @@ public final class BatteryStatusButtonView: ButtonView {
 
     let chargeLevel = CGFloat(batteryLevel)
 
-    Painter.drawBatteryStatus(color: baseColor, hasPower: hasPower, chargeLevel: chargeLevel, frame: rect)
+    Painter.drawBatteryStatus(color: baseColor, hasPower: hasPower, chargeLevel: chargeLevel, frame: baseRect)
 
 /*
 	  let insetRect = rect.rectByInsetting(dx: 2.0, dy: 2.0)
