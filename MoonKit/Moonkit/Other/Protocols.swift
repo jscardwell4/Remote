@@ -32,6 +32,10 @@ public protocol KeyValueCollectionType: CollectionType {
 
 extension Dictionary: KeyValueCollectionType {}
 
+public func valuesForKey<C: KeyValueCollectionType, K:Hashable, V where C.Key == K>(key: K, container: C) -> [V] {
+  var containers: [C] = flattened(container)
+  return compressedMap(containers) { $0[key] as? V }
+}
 
 public protocol Presentable {
   var title: String { get }

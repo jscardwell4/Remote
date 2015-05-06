@@ -3,6 +3,13 @@ import Foundation
 import UIKit
 import MoonKit
 
+let wtfDict: [String: AnyObject] = [
+  "huh": "something",
+  "nothing": ["say": "what", "huh": "okay"],
+  "what": "nothing"
+]
+//let huhWTF: [String] = valuesForKey("huh", wtfDict)
+
 "Helvetica Neue@32".matchFirst("^([^@]*)@?([0-9]*\\.?[0-9]*)")
 let s1 = ["Top", "Bottom", "Left", "Right"]
 let s2 = [1, 2 , 3]

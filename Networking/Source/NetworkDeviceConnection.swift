@@ -15,6 +15,10 @@ import DataModel
   optional func deviceConnected(connection: NetworkDeviceConnection)
   optional func messageReceived(message: String, overConnection connection: NetworkDeviceConnection)
   optional func messageSent(message: String, overConnection connection: NetworkDeviceConnection)
+  optional static func deviceDisconnected(connection: NetworkDeviceConnection)
+  optional static func deviceConnected(connection: NetworkDeviceConnection)
+  optional static func messageReceived(message: String, overConnection connection: NetworkDeviceConnection)
+  optional static func messageSent(message: String, overConnection connection: NetworkDeviceConnection)
 }
 
 @objc class NetworkDeviceConnection {
@@ -26,6 +30,7 @@ import DataModel
   weak var delegate: NetworkDeviceConnectionDelegate?
 
   private(set) var readSource: dispatch_source_t?
+
   private(set) var writeSource: dispatch_source_t?
 
   private(set) var connecting = false

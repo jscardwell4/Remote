@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C208D6301AFA87DA00AE83C1 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C208D62C1AFA87DA00AE83C1 /* ConnectionManager.swift */; };
+		C208D6311AFA87DA00AE83C1 /* ISYConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C208D62D1AFA87DA00AE83C1 /* ISYConnectionManager.swift */; };
+		C208D6321AFA87DA00AE83C1 /* ISYDeviceConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C208D62E1AFA87DA00AE83C1 /* ISYDeviceConnection.swift */; };
+		C208D6331AFA87DA00AE83C1 /* ITachConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C208D62F1AFA87DA00AE83C1 /* ITachConnectionManager.swift */; };
 		C20D11AF1A40E28700C33499 /* RemoteDrawingKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D11AE1A40E28700C33499 /* RemoteDrawingKit.swift */; };
 		C20D2F441AE0798400D0007B /* ModelIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D2F431AE0798400D0007B /* ModelIndex.swift */; };
 		C20D2F461AE0858800D0007B /* IndexedModelObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D2F451AE0858800D0007B /* IndexedModelObject.swift */; };
@@ -1006,6 +1010,10 @@
 /* Begin PBXFileReference section */
 		C2011DCB19B238F900B982CD /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
 		C203CC361A17DA1E0064D4CB /* RemoteElementViewConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteElementViewConstraint.swift; sourceTree = "<group>"; };
+		C208D62C1AFA87DA00AE83C1 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
+		C208D62D1AFA87DA00AE83C1 /* ISYConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ISYConnectionManager.swift; sourceTree = "<group>"; };
+		C208D62E1AFA87DA00AE83C1 /* ISYDeviceConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ISYDeviceConnection.swift; sourceTree = "<group>"; };
+		C208D62F1AFA87DA00AE83C1 /* ITachConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITachConnectionManager.swift; sourceTree = "<group>"; };
 		C20D11AE1A40E28700C33499 /* RemoteDrawingKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDrawingKit.swift; sourceTree = "<group>"; };
 		C20D2F431AE0798400D0007B /* ModelIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelIndex.swift; sourceTree = "<group>"; };
 		C20D2F451AE0858800D0007B /* IndexedModelObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedModelObject.swift; sourceTree = "<group>"; };
@@ -1017,8 +1025,6 @@
 		C21C43031A80015E004F8DA8 /* MainMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuController.swift; sourceTree = "<group>"; };
 		C21F07CB1AA378E700F1F8DD /* ActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
 		C221159B1AC58A980071F2D0 /* BankProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankProtocols.swift; sourceTree = "<group>"; };
-		C222480319B76E270093B07C /* ISYConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISYConnectionManager.h; sourceTree = "<group>"; };
-		C222480419B76E270093B07C /* ISYConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISYConnectionManager.m; sourceTree = "<group>"; };
 		C22E1BD819C12FB800A93D61 /* Remote-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Remote-Bridging-Header.h"; path = "Source/Remote-Bridging-Header.h"; sourceTree = "<group>"; };
 		C233E5871AE9412A00B0FD63 /* UIApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UIApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C233E58A1AE9412A00B0FD63 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1288,10 +1294,6 @@
 		C26BAEB716DC10FE0093D5B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C26BAEB916DC10FE0093D5B4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = main.m; path = Source/main.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		C26BAEBB16DC10FE0093D5B4 /* Remote-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Remote-Prefix.pch"; path = "Source/Remote-Prefix.pch"; sourceTree = "<group>"; };
-		C26BAF7616DC18530093D5B4 /* ConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionManager.h; sourceTree = "<group>"; };
-		C26BAF7716DC18530093D5B4 /* ConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionManager.m; sourceTree = "<group>"; };
-		C26BAF7B16DC18530093D5B4 /* ITachConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITachConnectionManager.h; sourceTree = "<group>"; };
-		C26BAF7C16DC18530093D5B4 /* ITachConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ITachConnectionManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		C26BAF8D16DC18530093D5B4 /* ColorSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorSelectionViewController.h; sourceTree = "<group>"; };
 		C26BAF8E16DC18530093D5B4 /* ColorSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorSelectionViewController.m; sourceTree = "<group>"; };
 		C26BAF8F16DC18530093D5B4 /* CommandDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandDetailViewController.h; sourceTree = "<group>"; };
@@ -1396,9 +1398,6 @@
 		C26BBAE516DC1B5C0093D5B4 /* Trash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Trash@2x.png"; sourceTree = "<group>"; };
 		C26BBAE616DC1B5C0093D5B4 /* Windows-White.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Windows-White.png"; sourceTree = "<group>"; };
 		C26BBAE716DC1B5C0093D5B4 /* Windows-White@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Windows-White@2x.png"; sourceTree = "<group>"; };
-		C26C6E6619B8EC9600B346AE /* NetworkDeviceConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceConnection.h; sourceTree = "<group>"; };
-		C26C6E6719B8EC9600B346AE /* NetworkDeviceConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkDeviceConnection.m; sourceTree = "<group>"; };
-		C26C6E6919B8EF6500B346AE /* NetworkDeviceConnection_Subclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceConnection_Subclass.h; sourceTree = "<group>"; };
 		C27BCC681801C16A0002464C /* IntegerKeyboard_0-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_0-Highlighted@2x.png"; sourceTree = "<group>"; };
 		C27BCC691801C16A0002464C /* IntegerKeyboard_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_0.png; sourceTree = "<group>"; };
 		C27BCC6A1801C16A0002464C /* IntegerKeyboard_0@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_0@2x.png"; sourceTree = "<group>"; };
@@ -1457,10 +1456,6 @@
 		C293C7741AC318EB00408D35 /* PresetCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetCategory.swift; sourceTree = "<group>"; };
 		C2997F2316FA563900290737 /* RETypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RETypedefs.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		C2A0C7501AD88D68008CF88B /* JSONStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONStorage.swift; sourceTree = "<group>"; };
-		C2A4102219B4BFB90089AACA /* ITachDeviceConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITachDeviceConnection.h; sourceTree = "<group>"; };
-		C2A4102319B4BFB90089AACA /* ITachDeviceConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITachDeviceConnection.m; sourceTree = "<group>"; };
-		C2A4102419B4BFB90089AACA /* NetworkDeviceMulticastConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkDeviceMulticastConnection.h; sourceTree = "<group>"; };
-		C2A4102519B4BFB90089AACA /* NetworkDeviceMulticastConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkDeviceMulticastConnection.m; sourceTree = "<group>"; };
 		C2A4EC4B178B990F00FD3AFF /* App_Icon@2x-ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "App_Icon@2x-ios7.png"; sourceTree = "<group>"; };
 		C2A4EC4C178B990F00FD3AFF /* image.512x512.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image.512x512.jpg; sourceTree = "<group>"; };
 		C2C3B91E1AC5DA7D001DC6CC /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = "../Debug-iphonesimulator/CocoaLumberjack.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1723,8 +1718,6 @@
 		C2EF968317F79E06005AA639 /* TableCellDetailArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TableCellDetailArrow@2x.png"; sourceTree = "<group>"; };
 		C2F01E2E1A030BD6007F6966 /* ColorSelectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSelectionController.swift; sourceTree = "<group>"; };
 		C2F01E301A03D9E3007F6966 /* BackgroundEditingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundEditingController.swift; sourceTree = "<group>"; };
-		C2F436FC19BAB8E600B60FC3 /* ISYDeviceConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISYDeviceConnection.h; sourceTree = "<group>"; };
-		C2F436FD19BAB8E600B60FC3 /* ISYDeviceConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISYDeviceConnection.m; sourceTree = "<group>"; };
 		C2F4370719BBAB3500B60FC3 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
 		C2F4370819BBAB3500B60FC3 /* nodes.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = nodes.xml; sourceTree = "<group>"; };
 		C2F4C58B1AC6E95300DB3695 /* DataModelApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DataModelApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1745,8 +1738,6 @@
 		C2F9410A19BE5E90007B5CC1 /* MSViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MSViewController.h; sourceTree = "<group>"; };
 		C2F9410B19BE5E90007B5CC1 /* MSViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MSViewController.m; sourceTree = "<group>"; };
 		C2F9410D19BE5E90007B5CC1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		C2F9414B19BE7EB7007B5CC1 /* MessageQueueEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageQueueEntry.h; sourceTree = "<group>"; };
-		C2F9414C19BE7EB7007B5CC1 /* MessageQueueEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageQueueEntry.m; sourceTree = "<group>"; };
 		C2FA4B911AC5E5260071429E /* Glyphish.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Glyphish.xcassets; sourceTree = "<group>"; };
 		C2FFB600170B986A0079C283 /* REPresetCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REPresetCollectionViewController.h; sourceTree = "<group>"; };
 		C2FFB601170B986B0079C283 /* REPresetCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REPresetCollectionViewController.m; sourceTree = "<group>"; };
@@ -2314,29 +2305,16 @@
 		C26BAF7516DC18530093D5B4 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				C208D62C1AFA87DA00AE83C1 /* ConnectionManager.swift */,
+				C208D62D1AFA87DA00AE83C1 /* ISYConnectionManager.swift */,
+				C208D62E1AFA87DA00AE83C1 /* ISYDeviceConnection.swift */,
+				C208D62F1AFA87DA00AE83C1 /* ITachConnectionManager.swift */,
 				C26863791AF9CE2200D664E8 /* ITachDeviceConnection.swift */,
 				C26863731AF990D600D664E8 /* MessageQueueEntry.swift */,
 				C26863741AF990D600D664E8 /* NetworkDeviceConnection.swift */,
 				C26863751AF990D600D664E8 /* NetworkDeviceMulticastConnection.swift */,
-				C2A4102219B4BFB90089AACA /* ITachDeviceConnection.h */,
-				C2A4102319B4BFB90089AACA /* ITachDeviceConnection.m */,
-				C2A4102419B4BFB90089AACA /* NetworkDeviceMulticastConnection.h */,
-				C2A4102519B4BFB90089AACA /* NetworkDeviceMulticastConnection.m */,
-				C26BAF7616DC18530093D5B4 /* ConnectionManager.h */,
-				C26BAF7716DC18530093D5B4 /* ConnectionManager.m */,
-				C26BAF7B16DC18530093D5B4 /* ITachConnectionManager.h */,
-				C26BAF7C16DC18530093D5B4 /* ITachConnectionManager.m */,
 				C240DD5D170485F2005CC390 /* IRLearner.h */,
 				C240DD5E170485F2005CC390 /* IRLearner.m */,
-				C222480319B76E270093B07C /* ISYConnectionManager.h */,
-				C222480419B76E270093B07C /* ISYConnectionManager.m */,
-				C26C6E6619B8EC9600B346AE /* NetworkDeviceConnection.h */,
-				C26C6E6719B8EC9600B346AE /* NetworkDeviceConnection.m */,
-				C26C6E6919B8EF6500B346AE /* NetworkDeviceConnection_Subclass.h */,
-				C2F436FC19BAB8E600B60FC3 /* ISYDeviceConnection.h */,
-				C2F436FD19BAB8E600B60FC3 /* ISYDeviceConnection.m */,
-				C2F9414B19BE7EB7007B5CC1 /* MessageQueueEntry.h */,
-				C2F9414C19BE7EB7007B5CC1 /* MessageQueueEntry.m */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -4355,9 +4333,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C208D6301AFA87DA00AE83C1 /* ConnectionManager.swift in Sources */,
 				C26863771AF990D600D664E8 /* NetworkDeviceConnection.swift in Sources */,
 				C26863761AF990D600D664E8 /* MessageQueueEntry.swift in Sources */,
+				C208D6331AFA87DA00AE83C1 /* ITachConnectionManager.swift in Sources */,
+				C208D6311AFA87DA00AE83C1 /* ISYConnectionManager.swift in Sources */,
 				C26863781AF990D600D664E8 /* NetworkDeviceMulticastConnection.swift in Sources */,
+				C208D6321AFA87DA00AE83C1 /* ISYDeviceConnection.swift in Sources */,
 				C268637A1AF9CE2200D664E8 /* ITachDeviceConnection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

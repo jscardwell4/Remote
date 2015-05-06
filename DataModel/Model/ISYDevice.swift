@@ -65,58 +65,58 @@ http://192.168.1.9/rest/nodes/1B%206E%20B2%201/cmd/DON
 @objc(ISYDevice)
 public class ISYDevice: NetworkDevice {
 
-    @NSManaged public var baseURL: String
-    @NSManaged public var deviceType: String
-    @NSManaged public var friendlyName: String
-    @NSManaged public var manufacturer: String
-    @NSManaged public var manufacturerURL: String
-    @NSManaged public var modelDescription: String
-    @NSManaged public var modelName: String
-    @NSManaged public var modelNumber: String
-    @NSManaged public var groups: Set<ISYDeviceGroup>
-    @NSManaged public var nodes: Set<ISYDeviceNode>
+  @NSManaged public var baseURL: String
+  @NSManaged public var deviceType: String
+  @NSManaged public var friendlyName: String
+  @NSManaged public var manufacturer: String
+  @NSManaged public var manufacturerURL: String
+  @NSManaged public var modelDescription: String
+  @NSManaged public var modelName: String
+  @NSManaged public var modelNumber: String
+  @NSManaged public var groups: Set<ISYDeviceGroup>
+  @NSManaged public var nodes: Set<ISYDeviceNode>
 
-  /**
-  updateWithData:
+/**
+updateWithData:
 
-  :param: data ObjectJSONValue
-  */
-  override public func updateWithData(data: ObjectJSONValue) {
-    super.updateWithData(data)
-    if let modelNumber       = String(data["modelNumber"]) { self.modelNumber = modelNumber }
-    if let modelName         = String(data["modelName"]) { self.modelName = modelName }
-    if let modelDescription  = String(data["modelDescription"]) { self.modelDescription = modelDescription }
-    if let manufacturerURL   = String(data["manufacturerURL"]) { self.manufacturerURL = manufacturerURL }
-    if let manufacturer      = String(data["manufacturer"]) { self.manufacturer = manufacturer }
-    if let friendlyName      = String(data["friendlyName"]) { self.friendlyName = friendlyName }
-    if let deviceType        = String(data["deviceType"]) { self.deviceType = deviceType }
-    if let baseURL           = String(data["baseURL"]) { self.baseURL = baseURL }
+:param: data ObjectJSONValue
+*/
+override public func updateWithData(data: ObjectJSONValue) {
+  super.updateWithData(data)
+  if let modelNumber       = String(data["modelNumber"]) { self.modelNumber = modelNumber }
+  if let modelName         = String(data["modelName"]) { self.modelName = modelName }
+  if let modelDescription  = String(data["modelDescription"]) { self.modelDescription = modelDescription }
+  if let manufacturerURL   = String(data["manufacturerURL"]) { self.manufacturerURL = manufacturerURL }
+  if let manufacturer      = String(data["manufacturer"]) { self.manufacturer = manufacturer }
+  if let friendlyName      = String(data["friendlyName"]) { self.friendlyName = friendlyName }
+  if let deviceType        = String(data["deviceType"]) { self.deviceType = deviceType }
+  if let baseURL           = String(data["baseURL"]) { self.baseURL = baseURL }
 
-    updateRelationshipFromData(data, forAttribute: "nodes")
-    updateRelationshipFromData(data, forAttribute: "groups")
-  }
+  updateRelationshipFromData(data, forAttribute: "nodes")
+  updateRelationshipFromData(data, forAttribute: "groups")
+}
 
-  /**
-  detailController
+/**
+detailController
 
-  :returns: UIViewController
-  */
+:returns: UIViewController
+*/
 //  func detailController() -> UIViewController { return ISYDeviceDetailController(model: self) }
 
-  override public var jsonValue: JSONValue {
-    var obj = ObjectJSONValue(super.jsonValue)!
-    obj["modelNumber"] = modelNumber.jsonValue
-    obj["modelName"] = modelName.jsonValue
-    obj["modelDescription"] = modelDescription.jsonValue
-    obj["manufacturerURL"] = manufacturerURL.jsonValue
-    obj["manufacturer"] = manufacturer.jsonValue
-    obj["friendlyName"] = friendlyName.jsonValue
-    obj["deviceType"] = deviceType.jsonValue
-    obj["baseURL"] = baseURL.jsonValue
-    obj["nodes"] = JSONValue(nodes)
-    obj["groups"] = JSONValue(groups)
-    obj["type"] = "isy"
-    return obj.jsonValue
-  }
+override public var jsonValue: JSONValue {
+  var obj = ObjectJSONValue(super.jsonValue)!
+  obj["modelNumber"] = modelNumber.jsonValue
+  obj["modelName"] = modelName.jsonValue
+  obj["modelDescription"] = modelDescription.jsonValue
+  obj["manufacturerURL"] = manufacturerURL.jsonValue
+  obj["manufacturer"] = manufacturer.jsonValue
+  obj["friendlyName"] = friendlyName.jsonValue
+  obj["deviceType"] = deviceType.jsonValue
+  obj["baseURL"] = baseURL.jsonValue
+  obj["nodes"] = JSONValue(nodes)
+  obj["groups"] = JSONValue(groups)
+  obj["type"] = "isy"
+  return obj.jsonValue
+}
 
 }
