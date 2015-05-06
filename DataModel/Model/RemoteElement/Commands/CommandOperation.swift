@@ -8,7 +8,7 @@
 
 import Foundation
 import MoonKit
-import class Networking.ConnectionManager
+//import class Networking.ConnectionManager
 
 internal class CommandOperation: NSOperation {
 
@@ -121,12 +121,12 @@ final class SendCommandOperation: CommandOperation {
   /** main */
   override func main() {
     let commandID = command.objectID
-    ConnectionManager.sendCommandWithID(commandID) {
-      MSLogDebug("command ID:\(commandID)\ncompletion: success? \($0) error - \($1)")
-      self.success = $0
-      self.error = $1
-      super.main()
-    }
+//    ConnectionManager.sendCommandWithID(commandID) {
+//      MSLogDebug("command ID:\(commandID)\ncompletion: success? \($0) error - \($1)")
+//      self.success = $0
+//      self.error = $1
+//      super.main()
+//    }
   }
 
 }
