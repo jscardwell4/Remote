@@ -53,8 +53,7 @@ class LearnerAppViewController: UIViewController, MSPickerInputButtonDelegate {
   @IBOutlet weak var status: UILabel!
   @IBOutlet weak var learnerEnabled: UISwitch!
   @IBOutlet weak var lastCapturedCommand: UILabel!
-  @IBOutlet weak var manufacturer: MSPickerInputButton!
-  @IBOutlet weak var codeSet: MSPickerInputButton!
+  @IBOutlet weak var manufacturerPicker: InlinePickerView!
 
   func setup() {
     learnerDelegate.didCaptureCommand = { [unowned self]
@@ -100,12 +99,7 @@ class LearnerAppViewController: UIViewController, MSPickerInputButtonDelegate {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    manufacturer.setTitle("Manufacturer", forState: .Normal)
-    manufacturer.titleLabel.font = Bank.actionFont
-    manufacturer.titleLabel.textColor = UIColor(white: 0.49, alpha: 1.0)
-    codeSet.setTitle("Code Set", forState: .Normal)
-    codeSet.titleLabel.font = Bank.actionFont
-    codeSet.titleLabel.textColor = UIColor(white: 0.49, alpha: 1.0)
+    manufacturerPicker.labels = ["Sony", "Cox", "Samsung", "Apple"]
   }
 
   override func prefersStatusBarHidden() -> Bool { return true }

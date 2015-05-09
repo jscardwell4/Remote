@@ -54,6 +54,11 @@
 			<key>orderHint</key>
 			<integer>14</integer>
 		</dict>
+		<key>Elysio.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>24</integer>
+		</dict>
 		<key>ISYClient.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -129,6 +134,16 @@
 			<true/>
 		</dict>
 		<key>C215CC081ABB102F00E8077E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C2194A5D1AFE4FF1009B19B7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C2194A671AFE4FF1009B19B7</key>
 		<dict>
 			<key>primary</key>
 			<true/>

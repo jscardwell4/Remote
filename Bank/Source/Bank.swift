@@ -11,6 +11,7 @@ import UIKit
 import MoonKit
 import DataModel
 import Settings
+import Elysio
 
 @objc final public class Bank {
 
@@ -20,6 +21,7 @@ import Settings
   }
 
   class func initialize() {
+    Elysio.registerFonts()
     SettingsManager.registerSettingWithKey(Bank.viewingModeKey,
                           withDefaultValue: .List,
                               fromDefaults: {ViewingMode(rawValue: ($0 as? NSNumber)?.integerValue ?? 0)},

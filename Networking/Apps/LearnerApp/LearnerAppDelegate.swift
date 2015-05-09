@@ -9,6 +9,7 @@
 import UIKit
 import MoonKit
 import Networking
+import Elysio
 
 @UIApplicationMain
 class LearnerAppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,6 +19,7 @@ class LearnerAppDelegate: UIResponder, UIApplicationDelegate {
   override class func initialize() {
     LogManager.addConsoleLoggers()
     MSLogDebug("loggers attached")
+    Elysio.registerFonts()
   }
 
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {

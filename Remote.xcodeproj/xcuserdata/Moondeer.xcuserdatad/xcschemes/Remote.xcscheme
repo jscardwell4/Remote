@@ -104,6 +104,20 @@
                ReferencedContainer = "container:Remote.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C2194A671AFE4FF1009B19B7"
+               BuildableName = "ElysioTests.xctest"
+               BlueprintName = "ElysioTests"
+               ReferencedContainer = "container:Remote.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -169,6 +183,16 @@
                BlueprintIdentifier = "C24A060D1AE5CB4900C9255E"
                BuildableName = "NetworkingTests.xctest"
                BlueprintName = "NetworkingTests"
+               ReferencedContainer = "container:Remote.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C2194A671AFE4FF1009B19B7"
+               BuildableName = "ElysioTests.xctest"
+               BlueprintName = "ElysioTests"
                ReferencedContainer = "container:Remote.xcodeproj">
             </BuildableReference>
          </TestableReference>
