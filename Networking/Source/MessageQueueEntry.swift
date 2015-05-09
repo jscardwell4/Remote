@@ -9,18 +9,29 @@
 import Foundation
 import MoonKit
 
-struct MessageQueueEntry {
+protocol MessageData {
+  var msg: String { get }
+  var data: NSData { get }
+}
 
-  /** `message` as `NSData` */
-  var data: NSData? { return message.dataUsingEncoding(NSUTF8StringEncoding) }
+
+struct MessageQueueEntry<T:MessageData> {
+
+  typealias Callback = ConnectionManager.Callback
+
+  var messageData: T
 
   /** The message being sent */
-  var message: String
+  var message: String { return messageData.msg }
+
+  /** The message being sent as data */
+  var data: NSData { return messageData.data }
 
   /** Generalized storage space */
-  var userInfo: [NSObject:AnyObject] = [:]
+  var userInfo: [NSObject:AnyObject]
 
-  var completion: ((Bool, String?, NSError?) -> Void)?
+  /** Optional callback to invoke after a corresponding response has been received for the message */
+  let completion: Callback?
 
   /**
   initWithMessage:completion:
@@ -28,8 +39,9 @@ struct MessageQueueEntry {
   :param: message String
   :param: completion ((Bool, String, NSError?) -> Void)? = nil
   */
-  init(message: String, completion: ((Bool, String?, NSError?) -> Void)? = nil) {
-    self.message = message
+  init(messageData: T, userInfo: [NSObject:AnyObject] = [:], completion: Callback? = nil) {
+    self.messageData = messageData
+    self.userInfo = userInfo
     self.completion = completion
   }
 

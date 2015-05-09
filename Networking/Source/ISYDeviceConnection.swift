@@ -9,6 +9,8 @@
 import Foundation
 import MoonKit
 import class DataModel.ISYDevice
+import class DataModel.ISYDeviceNode
+import class DataModel.ISYDeviceGroup
 import class DataModel.DataManager
 
 // TODO: Hardcoded user/passwords absolutely need to be replaced with proper implementation
@@ -108,6 +110,7 @@ final class ISYDeviceConnection: Equatable, Hashable {
       delegate.didFail = { completion(nil, $0) }
 
       delegate.didReceiveData = {
+
         let keys = [
           "URLBase",
           "deviceType",
@@ -152,94 +155,79 @@ final class ISYDeviceConnection: Equatable, Hashable {
 
   /** updateNodes */
   private func updateNodes() {
-/*
-   if (self.device) {
 
-      __weak ISYDeviceConnection * weakself = self;
+    if let url = NSURL(string: "rest/nodes", relativeToURL: baseURL) {
+      let request = NSURLRequest(URL: url)
+      let delegate = ConnectionDelegate()
+      delegate.user = "moondeer"
+      delegate.password = "1bluebear"
+      delegate.didReceiveData = { [unowned self] in
+        let parsedData = MSDictionary(byParsingXML: $0)
+        let moc = DataManager.rootContext
 
-      [self sendRequestWithText:@"rest/nodes" completion:^(BOOL success, NSError *error) {
+        moc.performBlock { [unowned self] in
 
-        if (success && !MSHandleErrors(error) && weakself.dataParsed) {
+          let nodes = findFirstValueForKeyInContainer("node", parsedData) as! [MSDictionary]
 
-          NSManagedObjectContext * moc = [DataManager mainContext];
+          let nodeKeys = ["flag", "address", "type", "enabled", "pnode", "name"]
+          let nodeModels = MSDictionary()
 
-          [moc performBlock:^{
+          for node in nodes {
 
-            NSArray * nodes  = findFirstValueForKeyInContainer(@"node",  weakself.dataParsed);
+            let propertyID        = node["property"]!["id"] as! String
+            let propertyValue     = node["property"]!["value"] as! String
+            let propertyUOM       = node["property"]!["uom"] as! String
+            let propertyFormatted = node["property"]!["formatted"] as! String
 
-            NSArray * attributeKeys = @[@"flag", @"address", @"type", @"enabled", @"pnode", @"name"];
-            MSDictionary * nodeModels = [MSDictionary dictionary];
+            node.filter {key, _ in contains(nodeKeys, key as! String)}
 
-            for (MSDictionary * node in nodes) {
+            node["propertyID"]        = propertyID
+            node["propertyValue"]     = propertyValue.toInt()
+            node["propertyUOM"]       = propertyUOM
+            node["propertyFormatted"] = propertyFormatted
+            node["device"]            = self.device
+            node["enabled"]           = (node["enabled"] as! String) == "true"
+            node["flag"]              = (node["flag"] as! String).toInt()
 
-              NSString * propertyID        = node[@"property"][@"id"];
-              NSString * propertyValue     = node[@"property"][@"value"];
-              NSString * propertyUOM       = node[@"property"][@"uom"];
-              NSString * propertyFormatted = node[@"property"][@"formatted"];
+            let nodeModel = ISYDeviceNode(context: moc)
+            nodeModel.setValuesForKeysWithDictionary(node as [NSObject:AnyObject])
 
-              assert(propertyID && propertyValue && propertyUOM && propertyFormatted);
+            nodeModels[nodeModel.address] = nodeModel
 
+          }
 
-              [node filter:^BOOL(id<NSCopying> key, id value) { return [attributeKeys containsObject:key]; }];
+          var error: NSError?
+          var saved = moc.save(&error)
+          assert(!MSHandleError(error))
 
-              node[@"propertyID"]        = propertyID;
-              node[@"propertyValue"]     = @([propertyValue integerValue]);
-              node[@"propertyUOM"]       = propertyUOM;
-              node[@"propertyFormatted"] = propertyFormatted;
-              node[@"device"]            = weakself.device;
-              node[@"enabled"]           = ([node[@"enabled"] isEqualToString:@"true"] ? @YES : @NO);
-              node[@"flag"]              = @([node[@"flag"] integerValue]);
+          let groups = findFirstValueForKeyInContainer("group", parsedData) as! [MSDictionary]
+          let groupKeys = ["flag", "address", "name", "family", "members"]
 
-              ISYDeviceNode * nodeModel = [ISYDeviceNode createInContext:moc];
-              [nodeModel setValuesForKeysWithDictionary:node];
+          for group in groups {
 
-              nodeModels[nodeModel.address] = nodeModel;
-
+            group.filter {key, _ in  contains(groupKeys, key as! String) }
+            if let members = group["members"]?["link"] as? [MSDictionary] {
+              group["members"] = Set((members as NSArray).mapped {member, _ in nodeModels[member["link"]] } as! [String])
             }
 
-            NSError * error = nil;
-            BOOL saved = [moc save:&error];
-            assert(saved);
+            group["device"] = self.device
+            group["flag"] = (group["flag"] as? String)?.toInt()
+            group["family"] = (group["family"] as? String)?.toInt()
 
-            if (MSHandleErrors(error)) error = nil;
+            let groupModel = ISYDeviceGroup(context: moc)
+            groupModel.setValuesForKeysWithDictionary(group as [NSObject:AnyObject])
 
-            NSArray * groups = findFirstValueForKeyInContainer(@"group", weakself.dataParsed);
-            attributeKeys = @[@"flag", @"address", @"name", @"family", @"members"];
+          }
 
-            for (MSDictionary * group in groups) {
-
-              [group filter:^BOOL(id<NSCopying> key, id value) { return [attributeKeys containsObject:key]; }];
-              NSArray * members = group[@"members"][@"link"];
-              if (members)
-                group[@"members"] = [[members mapped:^ISYDeviceNode *(MSDictionary * member, NSUInteger idx) {
-                  return nodeModels[member[@"link"]];
-                }] set];
-
-              group[@"device"] = weakself.device;
-              if (group[@"flag"])   group[@"flag"] = @([group[@"flag"] integerValue]);
-              if (group[@"family"]) group[@"family"] = @([group[@"family"] integerValue]);
-
-              ISYDeviceGroup * groupModel = [ISYDeviceGroup createInContext:moc];
-              [groupModel setValuesForKeysWithDictionary:group];
-
-            }
-
-            saved = [moc save:&error];
-            MSHandleErrors(error);
-
-            assert(saved);
-
-            nsprintf(@"%@", weakself.device.description);
-
-          }];
+          saved = moc.save(&error)
+          assert(!MSHandleError(error))
 
         }
 
-      }];
+      }
 
-
+      urlConnection = NSURLConnection(request: request, delegate: delegate)
     }
-*/
   }
 
   /**
@@ -255,7 +243,7 @@ final class ISYDeviceConnection: Equatable, Hashable {
             parameters: [String],
             completion: ((Bool, NSError?) -> Void)? = nil)
   {
-    let text = "reset/nodes/\(nodeID)/cmd/\(command)" + (parameters.count > 0 ? "/" + "/".join(parameters) : "")
+    let text = "rest/nodes/\(nodeID)/cmd/\(command)" + (parameters.count > 0 ? "/" + "/".join(parameters) : "")
     if let url = NSURL(string: text, relativeToURL: baseURL) {
       let request = NSURLRequest(URL: url)
       let delegate = ConnectionDelegate()

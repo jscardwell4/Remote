@@ -633,9 +633,9 @@
                         "@optional": "YES",
                         "@maxCount": "1",
                         "@deletionRule": "Nullify",
-                        "@destinationEntity": "SendIRCommand",
+                        "@destinationEntity": "ITachIRCommand",
                         "@inverseName": "offCommandForDevice",
-                        "@inverseEntity": "SendIRCommand",
+                        "@inverseEntity": "ITachIRCommand",
                         "@syncable": "YES"
                     },
                     {
@@ -643,9 +643,9 @@
                         "@optional": "YES",
                         "@maxCount": "1",
                         "@deletionRule": "Nullify",
-                        "@destinationEntity": "SendIRCommand",
+                        "@destinationEntity": "ITachIRCommand",
                         "@inverseName": "onCommandForDevice",
-                        "@inverseEntity": "SendIRCommand",
+                        "@inverseEntity": "ITachIRCommand",
                         "@syncable": "YES"
                     },
                     {
@@ -664,9 +664,9 @@
                         "@optional": "YES",
                         "@toMany": "YES",
                         "@deletionRule": "Nullify",
-                        "@destinationEntity": "SendIRCommand",
+                        "@destinationEntity": "ITachIRCommand",
                         "@inverseName": "componentDevice",
-                        "@inverseEntity": "SendIRCommand",
+                        "@inverseEntity": "ITachIRCommand",
                         "@syncable": "YES"
                     }
                 ]
@@ -1595,9 +1595,9 @@
                         "@optional": "YES",
                         "@toMany": "YES",
                         "@deletionRule": "Cascade",
-                        "@destinationEntity": "SendIRCommand",
+                        "@destinationEntity": "ITachIRCommand",
                         "@inverseName": "code",
-                        "@inverseEntity": "SendIRCommand",
+                        "@inverseEntity": "ITachIRCommand",
                         "@indexed": "YES",
                         "@syncable": "YES"
                     }
@@ -2457,8 +2457,8 @@
                 ]
             },
             {
-                "@name": "SendIRCommand",
-                "@representedClassName": "SendIRCommand",
+                "@name": "ITachIRCommand",
+                "@representedClassName": "ITachIRCommand",
                 "@parentEntity": "Command",
                 "@syncable": "YES",
                 "attribute": {
@@ -2786,7 +2786,7 @@
                     "@height": "300"
                 },
                 {
-                    "@name": "SendIRCommand",
+                    "@name": "ITachIRCommand",
                     "@positionX": "0",
                     "@positionY": "0",
                     "@width": "128",

@@ -8,8 +8,8 @@
 
 import Foundation
 
-private struct QueueNode<T> {
-  var next: Box<QueueNode<T>?> = Box(nil)
+private class QueueNode<T> {
+  var next: QueueNode<T>?
   var value: T
   init(_ v: T) { value = v }
 }
@@ -28,7 +28,7 @@ public struct Queue<T> {
   public mutating func dequeue() -> T? {
     let value = head?.value
     if head != nil {
-      head = head?.next.unbox
+      head = head?.next
       count--
       if count < 2 { tail = head }
     }
@@ -44,8 +44,8 @@ public struct Queue<T> {
   public mutating func enqueue(value: T) {
     let node = QueueNode(value)
     if var t = tail {
-      t.next = Box(node)
-      tail = t
+      t.next = node
+      tail = node
     } else {
       head = node
       tail = node

@@ -1,5 +1,5 @@
 //
-//  SendIRCommand.swift
+//  ITachIRCommand.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 3/2/15.
@@ -11,12 +11,12 @@ import CoreData
 import MoonKit
 
 /**
-  `SendIRCommand` subclasses `Command` to send IR commands via <ConnectionManager> to networked
+  `ITachIRCommand` subclasses `Command` to send IR commands via <ConnectionManager> to networked
   IR receivers that control the user's home theater system. At this time, only
   [iTach](http://www.globalcache.com/products/itach) devices from Global Caché are supported.
 */
-@objc(SendIRCommand)
-public final class SendIRCommand: SendCommand {
+@objc(ITachIRCommand)
+public final class ITachIRCommand: SendCommand {
 
   @NSManaged public var code: IRCode!
 

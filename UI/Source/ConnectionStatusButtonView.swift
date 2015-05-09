@@ -21,17 +21,17 @@ public final class ConnectionStatusButtonView: ButtonView {
   /** initializeIVARs */
   override func initializeIVARs() {
     super.initializeIVARs()
-    connected = ConnectionManager.isWifiAvailable()
+    connected = ConnectionManager.wifiAvailable
     receptionist = MSNotificationReceptionist(
       observer: self,
-      forObject: nil,
-      notificationName: CMConnectionStatusNotification,
+      forObject: ConnectionManager.self,
+      notificationName: ConnectionManager.ConnectionStatusNotification,
       queue: NSOperationQueue.mainQueue(),
       handler: {
         (receptionist: MSNotificationReceptionist!) -> Void in
           if let v = receptionist.observer as? ConnectionStatusButtonView {
             let currentlyConnected = v.connected
-            if let wifiAvailable = receptionist.notification.userInfo?[CMConnectionStatusWifiAvailableKey] as? Bool {
+            if let wifiAvailable = receptionist.notification.userInfo?[ConnectionManager.WifiAvailableKey] as? Bool {
               if currentlyConnected != wifiAvailable { v.connected = !currentlyConnected; v.setNeedsDisplay() }
             }
           }

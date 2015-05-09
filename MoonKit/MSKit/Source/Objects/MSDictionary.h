@@ -23,8 +23,6 @@
 @property (nonatomic, readonly, nullable) id<NSCopying>  lastKey;
 @property (nonatomic, readonly, nullable) id             firstValue;
 @property (nonatomic, readonly, nullable) id             lastValue;
-//@property (nonatomic, weak, readonly, nonnull) id JSONObject;
-//@property (nonatomic, weak, readonly, nonnull) NSString * JSONString;
 
 + (MSDictionary *)dictionaryWithDictionary:(NSDictionary *)dictionary convertFoundationClasses:(BOOL)convert;
 - (void)convertFoundationClasses;
@@ -63,9 +61,6 @@
 /// Recursively looks for values that are of a dictionary type with only one key-value pair and
 /// replaces with keypath-value pair
 - (void)compress;
-
-/// Recursively looks for keypath-value pairs and expands into key-dictionary pairs
-//- (void)inflate;
 
 - (void)removeObjectAtIndex:(NSUInteger)index;
 - (void)removeObjectsAtIndexes:(NSIndexSet *)indexes;

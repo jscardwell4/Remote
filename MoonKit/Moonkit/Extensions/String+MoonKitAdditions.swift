@@ -8,6 +8,31 @@
 
 import Foundation
 
+// even though infix ..< already exists, we need to declare it
+// two more times for the prefix and postfix form
+postfix operator ..< { }
+prefix operator ..< { }
+
+// then, declare a couple of simple custom types that indicate one-sided ranges:
+struct RangeStart<I: ForwardIndexType> { let start: I }
+struct RangeEnd<I: ForwardIndexType> { let end: I }
+
+// and define ..< to return them
+postfix func ..<<I: ForwardIndexType>(lhs: I) -> RangeStart<I>
+{ return RangeStart(start: lhs) }
+
+prefix func ..<<I: ForwardIndexType>(rhs: I) -> RangeEnd<I>
+{ return RangeEnd(end: rhs) }
+
+// finally, extend String to have a slicing subscript for these types:
+extension String {
+  subscript(r: RangeStart<String.Index>) -> String {
+    return self[r.start..<self.endIndex]
+  }
+  subscript(r: RangeEnd<String.Index>) -> String {
+    return self[self.startIndex..<r.end]
+  }
+}
 public extension String {
 
   public static let Space:       String = " "
@@ -103,8 +128,8 @@ public extension String {
 
   public var pathDecoded: String { return self.stringByRemovingPercentEncoding ?? self }
 
-  public var forwardSlashEncoded: String { return sub("/", "%2F") }
-  public var forwardSlashDecoded: String { return sub("%2F", "/").sub("%2f", "/") }
+  public var forwardSlashEncoded: String { return subbed("/", "%2F") }
+  public var forwardSlashDecoded: String { return subbed("%2F", "/").subbed("%2f", "/") }
 
   public func indentedBy(indent: Int) -> String {
     let spacer = " " * indent
@@ -176,11 +201,23 @@ public extension String {
 
   :returns: String
   */
-  public func sub(target: String, _ replacement: String) -> String {
+  public func subbed(target: String, _ replacement: String) -> String {
     return stringByReplacingOccurrencesOfString(target,
                                      withString: replacement,
                                         options: nil,
                                           range: startIndex..<endIndex)
+  }
+
+  /**
+  sub:replacement:
+
+  :param: target String
+  :param: replacement String
+  */
+  public mutating func sub(target: String, _ replacement: String) {
+    if let range = rangeForCapture(0, inFirstMatchFor: ~/target) {
+      replaceRange(range, with: replacement)
+    }
   }
 
   /**

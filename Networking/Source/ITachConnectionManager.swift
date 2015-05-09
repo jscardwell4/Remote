@@ -1,5 +1,5 @@
 //
-//  ItachConnectionManager.swift
+//  ITachConnectionManager.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 5/06/15.
@@ -7,158 +7,122 @@
 //
 
 import Foundation
+import CoreData
 import MoonKit
-import class DataModel.SendIRCommand
+import class DataModel.ITachIRCommand
 import class DataModel.ITachDevice
+import class DataModel.DataManager
 
-@objc final class ITachConnectionManager: NetworkDeviceConnectionDelegate {
+@objc final class ITachConnectionManager {
 
   typealias Callback = ConnectionManager.Callback
   typealias Error = ConnectionManager.Error
+  typealias Connection = ITachDeviceConnection
+
+  typealias Device = ITachDevice
+  typealias DeviceIdentifier = String
 
   static let MulticastAddress = "239.255.250.250"
-  static let MulticastPort = "9131"
+  static let MulticastPort: UInt16 = 9131
 
-  static let LearnerStatusDidChangeNotification = "ITachConnectionManagerLearnerStatusDidChangeNotification"
-  static let CommandCapturedNotification = "ItachConnectionManagerCommandCapturedNotification"
+  /** Current/previous device connections */
+  static private var connections: [DeviceIdentifier:Connection] = [:]
 
-  /** Currently connected devices */
-  static private var connections: [String:ITachDeviceConnection] = [:]
+  /** Active device connections */
+  static private var activeConnections: Set<DeviceIdentifier> = []
 
   /** UUIDs from processed beacons. */
-  static private var beaconsReceived: Set<String> = []
+  static private var beaconsReceived: Set<DeviceIdentifier> = []
+
+  /** Previously discovered devices. */
+  static private(set) var networkDevices = Set(Device.objectsInContext(DataManager.rootContext) as! [Device])
 
   /** Whether socket is (or should be) open to receive multicast group broadcast messages. */
   static private(set) var detectingNetworkDevices = false
 
   /** Multicast group connection */
-  static private var multicastConnection =
-    NetworkDeviceMulticastConnection(address: ITachConnectionManager.MulticastAddress,
-                                     port: ITachConnectionManager.MulticastPort,
-                                     delegate: ITachConnectionManager())
+  static private var multicastConnection = MulticastConnection(address: ITachConnectionManager.MulticastAddress,
+                                                               port: ITachConnectionManager.MulticastPort,
+                                                               callback: ITachConnectionManager.messageReceived)
+
+  /** Join multicast group and listen for beacons broadcast by iTach devices. */
+  class func startDetectingNetworkDevices() {
+    detectingNetworkDevices = true
+    multicastConnection.listen()
+    MSLogDebug("listening for iTach devices…")
+  }
+
+  /** Cease listening for beacon broadcasts and release resources. */
+  class func stopDetectingNetworkDevices() {
+    detectingNetworkDevices = false
+    multicastConnection.stopListening()
+    MSLogDebug("no longer listening for iTach devices")
+  }
 
   /**
+  connectionForDevice:
 
-  Join multicast group and listen for beacons broadcast by iTach devices.
+  :param: device Device
 
-  :param: completion Callback Block to be executed upon completion of the task.
-
+  :returns: Connection
   */
-  class func startDetectingNetworkDevices(completion: Callback? = nil) {
-    // Set group active flag
-    detectingNetworkDevices = true
-
-    // Check for wifi
-    if !ConnectionManager.wifiAvailable {
-      MSLogError("cannot detect network devices without a valid wifi connection")
-      completion?(false, NSError(domain: Error.domain, code: Error.NoWifi.rawValue, userInfo: nil))
-    }
-
-    // Just execute the completion block if we have already joined
-    else if multicastConnection.connected { MSLogWarn("multicast socket already exists"); completion?(true, nil) }
-
-    // Otherwise join the multicast group
-    else { multicastConnection.connect(completion: completion) }
+  class func connectionForDevice(device: Device) -> Connection {
+    let result: Connection
+    if let connection = connections[device.uniqueIdentifier] { result = connection }
+    else { result = Connection(device: device); connections[device.uniqueIdentifier] = result }
+    return result
   }
-
- /**
-
-  Cease listening for beacon broadcasts and release resources.
-
-  :param: completion Callback Block to be executed upon completion of the task.
-
-  */
-  class func stopDetectingNetworkDevices(completion: Callback? = nil) {
-    // Set group active flag
-    detectingNetworkDevices = false
-
-    // Leave group if joined to one
-    if multicastConnection.connected { multicastConnection.disconnect(completion: completion) }
-
-    // Otherwise just execute completion block
-    else { MSLogWarn("not currently joined to a multicast group"); completion?(true, nil) }
-  }
-
 
  /**
 
   Sends an IR command to the device identified by the specified `uuid`.
 
-  :param: command SendIRCommand The command to execute
+  :param: command ITachIRCommand The command to execute
 
   :param: completion The block to execute upon task completion
 
   */
-  class func sendCommand(command: SendIRCommand, completion: Callback? = nil) {
+  class func sendCommand(command: ITachIRCommand, completion: Callback? = nil) {
     if command.commandString.isEmpty {
       MSLogError("cannot send empty or nil command")
       completion?(false, NSError(domain: Error.domain, code: Error.CommandEmpty.rawValue, userInfo: nil))
-    } else if let device = command.networkDevice as? ITachDevice{
-      let id = device.uniqueIdentifier
-      let connection: ITachDeviceConnection
-
-      if let c = connections[id] { connection = c }
-      else { connection = ITachDeviceConnection(device: device); connections[id] = connection }
-
-      connection.enqueueCommand(command) { completion?($0, $2) }
+    } else if let device = command.networkDevice as? Device {
+      connectionForDevice(device).enqueueCommand(command, completion: completion)
     }
   }
 
   /** Suspend active connections */
   class func suspend() {
-    if detectingNetworkDevices { multicastConnection.disconnect() }
-    apply(connections.values.array) { if $0.connected { $0.disconnect() } }
+    if detectingNetworkDevices { multicastConnection.stopListening() }
+    activeConnections.removeAll(keepCapacity: true)
+    apply(connections) { if $1.connected { ITachConnectionManager.activeConnections.insert($0); $1.disconnect() } }
   }
 
-  /** Resume multicast connection, device connections should re-connect as needed when commands are enqueued */
-  class func resume() { if detectingNetworkDevices { multicastConnection.connect() } }
-
-  /**
-  Callback executed by a `NetworkDeviceConnection` after disconnecting from its device
-
-  :param: connection NetworkDeviceConnection The connection which has been disconnected
-  */
-  class func deviceDisconnected(connection: NetworkDeviceConnection) { MSLogInfo("") }
-
-  /**
-  Callback executed by a `NetworkDeviceConnection` after connecting to its device
-
-  :param: connection NetworkDeviceConnection The connection which has been established
-  */
-  class func deviceConnected(connection: NetworkDeviceConnection) { MSLogInfo("") }
-
-  /**
-  Callback executed by a `NetworkDeviceConnection` after sending a message
-
-  :param: message The message that has been sent
-  :param: connection NetworkDeviceConnection The connection over which the message has been sent
-  */
-  class func messageSent(message: String, overConnection connection: NetworkDeviceConnection) {
-    MSLogInfo("message: \(message)")
+  /** Resume multicast connection and any device connections that were active on suspension */
+  class func resume() {
+    if detectingNetworkDevices { multicastConnection.listen() }
+    apply(connections) { if ITachConnectionManager.activeConnections ∋ $0 { $1.connect() } }
   }
 
   /**
   Processes messages received through `NetworkDeviceConnection` objects.
 
   :param: message String Contents of the message received by the device connection
-  :param: connection NetworkDeviceConnection Device connection which received the message
   */
-  class func messageReceived(message: String, overConnection connection: NetworkDeviceConnection) {
+  class func messageReceived(message: String) {
 
-    if connection === multicastConnection {
+    MSLogDebug("message received over multicast connection:\n\(message)\n")
 
-      MSLogInfo("message over multicast connection:\n\(message)\n")
-
-      if let uniqueIdentifier = message.stringByMatchingFirstOccurrenceOfRegEx("(?<=UUID=)[^<]+(?=>)")
-       where beaconsReceived ∌ uniqueIdentifier
-      {
-        beaconsReceived.insert(uniqueIdentifier)
-        if let deviceConnection = ITachDeviceConnection(discoveryBeacon: message) {
-          connections[uniqueIdentifier] = deviceConnection
-          stopDetectingNetworkDevices()
-        }
+    if let uniqueIdentifier = message.stringByMatchingFirstOccurrenceOfRegEx("(?<=UUID=)[^<]+(?=>)")
+     where beaconsReceived ∌ uniqueIdentifier
+    {
+      beaconsReceived.insert(uniqueIdentifier)
+      if let deviceConnection = Connection(discoveryBeacon: message) {
+        connections[uniqueIdentifier] = deviceConnection
+        networkDevices.insert(deviceConnection.device)
+        ConnectionManager.discoveredDevice(deviceConnection.device)
+        stopDetectingNetworkDevices()
       }
-
     }
 
   }

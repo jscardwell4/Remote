@@ -14,6 +14,7 @@ import DataModel
 class ViewController: UIViewController {
 
   override func viewDidLoad() {
+    @IBOutlet weak var uniqueIdentifier: UILabel!
     super.viewDidLoad()
     [queryTextView, resultsTextView, errorsTextView] ➤ {$0.layer.borderWidth = 1.0}
   }

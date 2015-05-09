@@ -47,17 +47,17 @@ import Settings
   ////////////////////////////////////////////////////////////////////////////////
 
   // Fonts
-  static let labelFont          = UIFont(name: "Elysio-Medium", size: 15.0)!
-  static let boldLabelFont      = UIFont(name: "Elysio-Bold",   size: 17.0)!
-  static let largeBoldLabelFont = UIFont(name: "Elysio-Bold",   size: 18.0)!
-  static let infoFont           = UIFont(name: "Elysio-Light",  size: 15.0)!
-  static let actionFont         = UIFont(name: "Elysio-RegularItalic", size: 15.0)!
+  public static let labelFont          = UIFont(name: "Elysio-Medium", size: 15.0)!
+  public static let boldLabelFont      = UIFont(name: "Elysio-Bold",   size: 17.0)!
+  public static let largeBoldLabelFont = UIFont(name: "Elysio-Bold",   size: 18.0)!
+  public static let infoFont           = UIFont(name: "Elysio-Light",  size: 15.0)!
+  public static let actionFont         = UIFont(name: "Elysio-RegularItalic", size: 15.0)!
 
   // Colors
-  static let labelColor      = UIColor(r: 59, g: 60, b: 64, a:255)!
-  static let infoColor       = UIColor(r:159, g:160, b:164, a:255)!
-  static let backgroundColor = UIColor.whiteColor()
-  static let actionColor     = UIColor(r: 0,   g: 175, b: 255, a: 255)!
+  public static let labelColor      = UIColor(r: 59, g: 60, b: 64, a:255)!
+  public static let infoColor       = UIColor(r:159, g:160, b:164, a:255)!
+  public static let backgroundColor = UIColor.whiteColor()
+  public static let actionColor     = UIColor(r: 0,   g: 175, b: 255, a: 255)!
 
   // Images
   static let exportBarItemImage            = Bank.bankImageNamed("702-share-toolbar")!

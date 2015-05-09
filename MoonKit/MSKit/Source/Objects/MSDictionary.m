@@ -491,56 +491,6 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 
 }
 
-/// inflate
-/*
-- (void)inflate {
-
-  // First gather a list of keys to inflate
-  NSArray * inflatableKeys = [self.keys filtered:^BOOL(id evaluatedObject) {
-    return isStringKind(evaluatedObject) && [(NSString *)evaluatedObject numberOfMatchesForRegEx:@"(?:\\w\\.)+\\w"];
-  }];
-
-  // Enumerate the list inflating each key
-  for (NSString * key in inflatableKeys) {
-
-    MSKeyPath * keypath = [MSKeyPath keyPathFromString:key];  // Create a keypath from the inflatable key
-    NSString * first = [keypath popFirst];                    // This will become our key
-    NSString * last = [keypath popLast];                      // This will become the deepest key in our value
-
-    MSDictionary * dict = [MSDictionary dictionary];          // Create a dictionary within which to embed our value
-    MSDictionary * subdict = dict;                            // This will reference the dictionary to which our value entered
-
-    // If there are stops along the way from first to last, recursively embed in dictionaries
-    if (!keypath.isEmpty) {
-      for (NSString * subkey in keypath) {
-        subdict[subkey] = [MSDictionary dictionary];
-        subdict = dict[subkey];
-      }
-    }
-
-    id value = self[key];  // Get the value we are embedding
-
-    // If our value is an array, we embed each value in the array and keep our value as an array
-    if (isArrayKind(value))
-      value = [(NSArray *)value mapped:^id(id obj, NSUInteger idx) {
-        MSDictionary * d = [MSDictionary dictionaryWithDictionary:dict];
-        MSDictionary * subd = [d valueForKeyPath:keypath.stringValue];
-        subd[last] = obj;
-        return d;
-      }];
-
-    // Otherwise we embed the value
-    else { subdict[last] = value; value = dict; }
-
-    NSUInteger keyIndex = [self indexForKey:key];             // Get the key's index so we can respect the order of our entries
-    [self removeObjectForKey:key];                            // Remove the compressed key-value entry
-    [self insertObject:value forKey:first atIndex:keyIndex];  // Insert the inflated key-value entry
-
-  }
-
-}
-*/
-
 /// sortByKeys:
 /// @param sortedKeys
 - (void)sortByKeys:(NSArray *)sortedKeys {
@@ -691,56 +641,6 @@ static int msLogContext = LOG_CONTEXT_CONSOLE;
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark JSON export
 ////////////////////////////////////////////////////////////////////////////////
-
-
-/// JSONObject
-/// @return id
-//- (id)JSONObject {
-//
-//  if ([NSJSONSerialization isValidJSONObject:self]) return self;
-//
-//  MSDictionary * dictionary = [MSDictionary dictionaryWithCapacity:[self count]];
-//
-//  [self enumerateKeysAndObjectsUsingBlock:
-//   ^(id key, id obj, BOOL * stop)
-//   {
-//     NSString * keyString = [key description];
-//     dictionary[keyString] = obj;
-//
-//     if (![NSJSONSerialization isValidJSONObject:dictionary]) {
-//       [dictionary removeObjectForKey:keyString];
-//
-//       if ([obj respondsToSelector:@selector(JSONObject)]) {
-//         id jsonObj = [obj JSONObject];
-//
-//         if ([NSJSONSerialization isValidJSONObject:jsonObj])
-//           dictionary[keyString] = jsonObj;
-//
-//         else
-//           MSLogDebug(@"object of type %@ returned invalid JSON object",
-//                      ClassTagStringForInstance(obj));
-//       } else if ([obj respondsToSelector:@selector(JSONValue)])   {
-//         id jsonValue = [obj valueForKey:@"JSONValue"];
-//
-//         if ([MSJSONSerialization isValidJSONValue:jsonValue])
-//           dictionary[keyString] = jsonValue;
-//
-//         else
-//           MSLogDebug(@"object of type %@ returned invalid JSON Value",
-//                      ClassTagStringForInstance(obj));
-//       }
-//
-//       NSAssert(![dictionary count] || [NSJSONSerialization isValidJSONObject:dictionary],
-//                @"Only valid JSON values should have been added to dictionary");
-//     }
-//   }];
-//
-//  return dictionary;
-//}
-
-/// JSONString
-/// @return NSString *
-//- (NSString *)JSONString { return [MSJSONSerialization JSONFromObject:self.JSONObject options:MSJSONWriteFormatOptionsDefault]; }
 
 /// JSONDictionary
 /// @return MSDictionary *

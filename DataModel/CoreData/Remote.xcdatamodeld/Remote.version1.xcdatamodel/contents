@@ -128,10 +128,10 @@
         <relationship name="inputs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IRCode" inverseName="inputForDevice" inverseEntity="IRCode" syncable="YES"/>
         <relationship name="manufacturer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Manufacturer" inverseName="devices" inverseEntity="Manufacturer" syncable="YES"/>
         <relationship name="networkDevice" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NetworkDevice" inverseName="componentDevices" inverseEntity="NetworkDevice" syncable="YES"/>
-        <relationship name="offCommand" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SendIRCommand" inverseName="offCommandForDevice" inverseEntity="SendIRCommand" syncable="YES"/>
-        <relationship name="onCommand" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SendIRCommand" inverseName="onCommandForDevice" inverseEntity="SendIRCommand" syncable="YES"/>
+        <relationship name="offCommand" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ITachIRCommand" inverseName="offCommandForDevice" inverseEntity="ITachIRCommand" syncable="YES"/>
+        <relationship name="onCommand" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ITachIRCommand" inverseName="onCommandForDevice" inverseEntity="ITachIRCommand" syncable="YES"/>
         <relationship name="powerCommands" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PowerCommand" inverseName="device" inverseEntity="PowerCommand" indexed="YES" syncable="YES"/>
-        <relationship name="sendIRCommands" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SendIRCommand" inverseName="componentDevice" inverseEntity="SendIRCommand" syncable="YES"/>
+        <relationship name="sendIRCommands" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ITachIRCommand" inverseName="componentDevice" inverseEntity="ITachIRCommand" syncable="YES"/>
     </entity>
     <entity name="Constraint" representedClassName="Constraint" syncable="YES">
         <attribute name="constant" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -298,7 +298,7 @@
         <relationship name="codeSet" maxCount="1" deletionRule="Nullify" destinationEntity="IRCodeSet" inverseName="codes" inverseEntity="IRCodeSet" syncable="YES"/>
         <relationship name="device" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="codes" inverseEntity="ComponentDevice" syncable="YES"/>
         <relationship name="inputForDevice" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="inputs" inverseEntity="ComponentDevice" syncable="YES"/>
-        <relationship name="sendCommands" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SendIRCommand" inverseName="code" inverseEntity="SendIRCommand" indexed="YES" syncable="YES"/>
+        <relationship name="sendCommands" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ITachIRCommand" inverseName="code" inverseEntity="ITachIRCommand" indexed="YES" syncable="YES"/>
         <userInfo>
             <entry key="categoryKey" value="codeSet"/>
         </userInfo>
@@ -356,6 +356,12 @@
         <attribute name="revision" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sdkClass" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="ITachIRCommand" representedClassName="ITachIRCommand" parentEntity="Command" syncable="YES">
+        <relationship name="code" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="IRCode" inverseName="sendCommands" inverseEntity="IRCode" indexed="YES" syncable="YES"/>
+        <relationship name="componentDevice" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="sendIRCommands" inverseEntity="ComponentDevice" syncable="YES"/>
+        <relationship name="offCommandForDevice" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="offCommand" inverseEntity="ComponentDevice" syncable="YES"/>
+        <relationship name="onCommandForDevice" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="onCommand" inverseEntity="ComponentDevice" syncable="YES"/>
     </entity>
     <entity name="JSONStorage" representedClassName="JSONStorage" syncable="YES">
         <attribute name="dictionary" attributeType="Transformable" syncable="YES">
@@ -482,12 +488,6 @@
         <relationship name="secondItemConstraints" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Constraint" inverseName="secondItem" inverseEntity="Constraint" syncable="YES"/>
         <relationship name="subelements" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="RemoteElement" inverseName="parentElement" inverseEntity="RemoteElement" syncable="YES"/>
     </entity>
-    <entity name="SendIRCommand" representedClassName="SendIRCommand" parentEntity="Command" syncable="YES">
-        <relationship name="code" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="IRCode" inverseName="sendCommands" inverseEntity="IRCode" indexed="YES" syncable="YES"/>
-        <relationship name="componentDevice" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="sendIRCommands" inverseEntity="ComponentDevice" syncable="YES"/>
-        <relationship name="offCommandForDevice" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="offCommand" inverseEntity="ComponentDevice" syncable="YES"/>
-        <relationship name="onCommandForDevice" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ComponentDevice" inverseName="onCommand" inverseEntity="ComponentDevice" syncable="YES"/>
-    </entity>
     <entity name="SwitchCommand" representedClassName="SwitchCommand" parentEntity="Command" syncable="YES">
         <attribute name="target" attributeType="String" defaultValueString="REDefaultConfiguration" syncable="YES"/>
         <attribute name="targetType" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -534,7 +534,7 @@
         <element name="PresetCategory" positionX="63" positionY="189" width="128" height="135"/>
         <element name="Remote" positionX="0" positionY="0" width="128" height="120"/>
         <element name="RemoteElement" positionX="0" positionY="0" width="128" height="285"/>
-        <element name="SendIRCommand" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="ITachIRCommand" positionX="0" positionY="0" width="128" height="105"/>
         <element name="SwitchCommand" positionX="0" positionY="0" width="128" height="75"/>
         <element name="SystemCommand" positionX="0" positionY="0" width="128" height="60"/>
     </elements>

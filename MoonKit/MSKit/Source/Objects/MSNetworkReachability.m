@@ -12,6 +12,10 @@ static void MSNetworkReachabilityCallbackHandler(SCNetworkReachabilityRef target
                                                  SCNetworkReachabilityFlags flags,
                                                  void * info);
 
+@interface MSNetworkReachability ()
+@property (nonatomic, readwrite) SCNetworkReachabilityFlags flags;
+@end
+
 @implementation MSNetworkReachability {
   SCNetworkReachabilityRef      _reachability;
   MSNetworkReachabilityCallback _callback;
@@ -54,9 +58,11 @@ static void MSNetworkReachabilityCallbackHandler(SCNetworkReachabilityRef target
   return self;
 }
 
+
 - (void)refreshFlags {
   SCNetworkReachabilityFlags r_flags;
   SCNetworkReachabilityGetFlags(_reachability, &r_flags);
+  self.flags = r_flags;
   MSNetworkReachabilityCallbackHandler(_reachability, r_flags, (__bridge void *)self);
 }
 

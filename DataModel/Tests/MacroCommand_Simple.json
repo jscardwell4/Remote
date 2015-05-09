@@ -1,1 +1,1 @@
-{"class": "macro", "commands": [<@include SendIRCommand_Simple.json>, <@include PowerCommand_Simple.json>, <@include DelayCommand_Simple.json> ] }
+{"class": "macro", "commands": [<@include ITachIRCommand_Simple.json>, <@include PowerCommand_Simple.json>, <@include DelayCommand_Simple.json> ] }

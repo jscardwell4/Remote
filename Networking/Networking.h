@@ -16,4 +16,3 @@ FOUNDATION_EXPORT const unsigned char NetworkingVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <Networking/PublicHeader.h>
 
-#import <Networking/ConnectionManager.h>

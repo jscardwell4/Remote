@@ -17,4 +17,6 @@ typedef void(^MSNetworkReachabilityCallback)(SCNetworkReachabilityFlags);
 
 - (void)refreshFlags;
 
+@property (nonatomic, readonly) SCNetworkReachabilityFlags flags;
+
 @end

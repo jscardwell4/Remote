@@ -20,8 +20,8 @@ public final class ComponentDevice: EditableModelObject {
   @NSManaged public var power: Bool
   @NSManaged public var codeSet: IRCodeSet?
   @NSManaged public var networkDevice: NetworkDevice?
-  @NSManaged public var offCommand: SendIRCommand?
-  @NSManaged public var onCommand: SendIRCommand?
+  @NSManaged public var offCommand: ITachIRCommand?
+  @NSManaged public var onCommand: ITachIRCommand?
   @NSManaged public var powerCommands: Set<PowerCommand>
 
   public var manufacturer: Manufacturer {

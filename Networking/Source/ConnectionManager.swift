@@ -10,7 +10,9 @@ import Foundation
 import MoonKit
 import CoreData
 import class DataModel.DataManager
-import class DataModel.SendIRCommand
+import class DataModel.ITachIRCommand
+import class DataModel.NetworkDevice
+import class DataModel.ITachDevice
 import class DataModel.HTTPCommand
 
 /** The `ConnectionManager` class oversee all device-related network activity. */
@@ -18,6 +20,7 @@ public final class ConnectionManager {
 
   public typealias Callback = (Bool, NSError?) -> Void
 
+  /** Enumeration to encapsulate connection errors */
   public enum Error: Int {
     case NoWifi
     case InvalidID
@@ -30,34 +33,54 @@ public final class ConnectionManager {
     case Aggregate
 
     static let domain = "ConnectionManagerErrorDomain"
+
+    /**
+    error:
+
+    :param: userInfo [NSObject AnyObject]? = nil
+
+    :returns: NSError
+    */
+    func error(userInfo: [NSObject:AnyObject]? = nil) -> NSError {
+      return NSError(domain: Error.domain, code: rawValue, userInfo: userInfo)
+    }
   }
 
   private static let simulatedCommandDelay = Int64(0.5 * Double(NSEC_PER_SEC))
 
-  static let ConnectionStatusNotification = "ConnectionManagerConnectionStatusNotification"
-  static let NetworkDeviceDiscoveryNotification = "ConnectionManagerNetworkDeviceDiscoveryNotification"
+  public static let ConnectionStatusNotification = "ConnectionManagerConnectionStatusNotification"
+  public static let NetworkDeviceDiscoveryNotification = "ConnectionManagerNetworkDeviceDiscoveryNotification"
 
-  static let WifiAvailableKey = "ConnectionManaagerWifiAvailableKey"
-  static let NetworkDeviceKey = "ConnectionManagerNetworkDeviceKey"
-  static let AutoConnectDeviceKey = "ConnectionManagerAutoConnectDeviceKey"
+  public static let WifiAvailableKey = "ConnectionManaagerWifiAvailableKey"
+  public static let NetworkDeviceKey = "ConnectionManagerNetworkDeviceKey"
+  public static let AutoConnectDeviceKey = "ConnectionManagerAutoConnectDeviceKey"
 
   /** Monitors changes in connectivity */
-  private static let reachability = MSNetworkReachability(callback: {
+  private static let reachability = MSNetworkReachability(callback: {[cm = ConnectionManager.self]
     (flags: SCNetworkReachabilityFlags) -> Void in
-      let wifi = (   ((flags & UInt32(kSCNetworkReachabilityFlagsIsDirect)) != 0)
-                  && ((flags & UInt32(kSCNetworkReachabilityFlagsReachable)) != 0))
-      if wifi != ConnectionManager.wifiAvailable {
-        ConnectionManager.wifiAvailable = wifi
-        NSNotificationCenter.defaultCenter().postNotificationName(ConnectionManager.ConnectionStatusNotification,
-                                                           object: ConnectionManager.self,
-                                                         userInfo: [ConnectionManager.WifiAvailableKey: wifi])
-      }
-
+      let name = cm.ConnectionStatusNotification
+      let userInfo: [NSObject:AnyObject] = [cm.WifiAvailableKey: cm.flagsIndicateWifiAvailable(flags)]
+      NSNotificationCenter.defaultCenter().postNotificationName(name, object: cm, userInfo: userInfo)
+      MSLogDebug("posted notification for changes in reachability")
     })
 
+  /**
+  flagsIndicateWifiAvailable:
+
+  :param: flags SCNetworkReachabilityFlags
+
+  :returns: Bool
+  */
+  private static func flagsIndicateWifiAvailable(flags: SCNetworkReachabilityFlags) -> Bool {
+    return (((flags & UInt32(kSCNetworkReachabilityFlagsIsDirect)) != 0)
+         && ((flags & UInt32(kSCNetworkReachabilityFlagsReachable)) != 0))
+  }
 
   /** Indicates wifi availability */
-  private(set) public static var wifiAvailable = false
+  public static var wifiAvailable: Bool {
+    reachability.refreshFlags()
+    return flagsIndicateWifiAvailable(reachability.flags)
+  }
 
   /** Whether to simulate send operations */
   static let simulateCommandSuccess = NSUserDefaults.standardUserDefaults().boolForKey("simulate")
@@ -95,42 +118,57 @@ public final class ConnectionManager {
     }
 
     // Check for wifi or a simulated environment flag
-    if !(wifiAvailable || simulateCommandSuccess) {
-      MSLogWarn("wifi not available")
-      completion?(false, NSError(domain: Error.domain, code: Error.NoWifi.rawValue, userInfo: nil))
-    }
+    if !(wifiAvailable || simulateCommandSuccess) { MSLogWarn("wifi not available"); completion?(false, Error.NoWifi.error()) }
 
     // Otherwise continue sending command
     else {
       var error: NSError?
       let command = DataManager.rootContext.existingObjectWithID(commandID, error: &error)
-      if error != nil {
-        completion?(false, NSError(domain: Error.domain,
-                                   code: Error.InvalidID.rawValue,
-                                   userInfo: [NSUnderlyingErrorKey: error!]))
-      } else if let irCommand = command as? SendIRCommand {
+      if error != nil { completion?(false, Error.InvalidID.error(userInfo: [NSUnderlyingErrorKey: error!])) }
+      else if let irCommand = command as? ITachIRCommand {
         if simulateCommandSuccess { simulateSuccess() }
         else { ITachConnectionManager.sendCommand(irCommand, completion: completion) }
       } else if let httpCommand = command as? HTTPCommand {
         if httpCommand.url.absoluteString!.isEmpty {
           MSLogError("cannot send command with an empty url")
-          completion?(false, NSError(domain: Error.domain, code: Error.CommandEmpty.rawValue, userInfo: nil))
+          completion?(false, Error.CommandEmpty.error())
         }
         else if simulateCommandSuccess { simulateSuccess() }
         else {
           let request = NSURLRequest(URL: httpCommand.url)
           NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) {
             (response: NSURLResponse!, data: NSData!, connectionError: NSError!) in
-
             MSLogDebug("response: \(response)\ndata: \(data)")
-
-            // TODO: Determine what constitutes success here.
-
             completion?(true, connectionError)
           }
         }
       }
     }
+  }
+
+  /**
+  Invoked by specializing connection manager classes when a new device is has been detected
+
+  :param: device NetworkDevice
+  */
+  class func discoveredDevice(device: NetworkDevice) {
+    NSNotificationCenter.defaultCenter().postNotificationName(NetworkDeviceDiscoveryNotification,
+                                                       object: self,
+                                                     userInfo: [NetworkDeviceKey:device.uuid])
+  }
+
+  /**
+  connectToITachDevice:learnerDelegate:
+
+  :param: device ITachDevice
+  :param: learnerDelegate ITachLearnerDelegate
+  */
+  public class func connectToITachDevice(device: ITachDevice, learnerDelegate: ITachLearnerDelegate?) {
+    let connection = ITachConnectionManager.connectionForDevice(device)
+    if connection.learnerDelegate != nil && connection.learnerDelegate !== learnerDelegate {
+      MSLogWarn("existing learner delegate for connection will be replaced")
+    }
+    connection.learnerDelegate = learnerDelegate
   }
 
   /**
@@ -149,38 +187,26 @@ public final class ConnectionManager {
       success, error in
       completionSuccess = success && completionSuccess
       if completionError != nil && error != nil {
-        completionError = NSError(domain: Error.domain,
-                                    code: Error.Aggregate.rawValue,
-                                userInfo: [NSUnderlyingErrorKey: [completionError!, error!]])
-      } else if error != nil {
-        completionError = error
+        completionError = Error.Aggregate.error(userInfo: [NSUnderlyingErrorKey: [completionError!, error!]])
       }
+      else if error != nil { completionError = error }
+      
       if ++completionCount == 2 { completion?(completionSuccess, completionError) }
     }
   }
 
-  /**
-  Join multicast group and listen for beacons broadcast by iTach devices.
-
-  :param: completion Callback? = nil Block to be executed upon completion of the task.
-  */
-  public class func startDetectingNetworkDevices(completion: Callback? = nil) {
-    let callback = completionWrapper(completion)
-    ITachConnectionManager.startDetectingNetworkDevices(completion: callback)
-    ISYConnectionManager.startDetectingNetworkDevices(completion: callback)
+  /** Join multicast group and listen for beacons broadcast by iTach devices. */
+  public class func startDetectingNetworkDevices() {
+    ITachConnectionManager.startDetectingNetworkDevices()
+    ISYConnectionManager.startDetectingNetworkDevices()
     MSLogInfo("listening for network devices…")
   }
 
-  /**
-  Leave multicast group.
-
-  :param: completion Callback? = nil Block to be executed upon completion of the task.
-  */
-  public class func stopDetectingNetworkDevices(completion: Callback? = nil) {
-    let callback = completionWrapper(completion)
-    ITachConnectionManager.stopDetectingNetworkDevices(completion: callback)
-    ISYConnectionManager.stopDetectingNetworkDevices(completion: callback)
-    MSLogInfo("no logner listening for network devices…")
+  /** Leave multicast group. */
+  public class func stopDetectingNetworkDevices() {
+    ITachConnectionManager.stopDetectingNetworkDevices()
+    ISYConnectionManager.stopDetectingNetworkDevices()
+    MSLogInfo("no longer listening for network devices…")
   }
 
   /** Whether network devices are currently being detected */

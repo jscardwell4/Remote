@@ -95,13 +95,13 @@ public final class Remote: RemoteElement {
 
       let keys = map(panels.keys) {PanelAssignment(rawValue: $0)}
       let values = map(panels.values) {UUIDIndex(rawValue: $0)!}
-      return zip(keys, values)
+      return zipDict(keys, values)
     }
     set {
       let keys = map(newValue.keys) {$0.rawValue}
       let values = map(newValue.values) {$0.rawValue}
       willChangeValueForKey("panels")
-      setPrimitiveValue(zip(keys,values), forKey: "panels")
+      setPrimitiveValue(zipDict(keys,values), forKey: "panels")
       didChangeValueForKey("panels")
     }
   }

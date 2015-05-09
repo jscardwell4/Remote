@@ -16,7 +16,7 @@ import MoonKit
   execute other commands and chain the result back up to the command that initiated the execution.
   `Command` objects are not intended to be created directly. Instead, there are many subclasses
   that customize behavior for particular tasks: <PowerCommand>, <MacroCommand>, <DelayCommand>,
-  <SystemCommand>, <SendIRCommand>, <HTTPCommand>, <SwitchToRemoteCommand>.
+  <SystemCommand>, <ITachIRCommand>, <HTTPCommand>, <SwitchToRemoteCommand>.
 */
 @objc(Command)
 public class Command: ModelObject {
@@ -45,7 +45,7 @@ public class Command: ModelObject {
   private static let DelayCommandKeys     = Set(["delay"])
   private static let HTTPCommandKeys      = Set(["url"])
   private static let PowerCommandKeys     = Set(["device", "state"])
-  private static let SendIRCommandKeys    = Set(["code"])
+  private static let ITachIRCommandKeys    = Set(["code"])
   private static let SwitchCommandKeys    = Set(["targetType", "target"])
   private static let SystemCommandKeys    = Set(["type"])
   private static let MacroCommandKeys     = Set(["commands"])
@@ -62,7 +62,7 @@ public class Command: ModelObject {
     if DelayCommandKeys ⊇ keys { return DelayCommand.self}
     if HTTPCommandKeys ⊇ keys { return HTTPCommand.self}
     if PowerCommandKeys ⊇ keys { return PowerCommand.self}
-    if SendIRCommandKeys ⊇ keys { return SendIRCommand.self}
+    if ITachIRCommandKeys ⊇ keys { return ITachIRCommand.self}
     if SwitchCommandKeys ⊇ keys { return SwitchCommand.self}
     if SystemCommandKeys ⊇ keys { return SystemCommand.self}
     if MacroCommandKeys ⊇ keys { return MacroCommand.self}

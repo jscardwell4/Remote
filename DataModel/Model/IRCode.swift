@@ -15,7 +15,7 @@ final public class IRCode: EditableModelObject {
 
   @NSManaged public var frequency: Int64
   @NSManaged public var offset: Int16
-  @NSManaged public var onOffPattern: String?
+  @NSManaged public var onOffPattern: String!
   @NSManaged public var prontoHex: String?
   @NSManaged public var repeatCount: Int16
   @NSManaged public var setsDeviceInput: Bool

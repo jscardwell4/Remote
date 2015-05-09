@@ -15,6 +15,7 @@ public struct Stack<T> {
   public var count: Int { return storage.count }
   public var peek: T? { return storage.last }
   public var isEmpty: Bool { return count == 0 }
+  public var array: [T] { return storage }
 
   public init() { storage = [T]() }
   public init<S:SequenceType where S.Generator.Element == T>(_ sequence: S) { storage = Array(sequence) }

@@ -305,11 +305,14 @@
 		C28E50991A13CB1E00DF3206 /* IntegerInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C217E47D19E860DE00B36983 /* IntegerInputView.swift */; };
 		C28E509B1A143FDC00DF3206 /* MultiselectGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28E509A1A143FDC00DF3206 /* MultiselectGestureRecognizer.swift */; };
 		C28E98EE1AD196B800E78711 /* NSNumber+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28E98ED1AD196B800E78711 /* NSNumber+MoonKitAdditions.swift */; };
+		C29EECF81AFD010B00660EE6 /* MiscellaneousFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29EECF71AFD010B00660EE6 /* MiscellaneousFunctions.swift */; };
 		C2A6261F1A33598300152E97 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A6261E1A33598300152E97 /* Slider.swift */; };
 		C2A70E3B1ACC53D0009C2CF7 /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A70E3A1ACC53D0009C2CF7 /* JSONValue.swift */; };
 		C2A70E451ACD8EBA009C2CF7 /* MoonKit_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A70E441ACD8EBA009C2CF7 /* MoonKit_Tests.swift */; };
 		C2A70E461ACD8EBA009C2CF7 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2358F1619C78D6D00920F8D /* MoonKit.framework */; };
 		C2A70E4D1ACD8F95009C2CF7 /* example1.json in Resources */ = {isa = PBXBuildFile; fileRef = C2A70E4C1ACD8F95009C2CF7 /* example1.json */; };
+		C2B6914C1AFAC8EF0041CE11 /* XMLParserDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B6914B1AFAC8EF0041CE11 /* XMLParserDelegate.swift */; };
+		C2B6918A1AFBCADB0041CE11 /* NetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B691891AFBCADB0041CE11 /* NetworkReachability.swift */; };
 		C2B9B40A1AC1C499005BA67C /* RegularExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B9B4091AC1C499005BA67C /* RegularExpression.swift */; };
 		C2BE96E81A467E85007599B2 /* NSManagedObjectModel+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BE96E71A467E85007599B2 /* NSManagedObjectModel+MoonKitAdditions.swift */; };
 		C2C3B91F1AC5DA7D001DC6CC /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2C3B91E1AC5DA7D001DC6CC /* CocoaLumberjack.framework */; };
@@ -452,6 +455,7 @@
 		C28E509A1A143FDC00DF3206 /* MultiselectGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiselectGestureRecognizer.swift; sourceTree = "<group>"; };
 		C28E98ED1AD196B800E78711 /* NSNumber+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNumber+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C295E30319E2FBBB008309B8 /* ToggleImageSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleImageSegmentedControl.swift; sourceTree = "<group>"; };
+		C29EECF71AFD010B00660EE6 /* MiscellaneousFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscellaneousFunctions.swift; sourceTree = "<group>"; };
 		C2A46E651AD703E70030E3CC /* MoonKit.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MoonKit.playground; path = Moonkit/MoonKit.playground; sourceTree = "<group>"; };
 		C2A6261E1A33598300152E97 /* Slider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
 		C2A70E3A1ACC53D0009C2CF7 /* JSONValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONValue.swift; sourceTree = "<group>"; };
@@ -460,6 +464,8 @@
 		C2A70E441ACD8EBA009C2CF7 /* MoonKit_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonKit_Tests.swift; sourceTree = "<group>"; };
 		C2A70E4C1ACD8F95009C2CF7 /* example1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = example1.json; sourceTree = "<group>"; };
 		C2A7CA9619CBB8FE00212F2D /* MSDictionary+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MSDictionary+MoonKitAdditions.swift"; sourceTree = "<group>"; };
+		C2B6914B1AFAC8EF0041CE11 /* XMLParserDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLParserDelegate.swift; sourceTree = "<group>"; };
+		C2B691891AFBCADB0041CE11 /* NetworkReachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachability.swift; sourceTree = "<group>"; };
 		C2B9B4091AC1C499005BA67C /* RegularExpression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegularExpression.swift; sourceTree = "<group>"; };
 		C2BE96E71A467E85007599B2 /* NSManagedObjectModel+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectModel+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C2C3B91E1AC5DA7D001DC6CC /* CocoaLumberjack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -776,6 +782,7 @@
 				C24A22941ADB45340065E7EA /* RawOptionSetFunctions.swift */,
 				C24A22961ADB47590065E7EA /* CollectionManipulations.swift */,
 				C24A22981ADB4C1E0065E7EA /* FunctionManipulation.swift */,
+				C29EECF71AFD010B00660EE6 /* MiscellaneousFunctions.swift */,
 			);
 			path = Functions;
 			sourceTree = "<group>";
@@ -792,6 +799,7 @@
 		C23592F119C8E04200920F8D /* Parsing */ = {
 			isa = PBXGroup;
 			children = (
+				C2B6914B1AFAC8EF0041CE11 /* XMLParserDelegate.swift */,
 				C2A70E3A1ACC53D0009C2CF7 /* JSONValue.swift */,
 				C2E936FF1ACE04D4003EB3E8 /* JSONParser.swift */,
 				C2E937031ACF0736003EB3E8 /* JSONSerialization.swift */,
@@ -824,6 +832,7 @@
 		C277AB8519D7878A008DEE39 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
+				C24D19E919EDAE1500CC3CD9 /* InlinePickerView.swift */,
 				C28E35B91A451E3800438CCF /* CoreDataStack.swift */,
 				C28447101A3E051F005338AB /* LabeledCheckbox.swift */,
 				C2F8C30E1A36133E004229FE /* TwoToneSlider.swift */,
@@ -856,6 +865,7 @@
 				C2304E091AEECE1C0090D889 /* LayerProxy.swift */,
 				C210E9911AF27E3C0026A51D /* ViewProxy.swift */,
 				C20297FB1AF295A5003F647B /* KVOReceptionist.swift */,
+				C2B691891AFBCADB0041CE11 /* NetworkReachability.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -1233,7 +1243,6 @@
 				C2CE892818138CF700555D63 /* MSTouchReporterView.m */,
 				C2CE892918138CF700555D63 /* MSView.h */,
 				C2CE892A18138CF700555D63 /* MSView.m */,
-				C24D19E919EDAE1500CC3CD9 /* InlinePickerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1622,6 +1631,7 @@
 				C2C4B72C1AA951D700912951 /* NSManagedObject+MoonKitAdditions.swift in Sources */,
 				C2204D9C1AE1A0670079B731 /* JSONIncludeDirective.swift in Sources */,
 				C2874FBC1AE68D3800BD7634 /* NSShadow+MoonKitAdditions.swift in Sources */,
+				C29EECF81AFD010B00660EE6 /* MiscellaneousFunctions.swift in Sources */,
 				C201F73B1A2539E7004600BC /* PseudoConstraint.swift in Sources */,
 				C2358F5919C78E0C00920F8D /* MSBarButtonItem.m in Sources */,
 				C28E50931A13CA5000DF3206 /* MSButton.swift in Sources */,
@@ -1631,6 +1641,7 @@
 				C20297FC1AF295A5003F647B /* KVOReceptionist.swift in Sources */,
 				C28E50961A13CA7E00DF3206 /* ToggleBarButtonItem.swift in Sources */,
 				C21D7AE41AA60E3F000DE8A3 /* NSError+MoonKitAdditions.swift in Sources */,
+				C2B6918A1AFBCADB0041CE11 /* NetworkReachability.swift in Sources */,
 				C2F8C3171A362606004229FE /* UIResponder+MoonKitAdditions.swift in Sources */,
 				C2358F5A19C78E0C00920F8D /* MSColorInputButton.m in Sources */,
 				C2BE96E81A467E85007599B2 /* NSManagedObjectModel+MoonKitAdditions.swift in Sources */,
@@ -1647,6 +1658,7 @@
 				C2358F6219C78E0C00920F8D /* MSLongPressGestureRecognizer.m in Sources */,
 				C24A22811ADAEC010065E7EA /* ArrayJSONValue.swift in Sources */,
 				C2F094451A32A83A00681AB3 /* DrawingKit.swift in Sources */,
+				C2B6914C1AFAC8EF0041CE11 /* XMLParserDelegate.swift in Sources */,
 				C284EA5C1A1EAD6700B07BA8 /* TouchTrackingGesture.swift in Sources */,
 				C2358F6319C78E0C00920F8D /* MSMultiselectGestureRecognizer.m in Sources */,
 				C2358F6419C78E0C00920F8D /* MSPinchGestureRecognizer.m in Sources */,

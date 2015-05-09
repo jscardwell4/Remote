@@ -388,6 +388,10 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
     return result
   }
 
+  public static func dictionaryWithXMLData(data: NSData) -> OrderedDictionary<String, AnyObject> {
+    return MSDictionary(byParsingXML: data) as! OrderedDictionary<String, AnyObject>
+  }
+
 }
 
 // MARK: - Printing
@@ -434,7 +438,7 @@ extension OrderedDictionary: _ObjectiveCBridgeable {
       return MSDictionary()
     }
   }
-  
+
   static public func _forceBridgeFromObjectiveC(source: MSDictionary, inout result: OrderedDictionary?) {
     var d = OrderedDictionary(minimumCapacity: source.count)
     for (k, v) in zip(source.allKeys, source.allValues) {
