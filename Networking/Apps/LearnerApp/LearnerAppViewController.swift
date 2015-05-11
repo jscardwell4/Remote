@@ -10,10 +10,13 @@ import UIKit
 import MoonKit
 import class DataModel.ITachDevice
 import class DataModel.DataManager
+import class DataModel.Manufacturer
+import class DataModel.IRCodeSet
+import class DataModel.IRCode
 import Networking
-import class Bank.Bank
+import Elysio
 
-class LearnerAppViewController: UIViewController, MSPickerInputButtonDelegate {
+class LearnerAppViewController: UIViewController, AKPickerViewDelegate, AKPickerViewDataSource {
 
   var device: ITachDevice? {
     didSet {
@@ -40,6 +43,27 @@ class LearnerAppViewController: UIViewController, MSPickerInputButtonDelegate {
 
   let context = DataManager.mainContext()
 
+  lazy var manufacturers: [Manufacturer] = {
+    return Manufacturer.objectsInContext(self.context, sortBy: "name", ascending: true) as! [Manufacturer]
+    }()
+
+  var manufacturer: Manufacturer? {
+    didSet {
+      if let m = manufacturer where manufacturers ∌ m {
+        manufacturers.append(m)
+        sortByName(&manufacturers)
+        manufacturerPicker.reloadData()
+        if let idx = find(manufacturers, m) {
+          manufacturerPicker.selectItem(idx, animated: true)
+        }
+      }
+      codeSetPicker.reloadData()
+    }
+  }
+  var codeSets: [IRCodeSet]  { return sortedByName(manufacturer?.codeSets ?? []) }
+
+  var codeSet: IRCodeSet?
+
   var learnerDelegate: ITachLearnerDelegate = ITachLearnerDelegate()
 
   @IBOutlet weak var uniqueIdentifier: UILabel!
@@ -53,7 +77,8 @@ class LearnerAppViewController: UIViewController, MSPickerInputButtonDelegate {
   @IBOutlet weak var status: UILabel!
   @IBOutlet weak var learnerEnabled: UISwitch!
   @IBOutlet weak var lastCapturedCommand: UILabel!
-  @IBOutlet weak var manufacturerPicker: InlinePickerView!
+  @IBOutlet weak var manufacturerPicker: AKPickerView!
+  @IBOutlet weak var codeSetPicker: AKPickerView!
 
   func setup() {
     learnerDelegate.didCaptureCommand = { [unowned self]
@@ -97,27 +122,89 @@ class LearnerAppViewController: UIViewController, MSPickerInputButtonDelegate {
 
   }
 
+  @IBAction func createNewManufacturer() {
+    let nameValidation: (String?) -> Bool = {
+      [unowned context] name in
+      if let n = name where !n.isEmpty && Manufacturer.objectWithValue(n, forAttribute: "name", context: context) == nil {
+        return true
+      } else {
+        return false
+      }
+    }
+    let didCancel: () -> Void = {[unowned self] in self.dismissViewControllerAnimated(true, completion: nil) }
+    let didSubmit: (OrderedDictionary<String,Any>) -> Void = {[unowned self] values in
+      assert(NSThread.isMainThread())
+      if let name = values["Name"] as? String {
+        let manufacturer = Manufacturer(context: self.context)
+        manufacturer.name = name
+        self.manufacturer = manufacturer
+      } else {
+        assert(false)
+      }
+      self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    let nameField: FormViewController.Field = .Text(initial: nil, placeholder: "The manufacturer's name", validation: nameValidation)
+    let fields: OrderedDictionary<String, FormViewController.Field> = ["Name": nameField]
+    let formViewController = FormViewController(fields: fields, didCancel: didCancel, didSubmit: didSubmit)
+    formViewController.labelFont = Elysio.regularFontWithSize(16)
+    formViewController.controlFont = Elysio.regularItalicFontWithSize(16)
+    formViewController.controlTextColor = UIColor(white: 0.5, alpha: 1.0)
+    presentViewController(formViewController, animated: true, completion: nil)
+  }
+
+  
+  @IBAction func createNewCodeSet() {
+    if let manufacturer = self.manufacturer {
+      let nameValidation: (String?) -> Bool = {
+        name in
+        if let n = name where !contains(manufacturer.codeSets, {$0.name == name}) {
+          return true
+        } else {
+          return false
+        }
+      }
+
+      let nameField: FormViewController.Field = .Text(initial: nil, placeholder: "The code set's name", validation: nameValidation)
+      let fields: OrderedDictionary<String, FormViewController.Field> = ["Name": nameField]
+      presentViewController(FormViewController(fields: fields), animated: true, completion: nil)
+    }
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
-    manufacturerPicker.labels = ["Sony", "Cox", "Samsung", "Apple"]
+    if let m = manufacturers.first {
+      manufacturer = m
+      if codeSets.count > 0 { codeSet = codeSets[0] }
+    }
+    let decoratePicker: (AKPickerView)-> Void = { [unowned self]
+      picker in
+      picker.interitemSpacing = 20.0
+      picker.delegate = self
+      picker.dataSource = self
+      picker.font = Elysio.regularItalicFontWithSize(16.0)
+      picker.textColor = UIColor(white: 0.49, alpha: 1.0)
+      picker.highlightedFont = picker.font
+      picker.highlightedTextColor = picker.textColor
+    }
+    apply([manufacturerPicker, codeSetPicker], decoratePicker)
   }
 
   override func prefersStatusBarHidden() -> Bool { return true }
 
-  func pickerInput(pickerInput: MSPickerInputView!, didSelectRow row: Int, inComponent component: Int) {
-
+  func numberOfItemsInPickerView(pickerView: AKPickerView) -> Int {
+    if pickerView === manufacturerPicker { return manufacturers.count }
+    else { return codeSets.count }
   }
 
-  func pickerInput(pickerInput: MSPickerInputView!, selectedRows: [AnyObject]!) {
-
+  func pickerView(pickerView: AKPickerView, titleForItem item: Int) -> String {
+    if item == -1 { return "wtf" }
+    if pickerView === manufacturerPicker { return item < manufacturers.count ? manufacturers[item].name : "" }
+    else { return item < codeSets.count ? codeSets[item].name : "" }
   }
 
-  func pickerInputDidCancel(pickerInput: MSPickerInputView!) {
-
+  func pickerView(pickerView: AKPickerView, didSelectItem item: Int) {
+    if pickerView === manufacturerPicker { manufacturer = manufacturers[item] } else { codeSet = codeSets[item] }
   }
 
-  func numberOfComponentsInPickerInput(pickerInput: MSPickerInputView!) -> Int { return 0 }
-
-  func pickerInput(pickerInput: MSPickerInputView!, numberOfRowsInComponent component: Int) -> Int { return 0 }
 }
 

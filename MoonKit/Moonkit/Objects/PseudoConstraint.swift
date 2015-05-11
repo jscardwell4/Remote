@@ -9,6 +9,9 @@
 import Foundation
 import UIKit
 
+public let 𝗩 = UILayoutConstraintAxis.Vertical
+public let 𝗛 = UILayoutConstraintAxis.Horizontal
+
 private let UILayoutPriorityRequired: Float = 1000.0 // to avoid linker error
 
 public struct PseudoConstraint {
@@ -62,10 +65,10 @@ public struct PseudoConstraint {
 
   /** Whether the pseudo constraint can actually be turned into an `NSLayoutConstraint` object */
   public var valid: Bool {
-    return firstItem != nil
-      && firstAttribute != .NotAnAttribute
-      && !expandable
-      && (secondAttribute == .NotAnAttribute ? secondItem == nil : secondItem != nil)
+    return (firstItem ?? firstObject) != nil
+         && firstAttribute != .NotAnAttribute
+         && !expandable
+         && (secondAttribute == .NotAnAttribute ? secondItem == nil : (secondItem ?? secondObject) != nil)
   }
 
   /** Returns the array of `PseudoConstraint` objects by expanding a compatible attribute, i.e. 'center' into 'centerX', 'centerY' */
@@ -376,6 +379,8 @@ extension PseudoConstraint {
       }
     }
 
+    public var axis: UILayoutConstraintAxis { return NSLayoutAttributeValue.axis }
+
     public init(_ NSLayoutAttributeValue: NSLayoutAttribute) {
       switch NSLayoutAttributeValue {
         case .Left:                  self = .Left
@@ -430,9 +435,18 @@ extension PseudoConstraint {
 
 infix operator => {precedence 160}
 infix operator --> {}
-public func -->(var lhs: PseudoConstraint, rhs: String) -> PseudoConstraint {
+
+public func -->(var lhs: PseudoConstraint, rhs: String?) -> PseudoConstraint {
   lhs.identifier = rhs
   return lhs
+}
+
+public func -->(lhs: [PseudoConstraint], rhs: String?) -> [PseudoConstraint] {
+  return lhs.map {var p = $0; p.identifier = rhs; return p}
+}
+
+public func -->(lhs: [[PseudoConstraint]], rhs: String?) -> [PseudoConstraint] {
+  return flatMap(lhs) {$0 --> rhs}
 }
 
 infix operator -!> {}
@@ -445,8 +459,10 @@ public func -!>(var lhs: PseudoConstraint, rhs: Float) -> PseudoConstraint {
 public func =><V1: UIView, V2: UIView>(lhs: (V1, PseudoConstraint.Attribute), rhs: (V2, PseudoConstraint.Attribute)) -> PseudoConstraint {
   var pseudo = PseudoConstraint()
   pseudo.firstObject = lhs.0
+  pseudo.firstItem = lhs.0.nametag
   pseudo.firstAttribute = lhs.1
   pseudo.secondObject = rhs.0
+  pseudo.secondItem = rhs.0.nametag
   pseudo.secondAttribute = rhs.1
   pseudo.relation = .Equal
   return pseudo
@@ -454,6 +470,7 @@ public func =><V1: UIView, V2: UIView>(lhs: (V1, PseudoConstraint.Attribute), rh
 public func =><V: UIView>(lhs: (V, PseudoConstraint.Attribute), rhs: Float) -> PseudoConstraint {
   var pseudo = PseudoConstraint()
   pseudo.firstObject = lhs.0
+  pseudo.firstItem = lhs.0.nametag
   pseudo.firstAttribute = lhs.1
   pseudo.secondObject = nil
   pseudo.secondAttribute = .NotAnAttribute
@@ -466,8 +483,10 @@ infix operator ≥ {precedence 160}
 public func ≥<V1: UIView, V2: UIView>(lhs: (V1, PseudoConstraint.Attribute), rhs: (V2, PseudoConstraint.Attribute)) -> PseudoConstraint {
   var pseudo = PseudoConstraint()
   pseudo.firstObject = lhs.0
+  pseudo.firstItem = lhs.0.nametag
   pseudo.firstAttribute = lhs.1
   pseudo.secondObject = rhs.0
+  pseudo.secondItem = rhs.0.nametag
   pseudo.secondAttribute = rhs.1
   pseudo.relation = .GreaterThanOrEqual
   return pseudo
@@ -475,6 +494,7 @@ public func ≥<V1: UIView, V2: UIView>(lhs: (V1, PseudoConstraint.Attribute), r
 public func ≥<V: UIView>(lhs: (V, PseudoConstraint.Attribute), rhs: Float) -> PseudoConstraint {
   var pseudo = PseudoConstraint()
   pseudo.firstObject = lhs.0
+  pseudo.firstItem = lhs.0.nametag
   pseudo.firstAttribute = lhs.1
   pseudo.secondObject = nil
   pseudo.secondAttribute = .NotAnAttribute
@@ -487,8 +507,10 @@ infix operator ≤ {precedence 160}
 public func ≤<V1: UIView, V2: UIView>(lhs: (V1, PseudoConstraint.Attribute), rhs: (V2, PseudoConstraint.Attribute)) -> PseudoConstraint {
   var pseudo = PseudoConstraint()
   pseudo.firstObject = lhs.0
+  pseudo.firstItem = lhs.0.nametag
   pseudo.firstAttribute = lhs.1
   pseudo.secondObject = rhs.0
+  pseudo.secondItem = rhs.0.nametag
   pseudo.secondAttribute = rhs.1
   pseudo.relation = .LessThanOrEqual
   return pseudo
@@ -496,6 +518,7 @@ public func ≤<V1: UIView, V2: UIView>(lhs: (V1, PseudoConstraint.Attribute), r
 public func ≤<V: UIView>(lhs: (V, PseudoConstraint.Attribute), rhs: Float) -> PseudoConstraint {
   var pseudo = PseudoConstraint()
   pseudo.firstObject = lhs.0
+  pseudo.firstItem = lhs.0.nametag
   pseudo.firstAttribute = lhs.1
   pseudo.secondObject = nil
   pseudo.secondAttribute = .NotAnAttribute
@@ -520,3 +543,100 @@ public func -(var lhs: PseudoConstraint, rhs: Float) -> PseudoConstraint {
   return lhs
 }
 
+//prefix operator | {}
+//
+//public prefix func |(rhs: UIView) -> PseudoConstraint {
+//  if let v = rhs.superview {
+//    return rhs.left => v.left
+//  } else { return PseudoConstraint() }
+//}
+
+public func |(lhs: UILayoutConstraintAxis, rhs: UIView) -> PseudoConstraint {
+  assert(rhs.superview != nil, "this operator requires a proper view hierarchy has been established")
+  switch lhs {
+  case .Horizontal: return rhs.left => rhs.superview!.left
+  case .Vertical:   return rhs.top => rhs.superview!.top
+  }
+}
+
+//prefix operator || {}
+//
+//public prefix func ||(rhs: UIView) -> PseudoConstraint {
+//  if let v = rhs.superview {
+//    return rhs.top => v.top
+//  } else { return PseudoConstraint() }
+//}
+
+
+func addSpacingConstraint(lhs: PseudoConstraint)(space: Float)(rhs: UIView) -> [PseudoConstraint] {
+  return addSpacingConstraint([lhs])(space: space)(rhs: rhs)
+}
+
+func addSpacingConstraint(var lhs: [PseudoConstraint])(space: Float)(rhs: UIView) -> [PseudoConstraint] {
+  if let lhsView = lhs.first?.firstObject as? UIView,
+    superview = lhs.first?.secondObject as? UIView where superview === lhsView.superview && rhs.isDescendantOfView(superview),
+    let axis = lhs.first?.firstAttribute.axis,
+    lastView = lhs.last?.firstObject as? UIView
+  {
+    switch axis {
+      case .Horizontal: lhs.append(rhs.left => lastView.right + space)
+      case .Vertical:   lhs.append(rhs.top => lastView.bottom + space)
+    }
+    return lhs
+  } else {
+    return []
+  }
+}
+
+infix operator -- {associativity left}
+public func --(lhs: PseudoConstraint, rhs: Float) -> UIView -> [PseudoConstraint] {
+  return addSpacingConstraint(lhs)(space: rhs)
+}
+public func --(lhs: [PseudoConstraint], rhs: Float) -> UIView -> [PseudoConstraint] {
+  return addSpacingConstraint(lhs)(space: rhs)
+}
+
+public func --(lhs: UIView -> [PseudoConstraint], rhs: UIView) -> [PseudoConstraint] {
+  return lhs(rhs)
+}
+
+public func |(lhs: UIView, rhs: UILayoutConstraintAxis) -> PseudoConstraint {
+  assert(lhs.superview != nil, "this operator requires a proper view hierarchy has been established")
+  switch rhs {
+    case .Horizontal: return lhs.right => lhs.superview!.right
+    case .Vertical:   return lhs.bottom => lhs.superview!.bottom
+  }
+}
+
+public func |(var lhs: PseudoConstraint, rhs: UILayoutConstraintAxis) -> [PseudoConstraint] { return [lhs]|rhs }
+public func |(var lhs: [PseudoConstraint], rhs: UILayoutConstraintAxis) -> [PseudoConstraint] {
+  assert(lhs.last?.firstObject as? UIView != nil, "this operator requires a view for the last constraint's firstObject")
+  let view = lhs.last!.firstObject as! UIView
+  assert(view.superview != nil, "this operator requires a proper view hierarchy has been established")
+  switch rhs {
+    case .Horizontal: lhs.append(view.right => view.superview!.right)
+    case .Vertical: lhs.append(view.bottom => view.superview!.bottom)
+  }
+  return lhs
+}
+
+//postfix operator | {}
+
+//public postfix func |(var lhs: PseudoConstraint) -> [PseudoConstraint] { return [lhs]| }
+
+//public postfix func |(var lhs: [PseudoConstraint]) -> [PseudoConstraint] {
+//
+//  if lhs.count > 1,
+//    let firstConstraint = lhs.first,
+//    lastConstraint = lhs.last,
+//    lastView = lastConstraint.firstObject as? UIView,
+//    superview = firstConstraint.secondObject as? UIView where lastView.superview === superview
+//  {
+//    switch firstConstraint.firstAttribute.axis {
+//      case .Horizontal: lhs.append(lastView.right => superview.right)
+//      case .Vertical: lhs.append(lastView.bottom => superview.bottom)
+//    }
+//  }
+//  return lhs
+//
+//}

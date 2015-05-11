@@ -2,39 +2,40 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7703" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6711"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <mutableArray key="Type Dynamic - Elysio Bold.otf">
+        <mutableArray key="Elysio-Bold.otf">
             <string>Elysio-Bold</string>
             <string>Elysio-Bold</string>
             <string>Elysio-Bold</string>
         </mutableArray>
-        <mutableArray key="Type Dynamic - Elysio Regular Italic.otf">
-            <string>Elysio-RegularItalic</string>
-            <string>Elysio-RegularItalic</string>
-            <string>Elysio-RegularItalic</string>
-            <string>Elysio-RegularItalic</string>
-            <string>Elysio-RegularItalic</string>
-            <string>Elysio-RegularItalic</string>
-            <string>Elysio-RegularItalic</string>
-            <string>Elysio-RegularItalic</string>
-            <string>Elysio-RegularItalic</string>
-            <string>Elysio-RegularItalic</string>
+        <mutableArray key="Elysio-Regular.otf">
+            <string>Elysio-Regular</string>
+            <string>Elysio-Regular</string>
+            <string>Elysio-Regular</string>
+            <string>Elysio-Regular</string>
+            <string>Elysio-Regular</string>
+            <string>Elysio-Regular</string>
+            <string>Elysio-Regular</string>
+            <string>Elysio-Regular</string>
+            <string>Elysio-Regular</string>
+            <string>Elysio-Regular</string>
+            <string>Elysio-Regular</string>
+            <string>Elysio-Regular</string>
         </mutableArray>
-        <mutableArray key="Type Dynamic - Elysio.otf">
-            <string>Elysio-Regular</string>
-            <string>Elysio-Regular</string>
-            <string>Elysio-Regular</string>
-            <string>Elysio-Regular</string>
-            <string>Elysio-Regular</string>
-            <string>Elysio-Regular</string>
-            <string>Elysio-Regular</string>
-            <string>Elysio-Regular</string>
-            <string>Elysio-Regular</string>
-            <string>Elysio-Regular</string>
-            <string>Elysio-Regular</string>
-            <string>Elysio-Regular</string>
+        <mutableArray key="Elysio-RegularItalic.otf">
+            <string>Elysio-RegularItalic</string>
+            <string>Elysio-RegularItalic</string>
+            <string>Elysio-RegularItalic</string>
+            <string>Elysio-RegularItalic</string>
+            <string>Elysio-RegularItalic</string>
+            <string>Elysio-RegularItalic</string>
+            <string>Elysio-RegularItalic</string>
+            <string>Elysio-RegularItalic</string>
+            <string>Elysio-RegularItalic</string>
+            <string>Elysio-RegularItalic</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -51,13 +52,13 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Learner Enabled" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zhg-9s-Apq">
-                                <rect key="frame" x="36" y="261" width="88" height="14"/>
-                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="14"/>
+                                <rect key="frame" x="36" y="278" width="101" height="16"/>
+                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.20000000298023224" green="0.20000000298023224" blue="0.20000000298023224" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Z0n-lK-9bN">
-                                <rect key="frame" x="515" y="252" width="51" height="31"/>
+                                <rect key="frame" x="515" y="270" width="51" height="31"/>
                                 <connections>
                                     <action selector="switchValueDidChange:" destination="vXZ-lx-hvc" eventType="valueChanged" id="joN-AD-XcR"/>
                                 </connections>
@@ -69,122 +70,122 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Identifier" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bot-zu-3mP">
-                                <rect key="frame" x="36" y="54" width="49" height="14"/>
-                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="14"/>
+                                <rect key="frame" x="36" y="54" width="56" height="16"/>
+                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.20000000298023224" green="0.20000000298023224" blue="0.20000000298023224" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PKG LVL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FhO-f5-axa">
-                                <rect key="frame" x="36" y="164" width="44" height="14"/>
-                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="14"/>
+                                <rect key="frame" x="36" y="174" width="51" height="16"/>
+                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.20000000298023224" green="0.20000000298023224" blue="0.20000000298023224" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Config URL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vST-NJ-2nE">
-                                <rect key="frame" x="36" y="76" width="60" height="14"/>
-                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="14"/>
+                                <rect key="frame" x="36" y="78" width="68" height="16"/>
+                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.20000000298023224" green="0.20000000298023224" blue="0.20000000298023224" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Make" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Can-EX-PVq">
-                                <rect key="frame" x="36" y="98" width="31" height="14"/>
-                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="14"/>
+                                <rect key="frame" x="36" y="102" width="35" height="16"/>
+                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.20000000298023224" green="0.20000000298023224" blue="0.20000000298023224" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Model" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V9a-o2-Xoh">
-                                <rect key="frame" x="36" y="120" width="35" height="14"/>
-                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="14"/>
+                                <rect key="frame" x="36" y="126" width="39" height="16"/>
+                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.20000000298023224" green="0.20000000298023224" blue="0.20000000298023224" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PCB PN" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JgA-Zt-QxR">
-                                <rect key="frame" x="36" y="142" width="41" height="14"/>
-                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="14"/>
+                                <rect key="frame" x="36" y="150" width="47" height="16"/>
+                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.20000000298023224" green="0.20000000298023224" blue="0.20000000298023224" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uye-Ok-zgx">
-                                <rect key="frame" x="36" y="230" width="36" height="14"/>
-                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="14"/>
+                                <rect key="frame" x="36" y="246" width="41" height="16"/>
+                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.20000000298023224" green="0.20000000298023224" blue="0.20000000298023224" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Revision" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lfo-la-Yat">
-                                <rect key="frame" x="36" y="186" width="46" height="14"/>
-                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="14"/>
+                                <rect key="frame" x="36" y="198" width="53" height="16"/>
+                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.20000000298023224" green="0.20000000298023224" blue="0.20000000298023224" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SDK Class" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x5E-Mp-UpO">
-                                <rect key="frame" x="36" y="208" width="55" height="14"/>
-                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="14"/>
+                                <rect key="frame" x="36" y="222" width="63" height="16"/>
+                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.20000000298023224" green="0.20000000298023224" blue="0.20000000298023224" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unique Identifier" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fcs-Yf-vDR">
-                                <rect key="frame" x="474" y="54" width="90" height="14"/>
-                                <fontDescription key="fontDescription" name="Elysio-RegularItalic" family="Elysio" pointSize="14"/>
+                                <rect key="frame" x="461" y="54" width="103" height="16"/>
+                                <fontDescription key="fontDescription" name="Elysio-RegularItalic" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.49003699421882629" green="0.49002200365066528" blue="0.49002999067306519" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PKG LVL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mZc-Kf-nww">
-                                <rect key="frame" x="520" y="164" width="44" height="14"/>
-                                <fontDescription key="fontDescription" name="Elysio-RegularItalic" family="Elysio" pointSize="14"/>
+                                <rect key="frame" x="513" y="174" width="51" height="16"/>
+                                <fontDescription key="fontDescription" name="Elysio-RegularItalic" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.49003699421882629" green="0.49002200365066528" blue="0.49002999067306519" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Config URL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TQM-Zb-0jj">
-                                <rect key="frame" x="504" y="76" width="60" height="14"/>
-                                <fontDescription key="fontDescription" name="Elysio-RegularItalic" family="Elysio" pointSize="14"/>
+                                <rect key="frame" x="496" y="78" width="68" height="16"/>
+                                <fontDescription key="fontDescription" name="Elysio-RegularItalic" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.49003699421882629" green="0.49002200365066528" blue="0.49002999067306519" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Make" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TEZ-MC-6AC">
-                                <rect key="frame" x="533" y="98" width="31" height="14"/>
-                                <fontDescription key="fontDescription" name="Elysio-RegularItalic" family="Elysio" pointSize="14"/>
+                                <rect key="frame" x="529" y="102" width="35" height="16"/>
+                                <fontDescription key="fontDescription" name="Elysio-RegularItalic" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.49003699421882629" green="0.49002200365066528" blue="0.49002999067306519" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Model" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dou-eg-S9E">
-                                <rect key="frame" x="529" y="120" width="35" height="14"/>
-                                <fontDescription key="fontDescription" name="Elysio-RegularItalic" family="Elysio" pointSize="14"/>
+                                <rect key="frame" x="525" y="126" width="39" height="16"/>
+                                <fontDescription key="fontDescription" name="Elysio-RegularItalic" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.49003699421882629" green="0.49002200365066528" blue="0.49002999067306519" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PCB PN" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lzu-ni-3NU">
-                                <rect key="frame" x="523" y="142" width="41" height="14"/>
-                                <fontDescription key="fontDescription" name="Elysio-RegularItalic" family="Elysio" pointSize="14"/>
+                                <rect key="frame" x="517" y="150" width="47" height="16"/>
+                                <fontDescription key="fontDescription" name="Elysio-RegularItalic" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.49003699421882629" green="0.49002200365066528" blue="0.49002999067306519" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LRY-cG-fd8">
-                                <rect key="frame" x="528" y="230" width="36" height="14"/>
-                                <fontDescription key="fontDescription" name="Elysio-RegularItalic" family="Elysio" pointSize="14"/>
+                                <rect key="frame" x="523" y="246" width="41" height="16"/>
+                                <fontDescription key="fontDescription" name="Elysio-RegularItalic" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.49003699421882629" green="0.49002200365066528" blue="0.49002999067306519" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Revision" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="agZ-xu-a5r">
-                                <rect key="frame" x="518" y="186" width="46" height="14"/>
-                                <fontDescription key="fontDescription" name="Elysio-RegularItalic" family="Elysio" pointSize="14"/>
+                                <rect key="frame" x="511" y="198" width="53" height="16"/>
+                                <fontDescription key="fontDescription" name="Elysio-RegularItalic" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.49003699421882629" green="0.49002200365066528" blue="0.49002999067306519" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SDK Class" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2O9-r7-Vpw">
-                                <rect key="frame" x="509" y="208" width="55" height="14"/>
-                                <fontDescription key="fontDescription" name="Elysio-RegularItalic" family="Elysio" pointSize="14"/>
+                                <rect key="frame" x="501" y="222" width="63" height="16"/>
+                                <fontDescription key="fontDescription" name="Elysio-RegularItalic" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.49003699421882629" green="0.49002200365066528" blue="0.49002999067306519" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last Captured Command" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TZD-5O-omk">
-                                <rect key="frame" x="26" y="295" width="158" height="16"/>
+                                <rect key="frame" x="26" y="314" width="158" height="16"/>
                                 <fontDescription key="fontDescription" name="Elysio-Bold" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No command has been captured" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="230-E9-ZIG">
-                                <rect key="frame" x="36" y="321" width="174" height="14"/>
-                                <fontDescription key="fontDescription" name="Elysio-RegularItalic" family="Elysio" pointSize="14"/>
+                                <rect key="frame" x="36" y="340" width="198" height="16"/>
+                                <fontDescription key="fontDescription" name="Elysio-RegularItalic" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.49003699421882629" green="0.49002200365066528" blue="0.49002999067306519" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -196,50 +197,82 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4QN-6K-39g">
-                                <rect key="frame" x="26" y="308" width="538" height="3"/>
+                                <rect key="frame" x="26" y="327" width="538" height="3"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="3" id="lib-iI-LyV"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save Captured Command" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qMR-6W-qxa">
-                                <rect key="frame" x="26" y="355" width="162" height="16"/>
+                                <rect key="frame" x="26" y="376" width="162" height="16"/>
                                 <fontDescription key="fontDescription" name="Elysio-Bold" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JJD-eJ-NwK">
-                                <rect key="frame" x="26" y="368" width="538" height="3"/>
+                                <rect key="frame" x="26" y="389" width="538" height="3"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="3" id="kOz-0r-aVH"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manufacturer" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CkB-ng-HsA">
-                                <rect key="frame" x="31" y="381" width="74" height="14"/>
-                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="14"/>
+                                <rect key="frame" x="31" y="408" width="85" height="16"/>
+                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Code Set" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iRX-6q-Ciz">
-                                <rect key="frame" x="31" y="410" width="49" height="14"/>
-                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="14"/>
+                                <rect key="frame" x="31" y="456" width="55" height="16"/>
+                                <fontDescription key="fontDescription" name="Elysio-Regular" family="Elysio" pointSize="16"/>
                                 <color key="textColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KOx-x9-qQK" customClass="InlinePickerView" customModule="MoonKit">
-                                <rect key="frame" x="155" y="379" width="409" height="14"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KOx-x9-qQK" customClass="AKPickerView" customModule="MoonKit">
+                                <rect key="frame" x="136" y="408" width="392" height="16"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dm9-Mr-BST" customClass="AKPickerView" customModule="MoonKit">
+                                <rect key="frame" x="136" y="456" width="392" height="16"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y3S-Yh-4EY">
+                                <rect key="frame" x="536" y="402" width="28" height="28"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="y3S-Yh-4EY" secondAttribute="height" multiplier="1:1" id="4vn-mU-8zD"/>
+                                    <constraint firstAttribute="width" constant="28" id="BxT-aI-8q6"/>
+                                </constraints>
+                                <state key="normal" image="746-plus-circle">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted" image="746-plus-circle-selected"/>
+                                <connections>
+                                    <action selector="createNewManufacturer" destination="vXZ-lx-hvc" eventType="touchUpInside" id="95Z-c4-2BK"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eha-8j-D1E">
+                                <rect key="frame" x="536" y="450" width="28" height="28"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="28" id="1RK-B3-Uaz"/>
+                                    <constraint firstAttribute="width" secondItem="eha-8j-D1E" secondAttribute="height" multiplier="1:1" id="Ocy-GH-8yi"/>
+                                </constraints>
+                                <state key="normal" image="746-plus-circle">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted" image="746-plus-circle-selected"/>
+                                <connections>
+                                    <action selector="createNewCodeSet" destination="vXZ-lx-hvc" eventType="touchUpInside" id="KKp-Vc-Dg4"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="230-E9-ZIG" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="TQM-Zb-0jj" secondAttribute="trailing" id="0JU-2o-TIF"/>
-                            <constraint firstItem="KOx-x9-qQK" firstAttribute="centerY" secondItem="CkB-ng-HsA" secondAttribute="centerY" constant="-2" id="0SR-gW-nAv"/>
+                            <constraint firstItem="KOx-x9-qQK" firstAttribute="centerY" secondItem="CkB-ng-HsA" secondAttribute="centerY" id="0SR-gW-nAv"/>
                             <constraint firstItem="agZ-xu-a5r" firstAttribute="top" secondItem="lfo-la-Yat" secondAttribute="top" id="0V5-mt-vAf"/>
                             <constraint firstItem="bot-zu-3mP" firstAttribute="centerY" secondItem="fcs-Yf-vDR" secondAttribute="centerY" id="0dD-X8-rOd"/>
                             <constraint firstItem="lfo-la-Yat" firstAttribute="top" secondItem="FhO-f5-axa" secondAttribute="bottom" constant="8" id="0du-ii-pwy"/>
-                            <constraint firstItem="KOx-x9-qQK" firstAttribute="top" secondItem="JJD-eJ-NwK" secondAttribute="bottom" constant="8" id="0pE-6n-wwA"/>
+                            <constraint firstItem="KOx-x9-qQK" firstAttribute="top" secondItem="JJD-eJ-NwK" secondAttribute="bottom" constant="16" id="0pE-6n-wwA"/>
                             <constraint firstItem="Can-EX-PVq" firstAttribute="top" secondItem="vST-NJ-2nE" secondAttribute="bottom" constant="8" id="146-Kv-oMc"/>
                             <constraint firstItem="JgA-Zt-QxR" firstAttribute="leading" secondItem="V9a-o2-Xoh" secondAttribute="leading" id="2G8-kO-tbf"/>
                             <constraint firstItem="qMR-6W-qxa" firstAttribute="top" secondItem="230-E9-ZIG" secondAttribute="bottom" constant="20" id="2JY-VH-4Ob"/>
@@ -248,7 +281,7 @@
                             <constraint firstItem="TQM-Zb-0jj" firstAttribute="trailing" secondItem="TEZ-MC-6AC" secondAttribute="trailing" id="2el-ht-RWk"/>
                             <constraint firstItem="Z0n-lK-9bN" firstAttribute="top" secondItem="LRY-cG-fd8" secondAttribute="bottom" constant="8" id="32O-Nb-qas"/>
                             <constraint firstItem="FhO-f5-axa" firstAttribute="centerY" secondItem="mZc-Kf-nww" secondAttribute="centerY" id="3JX-FX-abH"/>
-                            <constraint firstItem="KOx-x9-qQK" firstAttribute="leading" secondItem="CkB-ng-HsA" secondAttribute="trailing" priority="998" constant="50" id="3uo-Ye-Qlq"/>
+                            <constraint firstItem="KOx-x9-qQK" firstAttribute="leading" secondItem="CkB-ng-HsA" secondAttribute="trailing" constant="20" id="3uo-Ye-Qlq"/>
                             <constraint firstItem="TZD-5O-omk" firstAttribute="leading" secondItem="4QN-6K-39g" secondAttribute="leading" id="7W4-GZ-bLZ"/>
                             <constraint firstItem="JgA-Zt-QxR" firstAttribute="leading" secondItem="FhO-f5-axa" secondAttribute="leading" id="7XK-9f-4uM"/>
                             <constraint firstItem="mZc-Kf-nww" firstAttribute="top" secondItem="lzu-ni-3NU" secondAttribute="bottom" constant="8" id="7g2-7h-xZY"/>
@@ -274,7 +307,11 @@
                             <constraint firstItem="bot-zu-3mP" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="20" id="LUh-bY-F17"/>
                             <constraint firstItem="Zhg-9s-Apq" firstAttribute="top" secondItem="uye-Ok-zgx" secondAttribute="bottom" constant="8" id="MNl-of-s0o"/>
                             <constraint firstItem="JgA-Zt-QxR" firstAttribute="leading" secondItem="iRX-6q-Ciz" secondAttribute="leading" constant="5" id="NXO-Ja-5r9"/>
+                            <constraint firstItem="Dm9-Mr-BST" firstAttribute="centerY" secondItem="eha-8j-D1E" secondAttribute="centerY" id="Nou-Lk-YDU"/>
                             <constraint firstItem="uye-Ok-zgx" firstAttribute="top" secondItem="x5E-Mp-UpO" secondAttribute="bottom" constant="8" id="O4U-nO-tBN"/>
+                            <constraint firstItem="eha-8j-D1E" firstAttribute="leading" secondItem="Dm9-Mr-BST" secondAttribute="trailing" constant="8" id="OrF-MI-xa9"/>
+                            <constraint firstItem="TQM-Zb-0jj" firstAttribute="trailing" secondItem="eha-8j-D1E" secondAttribute="trailing" id="PRM-6y-EG1"/>
+                            <constraint firstItem="Dm9-Mr-BST" firstAttribute="centerY" secondItem="iRX-6q-Ciz" secondAttribute="centerY" id="Qaf-ct-fTs"/>
                             <constraint firstItem="mZc-Kf-nww" firstAttribute="top" secondItem="FhO-f5-axa" secondAttribute="top" id="T0e-l6-KTR"/>
                             <constraint firstItem="TQM-Zb-0jj" firstAttribute="trailing" secondItem="fcs-Yf-vDR" secondAttribute="trailing" id="Tyt-yh-W8r"/>
                             <constraint firstItem="IDO-br-ENZ" firstAttribute="top" secondItem="WX1-tT-XnU" secondAttribute="bottom" constant="-3" id="U1D-Dg-STX"/>
@@ -285,21 +322,25 @@
                             <constraint firstItem="WX1-tT-XnU" firstAttribute="leading" secondItem="TZD-5O-omk" secondAttribute="leading" id="WMU-iW-oGl"/>
                             <constraint firstItem="agZ-xu-a5r" firstAttribute="centerY" secondItem="lfo-la-Yat" secondAttribute="centerY" id="XrE-kJ-FD4"/>
                             <constraint firstItem="CkB-ng-HsA" firstAttribute="top" secondItem="qMR-6W-qxa" secondAttribute="bottom" constant="8" id="YMN-qh-SsT"/>
+                            <constraint firstItem="Dm9-Mr-BST" firstAttribute="height" secondItem="KOx-x9-qQK" secondAttribute="height" id="Z79-8b-yFi"/>
                             <constraint firstItem="iRX-6q-Ciz" firstAttribute="top" secondItem="CkB-ng-HsA" secondAttribute="bottom" constant="8" id="ZBM-pf-Kf9"/>
+                            <constraint firstItem="KOx-x9-qQK" firstAttribute="centerY" secondItem="y3S-Yh-4EY" secondAttribute="centerY" id="Zkd-NY-l49"/>
                             <constraint firstItem="JgA-Zt-QxR" firstAttribute="top" secondItem="V9a-o2-Xoh" secondAttribute="bottom" constant="8" id="art-z8-L29"/>
                             <constraint firstItem="WX1-tT-XnU" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="10" id="bKf-u8-snd"/>
                             <constraint firstItem="LRY-cG-fd8" firstAttribute="centerY" secondItem="uye-Ok-zgx" secondAttribute="centerY" id="bRP-Rl-40o"/>
                             <constraint firstItem="TQM-Zb-0jj" firstAttribute="trailing" secondItem="2O9-r7-Vpw" secondAttribute="trailing" id="byl-Er-Yy3"/>
                             <constraint firstItem="agZ-xu-a5r" firstAttribute="top" secondItem="mZc-Kf-nww" secondAttribute="bottom" constant="8" id="d0i-aC-Pza"/>
                             <constraint firstItem="JgA-Zt-QxR" firstAttribute="leading" secondItem="vST-NJ-2nE" secondAttribute="leading" id="dAQ-OS-8ha"/>
-                            <constraint firstItem="iRX-6q-Ciz" firstAttribute="top" secondItem="CkB-ng-HsA" secondAttribute="bottom" constant="15" id="ePt-5Z-KUq"/>
+                            <constraint firstItem="iRX-6q-Ciz" firstAttribute="top" secondItem="CkB-ng-HsA" secondAttribute="bottom" constant="32" id="ePt-5Z-KUq"/>
+                            <constraint firstItem="Dm9-Mr-BST" firstAttribute="trailing" secondItem="KOx-x9-qQK" secondAttribute="trailing" id="eeq-Dl-03Q"/>
                             <constraint firstItem="JgA-Zt-QxR" firstAttribute="leading" secondItem="lfo-la-Yat" secondAttribute="leading" id="ey3-ko-4fL"/>
                             <constraint firstItem="230-E9-ZIG" firstAttribute="top" secondItem="TZD-5O-omk" secondAttribute="bottom" constant="10" id="fhN-RL-IKZ"/>
+                            <constraint firstItem="Dm9-Mr-BST" firstAttribute="leading" secondItem="KOx-x9-qQK" secondAttribute="leading" id="g7G-gj-mw7"/>
                             <constraint firstItem="IDO-br-ENZ" firstAttribute="leading" secondItem="WX1-tT-XnU" secondAttribute="leading" id="gP1-PY-E6T"/>
                             <constraint firstItem="TQM-Zb-0jj" firstAttribute="top" secondItem="fcs-Yf-vDR" secondAttribute="bottom" constant="8" id="gqd-ZU-pZ0"/>
                             <constraint firstItem="2O9-r7-Vpw" firstAttribute="centerY" secondItem="x5E-Mp-UpO" secondAttribute="centerY" id="hVn-dC-KSr"/>
                             <constraint firstItem="Zhg-9s-Apq" firstAttribute="centerY" secondItem="Z0n-lK-9bN" secondAttribute="centerY" id="jWy-l9-sO8"/>
-                            <constraint firstItem="KOx-x9-qQK" firstAttribute="leading" relation="lessThanOrEqual" secondItem="CkB-ng-HsA" secondAttribute="trailing" priority="999" constant="50" id="mQ1-GD-f3d"/>
+                            <constraint firstItem="eha-8j-D1E" firstAttribute="width" secondItem="eha-8j-D1E" secondAttribute="height" multiplier="1:1" id="juS-aS-aQr"/>
                             <constraint firstItem="vST-NJ-2nE" firstAttribute="leading" secondItem="CkB-ng-HsA" secondAttribute="leading" constant="5" id="q3c-ye-Kul"/>
                             <constraint firstItem="JgA-Zt-QxR" firstAttribute="centerY" secondItem="lzu-ni-3NU" secondAttribute="centerY" id="q7g-3k-dwt"/>
                             <constraint firstItem="KOx-x9-qQK" firstAttribute="height" secondItem="CkB-ng-HsA" secondAttribute="height" id="qjS-b7-0yF"/>
@@ -311,9 +352,10 @@
                             <constraint firstItem="TQM-Zb-0jj" firstAttribute="trailing" secondItem="4QN-6K-39g" secondAttribute="trailing" id="sg3-hB-8Hg"/>
                             <constraint firstItem="TEZ-MC-6AC" firstAttribute="top" secondItem="TQM-Zb-0jj" secondAttribute="bottom" constant="8" id="tai-N8-XEB"/>
                             <constraint firstItem="JgA-Zt-QxR" firstAttribute="leading" secondItem="bot-zu-3mP" secondAttribute="leading" id="u11-Qh-eMd"/>
-                            <constraint firstItem="KOx-x9-qQK" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="CkB-ng-HsA" secondAttribute="trailing" priority="999" constant="10" id="vIS-9o-npo"/>
+                            <constraint firstItem="y3S-Yh-4EY" firstAttribute="leading" secondItem="KOx-x9-qQK" secondAttribute="trailing" constant="8" id="wDw-r7-pye"/>
                             <constraint firstItem="LRY-cG-fd8" firstAttribute="top" secondItem="2O9-r7-Vpw" secondAttribute="bottom" constant="8" id="wnC-ae-Ch8"/>
                             <constraint firstItem="WX1-tT-XnU" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="10" id="x3D-Ea-GXI"/>
+                            <constraint firstItem="TQM-Zb-0jj" firstAttribute="trailing" secondItem="y3S-Yh-4EY" secondAttribute="trailing" id="x6D-9q-ntZ"/>
                             <constraint firstItem="qMR-6W-qxa" firstAttribute="leading" secondItem="JJD-eJ-NwK" secondAttribute="leading" id="xFx-Xq-VIe"/>
                             <constraint firstItem="JgA-Zt-QxR" firstAttribute="leading" secondItem="Can-EX-PVq" secondAttribute="leading" id="xSx-VW-yNr"/>
                             <constraint firstItem="x5E-Mp-UpO" firstAttribute="top" secondItem="lfo-la-Yat" secondAttribute="bottom" constant="8" id="yXM-b1-MTq"/>
@@ -333,17 +375,20 @@
                                 <exclude reference="O4U-nO-tBN"/>
                                 <exclude reference="MNl-of-s0o"/>
                                 <exclude reference="YMN-qh-SsT"/>
+                                <exclude reference="sK0-ui-y2y"/>
                                 <exclude reference="ZBM-pf-Kf9"/>
                                 <exclude reference="JHf-Ib-8Xu"/>
+                                <exclude reference="juS-aS-aQr"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="codeSetPicker" destination="Dm9-Mr-BST" id="6d4-0W-NgK"/>
                         <outlet property="configURL" destination="TQM-Zb-0jj" id="Fca-2u-WDu"/>
                         <outlet property="lastCapturedCommand" destination="230-E9-ZIG" id="WTW-hD-RVd"/>
                         <outlet property="learnerEnabled" destination="Z0n-lK-9bN" id="yNF-zv-eW5"/>
                         <outlet property="make" destination="TEZ-MC-6AC" id="YEN-9P-5DG"/>
-                        <outlet property="manufacturerPicker" destination="KOx-x9-qQK" id="p3r-Pg-pfs"/>
+                        <outlet property="manufacturerPicker" destination="KOx-x9-qQK" id="fAA-KB-g54"/>
                         <outlet property="model" destination="dou-eg-S9E" id="ESy-3o-S3x"/>
                         <outlet property="pcbPN" destination="lzu-ni-3NU" id="Hjx-Pj-A1l"/>
                         <outlet property="pkgLVL" destination="mZc-Kf-nww" id="dE9-qy-lpn"/>
@@ -358,4 +403,8 @@
             <point key="canvasLocation" x="414" y="389"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="746-plus-circle" width="42" height="42"/>
+        <image name="746-plus-circle-selected" width="42" height="42"/>
+    </resources>
 </document>

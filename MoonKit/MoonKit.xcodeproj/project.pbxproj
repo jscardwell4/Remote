@@ -289,6 +289,8 @@
 		C2683F7B1AF142E60081C74B /* UIBezierPath+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2683F7A1AF142E60081C74B /* UIBezierPath+MoonKitAdditions.swift */; };
 		C26863721AF96E6E00D664E8 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26863711AF96E6E00D664E8 /* Queue.swift */; };
 		C27372851A1FC0750079624D /* UIColor+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27372841A1FC0750079624D /* UIColor+MoonKitAdditions.swift */; };
+		C27953101AFEBA0300F72C80 /* AKPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C279530F1AFEBA0300F72C80 /* AKPickerView.swift */; };
+		C27953121AFED61200F72C80 /* FormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27953111AFED61200F72C80 /* FormViewController.swift */; };
 		C28447111A3E051F005338AB /* LabeledCheckbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28447101A3E051F005338AB /* LabeledCheckbox.swift */; };
 		C284EA5C1A1EAD6700B07BA8 /* TouchTrackingGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C284EA5B1A1EAD6700B07BA8 /* TouchTrackingGesture.swift */; };
 		C285D8281AC44E7400C527F6 /* MoonKitLite.h in Headers */ = {isa = PBXBuildFile; fileRef = C285D8271AC44E5500C527F6 /* MoonKitLite.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -443,6 +445,8 @@
 		C277AB8619D787EA008DEE39 /* ToggleBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleBarButtonItem.swift; sourceTree = "<group>"; };
 		C27828411814629700FC8D54 /* MSJSONSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSJSONSerialization.h; sourceTree = "<group>"; };
 		C27828421814629700FC8D54 /* MSJSONSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSJSONSerialization.m; sourceTree = "<group>"; };
+		C279530F1AFEBA0300F72C80 /* AKPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AKPickerView.swift; sourceTree = "<group>"; };
+		C27953111AFED61200F72C80 /* FormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormViewController.swift; sourceTree = "<group>"; };
 		C28447101A3E051F005338AB /* LabeledCheckbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabeledCheckbox.swift; sourceTree = "<group>"; };
 		C284EA5B1A1EAD6700B07BA8 /* TouchTrackingGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchTrackingGesture.swift; sourceTree = "<group>"; };
 		C285D8231AC44D3500C527F6 /* MoonKitLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoonKitLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -866,6 +870,8 @@
 				C210E9911AF27E3C0026A51D /* ViewProxy.swift */,
 				C20297FB1AF295A5003F647B /* KVOReceptionist.swift */,
 				C2B691891AFBCADB0041CE11 /* NetworkReachability.swift */,
+				C279530F1AFEBA0300F72C80 /* AKPickerView.swift */,
+				C27953111AFED61200F72C80 /* FormViewController.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -1651,6 +1657,7 @@
 				C28E50991A13CB1E00DF3206 /* IntegerInputView.swift in Sources */,
 				C2358F5D19C78E0C00920F8D /* MSPopupBarButtonItem.m in Sources */,
 				C2358F5E19C78E0C00920F8D /* MSScrollWheel.m in Sources */,
+				C27953121AFED61200F72C80 /* FormViewController.swift in Sources */,
 				C2358F5F19C78E0C00920F8D /* MSKitLoggingFunctions.m in Sources */,
 				C28E35BC1A45DBAB00438CCF /* Dictionary+MoonKitAdditions.swift in Sources */,
 				C2358F6019C78E0C00920F8D /* MSKitMiscellaneousFunctions.m in Sources */,
@@ -1669,6 +1676,7 @@
 				C2358F6819C78E0C00920F8D /* MSBitVector.m in Sources */,
 				C2358F6919C78E0C00920F8D /* MSCompletionBlockOperation.m in Sources */,
 				C2E937041ACF0736003EB3E8 /* JSONSerialization.swift in Sources */,
+				C27953101AFEBA0300F72C80 /* AKPickerView.swift in Sources */,
 				C2358F6A19C78E0C00920F8D /* MSContextChangeReceptionist.m in Sources */,
 				C2E8C8B71AE7325300F8AC45 /* UITableViewCell+MoonKitAdditions.swift in Sources */,
 				C24A22871ADAF0300065E7EA /* BoxedJSONValue.swift in Sources */,

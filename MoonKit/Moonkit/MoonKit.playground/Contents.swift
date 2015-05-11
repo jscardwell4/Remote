@@ -17,3 +17,5 @@ let target = "<tag>"
 let replacement = "12"
 var message = "It is a muthafunkin <tag> yo!"
 message.sub(target, replacement)
+
+UIViewNoIntrinsicMetric

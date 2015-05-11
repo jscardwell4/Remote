@@ -12,6 +12,7 @@ import MoonKit
 import DataModel
 import Settings
 import Elysio
+import Glyphish
 
 @objc final public class Bank {
 
@@ -62,24 +63,24 @@ import Elysio
   public static let actionColor     = UIColor(r: 0,   g: 175, b: 255, a: 255)!
 
   // Images
-  static let exportBarItemImage            = Bank.bankImageNamed("702-share-toolbar")!
-  static let exportBarItemImageSelected    = Bank.bankImageNamed("702-share-toolbar-selected")!
-  static let importBarItemImage            = Bank.bankImageNamed("703-download-toolbar")!
-  static let importBarItemImageSelected    = Bank.bankImageNamed("703-download-toolbar-selected")!
-  static let searchBarItemImage            = Bank.bankImageNamed("708-search-toolbar")!
-  static let searchBarItemImageSelected    = Bank.bankImageNamed("708-search-toolbar-selected")!
-  static let listBarItemImage              = Bank.bankImageNamed("1073-grid-1-toolbar")!
-  static let listBarItemImageSelected      = Bank.bankImageNamed("1073-grid-1-toolbar-selected")!
-  static let thumbnailBarItemImage         = Bank.bankImageNamed("1076-grid-4-toolbar")!
-  static let thumbnailBarItemImageSelected = Bank.bankImageNamed("1076-grid-4-toolbar-selected")!
-  static let indicatorImage                = Bank.bankImageNamed("1040-checkmark-toolbar")!
-  static let indicatorImageSelected        = Bank.bankImageNamed("1040-checkmark-toolbar-selected")!
-  static let componentDevicesImage         = Bank.bankImageNamed("969-television")!
+  static let exportBarItemImage            = Glyphish.imageNamed("702-share-toolbar")!
+  static let exportBarItemImageSelected    = Glyphish.imageNamed("702-share-toolbar-selected")!
+  static let importBarItemImage            = Glyphish.imageNamed("703-download-toolbar")!
+  static let importBarItemImageSelected    = Glyphish.imageNamed("703-download-toolbar-selected")!
+  static let searchBarItemImage            = Glyphish.imageNamed("708-search-toolbar")!
+  static let searchBarItemImageSelected    = Glyphish.imageNamed("708-search-toolbar-selected")!
+  static let listBarItemImage              = Glyphish.imageNamed("1073-grid-1-toolbar")!
+  static let listBarItemImageSelected      = Glyphish.imageNamed("1073-grid-1-toolbar-selected")!
+  static let thumbnailBarItemImage         = Glyphish.imageNamed("1076-grid-4-toolbar")!
+  static let thumbnailBarItemImageSelected = Glyphish.imageNamed("1076-grid-4-toolbar-selected")!
+  static let indicatorImage                = Glyphish.imageNamed("1040-checkmark-toolbar")!
+  static let indicatorImageSelected        = Glyphish.imageNamed("1040-checkmark-toolbar-selected")!
+  static let componentDevicesImage         = Glyphish.imageNamed("969-television")!
   static let irCodesImage                  = Bank.bankImageNamed("tv-remote")!
-  static let imagesImage                   = Bank.bankImageNamed("926-photos")!
-  static let manufacturersImage            = Bank.bankImageNamed("1022-factory")!
-  static let networkDevicesImage           = Bank.bankImageNamed("937-wifi-signal")!
-  static let presetsImage                  = Bank.bankImageNamed("1059-sliders")!
+  static let imagesImage                   = Glyphish.imageNamed("926-photos")!
+  static let manufacturersImage            = Glyphish.imageNamed("1022-factory")!
+  static let networkDevicesImage           = Glyphish.imageNamed("937-wifi-signal")!
+  static let presetsImage                  = Glyphish.imageNamed("1059-sliders")!
 
   static let defaultRowHeight: CGFloat = 38.0
   static let separatorStyle: UITableViewCellSeparatorStyle = .None

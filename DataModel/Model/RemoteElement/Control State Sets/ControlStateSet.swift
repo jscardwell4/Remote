@@ -46,14 +46,14 @@ extension UIControlState: JSONValueInitializable {
 /** Add type enumeration to `UIControlState` */
 extension UIControlState: EnumerableType {
   public static var all: [UIControlState] {
-    return [.Normal,
-            .Highlighted,
-            .Selected,
-            .Disabled,
-            .Selected | .Disabled,
-            .Highlighted | .Selected,
-            .Highlighted | .Disabled,
-            .Highlighted | .Selected | .Disabled]
+    return [UIControlState.Normal,
+            UIControlState.Highlighted,
+            UIControlState.Selected,
+            UIControlState.Disabled,
+            UIControlState.Selected | UIControlState.Disabled,
+            UIControlState.Highlighted | UIControlState.Selected,
+            UIControlState.Highlighted | UIControlState.Disabled,
+            UIControlState.Highlighted | UIControlState.Selected | UIControlState.Disabled]
   }
   public static func enumerate(block: (UIControlState) -> Void) { apply(all, block) }
 }
