@@ -15,6 +15,7 @@ import class DataModel.IRCodeSet
 import class DataModel.IRCode
 import Networking
 import Elysio
+import Chameleon
 
 class LearnerAppViewController: UIViewController, AKPickerViewDelegate, AKPickerViewDataSource {
 
@@ -62,7 +63,17 @@ class LearnerAppViewController: UIViewController, AKPickerViewDelegate, AKPicker
   }
   var codeSets: [IRCodeSet]  { return sortedByName(manufacturer?.codeSets ?? []) }
 
-  var codeSet: IRCodeSet?
+  var codeSet: IRCodeSet? {
+    didSet {
+      if let c = codeSet {
+        assert(manufacturer != nil && manufacturer! === c.manufacturer)
+        let idx = find(codeSets, c)
+        assert(idx != nil)
+        codeSetPicker.selectItem(idx!, animated: true)
+      }
+      codeSetPicker.reloadData()
+    }
+  }
 
   var learnerDelegate: ITachLearnerDelegate = ITachLearnerDelegate()
 
@@ -122,15 +133,21 @@ class LearnerAppViewController: UIViewController, AKPickerViewDelegate, AKPicker
 
   }
 
+  private func presentFormViewController(formViewController: FormViewController) {
+    formViewController.labelFont = Elysio.regularFontWithSize(16)
+    formViewController.labelTextColor = UIColor(white: 0.2, alpha: 1.0)
+    formViewController.controlFont = Elysio.regularItalicFontWithSize(16)
+    formViewController.controlTextColor = UIColor(white: 0.49019608, alpha: 1.0)
+    formViewController.controlSelectedFont = Elysio.boldItalicFontWithSize(16.0)
+
+    presentViewController(formViewController, animated: true, completion: nil)
+  }
+
   @IBAction func createNewManufacturer() {
     let nameValidation: (String?) -> Bool = {
-      [unowned context] name in
-      if let n = name where !n.isEmpty && Manufacturer.objectWithValue(n, forAttribute: "name", context: context) == nil {
-        return true
-      } else {
-        return false
-      }
+      $0 != nil && !$0!.isEmpty && Manufacturer.objectWithValue($0!, forAttribute: "name", context: self.context) == nil
     }
+    let placeholderText = "The manufacturer's name"
     let didCancel: () -> Void = {[unowned self] in self.dismissViewControllerAnimated(true, completion: nil) }
     let didSubmit: (OrderedDictionary<String,Any>) -> Void = {[unowned self] values in
       assert(NSThread.isMainThread())
@@ -143,35 +160,45 @@ class LearnerAppViewController: UIViewController, AKPickerViewDelegate, AKPicker
       }
       self.dismissViewControllerAnimated(true, completion: nil)
     }
-    let nameField: FormViewController.Field = .Text(initial: nil, placeholder: "The manufacturer's name", validation: nameValidation)
+    let nameField = FormViewController.Field.Text(initial: nil, placeholder: placeholderText, validation: nameValidation)
     let fields: OrderedDictionary<String, FormViewController.Field> = ["Name": nameField]
-    let formViewController = FormViewController(fields: fields, didCancel: didCancel, didSubmit: didSubmit)
-    formViewController.labelFont = Elysio.regularFontWithSize(16)
-    formViewController.controlFont = Elysio.regularItalicFontWithSize(16)
-    formViewController.controlTextColor = UIColor(white: 0.5, alpha: 1.0)
-    presentViewController(formViewController, animated: true, completion: nil)
+    presentFormViewController(FormViewController(fields: fields, didCancel: didCancel, didSubmit: didSubmit))
   }
 
   
   @IBAction func createNewCodeSet() {
     if let manufacturer = self.manufacturer {
       let nameValidation: (String?) -> Bool = {
-        name in
-        if let n = name where !contains(manufacturer.codeSets, {$0.name == name}) {
-          return true
+        n in n != nil && !n!.isEmpty && !contains(manufacturer.codeSets, {$0.name == n!})
+      }
+      let placeholderText = "The code set's name"
+      let didCancel: () -> Void = {[unowned self] in self.dismissViewControllerAnimated(true, completion: nil) }
+      let didSubmit: (OrderedDictionary<String,Any>) -> Void = {[unowned self] values in
+        assert(NSThread.isMainThread())
+        if let name = values["Name"] as? String {
+          let codeSet = IRCodeSet(context: self.context)
+          codeSet.name = name
+          codeSet.manufacturer = manufacturer
+          self.codeSet = codeSet
         } else {
-          return false
+          assert(false)
         }
+        self.dismissViewControllerAnimated(true, completion: nil)
       }
 
-      let nameField: FormViewController.Field = .Text(initial: nil, placeholder: "The code set's name", validation: nameValidation)
+      let nameField: FormViewController.Field = .Text(initial: nil, placeholder: placeholderText, validation: nameValidation)
       let fields: OrderedDictionary<String, FormViewController.Field> = ["Name": nameField]
-      presentViewController(FormViewController(fields: fields), animated: true, completion: nil)
+      presentFormViewController(FormViewController(fields: fields, didCancel: didCancel, didSubmit: didSubmit))
     }
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    let bgColor = Chameleon.flatWhite
+    let analogousColors = Chameleon.colorsForScheme(.Analogous, with: bgColor, flat: true)
+    let gradientColor = Chameleon.gradientWithStyle(.Radial, withFrame: view.bounds, andColors: analogousColors)
+    view.backgroundColor = gradientColor
+
     if let m = manufacturers.first {
       manufacturer = m
       if codeSets.count > 0 { codeSet = codeSets[0] }

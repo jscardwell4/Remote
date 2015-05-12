@@ -307,6 +307,8 @@
 		C28E50991A13CB1E00DF3206 /* IntegerInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C217E47D19E860DE00B36983 /* IntegerInputView.swift */; };
 		C28E509B1A143FDC00DF3206 /* MultiselectGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28E509A1A143FDC00DF3206 /* MultiselectGestureRecognizer.swift */; };
 		C28E98EE1AD196B800E78711 /* NSNumber+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28E98ED1AD196B800E78711 /* NSNumber+MoonKitAdditions.swift */; };
+		C296498E1B00EBBF000C2D4A /* FormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C296498D1B00EBBF000C2D4A /* FormView.swift */; };
+		C29649901B00EBD0000C2D4A /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C296498F1B00EBD0000C2D4A /* FieldView.swift */; };
 		C29EECF81AFD010B00660EE6 /* MiscellaneousFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29EECF71AFD010B00660EE6 /* MiscellaneousFunctions.swift */; };
 		C2A6261F1A33598300152E97 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A6261E1A33598300152E97 /* Slider.swift */; };
 		C2A70E3B1ACC53D0009C2CF7 /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A70E3A1ACC53D0009C2CF7 /* JSONValue.swift */; };
@@ -459,6 +461,8 @@
 		C28E509A1A143FDC00DF3206 /* MultiselectGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiselectGestureRecognizer.swift; sourceTree = "<group>"; };
 		C28E98ED1AD196B800E78711 /* NSNumber+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNumber+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C295E30319E2FBBB008309B8 /* ToggleImageSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleImageSegmentedControl.swift; sourceTree = "<group>"; };
+		C296498D1B00EBBF000C2D4A /* FormView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormView.swift; sourceTree = "<group>"; };
+		C296498F1B00EBD0000C2D4A /* FieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldView.swift; sourceTree = "<group>"; };
 		C29EECF71AFD010B00660EE6 /* MiscellaneousFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscellaneousFunctions.swift; sourceTree = "<group>"; };
 		C2A46E651AD703E70030E3CC /* MoonKit.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MoonKit.playground; path = Moonkit/MoonKit.playground; sourceTree = "<group>"; };
 		C2A6261E1A33598300152E97 /* Slider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
@@ -872,6 +876,8 @@
 				C2B691891AFBCADB0041CE11 /* NetworkReachability.swift */,
 				C279530F1AFEBA0300F72C80 /* AKPickerView.swift */,
 				C27953111AFED61200F72C80 /* FormViewController.swift */,
+				C296498D1B00EBBF000C2D4A /* FormView.swift */,
+				C296498F1B00EBD0000C2D4A /* FieldView.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -1650,6 +1656,7 @@
 				C2B6918A1AFBCADB0041CE11 /* NetworkReachability.swift in Sources */,
 				C2F8C3171A362606004229FE /* UIResponder+MoonKitAdditions.swift in Sources */,
 				C2358F5A19C78E0C00920F8D /* MSColorInputButton.m in Sources */,
+				C29649901B00EBD0000C2D4A /* FieldView.swift in Sources */,
 				C2BE96E81A467E85007599B2 /* NSManagedObjectModel+MoonKitAdditions.swift in Sources */,
 				C2358F5B19C78E0C00920F8D /* MSPickerInputButton.m in Sources */,
 				C2358F5C19C78E0C00920F8D /* MSPopupBarButton.m in Sources */,
@@ -1711,6 +1718,7 @@
 				C20650001A13C72600342FDE /* UIBarButtonItem+MoonKitAdditions.swift in Sources */,
 				C21493C11A35302200D274A2 /* ColorInputView.swift in Sources */,
 				C2358F7C19C78E0C00920F8D /* MSKeyPath.m in Sources */,
+				C296498E1B00EBBF000C2D4A /* FormView.swift in Sources */,
 				C24416331ACB16F8007EDEFE /* Set+MoonKitAdditions.swift in Sources */,
 				C2E937001ACE04D4003EB3E8 /* JSONParser.swift in Sources */,
 				C2358F7D19C78E0C00920F8D /* MSCheckboxView.m in Sources */,

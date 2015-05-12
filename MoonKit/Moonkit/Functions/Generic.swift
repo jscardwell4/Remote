@@ -27,6 +27,22 @@ public func **(lhs: CGFloat, rhs: Int) -> CGFloat {
   return reduce(0..<rhs, CGFloat(0.0), {n, _ in n * lhs})
 }
 
+public func sum<S:SequenceType where S.Generator.Element == CGFloat>(s: S) -> CGFloat {
+  return reduce(s, CGFloat(), {$0 + $1})
+}
+
+public func sum<S:SequenceType where S.Generator.Element == Float>(s: S) -> Float {
+  return reduce(s, Float(), {$0 + $1})
+}
+
+public func sum<S:SequenceType where S.Generator.Element == Double>(s: S) -> Double {
+  return reduce(s, 0.0, {$0 + $1})
+}
+
+public func sum<S:SequenceType where S.Generator.Element:IntegerArithmeticType>(s: S) -> IntMax {
+  return reduce(s, 0, {$0 + $1.toIntMax()})
+}
+
 /**
 createIdentifier:suffix:
 
