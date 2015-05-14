@@ -230,11 +230,9 @@
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KOx-x9-qQK" customClass="AKPickerView" customModule="MoonKit">
                                 <rect key="frame" x="136" y="408" width="392" height="16"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dm9-Mr-BST" customClass="AKPickerView" customModule="MoonKit">
                                 <rect key="frame" x="136" y="456" width="392" height="16"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y3S-Yh-4EY">
                                 <rect key="frame" x="536" y="402" width="28" height="28"/>

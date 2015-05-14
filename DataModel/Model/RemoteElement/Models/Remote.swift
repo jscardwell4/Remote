@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 import MoonKit
 
+// TODO: Possibly alter panels to only support one per edge and use screen edge gestures
 
 @objc(Remote)
 public final class Remote: RemoteElement {
