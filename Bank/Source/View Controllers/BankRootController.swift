@@ -10,10 +10,59 @@ import Foundation
 import UIKit
 import ObjectiveC
 import MoonKit
+import DataModel
 
 final public class BankRootController: UITableViewController, BankItemImportExportController {
 
   static let RootCellIdentifier = "RootCell"
+
+  let context = DataManager.mainContext()
+
+  /** Generates the collection delegates that will ultimately provide the controller's table data */
+  func generateCollectionDelegates() {
+    collectionDelegates.removeAll()
+
+    let componentDeviceCollection = BankModelCollectionDelegate()
+    componentDeviceCollection.label = "Component Devices"
+    componentDeviceCollection.icon = Bank.componentDevicesImage
+    componentDeviceCollection.fetchedItems = ComponentDevice.objectsInContext(context, sortedBy: "name")
+    collectionDelegates.append(componentDeviceCollection)
+
+    let irCodeCollection = BankModelCollectionDelegate()
+    irCodeCollection.label = "IR Codes"
+    irCodeCollection.icon = Bank.irCodesImage
+    irCodeCollection.fetchedCollections = IRCodeSet.objectsInContext(context, sortedBy: "name")
+    collectionDelegates.append(irCodeCollection)
+
+    let imageCollection = BankModelCollectionDelegate()
+    imageCollection.label = "Images"
+    imageCollection.icon = Bank.imagesImage
+    imageCollection.fetchedCollections = ImageCategory.objectsInContext(context,
+                                                          withPredicate: ∀"parentCategory == NULL",
+                                                               sortedBy: "name")
+    collectionDelegates.append(imageCollection)
+
+    let manufacturerCollection = BankModelCollectionDelegate()
+    manufacturerCollection.label = "Manufacturers"
+    manufacturerCollection.icon = Bank.manufacturersImage
+    manufacturerCollection.fetchedItems = Manufacturer.objectsInContext(context, sortedBy: "name")
+    collectionDelegates.append(manufacturerCollection)
+
+    let networkDeviceCollection = BankModelCollectionDelegate()
+    networkDeviceCollection.label = "Network Devices"
+    networkDeviceCollection.icon = Bank.networkDevicesImage
+    networkDeviceCollection.fetchedItems = NetworkDevice.objectsInContext(context, sortedBy: "name")
+    collectionDelegates.append(networkDeviceCollection)
+
+    let presetCollection = BankModelCollectionDelegate()
+    presetCollection.label = "Presets"
+    presetCollection.icon = Bank.presetsImage
+    presetCollection.fetchedCollections = PresetCategory.objectsInContext(context,
+                                                            withPredicate: ∀"parentCategory == NULL",
+                                                                 sortedBy: "name")
+    collectionDelegates.append(presetCollection)
+  }
+
 
   /** loadView */
   override public func loadView() {
@@ -46,7 +95,7 @@ final public class BankRootController: UITableViewController, BankItemImportExpo
   */
   func importFromFile(fileURL: NSURL) {}
 
-  var rootCategories: [Bank.RootCategory] = []
+  private var collectionDelegates: [BankModelCollectionDelegate] = []
 
   /**
   viewWillAppear:
@@ -57,7 +106,7 @@ final public class BankRootController: UITableViewController, BankItemImportExpo
     super.viewWillAppear(animated)
     navigationItem.rightBarButtonItem = Bank.dismissButton
     navigationController?.toolbarHidden = false
-    rootCategories = Bank.rootCategories
+    generateCollectionDelegates()
   }
 
   /** importBankObject */
@@ -82,11 +131,8 @@ extension BankRootController: UITableViewDelegate {
   :param: indexPath NSIndexPath
   */
   override public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    let rootCategory = rootCategories[indexPath.row]
-    let collection = BankSurrogateCategory(title: rootCategory.label,
-                                         collections: rootCategory.collections,
-                                         items: rootCategory.items)
-    let collectionController = BankCollectionController(collection: collection)!
+    let collectionDelegate = collectionDelegates[indexPath.row]
+    let collectionController = BankCollectionController(collection: collectionDelegate)!
     navigationController?.pushViewController(collectionController, animated: true)
   }
 
@@ -114,7 +160,7 @@ extension BankRootController: UITableViewDataSource {
   :returns: Int
   */
   override public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return rootCategories.count
+    return collectionDelegates.count
   }
 
 
@@ -129,7 +175,7 @@ extension BankRootController: UITableViewDataSource {
   override public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier(BankRootController.RootCellIdentifier,
                                               forIndexPath: indexPath) as! BankRootCell
-    cell.rootCategory = rootCategories[indexPath.row]
+    cell.collectionDelegate = collectionDelegates[indexPath.row]
     return cell
   }
 

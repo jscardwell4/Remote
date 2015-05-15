@@ -11,12 +11,10 @@ import MoonKit
 
 final class BankRootCell: UITableViewCell {
 
-  var rootCategory: Bank.RootCategory? {
+  weak var collectionDelegate: BankModelCollectionDelegate? {
     didSet {
-      if let category = rootCategory {
-        icon.image = category.icon
-        label.text = category.label
-      }
+      icon.image = collectionDelegate?.icon
+      label.text = collectionDelegate?.label
     }
   }
 

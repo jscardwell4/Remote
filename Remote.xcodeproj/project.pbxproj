@@ -263,6 +263,7 @@
 		C24844571AE955FB004FCADD /* Remote.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C24844541AE955FB004FCADD /* Remote.sqlite */; };
 		C24844581AE955FB004FCADD /* Remote.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = C24844551AE955FB004FCADD /* Remote.sqlite-shm */; };
 		C24844591AE955FB004FCADD /* Remote.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = C24844561AE955FB004FCADD /* Remote.sqlite-wal */; };
+		C249DB7B1B064FA3005EA44C /* BankModelCollectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C249DB7A1B064FA3005EA44C /* BankModelCollectionDelegate.swift */; };
 		C24A05A21AE5806100C9255E /* Settings.h in Headers */ = {isa = PBXBuildFile; fileRef = C24A05A11AE5806100C9255E /* Settings.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C24A05A81AE5806200C9255E /* Settings.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C24A059D1AE5806100C9255E /* Settings.framework */; };
 		C24A05B11AE5806200C9255E /* SettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24A05B01AE5806200C9255E /* SettingsTests.swift */; };
@@ -1318,6 +1319,7 @@
 		C24844541AE955FB004FCADD /* Remote.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Remote.sqlite; sourceTree = "<group>"; };
 		C24844551AE955FB004FCADD /* Remote.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Remote.sqlite-shm"; sourceTree = "<group>"; };
 		C24844561AE955FB004FCADD /* Remote.sqlite-wal */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Remote.sqlite-wal"; sourceTree = "<group>"; };
+		C249DB7A1B064FA3005EA44C /* BankModelCollectionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankModelCollectionDelegate.swift; sourceTree = "<group>"; };
 		C24A059D1AE5806100C9255E /* Settings.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Settings.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C24A05A01AE5806100C9255E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C24A05A11AE5806100C9255E /* Settings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
@@ -3054,6 +3056,7 @@
 		C2E9F44B1ABCA395007581F2 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				C249DB7A1B064FA3005EA44C /* BankModelCollectionDelegate.swift */,
 				C24DD2881AE402A5000306A0 /* BankSurrogateCategory.swift */,
 				C2E9F44C1ABCA395007581F2 /* Bank.swift */,
 				C2E9F4651ABCA395007581F2 /* DocumentSelectionController.swift */,
@@ -4736,6 +4739,7 @@
 			files = (
 				C285D8391AC48C8400C527F6 /* DetailButtonCell.swift in Sources */,
 				C285D8521AC48C9800C527F6 /* DetailSwitchRow.swift in Sources */,
+				C249DB7B1B064FA3005EA44C /* BankModelCollectionDelegate.swift in Sources */,
 				C285D8301AC48BC800C527F6 /* BankCollectionLayout.swift in Sources */,
 				C285D82B1AC48A5400C527F6 /* TitleAttributesDelegate.swift in Sources */,
 				C285D8371AC48C6B00C527F6 /* FilteringDetailSectionHeader.swift in Sources */,

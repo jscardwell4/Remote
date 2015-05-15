@@ -73,7 +73,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
     self.collection = collection
     if mode == .Default {
 	    exportButton = Bank.exportBarButtonItemForController(self)
-	    selectAllButton = Bank.selectAllBarButtonItemForController(self)
+	    selectAllButton = Bank.selectAllButtonForController(self)
 	  }
   }
 
@@ -142,7 +142,8 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
       // Determine if we are entering or leaving export selection mode
       if exportSelectionMode {
 
-        exportSelection.removeAll(keepCapacity: false)  // If entering, make sure our export items collection is empty
+        // If entering, make sure our export items collection is empty
+        exportSelection.removeAll(keepCapacity: false)
         exportSelectionIndices.removeAll(keepCapacity: false)
 
         // And, make sure no cells are selected
@@ -158,9 +159,11 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
       else if let dismissButton = Bank.dismissButton { rightBarButtonItems = [dismissButton] }
       else { rightBarButtonItems = [] }
 
-      collectionView?.allowsMultipleSelection = exportSelectionMode  // Update selection mode
+      // Update selection mode
+      collectionView?.allowsMultipleSelection = exportSelectionMode
 
-      navigationItem.rightBarButtonItems = rightBarButtonItems  // Update right bar button items
+      // Update right bar button items
+      navigationItem.rightBarButtonItems = rightBarButtonItems
 
       // Update visible cells
       for cell in collectionView?.visibleCells() as! [BankCollectionCell] {
@@ -177,10 +180,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   :param: sender AnyObject
   */
   func confirmExport(sender: AnyObject?) {
-    ImportExportFileManager.confirmExportOfItems(exportSelection) {
-      (success: Bool) -> Void in
-        self.exportSelectionMode = false
-    }
+    ImportExportFileManager.confirmExportOfItems(exportSelection) { _ in self.exportSelectionMode = false }
   }
 
 

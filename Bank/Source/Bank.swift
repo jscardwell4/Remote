@@ -16,13 +16,14 @@ import Glyphish
 
 @objc final public class Bank {
 
+  // MARK: - ViewingMode type
+
   enum ViewingMode: Int {
     case List, Thumbnail
     init(rawValue: Int) { self = rawValue == 1 ? .Thumbnail : .List }
   }
 
   class func initialize() {
-    Elysio.registerFonts()
     SettingsManager.registerSettingWithKey(Bank.ViewingModeKey,
                           withDefaultValue: .List,
                               fromDefaults: {ViewingMode(rawValue: ($0 as? NSNumber)?.integerValue ?? 0)},
@@ -62,20 +63,20 @@ import Glyphish
   public static let actionColor     = UIColor(r: 0,   g: 175, b: 255, a: 255)!
 
   // Images
-  static let exportBarItemImage            = Glyphish.imageNamed("702-share-toolbar")!
-  static let exportBarItemImageSelected    = Glyphish.imageNamed("702-share-toolbar-selected")!
-  static let importBarItemImage            = Glyphish.imageNamed("703-download-toolbar")!
-  static let importBarItemImageSelected    = Glyphish.imageNamed("703-download-toolbar-selected")!
-  static let searchBarItemImage            = Glyphish.imageNamed("708-search-toolbar")!
-  static let searchBarItemImageSelected    = Glyphish.imageNamed("708-search-toolbar-selected")!
+  static let exportBarItemImage            = Glyphish.imageNamed("702-share")!
+  static let exportBarItemImageSelected    = Glyphish.imageNamed("702-share-selected")!
+  static let importBarItemImage            = Glyphish.imageNamed("703-download")!
+  static let importBarItemImageSelected    = Glyphish.imageNamed("703-download-selected")!
+  static let searchBarItemImage            = Glyphish.imageNamed("708-search")!
+  static let searchBarItemImageSelected    = Glyphish.imageNamed("708-search-selected")!
   static let createBarItemImage            = Glyphish.imageNamed("907-plus-rounded-square")!
   static let createBarItemImageSelected    = Glyphish.imageNamed("907-plus-rounded-square-selected")!
   static let listBarItemImage              = Glyphish.imageNamed("1073-grid-1-toolbar")!
   static let listBarItemImageSelected      = Glyphish.imageNamed("1073-grid-1-toolbar-selected")!
   static let thumbnailBarItemImage         = Glyphish.imageNamed("1076-grid-4-toolbar")!
   static let thumbnailBarItemImageSelected = Glyphish.imageNamed("1076-grid-4-toolbar-selected")!
-  static let indicatorImage                = Glyphish.imageNamed("1040-checkmark-toolbar")!
-  static let indicatorImageSelected        = Glyphish.imageNamed("1040-checkmark-toolbar-selected")!
+  static let indicatorImage                = Glyphish.imageNamed("1040-checkmark")!
+  static let indicatorImageSelected        = Glyphish.imageNamed("1040-checkmark-selected")!
   static let componentDevicesImage         = Glyphish.imageNamed("969-television")!
   static let irCodesImage                  = Bank.bankImageNamed("tv-remote")!
   static let imagesImage                   = Glyphish.imageNamed("926-photos")!
@@ -103,9 +104,13 @@ import Glyphish
   */
   class func toolbarItemsForController(controller: UIViewController) -> [UIBarItem] {
 
+    let totalWidth = UIScreen.mainScreen().bounds.width
+    let outterWidth = floor(totalWidth / 3)
+    let innerWidth = totalWidth - outterWidth * 2
+    let outterItemWidth = outterWidth / 2
+    let negativeSpacer = UIBarButtonItem.fixedSpace(-16)
+
     var toolbarItems: [UIBarItem] = []
-    let spacer = UIBarButtonItem.fixedSpace(0.0)
-    let flex = UIBarButtonItem.flexibleSpace()
 
     if let importExportController = controller as? BankItemImportExportController {
 
@@ -113,6 +118,7 @@ import Glyphish
         ToggleImageBarButtonItem(image: Bank.exportBarItemImage, toggledImage: Bank.exportBarItemImageSelected) {
           importExportController.exportSelectionMode = $0.isToggled
         }
+      exportBarItem.width = outterItemWidth
 
       let importBarItem =
         ToggleImageBarButtonItem(image: Bank.importBarItemImage, toggledImage: Bank.importBarItemImageSelected) {
@@ -169,8 +175,11 @@ import Glyphish
             ImportToggleActionProperties.fileController = nil
           }
         }
+      importBarItem.width = outterItemWidth
 
-      toolbarItems += [exportBarItem, importBarItem, flex]
+      toolbarItems += [negativeSpacer, exportBarItem, negativeSpacer, importBarItem]
+    } else {
+      toolbarItems.append(UIBarButtonItem.fixedSpace(outterWidth))
     }
 
     if let selectiveViewController = controller as? BankItemSelectiveViewingModeController
@@ -188,9 +197,12 @@ import Glyphish
         selectiveViewController.viewingMode = viewingMode
         SettingsManager.setValue(viewingMode, forSetting: Bank.ViewingModeKey)
       }
+      let displayOptionsControlItem = UIBarButtonItem(customView: displayOptionsControl)
+      displayOptionsControlItem.width = innerWidth
       selectiveViewController.displayOptionsControl = displayOptionsControl
-      if toolbarItems.isEmpty { toolbarItems.append(flex) } // Keep control centered
-      toolbarItems += [UIBarButtonItem(customView: displayOptionsControl), flex]
+      toolbarItems += [displayOptionsControlItem]
+    } else {
+      toolbarItems.append(UIBarButtonItem.fixedSpace(innerWidth))
     }
 
     if let searchableController = controller as? BankItemSearchableController {
@@ -198,8 +210,10 @@ import Glyphish
         ToggleImageBarButtonItem(image: searchBarItemImage, toggledImage: searchBarItemImageSelected) {
           _ in searchableController.searchBankObjects()
         }
-      if toolbarItems.isEmpty { toolbarItems.append(flex) }
-      toolbarItems.append(searchBarItem)
+      searchBarItem.width = outterItemWidth
+      toolbarItems += [negativeSpacer, searchBarItem]
+    } else {
+      toolbarItems.append(UIBarButtonItem.fixedSpace(floor(outterWidth/2)))
     }
 
     if let creationController = controller as? BankItemCreationController {
@@ -207,8 +221,10 @@ import Glyphish
         ToggleImageBarButtonItem(image: createBarItemImage, toggledImage: createBarItemImageSelected) {
           _ in creationController.createBankItem()
         }
-      if toolbarItems.isEmpty { toolbarItems.append(flex) }
-      toolbarItems += [createBarItem]
+      createBarItem.width = outterItemWidth
+      toolbarItems += [negativeSpacer, createBarItem]
+    } else {
+      toolbarItems.append(UIBarButtonItem.fixedSpace(floor(outterWidth/2)))
     }
 
     return  toolbarItems
@@ -224,108 +240,34 @@ import Glyphish
   */
   class func exportBarButtonItemForController(controller: BankItemImportExportController) -> BlockBarButtonItem {
     return BlockBarButtonItem(title: "Export", style: .Done, action: {
-      () -> Void in
-        let exportSelection = controller.exportSelection
-        if exportSelection.count != 0 {
-          ImportExportFileManager.confirmExportOfItems(controller.exportSelection) {
-            (success: Bool) -> Void in
-              controller.exportSelectionMode = false
-          }
+        let sel = controller.exportSelection
+        if sel.count != 0 {
+          ImportExportFileManager.confirmExportOfItems(sel) { _ in controller.exportSelectionMode = false }
         }
     })
   }
 
   /**
-  selectAllBarButtonItemForController:
+  selectAllButtonForController:
 
   :param: controller BankItemImportExportController
 
   :returns: BlockBarButtonItem
   */
-  class func selectAllBarButtonItemForController(controller: BankItemImportExportController) -> BlockBarButtonItem {
-    return BlockBarButtonItem(title: "Select All", style: .Plain, action: { controller.selectAllExportableItems() })
+  class func selectAllButtonForController(controller: BankItemImportExportController) -> BlockBarButtonItem {
+    return BlockBarButtonItem(title: "Select All", style: .Plain) { controller.selectAllExportableItems() }
   }
 
   /** A bar button item that asks the application to return to the main menu */
   static let dismissButton: UIBarButtonItem? = {
     var dismissButton: UIBarButtonItem? = nil
-      let isBankTest = Bool(string: NSProcessInfo.processInfo().environment["BANK_TEST"] as? String)
-      if !isBankTest {
-        dismissButton = BlockBarButtonItem(barButtonSystemItem: .Done, action: {
-          if let url = NSURL(string: "mainmenu") { UIApplication.sharedApplication().openURL(url) }
-        })
+    let isBankTest = Bool(string: NSProcessInfo.processInfo().environment["BANK_TEST"] as? String)
+    if !Bool(string: NSProcessInfo.processInfo().environment["BANK_TEST"] as? String) {
+      dismissButton = BlockBarButtonItem(barButtonSystemItem: .Done) {
+        if let url = NSURL(string: "mainmenu") { UIApplication.sharedApplication().openURL(url) }
       }
-      return dismissButton
+    }
+    return dismissButton
     }()
 
-  /** A simple structure for packaging top level bank category data for consumption by `BankRootController` */
-  struct RootCategory: Printable {
-    let label: String
-    let icon: UIImage
-    let collections: [ModelCollection]
-    let items: [NamedModel]
-
-    init(label: String,
-      icon: UIImage,
-      collections: [ModelCollection] = [],
-      items: [NamedModel] = [])
-    {
-      self.label = label
-      self.icon = icon
-      self.collections = collections
-      self.items = items
-    }
-
-    var description: String {
-      var result = "RootCategory:\n"
-      result += "\tlabel = \(label)\n"
-      result += "\ticon = \(icon)\n"
-      result += "\tcollections = "
-      if collections.count == 0 { result += "[]\n" }
-      else { result += "{\n" + "\n\n".join(collections.map({toString($0)})).indentedBy(8) + "\n\t}\n" }
-      result += "items = "
-      if items.count == 0 { result += "[]\n" }
-      else { result += "{\n" + "\n\n".join(items.map({toString($0)})).indentedBy(8) + "\n\t}\n" }
-      return result
-    }
-  }
-
-  class var rootCategories: [RootCategory] {
-    let context = DataManager.rootContext
-    let componentDeviceRoot = RootCategory(
-      label: "Component Devices",
-      icon: componentDevicesImage,
-      items: ComponentDevice.objectsInContext(context, sortBy: "name") as? [ComponentDevice] ?? []
-    )
-    let irCodeRoot = RootCategory(
-      label: "IR Codes",
-      icon: irCodesImage,
-      collections: IRCodeSet.objectsInContext(context, sortBy: "name") as? [IRCodeSet] ?? []
-    )
-    let imageRoot = RootCategory(
-      label: "Images",
-      icon: imagesImage,
-      collections: ImageCategory.objectsMatchingPredicate(∀"parentCategory == NULL",
-                                                    sortBy: "name",
-                                                   context: context) as? [ImageCategory] ?? []
-    )
-    let manufacturerRoot = RootCategory(
-      label: "Manufacturers",
-      icon: manufacturersImage,
-      items: Manufacturer.objectsInContext(context, sortBy: "name") as? [Manufacturer] ?? []
-    )
-    let networkDeviceRoot = RootCategory(
-      label: "Network Devices",
-      icon: networkDevicesImage,
-      items: NetworkDevice.objectsInContext(context, sortBy: "name") as? [NetworkDevice] ?? []
-    )
-    let presetRoot = RootCategory(
-      label: "Presets",
-      icon: presetsImage,
-      collections: PresetCategory.objectsMatchingPredicate(∀"parentCategory == NULL",
-                                                    sortBy: "name",
-                                                   context: context) as? [PresetCategory] ?? []
-    )
-    return [componentDeviceRoot, irCodeRoot, imageRoot, manufacturerRoot, networkDeviceRoot, presetRoot]
-  }
 }

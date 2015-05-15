@@ -21,7 +21,7 @@ public protocol PathIndexedModel: Model {
   static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Self?
 }
 
-public typealias NamedModel = protocol<Model, DynamicallyNamed>
+@objc public protocol NamedModel: Model, DynamicallyNamed {}
 
 @objc public protocol Editable {
   func save()

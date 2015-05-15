@@ -271,7 +271,7 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   objectsInContext:groupedBy:withPredicate:sortedBy:ascending:
 
   :param: context NSManagedObjectContext
-  :param: groupBy String
+  :param: groupBy String? = nil
   :param: predicate NSPredicate = (default)
   :param: sortBy String
   :param: ascending Bool = true
@@ -279,18 +279,18 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   :returns: NSFetchedResultsController
   */
   public class func objectsInContext(context: NSManagedObjectContext,
-                    groupedBy groupBy: String,
+                    groupedBy groupBy: String? = nil,
                 withPredicate predicate: NSPredicate = ∀"TRUEPREDICATE",
                      sortedBy sortBy: String,
                     ascending: Bool = true) -> NSFetchedResultsController
   {
     let request = NSFetchRequest(entityName: entityName, predicate: predicate)
-    request.propertiesToGroupBy = ",".split(groupBy)
-    request.sortDescriptors = ",".split(sortBy).map{NSSortDescriptor(key: $0, ascending: ascending)}
+    if let g = groupBy {request.propertiesToGroupBy = ",".split(g) }
+    request.sortDescriptors = ",".split(sortBy).map {NSSortDescriptor(key: $0, ascending: ascending)}
     return NSFetchedResultsController(fetchRequest: request,
-      managedObjectContext: context,
-      sectionNameKeyPath: nil,
-      cacheName: nil)
+                                      managedObjectContext: context,
+                                      sectionNameKeyPath: nil,
+                                      cacheName: nil)
   }
 
   /// MARK: - Fetching attribute values for existing objects
