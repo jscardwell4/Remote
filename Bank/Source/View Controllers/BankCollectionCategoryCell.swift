@@ -12,6 +12,9 @@ import DataModel
 
 final class BankCollectionCategoryCell: BankCollectionCell {
 
+  private static let _cellIdentifier = "CategoryCell"
+  override class var cellIdentifier: String { return _cellIdentifier }
+
   var collection: ModelCollection? { didSet { label.text = collection?.name } }
 
   override var exportItem: JSONValueConvertible? { return collection as? JSONValueConvertible }

@@ -9,11 +9,14 @@
 import Foundation
 import CoreData
 import MoonKit
+import Settings
 import class DataModel.ITachIRCommand
 import class DataModel.ITachDevice
 import class DataModel.DataManager
 
 @objc final class ITachConnectionManager {
+
+  // MARK: - Typealiases and address, port property declarations
 
   typealias Callback = ConnectionManager.Callback
   typealias Error = ConnectionManager.Error
@@ -24,6 +27,8 @@ import class DataModel.DataManager
 
   static let MulticastAddress = "239.255.250.250"
   static let MulticastPort: UInt16 = 9131
+
+  // MARK: - Private cache, flag, and connection properties
 
   /** Current/previous device connections */
   static private var connections: [DeviceIdentifier:Connection] = [:]
@@ -45,6 +50,8 @@ import class DataModel.DataManager
                                                                port: ITachConnectionManager.MulticastPort,
                                                                callback: ITachConnectionManager.messageReceived)
 
+  // MARK: - Network device detection
+
   /** Join multicast group and listen for beacons broadcast by iTach devices. */
   class func startDetectingNetworkDevices() {
     detectingNetworkDevices = true
@@ -59,6 +66,8 @@ import class DataModel.DataManager
     MSLogDebug("no longer listening for iTach devices")
   }
 
+  // MARK: - Device connections
+
   /**
   connectionForDevice:
 
@@ -71,6 +80,67 @@ import class DataModel.DataManager
     if let connection = connections[device.uniqueIdentifier] { result = connection }
     else { result = Connection(device: device); connections[device.uniqueIdentifier] = result }
     return result
+  }
+
+  /** Suspend active connections */
+  class func suspend() {
+    if detectingNetworkDevices { multicastConnection.stopListening() }
+    activeConnections.removeAll(keepCapacity: true)
+    apply(connections) { if $1.connected { ITachConnectionManager.activeConnections.insert($0); $1.disconnect() } }
+  }
+
+  /** Resume multicast connection and any device connections that were active on suspension */
+  class func resume() {
+    if detectingNetworkDevices { multicastConnection.listen() }
+    apply(connections) { if ITachConnectionManager.activeConnections ∋ $0 { $1.connect() } }
+  }
+
+  // MARK: - Sending and receiving messages
+
+  /**
+  Processes messages received through `NetworkDeviceConnection` objects.
+
+  :param: message String Contents of the message received by the device connection
+  */
+  class func messageReceived(message: String) {
+
+    MSLogDebug("message received over multicast connection:\n\(message)\n")
+
+    if let uniqueIdentifier = message.stringByMatchingFirstOccurrenceOfRegEx("(?<=UUID=)[^<]+(?=>)")
+     where beaconsReceived ∌ uniqueIdentifier
+    {
+      assert(connections[uniqueIdentifier] == nil)
+      beaconsReceived.insert(uniqueIdentifier)
+
+      let device = Device.objectWithValue(uniqueIdentifier,
+                             forAttribute: "uniqueIdentifier",
+                                  context: DataManager.rootContext) ?? Device(context: DataManager.rootContext)
+      device.updateWithBeacon(message)
+
+      let shouldStop: Bool
+      let shouldConnect: Bool
+
+      // If `networkDevices` already contains `device`, send update notification
+      if networkDevices ∋ device {
+        ConnectionManager.updatedDevice(device)
+        shouldStop = SettingsManager.valueForSetting(ConnectionManager.StopAfterUpdatedDeviceKey) == true
+        shouldConnect = SettingsManager.valueForSetting(ConnectionManager.AutoConnectExistingKey) == true
+      }
+
+      // otherwise add `device` and send discovery notification
+      else {
+        networkDevices.insert(device); ConnectionManager.discoveredDevice(device)
+        shouldStop = SettingsManager.valueForSetting(ConnectionManager.StopAfterDiscoveredDeviceKey) == true
+        shouldConnect = SettingsManager.valueForSetting(ConnectionManager.AutoConnectDiscoveredKey) == true
+      }
+
+      // Stop if appropriate
+      if shouldStop { stopDetectingNetworkDevices() }
+
+      // Connect if appropriate
+      if shouldConnect { connections[uniqueIdentifier] = Connection(device: device) }
+    }
+
   }
 
  /**
@@ -89,42 +159,6 @@ import class DataModel.DataManager
     } else if let device = command.networkDevice as? Device {
       connectionForDevice(device).enqueueCommand(command, completion: completion)
     }
-  }
-
-  /** Suspend active connections */
-  class func suspend() {
-    if detectingNetworkDevices { multicastConnection.stopListening() }
-    activeConnections.removeAll(keepCapacity: true)
-    apply(connections) { if $1.connected { ITachConnectionManager.activeConnections.insert($0); $1.disconnect() } }
-  }
-
-  /** Resume multicast connection and any device connections that were active on suspension */
-  class func resume() {
-    if detectingNetworkDevices { multicastConnection.listen() }
-    apply(connections) { if ITachConnectionManager.activeConnections ∋ $0 { $1.connect() } }
-  }
-
-  /**
-  Processes messages received through `NetworkDeviceConnection` objects.
-
-  :param: message String Contents of the message received by the device connection
-  */
-  class func messageReceived(message: String) {
-
-    MSLogDebug("message received over multicast connection:\n\(message)\n")
-
-    if let uniqueIdentifier = message.stringByMatchingFirstOccurrenceOfRegEx("(?<=UUID=)[^<]+(?=>)")
-     where beaconsReceived ∌ uniqueIdentifier
-    {
-      beaconsReceived.insert(uniqueIdentifier)
-      if let deviceConnection = Connection(discoveryBeacon: message) {
-        connections[uniqueIdentifier] = deviceConnection
-        networkDevices.insert(deviceConnection.device)
-        ConnectionManager.discoveredDevice(deviceConnection.device)
-        stopDetectingNetworkDevices()
-      }
-    }
-
   }
 
 }

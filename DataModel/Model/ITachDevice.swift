@@ -73,6 +73,58 @@ public class ITachDevice: NetworkDevice {
   @NSManaged public var sdkClass: String
   @NSManaged public var status: String
 
+  // MARK: - BeaconProperty enumeration
+
+  enum BeaconProperty: String {
+    case ConfigURL        = "Config-URL"
+    case Make             = "Make"
+    case Model            = "Model"
+    case PCB              = "PCB_PN"
+    case SDK              = "SDKClass"
+    case Status           = "Status"
+    case Revision         = "Revision"
+    case Pkg              = "Pkg_Level"
+    case UniqueIdentifier = "UUID"
+
+    var deviceProperty: String {
+      switch self {
+      case .ConfigURL:        return "configURL"
+      case .Make:             return "make"
+      case .Model:            return "model"
+      case .PCB:              return "pcbPN"
+      case .SDK:              return "sdkClass"
+      case .Status:           return "status"
+      case .Revision:         return "revision"
+      case .Pkg:              return "pkgLevel"
+      case .UniqueIdentifier: return "uniqueIdentifier"
+      }
+    }
+  }
+
+  /**
+  updateWithBeacon:
+
+  :param: beacon String
+  */
+  public func updateWithBeacon(beacon: String) {
+    let entries = beacon.matchingSubstringsForRegEx(~/"(?<=<-)(.*?)(?=>)")
+    var attributes: [String:String] = [:]
+    apply(entries) {
+      let components = "=".split($0)
+      if components.count == 2, let prop = BeaconProperty(rawValue: components[0]) {
+        attributes[prop.deviceProperty] = components[1]
+      }
+    }
+    if let uniqueIdentifier = attributes[BeaconProperty.UniqueIdentifier.deviceProperty]
+      where self.uniqueIdentifier == uniqueIdentifier || self.uniqueIdentifier == nil
+    {
+      setValuesForKeysWithDictionary(attributes)
+      var error: NSError?
+      managedObjectContext?.save(&error)
+      MSHandleError(error, message: "failed to update from beacon '\(beacon)'")
+    }
+  }
+
   /**
   updateWithData:
 

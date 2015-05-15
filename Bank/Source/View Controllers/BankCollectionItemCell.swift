@@ -13,6 +13,9 @@ import MoonKit
 
 final class BankCollectionItemCell: BankCollectionCell {
 
+  private static let _cellIdentifier = "ItemCell"
+  override class var cellIdentifier: String { return _cellIdentifier }
+
   weak var item: protocol<Named>? {
     didSet {
       nameLabel.text = item?.name

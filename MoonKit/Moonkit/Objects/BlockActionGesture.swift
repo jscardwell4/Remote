@@ -87,6 +87,7 @@ public class BlockActionGesture: UIGestureRecognizer {
   public convenience init(handler: (BlockActionGesture) -> Void) {
     self.init()
     self.handler = handler
+    addTarget(self, action: "dispatchHandler")
   }
 
   /**
@@ -95,13 +96,10 @@ public class BlockActionGesture: UIGestureRecognizer {
   :param: sender BlockActionGesture
   */
   public func dispatchHandler(sender: BlockActionGesture) {
-    sender.handlerTarget.dispatchHandler(sender)
+    handlerTarget.dispatchHandler(sender)
   }
 
   public override var state: UIGestureRecognizerState { didSet { handlerTarget.dispatchHandler(self) } }
-
-  /** init */
-//  public init() { super.init(target: self, action: "dispatchHandler") }
 
   /**
   initWithTarget:action:
@@ -109,9 +107,9 @@ public class BlockActionGesture: UIGestureRecognizer {
   :param: target AnyObject
   :param: action Selector
   */
-  public override init(target: AnyObject, action: Selector) {
-    super.init(target: target, action: action)
-    addTarget(self, action: "dispatchHandler")
-  }
+//  public override init(target: AnyObject, action: Selector) {
+//    super.init(target: target, action: action)
+//    addTarget(self, action: "dispatchHandler")
+//  }
 
 }

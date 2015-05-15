@@ -8,6 +8,8 @@
 
 import Foundation
 
+
+
 public func typeCast<T,U>(t: T, u: U.Type) -> U? { return t as? U }
 public func typeCast<T,U>(t: T?, u: U.Type) -> U? { return t != nil ? typeCast(t!, u) : nil }
 

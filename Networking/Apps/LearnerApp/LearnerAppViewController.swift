@@ -34,9 +34,10 @@ class LearnerAppViewController: UIViewController, AKPickerViewDelegate, AKPicker
         revision.text = device.revision
         sdkClass.text = device.sdkClass
         status.text = device.status
-        ConnectionManager.connectToITachDevice(device, learnerDelegate: learnerDelegate)
-        learnerDelegate.enableLearner { [unowned self]
-          success, _ in dispatchToMain() {[unowned self] in self.learnerEnabled.on = success }
+        if learnerDelegate.connectToDevice(device) {
+          learnerDelegate.enableLearner { [unowned self]
+            success, _ in dispatchToMain() {[unowned self] in self.learnerEnabled.on = success }
+          }
         }
       }
     }

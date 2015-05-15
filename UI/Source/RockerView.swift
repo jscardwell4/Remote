@@ -50,10 +50,10 @@ public final class RockerView: ButtonGroupView {
       if var prevLabel = labels.first {
         labelContainer.verticallyStretchSubview(prevLabel)
         labelContainer.leftAlignSubview(prevLabel)
-        prevLabel.constrainWidth(bounds.width)
+        prevLabel.constrain(prevLabel.width => Float(bounds.width))
         for label in labels[1..<labels.count] {
           labelContainer.alignSubview(prevLabel, besideSubview: label, offset: 0.0)
-          label.constrainWidth(bounds.width)
+          label.constrainWidth(Float(bounds.width))
           prevLabel = label
         }
         labelContainer.rightAlignSubview(prevLabel)

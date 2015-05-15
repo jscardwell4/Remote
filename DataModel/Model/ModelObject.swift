@@ -197,6 +197,22 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   }
 
   /**
+  objectsWithValue:forAttribute:context:
+
+  :param: value AnyObject
+  :param: attribute String
+  :param: context NSManagedObjectContext
+
+  :returns: [ModelObject]
+  */
+  public class func objectsWithValue(value: AnyObject,
+                        forAttribute attribute: String,
+                             context: NSManagedObjectContext) -> [ModelObject]
+  {
+    return objectsMatchingPredicate(NSPredicate(format: "%K == %@", argumentArray: [attribute, value]), context: context)
+  }
+
+  /**
   objectMatchingPredicate:context:
 
   :param: predicate NSPredicate
@@ -464,6 +480,22 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /// MARK: - Counting
   ////////////////////////////////////////////////////////////////////////////////
 
+  /**
+  countInContext:withValue:forAttribute:
+
+  :param: context NSManagedObjectContext
+  :param: value AnyObject
+  :param: attribute String
+
+  :returns: Int
+  */
+  public class func countInContext(context: NSManagedObjectContext,
+                         withValue value: AnyObject,
+                      forAttribute attribute: String) -> Int
+  {
+    return countInContext(context, predicate: NSPredicate(format: "%K == %@", argumentArray: [attribute, value]))
+  }
+
 
   /**
   countInContext:predicate:
@@ -479,6 +511,22 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
     let result = context.countForFetchRequest(request, error: &error)
     MSHandleError(error)
     return result
+  }
+
+  /**
+  objectExistsInContext:withValue:forAttribute:
+
+  :param: context NSManagedObjectContext
+  :param: value AnyObject
+  :param: attribute String
+
+  :returns: Bool
+  */
+  public class func objectExistsInContext(context: NSManagedObjectContext,
+                                withValue value: AnyObject,
+                             forAttribute attribute: String) -> Bool
+  {
+    return countInContext(context, withValue: value, forAttribute: attribute) > 0
   }
 
 
@@ -605,7 +653,7 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   }
 
   public var jsonValue: JSONValue { return .Object(["uuid": uuid.jsonValue] as OrderedDictionary) }
-  
+
   override public var description: String {
     return "\(className):\n\t" + "\n\t".join(
       "entity = \(entityName)",

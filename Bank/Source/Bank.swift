@@ -23,17 +23,16 @@ import Glyphish
 
   class func initialize() {
     Elysio.registerFonts()
-    SettingsManager.registerSettingWithKey(Bank.viewingModeKey,
+    SettingsManager.registerSettingWithKey(Bank.ViewingModeKey,
                           withDefaultValue: .List,
                               fromDefaults: {ViewingMode(rawValue: ($0 as? NSNumber)?.integerValue ?? 0)},
                                 toDefaults: {$0.rawValue})
-    Image.registerBundle(Bank.bankBundle, forLocationValue: Bank.imageLocation)
-
+    Image.registerBundle(Bank.bundle, forLocationValue: "$bank")
+    Image.registerBundle(Glyphish.bundle, forLocationValue: "$glyphish")
   }
 
-  public static let viewingModeKey = "BankViewingModeKey"
-  private static let imageLocation = "$bank"
-  private static let bankBundle = NSBundle(forClass: Bank.self)
+  public static let ViewingModeKey = "BankViewingModeKey"
+  public static let bundle = NSBundle(forClass: Bank.self)
 
   /**
   bankImageNamed:
@@ -43,18 +42,18 @@ import Glyphish
   :returns: UIImage?
   */
   public static func bankImageNamed(named: String) -> UIImage? {
-    return UIImage(named: named, inBundle: bankBundle, compatibleWithTraitCollection: nil)
+    return UIImage(named: named, inBundle: bundle, compatibleWithTraitCollection: nil)
   }
 
   /// The bank's constant class properties
   ////////////////////////////////////////////////////////////////////////////////
 
   // Fonts
-  public static let labelFont          = UIFont(name: "Elysio-Medium", size: 15.0)!
-  public static let boldLabelFont      = UIFont(name: "Elysio-Bold",   size: 17.0)!
-  public static let largeBoldLabelFont = UIFont(name: "Elysio-Bold",   size: 18.0)!
-  public static let infoFont           = UIFont(name: "Elysio-Light",  size: 15.0)!
-  public static let actionFont         = UIFont(name: "Elysio-RegularItalic", size: 15.0)!
+  public static let labelFont          = Elysio.mediumFontWithSize(15)
+  public static let boldLabelFont      = Elysio.boldFontWithSize(17)
+  public static let largeBoldLabelFont = Elysio.boldFontWithSize(18)
+  public static let infoFont           = Elysio.lightFontWithSize(15)
+  public static let actionFont         = Elysio.regularItalicFontWithSize(15)
 
   // Colors
   public static let labelColor      = UIColor(r: 59, g: 60, b: 64, a:255)!
@@ -69,6 +68,8 @@ import Glyphish
   static let importBarItemImageSelected    = Glyphish.imageNamed("703-download-toolbar-selected")!
   static let searchBarItemImage            = Glyphish.imageNamed("708-search-toolbar")!
   static let searchBarItemImageSelected    = Glyphish.imageNamed("708-search-toolbar-selected")!
+  static let createBarItemImage            = Glyphish.imageNamed("907-plus-rounded-square")!
+  static let createBarItemImageSelected    = Glyphish.imageNamed("907-plus-rounded-square-selected")!
   static let listBarItemImage              = Glyphish.imageNamed("1073-grid-1-toolbar")!
   static let listBarItemImageSelected      = Glyphish.imageNamed("1073-grid-1-toolbar-selected")!
   static let thumbnailBarItemImage         = Glyphish.imageNamed("1076-grid-4-toolbar")!
@@ -90,27 +91,32 @@ import Glyphish
                                      NSForegroundColorAttributeName: Bank.labelColor ]
 
   /**
-  toolbarItemsForController:
+  Generates items for a view controller's bottom toolbar tailored to the protocols supported by the controller.
 
-  :param: controller BankController
+      ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+      ┃ export  import          viewing mode          search  create ┃
+      ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  :param: controller UIViewController
 
   :returns: [UIBarButtonItem]
   */
-  class func toolbarItemsForController(controller: BankController, addingItems items: [UIBarItem]? = nil) -> [UIBarItem] {
+  class func toolbarItemsForController(controller: UIViewController) -> [UIBarItem] {
 
-    let exportBarItem = ToggleImageBarButtonItem(
-      image: Bank.exportBarItemImage,
-      toggledImage: Bank.exportBarItemImageSelected) {
-        (item: ToggleBarButtonItem) -> Void in
-          controller.exportSelectionMode = item.isToggled
-    }
+    var toolbarItems: [UIBarItem] = []
+    let spacer = UIBarButtonItem.fixedSpace(0.0)
+    let flex = UIBarButtonItem.flexibleSpace()
 
-    let spacer = UIBarButtonItem.fixedSpace(-10.0)
+    if let importExportController = controller as? BankItemImportExportController {
 
-    let importBarItem = ToggleImageBarButtonItem(
-      image: Bank.importBarItemImage,
-      toggledImage: Bank.importBarItemImageSelected) {
-        (item: ToggleBarButtonItem) -> Void in
+      let exportBarItem =
+        ToggleImageBarButtonItem(image: Bank.exportBarItemImage, toggledImage: Bank.exportBarItemImageSelected) {
+          importExportController.exportSelectionMode = $0.isToggled
+        }
+
+      let importBarItem =
+        ToggleImageBarButtonItem(image: Bank.importBarItemImage, toggledImage: Bank.importBarItemImageSelected) {
+          (item: ToggleBarButtonItem) -> Void in
 
           struct ImportToggleActionProperties { static var fileController: DocumentSelectionController? }
 
@@ -123,22 +129,22 @@ import Glyphish
             ImportToggleActionProperties.fileController = fileController
             fileController!.didDismiss = {
               (documentSelectionController: DocumentSelectionController) -> Void in
-                documentSelectionController.willMoveToParentViewController(nil)
-                documentSelectionController.view.removeFromSuperview()
-                documentSelectionController.removeFromParentViewController()
-                item.toggle(nil)
-                ImportToggleActionProperties.fileController = nil
+              documentSelectionController.willMoveToParentViewController(nil)
+              documentSelectionController.view.removeFromSuperview()
+              documentSelectionController.removeFromParentViewController()
+              item.toggle(nil)
+              ImportToggleActionProperties.fileController = nil
             }
             fileController!.didSelectFile = {
               (documentSelectionController: DocumentSelectionController) -> Void in
-                if let selectedFile = documentSelectionController.selectedFile {
-                  controller.importFromFile(selectedFile)
-                }
-                documentSelectionController.willMoveToParentViewController(nil)
-                documentSelectionController.view.removeFromSuperview()
-                documentSelectionController.removeFromParentViewController()
-                item.toggle(nil)
-                ImportToggleActionProperties.fileController = nil
+              if let selectedFile = documentSelectionController.selectedFile {
+                importExportController.importFromFile(selectedFile)
+              }
+              documentSelectionController.willMoveToParentViewController(nil)
+              documentSelectionController.view.removeFromSuperview()
+              documentSelectionController.removeFromParentViewController()
+              item.toggle(nil)
+              ImportToggleActionProperties.fileController = nil
             }
             if let rootViewController =  UIApplication.sharedApplication().keyWindow?.rootViewController {
               let rootView = rootViewController.view
@@ -162,48 +168,61 @@ import Glyphish
             fileController?.removeFromParentViewController()
             ImportToggleActionProperties.fileController = nil
           }
+        }
 
+      toolbarItems += [exportBarItem, importBarItem, flex]
     }
-    let flex = UIBarButtonItem.flexibleSpace()
 
-    var toolbarItems: [UIBarItem] = [spacer, exportBarItem, spacer, importBarItem, spacer, flex]
+    if let selectiveViewController = controller as? BankItemSelectiveViewingModeController
+      where selectiveViewController.selectiveViewingEnabled
+    {
 
-    if let middleItems = items { toolbarItems += middleItems }
+      // Create the segmented control
+      let displayOptionsControl = ToggleImageSegmentedControl(items: [listBarItemImage,
+                                                                      listBarItemImageSelected,
+                                                                      thumbnailBarItemImage,
+                                                                      thumbnailBarItemImageSelected])
+      displayOptionsControl.selectedSegmentIndex = selectiveViewController.viewingMode.rawValue
+      displayOptionsControl.toggleAction = { control in
+        let viewingMode = ViewingMode(rawValue: control.selectedSegmentIndex)
+        selectiveViewController.viewingMode = viewingMode
+        SettingsManager.setValue(viewingMode, forSetting: Bank.ViewingModeKey)
+      }
+      selectiveViewController.displayOptionsControl = displayOptionsControl
+      if toolbarItems.isEmpty { toolbarItems.append(flex) } // Keep control centered
+      toolbarItems += [UIBarButtonItem(customView: displayOptionsControl), flex]
+    }
 
-    toolbarItems += [flex, spacer]
+    if let searchableController = controller as? BankItemSearchableController {
+      let searchBarItem =
+        ToggleImageBarButtonItem(image: searchBarItemImage, toggledImage: searchBarItemImageSelected) {
+          _ in searchableController.searchBankObjects()
+        }
+      if toolbarItems.isEmpty { toolbarItems.append(flex) }
+      toolbarItems.append(searchBarItem)
+    }
+
+    if let creationController = controller as? BankItemCreationController {
+      let createBarItem =
+        ToggleImageBarButtonItem(image: createBarItemImage, toggledImage: createBarItemImageSelected) {
+          _ in creationController.createBankItem()
+        }
+      if toolbarItems.isEmpty { toolbarItems.append(flex) }
+      toolbarItems += [createBarItem]
+    }
 
     return  toolbarItems
   }
 
-  /**
-  toolbarItemsForController:
-
-  :param: controller BankController
-
-  :returns: [UIBarButtonItem]
-  */
-  class func toolbarItemsForController(controller: SearchableBankController,
-                           addingItems items: [UIBarItem]? = nil) -> [UIBarItem]
-  {
-    var toolbarItems = toolbarItemsForController(controller as BankController, addingItems: items)
-    let spacer = UIBarButtonItem.fixedSpace(-10.0)
-    let searchBarItem = ToggleImageBarButtonItem(image: Bank.searchBarItemImage,
-      toggledImage: Bank.searchBarItemImageSelected) {
-        _ in controller.searchBankObjects()
-    }
-    toolbarItems += [searchBarItem, spacer]
-    return  toolbarItems
-  }
-
 
   /**
-  exportBarButtonItemForController:
+  Bar button item for the right side of the navigation bar
 
-  :param: controller BankController
+  :param: controller BankItemImportExportController
 
   :returns: BlockBarButtonItem
   */
-  class func exportBarButtonItemForController(controller: BankController) -> BlockBarButtonItem {
+  class func exportBarButtonItemForController(controller: BankItemImportExportController) -> BlockBarButtonItem {
     return BlockBarButtonItem(title: "Export", style: .Done, action: {
       () -> Void in
         let exportSelection = controller.exportSelection
@@ -219,11 +238,11 @@ import Glyphish
   /**
   selectAllBarButtonItemForController:
 
-  :param: controller BankController
+  :param: controller BankItemImportExportController
 
   :returns: BlockBarButtonItem
   */
-  class func selectAllBarButtonItemForController(controller: BankController) -> BlockBarButtonItem {
+  class func selectAllBarButtonItemForController(controller: BankItemImportExportController) -> BlockBarButtonItem {
     return BlockBarButtonItem(title: "Select All", style: .Plain, action: { controller.selectAllExportableItems() })
   }
 

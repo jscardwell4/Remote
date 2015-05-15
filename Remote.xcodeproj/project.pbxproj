@@ -800,6 +800,20 @@
 			remoteGlobalIDString = C215CBFE1ABB102F00E8077E;
 			remoteInfo = DataModel;
 		};
+		C238A6571B04E94900898DB8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C2194A5D1AFE4FF1009B19B7;
+			remoteInfo = Elysio;
+		};
+		C238A6591B04E96500898DB8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C27952E51AFE74BD00F72C80;
+			remoteInfo = Glyphish;
+		};
 		C24844521AE952E9004FCADD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C26BAEA016DC10FE0093D5B4 /* Project object */;
@@ -3674,6 +3688,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				C238A65A1B04E96500898DB8 /* PBXTargetDependency */,
+				C238A6581B04E94900898DB8 /* PBXTargetDependency */,
 				C2A0B2F61AED8144006A9182 /* PBXTargetDependency */,
 				C24A05C31AE595EF00C9255E /* PBXTargetDependency */,
 				C28104BF1AC5D059003C6E7A /* PBXTargetDependency */,
@@ -4876,6 +4892,16 @@
 			isa = PBXTargetDependency;
 			target = C215CBFE1ABB102F00E8077E /* DataModel */;
 			targetProxy = C233E5BE1AE9456300B0FD63 /* PBXContainerItemProxy */;
+		};
+		C238A6581B04E94900898DB8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C2194A5D1AFE4FF1009B19B7 /* Elysio */;
+			targetProxy = C238A6571B04E94900898DB8 /* PBXContainerItemProxy */;
+		};
+		C238A65A1B04E96500898DB8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C27952E51AFE74BD00F72C80 /* Glyphish */;
+			targetProxy = C238A6591B04E96500898DB8 /* PBXContainerItemProxy */;
 		};
 		C24844531AE952E9004FCADD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -6492,6 +6518,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Networking/Info.plist;
+				INIT_ROUTINE = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -6541,6 +6568,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Networking/Info.plist;
+				INIT_ROUTINE = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -6590,6 +6618,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Networking/Info.plist;
+				INIT_ROUTINE = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -6639,6 +6668,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Networking/Info.plist;
+				INIT_ROUTINE = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -8766,6 +8796,7 @@
 				C27953021AFE74BD00F72C80 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C28E98FC1AD1A4B000E78711 /* Build configuration list for PBXNativeTarget "DataModelTests" */ = {
 			isa = XCConfigurationList;

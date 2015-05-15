@@ -32,7 +32,7 @@ class LearnerAppDelegate: UIResponder, UIApplicationDelegate {
     let wifiAvailable = ConnectionManager.wifiAvailable
     MSLogDebug("wifi available? \(wifiAvailable)")
 
-    if wifiAvailable { detectDevices() }
+//    if wifiAvailable { detectDevices() }
 
     NSNotificationCenter.defaultCenter().addObserverForName(ConnectionManager.ConnectionStatusNotification,
                                                      object: ConnectionManager.self,

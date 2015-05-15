@@ -82,34 +82,6 @@ import MoonKit
     }
   }
 
-  // MARK: - BeaconProperty enumeration
-
-  enum BeaconProperty: String {
-    case ConfigURL        = "Config-URL"
-    case Make             = "Make"
-    case Model            = "Model"
-    case PCB              = "PCB_PN"
-    case SDK              = "SDKClass"
-    case Status           = "Status"
-    case Revision         = "Revision"
-    case Pkg              = "Pkg_Level"
-    case UniqueIdentifier = "UUID"
-
-    var deviceProperty: String {
-      switch self {
-        case .ConfigURL:        return "configURL"
-        case .Make:             return "make"
-        case .Model:            return "model"
-        case .PCB:              return "pcbPN"
-        case .SDK:              return "sdkClass"
-        case .Status:           return "status"
-        case .Revision:         return "revision"
-        case .Pkg:              return "pkgLevel"
-        case .UniqueIdentifier: return "uniqueIdentifier"
-      }
-    }
-  }
-
   // MARK: - Initialization
 
   /**
@@ -121,45 +93,6 @@ import MoonKit
     device = d
     socket = GCDAsyncSocket()
     socket.setDelegate(self, delegateQueue: ITachDeviceConnection.ITachQueue)
-  }
-
-  /**
-  init:
-
-  :param: beacon String
-  */
-  init?(discoveryBeacon beacon: String) {
-    let moc = DataManager.rootContext
-    var device: ITachDevice?
-    moc.performBlockAndWait {
-      let entries = beacon.matchingSubstringsForRegEx(~/"(?<=<-)(.*?)(?=>)")
-      var attributes: [String:String] = [:]
-      apply(entries) {
-        let components = "=".split($0)
-        if components.count == 2, let prop = BeaconProperty(rawValue: components[0]) {
-          attributes[prop.deviceProperty] = components[1]
-        }
-      }
-      if let uniqueIdentifier = attributes[BeaconProperty.UniqueIdentifier.deviceProperty],
-        model = attributes[BeaconProperty.Model.deviceProperty] where model ~= ".*IR.*"
-      {
-        device = ITachDevice.objectWithValue(uniqueIdentifier,
-                                forAttribute: BeaconProperty.UniqueIdentifier.deviceProperty,
-                                     context: moc) ?? ITachDevice(context: moc)
-        device?.setValuesForKeysWithDictionary(attributes)
-        var error: NSError?
-        let saved = moc.save(&error)
-        MSHandleError(error)
-      }
-    }
-    socket = GCDAsyncSocket()
-    if device != nil {
-      self.device = device!
-      socket.setDelegate(self, delegateQueue: ITachDeviceConnection.ITachQueue)
-    } else {
-      self.device = ITachDevice(context: nil)
-      return nil
-    }
   }
 
   // MARK: - Sending and Receiving

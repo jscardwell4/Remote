@@ -74,12 +74,20 @@ extension PresetCategory: BankModelCollection {
 
 // MARK: - View controller related protocols
 
-protocol BankItemSelectionDelegate {
-  func bankController(bankController: BankController, didSelectItem item: EditableModel)
+/** Protocol for objects that want to present a bank item controller and receive a callback on item selection */
+public protocol BankItemSelectionDelegate {
+  func bankController(bankController: UIViewController, didSelectItem item: EditableModel)
 }
 
-/** Protocol for types that want to display Bank toolbars, or other assets */
-protocol BankController: class {
+/** Protocol for types that want to support a toolbar control for switching between viewing modes */
+protocol BankItemSelectiveViewingModeController: class {
+  var selectiveViewingEnabled: Bool { get }
+  var viewingMode: Bank.ViewingMode { get set }
+  weak var displayOptionsControl: ToggleImageSegmentedControl? { get set }
+}
+
+/** Protocol for types that want import/export bar button items in bottom toolbar */
+protocol BankItemImportExportController: class {
 
   var exportSelection: [JSONValueConvertible] { get }
   var exportSelectionMode: Bool { get set }
@@ -89,8 +97,12 @@ protocol BankController: class {
 
 }
 
-protocol SearchableBankController: BankController {
+/** Protocol for types that want create bar button item in bottom toolbar */
+protocol BankItemCreationController: class {
+  func createBankItem()  // Called from create item bar button action
+}
 
+/** Protocol for types that want search bar button item in bottom toolbar */
+protocol BankItemSearchableController: class {
   func searchBankObjects()  // Called from search bar button action
-  
 }

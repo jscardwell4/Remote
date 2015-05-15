@@ -26,7 +26,7 @@ public final class Elysio: NSObject {
   public class func registerFonts() {
     if !fontsRegistered {
       fontsRegistered = true
-      let styles = ["Hairline", "Thin", "Light", "Regular", "Bold", "Black"]
+      let styles = ["Hairline", "Thin", "Light", "Regular", "Medium", "Bold", "Black"]
       let fontNames = flatMap(styles) { ["Elysio-\($0)", "Elysio-\($0)Italic"] }
       let bundle = NSBundle(forClass: self)
       let fontURLs = compressedMap(fontNames) { bundle.URLForResource($0, withExtension: "otf") }
@@ -100,6 +100,21 @@ public final class Elysio: NSObject {
     if !fontsRegistered { registerFonts() }
     assert(fontsRegistered)
     let font = UIFont(name: "Elysio-Regular", size: size)
+    assert(font != nil)
+    return font!
+  }
+
+  /**
+  mediumFontWithSize:
+
+  :param: size CGFloat
+
+  :returns: UIFont
+  */
+  public class func mediumFontWithSize(size: CGFloat) -> UIFont {
+    if !fontsRegistered { registerFonts() }
+    assert(fontsRegistered)
+    let font = UIFont(name: "Elysio-Medium", size: size)
     assert(font != nil)
     return font!
   }
@@ -190,6 +205,21 @@ public final class Elysio: NSObject {
     if !fontsRegistered { registerFonts() }
     assert(fontsRegistered)
     let font = UIFont(name: "Elysio-RegularItalic", size: size)
+    assert(font != nil)
+    return font!
+  }
+
+  /**
+  mediumItalicFontWithSize:
+
+  :param: size CGFloat
+
+  :returns: UIFont
+  */
+  public class func mediumItalicFontWithSize(size: CGFloat) -> UIFont {
+    if !fontsRegistered { registerFonts() }
+    assert(fontsRegistered)
+    let font = UIFont(name: "Elysio-MediumItalic", size: size)
     assert(font != nil)
     return font!
   }

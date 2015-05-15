@@ -261,6 +261,8 @@
 		C23592F419C8E04200920F8D /* BitArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592DE19C8E04200920F8D /* BitArray.swift */; };
 		C23592F519C8E04200920F8D /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592DF19C8E04200920F8D /* OrderedDictionary.swift */; };
 		C23592FE19C8E04200920F8D /* String+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592E919C8E04200920F8D /* String+MoonKitAdditions.swift */; };
+		C238A6541B04DC8B00898DB8 /* SortingFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C238A6531B04DC8B00898DB8 /* SortingFunctions.swift */; };
+		C238A6561B04DDA100898DB8 /* Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C238A6551B04DDA100898DB8 /* Numbers.swift */; };
 		C23F07211AD5AABA003BD28B /* example4.json in Resources */ = {isa = PBXBuildFile; fileRef = C23F07201AD5AABA003BD28B /* example4.json */; };
 		C23F07231AD5ACCC003BD28B /* example5.json in Resources */ = {isa = PBXBuildFile; fileRef = C23F07221AD5ACCC003BD28B /* example5.json */; };
 		C24416331ACB16F8007EDEFE /* Set+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24416321ACB16F8007EDEFE /* Set+MoonKitAdditions.swift */; };
@@ -412,6 +414,8 @@
 		C23592EB19C8E04200920F8D /* UIFont+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C23592EE19C8E04200920F8D /* Generic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Generic.swift; sourceTree = "<group>"; };
 		C23592F019C8E04200920F8D /* FontAwesomeIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontAwesomeIcon.swift; sourceTree = "<group>"; };
+		C238A6531B04DC8B00898DB8 /* SortingFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortingFunctions.swift; sourceTree = "<group>"; };
+		C238A6551B04DDA100898DB8 /* Numbers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Numbers.swift; sourceTree = "<group>"; };
 		C23F07201AD5AABA003BD28B /* example4.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = example4.json; sourceTree = "<group>"; };
 		C23F07221AD5ACCC003BD28B /* example5.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = example5.json; sourceTree = "<group>"; };
 		C24416321ACB16F8007EDEFE /* Set+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Set+MoonKitAdditions.swift"; sourceTree = "<group>"; };
@@ -791,6 +795,8 @@
 				C24A22961ADB47590065E7EA /* CollectionManipulations.swift */,
 				C24A22981ADB4C1E0065E7EA /* FunctionManipulation.swift */,
 				C29EECF71AFD010B00660EE6 /* MiscellaneousFunctions.swift */,
+				C238A6531B04DC8B00898DB8 /* SortingFunctions.swift */,
+				C238A6551B04DDA100898DB8 /* Numbers.swift */,
 			);
 			path = Functions;
 			sourceTree = "<group>";
@@ -1654,6 +1660,7 @@
 				C28E50961A13CA7E00DF3206 /* ToggleBarButtonItem.swift in Sources */,
 				C21D7AE41AA60E3F000DE8A3 /* NSError+MoonKitAdditions.swift in Sources */,
 				C2B6918A1AFBCADB0041CE11 /* NetworkReachability.swift in Sources */,
+				C238A6541B04DC8B00898DB8 /* SortingFunctions.swift in Sources */,
 				C2F8C3171A362606004229FE /* UIResponder+MoonKitAdditions.swift in Sources */,
 				C2358F5A19C78E0C00920F8D /* MSColorInputButton.m in Sources */,
 				C29649901B00EBD0000C2D4A /* FieldView.swift in Sources */,
@@ -1712,6 +1719,7 @@
 				C28E50951A13CA7300DF3206 /* ToggleImageSegmentedControl.swift in Sources */,
 				C2358F7519C78E0C00920F8D /* MSStack.m in Sources */,
 				C210E9921AF27E3C0026A51D /* ViewProxy.swift in Sources */,
+				C238A6561B04DDA100898DB8 /* Numbers.swift in Sources */,
 				C2358F7619C78E0C00920F8D /* MSValueTransformers.m in Sources */,
 				C2358F7A19C78E0C00920F8D /* MSNotificationReceptionist.m in Sources */,
 				C2358F7B19C78E0C00920F8D /* MSXMLParserDelegate.m in Sources */,

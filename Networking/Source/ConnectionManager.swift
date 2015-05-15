@@ -9,6 +9,7 @@
 import Foundation
 import MoonKit
 import CoreData
+import Settings
 import class DataModel.DataManager
 import class DataModel.ITachIRCommand
 import class DataModel.NetworkDevice
@@ -16,9 +17,18 @@ import class DataModel.ITachDevice
 import class DataModel.HTTPCommand
 
 /** The `ConnectionManager` class oversee all device-related network activity. */
-public final class ConnectionManager {
+@objc public final class ConnectionManager {
+
+  class func initialize() {
+    SettingsManager.registerBoolSettingWithKey(AutoConnectExistingKey, withDefaultValue: true)
+    SettingsManager.registerBoolSettingWithKey(AutoConnectDiscoveredKey, withDefaultValue: false)
+    SettingsManager.registerBoolSettingWithKey(StopAfterUpdatedDeviceKey, withDefaultValue: true)
+    SettingsManager.registerBoolSettingWithKey(StopAfterUpdatedDeviceKey, withDefaultValue: false)
+  }
 
   public typealias Callback = (Bool, NSError?) -> Void
+
+  // MARK: - Connection manager error type
 
   /** Enumeration to encapsulate connection errors */
   public enum Error: Int {
@@ -46,14 +56,28 @@ public final class ConnectionManager {
     }
   }
 
+  // MARK: - Flag, notification, and key property declarations
+
+  /** Whether to simulate send operations */
+  static let simulateCommandSuccess = NSUserDefaults.standardUserDefaults().boolForKey("simulate")
+
   private static let simulatedCommandDelay = Int64(0.5 * Double(NSEC_PER_SEC))
 
   public static let ConnectionStatusNotification = "ConnectionManagerConnectionStatusNotification"
   public static let NetworkDeviceDiscoveryNotification = "ConnectionManagerNetworkDeviceDiscoveryNotification"
+  public static let NetworkDeviceUpdatedNotification = "ConnectionManagerNetworkDeviceUpdatedNotification"
+
+  public static let AutoConnectExistingKey = "ConnectionManagerAutoConnectExistingKey"
+  public static let AutoConnectDiscoveredKey = "ConnectionManagerAutoConnectDiscoveredKey"
+  public static let StopAfterUpdatedDeviceKey = "StopAfterUpdatedDeviceKey"
+  public static let StopAfterDiscoveredDeviceKey = "StopAfterDiscoveredDeviceKey"
 
   public static let WifiAvailableKey = "ConnectionManaagerWifiAvailableKey"
   public static let NetworkDeviceKey = "ConnectionManagerNetworkDeviceKey"
   public static let AutoConnectDeviceKey = "ConnectionManagerAutoConnectDeviceKey"
+
+
+  // MARK: - Wifi availability
 
   /** Monitors changes in connectivity */
   private static let reachability = MSNetworkReachability(callback: {[cm = ConnectionManager.self]
@@ -82,11 +106,10 @@ public final class ConnectionManager {
     return flagsIndicateWifiAvailable(reachability.flags)
   }
 
-  /** Whether to simulate send operations */
-  static let simulateCommandSuccess = NSUserDefaults.standardUserDefaults().boolForKey("simulate")
+  // MARK: - Background, foreground receptionists
 
   /** Handles backgrounded notification */
-  private let backgroundReceptionist =
+  private static let backgroundReceptionist =
     MSNotificationReceptionist(observer: ConnectionManager.self,
                      forObject: UIApplication.sharedApplication(),
               notificationName: UIApplicationDidEnterBackgroundNotification,
@@ -94,7 +117,7 @@ public final class ConnectionManager {
                        handler: {_ in ITachConnectionManager.suspend(); ISYConnectionManager.suspend()})
 
   /** Handles foregrounded notification */
-  private let foregroundReceptionist =
+  private static let foregroundReceptionist =
     MSNotificationReceptionist(observer: ConnectionManager.self,
                      forObject: UIApplication.sharedApplication(),
               notificationName: UIApplicationWillEnterForegroundNotification,
@@ -102,13 +125,15 @@ public final class ConnectionManager {
                        handler: {_ in ITachConnectionManager.resume(); ISYConnectionManager.resume()})
 
 
+  // MARK: - Sending commands
+
   /**
   Executes the send operation, and, optionally, calls the completion handler with the result.
 
   :param: commandID NSManagedObjectID ID of the command to send
   :param: completion Callback? = nil Block to be executed upon completion of the send operation
   */
-  public class func sendCommandWithID(commandID: NSManagedObjectID, completion: Callback? = nil) {
+  public static func sendCommandWithID(commandID: NSManagedObjectID, completion: Callback? = nil) {
     MSLogInfo("sending command…")
 
     let simulateSuccess: () -> Void = {
@@ -146,71 +171,48 @@ public final class ConnectionManager {
     }
   }
 
-  /**
-  Invoked by specializing connection manager classes when a new device is has been detected
-
-  :param: device NetworkDevice
-  */
-  class func discoveredDevice(device: NetworkDevice) {
-    NSNotificationCenter.defaultCenter().postNotificationName(NetworkDeviceDiscoveryNotification,
-                                                       object: self,
-                                                     userInfo: [NetworkDeviceKey:device.uuid])
-  }
-
-  /**
-  connectToITachDevice:learnerDelegate:
-
-  :param: device ITachDevice
-  :param: learnerDelegate ITachLearnerDelegate
-  */
-  public class func connectToITachDevice(device: ITachDevice, learnerDelegate: ITachLearnerDelegate?) {
-    let connection = ITachConnectionManager.connectionForDevice(device)
-    if connection.learnerDelegate != nil && connection.learnerDelegate !== learnerDelegate {
-      MSLogWarn("existing learner delegate for connection will be replaced")
-    }
-    connection.learnerDelegate = learnerDelegate
-  }
-
-  /**
-  Wraps provided completion block to aggregate multiple calls
-
-  :param: completion Callback
-
-  :returns: Callback
-  */
-  private class func completionWrapper(completion: Callback?) ->  Callback {
-    var completionCount = 0
-    var completionSuccess = true
-    var completionError: NSError?
-
-    return {
-      success, error in
-      completionSuccess = success && completionSuccess
-      if completionError != nil && error != nil {
-        completionError = Error.Aggregate.error(userInfo: [NSUnderlyingErrorKey: [completionError!, error!]])
-      }
-      else if error != nil { completionError = error }
-      
-      if ++completionCount == 2 { completion?(completionSuccess, completionError) }
-    }
-  }
+  // MARK: - Network device discovery
+  
 
   /** Join multicast group and listen for beacons broadcast by iTach devices. */
-  public class func startDetectingNetworkDevices() {
+  public static func startDetectingNetworkDevices() {
     ITachConnectionManager.startDetectingNetworkDevices()
     ISYConnectionManager.startDetectingNetworkDevices()
     MSLogInfo("listening for network devices…")
   }
 
   /** Leave multicast group. */
-  public class func stopDetectingNetworkDevices() {
+  public static func stopDetectingNetworkDevices() {
     ITachConnectionManager.stopDetectingNetworkDevices()
     ISYConnectionManager.stopDetectingNetworkDevices()
     MSLogInfo("no longer listening for network devices…")
   }
 
   /** Whether network devices are currently being detected */
-  public class var isDetectingNetworkDevices: Bool {
+  public static var isDetectingNetworkDevices: Bool {
     return ITachConnectionManager.detectingNetworkDevices || ISYConnectionManager.detectingNetworkDevices
   }
+
+  /**
+  Invoked by specializing connection manager classes when an existing device has been updated
+
+  :param: device NetworkDevice
+  */
+  static func updatedDevice(device: NetworkDevice) {
+    NSNotificationCenter.defaultCenter().postNotificationName(NetworkDeviceUpdatedNotification,
+                                                       object: self,
+                                                     userInfo: [NetworkDeviceKey:device.uuid])
+  }
+
+  /**
+  Invoked by specializing connection manager classes when a new device is has been detected
+
+  :param: device NetworkDevice
+  */
+  static func discoveredDevice(device: NetworkDevice) {
+    NSNotificationCenter.defaultCenter().postNotificationName(NetworkDeviceDiscoveryNotification,
+                                                       object: self,
+                                                     userInfo: [NetworkDeviceKey:device.uuid])
+  }
+
 }

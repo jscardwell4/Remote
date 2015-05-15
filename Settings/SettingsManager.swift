@@ -41,6 +41,17 @@ public final class SettingsManager {
   }
 
   /**
+  registerBoolSettingWithKey:withDefaultValue:
+
+  :param: key String
+  :param: value Bool
+  */
+  public static func registerBoolSettingWithKey(key: String, withDefaultValue value: Bool) {
+    registeredSettings[key] = Box<Any>(Transformer<Bool>(fromUserDefaults: {($0 as? NSNumber)?.boolValue},
+                                                         toUserDefaults: {$0}))
+  }
+
+  /**
   setValue:forSetting:
 
   :param: value T

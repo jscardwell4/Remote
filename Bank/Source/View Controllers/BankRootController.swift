@@ -11,7 +11,7 @@ import UIKit
 import ObjectiveC
 import MoonKit
 
-final public class BankRootController: UITableViewController, BankController {
+final public class BankRootController: UITableViewController, BankItemImportExportController {
 
   static let RootCellIdentifier = "RootCell"
 
@@ -61,13 +61,13 @@ final public class BankRootController: UITableViewController, BankController {
   }
 
   /** importBankObject */
-  func importBankObjects() { MSLogInfo("not yet implemented") }
+  @IBAction func importBankObjects() { MSLogInfo("not yet implemented") }
 
   /** exportBankObject */
-  func exportBankObjects() { MSLogInfo("not yet implemented") }
+  @IBAction func exportBankObjects() { MSLogInfo("not yet implemented") }
 
   /** searchBankObjects */
-  func searchBankObjects() { MSLogInfo("not yet implemented") }
+  @IBAction func searchBankObjects() { MSLogInfo("not yet implemented") }
 
 }
 

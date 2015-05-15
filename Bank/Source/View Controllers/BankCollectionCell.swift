@@ -12,6 +12,13 @@ import MoonKit
 
 class BankCollectionCell: UICollectionViewCell {
 
+  class func registerWithCollectionView(collectionView: UICollectionView) {
+    collectionView.registerClass(self, forCellWithReuseIdentifier: cellIdentifier)
+  }
+
+  private static let _cellIdentifier = "CollectionCell"
+  class var cellIdentifier: String { return _cellIdentifier }
+
   let indicator: UIImageView = {
     let view = UIImageView.newForAutolayout()
     view.nametag = "indicator"
@@ -204,7 +211,7 @@ class BankCollectionCell: UICollectionViewCell {
             UIView.animateWithDuration(self.animationDurationForDistance(abs(x)),
               animations: {self.contentView.transform.tx = 0.0},
               completion: { (completed: Bool) -> Void in _ = self.showingDeleteDidChange?(self) })
-            
+
           default: break
 
         }
@@ -215,7 +222,7 @@ class BankCollectionCell: UICollectionViewCell {
       self.addGestureRecognizer(gesture)
       return gesture
       }()
-    
+
     insertSubview(deleteButton, belowSubview: contentView)
     deleteButton.addTarget(self, action: "deleteButtonAction", forControlEvents: .TouchUpInside)
     contentView.addSubview(indicator)

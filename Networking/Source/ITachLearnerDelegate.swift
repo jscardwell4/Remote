@@ -17,6 +17,26 @@ public class ITachLearnerDelegate {
 
   public typealias Callback = ConnectionManager.Callback
 
+  /**
+  Attempt to connect to the specified device. Only succeeds if connection can be established, and did not already exist
+  with another learner delegate assigned to it
+
+  :param: device ITachDevice
+
+  :returns: Bool
+  */
+  public func connectToDevice(device: ITachDevice) -> Bool {
+    let connection = ITachConnectionManager.connectionForDevice(device)
+    if let existingDelegate = connection.learnerDelegate where existingDelegate !== self {
+      MSLogWarn("attempt to replace existing learner delegate over connection for device '\(device.uniqueIdentifier)'")
+      return false
+    } else {
+      self.connection = connection
+      connection.learnerDelegate = self
+      return true
+    }
+  }
+
   /** Set in `enableLearner:` and invoked when a response has been received */
   private var learnerEnabledCallback: Callback?
 

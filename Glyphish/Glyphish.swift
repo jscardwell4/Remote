@@ -15,7 +15,7 @@ public final class Glyphish {
 
   private static var fontRegistered = false
 
-  private static let bundle = NSBundle(forClass: Glyphish.self)
+  public static let bundle = NSBundle(forClass: Glyphish.self)
 
   /**
   imageNamed:

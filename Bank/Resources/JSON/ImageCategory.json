@@ -5,21 +5,21 @@
       {
         "asset": {
           "name": "Pro Dots",
-          "location": "$bank"
+          "location": "$glyphish"
         },
         "name": "Pro Dots"
       },
       {
         "asset": {
           "name": "RealRealCarbon",
-          "location": "$bank"
+          "location": "$glyphish"
         },
         "name": "Real Real Carbon"
       },
       {
         "asset": {
           "name": "RealCarbon",
-          "location": "$bank"
+          "location": "$glyphish"
         },
         "name": "Real Carbon"
       }
@@ -35,7 +35,7 @@
           {
             "asset": {
               "name": "51-outlet",
-              "location": "$bank"
+              "location": "$glyphish"
             },
             "name": "Outlet"
           }
@@ -47,7 +47,7 @@
               {
                 "asset": {
                   "name": "57-power",
-                  "location": "$bank"
+                  "location": "$glyphish"
                 },
                 "name": "Power"
               }
@@ -61,28 +61,28 @@
           {
             "asset": {
               "name": "396-power-plug",
-              "location": "$bank"
+              "location": "$glyphish"
             },
             "name": "Power Plug"
           },
           {
             "asset": {
               "name": "436-plus",
-              "location": "$bank"
+              "location": "$glyphish"
             },
             "name": "Plus"
           },
           {
             "asset": {
               "name": "437-minus",
-              "location": "$bank"
+              "location": "$glyphish"
             },
             "name": "Minus"
           },
           {
             "asset": {
               "name": "306-light-switch",
-              "location": "$bank"
+              "location": "$glyphish"
             },
             "name": "Light Switch"
           }
@@ -100,63 +100,63 @@
                   {
                     "asset": {
                       "name": "750-home",
-                      "location": "$bank"
+                      "location": "$glyphish"
                     },
                     "name": "Home"
                   },
                   {
                     "asset": {
                       "name": "750-home-selected",
-                      "location": "$bank"
+                      "location": "$glyphish"
                     },
                     "name": "Home (Selected)"
                   },
                   {
                     "asset": {
                       "name": "740-gear",
-                      "location": "$bank"
+                      "location": "$glyphish"
                     },
                     "name": "Gear"
                   },
                   {
                     "asset": {
                       "name": "830-pencil",
-                      "location": "$bank"
+                      "location": "$glyphish"
                     },
                     "name": "Pencil"
                   },
                   {
                     "asset": {
                       "name": "856-lightning-bolt",
-                      "location": "$bank"
+                      "location": "$glyphish"
                     },
                     "name": "Lightning Bolt"
                   },
                   {
                     "asset": {
                       "name": "763-arrow-up",
-                      "location": "$bank"
+                      "location": "$glyphish"
                     },
                     "name": "Arrow Up"
                   },
                   {
                     "asset": {
                       "name": "764-arrow-down",
-                      "location": "$bank"
+                      "location": "$glyphish"
                     },
                     "name": "Arrow Down"
                   },
                   {
                     "asset": {
                       "name": "765-arrow-left",
-                      "location": "$bank"
+                      "location": "$glyphish"
                     },
                     "name": "Arrow Left"
                   },
                   {
                     "asset": {
                       "name": "766-arrow-right",
-                      "location": "$bank"
+                      "location": "$glyphish"
                     },
                     "name": "Arrow Right"
                   }
@@ -178,14 +178,14 @@
                   {
                     "asset": {
                       "name": "933-battery",
-                      "location": "$bank"
+                      "location": "$glyphish"
                     },
                     "name": "Battery"
                   },
                   {
                     "asset": {
                       "name": "937-wifi-signal",
-                      "location": "$bank"
+                      "location": "$glyphish"
                     },
                     "name": "Wifi Signal"
                   }

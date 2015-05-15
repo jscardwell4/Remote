@@ -23,8 +23,10 @@ public class NetworkDevice: EditableModelObject {
 
   :returns: Bool
   */
-  public class func deviceExistsWithIdentifier(identifier: String) -> Bool {
-    return objectWithValue(identifier, forAttribute: "uniqueIdentifier", context: DataManager.rootContext) != nil
+  public class func deviceExistsWithIdentifier(identifier: String,
+                                        context: NSManagedObjectContext = DataManager.rootContext) -> Bool
+  {
+    return objectWithValue(identifier, forAttribute: "uniqueIdentifier", context: context) != nil
   }
 
   override public func updateWithData(data: ObjectJSONValue) {
