@@ -34,8 +34,12 @@ public protocol PathIndexedModel: Model {
   var user: Bool { get }
 }
 
+@objc public protocol CollectedModel: NamedModel {
+  var collection: ModelCollection? { get }
+}
+
 @objc public protocol ModelCollection: NamedModel {
-  optional var items: [NamedModel] { get }
+  optional var items: [CollectedModel] { get }
 }
 
 @objc public protocol NestingModelCollection: ModelCollection {

@@ -299,7 +299,6 @@
 		C24A227D1ADABB540065E7EA /* SendIRCommand_Simple.json in Resources */ = {isa = PBXBuildFile; fileRef = C24A226E1ADABB540065E7EA /* SendIRCommand_Simple.json */; };
 		C24A227E1ADABB540065E7EA /* SwitchCommand_Simple.json in Resources */ = {isa = PBXBuildFile; fileRef = C24A226F1ADABB540065E7EA /* SwitchCommand_Simple.json */; };
 		C24A227F1ADABB540065E7EA /* SystemCommand_Simple.json in Resources */ = {isa = PBXBuildFile; fileRef = C24A22701ADABB540065E7EA /* SystemCommand_Simple.json */; };
-		C24DD2891AE402A5000306A0 /* BankSurrogateCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24DD2881AE402A5000306A0 /* BankSurrogateCategory.swift */; };
 		C24E0EBF1AC61E080044248E /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C24E0EBE1AC61E080044248E /* MoonKit.framework */; };
 		C24E0EC01AC61FC30044248E /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C24E0EBE1AC61E080044248E /* MoonKit.framework */; };
 		C24E0EC11AC61FC30044248E /* MoonKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C24E0EBE1AC61E080044248E /* MoonKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -4753,7 +4752,6 @@
 				C285D83F1AC48C8400C527F6 /* DetailPickerCell.swift in Sources */,
 				C24A05C91AE5B1E500C9255E /* ActivityDetailController.swift in Sources */,
 				C285D85B1AC48E4000C527F6 /* DetailListCell.swift in Sources */,
-				C24DD2891AE402A5000306A0 /* BankSurrogateCategory.swift in Sources */,
 				C26D84B71AC33752000230B9 /* ImportExportFileManager.swift in Sources */,
 				C285D8411AC48C8400C527F6 /* DetailStepperCell.swift in Sources */,
 				C285D8471AC48C9800C527F6 /* DetailAttributedTextRow.swift in Sources */,

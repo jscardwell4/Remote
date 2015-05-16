@@ -18,6 +18,16 @@ import MoonKit
   class func initialize() {
     MSLogDebug("bundle path: '\(dataModelBundle.bundlePath)'\nperforming \(dataFlag)\nwith model flags…\n"
                 + "\n".join(modelFlags.map({$0.description})))
+    let notificationCenter = NSNotificationCenter.defaultCenter()
+    notificationCenter.addObserverForName(NSManagedObjectContextObjectsDidChangeNotification, object: nil, queue: nil) {
+      DataManager.contextDidChangeNotification($0)
+    }
+    notificationCenter.addObserverForName(NSManagedObjectContextWillSaveNotification, object: nil, queue: nil) {
+      DataManager.contextWillSaveNotification($0)
+    }
+    notificationCenter.addObserverForName(NSManagedObjectContextDidSaveNotification, object: nil, queue: nil) {
+      DataManager.contextDidSaveNotification($0)
+    }
     initializeDatabase()
   }
 
@@ -290,7 +300,7 @@ import MoonKit
       } else {
         json = JSONSerialization.objectByParsingFile(path, options: .InflateKeypaths, error: &error)
       }
-      
+
       if MSHandleError(error) == false && json != nil
       {
         if hasOption(LogFlags.Parsed, logFlags) { MSLogDebug("json objects from parsed file:\n\(json)") }
@@ -352,7 +362,7 @@ import MoonKit
         error = NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil)
       }
     }
-    
+
     if path != nil { loadJSONFileAtPath(path!, forModel: type, context: context, logFlags: logFlags, completion: completion) }
     else { completion?(false, error) }
   }
@@ -395,9 +405,9 @@ import MoonKit
 
   }
 
-  /** 
-  Save the root context 
-  
+  /**
+  Save the root context
+
   :param: completion ((Bool, NSError?) -> Void)? = nil
   */
   public class func saveRootContext(completion: ((Bool, NSError?) -> Void)? = nil) {
@@ -471,6 +481,53 @@ import MoonKit
 
   /** The primary, private-queue managed object context maintained by `stack`.  */
   public class var rootContext: NSManagedObjectContext { return stack.rootContext }
+
+  // MARK: Managed object context notifications
+
+  /*
+  NSManagedObjectContextObjectsDidChangeNotification
+
+  Posted when values of properties of objects contained in a managed object context are changed.
+  The notification is posted during processPendingChanges, after the changes have been processed, but before it is
+  safe to call save: again (if you try, you will generate an infinite loop).
+
+  The notification object is the managed object context. The userInfo dictionary contains the following keys:
+  NSInsertedObjectsKey, NSUpdatedObjectsKey, and NSDeletedObjectsKey.
+
+  Note that this notification is posted only when managed objects are changed; it is not posted when managed
+  objects are added to a context as the result of a fetch.
+  */
+  private static func contextDidChangeNotification(notification: NSNotification) {
+    MSLogDebug("")
+  }
+
+  /*
+  NSManagedObjectContextWillSaveNotification
+  Posted whenever a managed object context is about to perform a save operation.
+  The notification object is the managed object context. There is no userInfo dictionary.
+  */
+  private static func contextWillSaveNotification(notification: NSNotification) {
+    MSLogDebug("")
+  }
+
+  /*
+  NSManagedObjectContextDidSaveNotification
+  Posted whenever a managed object context completes a save operation.
+
+  The notification object is the managed object context. The userInfo dictionary contains the following keys:
+  NSInsertedObjectsKey, NSUpdatedObjectsKey, and NSDeletedObjectsKey.
+
+  You can only use the managed objects in this notification on the same thread on which it was posted.
+
+  You can pass the notification object to mergeChangesFromContextDidSaveNotification: on another thread, however
+  you must not use the managed object in the user info dictionary directly on another thread. For more details,
+  see Concurrency with Core Data.
+  */
+  private static func contextDidSaveNotification(notification: NSNotification) {
+    MSLogDebug("")
+  }
+
+  // Mark: Saving contexts
 
   /**
   saveContext:withBlock::propagate:nonBlocking:completion:

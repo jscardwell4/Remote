@@ -11,11 +11,13 @@ import CoreData
 import MoonKit
 
 @objc(PresetCategory)
-final public class PresetCategory: EditableModelObject {
+final public class PresetCategory: EditableModelObject, CollectedModel {
 
   @NSManaged public var presets: Set<Preset>
   @NSManaged public var childCategories: Set<PresetCategory>
   @NSManaged public var parentCategory: PresetCategory?
+
+  public var collection: ModelCollection? { return parentCategory }
 
   /**
   updateWithData:
@@ -68,7 +70,7 @@ final public class PresetCategory: EditableModelObject {
 }
 
 extension PresetCategory: ModelCollection {
-  public var items: [NamedModel] { return sortedByName(presets) }
+  public var items: [CollectedModel] { return sortedByName(presets) }
 }
 
 extension PresetCategory: NestingModelCollection {

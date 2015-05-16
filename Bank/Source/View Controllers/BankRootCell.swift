@@ -11,11 +11,14 @@ import MoonKit
 
 final class BankRootCell: UITableViewCell {
 
-  weak var collectionDelegate: BankModelCollectionDelegate? {
-    didSet {
-      icon.image = collectionDelegate?.icon
-      label.text = collectionDelegate?.label
-    }
+  var iconImage: UIImage? {
+    get { return icon.image }
+    set { icon.image = newValue }
+  }
+
+  var labelText: String? {
+    get { return label.text }
+    set { label.text = newValue }
   }
 
   private let icon: UIImageView = {

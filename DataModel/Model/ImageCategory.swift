@@ -11,11 +11,13 @@ import CoreData
 import MoonKit
 
 @objc(ImageCategory)
-final public class ImageCategory: EditableModelObject {
+final public class ImageCategory: EditableModelObject, CollectedModel {
 
   @NSManaged public var images: Set<Image>
   @NSManaged public var childCategories: Set<ImageCategory>
   @NSManaged public var parentCategory: ImageCategory?
+
+  public var collection: ModelCollection? { return parentCategory }
 
   public let previewableItems = true
   public let editableItems = true
@@ -70,7 +72,7 @@ final public class ImageCategory: EditableModelObject {
 }
 
 extension ImageCategory: ModelCollection {
-  public var items: [NamedModel] { return sortedByName(images) }
+  public var items: [CollectedModel] { return sortedByName(images) }
 }
 
 extension ImageCategory: NestingModelCollection {

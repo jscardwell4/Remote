@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(IRCodeSet)
-final public class IRCodeSet: EditableModelObject {
+final public class IRCodeSet: EditableModelObject, CollectedModel {
 
 
   @NSManaged public var devices: Set<ComponentDevice>
@@ -35,6 +35,8 @@ final public class IRCodeSet: EditableModelObject {
     }
   }
 
+  public var collection: ModelCollection? { return manufacturer }
+
   /**
   updateWithData:
 
@@ -43,11 +45,8 @@ final public class IRCodeSet: EditableModelObject {
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
 
-//    MSLogDebug("self.codes before updating codes = \(self.codes)")
     updateRelationshipFromData(data, forAttribute: "codes")
-//    MSLogDebug("self.codes after updating codes = \(self.codes)")
     updateRelationshipFromData(data, forAttribute: "devices")
-//    updateRelationshipFromData(data, forAttribute: "manufacturer")
   }
 
   override public var jsonValue: JSONValue {
@@ -87,7 +86,7 @@ final public class IRCodeSet: EditableModelObject {
 }
 
 extension IRCodeSet: ModelCollection {
-  public var items: [NamedModel] { return sortedByName(codes) }
+  public var items: [CollectedModel] { return sortedByName(codes) }
 }
 
 extension IRCodeSet: DefaultingModelCollection {

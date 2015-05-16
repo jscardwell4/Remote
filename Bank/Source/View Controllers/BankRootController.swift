@@ -22,44 +22,69 @@ final public class BankRootController: UITableViewController, BankItemImportExpo
   func generateCollectionDelegates() {
     collectionDelegates.removeAll()
 
-    let componentDeviceCollection = BankModelCollectionDelegate()
-    componentDeviceCollection.label = "Component Devices"
-    componentDeviceCollection.icon = Bank.componentDevicesImage
-    componentDeviceCollection.fetchedItems = ComponentDevice.objectsInContext(context, sortedBy: "name")
+    let componentDeviceCollection = BankModelDelegate(name: "Component Devices", icon: Bank.componentDevicesImage, context: context)
+    componentDeviceCollection.setFetchedItems(ComponentDevice.objectsInContext(context, sortedBy: "name"))
+    componentDeviceCollection.createItem = { MSLogDebug("Here we should create a new component device") }
     collectionDelegates.append(componentDeviceCollection)
 
-    let irCodeCollection = BankModelCollectionDelegate()
-    irCodeCollection.label = "IR Codes"
-    irCodeCollection.icon = Bank.irCodesImage
-    irCodeCollection.fetchedCollections = IRCodeSet.objectsInContext(context, sortedBy: "name")
+    let irCodeCollection = BankModelDelegate(name: "IR Codes", icon: Bank.irCodesImage, context: context)
+    irCodeCollection.setFetchedCollections(IRCodeSet.objectsInContext(context, sortedBy: "name"))
+    irCodeCollection.createItem = { MSLogDebug("Here we should create a new ir code") }
     collectionDelegates.append(irCodeCollection)
 
-    let imageCollection = BankModelCollectionDelegate()
-    imageCollection.label = "Images"
-    imageCollection.icon = Bank.imagesImage
-    imageCollection.fetchedCollections = ImageCategory.objectsInContext(context,
-                                                          withPredicate: ∀"parentCategory == NULL",
-                                                               sortedBy: "name")
+    let imageCollection = BankModelDelegate(name: "Images", icon: Bank.imagesImage, context: context)
+    imageCollection.createItem = { MSLogDebug("Here we should create a new image") }
+    imageCollection.setFetchedCollections(ImageCategory.objectsInContext(context,
+                                                           withPredicate: ∀"parentCategory == NULL",
+                                                                sortedBy: "name"))
     collectionDelegates.append(imageCollection)
 
-    let manufacturerCollection = BankModelCollectionDelegate()
-    manufacturerCollection.label = "Manufacturers"
-    manufacturerCollection.icon = Bank.manufacturersImage
-    manufacturerCollection.fetchedItems = Manufacturer.objectsInContext(context, sortedBy: "name")
+    let manufacturerCollection = BankModelDelegate(name: "Manufacturers", icon: Bank.manufacturersImage, context: context)
+    manufacturerCollection.createItemForm = {[unowned manufacturerCollection] in
+
+      let nameValidation: (String?) -> Bool = {
+        $0 != nil &&
+        !$0!.isEmpty &&
+        Manufacturer.objectWithValue($0!,
+                        forAttribute: "name",
+                             context: manufacturerCollection.managedObjectContext) == nil
+      }
+
+      let didCancel: (FormViewController) -> Void = {$0.dismissViewControllerAnimated(true, completion: nil) }
+
+      let didSubmit: (FormViewController, OrderedDictionary<String, Any>) -> Void = {
+        if let name = $1["Name"] as? String {
+          let manufacturer = Manufacturer(context: manufacturerCollection.managedObjectContext)
+          manufacturer.name = name
+        } else {
+          assert(false, "how did we get here")
+        }
+        $0.dismissViewControllerAnimated(true, completion: nil)
+      }
+
+      let nameField = FormViewController.Field.Text(initial: nil, placeholder: "The manufacturer's name") {
+        $0 != nil &&
+        !$0!.isEmpty &&
+        Manufacturer.objectWithValue($0!,
+                        forAttribute: "name",
+                             context: manufacturerCollection.managedObjectContext) == nil
+      }
+
+     return FormViewController(fields: ["Name": nameField], didCancel: didCancel, didSubmit: didSubmit)
+    }
+    manufacturerCollection.setFetchedItems(Manufacturer.objectsInContext(context, sortedBy: "name"))
     collectionDelegates.append(manufacturerCollection)
 
-    let networkDeviceCollection = BankModelCollectionDelegate()
-    networkDeviceCollection.label = "Network Devices"
-    networkDeviceCollection.icon = Bank.networkDevicesImage
-    networkDeviceCollection.fetchedItems = NetworkDevice.objectsInContext(context, sortedBy: "name")
+    let networkDeviceCollection = BankModelDelegate(name: "Network Devices", icon: Bank.networkDevicesImage, context: context)
+    networkDeviceCollection.createItem = { MSLogDebug("Here we should create a new network device") }
+    networkDeviceCollection.setFetchedItems(NetworkDevice.objectsInContext(context, sortedBy: "name"))
     collectionDelegates.append(networkDeviceCollection)
 
-    let presetCollection = BankModelCollectionDelegate()
-    presetCollection.label = "Presets"
-    presetCollection.icon = Bank.presetsImage
-    presetCollection.fetchedCollections = PresetCategory.objectsInContext(context,
-                                                            withPredicate: ∀"parentCategory == NULL",
-                                                                 sortedBy: "name")
+    let presetCollection = BankModelDelegate(name: "Presets", icon: Bank.presetsImage, context: context)
+    presetCollection.createItem = { MSLogDebug("Here we should create a new preset") }
+    presetCollection.setFetchedCollections(PresetCategory.objectsInContext(context,
+                                                             withPredicate: ∀"parentCategory == NULL",
+                                                                  sortedBy: "name"))
     collectionDelegates.append(presetCollection)
   }
 
@@ -95,7 +120,7 @@ final public class BankRootController: UITableViewController, BankItemImportExpo
   */
   func importFromFile(fileURL: NSURL) {}
 
-  private var collectionDelegates: [BankModelCollectionDelegate] = []
+  private var collectionDelegates: [BankModelDelegate] = []
 
   /**
   viewWillAppear:
@@ -132,7 +157,7 @@ extension BankRootController: UITableViewDelegate {
   */
   override public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     let collectionDelegate = collectionDelegates[indexPath.row]
-    let collectionController = BankCollectionController(collection: collectionDelegate)!
+    let collectionController = BankCollectionController(collectionDelegate: collectionDelegate)
     navigationController?.pushViewController(collectionController, animated: true)
   }
 
@@ -175,7 +200,9 @@ extension BankRootController: UITableViewDataSource {
   override public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier(BankRootController.RootCellIdentifier,
                                               forIndexPath: indexPath) as! BankRootCell
-    cell.collectionDelegate = collectionDelegates[indexPath.row]
+    let collectionDelegate = collectionDelegates[indexPath.row]
+    cell.iconImage = collectionDelegate.icon
+    cell.labelText = collectionDelegate.name
     return cell
   }
 

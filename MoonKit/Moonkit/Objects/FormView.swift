@@ -11,6 +11,8 @@ import UIKit
 
 final class FormView: UIView {
 
+  typealias FieldCollection = FormViewController.FieldCollection
+  typealias FieldValues = FormViewController.FieldValues
   typealias Field = FormViewController.Field
   typealias Appearance = FormViewController.Appearance
 
@@ -21,12 +23,12 @@ final class FormView: UIView {
   // MARK: - Initializing the view
 
   /**
-  initWithFields:Field>:
+  initWithFields:appearance:
 
-  :param: fields OrderedDictionary<String, Field>
+  :param: fields FieldCollection
   :param: appearance Appearance? = nil
   */
-  init(fields: OrderedDictionary<String,Field>, appearance: Appearance? = nil) {
+  init(fields: FieldCollection, appearance: Appearance? = nil) {
     fieldAppearance = appearance
     super.init(frame: CGRect.zeroRect)
     setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -34,7 +36,7 @@ final class FormView: UIView {
     layer.shadowOpacity = 0.75
     layer.shadowRadius = 8
     layer.shadowOffset = CGSize(width: 1.0, height: 3.0)
-    apply(fields) { self.addSubview(FieldView(name: $1, field: $2)) }
+    apply(fields) { self.addSubview(FieldView(tag: $0, name: $1, field: $2)) }
   }
 
   required init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -57,6 +59,17 @@ final class FormView: UIView {
   }
 
   var fieldViews: [FieldView] { return subviews as! [FieldView] }
+
+  var fieldValues: FieldValues? {
+    var values: FieldValues = [:]
+    var valid = true
+    for fieldView in fieldViews {
+      fieldView.showingInvalid = !fieldView.valid
+      if fieldView.showingInvalid { valid = false }
+      else { values[fieldView.name] = fieldView.value }
+    }
+    return valid ? values : nil
+  }
 
   // MARK: - Constraints
 

@@ -11,15 +11,20 @@ import UIKit
 
 public class FormViewController: UIViewController {
 
+  public typealias Submission = (FormViewController, OrderedDictionary<String,Any>) -> Void
+  public typealias Cancellation = (FormViewController) -> Void
+  public typealias FieldCollection = OrderedDictionary<String, Field>
+  public typealias FieldValues = OrderedDictionary<String, Any>
+
   // MARK: - Field enumeration
 
   /** Type for defining a field in the form */
   public enum Field {
-    case Text (initial: String?, placeholder: String?, validation: ((String?) -> Bool)?)
-    case Switch (initial: Bool)
-    case Slider (initial: Float, min: Float, max: Float)
-    case Stepper (initial: Double, min: Double, max: Double, step: Double)
-    case Picker (initial: Int, choices: [String])
+    case Text     (initial: String?, placeholder: String?, validation: ((String?) -> Bool)?)
+    case Switch   (initial: Bool)
+    case Slider   (initial: Float, min: Float, max: Float)
+    case Stepper  (initial: Double, min: Double, max: Double, step: Double)
+    case Picker   (initial: Int, choices: [String])
     case Checkbox (initial: Bool)
   }
 
@@ -28,13 +33,11 @@ public class FormViewController: UIViewController {
   /**
   Default initializer takes the fields and cancel/submit callbacks
 
-  :param: fields OrderedDictionary<String, Field>
-  :param: submit ((OrderedDictionary<String,Any>) -> Void)? = nil
-  :param: cancel (() -> Void)? = nil
+  :param: fields FieldCollection
+  :param: submit Submission? = nil
+  :param: cancel Cancellation? = nil
   */
-  public init(fields f: OrderedDictionary<String,Field>,
-              didSubmit submit: ((OrderedDictionary<String,Any>) -> Void)? = nil,
-              didCancel cancel: (() -> Void)? = nil)
+  public init(fields f: FieldCollection, didSubmit submit: Submission? = nil, didCancel cancel: Cancellation? = nil)
   {
     fields = f; didSubmit = submit; didCancel = cancel
     super.init(nibName: nil, bundle: nil)
@@ -74,9 +77,10 @@ public class FormViewController: UIViewController {
   }
 
   // MARK: - The controller's private properties
-  private let didSubmit: ((OrderedDictionary<String,Any>) -> Void)?
-  private let didCancel: (() -> Void)?
-  private let fields: OrderedDictionary<String,Field>
+  private let didSubmit: Submission?
+  private let didCancel: Cancellation?
+  private let fields: FieldCollection
+
   private weak var snapshotView: UIView?
   private weak var effectView: UIVisualEffectView?
   private weak var formView: FormView?
@@ -137,20 +141,9 @@ public class FormViewController: UIViewController {
   // MARK: - Actions
 
   /** cancelAction */
-  func cancelAction() { didCancel?() }
+  func cancelAction() { didCancel?(self) }
 
   /** submitAction */
-  func submitAction() {
-    if let fieldViews = formView?.fieldViews {
-      var values: OrderedDictionary<String,Any> = [:]
-      var valid = true
-      for fieldView in fieldViews {
-        fieldView.showingInvalid = !fieldView.valid
-        if fieldView.showingInvalid { valid = false }
-        else { values[fieldView.name] = fieldView.value }
-      }
-      if valid { didSubmit?(values) }
-    }
-  }
+  func submitAction() { if let fieldValues = formView?.fieldValues { didSubmit?(self, fieldValues) } }
 
 }

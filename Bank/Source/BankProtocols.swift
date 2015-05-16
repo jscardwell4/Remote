@@ -57,20 +57,35 @@ extension Preset: Previewable {}
 
 // MARK: - BankModelCollection protocol and extensions
 
-@objc protocol BankModelCollection: Named {
-  optional var items: [NamedModel] { get }
+@objc protocol BankItemCollection: Named {
+  optional var itemType: CollectedModel.Type { get }
+  optional var collectionType: ModelCollection.Type { get }
+  optional var items: [CollectedModel] { get }
   optional var collections: [ModelCollection] { get }
   optional var previewable: Bool { get }
 }
 
-extension Manufacturer: BankModelCollection {}
-extension IRCodeSet: BankModelCollection {}
+@objc protocol BankModelCollection: BankItemCollection, NamedModel {}
+
+extension Manufacturer: BankModelCollection {
+  var collectionType: ModelCollection.Type { return IRCodeSet.self }
+}
+extension IRCodeSet: BankModelCollection {
+  var itemType: CollectedModel.Type { return IRCode.self }
+}
+
 extension ImageCategory: BankModelCollection {
+  var itemType: CollectedModel.Type { return Image.self }
+  var collectionType: ModelCollection.Type { return ImageCategory.self }
   var previewable: Bool { return true }
 }
+
 extension PresetCategory: BankModelCollection {
+  var itemType: CollectedModel.Type { return Preset.self }
+  var collectionType: ModelCollection.Type { return PresetCategory.self }
   var previewable: Bool { return true }
 }
+
 
 // MARK: - View controller related protocols
 

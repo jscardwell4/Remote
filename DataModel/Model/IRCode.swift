@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(IRCode)
-final public class IRCode: EditableModelObject {
+final public class IRCode: EditableModelObject, CollectedModel {
 
   @NSManaged public var frequency: Int64
   @NSManaged public var offset: Int16
@@ -39,6 +39,8 @@ final public class IRCode: EditableModelObject {
       didChangeValueForKey("codeSet")
     }
   }
+
+  public var collection: ModelCollection? { return codeSet }
 
   public var manufacturer: Manufacturer { return codeSet.manufacturer }
 

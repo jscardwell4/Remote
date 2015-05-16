@@ -23,7 +23,7 @@ import Glyphish
     init(rawValue: Int) { self = rawValue == 1 ? .Thumbnail : .List }
   }
 
-  class func initialize() {
+  static func initialize() {
     SettingsManager.registerSettingWithKey(Bank.ViewingModeKey,
                           withDefaultValue: .List,
                               fromDefaults: {ViewingMode(rawValue: ($0 as? NSNumber)?.integerValue ?? 0)},
@@ -50,17 +50,22 @@ import Glyphish
   ////////////////////////////////////////////////////////////////////////////////
 
   // Fonts
-  public static let labelFont          = Elysio.mediumFontWithSize(15)
-  public static let boldLabelFont      = Elysio.boldFontWithSize(17)
-  public static let largeBoldLabelFont = Elysio.boldFontWithSize(18)
-  public static let infoFont           = Elysio.lightFontWithSize(15)
-  public static let actionFont         = Elysio.regularItalicFontWithSize(15)
+  public static let labelFont               = Elysio.mediumFontWithSize(15)
+  public static let boldLabelFont           = Elysio.boldFontWithSize(17)
+  public static let largeBoldLabelFont      = Elysio.boldFontWithSize(18)
+  public static let infoFont                = Elysio.lightFontWithSize(15)
+  public static let actionFont              = Elysio.regularItalicFontWithSize(15)
+  public static let formLabelFont           = Elysio.regularFontWithSize(16)
+  public static let formControlFont         = Elysio.regularItalicFontWithSize(16)
+  public static let formControlSelectedFont = Elysio.boldItalicFontWithSize(16)
 
   // Colors
-  public static let labelColor      = UIColor(r: 59, g: 60, b: 64, a:255)!
-  public static let infoColor       = UIColor(r:159, g:160, b:164, a:255)!
-  public static let backgroundColor = UIColor.whiteColor()
-  public static let actionColor     = UIColor(r: 0,   g: 175, b: 255, a: 255)!
+  public static let labelColor           = UIColor(r: 59, g: 60, b: 64, a:255)!
+  public static let infoColor            = UIColor(r:159, g:160, b:164, a:255)!
+  public static let backgroundColor      = UIColor.whiteColor()
+  public static let actionColor          = UIColor(r: 0,   g: 175, b: 255, a: 255)!
+  public static let formLabelTextColor   = UIColor(white: 0.2, alpha: 1.0)
+  public static let formControlTextColor = UIColor(white: 0.49019608, alpha: 1.0)
 
   // Images
   static let exportBarItemImage            = Glyphish.imageNamed("702-share")!
@@ -102,7 +107,7 @@ import Glyphish
 
   :returns: [UIBarButtonItem]
   */
-  class func toolbarItemsForController(controller: UIViewController) -> [UIBarItem] {
+  static func toolbarItemsForController(controller: UIViewController) -> [UIBarItem] {
 
     let totalWidth = UIScreen.mainScreen().bounds.width
     let outterWidth = floor(totalWidth / 3)
@@ -238,7 +243,7 @@ import Glyphish
 
   :returns: BlockBarButtonItem
   */
-  class func exportBarButtonItemForController(controller: BankItemImportExportController) -> BlockBarButtonItem {
+  static func exportBarButtonItemForController(controller: BankItemImportExportController) -> BlockBarButtonItem {
     return BlockBarButtonItem(title: "Export", style: .Done, action: {
         let sel = controller.exportSelection
         if sel.count != 0 {
@@ -254,7 +259,7 @@ import Glyphish
 
   :returns: BlockBarButtonItem
   */
-  class func selectAllButtonForController(controller: BankItemImportExportController) -> BlockBarButtonItem {
+  static func selectAllButtonForController(controller: BankItemImportExportController) -> BlockBarButtonItem {
     return BlockBarButtonItem(title: "Select All", style: .Plain) { controller.selectAllExportableItems() }
   }
 
@@ -270,4 +275,17 @@ import Glyphish
     return dismissButton
     }()
 
+  /**
+  Applies font and text color to the provided form
+
+  :param: form FormViewController
+  */
+  static func decorateForm(form: FormViewController) {
+    form.labelFont           = formLabelFont
+    form.labelTextColor      = formLabelTextColor
+    form.controlFont         = formControlFont
+    form.controlTextColor    = formControlTextColor
+    form.controlSelectedFont = formControlSelectedFont
+
+  }
 }

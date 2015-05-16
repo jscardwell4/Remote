@@ -337,6 +337,7 @@
 		C2E937001ACE04D4003EB3E8 /* JSONParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E936FF1ACE04D4003EB3E8 /* JSONParser.swift */; };
 		C2E937041ACF0736003EB3E8 /* JSONSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E937031ACF0736003EB3E8 /* JSONSerialization.swift */; };
 		C2EB15771A1D45C100B64D84 /* ConfiningBlockActionGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EB15761A1D45C100B64D84 /* ConfiningBlockActionGesture.swift */; };
+		C2EEBA091B06BFD10041B1B1 /* NotificationReceptionist.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EEBA081B06BFD10041B1B1 /* NotificationReceptionist.swift */; };
 		C2F01E1B1A02E080007F6966 /* MSColorInputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2F01E1A1A02E080007F6966 /* MSColorInputView.xib */; };
 		C2F094451A32A83A00681AB3 /* DrawingKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F094441A32A83A00681AB3 /* DrawingKit.swift */; };
 		C2F094471A32AA8600681AB3 /* KeyInputButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F094461A32AA8600681AB3 /* KeyInputButton.swift */; };
@@ -657,6 +658,7 @@
 		C2E936FF1ACE04D4003EB3E8 /* JSONParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONParser.swift; sourceTree = "<group>"; };
 		C2E937031ACF0736003EB3E8 /* JSONSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONSerialization.swift; sourceTree = "<group>"; };
 		C2EB15761A1D45C100B64D84 /* ConfiningBlockActionGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfiningBlockActionGesture.swift; sourceTree = "<group>"; };
+		C2EEBA081B06BFD10041B1B1 /* NotificationReceptionist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationReceptionist.swift; sourceTree = "<group>"; };
 		C2F01E1A1A02E080007F6966 /* MSColorInputView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MSColorInputView.xib; sourceTree = "<group>"; };
 		C2F01E331A03EDD9007F6966 /* ToggleImageBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleImageBarButtonItem.swift; sourceTree = "<group>"; };
 		C2F094441A32A83A00681AB3 /* DrawingKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingKit.swift; sourceTree = "<group>"; };
@@ -884,6 +886,7 @@
 				C27953111AFED61200F72C80 /* FormViewController.swift */,
 				C296498D1B00EBBF000C2D4A /* FormView.swift */,
 				C296498F1B00EBD0000C2D4A /* FieldView.swift */,
+				C2EEBA081B06BFD10041B1B1 /* NotificationReceptionist.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -1617,6 +1620,7 @@
 				C2358F4619C78E0C00920F8D /* NSUserDefaults+MSKitAdditions.m in Sources */,
 				C2CEFF221A30F34400F3BE24 /* Label.swift in Sources */,
 				C24A22911ADB3B3C0065E7EA /* MappingOperations.swift in Sources */,
+				C2EEBA091B06BFD10041B1B1 /* NotificationReceptionist.swift in Sources */,
 				C2358F4719C78E0C00920F8D /* NSValue+MSKitAdditions.m in Sources */,
 				C2358F4819C78E0C00920F8D /* UIAlertView+MSKitAdditions.m in Sources */,
 				C23592F419C8E04200920F8D /* BitArray.swift in Sources */,

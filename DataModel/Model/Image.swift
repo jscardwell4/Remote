@@ -11,7 +11,7 @@ import CoreData
 import MoonKit
 
 @objc(Image)
-final public class Image: EditableModelObject {
+final public class Image: EditableModelObject, CollectedModel {
 
   static var resourceRegistration: [String:NSBundle] = [:]
 
@@ -65,6 +65,8 @@ final public class Image: EditableModelObject {
       didChangeValueForKey("imageCategory")
     }
   }
+
+  public var collection: ModelCollection? { return imageCategory }
 
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)

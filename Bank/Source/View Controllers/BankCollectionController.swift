@@ -13,21 +13,21 @@ import DataModel
 import Settings
 
 // TODO: Viewing mode changes need to respect whether category items are `previewable`
+  enum Mode { case Default, Selection }
 
 final class BankCollectionController: UICollectionViewController, BankItemSelectiveViewingModeController {
 
-	private static let ItemCellIdentifier = BankCollectionItemCell.cellIdentifier
-	private static let CategoryCellIdentifier = BankCollectionCategoryCell.cellIdentifier
+//	private static let ItemCellIdentifier = BankCollectionItemCell.cellIdentifier
+//	private static let CategoryCellIdentifier = BankCollectionCategoryCell.cellIdentifier
 
-  override var description: String {
-    return "\(super.description), collection = {\n\(toString(collection).indentedBy(4))\n}"
-  }
+//  var description: String {
+//    return "\(super.description), collectionDelegate = {\n\(toString(collectionDelegate).indentedBy(4))\n}"
+//  }
 
   /** The object supplying subcategories and/or items for the collection */
-  var collection: BankModelCollection!
+  let collectionDelegate: BankModelDelegate
 
   /** Enumeration for specifying the controller's current role, browsing or selecting */
-  enum Mode { case Default, Selection }
 
   private let mode: Mode
 
@@ -51,7 +51,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   private var layout: BankCollectionLayout { return collectionViewLayout as! BankCollectionLayout }
 
   /** Whether viewing mode segmented control should be displayed */
-  var selectiveViewingEnabled: Bool { return collection?.previewable == true }
+  var selectiveViewingEnabled: Bool { return collectionDelegate.previewable == true }
 
   /** Specifies whether the collection should be displayed as a list or as thumbnails */
   var viewingMode: Bank.ViewingMode = .List {
@@ -64,13 +64,12 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   /**
   Default initializer establishes the collection and mode for the controller
 
-  :param: collection ModelCollection
+  :param: collectionDelegate ModelCollection
   :param: mode Mode = .Default
   */
-  init?(collection: BankModelCollection, mode: Mode = .Default) {
-  	self.mode = mode
+  init(collectionDelegate d: BankModelDelegate, mode m: Mode = .Default) {
+  	collectionDelegate = d; mode = m
     super.init(collectionViewLayout: BankCollectionLayout())
-    self.collection = collection
     if mode == .Default {
 	    exportButton = Bank.exportBarButtonItemForController(self)
 	    selectAllButton = Bank.selectAllButtonForController(self)
@@ -80,17 +79,12 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   /** Segmented control for toggling viewing mode when the collection supports thumbnails  */
   internal weak var displayOptionsControl: ToggleImageSegmentedControl?
 
-  /**
-  After initialization the controller will still need to have a collection of items provided to be of any use
-
-  :param: aDecoder NSCoder
-  */
-  required init(coder aDecoder: NSCoder) { mode = .Default; super.init(coder: aDecoder) }
+  required init(coder aDecoder: NSCoder) { fatalError("init(coder aDecoder: NSCoder) not supported") }
 
   /** loadView */
   override func loadView() {
 
-    title = collection.name
+    title = collectionDelegate.name
 
     collectionView = {
       // Create the collection view and register cell classes
@@ -116,7 +110,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
     exportSelectionMode = false
     navigationItem.rightBarButtonItem = Bank.dismissButton
 
-    if collection.previewable != true { viewingMode = .List }
+    if collectionDelegate.previewable != true { viewingMode = .List }
     else if let viewingModeSetting: Bank.ViewingMode = SettingsManager.valueForSetting(Bank.ViewingModeKey) {
       viewingMode = viewingModeSetting
     }
@@ -195,9 +189,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   :returns: ModelCollection?
   */
   private func nestedCollectionForIndexPath(indexPath: NSIndexPath) -> ModelCollection? {
-    if indexPath.section == 0, let collections = collection.collections where collections.count > indexPath.row {
-      return collections[indexPath.row]
-    } else { return nil }
+    return indexPath.section == 0 ? collectionDelegate.collections[indexPath.row] : nil
   }
 
   /**
@@ -208,11 +200,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   :returns: NamedModel?
   */
   private func itemForIndexPath(indexPath: NSIndexPath) -> NamedModel? {
-    if indexPath.section == 1,
-      let items = collection.items where items.count > indexPath.row
-    {
-      return items[indexPath.row]
-    } else { return nil }
+    return indexPath.section == 1 ? collectionDelegate.items[indexPath.row] : nil
   }
 
   /**
@@ -298,8 +286,9 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
     switch indexPath.section {
       case 0:
         if let nestedCollection = nestedCollectionForIndexPath(indexPath) as? BankModelCollection,
-          controller = BankCollectionController(collection: nestedCollection, mode: mode)
+          collectionDelegate = BankModelCollectionDelegate(collection: nestedCollection)
         {
+          let controller = BankCollectionController(collectionDelegate: collectionDelegate, mode: mode)
           controller.selectionDelegate = selectionDelegate
           navigationController?.pushViewController(controller, animated: true)
         }
@@ -378,7 +367,8 @@ extension BankCollectionController: BankCollectionZoomViewDelegate {
 // MARK: - Item creation
 
 extension BankCollectionController: BankItemCreationController {
-  func createBankItem() { MSLogDebug("createBankItem not yet implemented") }
+  func createBankItem() {
+  }
 }
 
 // MARK: - Import/export
@@ -393,34 +383,30 @@ extension BankCollectionController: BankItemImportExportController {
 
       exportSelection.removeAll(keepCapacity: true)
       exportSelectionIndices.removeAll(keepCapacity: true)
-      var capacity = 0
-      if let collections = collection.collections { capacity += collections.count }
-      if let items = collection.items { capacity += items.count }
+      let collections = collectionDelegate.collections
+      let items = collectionDelegate.items
+      let capacity = collections.count + items.count
       exportSelection.reserveCapacity(capacity)
       exportSelectionIndices.reserveCapacity(capacity)
 
-      if let collections = collection.collections {
-        for (i, collection) in enumerate(collections) {
-          if let exportCollection = collection as? JSONValueConvertible {
-            exportSelection.append(exportCollection)
-            let indexPath = NSIndexPath(forRow: i, inSection: 0)
-            exportSelectionIndices.append(indexPath)
-            if let cell = collectionView?.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
-              cell.showIndicator(true, selected: true)
-            }
+      for (i, collection) in enumerate(collections) {
+        if let exportCollection = collection as? JSONValueConvertible {
+          exportSelection.append(exportCollection)
+          let indexPath = NSIndexPath(forRow: i, inSection: 0)
+          exportSelectionIndices.append(indexPath)
+          if let cell = collectionView?.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
+            cell.showIndicator(true, selected: true)
           }
         }
       }
 
-      if let items = collection.items {
-        for (i, item) in enumerate(items) {
-          if let exportItem = item as? JSONValueConvertible {
-            exportSelection.append(exportItem)
-            let indexPath = NSIndexPath(forRow: i, inSection: 1)
-            exportSelectionIndices.append(indexPath)
-            if let cell = collectionView?.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
-              cell.showIndicator(true, selected: true)
-            }
+      for (i, item) in enumerate(items) {
+        if let exportItem = item as? JSONValueConvertible {
+          exportSelection.append(exportItem)
+          let indexPath = NSIndexPath(forRow: i, inSection: 1)
+          exportSelectionIndices.append(indexPath)
+          if let cell = collectionView?.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
+            cell.showIndicator(true, selected: true)
           }
         }
       }
@@ -452,7 +438,7 @@ extension BankCollectionController: UICollectionViewDataSource {
   :returns: Int
   */
   override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return (section == 0 ? collection.collections?.count  : collection.items?.count) ?? 0
+    return (section == 0 ? collectionDelegate.collections.count  : collectionDelegate.items.count) ?? 0
   }
 
   /**
@@ -468,7 +454,7 @@ extension BankCollectionController: UICollectionViewDataSource {
   {
     switch indexPath.section {
       case 0:
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(BankCollectionController.CategoryCellIdentifier,
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(BankCollectionCategoryCell.cellIdentifier,
                                                             forIndexPath: indexPath) as! BankCollectionCategoryCell
         if let collection = nestedCollectionForIndexPath(indexPath) {
           cell.collection = collection
@@ -482,7 +468,7 @@ extension BankCollectionController: UICollectionViewDataSource {
         return cell
 
       default:
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(BankCollectionController.ItemCellIdentifier,
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(BankCollectionItemCell.cellIdentifier,
                                                             forIndexPath: indexPath) as! BankCollectionItemCell
         if let item = itemForIndexPath(indexPath) {
           cell.item = item

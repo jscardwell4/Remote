@@ -34,12 +34,13 @@ class DetailRow {
   var valueDidChange: ((AnyObject?) -> Void)?
   var valueIsValid: ((AnyObject?) -> Bool)?
 
-  static func selectPushableCollection(pushableCollection: BankModelCollection?) -> Void -> Void {
+  static func selectPushableCollection<C:BankModelCollection>(pushableCollection: C?) -> Void -> Void {
     return {
       if let collection = pushableCollection,
-        controller = BankCollectionController(collection: collection),
+        collectionDelegate = BankModelCollectionDelegate(collection: collection),
         nav = UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController
       {
+        let controller = BankCollectionController(collectionDelegate: collectionDelegate)
         nav.pushViewController(controller, animated: true)
       }
     }

@@ -148,9 +148,10 @@ final class FieldView: UIView, UITextFieldDelegate, AKPickerViewDelegate, AKPick
   :param: n String
   :param: f Field
   */
-  init(name n: String, field f: Field) {
+  init(tag t: Int, name n: String, field f: Field) {
     name = n; field = f
     super.init(frame: CGRect.zeroRect)
+    tag = t
     initializeIVARs()
   }
 

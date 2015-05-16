@@ -12,7 +12,7 @@ import MoonKit
 import UIKit
 
 @objc(Preset)
-final public class Preset: EditableModelObject {
+final public class Preset: EditableModelObject, CollectedModel {
 
   public var preview: UIImage? {
     get { return previewData?.image }
@@ -67,6 +67,8 @@ final public class Preset: EditableModelObject {
       didChangeValueForKey("presetCategory")
     }
   }
+
+  public var collection: ModelCollection? { return presetCategory }
 
   public var subelements: OrderedSet<Preset>? {
     get {
