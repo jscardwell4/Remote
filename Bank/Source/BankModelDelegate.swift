@@ -1,5 +1,5 @@
 //
-//  BankModelCollectionDelegate.swift
+//  BankModelDelegate.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 5/15/15.
@@ -10,7 +10,34 @@ import CoreData
 import DataModel
 import MoonKit
 
-class BankModelDelegate: NSFetchedResultsControllerDelegate, Printable {
+
+@objc class BankModelDelegate {
+
+  typealias CreateAction = (FormViewController.FieldValues) -> Void
+  typealias Fields = FormViewController.FieldCollection
+  typealias CreateTransaction = (label: String, fields: Fields, action: CreateAction)
+
+  /**
+  Generates a `CreateTransaction` given a label, a `FormCreation` type, and a managed object context
+
+  :param: label String
+  :param: creatableType T.Type
+  :param: context NSManagedObjectContext
+
+  :returns: CreateTransaction
+  */
+  static func createTransactionWithLabel<T:FormCreatable>(label: String,
+                                            creatableType: T.Type,
+                                                  context: NSManagedObjectContext) -> CreateTransaction
+  {
+    return (label: label, fields: creatableType.formFields(context: context), action: {
+      if let _ = creatableType.createWithFormValues($0, context: context) {
+        DataManager.saveContext(context, propagate: true) {
+          if !$0 { MSHandleError($1, message: "failed to save new manufacturer") }
+        }
+      }
+    })
+  }
 
   /**
   Initalize with name, icon and context expecting to have `fetchedItems` and/or `fetchedCollections` set at some point
@@ -25,6 +52,11 @@ class BankModelDelegate: NSFetchedResultsControllerDelegate, Printable {
     managedObjectContext = context
   }
 
+  var itemsDidChange: ((BankModelDelegate) -> Void)?
+  var collectionsDidChange: ((BankModelDelegate) -> Void)?
+
+  var createItem: CreateTransaction?
+  var createCollection: CreateTransaction?
 
   /** The context used for core data fetches */
   let managedObjectContext: NSManagedObjectContext
@@ -45,6 +77,7 @@ class BankModelDelegate: NSFetchedResultsControllerDelegate, Printable {
       managedObjectClass = NSClassFromString(managedObjectClassName) as? NSManagedObject.Type
       where managedObjectClass.conformsToProtocol(NamedModel.self)
     {
+      fetchedItems.delegate = self
       self.fetchedItems = fetchedItems
     }
   }
@@ -52,6 +85,7 @@ class BankModelDelegate: NSFetchedResultsControllerDelegate, Printable {
   /** The results controller that provides the objects for the `items` array */
   private var fetchedItems: NSFetchedResultsController? {
     didSet {
+      fetchedItems?.delegate = self
       var error: NSError?
       fetchedItems?.performFetch(&error)
       MSHandleError(error)
@@ -71,6 +105,7 @@ class BankModelDelegate: NSFetchedResultsControllerDelegate, Printable {
       managedObjectClass = NSClassFromString(managedObjectClassName) as? NSManagedObject.Type
       where managedObjectClass.conformsToProtocol(ModelCollection.self)
     {
+      fetchedCollections.delegate = self
       self.fetchedCollections = fetchedCollections
     }
   }
@@ -78,6 +113,7 @@ class BankModelDelegate: NSFetchedResultsControllerDelegate, Printable {
   /** The results controller that provides objects for the `collections` array */
   private var fetchedCollections: NSFetchedResultsController? {
     didSet {
+      fetchedCollections?.delegate = self
       var error: NSError?
       fetchedCollections?.performFetch(&error)
       MSHandleError(error)
@@ -87,24 +123,14 @@ class BankModelDelegate: NSFetchedResultsControllerDelegate, Printable {
   /** The child collections belonging to this collection */
   var collections: [ModelCollection] { return fetchedCollections?.fetchedObjects as? [ModelCollection] ?? [] }
 
-  // func delegateForCollectionAtIndex(idx: Int) -> BankModelDelegate {
-  //   let collections = self.collections
-  //   assert(idx < collections.count)
-  //   let collection = collections[idx]
-
-  // }
-
   /** Whether the collection supports viewing an image representation of its items */
   var previewable: Bool { return false }
 
-  var createItemForm: (() -> FormViewController)?
-  var createNewItemForm: FormViewController? { return createItemForm?() }
 
-  var createItem: (() -> Void)?
-  func createNewItem() {
-    MSLogDebug("")
-    createItem?()
-  }
+
+}
+
+extension BankModelDelegate: Printable {
 
   var description: String {
     var result = "BankModelCollectionDelegate:\n"
@@ -121,6 +147,13 @@ class BankModelDelegate: NSFetchedResultsControllerDelegate, Printable {
     return result
   }
 
+}
+
+extension BankModelDelegate: NSFetchedResultsControllerDelegate {
+  func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    if controller === fetchedItems { itemsDidChange?(self) }
+    else if controller === fetchedCollections { collectionsDidChange?(self) }
+  }
 }
 
 final class BankModelCollectionDelegate<C:BankModelCollection>: BankModelDelegate {

@@ -24,64 +24,39 @@ final public class BankRootController: UITableViewController, BankItemImportExpo
 
     let componentDeviceCollection = BankModelDelegate(name: "Component Devices", icon: Bank.componentDevicesImage, context: context)
     componentDeviceCollection.setFetchedItems(ComponentDevice.objectsInContext(context, sortedBy: "name"))
-    componentDeviceCollection.createItem = { MSLogDebug("Here we should create a new component device") }
+//    componentDeviceCollection.createItem = { MSLogDebug("Here we should create a new component device") }
     collectionDelegates.append(componentDeviceCollection)
 
     let irCodeCollection = BankModelDelegate(name: "IR Codes", icon: Bank.irCodesImage, context: context)
     irCodeCollection.setFetchedCollections(IRCodeSet.objectsInContext(context, sortedBy: "name"))
-    irCodeCollection.createItem = { MSLogDebug("Here we should create a new ir code") }
+//    irCodeCollection.createItem = { MSLogDebug("Here we should create a new ir code") }
     collectionDelegates.append(irCodeCollection)
 
     let imageCollection = BankModelDelegate(name: "Images", icon: Bank.imagesImage, context: context)
-    imageCollection.createItem = { MSLogDebug("Here we should create a new image") }
+    imageCollection.createItem = BankModelDelegate.createTransactionWithLabel("Category",
+                                                                creatableType: ImageCategory.self,
+                                                                      context: context)
     imageCollection.setFetchedCollections(ImageCategory.objectsInContext(context,
                                                            withPredicate: ∀"parentCategory == NULL",
                                                                 sortedBy: "name"))
     collectionDelegates.append(imageCollection)
 
     let manufacturerCollection = BankModelDelegate(name: "Manufacturers", icon: Bank.manufacturersImage, context: context)
-    manufacturerCollection.createItemForm = {[unowned manufacturerCollection] in
-
-      let nameValidation: (String?) -> Bool = {
-        $0 != nil &&
-        !$0!.isEmpty &&
-        Manufacturer.objectWithValue($0!,
-                        forAttribute: "name",
-                             context: manufacturerCollection.managedObjectContext) == nil
-      }
-
-      let didCancel: (FormViewController) -> Void = {$0.dismissViewControllerAnimated(true, completion: nil) }
-
-      let didSubmit: (FormViewController, OrderedDictionary<String, Any>) -> Void = {
-        if let name = $1["Name"] as? String {
-          let manufacturer = Manufacturer(context: manufacturerCollection.managedObjectContext)
-          manufacturer.name = name
-        } else {
-          assert(false, "how did we get here")
-        }
-        $0.dismissViewControllerAnimated(true, completion: nil)
-      }
-
-      let nameField = FormViewController.Field.Text(initial: nil, placeholder: "The manufacturer's name") {
-        $0 != nil &&
-        !$0!.isEmpty &&
-        Manufacturer.objectWithValue($0!,
-                        forAttribute: "name",
-                             context: manufacturerCollection.managedObjectContext) == nil
-      }
-
-     return FormViewController(fields: ["Name": nameField], didCancel: didCancel, didSubmit: didSubmit)
-    }
+    manufacturerCollection.createItem = BankModelDelegate.createTransactionWithLabel("Manufacturer",
+                                                                       creatableType: Manufacturer.self,
+                                                                             context: context)
     manufacturerCollection.setFetchedItems(Manufacturer.objectsInContext(context, sortedBy: "name"))
     collectionDelegates.append(manufacturerCollection)
 
     let networkDeviceCollection = BankModelDelegate(name: "Network Devices", icon: Bank.networkDevicesImage, context: context)
-    networkDeviceCollection.createItem = { MSLogDebug("Here we should create a new network device") }
+//    networkDeviceCollection.createItem = { MSLogDebug("Here we should create a new network device") }
     networkDeviceCollection.setFetchedItems(NetworkDevice.objectsInContext(context, sortedBy: "name"))
     collectionDelegates.append(networkDeviceCollection)
 
     let presetCollection = BankModelDelegate(name: "Presets", icon: Bank.presetsImage, context: context)
-    presetCollection.createItem = { MSLogDebug("Here we should create a new preset") }
+    presetCollection.createItem = BankModelDelegate.createTransactionWithLabel("Category",
+                                                                creatableType: PresetCategory.self,
+                                                                      context: context)
     presetCollection.setFetchedCollections(PresetCategory.objectsInContext(context,
                                                              withPredicate: ∀"parentCategory == NULL",
                                                                   sortedBy: "name"))

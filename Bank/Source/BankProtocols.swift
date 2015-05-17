@@ -11,52 +11,31 @@ import UIKit
 import MoonKit
 import DataModel
 
-// MARK: - Detailable protocol and extensions
-@objc protocol Detailable { func detailController() -> UIViewController }
+// MARK: - Detailable protocol
 
-extension ComponentDevice: Detailable {
-  func detailController() -> UIViewController { return ComponentDeviceDetailController(model: self) }
+/** Protocol for bank items that can be presented in a detail controller */
+protocol Detailable {
+  func detailController() -> UIViewController
 }
 
-extension Manufacturer: Detailable {
-  func detailController() -> UIViewController { return ManufacturerDetailController(model: self) }
+// MARK: - Previewable protocol
+
+/** Protocol for objects that can supply an image representation */
+protocol Previewable {
+  var preview: UIImage? { get }
+  var thumbnail: UIImage? { get }
 }
 
-extension IRCode: Detailable {
-  func detailController() -> UIViewController { return IRCodeDetailController(model: self) }
+// Mark: - Form creatable protocol
+
+protocol FormCreatable: Model {
+  static func formFields(#context: NSManagedObjectContext) -> FormViewController.FieldCollection
+  static func createWithFormValues(values: FormViewController.FieldValues, context: NSManagedObjectContext) -> Self?
 }
 
-extension Image: Detailable {
-  func detailController() -> UIViewController { return ImageDetailController(model: self) }
-}
+// MARK: - Bank colleciton protocols
 
-extension ISYDevice: Detailable {
-  func detailController() -> UIViewController { return ISYDeviceDetailController(model: self) }
-}
-
-extension ITachDevice: Detailable {
-  func detailController() -> UIViewController { return ITachDeviceDetailController(model: self) }
-}
-
-extension Preset: Detailable {
-  func detailController() -> UIViewController {
-    switch baseType {
-      case .Remote: return RemotePresetDetailController(model: self)
-      case .ButtonGroup: return ButtonGroupPresetDetailController(model: self)
-      case .Button: return ButtonPresetDetailController(model: self)
-      default: return PresetDetailController(model: self)
-    }
-  }
-}
-
-// MARK: - Previewable protocol and extensions
-@objc protocol Previewable { var preview: UIImage? { get }; var thumbnail: UIImage? { get } }
-
-extension Image: Previewable {}
-extension Preset: Previewable {}
-
-// MARK: - BankModelCollection protocol and extensions
-
+/** Protocol for objects that can supply bank items or collections */
 @objc protocol BankItemCollection: Named {
   optional var itemType: CollectedModel.Type { get }
   optional var collectionType: ModelCollection.Type { get }
@@ -65,27 +44,8 @@ extension Preset: Previewable {}
   optional var previewable: Bool { get }
 }
 
+/** Protocol for models that implement `BankItemCollection` */
 @objc protocol BankModelCollection: BankItemCollection, NamedModel {}
-
-extension Manufacturer: BankModelCollection {
-  var collectionType: ModelCollection.Type { return IRCodeSet.self }
-}
-extension IRCodeSet: BankModelCollection {
-  var itemType: CollectedModel.Type { return IRCode.self }
-}
-
-extension ImageCategory: BankModelCollection {
-  var itemType: CollectedModel.Type { return Image.self }
-  var collectionType: ModelCollection.Type { return ImageCategory.self }
-  var previewable: Bool { return true }
-}
-
-extension PresetCategory: BankModelCollection {
-  var itemType: CollectedModel.Type { return Preset.self }
-  var collectionType: ModelCollection.Type { return PresetCategory.self }
-  var previewable: Bool { return true }
-}
-
 
 // MARK: - View controller related protocols
 
@@ -115,6 +75,7 @@ protocol BankItemImportExportController: class {
 /** Protocol for types that want create bar button item in bottom toolbar */
 protocol BankItemCreationController: class {
   func createBankItem()  // Called from create item bar button action
+  weak var createItemBarButton: ToggleBarButtonItem? { get set }
 }
 
 /** Protocol for types that want search bar button item in bottom toolbar */

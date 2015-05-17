@@ -23,6 +23,11 @@ public class ToggleImageBarButtonItem: ToggleBarButtonItem {
     set { imageView.highlightedImage = newValue }
   }
 
+  public var disabledTintColor = UIColor.lightGrayColor()
+
+  override public var enabled: Bool { didSet { imageView?.tintColor = enabled ? nil : disabledTintColor } }
+
+
   /** init */
   public override init() { super.init() }
 
@@ -36,7 +41,7 @@ public class ToggleImageBarButtonItem: ToggleBarButtonItem {
   public init(image: UIImage, toggledImage: UIImage, action: (ToggleBarButtonItem) -> Void) {
 
     // create a view to hold the image view for padding purposes
-    let containingView = UIView(frame: CGRect(origin: CGPoint.zeroPoint, size: CGSize(width: 44.0, height: 44.0)))
+    let container = UIView(frame: CGRect(origin: CGPoint.zeroPoint, size: CGSize(width: 44.0, height: 44.0)))
 
     // create the image view
     let imageView = UIImageView(image: image, highlightedImage: toggledImage)
@@ -45,14 +50,14 @@ public class ToggleImageBarButtonItem: ToggleBarButtonItem {
     imageView.contentMode = .ScaleAspectFit
 
     // add the image view to the containing view
-    containingView.addSubview(imageView)
+    container.addSubview(imageView)
 
     // add constraints
-    containingView.constrain("image.center = self.center :: image.top ≥ self.top + 8 :: image.bottom ≤ self.bottom - 8",
-                       views: ["image": imageView])
+    container.constrain(imageView.centerX => container.centerX, imageView.centerY => container.centerY,
+                        imageView.top ≥ container.top + 8, imageView.bottom ≤ container.bottom - 8)
 
     // call super's initializer with our custom view
-    super.init(customView: containingView)
+    super.init(customView: container)
 
     // add a gesture for triggering our action
     imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toggle:"))

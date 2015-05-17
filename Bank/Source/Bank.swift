@@ -228,6 +228,7 @@ import Glyphish
         }
       createBarItem.width = outterItemWidth
       toolbarItems += [negativeSpacer, createBarItem]
+      creationController.createItemBarButton = createBarItem
     } else {
       toolbarItems.append(UIBarButtonItem.fixedSpace(floor(outterWidth/2)))
     }

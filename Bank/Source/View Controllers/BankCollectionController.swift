@@ -17,12 +17,9 @@ import Settings
 
 final class BankCollectionController: UICollectionViewController, BankItemSelectiveViewingModeController {
 
-//	private static let ItemCellIdentifier = BankCollectionItemCell.cellIdentifier
-//	private static let CategoryCellIdentifier = BankCollectionCategoryCell.cellIdentifier
-
-//  var description: String {
-//    return "\(super.description), collectionDelegate = {\n\(toString(collectionDelegate).indentedBy(4))\n}"
-//  }
+  override var description: String {
+    return "\(super.description), collectionDelegate = {\n\(toString(collectionDelegate).indentedBy(4))\n}"
+  }
 
   /** The object supplying subcategories and/or items for the collection */
   let collectionDelegate: BankModelDelegate
@@ -70,6 +67,8 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   init(collectionDelegate d: BankModelDelegate, mode m: Mode = .Default) {
   	collectionDelegate = d; mode = m
     super.init(collectionViewLayout: BankCollectionLayout())
+    d.collectionsDidChange = {[unowned self] _ in self.collectionView?.reloadSections(NSIndexSet(index: 0)) }
+    d.itemsDidChange = {[unowned self] _ in self.collectionView?.reloadSections(NSIndexSet(index: 1)) }
     if mode == .Default {
 	    exportButton = Bank.exportBarButtonItemForController(self)
 	    selectAllButton = Bank.selectAllButtonForController(self)
@@ -78,6 +77,9 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
 
   /** Segmented control for toggling viewing mode when the collection supports thumbnails  */
   internal weak var displayOptionsControl: ToggleImageSegmentedControl?
+
+  /** Set by the bank when bottom toolbar items are generated */
+  weak var createItemBarButton: ToggleBarButtonItem?
 
   required init(coder aDecoder: NSCoder) { fatalError("init(coder aDecoder: NSCoder) not supported") }
 
@@ -96,7 +98,10 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
     }()
 
     // Get the bottom toolbar items when not in `Selection` mode
-    if mode == .Default { toolbarItems = Bank.toolbarItemsForController(self) }
+    if mode == .Default {
+      toolbarItems = Bank.toolbarItemsForController(self)
+      createItemBarButton?.enabled = (collectionDelegate.createItem != nil || collectionDelegate.createCollection != nil)
+    }
 
   }
 
@@ -368,6 +373,38 @@ extension BankCollectionController: BankCollectionZoomViewDelegate {
 
 extension BankCollectionController: BankItemCreationController {
   func createBankItem() {
+
+    func presentFormForTransaction(transaction: BankModelDelegate.CreateTransaction) {
+      let dismissController = {self.dismissViewControllerAnimated(true, completion: {self.createItemBarButton?.isToggled = false})}
+      let form = FormViewController(fields: transaction.fields,
+                                    didSubmit: {_, values in transaction.action(values); dismissController()},
+                                    didCancel: {_ in dismissController()})
+      Bank.decorateForm(form)
+      presentViewController(form, animated: true, completion: nil)
+    }
+
+    switch (collectionDelegate.createItem, collectionDelegate.createCollection) {
+      // Display popover if there are multiple valid create transactions
+      case let (createItem, createCollection) where createItem != nil && createCollection != nil:
+        // TODO: Present popover to choose which transaction to begin
+        break
+      // Display controller for item creation if collection transaction is nil
+      case let (createItem, createCollection) where createItem != nil && createCollection == nil:
+        presentFormForTransaction(createItem!)
+
+      // Display controller for collection creation if item transaction is nil
+      case let (createItem, createCollection) where createItem == nil && createCollection != nil:
+        presentFormForTransaction(createCollection!)
+
+      // Don't do anything if we have no valid create transactions
+      default:
+        assert(false, "create bar button item should only be enabled if delegate has at least one valid transaction")
+    }
+
+//    if let form = collectionDelegate.createItemForm?() {
+//      Bank.decorateForm(form)
+//      presentViewController(form, animated: true, completion: nil)
+//    }
   }
 }
 
