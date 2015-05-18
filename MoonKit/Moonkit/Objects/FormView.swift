@@ -9,12 +9,43 @@
 import Foundation
 import UIKit
 
+public final class Form {
+
+  public var fields: OrderedDictionary<String, Field>
+  public var changeHandler: ((Form, Field, String) -> Void)?
+
+  public init(templates: OrderedDictionary<String, FieldTemplate>) {
+    fields = templates.map {Field.fieldWithTemplate($2)}
+    apply(fields) {$2.changeHandler = self.didChangeField}
+  }
+
+  func didChangeField(field: Field) { if let name = nameForField(field) { changeHandler?(self, field, name) } }
+
+  func nameForField(field: Field) -> String? {
+    if let idx = find(fields.values, field) { return fields.keys[idx] } else { return nil }
+  }
+
+  public var invalidFields: [(Int, String, Field)] {
+    var result: [(Int, String, Field)] = []
+    for (idx, name, field) in fields { if !field.valid { result.append((idx, name, field)) } }
+    return result
+  }
+
+  public var values: OrderedDictionary<String, Any>? {
+    var values: OrderedDictionary<String, Any> = [:]
+    for (_, n, f) in fields { if f.valid, let value: Any = f.value { values[n] = value } else { return nil } }
+    return values
+  }
+
+}
+
 final class FormView: UIView {
 
-  typealias FieldCollection = FormViewController.FieldCollection
-  typealias FieldValues = FormViewController.FieldValues
-  typealias Field = FormViewController.Field
   typealias Appearance = FormViewController.Appearance
+
+  // MARK: - Form type
+
+  let form: Form
 
   // MARK: - Customizing appearance
 
@@ -23,25 +54,25 @@ final class FormView: UIView {
   // MARK: - Initializing the view
 
   /**
-  initWithFields:appearance:
+  initWithForm:appearance:
 
-  :param: fields FieldCollection
+  :param: form Form
   :param: appearance Appearance? = nil
   */
-  init(fields: FieldCollection, appearance: Appearance? = nil) {
-    fieldAppearance = appearance
+  init(form f: Form, appearance: Appearance? = nil) {
+    form = f; fieldAppearance = appearance
     super.init(frame: CGRect.zeroRect)
     setTranslatesAutoresizingMaskIntoConstraints(false)
     backgroundColor = UIColor(white: 0.9, alpha: 0.75)
     layer.shadowOpacity = 0.75
     layer.shadowRadius = 8
     layer.shadowOffset = CGSize(width: 1.0, height: 3.0)
-    apply(fields) { self.addSubview(FieldView(tag: $0, name: $1, field: $2)) }
+    apply(f.fields) {self.addSubview(FieldView(tag: $0, name: $1, field: $2))}
   }
 
   required init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
-// MARK: - Field views
+  // MARK: - Field views
 
   /** Limit subviews to instances of `FieldView` */
   override func addSubview(view: UIView) {
@@ -60,33 +91,22 @@ final class FormView: UIView {
 
   var fieldViews: [FieldView] { return subviews as! [FieldView] }
 
-  var fieldValues: FieldValues? {
-    var values: FieldValues = [:]
-    var valid = true
-    for fieldView in fieldViews {
-      fieldView.showingInvalid = !fieldView.valid
-      if fieldView.showingInvalid { valid = false }
-      else { values[fieldView.name] = fieldView.value }
-    }
-    return valid ? values : nil
-  }
-
   // MARK: - Constraints
 
   override class func requiresConstraintBasedLayout() -> Bool { return true }
 
   override func updateConstraints() {
     super.updateConstraints()
-    let fields = fieldViews
+    let fieldViews = self.fieldViews
     let id = createIdentifier(self, "Internal")
     removeConstraintsWithIdentifier(id)
-    apply(fields) {constrain($0.left => self.left + 10.0, $0.right => self.right - 10.0 --> id)}
-    if let first = fields.first, last = fields.last {
+    apply(fieldViews) {constrain($0.left => self.left + 10.0, $0.right => self.right - 10.0 --> id)}
+    if let first = fieldViews.first, last = fieldViews.last {
 
       constrain(first.top => self.top + 10.0 --> id)
 
-      if fields.count > 1 {
-        var middle = fields[1..<fields.count].generate()
+      if fieldViews.count > 1 {
+        var middle = fieldViews[1..<fieldViews.count].generate()
         var p = first
         while let c = middle.next() { constrain(identifier: id, c.top => p.bottom + 10.0); p = c }
       }

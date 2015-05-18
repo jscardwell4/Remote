@@ -723,6 +723,7 @@
 		C2EEBA261B08087D0041B1B1 /* Manufacturer+Bank.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EEBA1C1B08087D0041B1B1 /* Manufacturer+Bank.swift */; };
 		C2EEBA271B08087D0041B1B1 /* Preset+Bank.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EEBA1D1B08087D0041B1B1 /* Preset+Bank.swift */; };
 		C2EEBA281B08087D0041B1B1 /* PresetCategory+Bank.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EEBA1E1B08087D0041B1B1 /* PresetCategory+Bank.swift */; };
+		C2EEBA2A1B08F0DE0041B1B1 /* NamedModelObject+Bank.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EEBA291B08F0DE0041B1B1 /* NamedModelObject+Bank.swift */; };
 		C2EF968417F79E06005AA639 /* TableCellDetailArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2EF968317F79E06005AA639 /* TableCellDetailArrow@2x.png */; };
 		C2F01E2F1A030BD6007F6966 /* ColorSelectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F01E2E1A030BD6007F6966 /* ColorSelectionController.swift */; };
 		C2F01E311A03D9E3007F6966 /* BackgroundEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F01E301A03D9E3007F6966 /* BackgroundEditingController.swift */; };
@@ -1840,6 +1841,7 @@
 		C2EEBA1C1B08087D0041B1B1 /* Manufacturer+Bank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Manufacturer+Bank.swift"; sourceTree = "<group>"; };
 		C2EEBA1D1B08087D0041B1B1 /* Preset+Bank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Preset+Bank.swift"; sourceTree = "<group>"; };
 		C2EEBA1E1B08087D0041B1B1 /* PresetCategory+Bank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PresetCategory+Bank.swift"; sourceTree = "<group>"; };
+		C2EEBA291B08F0DE0041B1B1 /* NamedModelObject+Bank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NamedModelObject+Bank.swift"; sourceTree = "<group>"; };
 		C2EF968317F79E06005AA639 /* TableCellDetailArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TableCellDetailArrow@2x.png"; sourceTree = "<group>"; };
 		C2F01E2E1A030BD6007F6966 /* ColorSelectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSelectionController.swift; sourceTree = "<group>"; };
 		C2F01E301A03D9E3007F6966 /* BackgroundEditingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundEditingController.swift; sourceTree = "<group>"; };
@@ -3361,6 +3363,7 @@
 		C2EEBA0A1B0806610041B1B1 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				C2EEBA291B08F0DE0041B1B1 /* NamedModelObject+Bank.swift */,
 				C2EEBA151B08087D0041B1B1 /* ComponentDevice+Bank.swift */,
 				C2EEBA161B08087D0041B1B1 /* Image+Bank.swift */,
 				C2EEBA171B08087D0041B1B1 /* ImageCategory+Bank.swift */,
@@ -4784,6 +4787,7 @@
 				C285D84B1AC48C9800C527F6 /* DetailImageRow.swift in Sources */,
 				C2EEBA221B08087D0041B1B1 /* IRCode+Bank.swift in Sources */,
 				C285D8651AC48FCA00C527F6 /* ButtonPresetDetailController.swift in Sources */,
+				C2EEBA2A1B08F0DE0041B1B1 /* NamedModelObject+Bank.swift in Sources */,
 				C285D8321AC48C3200C527F6 /* DetailCell.swift in Sources */,
 				C285D8561AC48C9800C527F6 /* DetailTwoToneSliderRow.swift in Sources */,
 				C285D8511AC48C9800C527F6 /* DetailStepperRow.swift in Sources */,

@@ -18,18 +18,45 @@ extension PresetCategory: BankModelCollection {
 }
 
 extension PresetCategory: FormCreatable {
+
   static func formFields(#context: NSManagedObjectContext) -> FormViewController.FieldCollection {
-    return ["Name":FormViewController.Field.Text(initial: nil, placeholder: "The category's name") {
+    return ["Name":FormViewController.Field.Text(value: "", placeholder: "The category's name") {
       $0 != nil && !$0!.isEmpty && PresetCategory.objectWithValue($0!, forAttribute: "name", context: context) == nil
       }]
   }
-  static func createWithFormValues(values: FormViewController.FieldValues, context: NSManagedObjectContext) -> PresetCategory? {
-    if let name = values["Name"] as? String {
-      let category = PresetCategory(context: context)
-      category.name = name
-      return category
-    } else {
-      return nil
-    }
+
+  static func createWithFormValues(values: FormViewController.FieldValues,
+                                  context: NSManagedObjectContext) -> PresetCategory?
+  {
+    if let name = values["Name"] as? String { return PresetCategory(name: name, context: context) }
+    else { return nil }
   }
+}
+
+extension PresetCategory: CreatableItemBankModelCollection {
+
+  static func itemTypeFormFields(#context: NSManagedObjectContext) -> FormViewController.FieldCollection {
+    return Preset.formFields(context: context)
+  }
+
+  static func createItemTypeWithFormValues(values: FormViewController.FieldValues,
+                                           context: NSManagedObjectContext) -> CollectedModel?
+  {
+    return Preset.createWithFormValues(values, context: context)
+  }
+
+}
+
+extension PresetCategory: CreatableCollectionBankModelCollection {
+
+  static func collectionTypeFormFields(#context: NSManagedObjectContext) -> FormViewController.FieldCollection {
+    return PresetCategory.formFields(context: context)
+  }
+
+  static func createCollectionTypeWithFormValues(values: FormViewController.FieldValues,
+                                                 context: NSManagedObjectContext) -> ModelCollection?
+  {
+    return PresetCategory.createWithFormValues(values, context: context)
+  }
+
 }

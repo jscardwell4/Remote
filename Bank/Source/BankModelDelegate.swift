@@ -26,9 +26,9 @@ import MoonKit
 
   :returns: CreateTransaction
   */
-  static func createTransactionWithLabel<T:FormCreatable>(label: String,
-                                            creatableType: T.Type,
-                                                  context: NSManagedObjectContext) -> CreateTransaction
+  class func createTransactionWithLabel<T:FormCreatable>(label: String,
+                                           creatableType: T.Type,
+                                                 context: NSManagedObjectContext) -> CreateTransaction
   {
     return (label: label, fields: creatableType.formFields(context: context), action: {
       if let _ = creatableType.createWithFormValues($0, context: context) {
@@ -126,8 +126,6 @@ import MoonKit
   /** Whether the collection supports viewing an image representation of its items */
   var previewable: Bool { return false }
 
-
-
 }
 
 extension BankModelDelegate: Printable {
@@ -176,7 +174,7 @@ final class BankModelCollectionDelegate<C:BankModelCollection>: BankModelDelegat
 
   :returns: Bool
   */
-  private static func propertyForRelationshipPair(collection: NSEntityDescription, item: NSEntityDescription) -> String? {
+  private static func propertyForRelationshipPair(collection: NSEntityDescription, _ item: NSEntityDescription) -> String? {
     if var collectionToItem = collection.relationshipsWithDestinationEntity(item) as? [NSRelationshipDescription]
       where collectionToItem.count > 0,
       var itemToCollection = item.relationshipsWithDestinationEntity(collection) as? [NSRelationshipDescription]
@@ -201,9 +199,35 @@ final class BankModelCollectionDelegate<C:BankModelCollection>: BankModelDelegat
       }
     }
 
-
     return nil
   }
+
+  let rootType: ModelObject.Type
+  let itemType: ModelObject.Type?
+  let collectionType: ModelObject.Type?
+
+  let itemToRootAttributeName: String?
+  let collectionToRootAttributeName: String?
+
+  /**
+  Creates a fetched results controller, assuming collection has been set and has a valid managed object context
+
+  :param: entity NSEntityDescription
+  :param: name String
+
+  :returns: NSFetchedResultsController
+  */
+  private func fetchedResultsForEntity(entity: NSEntityDescription, withAttributeName name: String) -> NSFetchedResultsController {
+    let request = NSFetchRequest()
+    request.entity = entity
+    request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+    request.predicate = ∀"\(name).uuid == '\(collection.uuid)'"
+    return NSFetchedResultsController(fetchRequest: request,
+                                      managedObjectContext: collection.managedObjectContext!,
+                                      sectionNameKeyPath: nil,
+                                      cacheName: nil)
+  }
+
 
   /**
   Initialize with an actual collection, collection must have a valid managed object context
@@ -215,43 +239,49 @@ final class BankModelCollectionDelegate<C:BankModelCollection>: BankModelDelegat
 
     // Check for a valid context before continuing with collection delegate initialization
     if let context = c.managedObjectContext {
-      super.init(name: c.name, icon: nil, context: context)
-      if let owningCollectionType = c.dynamicType.self as? ModelObject.Type,
+
+      // Get the root type as subclass of the `ModelObject` type
+      if let type = c.dynamicType.self as? ModelObject.Type {
+
+        rootType = type
+        let rootEntity = rootType.entityDescription
+
         itemType = collection.itemType as? ModelObject.Type
-      {
-        let collectionEntity = owningCollectionType.entityDescription
-        let itemEntity = itemType.entityDescription
-        if let propertyName = self.dynamicType.propertyForRelationshipPair(collectionEntity, item: itemEntity) {
-          let request = NSFetchRequest()
-          request.entity = itemEntity
-          request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-          request.predicate = ∀"\(propertyName).uuid == '\(collection.uuid)'"
-          fetchedItems = NSFetchedResultsController(fetchRequest: request,
-                                                    managedObjectContext: context,
-                                                    sectionNameKeyPath: nil,
-                                                    cacheName: nil)
+        if itemType != nil {
+          itemToRootAttributeName = BankModelCollectionDelegate.propertyForRelationshipPair(rootEntity, itemType!.entityDescription)
+        } else { itemToRootAttributeName = nil }
+
+        collectionType = collection.collectionType as? ModelObject.Type
+        if collectionType != nil {
+          collectionToRootAttributeName = BankModelCollectionDelegate.propertyForRelationshipPair(rootEntity, collectionType!.entityDescription)
+        } else { collectionToRootAttributeName = nil }
+
+        super.init(name: c.name, icon: nil, context: context)
+
+        if let entity = itemType?.entityDescription, name = itemToRootAttributeName {
+          fetchedItems = fetchedResultsForEntity(entity, withAttributeName: name)
+        }
+
+        if let entity = collectionType?.entityDescription, name = collectionToRootAttributeName {
+          fetchedCollections = fetchedResultsForEntity(entity, withAttributeName: name)
         }
       }
-      if let owningCollectionType = c.dynamicType.self as? ModelObject.Type,
-        collectionType = collection.collectionType as? ModelObject.Type
-      {
-        let collectionEntity = owningCollectionType.entityDescription
-        let itemEntity = collectionType.entityDescription
-        if let propertyName = self.dynamicType.propertyForRelationshipPair(collectionEntity, item: itemEntity) {
-          let request = NSFetchRequest()
-          request.entity = itemEntity
-          request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-          request.predicate = ∀"\(propertyName).uuid == '\(collection.uuid)'"
-          fetchedCollections = NSFetchedResultsController(fetchRequest: request,
-                                                          managedObjectContext: context,
-                                                          sectionNameKeyPath: nil,
-                                                          cacheName: nil)
-        }
+
+      // Otherwise bug out
+      else {
+        rootType = ModelObject.self
+        itemType = nil
+        collectionType = nil
+        itemToRootAttributeName = nil
+        collectionToRootAttributeName = nil
+        super.init(name: c.name, icon: nil, context: context)
+        return nil
       }
     }
 
     // Without a valid context, initialization fails
     else {
+      rootType = ModelObject.self; itemType = nil; collectionType = nil; itemToRootAttributeName = nil; collectionToRootAttributeName = nil
       super.init(name: c.name, icon: nil, context: NSManagedObjectContext())
       return nil
     }

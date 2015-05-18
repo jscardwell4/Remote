@@ -59,7 +59,6 @@ public final class ComponentDevice: EditableModelObject {
     } else { return false }
   }
 
-
   public func powerOn(completion: ((Bool, NSError?) -> Void)?) {
     if !ignorePowerCommand(completion) {
       offCommand?.execute{[unowned self] (success: Bool, error: NSError?) in

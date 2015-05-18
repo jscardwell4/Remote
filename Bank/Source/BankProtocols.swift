@@ -46,6 +46,18 @@ protocol FormCreatable: Model {
 
 /** Protocol for models that implement `BankItemCollection` */
 @objc protocol BankModelCollection: BankItemCollection, NamedModel {}
+protocol CreatableItemBankModelCollection: BankModelCollection {
+  // typealias ItemType
+  static func itemTypeFormFields(#context: NSManagedObjectContext) -> FormViewController.FieldCollection
+  static func createItemTypeWithFormValues(values: FormViewController.FieldValues,
+                                           context: NSManagedObjectContext) -> CollectedModel?
+}
+protocol CreatableCollectionBankModelCollection: BankModelCollection {
+  // typealias CollectionType
+  static func collectionTypeFormFields(#context: NSManagedObjectContext) -> FormViewController.FieldCollection
+  static func createCollectionTypeWithFormValues(values: FormViewController.FieldValues,
+                                                 context: NSManagedObjectContext) -> ModelCollection?
+}
 
 // MARK: - View controller related protocols
 

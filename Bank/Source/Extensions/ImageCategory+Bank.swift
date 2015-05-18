@@ -20,7 +20,7 @@ extension ImageCategory: BankModelCollection {
 
 extension ImageCategory: FormCreatable {
   static func formFields(#context: NSManagedObjectContext) -> FormViewController.FieldCollection {
-    return ["Name":FormViewController.Field.Text(initial: nil, placeholder: "The category's name") {
+    return ["Name":FormViewController.Field.Text(value: "", placeholder: "The category's name") {
       $0 != nil && !$0!.isEmpty && ImageCategory.objectWithValue($0!, forAttribute: "name", context: context) == nil
       }]
   }

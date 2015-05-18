@@ -24,7 +24,9 @@ final public class BankRootController: UITableViewController, BankItemImportExpo
 
     let componentDeviceCollection = BankModelDelegate(name: "Component Devices", icon: Bank.componentDevicesImage, context: context)
     componentDeviceCollection.setFetchedItems(ComponentDevice.objectsInContext(context, sortedBy: "name"))
-//    componentDeviceCollection.createItem = { MSLogDebug("Here we should create a new component device") }
+    // componentDeviceCollection.createItem = BankModelDelegate.createTransactionWithLabel("Component Device",
+    //                                                                       creatableType: ComponentDevice.self,
+    //                                                                             context: context)
     collectionDelegates.append(componentDeviceCollection)
 
     let irCodeCollection = BankModelDelegate(name: "IR Codes", icon: Bank.irCodesImage, context: context)
@@ -33,18 +35,18 @@ final public class BankRootController: UITableViewController, BankItemImportExpo
     collectionDelegates.append(irCodeCollection)
 
     let imageCollection = BankModelDelegate(name: "Images", icon: Bank.imagesImage, context: context)
-    imageCollection.createItem = BankModelDelegate.createTransactionWithLabel("Category",
-                                                                creatableType: ImageCategory.self,
-                                                                      context: context)
+    // imageCollection.createItem = BankModelDelegate.createTransactionWithLabel("Category",
+    //                                                             creatableType: ImageCategory.self,
+    //                                                                   context: context)
     imageCollection.setFetchedCollections(ImageCategory.objectsInContext(context,
                                                            withPredicate: ∀"parentCategory == NULL",
                                                                 sortedBy: "name"))
     collectionDelegates.append(imageCollection)
 
     let manufacturerCollection = BankModelDelegate(name: "Manufacturers", icon: Bank.manufacturersImage, context: context)
-    manufacturerCollection.createItem = BankModelDelegate.createTransactionWithLabel("Manufacturer",
-                                                                       creatableType: Manufacturer.self,
-                                                                             context: context)
+    // manufacturerCollection.createItem = BankModelDelegate.createTransactionWithLabel("Manufacturer",
+    //                                                                    creatableType: Manufacturer.self,
+    //                                                                          context: context)
     manufacturerCollection.setFetchedItems(Manufacturer.objectsInContext(context, sortedBy: "name"))
     collectionDelegates.append(manufacturerCollection)
 
@@ -54,9 +56,9 @@ final public class BankRootController: UITableViewController, BankItemImportExpo
     collectionDelegates.append(networkDeviceCollection)
 
     let presetCollection = BankModelDelegate(name: "Presets", icon: Bank.presetsImage, context: context)
-    presetCollection.createItem = BankModelDelegate.createTransactionWithLabel("Category",
-                                                                creatableType: PresetCategory.self,
-                                                                      context: context)
+    // presetCollection.createItem = BankModelDelegate.createTransactionWithLabel("Category",
+    //                                                             creatableType: PresetCategory.self,
+    //                                                                   context: context)
     presetCollection.setFetchedCollections(PresetCategory.objectsInContext(context,
                                                              withPredicate: ∀"parentCategory == NULL",
                                                                   sortedBy: "name"))

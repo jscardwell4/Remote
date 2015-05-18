@@ -13,33 +13,19 @@ public class FormViewController: UIViewController {
 
   public typealias Submission = (FormViewController, OrderedDictionary<String,Any>) -> Void
   public typealias Cancellation = (FormViewController) -> Void
-  public typealias FieldCollection = OrderedDictionary<String, Field>
-  public typealias FieldValues = OrderedDictionary<String, Any>
-
-  // MARK: - Field enumeration
-
-  /** Type for defining a field in the form */
-  public enum Field {
-    case Text     (initial: String?, placeholder: String?, validation: ((String?) -> Bool)?)
-    case Switch   (initial: Bool)
-    case Slider   (initial: Float, min: Float, max: Float)
-    case Stepper  (initial: Double, min: Double, max: Double, step: Double)
-    case Picker   (initial: Int, choices: [String])
-    case Checkbox (initial: Bool)
-  }
 
   // MARK: - Initializating the controller
 
   /**
-  Default initializer takes the fields and cancel/submit callbacks
+  Default initializer takes the form and cancel/submit callbacks
 
-  :param: fields FieldCollection
+  :param: form Form
   :param: submit Submission? = nil
   :param: cancel Cancellation? = nil
   */
-  public init(fields f: FieldCollection, didSubmit submit: Submission? = nil, didCancel cancel: Cancellation? = nil)
+  public init(form f: Form, didSubmit submit: Submission? = nil, didCancel cancel: Cancellation? = nil)
   {
-    fields = f; didSubmit = submit; didCancel = cancel
+    form = f; didSubmit = submit; didCancel = cancel
     super.init(nibName: nil, bundle: nil)
     modalTransitionStyle = .CrossDissolve
   }
@@ -57,6 +43,7 @@ public class FormViewController: UIViewController {
     let controlSelectedTextColor: UIColor
   }
 
+  public let form: Form
 
   public dynamic var labelFont: UIFont = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
   public dynamic var controlFont: UIFont = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
@@ -79,7 +66,6 @@ public class FormViewController: UIViewController {
   // MARK: - The controller's private properties
   private let didSubmit: Submission?
   private let didCancel: Cancellation?
-  private let fields: FieldCollection
 
   private weak var snapshotView: UIView?
   private weak var effectView: UIVisualEffectView?
@@ -99,7 +85,7 @@ public class FormViewController: UIViewController {
     view.addSubview(effectView)
     self.effectView = effectView
 
-    let formView = FormView(fields: fields, appearance: formAppearance)
+    let formView = FormView(form: form, appearance: formAppearance)
     effectView.contentView.addSubview(formView)
     self.formView = formView
 
@@ -144,6 +130,6 @@ public class FormViewController: UIViewController {
   func cancelAction() { didCancel?(self) }
 
   /** submitAction */
-  func submitAction() { if let fieldValues = formView?.fieldValues { didSubmit?(self, fieldValues) } }
+  func submitAction() { if let fieldValues = form.values { didSubmit?(self, fieldValues) } }
 
 }

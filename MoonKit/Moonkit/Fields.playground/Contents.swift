@@ -1,12 +1,12 @@
-//
-//  FieldView.swift
-//  MoonKit
-//
-//  Created by Jason Cardwell on 5/11/15.
-//  Copyright (c) 2015 Jason Cardwell. All rights reserved.
-//
+//: Playground - noun: a place where people can play
 
-import Foundation
+import UIKit
+import class MoonKit.UIView
+import class MoonKit.AKPickerView
+import protocol MoonKit.AKPickerViewDelegate
+import protocol MoonKit.AKPickerViewDataSource
+import class MoonKit.Checkbox
+import struct MoonKit.OrderedDictionary
 
 public enum FieldTemplate {
   case Text     (value: String, placeholder: String?, validation: ((String?) -> Bool)?)
@@ -45,7 +45,7 @@ public class Field: NSObject {
     }
   }
 
-  private final class TextField: Field, UITextFieldDelegate {
+  private class TextField: Field, UITextFieldDelegate {
     var _value: String = ""
     override var type: Type { return .Text }
     override var value: Any? { get { return _value } set { if let v = newValue as? String { _value = v } } }
@@ -56,7 +56,6 @@ public class Field: NSObject {
     init(value: String, placeholder: String?, validation: ((String?) -> Bool)?) {
       _value = value; self.placeholder = placeholder; self.validation = validation; super.init()
     }
-
     weak var _control: UITextField?
     override var control: UIView {
       let control = UITextField.newForAutolayout()
@@ -76,7 +75,7 @@ public class Field: NSObject {
     }
   }
 
-  private final class SwitchField: Field {
+  private class SwitchField: Field {
     var _value = false
     override var type: Type { return .Switch }
     override var value: Any? { get { return _value } set { if let v = newValue as? Bool { _value = v } } }
@@ -91,7 +90,7 @@ public class Field: NSObject {
     }
   }
 
-  private final class SliderField: Field {
+  private class SliderField: Field {
     var _value: Float = 0
     override var type: Type { return .Slider }
     override var value: Any? { get { return _value } set { if let v = newValue as? Float { _value = v } } }
@@ -110,7 +109,7 @@ public class Field: NSObject {
     }
   }
 
-  private final class StepperField: Field {
+  private class StepperField: Field {
     var _value = 0.0
     override var type: Type { return .Stepper }
     override var value: Any? { get { return _value } set { if let v = newValue as? Double { _value = v } } }
@@ -131,7 +130,7 @@ public class Field: NSObject {
     }
   }
 
-  private final class PickerField: Field, AKPickerViewDelegate, AKPickerViewDataSource {
+  private class PickerField: Field, AKPickerViewDelegate, AKPickerViewDataSource {
     var _value = 0
     override var type: Type { return .Picker }
     override var value: Any? { get { return _value } set { if let v = newValue as? Int { _value = v } } }
@@ -166,7 +165,7 @@ public class Field: NSObject {
     }
   }
 
-  private final class CheckboxField: Field {
+  private class CheckboxField: Field {
     var _value = false
     override var type: Type { return .Checkbox }
     override var value: Any? { get { return _value } set { if let v = newValue as? Bool { _value = v } } }
@@ -182,125 +181,24 @@ public class Field: NSObject {
       return control
     }
   }
+  
+}
+
+public class Form {
+
+  public var fields: OrderedDictionary<String, Field>
+  public var changeHandler: ((Form, Field, String) -> Void)?
+
+  public init(templates: OrderedDictionary<String, FieldTemplate>) {
+    fields = templates.map {Field.fieldWithTemplate($0)}
+    apply(fields) {$2.changeHandler = self.didChangeField}
+  }
+
+  func didChangeField(field: Field) { if let name = nameForField(field) { changeHandler?(self, field, name) } }
+
+  func nameForField(field: Field) -> String? {
+    if let idx = find(fields.values, field) { return fields.keys[idx] } else { return nil }
+  }
 
 }
 
-
-/** View subclass for a single form field with a name label and a control for capturing the value */
-final class FieldView: UIView {
-
-  // MARK: - Field-related properties
-
-  let name: String
-  let field: Field
-  var value: Any? { get { return field.value } set { field.value = newValue } }
-
-  // MARK: - Customizing appearance
-
-  var labelFont: UIFont { get { return nameLabel.font } set { nameLabel.font = newValue } }
-  var labelTextColor: UIColor { get { return nameLabel.textColor } set { nameLabel.textColor = newValue } }
-
-  var controlFont: UIFont? {
-    get { return textControl?.font ?? pickerControl?.font }
-    set { if let font = newValue { textControl?.font = font; pickerControl?.font = font } }
-  }
-  var controlSelectedFont: UIFont? {
-    get { return pickerControl?.highlightedFont }
-    set { if let font = newValue { pickerControl?.highlightedFont = font } }
-  }
-  var controlTextColor: UIColor? {
-    get { return textControl?.textColor ?? pickerControl?.textColor }
-    set { if let color = newValue { textControl?.textColor = color;  pickerControl?.textColor = color } }
-  }
-  var controlSelectedTextColor: UIColor? {
-    get { return  pickerControl?.highlightedTextColor }
-    set { if let color = newValue { pickerControl?.highlightedTextColor = color } }
-  }
-
-  // MARK: - Label and control
-
-  /** Overridden to return the field view's `name` property */
-  override var nametag: String! { get { return nameLabel.text } set {} }
-
-  weak var nameLabel: UILabel!
-  weak var fieldControl: UIView!
-
-  var didChangeValue: ((FieldView) -> Void)?
-
-  var textControl: UITextField?    { return fieldControl as? UITextField  }
-  var switchControl: UISwitch?     { return fieldControl as? UISwitch     }
-  var sliderControl: UISlider?     { return fieldControl as? UISlider     }
-  var stepperControl: UIStepper?   { return fieldControl as? UIStepper    }
-  var pickerControl: AKPickerView? { return fieldControl as? AKPickerView }
-  var checkboxControl: Checkbox?   { return fieldControl as? Checkbox     }
-
-  // MARK: Observing value changes
-
-  /**
-  valueDidChange:
-
-  :param: sender UIControl
-  */
-  func valueDidChange(sender: UIControl) {
-    MSLogDebug("sender = \(toString(sender))")
-  }
-
-  // MARK: Validating text fields
-
-  var valid: Bool { return field.valid }
-  var showingInvalid = false { didSet { textControl?.layer.shadowOpacity = showingInvalid ? 0.9 : 0.0 } }
-
-  // MARK: - Initializing the view
-
-  /** initializeIVARs */
-  private func initializeIVARs() {
-    setTranslatesAutoresizingMaskIntoConstraints(false)
-    let label = UILabel.newForAutolayout()
-    label.text = name
-    addSubview(label)
-    nameLabel = label
-    let control = field.control
-    addSubview(control)
-    fieldControl = control
-  }
-
-  /**
-  Initialize the view with a name and field
-
-  :param: n String
-  :param: f Field
-  */
-  init(tag t: Int, name n: String, field f: Field) {
-    name = n; field = f
-    super.init(frame: CGRect.zeroRect)
-    tag = t
-    initializeIVARs()
-  }
-
-  required init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-
-  // MARK: - Constraints
-
-  override class func requiresConstraintBasedLayout() -> Bool { return true }
-
-  /**
-  intrinsicContentSize
-
-  :returns: CGSize
-  */
-  override func intrinsicContentSize() -> CGSize {
-    let labelSize = nameLabel.intrinsicContentSize()
-    let fieldSize = fieldControl.intrinsicContentSize()
-    return CGSize(width: labelSize.width + 10.0 + fieldSize.width,
-                  height: max(labelSize.height, fieldSize.height))
-  }
-
-  override func updateConstraints() {
-    super.updateConstraints()
-    let id = createIdentifier(self, "Internal")
-    removeConstraintsWithIdentifier(id)
-    constrain([𝗩|nameLabel|𝗩, 𝗩|fieldControl|𝗩] --> id)
-    constrain([𝗛|nameLabel, fieldControl.left => nameLabel.right + 10.0, fieldControl|𝗛] --> id)
-  }
-
-}
