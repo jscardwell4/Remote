@@ -31,6 +31,8 @@ public final class Form {
     return result
   }
 
+  public var valid: Bool { return invalidFields.count == 0 }
+
   public var values: OrderedDictionary<String, Any>? {
     var values: OrderedDictionary<String, Any> = [:]
     for (_, n, f) in fields { if f.valid, let value: Any = f.value { values[n] = value } else { return nil } }
@@ -67,7 +69,19 @@ final class FormView: UIView {
     layer.shadowOpacity = 0.75
     layer.shadowRadius = 8
     layer.shadowOffset = CGSize(width: 1.0, height: 3.0)
-    apply(f.fields) {self.addSubview(FieldView(tag: $0, name: $1, field: $2))}
+    apply(f.fields) {
+      (idx: Int, name: String, field: Field) -> Void in
+      let fieldView = FieldView(tag: idx, name: name, field: field)
+      if let appearance = appearance {
+        field.font = appearance.controlFont
+        field.selectedFont = appearance.controlSelectedFont
+        field.color = appearance.controlTextColor
+        field.selectedColor = appearance.controlSelectedTextColor
+        fieldView.labelFont = appearance.labelFont
+        fieldView.labelTextColor = appearance.labelTextColor
+      }
+      self.addSubview(fieldView)
+    }
   }
 
   required init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -75,19 +89,7 @@ final class FormView: UIView {
   // MARK: - Field views
 
   /** Limit subviews to instances of `FieldView` */
-  override func addSubview(view: UIView) {
-    if let fieldView = view as? FieldView {
-      if let appearance = fieldAppearance {
-        fieldView.labelFont = appearance.labelFont
-        fieldView.labelTextColor = appearance.labelTextColor
-        fieldView.controlFont = appearance.controlFont
-        fieldView.controlSelectedFont = appearance.controlSelectedFont
-        fieldView.controlTextColor = appearance.controlTextColor
-        fieldView.controlSelectedTextColor = appearance.controlSelectedTextColor
-      }
-      super.addSubview(fieldView)
-    }
-  }
+  override func addSubview(view: UIView) { if let fieldView = view as? FieldView { super.addSubview(fieldView) } }
 
   var fieldViews: [FieldView] { return subviews as! [FieldView] }
 

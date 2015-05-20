@@ -17,26 +17,32 @@ extension ComponentDevice: Detailable {
 
 extension ComponentDevice: FormCreatable {
 
-  static func formFields(#context: NSManagedObjectContext) -> FormViewController.FieldCollection {
-    typealias Field = FormViewController.Field
+  /**
+  creationForm:
 
-    var formFields: FormViewController.FieldCollection = [:]
+  :param: #context NSManagedObjectContext
 
-    formFields["Name"]            = nameFormField(context: context)
-    formFields["Manufacturer"]    = Manufacturer.pickerFormField(context: context)
-    formFields["Port"]            = Field.Stepper(value: 1, min: 1, max: 3, step: 1)
-    formFields["Network Device"]  = ITachDevice.pickerFormField(context: context)
-    formFields["Always On"]       = Field.Switch(value: false)
-    formFields["Input Powers On"] = Field.Switch(value: false)
+  :returns: Form
+  */
+  static func creationForm(#context: NSManagedObjectContext) -> Form {
+
+    var fields: OrderedDictionary<String, FieldTemplate> = [:]
+
+    fields["Name"]            = nameFormFieldTemplate(context: context)
+    fields["Manufacturer"]    = Manufacturer.pickerFormFieldTemplate(context: context)
+    fields["Port"]            = .Stepper(value: 1, min: 1, max: 3, step: 1)
+    fields["Network Device"]  = ITachDevice.pickerFormFieldTemplate(context: context)
+    fields["Always On"]       = .Switch(value: false)
+    fields["Input Powers On"] = .Switch(value: false)
 
     /**
     codeSet:       IRCodeSet?
     */
 
-    return formFields
+    return Form(templates: fields)
   }
 
-  static func createWithFormValues(values: FormViewController.FieldValues, context: NSManagedObjectContext) -> Self? {
+  static func createWithForm(form: Form, context: NSManagedObjectContext) -> Self? {
     return nil
   }
 

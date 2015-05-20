@@ -8,9 +8,39 @@
 
 import Foundation
 import DataModel
+import MoonKit
+import CoreData
 
 extension Image: Previewable {}
 
 extension Image: Detailable {
   func detailController() -> UIViewController { return ImageDetailController(model: self) }
+}
+
+// TODO: Fill out stubs for `FormCreatable`
+extension Image: FormCreatable {
+
+  /**
+  creationForm:
+
+  :param: #context NSManagedObjectContext
+
+  :returns: Form
+  */
+  static func creationForm(#context: NSManagedObjectContext) -> Form {
+    return Form(templates: [:])
+  }
+
+  /**
+  createWithForm:context:
+
+  :param: form Form
+  :param: context NSManagedObjectContext
+
+  :returns: Self?
+  */
+  static func createWithForm(form: Form, context: NSManagedObjectContext) -> Self? {
+    return nil
+  }
+
 }

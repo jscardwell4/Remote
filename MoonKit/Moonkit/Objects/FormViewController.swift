@@ -11,7 +11,7 @@ import UIKit
 
 public class FormViewController: UIViewController {
 
-  public typealias Submission = (FormViewController, OrderedDictionary<String,Any>) -> Void
+  public typealias Submission = (FormViewController, Form) -> Void
   public typealias Cancellation = (FormViewController) -> Void
 
   // MARK: - Initializating the controller
@@ -130,6 +130,6 @@ public class FormViewController: UIViewController {
   func cancelAction() { didCancel?(self) }
 
   /** submitAction */
-  func submitAction() { if let fieldValues = form.values { didSubmit?(self, fieldValues) } }
+  func submitAction() { if form.valid { didSubmit?(self, form) } }
 
 }

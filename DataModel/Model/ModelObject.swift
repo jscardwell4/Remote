@@ -312,7 +312,7 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
     request.propertiesToFetch = [attribute]
 
     var error: NSError?
-    let results = context.executeFetchRequest(request, error: &error)
+    let results = compressedMap(context.executeFetchRequest(request, error: &error), {($0 as? [String:AnyObject])?[attribute]})
     MSHandleError(error)
     return results ?? []
   }

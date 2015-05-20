@@ -61,7 +61,7 @@
 - (NSArray *)subviewsWithNametag:(NSString *)nametag;
 - (NSArray *)subviewsWithNametagPrefix:(NSString *)prefix;
 - (NSArray *)subviewsWithNametagSuffix:(NSString *)suffixx;
-- (NSArray *)subviewsMatching:(NSPredicate *)predicate;
+//- (NSArray *)subviewsMatching:(NSPredicate *)predicate;
 
 - (UIGestureRecognizer *)gestureWithNametag:(NSString *)nametag;
 - (UIGestureRecognizer *)gestureWithNametagPrefix:(NSString *)prefix;

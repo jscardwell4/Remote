@@ -1366,7 +1366,6 @@
 		C24A226E1ADABB540065E7EA /* SendIRCommand_Simple.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SendIRCommand_Simple.json; sourceTree = "<group>"; };
 		C24A226F1ADABB540065E7EA /* SwitchCommand_Simple.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SwitchCommand_Simple.json; sourceTree = "<group>"; };
 		C24A22701ADABB540065E7EA /* SystemCommand_Simple.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SystemCommand_Simple.json; sourceTree = "<group>"; };
-		C24DD2881AE402A5000306A0 /* BankSurrogateCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankSurrogateCategory.swift; sourceTree = "<group>"; };
 		C24E0EBE1AC61E080044248E /* MoonKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MoonKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C253B2E01AD98D6B00F7E6AF /* Asset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
 		C25B130219FB4A6500C5630F /* Remote.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Remote.entitlements; sourceTree = "<group>"; };
@@ -3079,7 +3078,6 @@
 			children = (
 				C2EEBA0A1B0806610041B1B1 /* Extensions */,
 				C249DB7A1B064FA3005EA44C /* BankModelDelegate.swift */,
-				C24DD2881AE402A5000306A0 /* BankSurrogateCategory.swift */,
 				C2E9F44C1ABCA395007581F2 /* Bank.swift */,
 				C2E9F4651ABCA395007581F2 /* DocumentSelectionController.swift */,
 				C2E9F4661ABCA395007581F2 /* ImportExportFileManager.swift */,

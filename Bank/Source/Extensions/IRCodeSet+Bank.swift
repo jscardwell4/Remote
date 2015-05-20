@@ -17,14 +17,31 @@ extension IRCodeSet: BankModelCollection {
 
 extension IRCodeSet: FormCreatable {
 
-  static func formFields(#context: NSManagedObjectContext) -> FormViewController.FieldCollection {
-    return ["Name":FormViewController.Field.Text(value: "", placeholder: "The code set's name") {
-      $0 != nil && !$0!.isEmpty && IRCodeSet.objectWithValue($0!, forAttribute: "name", context: context) == nil
-      }]
+  /**
+  creationForm:
+
+  :param: #context NSManagedObjectContext
+
+  :returns: Form
+  */
+  static func creationForm(#context: NSManagedObjectContext) -> Form {
+
+    var fields: OrderedDictionary<String, FieldTemplate> = [:]
+
+    fields["Name"]         = nameFormFieldTemplate(context: context)
+    fields["Manufacturer"] = Manufacturer.pickerFormFieldTemplate(context: context, optional: false)
+
+    return Form(templates: fields)
   }
 
-  static func createWithFormValues(values: FormViewController.FieldValues, context: NSManagedObjectContext) -> IRCodeSet? {
-    if let name = values["Name"] as? String { return IRCodeSet(name: name, context: context) }
-    else { return nil }
+  static func createWithForm(form: Form, context: NSManagedObjectContext) -> IRCodeSet? {
+    if let name = form.values?["Name"] as? String,
+      manufacturerName = form.values?["Manufacturer"] as? String,
+      manufacturer = Manufacturer.objectWithValue(manufacturerName, forAttribute: "name", context: context)
+    {
+      let codeSet = IRCodeSet(name: name, context: context)
+      codeSet.manufacturer = manufacturer
+      return codeSet
+    } else { return nil }
   }
 }

@@ -24,19 +24,30 @@ extension Preset: Detailable {
   }
 }
 
+// TODO: Fill out `FormCreatable` stubs
 extension Preset: FormCreatable {
-  static func formFields(#context: NSManagedObjectContext) -> FormViewController.FieldCollection {
-    return ["Name":FormViewController.Field.Text(value: "", placeholder: "The manufacturer's name") {
-      $0 != nil && !$0!.isEmpty && Preset.objectWithValue($0!, forAttribute: "name", context: context) == nil
-      }]
+
+  /**
+  creationForm:
+
+  :param: #context NSManagedObjectContext
+
+  :returns: Form
+  */
+  static func creationForm(#context: NSManagedObjectContext) -> Form {
+    return Form(templates: OrderedDictionary<String, FieldTemplate>(["Name": nameFormFieldTemplate(context: context)]))
   }
-  static func createWithFormValues(values: FormViewController.FieldValues, context: NSManagedObjectContext) -> Preset? {
-    if let name = values["Name"] as? String {
-      let preset = Preset(context: context)
-      preset.name = name
-      return preset
-    } else {
-      return nil
-    }
+
+  /**
+  createWithForm:context:
+
+  :param: form Form
+  :param: context NSManagedObjectContext
+
+  :returns: Preset?
+  */
+  static func createWithForm(form: Form, context: NSManagedObjectContext) -> Preset? {
+    if let name = form.values?["Name"] as? String { return Preset(name: name, context: context) } else { return nil }
   }
+
 }

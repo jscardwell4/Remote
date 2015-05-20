@@ -3,6 +3,16 @@ import Foundation
 import UIKit
 import MoonKit
 
+class WTF {}
+
+let wtf = WTF()
+
+let firstIdentfier = ObjectIdentifier(wtf)
+let secondIdentifier = ObjectIdentifier(wtf)
+
+firstIdentfier == secondIdentifier
+toString(firstIdentfier.uintValue)
+
 var q = Queue<Int>()
 q
 q.enqueue(1)

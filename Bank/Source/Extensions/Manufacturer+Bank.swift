@@ -20,13 +20,28 @@ extension Manufacturer: Detailable {
 }
 
 extension Manufacturer: FormCreatable {
-  static func formFields(#context: NSManagedObjectContext) -> FormViewController.FieldCollection {
-    return ["Name":FormViewController.Field.Text(value: "", placeholder: "The manufacturer's name") {
-      $0 != nil && !$0!.isEmpty && Manufacturer.objectWithValue($0!, forAttribute: "name", context: context) == nil
-      }]
+
+  /**
+  creationForm:
+
+  :param: #context NSManagedObjectContext
+
+  :returns: Form
+  */
+  static func creationForm(#context: NSManagedObjectContext) -> Form {
+    return Form(templates: OrderedDictionary<String, FieldTemplate>(["Name": nameFormFieldTemplate(context: context)]))
   }
-  static func createWithFormValues(values: FormViewController.FieldValues, context: NSManagedObjectContext) -> Manufacturer? {
-    if let name = values["Name"] as? String { return Manufacturer(name: name, context: context) }
+
+  /**
+  createWithForm:context:
+
+  :param: form Form
+  :param: context NSManagedObjectContext
+
+  :returns: Manufacturer?
+  */
+  static func createWithForm(form: Form, context: NSManagedObjectContext) -> Manufacturer? {
+    if let name = form.values?["Name"] as? String { return Manufacturer(name: name, context: context) }
     else { return nil }
   }
 

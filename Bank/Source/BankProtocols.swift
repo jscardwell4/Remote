@@ -29,8 +29,8 @@ protocol Previewable {
 // Mark: - Form creatable protocol
 
 protocol FormCreatable: Model {
-  static func formFields(#context: NSManagedObjectContext) -> FormViewController.FieldCollection
-  static func createWithFormValues(values: FormViewController.FieldValues, context: NSManagedObjectContext) -> Self?
+  static func creationForm(#context: NSManagedObjectContext) -> Form
+  static func createWithForm(form: Form, context: NSManagedObjectContext) -> Self?
 }
 
 // MARK: - Bank colleciton protocols
@@ -48,15 +48,15 @@ protocol FormCreatable: Model {
 @objc protocol BankModelCollection: BankItemCollection, NamedModel {}
 protocol CreatableItemBankModelCollection: BankModelCollection {
   // typealias ItemType
-  static func itemTypeFormFields(#context: NSManagedObjectContext) -> FormViewController.FieldCollection
-  static func createItemTypeWithFormValues(values: FormViewController.FieldValues,
-                                           context: NSManagedObjectContext) -> CollectedModel?
+//  static func itemTypeFormFields(#context: NSManagedObjectContext) -> FormViewController.FieldCollection
+//  static func createItemTypeWithFormValues(values: FormViewController.FieldValues,
+//                                           context: NSManagedObjectContext) -> CollectedModel?
 }
 protocol CreatableCollectionBankModelCollection: BankModelCollection {
   // typealias CollectionType
-  static func collectionTypeFormFields(#context: NSManagedObjectContext) -> FormViewController.FieldCollection
-  static func createCollectionTypeWithFormValues(values: FormViewController.FieldValues,
-                                                 context: NSManagedObjectContext) -> ModelCollection?
+//  static func collectionTypeFormFields(#context: NSManagedObjectContext) -> FormViewController.FieldCollection
+//  static func createCollectionTypeWithFormValues(values: FormViewController.FieldValues,
+//                                                 context: NSManagedObjectContext) -> ModelCollection?
 }
 
 // MARK: - View controller related protocols

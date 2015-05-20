@@ -31,7 +31,9 @@ final public class BankRootController: UITableViewController, BankItemImportExpo
 
     let irCodeCollection = BankModelDelegate(name: "IR Codes", icon: Bank.irCodesImage, context: context)
     irCodeCollection.setFetchedCollections(IRCodeSet.objectsInContext(context, sortedBy: "name"))
-//    irCodeCollection.createItem = { MSLogDebug("Here we should create a new ir code") }
+    irCodeCollection.createItem = BankModelDelegate.createTransactionWithLabel("IR Code Set",
+                                                                 creatableType: IRCodeSet.self,
+                                                                       context: context)
     collectionDelegates.append(irCodeCollection)
 
     let imageCollection = BankModelDelegate(name: "Images", icon: Bank.imagesImage, context: context)
@@ -44,9 +46,9 @@ final public class BankRootController: UITableViewController, BankItemImportExpo
     collectionDelegates.append(imageCollection)
 
     let manufacturerCollection = BankModelDelegate(name: "Manufacturers", icon: Bank.manufacturersImage, context: context)
-    // manufacturerCollection.createItem = BankModelDelegate.createTransactionWithLabel("Manufacturer",
-    //                                                                    creatableType: Manufacturer.self,
-    //                                                                          context: context)
+    manufacturerCollection.createItem = BankModelDelegate.createTransactionWithLabel("Manufacturer",
+                                                                       creatableType: Manufacturer.self,
+                                                                             context: context)
     manufacturerCollection.setFetchedItems(Manufacturer.objectsInContext(context, sortedBy: "name"))
     collectionDelegates.append(manufacturerCollection)
 

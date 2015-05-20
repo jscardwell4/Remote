@@ -18,13 +18,11 @@ public class EditableModelObject: IndexedModelObject, EditableModel {
 
   /** delete */
   public func delete() {
-    if let moc = self.managedObjectContext {
-      moc.performBlockAndWait { moc.processPendingChanges(); moc.deleteObject(self) }
-      DataManager.saveContext(moc, propagate: true)
-    }
+    if let moc = self.managedObjectContext { DataManager.saveContext(moc, withBlockAndWait: {$0.deleteObject(self)}) }
   }
 
-  public var editable: Bool { return user }
+  // TODO: Returning true for all Editable model objects, this should not be the case when shipping app
+  public var editable: Bool { return true } //user }
 
   /** rollback */
   public func rollback() { if let moc = self.managedObjectContext { moc.performBlockAndWait { moc.rollback() } } }

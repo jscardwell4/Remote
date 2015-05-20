@@ -8,7 +8,37 @@
 
 import Foundation
 import DataModel
+import MoonKit
+import CoreData
 
 extension IRCode: Detailable {
   func detailController() -> UIViewController { return IRCodeDetailController(model: self) }
+}
+
+// TODO: Fill out stubs for `FormCreatable`
+extension IRCode: FormCreatable {
+
+  /**
+  creationForm:
+
+  :param: #text NSManagedObjectContext
+
+  :returns: Form
+  */
+  static func creationForm(#context: NSManagedObjectContext) -> Form {
+    return Form(templates: [:])
+  }
+
+  /**
+  createWithForm:context:
+
+  :param: form Form
+  :param: context NSManagedObjectContext
+
+  :returns: Self?
+  */
+  static func createWithForm(form: Form, context: NSManagedObjectContext) -> Self? {
+    return nil
+  }
+
 }

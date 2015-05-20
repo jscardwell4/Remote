@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import UIKit.UIGestureRecognizerSubclass
 
-public class BlockActionGesture: UIGestureRecognizer {
+@objc public class BlockActionGesture: UIGestureRecognizer {
 
   private let handlerTarget = Handler()
 
@@ -87,7 +87,7 @@ public class BlockActionGesture: UIGestureRecognizer {
   public convenience init(handler: (BlockActionGesture) -> Void) {
     self.init()
     self.handler = handler
-    addTarget(self, action: "dispatchHandler")
+    addTarget(self, action: "dispatchHandler:")
   }
 
   /**
@@ -107,9 +107,9 @@ public class BlockActionGesture: UIGestureRecognizer {
   :param: target AnyObject
   :param: action Selector
   */
-//  public override init(target: AnyObject, action: Selector) {
-//    super.init(target: target, action: action)
-//    addTarget(self, action: "dispatchHandler")
-//  }
+  public override init(target: AnyObject, action: Selector) {
+    super.init(target: target, action: action)
+    addTarget(self, action: "dispatchHandler:")
+  }
 
 }

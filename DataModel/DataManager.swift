@@ -217,6 +217,7 @@ import MoonKit
                                       NSInferMappingModelAutomaticallyOption: true])
     {
       MSLogDebug("persistent store url: '\(databaseStoreURL)'")
+      stack.rootContext.nametag = "root"
       return stack
     } else { return nil }
 
@@ -405,25 +406,6 @@ import MoonKit
 
   }
 
-  /**
-  Save the root context
-
-  :param: completion ((Bool, NSError?) -> Void)? = nil
-  */
-  public class func saveRootContext(completion: ((Bool, NSError?) -> Void)? = nil) {
-    rootContext.performBlock {
-      var error: NSError?
-      MSLogDebug("saving context…")
-      if self.rootContext.save(&error) && !MSHandleError(error, message: "error occurred while saving context") {
-        MSLogDebug("context saved successfully")
-        completion?(true, nil)
-      } else {
-        MSHandleError(error, message: "failed to save context")
-        completion?(false, error)
-      }
-    }
-  }
-
   /** dumpData */
   private class func dumpData(completion: ((Void) -> Void)? = nil ) {
     rootContext.performBlock {
@@ -498,7 +480,7 @@ import MoonKit
   objects are added to a context as the result of a fetch.
   */
   private static func contextDidChangeNotification(notification: NSNotification) {
-    MSLogDebug("")
+    MSLogDebug("context did change '\(toString((notification.object as! NSManagedObjectContext).nametag))")
   }
 
   /*
@@ -507,7 +489,7 @@ import MoonKit
   The notification object is the managed object context. There is no userInfo dictionary.
   */
   private static func contextWillSaveNotification(notification: NSNotification) {
-    MSLogDebug("")
+    MSLogDebug("context will save '\(toString((notification.object as! NSManagedObjectContext).nametag))")
   }
 
   /*
@@ -524,10 +506,60 @@ import MoonKit
   see Concurrency with Core Data.
   */
   private static func contextDidSaveNotification(notification: NSNotification) {
-    MSLogDebug("")
+    MSLogDebug("context did save '\(toString((notification.object as! NSManagedObjectContext).nametag))")
   }
 
   // Mark: Saving contexts
+
+  public typealias PerformBlock = (NSManagedObjectContext) -> Void
+  public typealias CompletionCallback = (Bool, NSError?) -> Void
+
+  /**
+  Wraps save action with error handling, only to be called from within an appropriate 'perform' block
+
+  :param: context NSManagedObjectContext
+  
+  :returns: (Bool, NSError?)
+  */
+  private class func saveContext(context: NSManagedObjectContext) -> (Bool, NSError?) {
+    var error: NSError?
+    return (context.save(&error), error)
+  }
+
+  /**
+  Invokes `performBlockAndWait:` on the specified context, within which the optional block is invoked followed by a save
+
+  :param: context NSManagedObjectContext
+  :param: block PerformBlock? = nil
+  
+  :returns: (Bool, NSError?)
+  */
+  public class func saveContext(context: NSManagedObjectContext,
+               withBlockAndWait block: PerformBlock? = nil) -> (Bool, NSError?)
+  {
+    MSLogDebug("saving context \(toString(context.nametag))")
+    var (success, error): (Bool, NSError?) = (false, nil)
+    context.performBlockAndWait { block?(context); (success, error) = DataManager.saveContext(context) }
+    return (success, error)
+  }
+
+  /**
+  Invokes `performBlock:` on the specified context, within which the optional block is invoked followed by a save
+
+  :param: context NSManagedObjectContext
+  :param: block PerformBlock? = nil
+  */
+  public class func saveContext(context: NSManagedObjectContext,
+                      withBlock block: PerformBlock? = nil,
+                     completion: CompletionCallback? = nil)
+  {
+    MSLogDebug("saving context \(toString(context.nametag))")
+    context.performBlock {
+      block?(context)
+      let (success, error) = DataManager.saveContext(context)
+      completion?(success, error)
+    }
+  }
 
   /**
   saveContext:withBlock::propagate:nonBlocking:completion:
@@ -538,14 +570,15 @@ import MoonKit
   :param: nonBlocking Bool = false
   :param: completion ((Bool, NSError?) -> Void)? = nil
   */
-  public class func saveContext(moc: NSManagedObjectContext,
-               withBlock block: ((NSManagedObjectContext) -> Void)? = nil,
+  public class func saveContext(context: NSManagedObjectContext,
+               withBlock block: PerformBlock? = nil,
                propagate: Bool = false,
              nonBlocking: Bool = false,
      backgroundExecution: Bool = false,
               completion: ((Bool, NSError?) -> Void)? = nil)
   {
-    stack.saveContext(moc,
+    MSLogDebug("saving context '\(toString(context.nametag))")
+    stack.saveContext(context,
                     withBlock: block,
                     propagate: propagate,
                   nonBlocking: nonBlocking,
@@ -553,6 +586,35 @@ import MoonKit
                    completion: completion)
   }
 
+  public class func propagatingSaveFromContext(context: NSManagedObjectContext) {
+    MSLogDebug("starting context = \(toString(context.nametag))")
+    var currentContext = context
+    while let parentContext = currentContext.parentContext {
+      MSLogDebug("saving context \(toString(parentContext.nametag))")
+      parentContext.performBlockAndWait {DataManager.saveContext(parentContext)}
+      currentContext = parentContext
+    }
+  }
+
+
+  /**
+  Save the root context
+
+  :param: completion ((Bool, NSError?) -> Void)? = nil
+  */
+  public class func saveRootContext(completion: ((Bool, NSError?) -> Void)? = nil) {
+    rootContext.performBlock {
+      var error: NSError?
+      MSLogDebug("saving context '\(toString(self.rootContext.nametag))'")
+      if self.rootContext.save(&error) && !MSHandleError(error, message: "error occurred while saving context") {
+        MSLogDebug("context saved successfully")
+        completion?(true, nil)
+      } else {
+        MSHandleError(error, message: "failed to save context")
+        completion?(false, error)
+      }
+    }
+  }
 
   // MARK: - Marker type
 

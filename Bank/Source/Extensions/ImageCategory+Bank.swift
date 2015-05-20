@@ -19,18 +19,26 @@ extension ImageCategory: BankModelCollection {
 
 
 extension ImageCategory: FormCreatable {
-  static func formFields(#context: NSManagedObjectContext) -> FormViewController.FieldCollection {
-    return ["Name":FormViewController.Field.Text(value: "", placeholder: "The category's name") {
-      $0 != nil && !$0!.isEmpty && ImageCategory.objectWithValue($0!, forAttribute: "name", context: context) == nil
-      }]
+  /**
+  creationForm:
+
+  :param: #context NSManagedObjectContext
+
+  :returns: Form
+  */
+  static func creationForm(#context: NSManagedObjectContext) -> Form {
+    return Form(templates: OrderedDictionary<String, FieldTemplate>(["Name": nameFormFieldTemplate(context: context)]))
   }
-  static func createWithFormValues(values: FormViewController.FieldValues, context: NSManagedObjectContext) -> ImageCategory? {
-    if let name = values["Name"] as? String {
-      let category = ImageCategory(context: context)
-      category.name = name
-      return category
-    } else {
-      return nil
-    }
+
+  /**
+  createWithForm:context:
+
+  :param: form Form
+  :param: context NSManagedObjectContext
+
+  :returns: ImageCategory?
+  */
+  static func createWithForm(form: Form, context: NSManagedObjectContext) -> ImageCategory? {
+    if let name = form.values?["Name"] as? String { return ImageCategory(name: name, context: context) } else { return nil }
   }
 }

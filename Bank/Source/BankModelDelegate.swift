@@ -13,9 +13,15 @@ import MoonKit
 
 @objc class BankModelDelegate {
 
-  typealias CreateAction = (FormViewController.FieldValues) -> Void
-  typealias Fields = FormViewController.FieldCollection
-  typealias CreateTransaction = (label: String, fields: Fields, action: CreateAction)
+  typealias BeginEndChangeCallback = (BankModelDelegate) -> Void
+  typealias ChangeCallback = (BankModelDelegate, Change) -> Void
+
+  // MARK: - Transactions
+
+  typealias CreateTransaction = (label: String, form: Form, action: (Form) -> Bool)
+
+  var createItem: CreateTransaction?
+  var createCollection: CreateTransaction?
 
   /**
   Generates a `CreateTransaction` given a label, a `FormCreation` type, and a managed object context
@@ -30,14 +36,14 @@ import MoonKit
                                            creatableType: T.Type,
                                                  context: NSManagedObjectContext) -> CreateTransaction
   {
-    return (label: label, fields: creatableType.formFields(context: context), action: {
-      if let _ = creatableType.createWithFormValues($0, context: context) {
-        DataManager.saveContext(context, propagate: true) {
-          if !$0 { MSHandleError($1, message: "failed to save new manufacturer") }
-        }
-      }
+    return (label: label, form: creatableType.creationForm(context: context), action: { form in
+      let (success, error) = DataManager.saveContext(context) {_ = creatableType.createWithForm(form, context: $0)}
+      MSHandleError(error, message: "failed to save new manufacturer")
+      return success
     })
   }
+
+  // MARK: - Initialization
 
   /**
   Initalize with name, icon and context expecting to have `fetchedItems` and/or `fetchedCollections` set at some point
@@ -52,20 +58,47 @@ import MoonKit
     managedObjectContext = context
   }
 
-  var itemsDidChange: ((BankModelDelegate) -> Void)?
-  var collectionsDidChange: ((BankModelDelegate) -> Void)?
-
-  var createItem: CreateTransaction?
-  var createCollection: CreateTransaction?
-
-  /** The context used for core data fetches */
-  let managedObjectContext: NSManagedObjectContext
+  // MARK: - Root collection support
 
   /** A name that may be used as a label or title for the collection */
   let name: String
 
   /** Optional image that may be used to represent the collection */
   let icon: UIImage?
+
+  /** Whether the collection supports viewing an image representation of its items */
+  var previewable: Bool { return false }
+
+  // MARK: - Callbacks
+  typealias Change = (type: NSFetchedResultsChangeType, indexPath: NSIndexPath?, newIndexPath: NSIndexPath?)
+
+  var beginItemsChanges: BeginEndChangeCallback?
+  var endItemsChanges: BeginEndChangeCallback?
+  var itemsDidChange: ChangeCallback?
+
+  var beginCollectionsChanges: BeginEndChangeCallback?
+  var endCollectionsChanges: BeginEndChangeCallback?
+  var collectionsDidChange: ChangeCallback?
+
+  // MARK: - Managed object context
+
+  /** The context used for core data fetches */
+  let managedObjectContext: NSManagedObjectContext
+
+  // MARK: - Items collection
+
+  var numberOfItems: Int { return (fetchedItems?.sections?[0] as? NSFetchedResultsSectionInfo)?.numberOfObjects ?? 0 }
+
+  /**
+  itemAtIndex:
+
+  :param: index Int
+
+  :returns: NamedModel?
+  */
+  func itemAtIndex(index: Int) -> NamedModel? {
+    return fetchedItems?.objectAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? NamedModel
+  }
 
   /**
   Sets the `fetchedItems` results controller
@@ -92,8 +125,20 @@ import MoonKit
     }
   }
 
-  /** The items belonging to this collection */
-  var items: [NamedModel] { return fetchedItems?.fetchedObjects as? [NamedModel] ?? [] }
+  // MARK: - Collections collection
+
+  var numberOfCollections: Int { return (fetchedCollections?.sections?[0] as? NSFetchedResultsSectionInfo)?.numberOfObjects ?? 0 }
+
+  /**
+  collectionAtIndex:
+
+  :param: index Int
+
+  :returns: ModelCollection
+  */
+  func collectionAtIndex(index: Int) -> ModelCollection? {
+    return fetchedCollections?.objectAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? ModelCollection
+  }
 
   /**
   Sets the `fetchedCollections` results controller
@@ -120,13 +165,9 @@ import MoonKit
     }
   }
 
-  /** The child collections belonging to this collection */
-  var collections: [ModelCollection] { return fetchedCollections?.fetchedObjects as? [ModelCollection] ?? [] }
-
-  /** Whether the collection supports viewing an image representation of its items */
-  var previewable: Bool { return false }
-
 }
+
+// MARK: - Descriptions
 
 extension BankModelDelegate: Printable {
 
@@ -135,11 +176,11 @@ extension BankModelDelegate: Printable {
     result += "\tlabel = \(toString(name))\n"
     result += "\ticon = \(toString(icon))\n"
     result += "\tcollections = "
-    let collections = self.collections
+    let collections = (fetchedCollections?.fetchedObjects as? [ModelCollection]) ?? []
     if collections.count == 0 { result += "[]\n" }
     else { result += "{\n" + "\n\n".join(collections.map({toString($0)})).indentedBy(8) + "\n\t}\n" }
     result += "items = "
-    let items = self.items
+    let items = (fetchedItems?.fetchedObjects as? [NamedModel]) ?? []
     if items.count == 0 { result += "[]\n" }
     else { result += "{\n" + "\n\n".join(items.map({toString($0)})).indentedBy(8) + "\n\t}\n" }
     return result
@@ -147,14 +188,64 @@ extension BankModelDelegate: Printable {
 
 }
 
+// MARK: - NSFetchedResultsControllerDelegate methods
+
 extension BankModelDelegate: NSFetchedResultsControllerDelegate {
-  func controllerDidChangeContent(controller: NSFetchedResultsController) {
-    if controller === fetchedItems { itemsDidChange?(self) }
-    else if controller === fetchedCollections { collectionsDidChange?(self) }
+
+  func controllerWillChangeContent(controller: NSFetchedResultsController) {
+    MSLogDebug("")
+    if controller === fetchedItems { beginItemsChanges?(self) }
+    else if controller === fetchedCollections { beginCollectionsChanges?(self) }
   }
+
+  func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    MSLogDebug("")
+    if controller === fetchedItems { endItemsChanges?(self) }
+    else if controller === fetchedCollections { endCollectionsChanges?(self) }
+  }
+
+  func controller(controller: NSFetchedResultsController,
+  didChangeObject anObject: AnyObject,
+      atIndexPath indexPath: NSIndexPath?,
+    forChangeType type: NSFetchedResultsChangeType,
+    newIndexPath: NSIndexPath?)
+  {
+    let change: Change = (type: type, indexPath: indexPath, newIndexPath: newIndexPath)
+    if controller === fetchedItems { itemsDidChange?(self, change) }
+    else if controller === fetchedCollections { collectionsDidChange?(self, change) }
+
+    let changeType: String
+    switch type {
+      case .Insert: changeType = "Insert"
+      case .Delete: changeType = "Delete"
+      case .Move:   changeType = "Move"
+      case .Update: changeType = "Update"
+    }
+    MSLogDebug("object = \((anObject as! NamedModel).name), indexPath = \(toString(indexPath)), type = \(changeType), newIndexPath = \(toString(newIndexPath))")
+  }
+
+  func controller(controller: NSFetchedResultsController,
+ didChangeSection sectionInfo: NSFetchedResultsSectionInfo,
+          atIndex sectionIndex: Int,
+    forChangeType type: NSFetchedResultsChangeType)
+  {
+    let changeType: String
+    switch type {
+      case .Insert: changeType = "Insert"
+      case .Delete: changeType = "Delete"
+      case .Move:   changeType = "Move"
+      case .Update: changeType = "Update"
+    }
+    MSLogDebug("sectionInfo = \(toString(sectionInfo)), sectionIndex = \(sectionIndex), type = \(changeType)")
+  }
+
 }
 
+// MARK: - Delegate for a model collection object
+
 final class BankModelCollectionDelegate<C:BankModelCollection>: BankModelDelegate {
+
+  // MARK: - Properties
 
   /** Optional collection that may be used to generate `items` and `collections` */
   let collection: C
@@ -162,8 +253,12 @@ final class BankModelCollectionDelegate<C:BankModelCollection>: BankModelDelegat
   /** Whether the collection supports viewing an image representation of its items */
   override var previewable: Bool { return collection.previewable == true }
 
+  // MARK: - BankModelDelegate overrides
+
   override func setFetchedCollections(fetchedCollections: NSFetchedResultsController) {}
   override func setFetchedItems(fetchedItems: NSFetchedResultsController) {}
+
+  // MARK: - Entity-based methods and properties
 
   /**
   Determines if the provided entities repesent an acceptable collection to item relationship and returns the item's
@@ -228,6 +323,8 @@ final class BankModelCollectionDelegate<C:BankModelCollection>: BankModelDelegat
                                       cacheName: nil)
   }
 
+
+  // MARK: - Initialization
 
   /**
   Initialize with an actual collection, collection must have a valid managed object context

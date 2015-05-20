@@ -450,7 +450,6 @@
 		C27372841A1FC0750079624D /* UIColor+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C274832519D07942000CB422 /* UIBarButtonItem+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C277AB8619D787EA008DEE39 /* ToggleBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleBarButtonItem.swift; sourceTree = "<group>"; };
-		C278260F1B0A6BA800BB2C39 /* Form.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Form.swift; sourceTree = "<group>"; };
 		C27828411814629700FC8D54 /* MSJSONSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSJSONSerialization.h; sourceTree = "<group>"; };
 		C27828421814629700FC8D54 /* MSJSONSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSJSONSerialization.m; sourceTree = "<group>"; };
 		C279530F1AFEBA0300F72C80 /* AKPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AKPickerView.swift; sourceTree = "<group>"; };
@@ -669,7 +668,6 @@
 		C2F39D2E1A3A6D5A0024EE94 /* NSAttributedString+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C2F4370219BB813F00B60FC3 /* MSKeyPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSKeyPath.h; sourceTree = "<group>"; };
 		C2F4370319BB813F00B60FC3 /* MSKeyPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSKeyPath.m; sourceTree = "<group>"; };
-		C2F875851B0A364B0086B9BD /* Field.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
 		C2F8C30E1A36133E004229FE /* TwoToneSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoToneSlider.swift; sourceTree = "<group>"; };
 		C2F8C3161A362606004229FE /* UIResponder+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIResponder+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C2F9414119BE7D01007B5CC1 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
@@ -851,8 +849,6 @@
 		C277AB8519D7878A008DEE39 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
-				C278260F1B0A6BA800BB2C39 /* Form.swift */,
-				C2F875851B0A364B0086B9BD /* Field.swift */,
 				C24D19E919EDAE1500CC3CD9 /* InlinePickerView.swift */,
 				C28E35B91A451E3800438CCF /* CoreDataStack.swift */,
 				C28447101A3E051F005338AB /* LabeledCheckbox.swift */,
