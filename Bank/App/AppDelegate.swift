@@ -26,7 +26,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     window = UIWindow(frame: UIScreen.mainScreen().bounds)
     window?.backgroundColor = UIColor.whiteColor()
     window?.makeKeyAndVisible()
-    window?.rootViewController = UINavigationController(rootViewController: BankRootController())
+    window?.rootViewController = UINavigationController(rootViewController: BankController(nibName: "BankController", bundle: NSBundle(forClass: BankController.self)))
 
     return true
   }

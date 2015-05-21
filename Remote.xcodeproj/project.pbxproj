@@ -520,6 +520,7 @@
 		C2874FC41AE6A5A400BD7634 /* UI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C24A05D11AE5C65C00C9255E /* UI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C2874FC71AE6A5A500BD7634 /* Networking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C24A06041AE5CB4900C9255E /* Networking.framework */; };
 		C2874FC81AE6A5A500BD7634 /* Networking.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C24A06041AE5CB4900C9255E /* Networking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C28A61EE1B0D302B00612469 /* BankController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C28A61ED1B0D302B00612469 /* BankController.xib */; };
 		C28E98F91AD1A4B000E78711 /* DataModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* DataModel.framework */; };
 		C293C7491AC3164700408D35 /* Bank.h in Headers */ = {isa = PBXBuildFile; fileRef = C293C7481AC3164700408D35 /* Bank.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C293C7751AC318EB00408D35 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C7691AC318EB00408D35 /* Image.swift */; };
@@ -536,6 +537,9 @@
 		C293C7801AC318EB00408D35 /* PresetCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C293C7741AC318EB00408D35 /* PresetCategory.swift */; };
 		C29EECF61AFC379500660EE6 /* ITachLearnerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29EECF51AFC379500660EE6 /* ITachLearnerDelegate.swift */; };
 		C2A0C7511AD88D68008CF88B /* JSONStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A0C7501AD88D68008CF88B /* JSONStorage.swift */; };
+		C2A12B951B0D3CA6003C17F8 /* BankController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A12B931B0D3CA5003C17F8 /* BankController.swift */; };
+		C2A12B981B0D597B003C17F8 /* BankButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2A12B971B0D597B003C17F8 /* BankButton.xib */; };
+		C2A12B9A1B0D59A8003C17F8 /* BankButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A12B991B0D59A8003C17F8 /* BankButton.swift */; };
 		C2A4EC4D178B990F00FD3AFF /* App_Icon@2x-ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = C2A4EC4B178B990F00FD3AFF /* App_Icon@2x-ios7.png */; };
 		C2A4EC4E178B990F00FD3AFF /* image.512x512.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2A4EC4C178B990F00FD3AFF /* image.512x512.jpg */; };
 		C2B691811AFBB2240041CE11 /* LearnerAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B691791AFBB20E0041CE11 /* LearnerAppDelegate.swift */; };
@@ -1555,6 +1559,7 @@
 		C2817C401AEC101B00C60C07 /* ModalStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalStorage.swift; sourceTree = "<group>"; };
 		C285D8691AC4C0E800C527F6 /* DataModelProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataModelProtocols.swift; path = Model/DataModelProtocols.swift; sourceTree = "<group>"; };
 		C2874FB91AE68CD100BD7634 /* Painter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Painter.swift; sourceTree = "<group>"; };
+		C28A61ED1B0D302B00612469 /* BankController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BankController.xib; sourceTree = "<group>"; };
 		C28E98F31AD1A4B000E78711 /* DataModelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DataModelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C28E98F61AD1A4B000E78711 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C293C7441AC3164700408D35 /* Bank.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bank.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1575,6 +1580,9 @@
 		C2997F2316FA563900290737 /* RETypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RETypedefs.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		C29EECF51AFC379500660EE6 /* ITachLearnerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITachLearnerDelegate.swift; sourceTree = "<group>"; };
 		C2A0C7501AD88D68008CF88B /* JSONStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONStorage.swift; sourceTree = "<group>"; };
+		C2A12B931B0D3CA5003C17F8 /* BankController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankController.swift; sourceTree = "<group>"; };
+		C2A12B971B0D597B003C17F8 /* BankButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BankButton.xib; sourceTree = "<group>"; };
+		C2A12B991B0D59A8003C17F8 /* BankButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankButton.swift; sourceTree = "<group>"; };
 		C2A4EC4B178B990F00FD3AFF /* App_Icon@2x-ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "App_Icon@2x-ios7.png"; sourceTree = "<group>"; };
 		C2A4EC4C178B990F00FD3AFF /* image.512x512.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image.512x512.jpg; sourceTree = "<group>"; };
 		C2B691511AFBB1A60041CE11 /* LearnerApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LearnerApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3085,6 +3093,8 @@
 				C2E9F4671ABCA395007581F2 /* Other */,
 				C2E9F4721ABCA395007581F2 /* View Controllers */,
 				C221159B1AC58A980071F2D0 /* BankProtocols.swift */,
+				C2A12B931B0D3CA5003C17F8 /* BankController.swift */,
+				C2A12B991B0D59A8003C17F8 /* BankButton.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -3340,6 +3350,8 @@
 				C2345AAB1AE3005A000AA262 /* JSON */,
 				C2E9F6201ABCA7A3007581F2 /* Fonts */,
 				C2E9F6381ABCA7A3007581F2 /* Remote.xcassets */,
+				C28A61ED1B0D302B00612469 /* BankController.xib */,
+				C2A12B971B0D597B003C17F8 /* BankButton.xib */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -4412,6 +4424,7 @@
 				C2345AE01AE3005A000AA262 /* Remote.json in Resources */,
 				C2345AD71AE3005A000AA262 /* Preset_Button_Toolbar.json in Resources */,
 				C22115B11AC59CD30071F2D0 /* gui_design_icons.otf in Resources */,
+				C28A61EE1B0D302B00612469 /* BankController.xib in Resources */,
 				C22115B51AC59CD30071F2D0 /* modernpics.otf in Resources */,
 				C2345ACF1AE3005A000AA262 /* ForegroundColor_Normal.json in Resources */,
 				C2345AD81AE3005A000AA262 /* Preset_ButtonGroup_1x3.json in Resources */,
@@ -4436,6 +4449,7 @@
 				C2345ACC1AE3005A000AA262 /* ComponentDevice.json in Resources */,
 				C2345ADD1AE3005A000AA262 /* Preset_ButtonGroup_Rocker.json in Resources */,
 				C2345AD01AE3005A000AA262 /* ImageCategory.json in Resources */,
+				C2A12B981B0D597B003C17F8 /* BankButton.xib in Resources */,
 				C2345AE31AE3005A000AA262 /* TitleEdgeInsets_Default.json in Resources */,
 				C2345AC81AE3005A000AA262 /* Activity.json in Resources */,
 				C2345ACB1AE3005A000AA262 /* BackgroundColor_Default.json in Resources */,
@@ -4801,6 +4815,7 @@
 				C285D85A1AC48D4D00C527F6 /* NamedItemDetailController.swift in Sources */,
 				C285D8441AC48C8400C527F6 /* DetailTextInputCell.swift in Sources */,
 				C285D85E1AC48E8500C527F6 /* TitleAttributesDetailController.swift in Sources */,
+				C2A12B951B0D3CA6003C17F8 /* BankController.swift in Sources */,
 				C285D84C1AC48C9800C527F6 /* DetailLabeledImageRow.swift in Sources */,
 				C2EEBA251B08087D0041B1B1 /* ITachDevice+Bank.swift in Sources */,
 				C285D84D1AC48C9800C527F6 /* DetailLabelRow.swift in Sources */,
@@ -4833,6 +4848,7 @@
 				C285D8631AC48EB600C527F6 /* ManufacturerDetailController.swift in Sources */,
 				C285D8331AC48C4400C527F6 /* DetailController.swift in Sources */,
 				C285D8581AC48D2200C527F6 /* PresetDetailController.swift in Sources */,
+				C2A12B9A1B0D59A8003C17F8 /* BankButton.swift in Sources */,
 				C285D83B1AC48C8400C527F6 /* DetailCustomCell.swift in Sources */,
 				C24A05CB1AE5B2E400C9255E /* RemoteDetailController.swift in Sources */,
 				C285D8491AC48C9800C527F6 /* DetailColorRow.swift in Sources */,

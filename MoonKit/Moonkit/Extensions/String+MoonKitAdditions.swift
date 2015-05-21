@@ -14,22 +14,22 @@ postfix operator ..< { }
 prefix operator ..< { }
 
 // then, declare a couple of simple custom types that indicate one-sided ranges:
-struct RangeStart<I: ForwardIndexType> { let start: I }
-struct RangeEnd<I: ForwardIndexType> { let end: I }
+public struct RangeStart<I: ForwardIndexType> { let start: I }
+public struct RangeEnd<I: ForwardIndexType> { let end: I }
 
 // and define ..< to return them
-postfix func ..<<I: ForwardIndexType>(lhs: I) -> RangeStart<I>
+public postfix func ..<<I: ForwardIndexType>(lhs: I) -> RangeStart<I>
 { return RangeStart(start: lhs) }
 
-prefix func ..<<I: ForwardIndexType>(rhs: I) -> RangeEnd<I>
+public prefix func ..<<I: ForwardIndexType>(rhs: I) -> RangeEnd<I>
 { return RangeEnd(end: rhs) }
 
 // finally, extend String to have a slicing subscript for these types:
 extension String {
-  subscript(r: RangeStart<String.Index>) -> String {
+  public subscript(r: RangeStart<String.Index>) -> String {
     return self[r.start..<self.endIndex]
   }
-  subscript(r: RangeEnd<String.Index>) -> String {
+  public subscript(r: RangeEnd<String.Index>) -> String {
     return self[self.startIndex..<r.end]
   }
 }
@@ -55,7 +55,7 @@ public extension String {
       }
       s += self[offset..<length]
       return s.lowercaseString
-    } else { return String(map(self){$0 == " " ? "-" : $0}).lowercaseString }
+    } else { return camelcaseString.dashcaseString }
   }
 
   public var titlecaseString: String {
@@ -105,7 +105,7 @@ public extension String {
 
   public var isCamelcase: Bool { return ~/"^\\p{Ll}+(\\p{Lu}+\\p{Ll}*)*$" ~= self }
   public var isDashcase: Bool { return ~/"^\\p{Ll}+(-\\p{Ll}*)*$" ~= self }
-  public var isTitlecase: Bool { return ~/"^\\p{Lu}\\p{Ll}*(\\P{L}+\\p{Lu}\\p{Ll}*)*$" ~= self }
+  public var isTitlecase: Bool { return ~/"^(?:\\p{Lu}\\p{Ll}*)*$" ~= self }
 
   public var pathEncoded: String { return self.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding) ?? self }
   public var urlFragmentEncoded: String {
@@ -166,6 +166,25 @@ public extension String {
   public var pathStack: Stack<String> { return Stack(pathComponents.reverse()) }
   public var keypathStack: Stack<String> { return Stack(".".split(self).reverse()) }
 
+  // MARK: - Initializers
+
+  public init(_ f: Float, precision: Int = -1) { self = String(Double(f)) }
+
+  public init(_ d: Double, precision: Int = -1) {
+
+    switch precision {
+    case Int.min ... -1:
+      self = toString(d)
+    case 0:
+      self = toString(Int(d))
+    default:
+      let string = toString(d)
+      if let decimal = find(string, ".") {
+        self = ".".join(string[..<decimal], prefix(string[advance(decimal, 1)..<], precision))
+      } else { self = string }
+    }
+  }
+
   /**
   initWithContentsOfFile:error:
 
@@ -192,6 +211,8 @@ public extension String {
       } else { return nil }
     } else { return nil }
   }
+
+  // MARK: - Regular Expressions
 
   /**
   sub:replacement:
@@ -536,6 +557,8 @@ public extension String {
 
 }
 
+// MARK: - RegularExpressionMatchable
+
  extension String: RegularExpressionMatchable {
   public func match(regex: RegularExpression) -> Bool { return regex.match(self) }
 }
@@ -546,6 +569,8 @@ public func enumerateMatches(pattern: String,
 {
   (~/pattern).regex?.enumerateMatchesInString(string, options: nil, range: NSRange(0..<string.length), usingBlock: block)
 }
+
+// MARK: - Operators
 
 /** predicates */
 prefix operator ∀ {}

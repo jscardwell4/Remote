@@ -42,7 +42,38 @@ extension ComponentDevice: FormCreatable {
     return Form(templates: fields)
   }
 
-  static func createWithForm(form: Form, context: NSManagedObjectContext) -> Self? {
+  /**
+  createWithForm:context:
+
+  :param: form Form
+  :param: context NSManagedObjectContext
+
+  :returns: ComponentDevice?
+  */
+  static func createWithForm(form: Form, context: NSManagedObjectContext) -> ComponentDevice? {
+    MSLogDebug("\(form)")
+    if let values = form.values,
+      name = values["Name"] as? String,
+      port = values["Port"] as? Double,
+      alwaysOn = values["Always On"] as? Bool,
+      inputPowersOn = values["Input Powers On"] as? Bool
+    {
+      let componentDevice = ComponentDevice(name: name, context: context)
+      componentDevice.port = Int16(port)
+      componentDevice.alwaysOn = alwaysOn
+      componentDevice.inputPowersOn = inputPowersOn
+      if let manufacturerName = values["Manufacturer"] as? String,
+        manufacturer = Manufacturer.objectWithValue(manufacturerName, forAttribute: "name", context: context)
+      {
+        componentDevice.manufacturer = manufacturer
+      }
+      if let networkDeviceName = values["Network Device"] as? String,
+        networkDevice = ITachDevice.objectWithValue(networkDeviceName, forAttribute: "name", context: context)
+      {
+        componentDevice.networkDevice = networkDevice
+      }
+      return componentDevice
+    }
     return nil
   }
 

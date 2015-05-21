@@ -34,13 +34,13 @@ public class Field: NSObject {
 
   func valueDidChange(sender: AnyObject) {
     switch sender {
-      case let text as UITextField:    value = text.text
-      case let `switch` as UISwitch:   value = `switch`.on
-      case let slider as UISlider:     value = slider.value
-      case let stepper as UIStepper:   value = stepper.value
-      case let picker as AKPickerView: value = picker.dataSource?.pickerView?(picker, titleForItem: picker.selectedItem)
-      case let checkbox as Checkbox:   value = checkbox.checked
-      default:                         break
+      case let text as UITextField:       value = text.text
+      case let `switch` as UISwitch:      value = `switch`.on
+      case let slider as UISlider:        value = slider.value
+      case let stepper as LabeledStepper: value = stepper.value
+      case let picker as AKPickerView:    value = picker.dataSource?.pickerView?(picker, titleForItem: picker.selectedItem)
+      case let checkbox as Checkbox:      value = checkbox.checked
+      default:                            break
     }
     changeHandler?(self)
   }
@@ -86,7 +86,7 @@ public class Field: NSObject {
     }
     weak var _control: UITextField?
     override var control: UIView {
-      let control = UITextField.newForAutolayout()
+      let control = UITextField(autolayout: true)
       control.textAlignment = .Right
       control.returnKeyType = .Done
       control.layer.shadowColor = UIColor.redColor().CGColor
@@ -120,7 +120,7 @@ public class Field: NSObject {
     init(value: Bool) { _value = value; super.init()  }
     weak var _control: UISwitch?
     override var control: UIView {
-      let control = UISwitch.newForAutolayout()
+      let control = UISwitch(autolayout: true)
       control.addTarget(self, action: "valueDidChange:", forControlEvents: .ValueChanged)
       control.on = _value
       _control = control
@@ -147,7 +147,7 @@ public class Field: NSObject {
     }
     weak var _control: UISlider?
     override var control: UIView {
-      let control = UISlider.newForAutolayout()
+      let control = UISlider(autolayout: true)
       control.value = _value
       control.addTarget(self, action: "valueDidChange:", forControlEvents: .ValueChanged)
       _control = control
@@ -170,13 +170,22 @@ public class Field: NSObject {
     var min = 0.0
     var max = 100.0
     var step = 1.0
+    var autorepeat = false
+    var wraps = true
     init(value: Double, min: Double, max: Double, step: Double) {
       _value = value; self.min = min; self.max = max; self.step = step; super.init()
     }
-    weak var _control: UIStepper?
+    weak var _control: LabeledStepper?
     override var control: UIView {
-      let control = UIStepper.newForAutolayout()
+      let control = LabeledStepper(autolayout: true)
       control.value = _value
+      control.minimumValue = min
+      control.maximumValue = max
+      control.stepValue = step
+      control.wraps = wraps
+      control.autorepeat = autorepeat
+      if let font = font { control.font = font }
+      if let color = color { control.textColor = color }
       control.addTarget(self, action: "valueDidChange:", forControlEvents: .ValueChanged)
       _control = control
       return control
@@ -206,7 +215,7 @@ public class Field: NSObject {
     override var selectedColor: UIColor? { didSet { if let color = selectedColor { _control?.highlightedTextColor = color } } }
     weak var _control: AKPickerView?
     override var control: UIView {
-      let control = AKPickerView.newForAutolayout()
+      let control = AKPickerView(autolayout: true)
       if let font = font { control.font = font }
       if let color = color { control.textColor = color }
       if let font = selectedFont { control.highlightedFont = font }
@@ -238,7 +247,7 @@ public class Field: NSObject {
     init(value: Bool) { _value = value; super.init() }
     weak var _control: Checkbox?
     override var control: UIView {
-      let control = Checkbox.newForAutolayout()
+      let control = Checkbox(autolayout: true)
       control.checked = _value
       control.addTarget(self, action: "valueDidChange:", forControlEvents: .ValueChanged)
       _control = control
@@ -272,7 +281,7 @@ final class FieldView: UIView {
   /** initializeIVARs */
   private func initializeIVARs() {
     setTranslatesAutoresizingMaskIntoConstraints(false)
-    let label = UILabel.newForAutolayout()
+    let label = UILabel(autolayout: true)
     label.text = name
     addSubview(label)
     let control = field.control
@@ -294,7 +303,7 @@ final class FieldView: UIView {
 
   private var label: UILabel? { return firstSubviewOfKind(UILabel.self) }
   private var control: UIView? {
-    let controlTypes = [UITextField.self, UISwitch.self, UISlider.self, Checkbox.self, UIStepper.self, AKPickerView.self]
+    let controlTypes = [UITextField.self, UISwitch.self, UISlider.self, Checkbox.self, LabeledStepper.self, AKPickerView.self]
     let controlTypeIdentifiers = Set(map(controlTypes, {ObjectIdentifier($0)}))
     return firstSubviewMatching({controlTypeIdentifiers.contains(ObjectIdentifier(($0 as AnyObject).dynamicType.self))})
   }

@@ -17,10 +17,10 @@ class BankItemDetailController: NamedItemDetailController {
   var model: EditableModel! { return item as? EditableModel }
   let context: NSManagedObjectContext
 
-//  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-//    context = NSManagedObjectContext()
-//    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-//  }
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    context = NSManagedObjectContext()
+    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+  }
 
   /**
   initWithCoder:

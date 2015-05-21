@@ -52,19 +52,12 @@ import MoonKit
   :param: i UIImage?
   :param: context NSManagedObjectContext
   */
-  init(name n: String, icon i: UIImage?, context: NSManagedObjectContext) {
-    name = n
-    icon = i
-    managedObjectContext = context
-  }
+  init(name n: String, context: NSManagedObjectContext) { name = n; managedObjectContext = context }
 
   // MARK: - Root collection support
 
   /** A name that may be used as a label or title for the collection */
   let name: String
-
-  /** Optional image that may be used to represent the collection */
-  let icon: UIImage?
 
   /** Whether the collection supports viewing an image representation of its items */
   var previewable: Bool { return false }
@@ -174,7 +167,6 @@ extension BankModelDelegate: Printable {
   var description: String {
     var result = "BankModelCollectionDelegate:\n"
     result += "\tlabel = \(toString(name))\n"
-    result += "\ticon = \(toString(icon))\n"
     result += "\tcollections = "
     let collections = (fetchedCollections?.fetchedObjects as? [ModelCollection]) ?? []
     if collections.count == 0 { result += "[]\n" }
@@ -353,7 +345,7 @@ final class BankModelCollectionDelegate<C:BankModelCollection>: BankModelDelegat
           collectionToRootAttributeName = BankModelCollectionDelegate.propertyForRelationshipPair(rootEntity, collectionType!.entityDescription)
         } else { collectionToRootAttributeName = nil }
 
-        super.init(name: c.name, icon: nil, context: context)
+        super.init(name: c.name, context: context)
 
         if let entity = itemType?.entityDescription, name = itemToRootAttributeName {
           fetchedItems = fetchedResultsForEntity(entity, withAttributeName: name)
@@ -371,7 +363,7 @@ final class BankModelCollectionDelegate<C:BankModelCollection>: BankModelDelegat
         collectionType = nil
         itemToRootAttributeName = nil
         collectionToRootAttributeName = nil
-        super.init(name: c.name, icon: nil, context: context)
+        super.init(name: c.name, context: context)
         return nil
       }
     }
@@ -379,7 +371,7 @@ final class BankModelCollectionDelegate<C:BankModelCollection>: BankModelDelegat
     // Without a valid context, initialization fails
     else {
       rootType = ModelObject.self; itemType = nil; collectionType = nil; itemToRootAttributeName = nil; collectionToRootAttributeName = nil
-      super.init(name: c.name, icon: nil, context: NSManagedObjectContext())
+      super.init(name: c.name, context: NSManagedObjectContext())
       return nil
     }
   }

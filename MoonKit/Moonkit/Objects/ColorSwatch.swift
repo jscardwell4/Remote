@@ -16,7 +16,7 @@ import UIKit
   optional func colorSwatchDidEndEditing(colorSwatch: ColorSwatch)
 }
 
-public class ColorSwatch: UIControl {
+@IBDesignable public class ColorSwatch: UIControl {
 
   public var color: UIColor? { didSet { setNeedsDisplay() } }
 

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public final class Form {
+public final class Form: Printable {
 
   public var fields: OrderedDictionary<String, Field>
   public var changeHandler: ((Form, Field, String) -> Void)?
@@ -37,6 +37,10 @@ public final class Form {
     var values: OrderedDictionary<String, Any> = [:]
     for (_, n, f) in fields { if f.valid, let value: Any = f.value { values[n] = value } else { return nil } }
     return values
+  }
+
+  public var description: String {
+    return "Form: {\n\t" + "\n\t".join(map(fields) {"\($0): \($1) = \(toString($2.value))"}) + "\n}"
   }
 
 }

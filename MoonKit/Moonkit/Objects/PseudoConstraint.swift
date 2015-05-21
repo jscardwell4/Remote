@@ -588,13 +588,21 @@ func addSpacingConstraint(var lhs: [PseudoConstraint])(space: Float)(rhs: UIView
   }
 }
 
-infix operator -- {associativity left}
+infix operator -- {associativity left precedence 140}
 public func --(lhs: PseudoConstraint, rhs: Float) -> UIView -> [PseudoConstraint] {
   return addSpacingConstraint(lhs)(space: rhs)
 }
 public func --(lhs: [PseudoConstraint], rhs: Float) -> UIView -> [PseudoConstraint] {
   return addSpacingConstraint(lhs)(space: rhs)
 }
+//public func --(lhs: [PseudoConstraint], rhs: Float) -> [PseudoConstraint] {
+//  var result = dropLast(lhs)
+//  if var lastConstraint = lhs.last {
+//    lastConstraint.constant += rhs
+//    result.append(lastConstraint)
+//  }
+//  return Array(result)
+//}
 
 public func --(lhs: UIView -> [PseudoConstraint], rhs: UIView) -> [PseudoConstraint] {
   return lhs(rhs)

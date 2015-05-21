@@ -3,10 +3,26 @@ import Foundation
 import UIKit
 import MoonKit
 
+let s = "ComponentDevice"
+s.isDashcase
+s.isCamelcase
+s.isTitlecase
+s.dashcaseString.subbed("-", " ")
+
+let floatingPointString = "12345.6789"
+if let decimal = find(floatingPointString, ".") {
+  let integerPart = floatingPointString[..<decimal]
+  integerPart
+  let fractionalPart = floatingPointString[advance(decimal, 1)..<]
+  let wtf = prefix(fractionalPart, 2)
+}
+
+let floatingPoint = 12345.6789
+toString(floatingPoint)
+String(floatingPoint, precision: -1)
+
 class WTF {}
-
 let wtf = WTF()
-
 let firstIdentfier = ObjectIdentifier(wtf)
 let secondIdentifier = ObjectIdentifier(wtf)
 
@@ -57,3 +73,4 @@ CGFloat._fromBitPattern(CGFloat._BitsType(doubleBitPattern))
 Double._BitsType.self
 CGFloat._BitsType.self
 Float._BitsType.self
+
