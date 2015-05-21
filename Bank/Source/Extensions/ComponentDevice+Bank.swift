@@ -30,10 +30,10 @@ extension ComponentDevice: FormCreatable {
 
     fields["Name"]            = nameFormFieldTemplate(context: context)
     fields["Manufacturer"]    = Manufacturer.pickerFormFieldTemplate(context: context)
-    fields["Port"]            = .Stepper(value: 1, min: 1, max: 3, step: 1)
+    fields["Port"]            = .Stepper(value: 1, min: 1, max: 3, step: 1, editable: true)
     fields["Network Device"]  = ITachDevice.pickerFormFieldTemplate(context: context)
-    fields["Always On"]       = .Switch(value: false)
-    fields["Input Powers On"] = .Switch(value: false)
+    fields["Always On"]       = .Switch(value: false, editable: true)
+    fields["Input Powers On"] = .Switch(value: false, editable: true)
 
     /**
     codeSet:       IRCodeSet?

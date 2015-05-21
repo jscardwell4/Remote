@@ -41,6 +41,18 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
     }
   }
 
+  /** The creation mode supported by the controller's collection delegate */
+  var creationMode: Bank.CreationMode {
+    var canManuallyCreate = collectionDelegate.createItem != nil || collectionDelegate.createCollection != nil
+    var canDiscover = collectionDelegate.discoverItem != nil || collectionDelegate.discoverCollection != nil
+    switch (canManuallyCreate, canDiscover) {
+      case (true, true):   return .Both
+      case (true, false) : return .Manual
+      case (false, true):  return .Discovery
+      default:             return .None
+    }
+  }
+
   /** Whether model changes should be saved up to persistent store */
   var propagateChanges = true
 
@@ -49,6 +61,9 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
 
   /** Set by the bank when bottom toolbar items are generated */
   weak var createItemBarButton: ToggleBarButtonItem?
+
+  /** Set by the bank when bottom toolbar items are generated */
+  weak var discoverItemBarButton: ToggleBarButtonItem?
 
   // MARK: Private
 
@@ -187,15 +202,19 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   */
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
+    title = collectionDelegate.name
     exportSelectionMode = false
     navigationItem.rightBarButtonItem = Bank.dismissButton
-
     if collectionDelegate.previewable != true { viewingMode = .List }
     else if let viewingModeSetting: Bank.ViewingMode = SettingsManager.valueForSetting(Bank.ViewingModeKey) {
       viewingMode = viewingModeSetting
     }
   }
 
+  override func viewWillDisappear(animated: Bool) {
+    super.viewWillDisappear(animated)
+    title = ""
+  }
 
   // MARK: - Exporting items
 
@@ -246,7 +265,6 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
 
     }
   }
-
 
   /**
   confirmExport:
@@ -387,19 +405,24 @@ extension BankCollectionController: BankCollectionZoomViewDelegate {
 // MARK: - Item creation
 
 extension BankCollectionController: BankItemCreationController {
+
+  /** discoverBankItem */
+  func discoverBankItem() {
+
+  }
+
+  /** createBankItem */
   func createBankItem() {
 
-    func presentFormForTransaction(transaction: BankModelDelegate.CreateTransaction) {
-      let dismissController = {self.dismissViewControllerAnimated(true, completion: {self.createItemBarButton?.isToggled = false})}
+    func presentForm(form: Form, action: (Form) -> Bool) {
+      let dismissController = {self.dismissViewControllerAnimated(true) {self.createItemBarButton?.isToggled = false}}
       let didSubmit: FormViewController.Submission = {
-        _, values in
-        if transaction.action(values) { DataManager.propagatingSaveFromContext(self.collectionDelegate.managedObjectContext) }
+        if action($1) { DataManager.propagatingSaveFromContext(self.collectionDelegate.managedObjectContext) }
         dismissController()
       }
       let didCancel: FormViewController.Cancellation = {_ in dismissController()}
-      let form = FormViewController(form: transaction.form, didSubmit: didSubmit, didCancel: didCancel)
-      Bank.decorateForm(form)
-      presentViewController(form, animated: true, completion: nil)
+      let formViewController = FormViewController(form: form, didSubmit: didSubmit, didCancel: didCancel)
+      presentViewController(formViewController, animated: true, completion: nil)
     }
 
     switch (collectionDelegate.createItem, collectionDelegate.createCollection) {
@@ -409,11 +432,11 @@ extension BankCollectionController: BankItemCreationController {
         break
       // Display controller for item creation if collection transaction is nil
       case let (createItem, createCollection) where createItem != nil && createCollection == nil:
-        presentFormForTransaction(createItem!)
+        presentForm(createItem!.form, createItem!.action)
 
       // Display controller for collection creation if item transaction is nil
       case let (createItem, createCollection) where createItem == nil && createCollection != nil:
-        presentFormForTransaction(createCollection!)
+        presentForm(createCollection!.form, createCollection!.action)
 
       // Don't do anything if we have no valid create transactions
       default:

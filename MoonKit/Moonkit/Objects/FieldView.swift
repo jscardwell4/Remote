@@ -9,19 +9,36 @@
 import Foundation
 
 public enum FieldTemplate {
-  case Text     (value: String, placeholder: String?, validation: ((String?) -> Bool)?)
-  case Switch   (value: Bool)
-  case Slider   (value: Float, min: Float, max: Float)
-  case Stepper  (value: Double, min: Double, max: Double, step: Double)
-  case Picker   (value: String, choices: [String])
-  case Checkbox (value: Bool)
+  case Text     (value: String, placeholder: String?, validation: ((String?) -> Bool)?, editable: Bool)
+  case Switch   (value: Bool, editable: Bool)
+  case Slider   (value: Float, min: Float, max: Float, editable: Bool)
+  case Stepper  (value: Double, min: Double, max: Double, step: Double, editable: Bool)
+  case Picker   (value: String, choices: [String], editable: Bool)
+  case Checkbox (value: Bool, editable: Bool)
+
+  public var values: [String:Any] {
+    switch self {
+      case let .Text(value, placeholder, validation, editable):
+        return ["value": value, "editable": editable, "placeholder": placeholder, "validation": validation]
+      case let .Switch(value, editable):
+        return ["value": value, "editable": editable]
+      case let .Slider(value, min, max, editable):
+        return ["value": value, "editable": editable, "min": min, "max": max]
+      case let .Stepper(value, min, max, step, editable):
+        return ["value": value, "editable": editable, "min": min, "max": max, "step": step]
+      case let .Picker(value, choices, editable):
+        return ["value": value, "editable": editable, "choices": choices]
+      case let .Checkbox(value, editable):
+        return ["value": value, "editable": editable]
+    }
+  }
 }
 
 public class Field: NSObject {
   public enum Type { case Undefined, Text, Switch, Slider, Stepper, Picker, Checkbox }
 
   var control: UIView { return UIView() }
-
+  var editable = true
   var font: UIFont?
   var selectedFont: UIFont?
   var color: UIColor?
@@ -47,20 +64,20 @@ public class Field: NSObject {
 
   public static func fieldWithTemplate(template: FieldTemplate) -> Field {
     switch template {
-    case let .Text(value, placeholder, validation):
-      return TextField(value: value, placeholder: placeholder, validation: validation)
-    case let .Switch(value):
-      return SwitchField(value: value)
-    case let .Slider(value, min, max):
-      return SliderField(value: value, min: min, max: max)
-    case let .Stepper(value, min, max, step):
-      return StepperField(value: value, min: min, max: max, step: step)
-    case let .Picker(value, choices) where choices.count > 0 && contains(choices, value):
-      return PickerField(value: value, choices: choices)
-    case let .Picker:
+    case let .Text(value, placeholder, validation, editable):
+      return TextField(value: value, placeholder: placeholder, validation: validation, editable: editable)
+    case let .Switch(value, editable):
+      return SwitchField(value: value, editable: editable)
+    case let .Slider(value, min, max, editable):
+      return SliderField(value: value, min: min, max: max, editable: editable)
+    case let .Stepper(value, min, max, step, editable):
+      return StepperField(value: value, min: min, max: max, step: step, editable: editable)
+    case let .Picker(value, choices, editable) where choices.count > 0 && contains(choices, value):
+      return PickerField(value: value, choices: choices, editable: editable)
+    case .Picker:
       return PickerField()
-    case let .Checkbox(value):
-      return CheckboxField(value: value)
+    case let .Checkbox(value, editable):
+      return CheckboxField(value: value, editable: editable)
     }
   }
 
@@ -81,12 +98,15 @@ public class Field: NSObject {
     var validation: ((String?) -> Bool)?
     override var font: UIFont? { didSet { if let font = font { _control?.font = font } } }
     override var color: UIColor? { didSet { if let color = color { _control?.textColor = color } } }
-    init(value: String, placeholder: String?, validation: ((String?) -> Bool)?) {
+    init(value: String, placeholder: String?, validation: ((String?) -> Bool)?, editable: Bool = true) {
       _value = value; self.placeholder = placeholder; self.validation = validation; super.init()
     }
     weak var _control: UITextField?
+    override var editable: Bool { didSet { _control?.userInteractionEnabled = editable } }
     override var control: UIView {
+      if _control != nil { return _control! }
       let control = UITextField(autolayout: true)
+      control.userInteractionEnabled = editable
       control.textAlignment = .Right
       control.returnKeyType = .Done
       control.layer.shadowColor = UIColor.redColor().CGColor
@@ -117,10 +137,13 @@ public class Field: NSObject {
         }
       }
     }
-    init(value: Bool) { _value = value; super.init()  }
+    init(value: Bool, editable: Bool = true) { _value = value; super.init()  }
     weak var _control: UISwitch?
+    override var editable: Bool { didSet { _control?.userInteractionEnabled = editable } }
     override var control: UIView {
+      if _control != nil { return _control! }
       let control = UISwitch(autolayout: true)
+      control.userInteractionEnabled = editable
       control.addTarget(self, action: "valueDidChange:", forControlEvents: .ValueChanged)
       control.on = _value
       _control = control
@@ -142,12 +165,15 @@ public class Field: NSObject {
     }
     var min: Float = 0
     var max: Float = 1
-    init(value: Float, min: Float, max: Float) {
+    init(value: Float, min: Float, max: Float, editable: Bool = true) {
       _value = value; self.min = min; self.max = max; super.init()
     }
     weak var _control: UISlider?
+    override var editable: Bool { didSet { _control?.userInteractionEnabled = editable } }
     override var control: UIView {
+      if _control != nil { return _control! }
       let control = UISlider(autolayout: true)
+      control.userInteractionEnabled = editable
       control.value = _value
       control.addTarget(self, action: "valueDidChange:", forControlEvents: .ValueChanged)
       _control = control
@@ -172,12 +198,15 @@ public class Field: NSObject {
     var step = 1.0
     var autorepeat = false
     var wraps = true
-    init(value: Double, min: Double, max: Double, step: Double) {
+    init(value: Double, min: Double, max: Double, step: Double, editable: Bool = true) {
       _value = value; self.min = min; self.max = max; self.step = step; super.init()
     }
     weak var _control: LabeledStepper?
+    override var editable: Bool { didSet { _control?.userInteractionEnabled = editable } }
     override var control: UIView {
+      if _control != nil { return _control! }
       let control = LabeledStepper(autolayout: true)
+      control.userInteractionEnabled = editable
       control.value = _value
       control.minimumValue = min
       control.maximumValue = max
@@ -206,7 +235,7 @@ public class Field: NSObject {
     }
     var choices: [String] = []
     override init() { super.init() }
-    init(value: String, choices: [String]) {
+    init(value: String, choices: [String], editable: Bool = true) {
       _value = value; self.choices = choices; super.init()
     }
     override var font: UIFont? { didSet { if let font = font { _control?.font = font } } }
@@ -214,8 +243,11 @@ public class Field: NSObject {
     override var color: UIColor? { didSet { if let color = color { _control?.textColor = color } } }
     override var selectedColor: UIColor? { didSet { if let color = selectedColor { _control?.highlightedTextColor = color } } }
     weak var _control: AKPickerView?
+    override var editable: Bool { didSet { _control?.userInteractionEnabled = editable } }
     override var control: UIView {
+      if _control != nil { return _control! }
       let control = AKPickerView(autolayout: true)
+      control.userInteractionEnabled = editable
       if let font = font { control.font = font }
       if let color = color { control.textColor = color }
       if let font = selectedFont { control.highlightedFont = font }
@@ -244,10 +276,13 @@ public class Field: NSObject {
         }
       }
     }
-    init(value: Bool) { _value = value; super.init() }
+    init(value: Bool, editable: Bool = true) { _value = value; super.init() }
     weak var _control: Checkbox?
+    override var editable: Bool { didSet { _control?.userInteractionEnabled = editable } }
     override var control: UIView {
+      if _control != nil { return _control! }
       let control = Checkbox(autolayout: true)
+      control.userInteractionEnabled = editable
       control.checked = _value
       control.addTarget(self, action: "valueDidChange:", forControlEvents: .ValueChanged)
       _control = control

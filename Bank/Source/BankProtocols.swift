@@ -33,6 +33,11 @@ protocol FormCreatable: Model {
   static func createWithForm(form: Form, context: NSManagedObjectContext) -> Self?
 }
 
+protocol DiscoverCreatable: Model {
+  static func beginDiscovery(#context: NSManagedObjectContext, discoveryForm: (Form) -> Void) -> Bool
+  static func endDiscovery()
+}
+
 // MARK: - Bank colleciton protocols
 
 /** Protocol for objects that can supply bank items or collections */
@@ -86,8 +91,11 @@ protocol BankItemImportExportController: class {
 
 /** Protocol for types that want create bar button item in bottom toolbar */
 protocol BankItemCreationController: class {
-  func createBankItem()  // Called from create item bar button action
+  var creationMode: Bank.CreationMode { get } // Whether new items are created manually, via discovery, both, or neither
+  func discoverBankItem()  // Called from create item bar button action when creationMode == .Discovery
+  func createBankItem()    // Called from create item bar button action when creationMode == .Manual
   weak var createItemBarButton: ToggleBarButtonItem? { get set }
+  weak var discoverItemBarButton: ToggleBarButtonItem? { get set }
 }
 
 /** Protocol for types that want search bar button item in bottom toolbar */

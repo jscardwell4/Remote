@@ -54,9 +54,9 @@ public class BankController: UIViewController, BankItemImportExportController {
       switch rootCategory {
         case .Presets:
           collectionDelegate = BankModelDelegate(name: "Presets", context: context)
-          // collectionDelegate.createItem = BankModelDelegate.createTransactionWithLabel("Category",
-          //                                                                creatableType: PresetCategory.self,
-          //                                                                      context: context)
+          collectionDelegate.createItem = BankModelDelegate.createTransactionWithLabel("Category",
+                                                                         creatableType: PresetCategory.self,
+                                                                               context: context)
         collectionDelegate.setFetchedCollections(PresetCategory.objectsInContext(context,
                                                                    withPredicate: ∀"parentCategory == NULL",
                                                                         sortedBy: "name"))
@@ -78,9 +78,9 @@ public class BankController: UIViewController, BankItemImportExportController {
           collectionDelegate.setFetchedItems(Manufacturer.objectsInContext(context, sortedBy: "name"))
         case .Images:
           collectionDelegate = BankModelDelegate(name: "Images", context: context)
-          // collectionDelegate.createItem = BankModelDelegate.createTransactionWithLabel("Category",
-          //                                                                creatableType: ImageCategory.self,
-          //                                                                      context: context)
+          collectionDelegate.createItem = BankModelDelegate.createTransactionWithLabel("Category",
+                                                                         creatableType: ImageCategory.self,
+                                                                               context: context)
           collectionDelegate.setFetchedCollections(ImageCategory.objectsInContext(context,
                                                                     withPredicate: ∀"parentCategory == NULL",
                                                                          sortedBy: "name"))
@@ -92,7 +92,6 @@ public class BankController: UIViewController, BankItemImportExportController {
   }
 
    public override func viewDidLoad() {
-    title = "Bank"
     navigationController?.navigationBar.titleTextAttributes = Bank.titleTextAttributes
     toolbarItems = Bank.toolbarItemsForController(self)
     apply(buttons) {$0.actions.append(self.buttonAction)}
@@ -105,8 +104,14 @@ public class BankController: UIViewController, BankItemImportExportController {
   */
   override public func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
+    title = "Bank"
     navigationItem.rightBarButtonItem = Bank.dismissButton
     navigationController?.toolbarHidden = false
+  }
+
+  override public func viewWillDisappear(animated: Bool) {
+    super.viewWillDisappear(animated)
+    title = ""
   }
 
   /** importBankObject */

@@ -23,6 +23,10 @@ import Glyphish
     init(rawValue: Int) { self = rawValue == 1 ? .Thumbnail : .List }
   }
 
+  // MARK: - CreationMode type
+
+  enum CreationMode { case None, Manual, Discovery, Both }
+
   static func initialize() {
     SettingsManager.registerSettingWithKey(Bank.ViewingModeKey,
                           withDefaultValue: .List,
@@ -76,18 +80,14 @@ import Glyphish
   static let searchBarItemImageSelected    = Glyphish.imageNamed("708-search-selected")!
   static let createBarItemImage            = Glyphish.imageNamed("907-plus-rounded-square")!
   static let createBarItemImageSelected    = Glyphish.imageNamed("907-plus-rounded-square-selected")!
+  static let discoverBarItemImage          = Bank.bankImageNamed("network-discovery")!
+  static let discoverBarItemImageSelected  = Bank.bankImageNamed("network-discovery-selected")!
   static let listBarItemImage              = Glyphish.imageNamed("1073-grid-1-toolbar")!
   static let listBarItemImageSelected      = Glyphish.imageNamed("1073-grid-1-toolbar-selected")!
   static let thumbnailBarItemImage         = Glyphish.imageNamed("1076-grid-4-toolbar")!
   static let thumbnailBarItemImageSelected = Glyphish.imageNamed("1076-grid-4-toolbar-selected")!
   static let indicatorImage                = Glyphish.imageNamed("1040-checkmark")!
   static let indicatorImageSelected        = Glyphish.imageNamed("1040-checkmark-selected")!
-  static let componentDevicesImage         = Glyphish.imageNamed("969-television")!
-  static let irCodesImage                  = Bank.bankImageNamed("tv-remote")!
-  static let imagesImage                   = Glyphish.imageNamed("926-photos")!
-  static let manufacturersImage            = Glyphish.imageNamed("1022-factory")!
-  static let networkDevicesImage           = Glyphish.imageNamed("937-wifi-signal")!
-  static let presetsImage                  = Glyphish.imageNamed("1059-sliders")!
 
   static let defaultRowHeight: CGFloat = 38.0
   static let separatorStyle: UITableViewCellSeparatorStyle = .None
@@ -100,7 +100,7 @@ import Glyphish
   Generates items for a view controller's bottom toolbar tailored to the protocols supported by the controller.
 
       ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-      ┃ export  import          viewing mode          search  create ┃
+      ┃ export  import        viewing mode  search  discover  create ┃
       ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
   :param: controller UIViewController
@@ -112,7 +112,8 @@ import Glyphish
     let totalWidth = UIScreen.mainScreen().bounds.width
     let outterWidth = floor(totalWidth / 3)
     let innerWidth = totalWidth - outterWidth * 2
-    let outterItemWidth = outterWidth / 2
+    let leftOutterItemWidth = outterWidth / 2
+    let rightOutterItemWidth = outterWidth / 3
     let negativeSpacer = UIBarButtonItem.fixedSpace(-16)
 
     var toolbarItems: [UIBarItem] = []
@@ -123,7 +124,7 @@ import Glyphish
         ToggleImageBarButtonItem(image: Bank.exportBarItemImage, toggledImage: Bank.exportBarItemImageSelected) {
           importExportController.exportSelectionMode = $0.isToggled
         }
-      exportBarItem.width = outterItemWidth
+      exportBarItem.width = leftOutterItemWidth
 
       let importBarItem =
         ToggleImageBarButtonItem(image: Bank.importBarItemImage, toggledImage: Bank.importBarItemImageSelected) {
@@ -180,7 +181,7 @@ import Glyphish
             ImportToggleActionProperties.fileController = nil
           }
         }
-      importBarItem.width = outterItemWidth
+      importBarItem.width = leftOutterItemWidth
 
       toolbarItems += [negativeSpacer, exportBarItem, negativeSpacer, importBarItem]
     } else {
@@ -215,22 +216,59 @@ import Glyphish
         ToggleImageBarButtonItem(image: searchBarItemImage, toggledImage: searchBarItemImageSelected) {
           _ in searchableController.searchBankObjects()
         }
-      searchBarItem.width = outterItemWidth
+      searchBarItem.width = rightOutterItemWidth
       toolbarItems += [negativeSpacer, searchBarItem]
     } else {
-      toolbarItems.append(UIBarButtonItem.fixedSpace(floor(outterWidth/2)))
+      toolbarItems.append(UIBarButtonItem.fixedSpace(floor(rightOutterItemWidth)))
     }
 
     if let creationController = controller as? BankItemCreationController {
-      let createBarItem =
-        ToggleImageBarButtonItem(image: createBarItemImage, toggledImage: createBarItemImageSelected) {
-          _ in creationController.createBankItem()
-        }
-      createBarItem.width = outterItemWidth
-      toolbarItems += [negativeSpacer, createBarItem]
+
+      let createBarItem: ToggleImageBarButtonItem?, discoverBarItem: ToggleImageBarButtonItem?
+      switch creationController.creationMode {
+        case .Manual:
+          discoverBarItem = nil
+          createBarItem =
+            ToggleImageBarButtonItem(image: createBarItemImage, toggledImage: createBarItemImageSelected) {
+              _ in creationController.createBankItem()
+          }
+        case .Discovery:
+          createBarItem = nil
+          discoverBarItem =
+            ToggleImageBarButtonItem(image: discoverBarItemImage, toggledImage: discoverBarItemImageSelected) {
+              _ in creationController.discoverBankItem()
+            }
+        case .Both:
+          createBarItem =
+            ToggleImageBarButtonItem(image: createBarItemImage, toggledImage: createBarItemImageSelected) {
+              _ in creationController.createBankItem()
+          }
+          discoverBarItem =
+            ToggleImageBarButtonItem(image: discoverBarItemImage, toggledImage: discoverBarItemImageSelected) {
+              _ in creationController.discoverBankItem()
+            }
+        case .None:
+          createBarItem = nil
+          discoverBarItem = nil
+      }
+
+      if let createBarItem = createBarItem, discoverBarItem = discoverBarItem {
+        createBarItem.width = rightOutterItemWidth
+        discoverBarItem.width = rightOutterItemWidth
+        toolbarItems += [negativeSpacer, discoverBarItem, negativeSpacer, createBarItem]
+      } else if let createBarItem = createBarItem {
+        createBarItem.width = ceil(rightOutterItemWidth * 2)
+        toolbarItems += [negativeSpacer, createBarItem]
+      } else if let discoverBarItem = discoverBarItem {
+        discoverBarItem.width = ceil(rightOutterItemWidth * 2)
+        toolbarItems += [negativeSpacer, discoverBarItem]
+      } else {
+        toolbarItems.append(UIBarButtonItem.fixedSpace(floor(2 * rightOutterItemWidth)))
+      }
       creationController.createItemBarButton = createBarItem
+      creationController.discoverItemBarButton = discoverBarItem
     } else {
-      toolbarItems.append(UIBarButtonItem.fixedSpace(floor(outterWidth/2)))
+      toolbarItems.append(UIBarButtonItem.fixedSpace(floor(2 * rightOutterItemWidth)))
     }
 
     return  toolbarItems

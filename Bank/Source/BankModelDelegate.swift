@@ -19,9 +19,12 @@ import MoonKit
   // MARK: - Transactions
 
   typealias CreateTransaction = (label: String, form: Form, action: (Form) -> Bool)
+  typealias DiscoverTransaction = (label: String, form: () -> Form, action: (Form) -> Bool)
 
   var createItem: CreateTransaction?
   var createCollection: CreateTransaction?
+  var discoverItem: DiscoverTransaction?
+  var discoverCollection: DiscoverTransaction?
 
   /**
   Generates a `CreateTransaction` given a label, a `FormCreation` type, and a managed object context

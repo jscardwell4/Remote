@@ -42,7 +42,6 @@
 		C21F10681AC62D8100CD877B /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2C3B91E1AC5DA7D001DC6CC /* CocoaLumberjack.framework */; };
 		C21F10691AC62D8100CD877B /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2C3B91E1AC5DA7D001DC6CC /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C21F106B1AC62FC800CD877B /* MoonKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C24E0EBE1AC61E080044248E /* MoonKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C22115951AC5883B0071F2D0 /* BankRootController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F47D1ABCA395007581F2 /* BankRootController.swift */; };
 		C221159A1AC5883D0071F2D0 /* BankRootCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F47C1ABCA395007581F2 /* BankRootCell.swift */; };
 		C221159C1AC58A980071F2D0 /* BankProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C221159B1AC58A980071F2D0 /* BankProtocols.swift */; };
 		C22115AE1AC59CD30071F2D0 /* Apple Symbols.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6211ABCA7A3007581F2 /* Apple Symbols.ttf */; };
@@ -52,7 +51,7 @@
 		C22115B31AC59CD30071F2D0 /* iconic_stroke.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6261ABCA7A3007581F2 /* iconic_stroke.otf */; };
 		C22115B41AC59CD30071F2D0 /* iconSweets.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6271ABCA7A3007581F2 /* iconSweets.otf */; };
 		C22115B51AC59CD30071F2D0 /* modernpics.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6281ABCA7A3007581F2 /* modernpics.otf */; };
-		C22115C51AC59CE40071F2D0 /* Remote.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6381ABCA7A3007581F2 /* Remote.xcassets */; };
+		C22115C51AC59CE40071F2D0 /* Bank.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F6381ABCA7A3007581F2 /* Bank.xcassets */; };
 		C22645F619F6EB20001F5A5E /* AuxiliaryStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59216DC18A90093D5B4 /* AuxiliaryStoryboard.storyboard */; };
 		C22D7CDD1AED52FE009018A1 /* Bank.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C293C7441AC3164700408D35 /* Bank.framework */; };
 		C22D7CDE1AED52FE009018A1 /* Bank.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C293C7441AC3164700408D35 /* Bank.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -327,6 +326,7 @@
 		C265DBB81AE81E4600655C4C /* PNG.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265DBB71AE81E4600655C4C /* PNG.swift */; };
 		C26863761AF990D600D664E8 /* MessageQueueEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26863731AF990D600D664E8 /* MessageQueueEntry.swift */; };
 		C268637A1AF9CE2200D664E8 /* ITachDeviceConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26863791AF9CE2200D664E8 /* ITachDeviceConnection.swift */; };
+		C26A16441B0E1941001FC95F /* NetworkDevice+Bank.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26A16431B0E1941001FC95F /* NetworkDevice+Bank.swift */; };
 		C26BAEB816DC10FE0093D5B4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C26BAEB616DC10FE0093D5B4 /* InfoPlist.strings */; };
 		C26BAEBA16DC10FE0093D5B4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C26BAEB916DC10FE0093D5B4 /* main.m */; };
 		C26BBA8916DC18A90093D5B4 /* CommandDetailEditorsStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C26BB59316DC18A90093D5B4 /* CommandDetailEditorsStoryboard.storyboard */; };
@@ -538,7 +538,6 @@
 		C29EECF61AFC379500660EE6 /* ITachLearnerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29EECF51AFC379500660EE6 /* ITachLearnerDelegate.swift */; };
 		C2A0C7511AD88D68008CF88B /* JSONStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A0C7501AD88D68008CF88B /* JSONStorage.swift */; };
 		C2A12B951B0D3CA6003C17F8 /* BankController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A12B931B0D3CA5003C17F8 /* BankController.swift */; };
-		C2A12B981B0D597B003C17F8 /* BankButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2A12B971B0D597B003C17F8 /* BankButton.xib */; };
 		C2A12B9A1B0D59A8003C17F8 /* BankButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A12B991B0D59A8003C17F8 /* BankButton.swift */; };
 		C2A4EC4D178B990F00FD3AFF /* App_Icon@2x-ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = C2A4EC4B178B990F00FD3AFF /* App_Icon@2x-ios7.png */; };
 		C2A4EC4E178B990F00FD3AFF /* image.512x512.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2A4EC4C178B990F00FD3AFF /* image.512x512.jpg */; };
@@ -1404,6 +1403,7 @@
 		C265DBBD1AE8769500655C4C /* UI.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = UI.playground; sourceTree = "<group>"; };
 		C26863731AF990D600D664E8 /* MessageQueueEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageQueueEntry.swift; sourceTree = "<group>"; };
 		C26863791AF9CE2200D664E8 /* ITachDeviceConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITachDeviceConnection.swift; sourceTree = "<group>"; };
+		C26A16431B0E1941001FC95F /* NetworkDevice+Bank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NetworkDevice+Bank.swift"; sourceTree = "<group>"; };
 		C26A4ECE1ACA1B4E004EEF7C /* RemoteDataModel.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = RemoteDataModel.json; sourceTree = "<group>"; };
 		C26BAEA816DC10FE0093D5B4 /* Remote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Remote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C26BAEB516DC10FE0093D5B4 /* Remote-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Remote-Info.plist"; sourceTree = "<group>"; };
@@ -1581,7 +1581,6 @@
 		C29EECF51AFC379500660EE6 /* ITachLearnerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITachLearnerDelegate.swift; sourceTree = "<group>"; };
 		C2A0C7501AD88D68008CF88B /* JSONStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONStorage.swift; sourceTree = "<group>"; };
 		C2A12B931B0D3CA5003C17F8 /* BankController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankController.swift; sourceTree = "<group>"; };
-		C2A12B971B0D597B003C17F8 /* BankButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BankButton.xib; sourceTree = "<group>"; };
 		C2A12B991B0D59A8003C17F8 /* BankButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankButton.swift; sourceTree = "<group>"; };
 		C2A4EC4B178B990F00FD3AFF /* App_Icon@2x-ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "App_Icon@2x-ios7.png"; sourceTree = "<group>"; };
 		C2A4EC4C178B990F00FD3AFF /* image.512x512.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image.512x512.jpg; sourceTree = "<group>"; };
@@ -1712,7 +1711,6 @@
 		C2E9F47A1ABCA395007581F2 /* BankCollectionZoomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankCollectionZoomView.swift; sourceTree = "<group>"; };
 		C2E9F47B1ABCA395007581F2 /* BankItemDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankItemDetailController.swift; sourceTree = "<group>"; };
 		C2E9F47C1ABCA395007581F2 /* BankRootCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankRootCell.swift; sourceTree = "<group>"; };
-		C2E9F47D1ABCA395007581F2 /* BankRootController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankRootController.swift; sourceTree = "<group>"; };
 		C2E9F47E1ABCA395007581F2 /* ButtonGroupPresetDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonGroupPresetDetailController.swift; sourceTree = "<group>"; };
 		C2E9F47F1ABCA395007581F2 /* ButtonPresetDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonPresetDetailController.swift; sourceTree = "<group>"; };
 		C2E9F4801ABCA395007581F2 /* ComponentDeviceDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentDeviceDetailController.swift; sourceTree = "<group>"; };
@@ -1837,7 +1835,7 @@
 		C2E9F6261ABCA7A3007581F2 /* iconic_stroke.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = iconic_stroke.otf; sourceTree = "<group>"; };
 		C2E9F6271ABCA7A3007581F2 /* iconSweets.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = iconSweets.otf; sourceTree = "<group>"; };
 		C2E9F6281ABCA7A3007581F2 /* modernpics.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = modernpics.otf; sourceTree = "<group>"; };
-		C2E9F6381ABCA7A3007581F2 /* Remote.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Remote.xcassets; sourceTree = "<group>"; };
+		C2E9F6381ABCA7A3007581F2 /* Bank.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Bank.xcassets; sourceTree = "<group>"; };
 		C2EEBA151B08087D0041B1B1 /* ComponentDevice+Bank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ComponentDevice+Bank.swift"; sourceTree = "<group>"; };
 		C2EEBA161B08087D0041B1B1 /* Image+Bank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Image+Bank.swift"; sourceTree = "<group>"; };
 		C2EEBA171B08087D0041B1B1 /* ImageCategory+Bank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ImageCategory+Bank.swift"; sourceTree = "<group>"; };
@@ -3128,7 +3126,6 @@
 				C2E9F47A1ABCA395007581F2 /* BankCollectionZoomView.swift */,
 				C2E9F47B1ABCA395007581F2 /* BankItemDetailController.swift */,
 				C2E9F47C1ABCA395007581F2 /* BankRootCell.swift */,
-				C2E9F47D1ABCA395007581F2 /* BankRootController.swift */,
 				C221159D1AC58BE20071F2D0 /* DetailController */,
 				C2E9F4811ABCA395007581F2 /* DetailCell */,
 				C2E9F4951ABCA395007581F2 /* DetailRow */,
@@ -3349,9 +3346,8 @@
 				C265DBB91AE8760800655C4C /* Preloaded Database */,
 				C2345AAB1AE3005A000AA262 /* JSON */,
 				C2E9F6201ABCA7A3007581F2 /* Fonts */,
-				C2E9F6381ABCA7A3007581F2 /* Remote.xcassets */,
+				C2E9F6381ABCA7A3007581F2 /* Bank.xcassets */,
 				C28A61ED1B0D302B00612469 /* BankController.xib */,
-				C2A12B971B0D597B003C17F8 /* BankButton.xib */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -3384,6 +3380,7 @@
 				C2EEBA1C1B08087D0041B1B1 /* Manufacturer+Bank.swift */,
 				C2EEBA1D1B08087D0041B1B1 /* Preset+Bank.swift */,
 				C2EEBA1E1B08087D0041B1B1 /* PresetCategory+Bank.swift */,
+				C26A16431B0E1941001FC95F /* NetworkDevice+Bank.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -4449,13 +4446,12 @@
 				C2345ACC1AE3005A000AA262 /* ComponentDevice.json in Resources */,
 				C2345ADD1AE3005A000AA262 /* Preset_ButtonGroup_Rocker.json in Resources */,
 				C2345AD01AE3005A000AA262 /* ImageCategory.json in Resources */,
-				C2A12B981B0D597B003C17F8 /* BankButton.xib in Resources */,
 				C2345AE31AE3005A000AA262 /* TitleEdgeInsets_Default.json in Resources */,
 				C2345AC81AE3005A000AA262 /* Activity.json in Resources */,
 				C2345ACB1AE3005A000AA262 /* BackgroundColor_Default.json in Resources */,
 				C2345AD91AE3005A000AA262 /* Preset_ButtonGroup_Dpad.json in Resources */,
 				C22115AE1AC59CD30071F2D0 /* Apple Symbols.ttf in Resources */,
-				C22115C51AC59CE40071F2D0 /* Remote.xcassets in Resources */,
+				C22115C51AC59CE40071F2D0 /* Bank.xcassets in Resources */,
 				C2345ACE1AE3005A000AA262 /* ForegroundColor_Highlighted.json in Resources */,
 				C2345AD61AE3005A000AA262 /* Preset_Button_Roundish.json in Resources */,
 			);
@@ -4861,9 +4857,9 @@
 				C2EEBA1F1B08087D0041B1B1 /* ComponentDevice+Bank.swift in Sources */,
 				C2EEBA281B08087D0041B1B1 /* PresetCategory+Bank.swift in Sources */,
 				C285D8661AC4BF6300C527F6 /* BankCollectionCategoryCell.swift in Sources */,
-				C22115951AC5883B0071F2D0 /* BankRootController.swift in Sources */,
 				C285D85C1AC48E4400C527F6 /* DetailListRow.swift in Sources */,
 				C285D8591AC48D3800C527F6 /* BankItemDetailController.swift in Sources */,
+				C26A16441B0E1941001FC95F /* NetworkDevice+Bank.swift in Sources */,
 				C285D8671AC4BF9800C527F6 /* BankCollectionItemCell.swift in Sources */,
 				C285D8431AC48C8400C527F6 /* DetailTextFieldCell.swift in Sources */,
 				C285D85F1AC48EB600C527F6 /* ImageDetailController.swift in Sources */,

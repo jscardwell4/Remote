@@ -172,20 +172,33 @@ import class DataModel.HTTPCommand
   }
 
   // MARK: - Network device discovery
-  
 
-  /** Join multicast group and listen for beacons broadcast by iTach devices. */
-  public static func startDetectingNetworkDevices() {
+  public typealias DiscoveryCallback = (NetworkDevice) -> Void
+  public typealias DiscoveryCallbackToken = Int
+
+  private static var discoveryCallbacks: [DiscoveryCallback] = []
+
+  /**
+  Join multicast group and listen for beacons broadcast by supported network devices, optionally providing a callback in the
+  event a new device is detected.
+
+  :param: discovery ((NetworkDevice) -> Void)? = nil
+  */
+  public static func startDetectingNetworkDevices(discovery: DiscoveryCallback? = nil) -> DiscoveryCallbackToken {
+    var token = -1
+    if let discovery = discovery { token = discoveryCallbacks.count; discoveryCallbacks.append(discovery) }
     ITachConnectionManager.startDetectingNetworkDevices()
     ISYConnectionManager.startDetectingNetworkDevices()
     MSLogInfo("listening for network devices…")
+    return token
   }
 
   /** Leave multicast group. */
-  public static func stopDetectingNetworkDevices() {
+  public static func stopDetectingNetworkDevices(discoveryCallbackToken: DiscoveryCallbackToken = -1) {
     ITachConnectionManager.stopDetectingNetworkDevices()
     ISYConnectionManager.stopDetectingNetworkDevices()
     MSLogInfo("no longer listening for network devices…")
+    if 0 ..< discoveryCallbacks.count ∋ discoveryCallbackToken { _ = discoveryCallbacks.removeAtIndex(discoveryCallbackToken) }
   }
 
   /** Whether network devices are currently being detected */
@@ -210,6 +223,8 @@ import class DataModel.HTTPCommand
   :param: device NetworkDevice
   */
   static func discoveredDevice(device: NetworkDevice) {
+    apply(discoveryCallbacks) {$0(device)}
+    discoveryCallbacks.removeAll()
     NSNotificationCenter.defaultCenter().postNotificationName(NetworkDeviceDiscoveryNotification,
                                                        object: self,
                                                      userInfo: [NetworkDeviceKey:device.uuid])

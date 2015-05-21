@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import MoonKit
+import CoreData
 import DataModel
 
 extension ISYDevice: Detailable {
