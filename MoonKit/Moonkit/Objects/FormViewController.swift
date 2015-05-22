@@ -11,8 +11,8 @@ import UIKit
 
 public class FormViewController: UIViewController {
 
-  public typealias Submission = (FormViewController, Form) -> Void
-  public typealias Cancellation = (FormViewController) -> Void
+  public typealias Submission = (Form) -> Void
+  public typealias Cancellation = () -> Void
 
   // MARK: - Initializating the controller
 
@@ -127,9 +127,9 @@ public class FormViewController: UIViewController {
   // MARK: - Actions
 
   /** cancelAction */
-  func cancelAction() { didCancel?(self) }
+  func cancelAction() { didCancel?() }
 
   /** submitAction */
-  func submitAction() { if form.valid { didSubmit?(self, form) } }
+  func submitAction() { if form.valid { didSubmit?(form) } }
 
 }

@@ -34,7 +34,7 @@ protocol FormCreatable: Model {
 }
 
 protocol DiscoverCreatable: Model {
-  static func beginDiscovery(#context: NSManagedObjectContext, discoveryForm: (Form) -> Void) -> Bool
+  static func beginDiscovery(#context: NSManagedObjectContext, presentForm: (Form) -> Void) -> Bool
   static func endDiscovery()
 }
 

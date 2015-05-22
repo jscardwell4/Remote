@@ -17,15 +17,17 @@ private var discoveryCallbackToken: ConnectionManager.DiscoveryCallbackToken?
 extension NetworkDevice: DiscoverCreatable {
 
   /** beginDiscovery */
-  static func beginDiscovery(#context: NSManagedObjectContext, discoveryForm: (Form) -> Void) -> Bool {
+  static func beginDiscovery(#context: NSManagedObjectContext, presentForm: (Form) -> Void) -> Bool {
     if !ConnectionManager.wifiAvailable || discoveryCallbackToken != nil { return false }
     else {
-      discoveryCallbackToken = ConnectionManager.startDetectingNetworkDevices {
+      let discoveryCallback: ConnectionManager.DiscoveryCallback = {
+        (networkDevice: NetworkDevice) -> Void in
         if discoveryCallbackToken != nil {
           discoveryCallbackToken = nil
-          discoveryForm(Form(templates: $0.discoveryConfirmationFormFields()))
+          presentForm(networkDevice.discoveryConfirmationForm())
         }
       }
+      discoveryCallbackToken = ConnectionManager.startDetectingNetworkDevices(discovery: discoveryCallback)
       return true
     }
   }
@@ -44,9 +46,9 @@ extension NetworkDevice {
   /**
   discoveryConfirmationFormFields
 
-  :returns: OrderedDictionary<String, FieldTemplate>
+  :returns: Form
   */
-  func discoveryConfirmationFormFields() -> OrderedDictionary<String, FieldTemplate> {
+  func discoveryConfirmationForm() -> Form {
     var fields: OrderedDictionary<String, FieldTemplate> = [:]
     if let moc = managedObjectContext {
       let validation = self.dynamicType.nameFormFieldTemplate(context: moc).values["validation"] as? (String?) -> Bool
@@ -78,7 +80,7 @@ extension NetworkDevice {
       }
     }
 
-    return fields
+    return Form(templates: fields)
   }
 
 }

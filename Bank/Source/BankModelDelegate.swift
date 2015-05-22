@@ -13,21 +13,37 @@ import MoonKit
 
 @objc class BankModelDelegate {
 
+  typealias FormPresentation = (Form) -> Void
+  typealias ProcessedForm = (Form) -> Bool
+
+  struct DiscoveryTransaction {
+    let label: String
+    let beginDiscovery: (FormPresentation) -> Void
+    let endDiscovery: () -> Void
+    let processedForm: ProcessedForm
+  }
+
+  struct CreationTransaction {
+    let label: String
+    let form: Form
+    let processedForm: ProcessedForm
+  }
+
   typealias BeginEndChangeCallback = (BankModelDelegate) -> Void
   typealias ChangeCallback = (BankModelDelegate, Change) -> Void
 
   // MARK: - Transactions
 
-  typealias CreateTransaction = (label: String, form: Form, action: (Form) -> Bool)
-  typealias DiscoverTransaction = (label: String, form: () -> Form, action: (Form) -> Bool)
+  typealias FormSubmission = FormViewController.Submission
+  typealias FormSubmissionResult = (Form) -> Bool
 
-  var createItem: CreateTransaction?
-  var createCollection: CreateTransaction?
-  var discoverItem: DiscoverTransaction?
-  var discoverCollection: DiscoverTransaction?
+  var createItem: CreationTransaction?
+  var createCollection: CreationTransaction?
+  var discoverItem: DiscoveryTransaction?
+  var discoverCollection: DiscoveryTransaction?
 
   /**
-  Generates a `CreateTransaction` given a label, a `FormCreation` type, and a managed object context
+  Generates a `CreateTransaction` given a label, a `FormCreatable` type, and a managed object context
 
   :param: label String
   :param: creatableType T.Type
@@ -37,13 +53,37 @@ import MoonKit
   */
   class func createTransactionWithLabel<T:FormCreatable>(label: String,
                                            creatableType: T.Type,
-                                                 context: NSManagedObjectContext) -> CreateTransaction
+                                                 context: NSManagedObjectContext) -> CreationTransaction
   {
-    return (label: label, form: creatableType.creationForm(context: context), action: { form in
-      let (success, error) = DataManager.saveContext(context) {_ = creatableType.createWithForm(form, context: $0)}
-      MSHandleError(error, message: "failed to save new manufacturer")
-      return success
-    })
+    return CreationTransaction(label: label, form: creatableType.creationForm(context: context)) {
+      form in
+        let (success, error) = DataManager.saveContext(context) {_ = creatableType.createWithForm(form, context: $0)}
+        MSHandleError(error, message: "failed to save new \(toString(creatableType))")
+        return success
+    }
+  }
+
+  /**
+  Generates a `DiscoverTransaction` given a label, a `DiscoverCreatable` type, and a managed object context
+
+  :param: label String
+  :param: discoverableType T.Type
+  :param: context NSManagedObjectContext
+
+  :returns: DiscoverTransaction
+  */
+  class func discoverTransactionWithLabel<T:DiscoverCreatable>(label: String,
+                                              discoverableType: T.Type,
+                                                       context: NSManagedObjectContext) -> DiscoveryTransaction
+  {
+    let beginDiscovery: (FormPresentation) -> Void = {discoverableType.beginDiscovery(context: context, presentForm: $0)}
+    let endDiscovery: () -> Void = {discoverableType.endDiscovery()}
+    return DiscoveryTransaction(label: label, beginDiscovery: beginDiscovery, endDiscovery: endDiscovery) {
+        form in
+          let (success, error) = DataManager.saveContext(context)
+          MSHandleError(error, message: "failed to save new \(toString(discoverableType))")
+          return success
+      }
   }
 
   // MARK: - Initialization

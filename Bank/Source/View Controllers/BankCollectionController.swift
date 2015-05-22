@@ -53,6 +53,8 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
     }
   }
 
+  private var endDiscovery: (() -> Void)?
+
   /** Whether model changes should be saved up to persistent store */
   var propagateChanges = true
 
@@ -406,25 +408,76 @@ extension BankCollectionController: BankCollectionZoomViewDelegate {
 
 extension BankCollectionController: BankItemCreationController {
 
+  /**
+  presentForm:action:
+
+  :param: form Form
+  :param: action (Form) -> Bool
+  */
+  private func presentForm(form: Form, processedForm: BankModelDelegate.ProcessedForm) {
+    let dismissController = {self.dismissViewControllerAnimated(true) {self.createItemBarButton?.isToggled = false}}
+    let didSubmit: FormViewController.Submission = {
+      if processedForm($0) { DataManager.propagatingSaveFromContext(self.collectionDelegate.managedObjectContext) }
+      dismissController()
+    }
+    let formViewController = FormViewController(form: form, didSubmit: didSubmit, didCancel: dismissController)
+    presentViewController(formViewController, animated: true, completion: nil)
+  }
+
+  /**
+  beginDiscoveryTransaction:
+
+  :param: transaction BankModelDelegate.DiscoveryTransaction
+  */
+  private func beginDiscoveryTransaction(transaction: BankModelDelegate.DiscoveryTransaction) {
+    endDiscovery = transaction.endDiscovery
+    let context = collectionDelegate.managedObjectContext
+    let processedForm = transaction.processedForm
+    let formPresentation: BankModelDelegate.FormPresentation = {
+      form in
+      let dismissController = {
+        self.dismissViewControllerAnimated(true) { self.discoverItemBarButton?.isToggled = false }
+      }
+      let didSubmit: FormViewController.Submission = {
+        _ in
+        if processedForm(form) { DataManager.propagatingSaveFromContext(context) }
+        dismissController()
+      }
+      let formViewController = FormViewController(form: form, didSubmit: didSubmit, didCancel: dismissController)
+      self.presentViewController(formViewController, animated: true, completion: nil)
+    }
+    transaction.beginDiscovery(formPresentation)
+  }
+
   /** discoverBankItem */
   func discoverBankItem() {
 
+    if let endDiscovery = endDiscovery {
+      endDiscovery()
+      discoverItemBarButton?.isToggled = false
+    } else {
+      switch (collectionDelegate.discoverItem, collectionDelegate.discoverCollection) {
+
+        // Display popover if there are multiple valid discover transactions
+        case let (discoverItem, discoverCollection) where discoverItem != nil && discoverCollection != nil:
+          // TODO: Present popover to choose which transaction to begin
+          break
+
+        case let (discoverItem, discoverCollection) where discoverItem != nil && discoverCollection == nil:
+          beginDiscoveryTransaction(discoverItem!)
+
+        case let (discoverItem, discoverCollection) where discoverItem == nil && discoverCollection != nil:
+          beginDiscoveryTransaction(discoverCollection!)
+
+        // Don't do anything if we have no valid create transactions
+        default:
+          assert(false, "discover bar button item should only be enabled if delegate has at least one valid transaction")
+      }
+    }
   }
 
   /** createBankItem */
   func createBankItem() {
-
-    func presentForm(form: Form, action: (Form) -> Bool) {
-      let dismissController = {self.dismissViewControllerAnimated(true) {self.createItemBarButton?.isToggled = false}}
-      let didSubmit: FormViewController.Submission = {
-        if action($1) { DataManager.propagatingSaveFromContext(self.collectionDelegate.managedObjectContext) }
-        dismissController()
-      }
-      let didCancel: FormViewController.Cancellation = {_ in dismissController()}
-      let formViewController = FormViewController(form: form, didSubmit: didSubmit, didCancel: didCancel)
-      presentViewController(formViewController, animated: true, completion: nil)
-    }
-
     switch (collectionDelegate.createItem, collectionDelegate.createCollection) {
       // Display popover if there are multiple valid create transactions
       case let (createItem, createCollection) where createItem != nil && createCollection != nil:
@@ -432,18 +485,18 @@ extension BankCollectionController: BankItemCreationController {
         break
       // Display controller for item creation if collection transaction is nil
       case let (createItem, createCollection) where createItem != nil && createCollection == nil:
-        presentForm(createItem!.form, createItem!.action)
+        presentForm(createItem!.form, processedForm: createItem!.processedForm)
 
       // Display controller for collection creation if item transaction is nil
       case let (createItem, createCollection) where createItem == nil && createCollection != nil:
-        presentForm(createCollection!.form, createCollection!.action)
+        presentForm(createCollection!.form, processedForm: createCollection!.processedForm)
 
       // Don't do anything if we have no valid create transactions
       default:
         assert(false, "create bar button item should only be enabled if delegate has at least one valid transaction")
     }
-
   }
+
 }
 
 // MARK: - Import/export
