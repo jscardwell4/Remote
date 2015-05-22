@@ -13,6 +13,7 @@ import Settings
 import class DataModel.ITachIRCommand
 import class DataModel.ITachDevice
 import class DataModel.DataManager
+import class DataModel.NetworkDevice
 
 @objc final class ITachConnectionManager {
 
@@ -30,6 +31,8 @@ import class DataModel.DataManager
 
   // MARK: - Private cache, flag, and connection properties
 
+  static private var context: NSManagedObjectContext = DataManager.rootContext
+
   /** Current/previous device connections */
   static private var connections: [DeviceIdentifier:Connection] = [:]
 
@@ -38,9 +41,6 @@ import class DataModel.DataManager
 
   /** UUIDs from processed beacons. */
   static private var beaconsReceived: Set<DeviceIdentifier> = []
-
-  /** Previously discovered devices. */
-  static private(set) var networkDevices = Set(Device.objectsInContext(DataManager.rootContext) as! [Device])
 
   /** Whether socket is (or should be) open to receive multicast group broadcast messages. */
   static private(set) var detectingNetworkDevices = false
@@ -52,11 +52,18 @@ import class DataModel.DataManager
 
   // MARK: - Network device detection
 
-  /** Join multicast group and listen for beacons broadcast by iTach devices. */
-  class func startDetectingNetworkDevices() {
-    detectingNetworkDevices = true
-    multicastConnection.listen()
-    MSLogDebug("listening for iTach devices…")
+  /**
+  Join multicast group and listen for beacons broadcast by iTach devices.
+
+  :param: context NSManagedObjectContext = DataManager.rootContext
+  */
+  class func startDetectingNetworkDevices(context: NSManagedObjectContext = DataManager.rootContext) {
+    if !detectingNetworkDevices {
+      self.context = context
+      detectingNetworkDevices = true
+      multicastConnection.listen()
+      MSLogDebug("listening for iTach devices…")
+    }
   }
 
   /** Cease listening for beacon broadcasts and release resources. */
@@ -112,33 +119,44 @@ import class DataModel.DataManager
       assert(connections[uniqueIdentifier] == nil)
       beaconsReceived.insert(uniqueIdentifier)
 
-      let device = Device.objectWithValue(uniqueIdentifier,
-                             forAttribute: "uniqueIdentifier",
-                                  context: DataManager.rootContext) ?? Device(context: DataManager.rootContext)
-      device.updateWithBeacon(message)
-
       let shouldStop: Bool
       let shouldConnect: Bool
 
-      // If `networkDevices` already contains `device`, send update notification
-      if networkDevices ∋ device {
-        ConnectionManager.updatedDevice(device)
-        shouldStop = SettingsManager.valueForSetting(ConnectionManager.StopAfterUpdatedDeviceKey) == true
-        shouldConnect = SettingsManager.valueForSetting(ConnectionManager.AutoConnectExistingKey) == true
+      let device: Device?
+      let notify: ((NetworkDevice) -> Void)?
+      let shouldStopKey: String?
+      let shouldConnectKey: String?
+
+      if let existingDevice = Device.objectWithValue(uniqueIdentifier, forAttribute: "uniqueIdentifier", context: context) {
+        existingDevice.updateWithBeacon(message)
+        device = existingDevice
+        notify = ConnectionManager.updatedDevice
+        shouldStopKey = ConnectionManager.StopAfterUpdatedDeviceKey
+        shouldConnectKey = ConnectionManager.AutoConnectExistingKey
+      } else if let newDevice = Device(beacon: message, context: context) {
+        device = newDevice
+        notify = ConnectionManager.discoveredDevice
+        shouldStopKey = ConnectionManager.StopAfterDiscoveredDeviceKey
+        shouldConnectKey = ConnectionManager.AutoConnectDiscoveredKey
+      } else {
+        device = nil
+        notify = nil
+        shouldStopKey = nil
+        shouldConnectKey = nil
       }
 
-      // otherwise add `device` and send discovery notification
-      else {
-        networkDevices.insert(device); ConnectionManager.discoveredDevice(device)
-        shouldStop = SettingsManager.valueForSetting(ConnectionManager.StopAfterDiscoveredDeviceKey) == true
-        shouldConnect = SettingsManager.valueForSetting(ConnectionManager.AutoConnectDiscoveredKey) == true
+      if let device = device, notify = notify, shouldStopKey = shouldStopKey, shouldConnectKey = shouldConnectKey {
+        notify(device)
+
+        // Stop if appropriate
+        if SettingsManager.valueForSetting(shouldStopKey) == true { stopDetectingNetworkDevices() }
+
+        // Connect if appropriate
+        if SettingsManager.valueForSetting(shouldConnectKey) == true {
+          connections[uniqueIdentifier] = Connection(device: device)
+        }
       }
 
-      // Stop if appropriate
-      if shouldStop { stopDetectingNetworkDevices() }
-
-      // Connect if appropriate
-      if shouldConnect { connections[uniqueIdentifier] = Connection(device: device) }
     }
 
   }

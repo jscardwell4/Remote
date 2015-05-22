@@ -37,8 +37,15 @@ import class DataModel.DataManager
   /** Whether socket is open to receive multicast group broadcast messages */
   static private(set) var detectingNetworkDevices = false
 
-  /** Join multicast group and listen for beacons broadcast by iTach devices. */
-  class func startDetectingNetworkDevices() { detectingNetworkDevices = true; multicastConnection.listen() }
+  /**
+  Join multicast group and listen for beacons broadcast by iTach devices.
+
+  :param: context NSManagedObjectContext = DataManager.rootContext
+  */
+  class func startDetectingNetworkDevices(context: NSManagedObjectContext = DataManager.rootContext) {
+    detectingNetworkDevices = true
+    multicastConnection.listen()
+  }
 
   /** Cease listening for beacon broadcasts and release resources. */
   class func stopDetectingNetworkDevices() { detectingNetworkDevices = false; multicastConnection.stopListening() }

@@ -79,7 +79,9 @@ import MoonKit
   */
   func listen(error: NSErrorPointer = nil) -> Bool {
     if !joinedGroup { joinGroup(error) }
-    if joinedGroup && !listening { listening = socket.beginReceiving(error) }
+    if joinedGroup && !listening {
+      listening = socket.beginReceiving(error)
+    }
     return listening
   }
 

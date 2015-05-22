@@ -102,6 +102,32 @@ public class ITachDevice: NetworkDevice {
   }
 
   /**
+  initWithBeacon:context:
+
+  :param: beacon String
+  :param: context NSManagedObjectContext
+  */
+  public convenience init?(beacon: String, context: NSManagedObjectContext) {
+    let entries = beacon.matchingSubstringsForRegEx(~/"(?<=<-)(.*?)(?=>)")
+    var attributes: [String:String] = [:]
+    apply(entries) {
+      let components = "=".split($0)
+      if components.count == 2, let prop = BeaconProperty(rawValue: components[0]) {
+        attributes[prop.deviceProperty] = components[1]
+      }
+    }
+    if let uniqueIdentifier = attributes[BeaconProperty.UniqueIdentifier.deviceProperty]
+      where !NetworkDevice.objectExistsInContext(context, withValue: uniqueIdentifier, forAttribute: "uniqueIdentifier")
+    {
+      self.init(context: context)
+      setValuesForKeysWithDictionary(attributes)
+    } else {
+      self.init(context: nil)
+      return nil
+    }
+  }
+
+  /**
   updateWithBeacon:
 
   :param: beacon String
@@ -116,7 +142,7 @@ public class ITachDevice: NetworkDevice {
       }
     }
     if let uniqueIdentifier = attributes[BeaconProperty.UniqueIdentifier.deviceProperty]
-      where self.uniqueIdentifier == uniqueIdentifier || self.uniqueIdentifier == nil
+      where self.uniqueIdentifier == nil || self.uniqueIdentifier == uniqueIdentifier
     {
       setValuesForKeysWithDictionary(attributes)
       var error: NSError?

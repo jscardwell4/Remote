@@ -150,9 +150,9 @@ class LearnerAppViewController: UIViewController, AKPickerViewDelegate, AKPicker
     }
     let placeholderText = "The manufacturer's name"
     let didCancel: () -> Void = {[unowned self] in self.dismissViewControllerAnimated(true, completion: nil) }
-    let didSubmit: (OrderedDictionary<String,Any>) -> Void = {[unowned self] values in
+    let didSubmit: (Form) -> Void = {[unowned self] form in
       assert(NSThread.isMainThread())
-      if let name = values["Name"] as? String {
+      if let name = form.values?["Name"] as? String {
         let manufacturer = Manufacturer(context: self.context)
         manufacturer.name = name
         self.manufacturer = manufacturer
@@ -161,9 +161,9 @@ class LearnerAppViewController: UIViewController, AKPickerViewDelegate, AKPicker
       }
       self.dismissViewControllerAnimated(true, completion: nil)
     }
-    let nameField = FormViewController.Field.Text(initial: nil, placeholder: placeholderText, validation: nameValidation)
-    let fields: OrderedDictionary<String, FormViewController.Field> = ["Name": nameField]
-    presentFormViewController(FormViewController(fields: fields, didCancel: didCancel, didSubmit: didSubmit))
+    let nameField = FieldTemplate.Text(value: "", placeholder: placeholderText, validation: nameValidation, editable: true)
+    let fields: OrderedDictionary<String, FieldTemplate> = ["Name": nameField]
+    presentFormViewController(FormViewController(form: Form(templates: fields), didSubmit: didSubmit, didCancel: didCancel))
   }
 
   
@@ -174,9 +174,9 @@ class LearnerAppViewController: UIViewController, AKPickerViewDelegate, AKPicker
       }
       let placeholderText = "The code set's name"
       let didCancel: () -> Void = {[unowned self] in self.dismissViewControllerAnimated(true, completion: nil) }
-      let didSubmit: (OrderedDictionary<String,Any>) -> Void = {[unowned self] values in
+      let didSubmit: (Form) -> Void = {[unowned self] form in
         assert(NSThread.isMainThread())
-        if let name = values["Name"] as? String {
+        if let name = form.values?["Name"] as? String {
           let codeSet = IRCodeSet(context: self.context)
           codeSet.name = name
           codeSet.manufacturer = manufacturer
@@ -187,9 +187,9 @@ class LearnerAppViewController: UIViewController, AKPickerViewDelegate, AKPicker
         self.dismissViewControllerAnimated(true, completion: nil)
       }
 
-      let nameField: FormViewController.Field = .Text(initial: nil, placeholder: placeholderText, validation: nameValidation)
-      let fields: OrderedDictionary<String, FormViewController.Field> = ["Name": nameField]
-      presentFormViewController(FormViewController(fields: fields, didCancel: didCancel, didSubmit: didSubmit))
+      let nameField = FieldTemplate.Text(value: "", placeholder: placeholderText, validation: nameValidation, editable: true)
+      let fields: OrderedDictionary<String, FieldTemplate> = ["Name": nameField]
+      presentFormViewController(FormViewController(form: Form(templates: fields), didSubmit: didSubmit, didCancel: didCancel))
     }
   }
 

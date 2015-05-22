@@ -17,23 +17,32 @@ private var discoveryCallbackToken: ConnectionManager.DiscoveryCallbackToken?
 extension NetworkDevice: DiscoverCreatable {
 
   /** beginDiscovery */
-  static func beginDiscovery(#context: NSManagedObjectContext, presentForm: (Form) -> Void) -> Bool {
+  static func beginDiscovery(#context: NSManagedObjectContext, presentForm: (Form, ProcessedForm) -> Void) -> Bool {
     if !ConnectionManager.wifiAvailable || discoveryCallbackToken != nil { return false }
     else {
       let discoveryCallback: ConnectionManager.DiscoveryCallback = {
         (networkDevice: NetworkDevice) -> Void in
         if discoveryCallbackToken != nil {
-          discoveryCallbackToken = nil
-          presentForm(networkDevice.discoveryConfirmationForm())
+          self.endDiscovery()
+          dispatchToMain {
+            presentForm(networkDevice.discoveryConfirmationForm()) {
+              form in
+              if let name = form.values?["Name"] as? String { networkDevice.name = name }
+              let (success, error) = DataManager.saveContext(context)
+              MSHandleError(error)
+              return success
+            }
+          }
         }
       }
-      discoveryCallbackToken = ConnectionManager.startDetectingNetworkDevices(discovery: discoveryCallback)
+      discoveryCallbackToken = ConnectionManager.startDetectingNetworkDevices(context: context, discovery: discoveryCallback)
       return true
     }
   }
 
   /** endDiscovery */
   static func endDiscovery() {
+    MSLogDebug("discoveryCallbackToken = \(toString(discoveryCallbackToken))")
     if discoveryCallbackToken != nil {
       ConnectionManager.stopDetectingNetworkDevices(discoveryCallbackToken: discoveryCallbackToken!)
       discoveryCallbackToken = nil
@@ -53,7 +62,7 @@ extension NetworkDevice {
     if let moc = managedObjectContext {
       let validation = self.dynamicType.nameFormFieldTemplate(context: moc).values["validation"] as? (String?) -> Bool
       fields["Name"] = .Text(value: "", placeholder: uniqueIdentifier, validation: validation, editable: true)
-      fields["Unique Identifier"] = .Text(value: uniqueIdentifier, placeholder: nil, validation: nil, editable: false)
+      fields["UUID"] = .Text(value: uniqueIdentifier, placeholder: nil, validation: nil, editable: false)
 
       switch self {
         case let d as ITachDevice:

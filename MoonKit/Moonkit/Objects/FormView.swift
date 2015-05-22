@@ -122,7 +122,7 @@ final class FormView: UIView {
 
   override func intrinsicContentSize() -> CGSize {
     let fieldSizes = fieldViews.map {$0.intrinsicContentSize()}
-    let w = maxElement(fieldSizes.map {$0.width})
+    let w = min(maxElement(fieldSizes.map {$0.width}), UIScreen.mainScreen().bounds.width - 8)
     let h = sum(fieldSizes.map {$0.height}) + CGFloat(fieldSizes.count + 1) * CGFloat(10)
     return CGSize(width: w, height: h)
   }

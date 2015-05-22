@@ -27,6 +27,9 @@ protocol Previewable {
 }
 
 // Mark: - Form creatable protocol
+typealias FormPresentation = (Form) -> Void
+typealias FormSubmission = (Form) -> Void
+typealias ProcessedForm = (Form) -> Bool
 
 protocol FormCreatable: Model {
   static func creationForm(#context: NSManagedObjectContext) -> Form
@@ -34,7 +37,7 @@ protocol FormCreatable: Model {
 }
 
 protocol DiscoverCreatable: Model {
-  static func beginDiscovery(#context: NSManagedObjectContext, presentForm: (Form) -> Void) -> Bool
+  static func beginDiscovery(#context: NSManagedObjectContext, presentForm: (Form, ProcessedForm) -> Void) -> Bool
   static func endDiscovery()
 }
 

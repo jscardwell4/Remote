@@ -4,521 +4,593 @@
 		"selected_items":
 		[
 			[
-				"replace",
-				"replacetext"
+				"valid",
+				"validation"
 			],
 			[
-				"for",
-				"forin	for … in … done"
+				"prot",
+				"protocol-composition"
 			],
 			[
-				"sha",
-				"sharedManager"
+				"met",
+				"meta_scope"
 			],
 			[
-				"diff",
-				"difficulties"
+				"update",
+				"updateFromControl"
 			],
 			[
-				"share",
-				"sharedInstance"
+				"change",
+				"changeHandler"
 			],
 			[
-				"auth",
-				"authenticatePlayer"
+				"Fiel",
+				"FieldTemplate"
 			],
 			[
-				"user",
-				"userDefaults"
+				"value",
+				"valueDidChange"
 			],
 			[
-				"Help",
-				"HelpOverlayOptions"
+				"val",
+				"valueDidChange"
 			],
 			[
-				"Hel",
-				"HelpOverlayOptions"
+				"Che",
+				"CheckboxField"
 			],
 			[
-				"local",
-				"localPlayer"
+				"get",
+				"getValue"
 			],
 			[
-				"Game",
-				"GameCenterDidAuthenticateNotification"
+				"self",
+				"selfie"
 			],
 			[
-				"def",
-				"defaultCenter"
+				"Fil",
+				"FieldType"
 			],
 			[
-				"game",
-				"gameCenterVC"
+				"vali",
+				"validation"
 			],
 			[
-				"present",
-				"presentGameCenterAuthenticationController"
+				"fiel",
+				"fieldType"
 			],
 			[
-				"view",
-				"viewController"
+				"did",
+				"didChangeValueForField"
 			],
 			[
-				"post",
-				"postNotificationName"
-			],
-			[
-				"disp",
-				"displaySize"
-			],
-			[
-				"disableGa",
-				"disableGameCenter"
-			],
-			[
-				"reg",
-				"registerDefaults"
-			],
-			[
-				"SD",
-				"SDKROOT"
-			],
-			[
-				"ar",
-				"arrayContainsElement"
-			],
-			[
-				"me",
-				"MENTALRAY_LOCATION"
-			],
-			[
-				"list",
-				"listx"
-			],
-			[
-				"M",
-				"MENTALRAY_LOCATION"
-			],
-			[
-				"edit",
-				"edit_note_curses_move"
-			],
-			[
-				"k",
-				"k_in"
-			],
-			[
-				"edi",
-				"edit_note_curses_exit"
-			],
-			[
-				"eid",
-				"edit_note_curses"
-			],
-			[
-				"ed",
-				"edit_note_curses_toggle"
-			],
-			[
-				"c",
-				"c_in"
-			],
-			[
-				"char",
-				"char_in"
-			],
-			[
-				"mac",
-				"max_color_pairs"
-			],
-			[
-				"max",
-				"max_colors"
-			],
-			[
-				"NT",
-				"NOTESDIR"
-			],
-			[
-				"ls",
-				"ls_hook"
-			],
-			[
-				"MSLogDe",
-				"MSLogDebugWeak"
-			],
-			[
-				"GyreCenter",
-				"GyreCenterZoneBeginTexture"
-			],
-			[
-				"wai",
-				"waitForCompletion"
-			],
-			[
-				"GyrePla",
-				"GyrePlayCorrectSound"
-			],
-			[
-				"level",
-				"levelCompletionHandler"
-			],
-			[
-				"curr",
-				"currentTime"
-			],
-			[
-				"GyreC",
-				"GyreCenterZonePauseTexture"
-			],
-			[
-				"setC",
-				"setCenterZoneTexture"
-			],
-			[
-				"all",
-				"allowSelections"
-			],
-			[
-				"wek",
-				"weakself"
-			],
-			[
-				"rev",
-				"revealOverlay"
-			],
-			[
-				"tut",
-				"tutorialStrings_"
-			],
-			[
-				"mes",
-				"messageStack"
-			],
-			[
-				"GyreL",
-				"GyreLevelCenterZone"
-			],
-			[
-				"loc",
-				"locationInNode"
-			],
-			[
-				"weak",
-				"weakself"
-			],
-			[
-				"touch",
-				"touches"
-			],
-			[
-				"revea",
-				"revealOverlay"
-			],
-			[
-				"r",
-				"r_buf"
-			],
-			[
-				"lbu",
-				"l_buf"
-			],
-			[
-				"notes-edit-mo",
-				"notes-edit-move-up"
-			],
-			[
-				"R",
-				"RBUFFER"
-			],
-			[
-				"POWE",
-				"POWERLINE_CURRENT_PATH"
-			],
-			[
-				"a",
-				"alias"
-			],
-			[
-				"hi",
-				"highlight_idx"
-			],
-			[
-				"cur",
-				"current_task_idx"
-			],
-			[
-				"in",
-				"integer"
-			],
-			[
-				"notes",
-				"notes-edit-toggle"
-			],
-			[
-				"fg",
-				"fg_color"
-			],
-			[
-				"not",
-				"notes-edit-undo"
-			],
-			[
-				"note",
-				"notes-edit-highlight"
-			],
-			[
-				"noe",
-				"notes-edit-highlight"
-			],
-			[
-				"e",
-				"e_idx"
-			],
-			[
-				"s",
-				"s_idx"
-			],
-			[
-				"col",
-				"color_code"
-			],
-			[
-				"ms",
-				"ms_print_usage"
-			],
-			[
-				"sg",
-				"sgr_parameters"
-			],
-			[
-				"sgr",
-				"sgr_parameters"
-			],
-			[
-				"color",
-				"color_index"
-			],
-			[
-				"P",
-				"POWERLINE_RIGHT_B"
+				"didC",
+				"didChangeValueForField"
 			],
 			[
 				"add",
-				"addChild"
+				"addControlForField"
 			],
 			[
-				"eix",
-				"exit_status"
+				"textFi",
+				"textFieldValidation"
 			],
 			[
-				"w",
-				"WIDGET"
+				"field",
+				"fieldControl"
 			],
 			[
-				"current",
-				"current_task"
+				"picker",
+				"pickerControl"
 			],
 			[
-				"W",
-				"WIDGET"
+				"cho",
+				"choice"
 			],
 			[
-				"curre",
-				"current_line"
+				"upd",
+				"updateControlForField"
 			],
 			[
-				"application",
-				"applications_array"
+				"Component",
+				"ComponentDevice"
 			],
 			[
-				"app",
-				"applications_array"
+				"vl",
+				"validation"
 			],
 			[
-				"appliction",
-				"applications"
+				"TExt",
+				"TextValidation"
 			],
 			[
-				"appli",
-				"applications_array"
+				"Pres",
+				"PresetCategory"
 			],
 			[
-				"appic",
-				"applications"
+				"fetch",
+				"fetchedResultsForEntity"
 			],
 			[
-				"py",
-				"pythonpath"
+				"coll",
+				"collectionToRootAttributeName"
 			],
 			[
-				"exi",
-				"exit_status"
+				"itemTo",
+				"itemToRootAttributeName"
+			],
+			[
+				"man",
+				"managedObjectContext"
+			],
+			[
+				"NSFetc",
+				"NSFetchedResultsController"
+			],
+			[
+				"prop",
+				"propertyForRelationshipPair"
+			],
+			[
+				"enti",
+				"entityDescription"
+			],
+			[
+				"Moel",
+				"ModelObject"
+			],
+			[
+				"Create",
+				"CreateTransaction"
 			],
 			[
 				"create",
-				"create_note"
+				"createItem"
 			],
 			[
-				"return",
-				"return_status"
+				"NSFet",
+				"NSFetchedResultsController"
 			],
 			[
-				"retu",
-				"return"
+				"Collec",
+				"CollectedModel"
+			],
+			[
+				"BankM",
+				"BankModelDelegate"
+			],
+			[
+				"Bank",
+				"BankModelDelegate"
+			],
+			[
+				"BankMode",
+				"BankModelCollectionDelegate"
+			],
+			[
+				"fetc",
+				"fetchedCollections"
+			],
+			[
+				"fet",
+				"fetchedItems"
+			],
+			[
+				"mn",
+				"managedObjectContext"
+			],
+			[
+				"creat",
+				"creatableItemCollection"
+			],
+			[
+				"FOrm",
+				"FormViewController"
+			],
+			[
+				"didS",
+				"didSubmit"
+			],
+			[
+				"Form",
+				"FormViewController"
+			],
+			[
+				"manuf",
+				"manufacturerCollection"
+			],
+			[
+				"mana",
+				"managedObjectContext"
+			],
+			[
+				"collec",
+				"collectionDelegates"
+			],
+			[
+				"compo",
+				"componentDeviceCollection"
+			],
+			[
+				"BankMod",
+				"BankModelCollectionDelegate"
+			],
+			[
+				"cl",
+				"collections"
+			],
+			[
+				"toolb",
+				"toolbarItems"
+			],
+			[
+				"sele",
+				"selectiveViewController"
+			],
+			[
+				"regis",
+				"registerWithCollectionView"
+			],
+			[
+				"BankCo",
+				"BankCollectionCategoryCell"
+			],
+			[
+				"dark",
+				"darkColor"
+			],
+			[
+				"Dar",
+				"DarculaColor"
+			],
+			[
+				"NSMan",
+				"NSManagedObjectContext"
+			],
+			[
+				"lab",
+				"labToXYZ"
+			],
+			[
+				"xyz",
+				"xyzToLAB"
+			],
+			[
+				"sRG",
+				"sRGBToXYZ"
+			],
+			[
+				"srgb",
+				"sRGBToXYZ"
+			],
+			[
+				"pr",
+				"prevLine"
+			],
+			[
+				"char",
+				"characterCount"
+			],
+			[
+				"prev",
+				"prevRangeLoc"
+			],
+			[
+				"ligh",
+				"lightGenerator"
+			],
+			[
+				"light",
+				"lightColors"
+			],
+			[
+				"col",
+				"colors"
+			],
+			[
+				"Sha",
+				"ShadeStyle"
+			],
+			[
+				"Sh",
+				"ShadeStyle"
+			],
+			[
+				"back",
+				"backgroundColor"
+			],
+			[
+				"navi",
+				"navigationController"
+			],
+			[
+				"num",
+				"numberOfPossibleColors"
+			],
+			[
+				"genera",
+				"generateRandomNumberWithMax"
+			],
+			[
+				"randomC",
+				"randomColorChosen"
+			],
+			[
+				"previ",
+				"previousRandomNumber"
+			],
+			[
+				"stand",
+				"standardUserDefaults"
+			],
+			[
+				"rgb",
+				"rgbColorFromPatternColor"
+			],
+			[
+				"CGC",
+				"CGColor"
+			],
+			[
+				"gradientIm",
+				"gradientImageKey"
+			],
+			[
+				"total",
+				"totalDifferences"
+			],
+			[
+				"flat",
+				"flatColors"
+			],
+			[
+				"sum",
+				"totalSumOfDifferencesFromL1"
+			],
+			[
+				"small",
+				"smallestDistance"
+			],
+			[
+				"nearest",
+				"nearestFlatColorForL"
+			],
+			[
+				"tria",
+				"triadicColorSchemeFromHue"
+			],
+			[
+				"comple",
+				"complementaryColorSchemeFromHue"
+			],
+			[
+				"anal",
+				"analogousColorSchemeFromHue"
+			],
+			[
+				"regi",
+				"registerFonts"
+			],
+			[
+				"comp",
+				"completion"
+			],
+			[
+				"LEar",
+				"LearnerEnabled"
+			],
+			[
+				"Unkon",
+				"UnknownCommand"
+			],
+			[
+				"ITachE",
+				"ITachError"
+			],
+			[
+				"lis",
+				"listening"
+			],
+			[
+				"Any",
+				"AnyObject"
+			],
+			[
+				"attr",
+				"attributeKeys"
+			],
+			[
+				"par",
+				"parameters"
+			],
+			[
+				"URL",
+				"URLConnection"
+			],
+			[
+				"rese",
+				"request"
+			],
+			[
+				"con",
+				"connections"
+			],
+			[
+				"ISY",
+				"ISYConnectionManager"
+			],
+			[
+				"ISYD",
+				"ISYDeviceConnection"
+			],
+			[
+				"becaon",
+				"beaconsReceived"
+			],
+			[
+				"Multi",
+				"MulticastAddress"
+			],
+			[
+				"beacons",
+				"beaconsReceived"
+			],
+			[
+				"muli",
+				"multicastConnection"
 			],
 			[
 				"det",
-				"detect_embedded_syntax"
+				"detectingNetworkDevices"
 			],
 			[
-				"run",
-				"run_command"
+				"multi",
+				"multicastConnection"
 			],
 			[
-				"locate",
-				"locate_database"
+				"mult",
+				"multicastConnection"
 			],
 			[
-				"subl",
-				"subl_command"
+				"mu",
+				"multicastGroupActive"
 			],
 			[
-				"Detec",
-				"DetectEmbeddedSyntax"
+				"Mutl",
+				"MulticastPort"
 			],
 			[
-				"sett",
-				"settings_entry"
+				"Mult",
+				"MulticastAddress"
 			],
 			[
-				"synt",
-				"syntax_file"
+				"simulated",
+				"simulatedCommandDelay"
 			],
 			[
-				"set",
-				"settings_entry"
+				"NSU",
+				"NSUnderlyingErrorKey"
 			],
 			[
-				"file",
-				"file_path"
+				"compl",
+				"completion"
 			],
 			[
-				"syn",
-				"syntax"
+				"simul",
+				"simulateCommandSuccess"
 			],
 			[
-				"sy",
-				"syntax_files"
+				"ITach",
+				"ITachConnectionManager"
 			],
 			[
-				"line",
-				"line_text"
+				"Itach",
+				"ITachConnectionManager"
 			],
 			[
-				"car",
-				"caret_extra_top"
+				"wifi",
+				"wifiAvailable"
 			],
 			[
-				"chunk",
-				"chunk_lines"
+				"SendIR",
+				"SendIRCommand"
 			],
 			[
-				"chun",
-				"chunk_lines"
+				"Devc",
+				"DeviceResponse"
 			],
 			[
-				"option",
-				"option_chunks"
+				"message",
+				"messagesSending"
 			],
 			[
-				"opt",
-				"option_chunks"
+				"Conn",
+				"ConnectionManagerErrorDomain"
 			],
 			[
-				"op",
-				"option_chunks"
+				"It",
+				"ITachDeviceConnection"
 			],
 			[
-				"unc",
-				"uncrustified_source"
-			],
-			[
-				"out",
-				"outfile"
-			],
-			[
-				"outfile",
-				"outfile_name"
-			],
-			[
-				"outf",
-				"outfile_name"
-			],
-			[
-				"inf",
-				"infile"
-			],
-			[
-				"sour",
-				"source_base"
-			],
-			[
-				"DE",
-				"DEBUG_EXIT_AFTER_REPLACE"
-			],
-			[
-				"DEB",
-				"DEBUG_EXIT_AFTER_ARGS"
-			],
-			[
-				"infi",
-				"infile_name"
-			],
-			[
-				"Filt",
-				"FilteredFileWriteAction"
-			],
-			[
-				"File",
-				"FileFilterAction"
-			],
-			[
-				"name",
-				"namespace"
-			],
-			[
-				"config",
-				"config_file"
-			],
-			[
-				"o",
-				"outfile"
-			],
-			[
-				"no",
-				"no_common"
-			],
-			[
-				"other",
-				"other_keys"
-			],
-			[
-				"onl",
-				"only_common_with_file"
-			],
-			[
-				"sup",
-				"suppress"
-			],
-			[
-				"rep",
-				"replace"
+				"IRC",
+				"IRConfig"
 			]
 		]
 	},
 	"buffers":
 	[
+		{
+			"file": "MoonKit/Moonkit/Objects/AKPickerView.swift",
+			"settings":
+			{
+				"buffer_size": 21401,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "MoonKit/Moonkit/Objects/LabeledStepper.swift",
+			"settings":
+			{
+				"buffer_size": 7593,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Bank/Source/BankController.swift",
+			"settings":
+			{
+				"buffer_size": 5604,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/darcula (Flake8Lint).JSON-tmTheme",
+			"settings":
+			{
+				"buffer_size": 11006,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/MoonYAMLSwift.sublime-syntax",
+			"settings":
+			{
+				"buffer_size": 8336,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "MoonKit/Moonkit/Objects/FieldView.swift",
+			"settings":
+			{
+				"buffer_size": 14031,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Bank/Source/Extensions/NetworkDevice+Bank.swift",
+			"settings":
+			{
+				"buffer_size": 4038,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Bank/Source/View Controllers/BankCollectionController.swift",
+			"settings":
+			{
+				"buffer_size": 25881,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Bank/Source/BankModelDelegate.swift",
+			"settings":
+			{
+				"buffer_size": 15201,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -527,10 +599,54 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 67.0,
-		"last_filter": "",
+		"height": 167.0,
+		"last_filter": "ssjson",
 		"selected_items":
 		[
+			[
+				"ssjson",
+				"Set Syntax: JSON"
+			],
+			[
+				"sssub",
+				"Set Syntax: Sublime Text Syntax Def (YAML)"
+			],
+			[
+				"ssmoo",
+				"Set Syntax: MoonSwift"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"ssmoon",
+				"Set Syntax: MoonSwift"
+			],
+			[
+				"swif",
+				"SublimeREPL: Swift"
+			],
+			[
+				"ssmo",
+				"Set Syntax: MoonSwift"
+			],
+			[
+				"ssMoo",
+				"Set Syntax: MoonSwift"
+			],
+			[
+				"ssswi",
+				"Set Syntax: MoonSwift"
+			],
+			[
+				"SSswif",
+				"Set Syntax: MoonSwift"
+			],
+			[
+				"prett",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
 			[
 				"ssshe",
 				"Set Syntax: Shell Script (Bash)"
@@ -545,10 +661,6 @@
 			],
 			[
 				"ssswit",
-				"Set Syntax: Swift"
-			],
-			[
-				"ssswi",
 				"Set Syntax: Swift"
 			],
 			[
@@ -600,20 +712,12 @@
 				"Set Syntax: YAML"
 			],
 			[
-				"prett",
-				"Pretty JSON: Reformat (Pretty Print) JSON"
-			],
-			[
 				"remov",
 				"Package Control: Remove Package"
 			],
 			[
 				"view",
 				"View In Browser"
-			],
-			[
-				"inst",
-				"Package Control: Install Package"
 			],
 			[
 				"she",
@@ -876,13 +980,17 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 568.0
+		"width": 593.0
 	},
 	"console":
 	{
 		"height": 378.0,
 		"history":
 		[
+			"view.set_syntax_file(\"Packages/User/MoonYAMLSwift.sublime-syntax\")",
+			"pydoc.help(sublime)",
+			"help(sublime)",
+			"import pydoc",
 			"view.run_command(\"detect_embedded_syntax\")",
 			"view.run_command(\"repeat_selected\", {\"count\":2})",
 			"sublime.log_commands(True)",
@@ -968,142 +1076,141 @@
 	"expanded_folders":
 	[
 		"/Users/Moondeer/Projects/MSRemote/Remote",
-		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit",
-		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit",
-		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects",
-		"/Users/Moondeer/Projects/MSRemote/Remote/UI",
-		"/Users/Moondeer/Projects/MSRemote/Remote/UI/Source"
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions",
+		"/Users/Moondeer/Projects/MSRemote/Remote/iTachClient"
 	],
 	"file_history":
 	[
-		"/Users/Moondeer/Projects/MSRemote/Remote/UI/Source/RemoteElementView.swift",
-		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/361F572B-7D8F-4F48-B852-5CDA3421155C/UI/Source/RemoteElementView.swift",
-		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/17C38239-D05B-46FC-99F3-A52DD3FBC948/UI/Source/RemoteElementViewConstraint.swift",
-		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/A5E10776-9249-42B6-AAA8-B17DBFB18546/UI/Source/RemoteView.swift",
-		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/3A2077A0-6E57-40F8-8EDC-23133CCEA65E/UI/Source/ButtonView.swift",
-		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/0BC70331-7C6E-4B5B-B682-FDE56AD93F8A/UI/Source/BatteryStatusButtonView.swift",
-		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/BDC16E39-ED12-4546-900A-ACDFB5F077E2/UI/Source/RockerView.swift",
-		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/A1F561C6-602B-468A-BC4D-8D502A53CD7B/UI/Source/ModeSelectionView.swift",
-		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/887652C9-C938-4D9E-B0F9-E622BA8A9122/UI/Source/ConnectionStatusButtonView.swift",
-		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/E5E69DCC-A096-41B3-AAE1-25418A1E88F3/UI/Source/ActivityViewController.swift",
-		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/EF6EBEA8-5ED4-415F-AE75-549E8B13614E/Remote/Source/Remote Elements/Views/ButtonView.swift",
-		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/B289663E-4A64-4D5A-B142-D37EFD272851/UI/Source/DrawingKit.swift",
-		"/private/var/folders/kj/3y4q8wwd5ys64x69bspv8_0r0000gn/T/4B858353-095B-44CF-B0DB-6E56AB359918/Remote/Source/Remote Elements/Views/ButtonView.swift",
-		"/Users/Moondeer/disabled.profile",
-		"/Users/Moondeer/Projects/Gyre/MSKitLib/MSKit/MSKit/Objects/MSLogMacros.h",
-		"/Users/Moondeer/GitHub/CocoaLumberjack/Xcode/LumberjackFramework/Mobile/Lumberjack/Lumberjack.h",
-		"/Users/Moondeer/Projects/MoonKit/MoonLog.swift",
-		"/Users/Moondeer/Projects/Gyre/Gyre-Swift/Gyre-Swift/Scores/ScoreManager.swift",
-		"/Users/Moondeer/Projects/Gyre/Gyre-Swift/Gyre-Swift/Other Objects/SettingsManager.swift",
-		"/Users/Moondeer/Projects/Gyre/Gyre-Swift/Gyre-Swift/Supporting Files/helpers.swift",
-		"/Users/Moondeer/.oh-my-zsh/functions/imgsize",
-		"/Users/Moondeer/.oh-my-zsh/functions/imf_disp",
-		"/Users/Moondeer/.oh-my-zsh/functions/imf_disp copy",
-		"/Users/Moondeer/bin/parseargs",
-		"/Users/Moondeer/.oh-my-zsh/custom/aliases.zsh",
-		"/Users/Moondeer/.oh-my-zsh/functions/dirsync",
-		"/Users/Moondeer/Projects/MoonKit/MoonKit/Array.swift",
-		"/Users/Moondeer/bin/dirsync",
-		"/Users/Moondeer/bin/browser",
-		"/Users/Moondeer/Projects/dirsync/dirsync/main.swift",
-		"/Users/Moondeer/Projects/dirsync/extensions/String.swift",
-		"/Users/Moondeer/Projects/dirsync/extensions/NSFileManager.swift",
-		"/Users/Moondeer/.oh-my-zsh/oh-my-zsh.sublime-project",
-		"/Users/Moondeer/.oh-my-zsh/custom/paths.zsh",
-		"/Users/Moondeer/.oh-my-zsh/functions/exr_to_png",
-		"/Users/Moondeer/.oh-my-zsh/functions/parse_objc_class_names",
-		"/Users/Moondeer/.oh-my-zsh/functions/mayacli",
-		"/Users/Moondeer/.oh-my-zsh/functions/tellmaya",
-		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/Objective-C.tmLanguage",
-		"/Users/Moondeer/Projects/dirsync/dirsync/FileComparison.swift",
-		"/Users/Moondeer/Projects/dirsync/extensions/Array.swift",
-		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/Swift/Swift.tmLanguage",
-		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/Swift/Swift.JSON-tmLanguage",
-		"/Users/Moondeer/Library/Caches/Cleanup At Startup/Transmit/56481B52-BC9D-454B-AF02-65F9ED7FB5A3/Info.plist",
-		"/Users/Moondeer/.oh-my-zsh/functions/pbcp",
-		"/Users/Moondeer/.oh-my-zsh/functions/color_index",
-		"/Users/Moondeer/.oh-my-zsh/custom/functions.zsh",
-		"/Users/Moondeer/.oh-my-zsh/functions/finder_toggle_hidden",
-		"/Users/Moondeer/.oh-my-zsh/functions/remote_file_sync",
-		"/Users/Moondeer/.oh-my-zsh/functions/notes",
-		"/Users/Moondeer/.oh-my-zsh/themes/moondeer-powerline.zsh-theme",
-		"/Users/Moondeer/.oh-my-zsh/functions/zipcat",
-		"/Users/Moondeer/.oh-my-zsh/functions/notes_curses",
-		"/Users/Moondeer/.oh-my-zsh/functions/notes-set-file-name",
-		"/Users/Moondeer/.oh-my-zsh/functions/notes-edit",
-		"/Users/Moondeer/.oh-my-zsh/functions/med",
-		"/Users/Moondeer/.oh-my-zsh/functions/med-set-file-name",
-		"/tmp/subl stdin BPl5DU.txt",
-		"/Users/Moondeer/.oh-my-zsh/plugins/colemak/colemak-less",
-		"/Users/Moondeer/.oh-my-zsh/functions/dash",
-		"/Users/Moondeer/.oh-my-zsh/functions/cd-ls",
-		"/Users/Moondeer/.oh-my-zsh/functions/fdc",
-		"/Users/Moondeer/.oh-my-zsh/functions/rmm",
-		"/Users/Moondeer/.oh-my-zsh/functions/prompt_moondeer_setup",
-		"/Users/Moondeer/.oh-my-zsh/functions/finder",
-		"/Users/Moondeer/Projects/Gyre/MSKit/MSKit/Source/Macros, Defines/MSKitMacros.h",
-		"/Users/Moondeer/Projects/Gyre/Gyre/Scenes/GyreTutorialScene.m",
+		"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Website/Peaceful Pathways.sublime-project",
+		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/Default (OSX).sublime-keymap",
+		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/MoonYAMLSwift.sublime-syntax",
+		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/wtf.sublime-syntax",
+		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/MoonSwift.sublime-syntax",
+		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/MoonSwift.sublime-syntax.YAML-tmLanguage",
 		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
-		"/Users/Moondeer/.notes/gyre",
-		"/Users/Moondeer/.gitconfig",
-		"/Users/Moondeer/.oh-my-zsh/custom/directories.zsh",
-		"/Users/Moondeer/Projects/Gyre/Gyre/Nodes/GyreGameOverOverlayNode.m",
-		"/Users/Moondeer/Projects/Gyre/Gyre/Nodes/GyreTutorialOverlayNode.m",
-		"/Users/Moondeer/Projects/Gyre/.git/COMMIT_EDITMSG",
-		"/Users/Moondeer/.zshenv",
-		"/Users/Moondeer/.zshrc",
-		"/Users/Moondeer/Projects/Gyre/Gyre/GyreMenuScene.m",
-		"/Users/Moondeer/Projects/Gyre/Gyre/GyreSettingsScene.m",
-		"/Users/Moondeer/Projects/Gyre/Gyre/GyreGameplayScene.m",
-		"/Users/Moondeer/Projects/Gyre/Gyre/GyreGameplayLights.m",
-		"/Users/Moondeer/Projects/Gyre/Gyre/GyreSettingsManager.m",
-		"/Users/Moondeer/.oh-my-zsh/plugins/osx/osx.plugin.zsh",
-		"/Users/Moondeer/.uncrustify/uncrustify.cfg",
-		"/Users/Moondeer/.oh-my-zsh/themes/moondeer.zsh-theme",
-		"/Users/Moondeer/Projects/Gyre/Gyre/GyreScoreManager.m",
-		"/Users/Moondeer/.ssh/id_rsa.pub",
-		"/Users/Moondeer/Projects/Gyre/Gyre-1.0.2/Classes/SettingsViewController.m",
-		"/Users/Moondeer/Projects/Gyre/.gitignore",
-		"/Users/Moondeer/.ssh/known_hosts",
-		"/Users/Moondeer/.oh-my-zsh/functions/color_index.prompt",
-		"/Users/Moondeer/.oh-my-zsh/custom/completions.zsh",
-		"/Users/Moondeer/.oh-my-zsh/custom/completions.zsh.disabled",
-		"/Users/Moondeer/.oh-my-zsh/oh-my-zsh.sh",
-		"/Users/Moondeer/.oh-my-zsh/lib/aliases.zsh",
-		"/Users/Moondeer/.zsh/startup/completions",
-		"/Users/Moondeer/.zsh/startup/aliases",
-		"/Users/Moondeer/.oh-my-zsh/lib/aliases",
-		"/Users/Moondeer/.zsh/startup/options",
-		"/Users/Moondeer/.zsh/startup/functions",
-		"/Users/Moondeer/.zsh/startup/paths",
-		"/Users/Moondeer/.zsh/startup/parameters",
-		"/Users/Moondeer/.zsh/functions/notes",
-		"/Users/Moondeer/.zsh/functions/notes-edit",
-		"/Users/Moondeer/.oh-my-zsh/templates/zshrc.zsh-template",
-		"/Users/Moondeer/.oh-my-zsh/themes/agnoster.zsh-theme",
-		"/etc/zshenv",
-		"/etc/shells",
-		"/Users/Moondeer/Projects/Gyre/Gyre/GyreHighScoresScene.m",
-		"/Users/Moondeer/Projects/Gyre/Gyre/GyreHighScoreNode.m",
-		"/Users/Moondeer/.uncrustify/uncrustify-config",
-		"/Users/Moondeer/.zsh/help/zshzle/zle",
-		"/Users/Moondeer/.zsh/help/source_text/zshbuiltins",
-		"/Users/Moondeer/.zsh/help/zshbuiltins/alias",
-		"/Users/Moondeer/.zsh/help/source_text/zshzftpsys",
-		"/Users/Moondeer/.zsh/help/helpfiles",
-		"/Users/Moondeer/.zsh/help/source_text/zshcalsys",
-		"/Users/Moondeer/.zsh/help/source_text/zshcompctl",
-		"/Users/Moondeer/.zsh/help/source_text/zshcompsys",
-		"/Users/Moondeer/.zsh/help/source_text/zshcompwid",
-		"/Users/Moondeer/.zsh/help/source_text/zshcontrib",
-		"/Users/Moondeer/.zsh/help/source_text/zshexpn",
-		"/Users/Moondeer/.zsh/help/source_text/zshmisc",
-		"/Users/Moondeer/.zsh/help/source_text/zshmodules",
-		"/Users/Moondeer/.zsh/help/source_text/zshoptions",
-		"/Users/Moondeer/.zsh/help/source_text/zshparam",
-		"/Users/Moondeer/.zsh/help/source_text/zshroadmap",
-		"/Users/Moondeer/.zsh/help/zshzftpsys/zshtcpsys",
-		"/Users/Moondeer/.zsh/functions/array_from_file"
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/FieldView.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/Form.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/Field.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/FormViewController.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/FormView.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/Field2.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/AKPickerView.swift",
+		"/Users/Moondeer/Downloads/swiftslowly-master/Playground Secrets and Power Tips/Playground Support/SimulatorSupport.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/BankModelDelegate.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/ComponentDevice+Bank.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankRootController.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/Manufacturer.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/Manufacturer+Bank.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/NamedModelObject+Bank.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/ModelObject.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Extensions/String+MoonKitAdditions.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/NamedModelObject.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/ComponentDevice.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/BankProtocols.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/Preset+Bank.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/IRCodeSet+Bank.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/ImageCategory+Bank.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/PresetCategory+Bank.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/PresetCategory.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/ImageCategory.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/Image+Bank.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/ISYDevice+Bank.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/ITachDevice+Bank.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/IRCode+Bank.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/DataModelProtocols.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionController.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/IRCodeSet.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/BankModelCollectionDelegate.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/Image.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/IRCode.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/Preset.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Bank.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/DataManager.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Apps/LearnerApp/LearnerAppViewController.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankRootCell.swift",
+		"/Applications/Sublime Text.app/Contents/MacOS/sublime.py",
+		"/Applications/Sublime Text.app/Contents/MacOS/sublime_plugin.py",
+		"/Users/Moondeer/.lldbinit",
+		"/Users/Moondeer/Downloads/githubicons-master/setfileicon",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/BankSurrogateCategory.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Elysio/Elysio.swift",
+		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/SchemeEditor.swift",
+		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/Chameleon.CSSColor.swift",
+		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/Chameleon.KelleyColor.swift",
+		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/Chameleon.DarculaColor.swift",
+		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/Chameleon.QuietLightColor.swift",
+		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/Chameleon.FlatColor.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionCategoryCell.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionItemCell.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionCell.swift",
+		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/Chameleon.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Resources/JSON/ImageCategory.json",
+		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/UIColor+Chameleon.swift",
+		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/CSSColors.playground/contents.xcplayground",
+		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/CSSColors.playground/Contents.swift",
+		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/CSSColors.playground/timeline.xctimeline",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Remote.sublime-project",
+		"/Users/Moondeer/Desktop/NearestFlatColor.csv",
+		"/Users/Moondeer/Desktop/wtf.csv",
+		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/UIViewController+Chameleon.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ITachDeviceConnection.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ITachDeviceConnection.Command.swift",
+		"/Users/Moondeer/GitHub/Chameleon/Pod/Classes/Chameleon.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Extensions/UIView+MoonKitAdditions.swift",
+		"/Users/Moondeer/GitHub/Chameleon/Pod/Classes/Objective-C/UIViewController+Chameleon.m",
+		"/Users/Moondeer/GitHub/Chameleon/Pod/Classes/Objective-C/UIColor+CIELAB.m",
+		"/Users/Moondeer/GitHub/Chameleon/Pod/Classes/Objective-C/UIColor+Chameleon.m",
+		"/Users/Moondeer/GitHub/Chameleon/Pod/Classes/UIColor+CIELab.swift",
+		"/Users/Moondeer/GitHub/Chameleon/Pod/Classes/UIColor+Chameleon.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ISYDeviceConnection.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/NetworkDeviceConnection.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ITachConnectionManager.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/MulticastConnection.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ISYConnectionManager.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/NetworkDeviceMulticastConnection.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/NetworkDeviceMulticastConnection.m",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/MSKit/Source/Objects/MSDictionary.m",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/MSKit/Source/Objects/MSXMLParserDelegate.m",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/MSKit/Source/Objects/MSXMLParserDelegate.h",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Parsing/XMLParserDelegate.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Data Structures/OrderedDictionary.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ISYDeviceConnection.m",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/MessageQueueEntry.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ConnectionManager.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/ISYDevice.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ISYDeviceConnection.h",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ISYConnectionManager.m",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ISYConnectionManager.h",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ITachConnectionManager.m",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ITachConnectionManager.h",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ConnectionManager.h",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ConnectionManager.m",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/CocoaAsyncSocket/GCDAsyncSocket.m",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/CocoaAsyncSocket/GCDAsyncSocket.h",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Extensions/Dictionary+MoonKitAdditions.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ITachDeviceConnection.m",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ITachDeviceConnection.h",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/NetworkDeviceMulticastConnection.h",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/NetworkDeviceConnection.h",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/NetworkDeviceConnection.m",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Data Structures/Queue.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/MSKit/Source/Objects/MSQueue.m",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/MSKit/Source/Objects/MSQueue.h",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/MessageQueueEntry.m",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/MessageQueueEntry.h",
+		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/RemoteElement/Models/Remote.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/MSKit/Source/Categories/UIFont+MSKitAdditions.m",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Parsing/JSONIncludeDirective.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Parsing/JSONSerialization.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/UI/Source/RemoteView.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/UI/Source/PanelDelegate.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Resources/JSON/Remote.json",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Functions/RawOptionSetFunctions.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit Tests/TitleAttributes_Default_Text.json",
+		"/Users/Moondeer/Projects/MSRemote/Remote/UI/Source/ButtonGroupView.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/RemoteElement/Models/RemoteElement.swift"
 	],
 	"find":
 	{
@@ -1114,6 +1221,7 @@
 		"height": 93.0,
 		"where_history":
 		[
+			"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source",
 			"/Users/Moondeer/Projects/Gyre",
 			"/Users/Moondeer/Box Documents/Projects/Gyre",
 			"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Peaceful Pathways - Compass/jade,/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Website/Codekit-Compass/jade",
@@ -1143,134 +1251,134 @@
 		"case_sensitive": true,
 		"find_history":
 		[
-			"overlayView",
-			"objectIsSubelementKind",
-			"X",
-			"Character",
-			"  i",
-			" ",
-			"print -n",
-			"));",
-			"((",
-			"do",
-			"print -- ",
-			"codepoints=($codepoints $i)",
+			"createCollection",
+			"createItem",
+			"= ",
+			" =",
+			"enabled",
 			"case",
-			"<Lumberjack/",
-			"0x",
-			"0x00",
-			"Score",
-			"w",
-			")",
-			"(",
-			"{",
-			" return",
-			"  ",
-			":",
-			"MyOptions",
-			"warning",
-			"error",
-			"info",
-			"@",
-			"NSUserDefaults.standardUserDefaults()",
-			"Gyre",
-			"UserDefaults",
-			"BOOL",
+			"if _control != nil",
+			"weak var _control",
+			"override var control",
+			"case",
+			"imageCollection",
+			"manufacturerCollection",
+			"componentDeviceCollection",
 			";",
-			"warning",
-			"Gyre",
-			"MSLogInfo",
-			"Array<T>",
-			"swiftscript",
-			"DONE",
-			"script",
-			"var",
-			"self.",
-			"let fileManager = NSFileManager.defaultManager()",
-			"fm",
-			"\"",
-			"\n",
-			"listx",
-			"\"",
-			"A",
-			"dir",
-			"1",
-			"char_in",
-			" && return $exit_status",
-			"note_file_name",
-			"var",
-			"    while vared -M notes -i notes-edit-init var\n",
-			"var",
-			"note_name",
-			"med_file_name",
-			"med",
-			"\"$NOTESDIR/$1\"",
-			"1",
-			"opt",
-			"notes",
-			"zed",
-			"MSLogDebugWeak",
-			"wself",
-			"weakself",
-			"==",
-			"Change",
-			"\\",
-			"\\{\\n(?!\\n)",
-			"noAction",
-			"[weakself revealOverlay]",
-			".",
-			"l_buf",
-			"lbuffer",
-			"\\{\\n(?!\\n)",
-			"4",
-			"\\{\\n(?!\\n)",
-			"PARAM",
-			"_##PARAM",
-			"IVAR",
-			"\\{\\n(?!\\n)",
-			"^ *\\n",
-			"(?!<\\n\\n)\\s*\\}\\];\\n",
-			"\\}\\];\\n(?!\\n)",
-			"\\}\\n(?!\\n)",
-			"\\{(?!\\n\\n)",
-			"{(?!\\n\\n)",
+			"- match",
+			"(",
+			"scope",
+			"scope: ",
+			"'",
+			"code-block",
+			"name",
+			":",
+			"func updateFromControl",
+			"updateFromControl",
+			"override func valueDidChange(sender: AnyObject) {",
+			" get { return _value }",
+			"text",
+			"super.valueDidChange(sender",
+			"changeHandler?(self)",
+			"FieldTemplate",
+			"FieldCollection",
+			"private class",
+			"TextValidation",
+			"FieldValues",
+			"field",
+			"name",
+			"FieldValues",
+			"FieldCollection",
+			"fields",
+			"var _value",
+			"self._value",
+			"value",
+			"func control() ->",
+			"private ",
+			"return",
+			"v",
+			"let",
+			"textField",
+			"picker",
+			"initial",
+			"Type",
+			"private let",
+			"didChangeValue",
 			"{",
-			"default",
-			"✗",
-			"✓",
-			"✗",
-			"finalScore",
-			"selected_array",
-			"${opts[-k]}",
-			"selected_array",
-			"${opts[-k]}",
-			"{opts[-k]}",
-			"\\",
-			"^([0-9]+) ([^\\n]+)",
-			"^((?:[0-9]+(?:–[0-9]+)?)\\t+.*)[ ]{2,}",
-			"^([0-9]+) ([^\\n]+)",
-			" +\\n",
-			"\\t+",
-			"100–109",
-			"90–99",
-			"40–47",
-			"11–19",
-			"^((?:[0-9]+(?:–[0-9]+)?)\\t+.*)[ ]{2,}",
-			"^([0-9]+(?:–[0-9]+)?) +",
-			"^([0-9][^\\s]*)\\s*([^\\s]+|[^\\n][^\\s]+)+(?:\\n|(?:[ ]+([^\\n]+)\\n))",
-			"^([0-9][^\\s]*)\\s*([^\\s]+|[^\\n][^\\s]+)+(?:\\n|(?:[^w]+([^\\n]+)\\n))",
-			"^[0-9][^\\s]*\\s*([^\\s]+|\\s[^\\s]+)+",
-			"^[0-9][^\\t]*\\t",
-			"returnFromHandler",
-			"f",
-			"FG",
-			";;",
-			"keys",
-			"${#${(M)@%-[[:alpha:]]#l}}",
-			"32",
-			"if",
-			"IF",
-			"if"
+			"fieldControlForField",
+			"=",
+			"result",
+			"(String?) -> Bool",
+			":",
+			"manufacturer",
+			"Manufacturer",
+			"itemEntity",
+			"rootCollectionType",
+			"owningCollectionType",
+			"manufacturer",
+			"Image",
+			"manufacturer",
+			"Manufacturer",
+			"manufacturer",
+			"Manufacturer",
+			"CollectionType",
+			"ItemType",
+			"BankModelCollectionDelegate",
+			"T",
+			"fetchedCollections",
+			".fetchedItems",
+			"BankItemCollection",
+			"collection",
+			"BankItemCollection",
+			"OrderedDictionary<String, Any>",
+			"!",
+			"label",
+			"scope",
+			"category",
+			"rootCategory",
+			"generateCollections",
+			"image",
+			"componentDevice",
+			"selectAllBarButtonItemForController",
+			"ForIndexPath",
+			"Bank.ViewingMode",
+			"exportSelection",
+			",",
+			"_",
+			"//",
+			"Darcula",
+			"darcula",
+			"Base",
+			"displayOptions",
+			"viewingModeKey",
+			"viewingMode",
+			"importFromFile",
+			"exportSelection",
+			"deselectAll",
+			"SearchableBankController",
+			"BankItemCreation",
+			"BankItemImportExport",
+			"collectionView",
+			"case CSSColor",
+			"self = .",
+			"CSSColor",
+			":",
+			"UIColor",
+			"DarculaColor",
+			":",
+			"MayaBlue",
+			"Limerick",
+			"Flamenco",
+			"MoonstoneBlue",
+			"Celery",
+			"Axolotl",
+			"HippieGreen",
+			"MountainMist",
+			"AthensGray",
+			"Mauve",
+			"self",
+			"UIColor",
+			"FlatColor"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1278,6 +1386,14 @@
 		"regex": true,
 		"replace_history":
 		[
+			"selectAllButtonForController",
+			"BankItemSearchableController",
+			"BankItemCreationController",
+			"BankItemImportExportController",
+			"\\n",
+			"",
+			"\\n",
+			"\"iconSets",
 			"'\\1' '\\2'",
 			"$'\\1' $'\\2'",
 			"\\n",
@@ -1397,15 +1513,7 @@
 			"p ",
 			"h2 ",
 			"",
-			"img(\\1, \\2, \\3, \\4)",
-			"",
-			" ",
-			"",
-			" ",
-			"",
-			"\\1\\n",
-			"\\n\\1",
-			"\\np.span"
+			"img(\\1, \\2, \\3, \\4)"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -1416,8 +1524,409 @@
 	"groups":
 	[
 		{
+			"selected": 9,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "MoonKit/Moonkit/Objects/AKPickerView.swift",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 21401,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								20140,
+								20140
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/User/MoonSwift.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 4899.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "MoonKit/Moonkit/Objects/LabeledStepper.swift",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7593,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								638,
+								638
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/User/MoonSwift.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "Bank/Source/BankController.swift",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5604,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/User/MoonSwift.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 444.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/darcula (Flake8Lint).JSON-tmTheme",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11006,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 647.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/MoonYAMLSwift.sublime-syntax",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8336,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4523,
+								4523
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 549.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "Bank/Source/BankController.swift",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5604,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/User/MoonSwift.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 90.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "MoonKit/Moonkit/Objects/FieldView.swift",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 14031,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								766,
+								766
+							],
+							[
+								777,
+								777
+							],
+							[
+								915,
+								915
+							],
+							[
+								926,
+								926
+							],
+							[
+								1020,
+								1020
+							],
+							[
+								1031,
+								1031
+							],
+							[
+								1156,
+								1156
+							],
+							[
+								1167,
+								1167
+							],
+							[
+								1298,
+								1298
+							],
+							[
+								1309,
+								1309
+							],
+							[
+								1415,
+								1415
+							],
+							[
+								1426,
+								1426
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/User/MoonSwift.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "Bank/Source/Extensions/NetworkDevice+Bank.swift",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4038,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3337,
+								3337
+							],
+							[
+								3460,
+								3460
+							],
+							[
+								3583,
+								3583
+							],
+							[
+								3706,
+								3706
+							],
+							[
+								3829,
+								3829
+							],
+							[
+								3952,
+								3952
+							],
+							[
+								3968,
+								3968
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/User/MoonSwift.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 23.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "Bank/Source/View Controllers/BankCollectionController.swift",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 25881,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								15743,
+								15743
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/User/MoonSwift.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 4365.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "Bank/Source/BankModelDelegate.swift",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 15201,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2379,
+								2379
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/User/MoonSwift.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 6,
+					"file": "Bank/Source/Extensions/NetworkDevice+Bank.swift",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4038,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/User/MoonSwift.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 45.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -1438,11 +1947,18 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.5,
 			1.0
 		],
 		"rows":
@@ -1460,7 +1976,7 @@
 	"project": "Remote.sublime-project",
 	"replace":
 	{
-		"height": 40.0
+		"height": 64.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1469,6 +1985,382 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"networkde",
+				"Remote/Bank/Source/Extensions/NetworkDevice+Bank.swift"
+			],
+			[
+				"akpi",
+				"Remote/MoonKit/Moonkit/Objects/AKPickerView.swift"
+			],
+			[
+				"man",
+				"Remote/DataModel/Model/Manufacturer.swift"
+			],
+			[
+				"bankmod",
+				"Remote/Bank/Source/BankModelDelegate.swift"
+			],
+			[
+				"bankroo",
+				"Remote/Bank/Source/View Controllers/BankRootController.swift"
+			],
+			[
+				"field",
+				"Remote/MoonKit/Moonkit/Objects/FieldView.swift"
+			],
+			[
+				"form",
+				"Remote/MoonKit/Moonkit/Objects/FormView.swift"
+			],
+			[
+				"named",
+				"Remote/DataModel/Model/NamedModelObject.swift"
+			],
+			[
+				"model",
+				"Remote/DataModel/Model/ModelObject.swift"
+			],
+			[
+				"string",
+				"Remote/MoonKit/Moonkit/Extensions/String+MoonKitAdditions.swift"
+			],
+			[
+				"manufacturer+",
+				"Remote/Bank/Source/Extensions/Manufacturer+Bank.swift"
+			],
+			[
+				"compon",
+				"Remote/Bank/Source/Extensions/ComponentDevice+Bank.swift"
+			],
+			[
+				"name",
+				"Remote/DataModel/Model/NamedModelObject.swift"
+			],
+			[
+				"preset+",
+				"Remote/Bank/Source/Extensions/Preset+Bank.swift"
+			],
+			[
+				"presetca",
+				"Remote/Bank/Source/Extensions/PresetCategory+Bank.swift"
+			],
+			[
+				"presetc",
+				"Remote/DataModel/Model/PresetCategory.swift"
+			],
+			[
+				"bankmo",
+				"Remote/Bank/Source/BankModelDelegate.swift"
+			],
+			[
+				"imagec",
+				"Remote/DataModel/Model/ImageCategory.swift"
+			],
+			[
+				"ircodeset",
+				"Remote/Bank/Source/Extensions/IRCodeSet+Bank.swift"
+			],
+			[
+				"bankro",
+				"Remote/Bank/Source/View Controllers/BankRootController.swift"
+			],
+			[
+				"formviewc",
+				"Remote/MoonKit/Moonkit/Objects/FormViewController.swift"
+			],
+			[
+				"bankpr",
+				"Remote/Bank/Source/BankProtocols.swift"
+			],
+			[
+				"modelobj",
+				"Remote/DataModel/Model/ModelObject.swift"
+			],
+			[
+				"ir",
+				"Remote/DataModel/Model/IRCodeSet.swift"
+			],
+			[
+				"bankcollectioncon",
+				"Remote/Bank/Source/View Controllers/BankCollectionController.swift"
+			],
+			[
+				"ircodese",
+				"Remote/DataModel/Model/IRCodeSet.swift"
+			],
+			[
+				"preset",
+				"Remote/DataModel/Model/Preset.swift"
+			],
+			[
+				"ircode",
+				"Remote/DataModel/Model/IRCode.swift"
+			],
+			[
+				"image",
+				"Remote/DataModel/Model/Image.swift"
+			],
+			[
+				"datam",
+				"Remote/DataModel/Model/DataModelProtocols.swift"
+			],
+			[
+				"bankpro",
+				"Remote/Bank/Source/BankProtocols.swift"
+			],
+			[
+				"formview",
+				"Remote/MoonKit/Moonkit/Objects/FormViewController.swift"
+			],
+			[
+				"imagecategory",
+				"Remote/DataModel/Model/ImageCategory.swift"
+			],
+			[
+				"manufa",
+				"Remote/DataModel/Model/Manufacturer.swift"
+			],
+			[
+				"bankroot",
+				"Remote/Bank/Source/View Controllers/BankRootCell.swift"
+			],
+			[
+				"learner",
+				"Remote/Networking/Apps/LearnerApp/LearnerAppViewController.swift"
+			],
+			[
+				"datamodelpr",
+				"Remote/DataModel/Model/DataModelProtocols.swift"
+			],
+			[
+				"banksur",
+				"Remote/Bank/Source/BankSurrogateCategory.swift"
+			],
+			[
+				"bankcollectioncontrol",
+				"Remote/Bank/Source/View Controllers/BankCollectionController.swift"
+			],
+			[
+				"ely",
+				"Remote/Elysio/Elysio.swift"
+			],
+			[
+				"bank.",
+				"Remote/Bank/Source/Bank.swift"
+			],
+			[
+				"chameleon.f",
+				"Chameleon/Chameleon/Chameleon/Chameleon.FlatColor.swift"
+			],
+			[
+				"chameleon.q",
+				"Chameleon/Chameleon/Chameleon/Chameleon.QuietLightColor.swift"
+			],
+			[
+				"chameleon.d",
+				"Chameleon/Chameleon/Chameleon/Chameleon.DarculaColor.swift"
+			],
+			[
+				"chameleon.",
+				"Chameleon/Chameleon/Chameleon/Chameleon.CSSColor.swift"
+			],
+			[
+				"bankcollectioni",
+				"Remote/Bank/Source/View Controllers/BankCollectionItemCell.swift"
+			],
+			[
+				"bankcollectioncell",
+				"Remote/Bank/Source/View Controllers/BankCollectionCell.swift"
+			],
+			[
+				"bankcollectioncat",
+				"Remote/Bank/Source/View Controllers/BankCollectionCategoryCell.swift"
+			],
+			[
+				"datamodel",
+				"Remote/DataModel/Model/DataModelProtocols.swift"
+			],
+			[
+				"chameleon.c",
+				"Chameleon/Chameleon/Chameleon/Chameleon.CSSColor.swift"
+			],
+			[
+				"chame",
+				"Chameleon/Chameleon/Chameleon/Chameleon.swift"
+			],
+			[
+				"imagecate",
+				"Remote/Bank/Resources/JSON/ImageCategory.json"
+			],
+			[
+				"chamel",
+				"Chameleon/Chameleon/Chameleon/Chameleon.CSSColor.swift"
+			],
+			[
+				"uiview",
+				"Remote/MoonKit/Moonkit/Extensions/UIView+MoonKitAdditions.swift"
+			],
+			[
+				"itachcon",
+				"Remote/Networking/Source/ITachConnectionManager.swift"
+			],
+			[
+				"isyconne",
+				"Remote/Networking/Source/ISYConnectionManager.swift"
+			],
+			[
+				"networkdevicec",
+				"Remote/Networking/Source/NetworkDeviceConnection.swift"
+			],
+			[
+				"networkdevicemu",
+				"Remote/Networking/Source/NetworkDeviceMulticastConnection.m"
+			],
+			[
+				"ord",
+				"Remote/MoonKit/Moonkit/Data Structures/OrderedDictionary.swift"
+			],
+			[
+				"msdic",
+				"Remote/MoonKit/MSKit/Source/Objects/MSDictionary.m"
+			],
+			[
+				"msdi",
+				"Remote/MoonKit/MSKit/Source/Objects/MSDictionary.m"
+			],
+			[
+				"isy",
+				"Remote/DataModel/Model/ISYDevice.swift"
+			],
+			[
+				"isyd",
+				"Remote/DataModel/Model/ISYDevice.swift"
+			],
+			[
+				"diction",
+				"Remote/MoonKit/Moonkit/Extensions/Dictionary+MoonKitAdditions.swift"
+			],
+			[
+				"gcdas",
+				"Remote/MoonKit/CocoaAsyncSocket/GCDAsyncSocket.m"
+			],
+			[
+				"gcda",
+				"Remote/MoonKit/CocoaAsyncSocket/GCDAsyncSocket.h"
+			],
+			[
+				"msqueu",
+				"Remote/MoonKit/MSKit/Source/Objects/MSQueue.m"
+			],
+			[
+				"msque",
+				"Remote/MoonKit/MSKit/Source/Objects/MSQueue.h"
+			],
+			[
+				"uifon",
+				"Remote/MoonKit/MSKit/Source/Categories/UIFont+MSKitAdditions.m"
+			],
+			[
+				"jsonin",
+				"Remote/MoonKit/Moonkit/Parsing/JSONIncludeDirective.swift"
+			],
+			[
+				"jsons",
+				"Remote/MoonKit/Moonkit/Parsing/JSONSerialization.swift"
+			],
+			[
+				"title",
+				"Remote/MoonKit/Moonkit Tests/TitleAttributes_Default_Text.json"
+			],
+			[
+				"remote.json",
+				"Remote/Bank/Resources/JSON/Remote.json"
+			],
+			[
+				"imageca",
+				"Remote/Bank/Resources/JSON/ImageCategory.json"
+			],
+			[
+				"buttongroupview",
+				"Remote/UI/Source/ButtonGroupView.swift"
+			],
+			[
+				"remote.sw",
+				"Remote/DataModel/Model/RemoteElement/Models/Remote.swift"
+			],
+			[
+				"remote.swi",
+				"Remote/DataModel/Model/RemoteElement/Models/Remote.swift"
+			],
+			[
+				"titleattr",
+				"Remote/MoonKit/Moonkit Tests/TitleAttributes_Default_Text.json"
+			],
+			[
+				"imagecat",
+				"Remote/Bank/Resources/JSON/ImageCategory.json"
+			],
+			[
+				"activitc",
+				"Remote/Bank/Resources/JSON/ActivityController.json"
+			],
+			[
+				"remote",
+				"Remote/Bank/Resources/JSON/Remote.json"
+			],
+			[
+				"acti",
+				"Remote/Bank/Resources/JSON/ActivityController.json"
+			],
+			[
+				"bank",
+				"Remote/Bank/Source/Bank.swift"
+			],
+			[
+				"systemcom",
+				"Remote/DataModel/Model/RemoteElement/Commands/Command Subclasses/SystemCommand.swift"
+			],
+			[
+				"command",
+				"Remote/DataModel/Model/RemoteElement/Commands/Command.swift"
+			],
+			[
+				"macrocom",
+				"Remote/DataModel/Model/RemoteElement/Commands/Command Subclasses/MacroCommand.swift"
+			],
+			[
+				"delayc",
+				"Remote/DataModel/Model/RemoteElement/Commands/Command Subclasses/DelayCommand.swift"
+			],
+			[
+				"commandoper",
+				"Remote/DataModel/Model/RemoteElement/Commands/CommandOperation.swift"
+			],
+			[
+				"switch",
+				"Remote/DataModel/Model/RemoteElement/Commands/Command Subclasses/SwitchCommand.swift"
+			],
+			[
+				"backgrou",
+				"Remote/Bank/Resources/JSON/BackgroundColor_Dark_Normal.json"
+			],
+			[
+				"",
+				"Remote/Bank/Resources/JSON/ActivityController.json"
+			],
+			[
+				"activ",
+				"Remote/Bank/Resources/JSON/ActivityController.json"
+			],
+			[
+				"manufac",
+				"Remote/Bank/Resources/JSON/Manufacturer.json"
+			],
+			[
+				"activityc",
+				"Remote/Bank/Resources/JSON/ActivityController.json"
+			],
 			[
 				"path",
 				"custom/paths.zsh"
@@ -1604,382 +2496,6 @@
 			[
 				"style",
 				"Website/Codekit-Compass/sass/styles.sass"
-			],
-			[
-				"style.c",
-				"Website/Codekit-Compass/stylesheets/styles.css"
-			],
-			[
-				"_resou",
-				"Website/Codekit-Compass/sass/_resources.sass"
-			],
-			[
-				"_var",
-				"bootstrap-sass-3.0.2.1/vendor/assets/stylesheets/bootstrap/_variables.scss"
-			],
-			[
-				"_mixins.scss",
-				"bootstrap-sass-3.0.2.1/vendor/assets/stylesheets/bootstrap/_mixins.scss"
-			],
-			[
-				"_cont",
-				"Website/Codekit-Compass/sass/_contact-us.sass"
-			],
-			[
-				"_he",
-				"Website/Codekit-Compass/sass/_header.sass"
-			],
-			[
-				"_h",
-				"Website/Codekit-Compass/jade/_header.jade"
-			],
-			[
-				"_re",
-				"Website/Codekit-Compass/sass/_resources.sass"
-			],
-			[
-				"_ge",
-				"Website/Codekit-Compass/sass/_general.sass"
-			],
-			[
-				"_mem",
-				"Peaceful Pathways - Compass/sass/_memorials.sass"
-			],
-			[
-				"class",
-				"Peaceful Pathways - Compass/php/class.memorial.php"
-			],
-			[
-				"fun",
-				"Peaceful Pathways - Compass/php/functions.php"
-			],
-			[
-				"func",
-				"Peaceful Pathways - Compass/htdocs/functions.php"
-			],
-			[
-				"feline",
-				"Peaceful Pathways - Compass/jade/feline-grief.jade"
-			],
-			[
-				"_mixi",
-				"Peaceful Pathways - Compass/jade/_mixins.jade"
-			],
-			[
-				"_mi",
-				"Peaceful Pathways - Compass/sass/_mixins.sass"
-			],
-			[
-				"_",
-				"Peaceful Pathways - Compass/jade/_scaffold.jade"
-			],
-			[
-				"_lay",
-				"Peaceful Pathways - Compass/jade/_layout.jade"
-			],
-			[
-				"pack",
-				"Peaceful Pathways - Compass/package.json"
-			],
-			[
-				"index",
-				"Peaceful Pathways - Compass/jade/index.jade"
-			],
-			[
-				"_hom",
-				"Peaceful Pathways - Compass/sass/_home-page.sass"
-			],
-			[
-				"_mixins",
-				"bootstrap-sass-3.0.2.1/vendor/assets/stylesheets/bootstrap/_mixins.scss"
-			],
-			[
-				"_ser",
-				"Peaceful Pathways - Compass/sass/_services.sass"
-			],
-			[
-				"memo",
-				"Peaceful Pathways - Compass/jade/memorials.jade"
-			],
-			[
-				"_me",
-				"Peaceful Pathways - Compass/sass/_memorials.sass"
-			],
-			[
-				"_varia",
-				"Peaceful Pathways - Compass/sass/_variables.sass"
-			],
-			[
-				"_gen",
-				"Peaceful Pathways - Compass/sass/_general.sass"
-			],
-			[
-				"lay",
-				"Peaceful Pathways - Compass/jade/_layout.jade"
-			],
-			[
-				"_header",
-				"Peaceful Pathways - Compass/jade/_header.jade"
-			],
-			[
-				"_hea",
-				"Peaceful Pathways - Compass/sass/_header.sass"
-			],
-			[
-				"t",
-				"Peaceful Pathways - Compass/coffee/tab-pane.coffee"
-			],
-			[
-				"_res",
-				"Peaceful Pathways - Compass/sass/_resources.sass"
-			],
-			[
-				"_about",
-				"Peaceful Pathways - Compass/sass/_about-us.sass"
-			],
-			[
-				"_variables.sc",
-				"bootstrap-sass-3.0.2.1/vendor/assets/stylesheets/bootstrap/_variables.scss"
-			],
-			[
-				"_va",
-				"bootstrap-sass-3.0.2.1/vendor/assets/stylesheets/bootstrap/_variables.scss"
-			],
-			[
-				"ind",
-				"Peaceful Pathways - Compass/jade/index.jade"
-			],
-			[
-				"tap",
-				"Peaceful Pathways - Compass/coffee/tab-pane.coffee"
-			],
-			[
-				"resourc",
-				"Peaceful Pathways - Compass/jade/resources.jade"
-			],
-			[
-				"_reso",
-				"Peaceful Pathways - Compass/sass/_resources.sass"
-			],
-			[
-				"servi",
-				"Peaceful Pathways - Compass/jade/services.jade"
-			],
-			[
-				"_hos",
-				"Peaceful Pathways - Compass/jade/_hospice-care.jade"
-			],
-			[
-				"_af",
-				"Peaceful Pathways - Compass/jade/_after-care.jade"
-			],
-			[
-				"_we",
-				"Peaceful Pathways - Compass/jade/_welcome.jade"
-			],
-			[
-				"_in",
-				"Peaceful Pathways - Compass/jade/_in-home-euthanasia.jade"
-			],
-			[
-				"_is",
-				"Peaceful Pathways - Compass/jade/_is-my-pet-suffering.jade"
-			],
-			[
-				"pix",
-				"Peaceful Pathways - Compass/coffee/pixel-ratio.coffee"
-			],
-			[
-				"ana",
-				"Peaceful Pathways - Compass/coffee/analytics.coffee"
-			],
-			[
-				"an",
-				"Peaceful Pathways - Compass/javascripts/analytics.js"
-			],
-			[
-				"_variables-",
-				"Peaceful Pathways - Compass/sass/_variables-pre-bootstrap.sass"
-			],
-			[
-				"clas",
-				"Peaceful Pathways - Compass/php/class.memorial.php"
-			],
-			[
-				"class.",
-				"Peaceful Pathways - Compass/php/class.memorial.php"
-			],
-			[
-				"_memro",
-				"Peaceful Pathways - Compass/sass/_memorials.sass"
-			],
-			[
-				"memorials",
-				"Peaceful Pathways - Compass/javascripts/memorials.js"
-			],
-			[
-				"memori",
-				"Peaceful Pathways - Compass/javascripts/memorials.js"
-			],
-			[
-				"memorial",
-				"Peaceful Pathways - Compass/jade/memorials.jade"
-			],
-			[
-				"_memori",
-				"Peaceful Pathways - Compass/sass/_memorials.sass"
-			],
-			[
-				"_mis",
-				"Peaceful Pathways - Compass/sass/_mixins.sass"
-			],
-			[
-				"_pre-b",
-				"Peaceful Pathways - Compass/sass/_variables-pre-bootstrap.sass"
-			],
-			[
-				"head",
-				"Peaceful Pathways - Compass/jade/_header.jade"
-			],
-			[
-				"fel",
-				"Peaceful Pathways - Compass/jade/feline-grief.jade"
-			],
-			[
-				"mix",
-				"jade/_mixins.jade"
-			],
-			[
-				"upl",
-				"php/upload-memorial.php"
-			],
-			[
-				"up",
-				"php/upload-memorial.php"
-			],
-			[
-				"cla",
-				"php/class.memorial.php"
-			],
-			[
-				"ret",
-				"php/retina-images.php"
-			],
-			[
-				"confi",
-				"config.rb"
-			],
-			[
-				"cl",
-				"php/class.memorial.php"
-			],
-			[
-				"link",
-				"jade/_icon-links.jade"
-			],
-			[
-				"u",
-				"php/upload-memorial.php"
-			],
-			[
-				"reti",
-				"htdocs/retina-images.php"
-			],
-			[
-				"valid",
-				"javascripts/validation.js"
-			],
-			[
-				"va",
-				"coffee/validation.coffee"
-			],
-			[
-				"mer",
-				"javascripts/memorial-preview.js"
-			],
-			[
-				"vali",
-				"javascripts/validation.js"
-			],
-			[
-				"val",
-				"coffee/validation.coffee"
-			],
-			[
-				"me",
-				"php/memorials.php"
-			],
-			[
-				"_ab",
-				"sass/_about-us.sass"
-			],
-			[
-				"gen",
-				"sass/_generic.sass"
-			],
-			[
-				"cr",
-				"jade/create-memorial.jade"
-			],
-			[
-				"_conta",
-				"sass/_contact-us.sass"
-			],
-			[
-				"cont",
-				"jade/contact-us.jade"
-			],
-			[
-				"contac",
-				"jade/contact-us.jade"
-			],
-			[
-				"ab",
-				"jade/about-us.jade"
-			],
-			[
-				"abo",
-				"jade/about-us.jade"
-			],
-			[
-				"tab",
-				"coffee/tab-pane.coffee"
-			],
-			[
-				"_pre",
-				"sass/_variables-pre-bootstrap.sass"
-			],
-			[
-				"page",
-				"javascripts/page-scripts.js"
-			],
-			[
-				"_con",
-				"sass/_contact-us.scss"
-			],
-			[
-				"_memor",
-				"sass/_memorials.scss"
-			],
-			[
-				"_layo",
-				"jade/_layout.jade"
-			],
-			[
-				"create",
-				"jade/create-memorial.jade"
-			],
-			[
-				"_wel",
-				"sass/_welcome.scss"
-			],
-			[
-				"_inh",
-				"sass/_in-home-euthanasia.scss"
-			],
-			[
-				"_ismy",
-				"jade/_is-my-pet-suffering.jade"
 			]
 		],
 		"width": 0.0
@@ -2002,15 +2518,15 @@
 		],
 		"width": 568.0
 	},
-	"selected_group": 0,
+	"selected_group": 1,
 	"settings":
 	{
 	},
 	"show_minimap": false,
 	"show_open_files": true,
-	"show_tabs": true,
-	"side_bar_visible": true,
-	"side_bar_width": 251.0,
+	"show_tabs": false,
+	"side_bar_visible": false,
+	"side_bar_width": 439.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

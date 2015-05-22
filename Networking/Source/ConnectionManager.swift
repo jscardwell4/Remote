@@ -182,23 +182,35 @@ import class DataModel.HTTPCommand
   Join multicast group and listen for beacons broadcast by supported network devices, optionally providing a callback in the
   event a new device is detected.
 
+  :param: context NSManagedObjectContext = DataManager.rootContext
   :param: discovery ((NetworkDevice) -> Void)? = nil
   */
-  public static func startDetectingNetworkDevices(discovery: DiscoveryCallback? = nil) -> DiscoveryCallbackToken {
+  public static func startDetectingNetworkDevices(context: NSManagedObjectContext = DataManager.rootContext,
+                                        discovery: DiscoveryCallback? = nil) -> DiscoveryCallbackToken
+  {
     var token = -1
-    if let discovery = discovery { token = discoveryCallbacks.count; discoveryCallbacks.append(discovery) }
-    ITachConnectionManager.startDetectingNetworkDevices()
-    ISYConnectionManager.startDetectingNetworkDevices()
+    if let discovery = discovery {
+      token = discoveryCallbacks.count; discoveryCallbacks.append(discovery)
+      MSLogDebug("discovery appended to discoveryCallbacks, token = \(token)")
+    }
+    ITachConnectionManager.startDetectingNetworkDevices(context: context)
+    ISYConnectionManager.startDetectingNetworkDevices(context: context)
     MSLogInfo("listening for network devices…")
     return token
   }
 
   /** Leave multicast group. */
   public static func stopDetectingNetworkDevices(discoveryCallbackToken: DiscoveryCallbackToken = -1) {
-    ITachConnectionManager.stopDetectingNetworkDevices()
-    ISYConnectionManager.stopDetectingNetworkDevices()
-    MSLogInfo("no longer listening for network devices…")
-    if 0 ..< discoveryCallbacks.count ∋ discoveryCallbackToken { _ = discoveryCallbacks.removeAtIndex(discoveryCallbackToken) }
+    if 0 ..< discoveryCallbacks.count ∋ discoveryCallbackToken {
+      MSLogDebug("removing discovery callback for token \(discoveryCallbackToken)")
+      _ = discoveryCallbacks.removeAtIndex(discoveryCallbackToken)
+    }
+    if discoveryCallbacks.count == 0 {
+      MSLogDebug("discoveryCallbacks is empty, stopping device detection…")
+      ITachConnectionManager.stopDetectingNetworkDevices()
+      ISYConnectionManager.stopDetectingNetworkDevices()
+      MSLogInfo("no longer listening for network devices…")
+    }
   }
 
   /** Whether network devices are currently being detected */
@@ -223,7 +235,12 @@ import class DataModel.HTTPCommand
   :param: device NetworkDevice
   */
   static func discoveredDevice(device: NetworkDevice) {
-    apply(discoveryCallbacks) {$0(device)}
+    var i = 0
+    apply(discoveryCallbacks) {
+      MSLogDebug("invoking discovery callback \(i++)")
+      $0(device)
+    }
+    MSLogDebug("removing discovery callbacks and posting notification…")
     discoveryCallbacks.removeAll()
     NSNotificationCenter.defaultCenter().postNotificationName(NetworkDeviceDiscoveryNotification,
                                                        object: self,

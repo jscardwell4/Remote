@@ -414,9 +414,9 @@ extension BankCollectionController: BankItemCreationController {
   :param: form Form
   :param: action (Form) -> Bool
   */
-  private func presentForm(form: Form, processedForm: BankModelDelegate.ProcessedForm) {
+  private func presentForm(form: Form, processedForm: ProcessedForm) {
     let dismissController = {self.dismissViewControllerAnimated(true) {self.createItemBarButton?.isToggled = false}}
-    let didSubmit: FormViewController.Submission = {
+    let didSubmit: FormSubmission = {
       if processedForm($0) { DataManager.propagatingSaveFromContext(self.collectionDelegate.managedObjectContext) }
       dismissController()
     }
@@ -432,19 +432,19 @@ extension BankCollectionController: BankItemCreationController {
   private func beginDiscoveryTransaction(transaction: BankModelDelegate.DiscoveryTransaction) {
     endDiscovery = transaction.endDiscovery
     let context = collectionDelegate.managedObjectContext
-    let processedForm = transaction.processedForm
-    let formPresentation: BankModelDelegate.FormPresentation = {
-      form in
-      let dismissController = {
-        self.dismissViewControllerAnimated(true) { self.discoverItemBarButton?.isToggled = false }
-      }
-      let didSubmit: FormViewController.Submission = {
-        _ in
-        if processedForm(form) { DataManager.propagatingSaveFromContext(context) }
-        dismissController()
-      }
-      let formViewController = FormViewController(form: form, didSubmit: didSubmit, didCancel: dismissController)
-      self.presentViewController(formViewController, animated: true, completion: nil)
+    let formPresentation: (Form, ProcessedForm) -> Void = {
+      form, processedForm in
+
+        let dismissController = {
+          self.dismissViewControllerAnimated(true) { self.discoverItemBarButton?.isToggled = false }
+        }
+        let didSubmit: FormSubmission = {
+          _ in
+          if processedForm(form) { DataManager.propagatingSaveFromContext(context) }
+          dismissController()
+        }
+        let formViewController = FormViewController(form: form, didSubmit: didSubmit, didCancel: dismissController)
+        self.presentViewController(formViewController, animated: true, completion: nil)
     }
     transaction.beginDiscovery(formPresentation)
   }
@@ -452,9 +452,9 @@ extension BankCollectionController: BankItemCreationController {
   /** discoverBankItem */
   func discoverBankItem() {
 
-    if let endDiscovery = endDiscovery {
-      endDiscovery()
-      discoverItemBarButton?.isToggled = false
+    if discoverItemBarButton?.isToggled == false {
+      endDiscovery?()
+      endDiscovery = nil
     } else {
       switch (collectionDelegate.discoverItem, collectionDelegate.discoverCollection) {
 

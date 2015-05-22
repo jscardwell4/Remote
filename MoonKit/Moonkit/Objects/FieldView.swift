@@ -108,6 +108,8 @@ public class Field: NSObject {
       let control = UITextField(autolayout: true)
       control.userInteractionEnabled = editable
       control.textAlignment = .Right
+      control.adjustsFontSizeToFitWidth = true
+      control.minimumFontSize = 10
       control.returnKeyType = .Done
       control.layer.shadowColor = UIColor.redColor().CGColor
       control.delegate = self

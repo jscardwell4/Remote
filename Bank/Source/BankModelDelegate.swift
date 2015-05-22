@@ -13,14 +13,11 @@ import MoonKit
 
 @objc class BankModelDelegate {
 
-  typealias FormPresentation = (Form) -> Void
-  typealias ProcessedForm = (Form) -> Bool
 
   struct DiscoveryTransaction {
     let label: String
-    let beginDiscovery: (FormPresentation) -> Void
+    let beginDiscovery: ((Form, ProcessedForm) -> Void) -> Void
     let endDiscovery: () -> Void
-    let processedForm: ProcessedForm
   }
 
   struct CreationTransaction {
@@ -33,9 +30,6 @@ import MoonKit
   typealias ChangeCallback = (BankModelDelegate, Change) -> Void
 
   // MARK: - Transactions
-
-  typealias FormSubmission = FormViewController.Submission
-  typealias FormSubmissionResult = (Form) -> Bool
 
   var createItem: CreationTransaction?
   var createCollection: CreationTransaction?
@@ -76,14 +70,11 @@ import MoonKit
                                               discoverableType: T.Type,
                                                        context: NSManagedObjectContext) -> DiscoveryTransaction
   {
-    let beginDiscovery: (FormPresentation) -> Void = {discoverableType.beginDiscovery(context: context, presentForm: $0)}
+    let beginDiscovery: ((Form, ProcessedForm) -> Void) -> Void = {
+      discoverableType.beginDiscovery(context: context, presentForm: $0)
+    }
     let endDiscovery: () -> Void = {discoverableType.endDiscovery()}
-    return DiscoveryTransaction(label: label, beginDiscovery: beginDiscovery, endDiscovery: endDiscovery) {
-        form in
-          let (success, error) = DataManager.saveContext(context)
-          MSHandleError(error, message: "failed to save new \(toString(discoverableType))")
-          return success
-      }
+    return DiscoveryTransaction(label: label, beginDiscovery: beginDiscovery, endDiscovery: endDiscovery)
   }
 
   // MARK: - Initialization

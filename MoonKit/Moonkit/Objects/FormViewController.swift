@@ -121,6 +121,7 @@ public class FormViewController: UIViewController {
       view.constrain([𝗛|effect|𝗛, 𝗩|effect|𝗩] --> id)
       view.constrain([form.centerX => effect.centerX, form.centerY => effect.centerY] --> id)
       view.constrain([tool.left => form.left, tool.right => form.right, tool.top => form.bottom] --> id)
+      view.constrain(form.left ≥ view.left + 4, form.right ≤ view.right - 4, form.top ≥ view.top + 4, form.bottom ≤ view.bottom - 4)
     }
   }
 
