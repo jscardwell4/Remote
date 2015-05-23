@@ -1,40 +1,37 @@
 //
-//  ImageButtonView.swift
+//  LabelButton.swift
 //  MoonKit
 //
-//  Created by Jason Cardwell on 5/20/15.
+//  Created by Jason Cardwell on 5/23/15.
 //  Copyright (c) 2015 Jason Cardwell. All rights reserved.
 //
 
 import UIKit
 
-public class ImageButtonView: UIImageView {
+public class LabelButton: UILabel {
+
+  private var visualEffect = false
+
+  public override func didMoveToSuperview() { visualEffect = superview?.superview is UIVisualEffectView }
 
   private var trackingTouch: UITouch? { didSet { _highlighted = trackingTouch != nil } }
 
-  private var _highlighted = false { didSet { super.highlighted = _highlighted } }
+  private var _highlighted = false { didSet { super.highlighted = _highlighted; setNeedsDisplay() } }
 
   public override var highlighted: Bool { get { return super.highlighted } set {} }
 
-  public typealias Action = (ImageButtonView) -> Void
+  public typealias Action = (LabelButton) -> Void
 
-  private func initializeIVARs() { userInteractionEnabled = true }
-
-  public override init(image: UIImage!) { super.init(image: image); initializeIVARs() }
-
-  public override init(image: UIImage!, highlightedImage: UIImage?) {
-    super.init(image: image, highlightedImage: highlightedImage)
-    initializeIVARs()
+  private func initializeIVARs() {
+    userInteractionEnabled = true
+    MSLogDebug("tintColor = \(toString(tintColor))")
+    highlightedTextColor = tintColor // Store initial tintColor into highlightedTextColor
+    opaque = false
   }
 
   public override init(frame: CGRect) { super.init(frame: frame); initializeIVARs() }
 
   public required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
-
-  public convenience init(image: UIImage, highlightedImage: UIImage, action: Action? = nil) {
-    self.init(image: image, highlightedImage: highlightedImage)
-    if let action = action { actions.append(action) }
-  }
 
   public var actions: [Action] = []
 

@@ -257,9 +257,46 @@ public extension UIView {
 
   :returns: [NSLayoutConstraint]
   */
-  public func constrain(identifier id: String? = nil, _ pseudo: [PseudoConstraint] ...) -> [NSLayoutConstraint] {
-    let p = reduce(pseudo, [], {$0 + $1})
-    let result = flatMap(p, {$0.expanded}).compressedMap({$0.constraint()}) ➤| {$0.identifier = id}
+  public func constrain(selfAsSuperview: Bool = true,
+             identifier id: String? = nil,
+                      _ pseudo: [PseudoConstraint] ...) -> [NSLayoutConstraint]
+  {
+    var constraints: [PseudoConstraint] = flatMap(pseudo) {$0}
+
+    // If `selfAsSuperview` is `true` then process the constraints to make sure the deepest ancestor is the view
+    if selfAsSuperview {
+      // Find the deepest ancestor shared by all constraint objects
+      var deepestAncestor: UIView?
+      for constraint in constraints {
+        let ancestor = discernNearestAncestor(constraint.firstObject, constraint.secondObject)
+        switch (ancestor, deepestAncestor) {
+          case let (a, d) where d == nil && a != nil:
+            deepestAncestor = a
+          case let (a, d) where a != nil && d != nil && !a!.isDescendantOfView(d!):
+            if let v = discernNearestAncestor(a, d) { deepestAncestor = v }
+            else { MSLogWarn("unsupported constraint configuration, all objects must share a common ancestor"); return [] }
+          default:
+            break
+        }
+      }
+
+      // If `deepestAncestor` is nil then most likely the array was empty, return an empty array just to be safe
+      if deepestAncestor == nil { return [] }
+
+      // Check if we are not the ancestor but the ancestor descends from us, if so then replace ancestor with self
+      // unless both the first and second objects are the ancestor
+      else if let ancestor = deepestAncestor where self != ancestor && ancestor.isDescendantOfView(self) {
+        constraints = constraints.map {
+          (var c: PseudoConstraint) -> PseudoConstraint in
+          if c.firstObject === ancestor && c.secondObject !== ancestor { c.firstObject = self }
+          else if c.secondObject === ancestor && c.firstObject !== ancestor { c.secondObject = self }
+          return c
+        }
+      }
+
+    }
+
+    let result = flatMap(constraints, {$0.expanded}).compressedMap({$0.constraint()}) ➤| {$0.identifier = id}
     addConstraints(result)
     return result
   }

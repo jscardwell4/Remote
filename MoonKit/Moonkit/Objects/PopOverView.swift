@@ -10,8 +10,7 @@ import UIKit
 
 public class PopOverView: UIView {
 
-  public typealias Action = (PopOverView, String) -> Void
-
+  /** Enumeration to define which edge of the view will have an arrow */
   public enum Location { case Top, Bottom }
 
   /** Whether the arrow is drawn at the top or the bottom of the view, also affects label offsets and alignment rect */
@@ -23,7 +22,7 @@ public class PopOverView: UIView {
   }
 
   /** Storage for the color passed through to labels for property of the same name */
-  public var textColor: UIColor = UIColor.blackColor() {
+  public var textColor: UIColor = UIColor.whiteColor() {
     didSet { apply(labels){[color = textColor] in $0.textColor = color} }
   }
 
@@ -31,18 +30,6 @@ public class PopOverView: UIView {
   public var highlightedTextColor: UIColor = UIColor(name: "dodger-blue")! {
     didSet { apply(labels){[color = highlightedTextColor] in $0.highlightedTextColor = color} }
   }
-
-  /** Storage for the `Action` closures associated with each label */
-  private var actions: [Action] = []
-
-  /** Overridden to pass through value to/from the shape layer's `fillColor` property */
-  public override var backgroundColor: UIColor? {
-    get { return UIColor(CGColor: (layer as! CAShapeLayer).fillColor) }
-    set { (layer as! CAShapeLayer).fillColor = newValue?.CGColor }
-  }
-
-  /** Overridden to use `CAShapeLayer` as the view's backing layer */
-  public override class func layerClass() -> AnyClass { return CAShapeLayer.self }
 
   /** Value used to size the arrow */
   public var offset: CGFloat = 10 { didSet { refreshShape() } }
@@ -62,106 +49,84 @@ public class PopOverView: UIView {
   /** Method for updating the shape layer's path according to the views `bounds` and `location` */
   private func refreshShape() {
     let (w, h) = bounds.size.unpack()
-    if w < 20 || h < 20 { return }
+    if w < offset || h < offset { return }
+
     let path = UIBezierPath()
     switch location {
     case .Top:
-      path.moveToPoint(CGPoint(x: 0, y: offset))
-      path.addLineToPoint(CGPoint(x: round(w * 0.5) - offset, y: offset))
-      path.addLineToPoint(CGPoint(x: round(w * 0.5), y: 0))
-      path.addLineToPoint(CGPoint(x: round(w * 0.5) + offset, y: offset))
-      path.addLineToPoint(CGPoint(x: w, y: offset))
-      path.addLineToPoint(CGPoint(x: w, y: h))
-      path.addLineToPoint(CGPoint(x: 0, y: h))
-      path.closePath()
+      path.moveToPoint   (CGPoint(x: 0,                       y: offset    ))
+      path.addLineToPoint(CGPoint(x: round(half(w)) - offset, y: offset    ))
+      path.addLineToPoint(CGPoint(x: round(half(w)),          y: 0         ))
+      path.addLineToPoint(CGPoint(x: round(half(w)) + offset, y: offset    ))
+      path.addLineToPoint(CGPoint(x: w,                       y: offset    ))
+      path.addLineToPoint(CGPoint(x: w,                       y: h         ))
+      path.addLineToPoint(CGPoint(x: 0,                       y: h         ))
     case .Bottom:
-      path.moveToPoint(CGPoint.zeroPoint)
-      path.addLineToPoint(CGPoint(x: w, y: 0))
-      path.addLineToPoint(CGPoint(x: w, y: h - offset))
-      path.addLineToPoint(CGPoint(x: round(w * 0.5) + offset, y: h - offset))
-      path.addLineToPoint(CGPoint(x: round(w * 0.5), y: h))
-      path.addLineToPoint(CGPoint(x: round(w * 0.5) - offset, y: h - offset))
-      path.addLineToPoint(CGPoint(x: 0, y: h - offset))
-      path.closePath()
+      path.moveToPoint   (CGPoint(x: 0,                       y: 0         ))
+      path.addLineToPoint(CGPoint(x: w,                       y: 0         ))
+      path.addLineToPoint(CGPoint(x: w,                       y: h - offset))
+      path.addLineToPoint(CGPoint(x: round(half(w)) + offset, y: h - offset))
+      path.addLineToPoint(CGPoint(x: round(half(w)),          y: h         ))
+      path.addLineToPoint(CGPoint(x: round(half(w)) - offset, y: h - offset))
+      path.addLineToPoint(CGPoint(x: 0,                       y: h - offset))
     }
-    (layer as! CAShapeLayer).path = path.CGPath
+    path.closePath()
+    maskingLayer.frame = CGRect(size: bounds.size)
+    maskingLayer.path = path.CGPath
   }
 
   /** updateConstraints */
   public override func updateConstraints() {
     removeAllConstraints()
     super.updateConstraints()
-    if let effectView = subviews.first as? UIVisualEffectView { constrain(𝗛|effectView|𝗛, 𝗩|effectView|𝗩) }
+
+    var topOffset:    Float = location == .Top    ? Float(offset) : 0
+    var bottomOffset: Float = location == .Bottom ? Float(offset) : 0
+
+    if let effect = subviews.first as? UIVisualEffectView {
+      constrain(𝗛|effect|𝗛, [effect.top => self.top - topOffset, effect.bottom => self.bottom + bottomOffset])
+    }
+
+
     let labels = self.labels
     if labels.count == 0 { return }
-    let topOffset: Float
-    let bottomOffset: Float
-    switch location {
-      case .Top:    topOffset = Float(offset + 8); bottomOffset = 8
-      case .Bottom: bottomOffset = Float(offset + 8); topOffset = 8
-    }
+
+    topOffset += 8; bottomOffset += 8
+
     var prevLabel: UILabel?
+
     for label in labels {
       constrain(𝗛|--8--label--8--|𝗛)
       if let prev = prevLabel { constrain(label.top => prev.bottom + 8) } else { constrain(𝗩|--topOffset--label) }
       prevLabel = label
     }
+
     constrain(prevLabel!--bottomOffset--|𝗩)
   }
 
   /** Convenience accessor for the view's subviews as `UILabel` objects */
-  private var labels: [UILabel] { return flattened(contentView.subviews) }
+  private var labels: [LabelButton] { return flattened(contentView.subviews) }
 
   /** Overridden so we can update our shape's path on bounds changes */
   public override var bounds: CGRect { didSet { refreshShape() } }
 
-  /**
-  Callback for tap gestures attached to the labels
-
-  :param: sender UITapGestureRecognizer
-  */
-  func handleTap(sender: UITapGestureRecognizer) {
-    if let label = sender.view as? UILabel where label.tag < actions.count, let string = label.text {
-      label.highlighted = true
-      delayedDispatchToMain(0.5, {self.actions[label.tag](self, string)})
-    }
-  }
-
-  /**
-  Internal method for creating and decorating a new `UILabel` object
-
-  :param: text String
-
-  :returns: UILabel
-  */
-  private func newLabelWithText(text: String) -> UILabel {
-    let label = UILabel(autolayout: true)
-    label.tag = labels.count
-    label.font = font
-    label.textColor = textColor
-    label.text = text
-    label.highlightedTextColor = highlightedTextColor
-    label.backgroundColor = UIColor.clearColor()
-    label.userInteractionEnabled = true
-    label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
-    return label
-  }
-
   private weak var contentView: UIView!
+  private weak var maskingLayer: CAShapeLayer!
 
   private func initializeIVARs() {
-    let blur = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
+    let maskingLayer = CAShapeLayer()
+    layer.mask = maskingLayer
+    self.maskingLayer = maskingLayer
+    refreshShape()
+
+    let blurEffect = UIBlurEffect(style: .Dark)
+    let blur = UIVisualEffectView(effect: blurEffect)
     blur.setTranslatesAutoresizingMaskIntoConstraints(false)
     blur.contentView.setTranslatesAutoresizingMaskIntoConstraints(false)
     blur.constrain(𝗩|blur.contentView|𝗩, 𝗛|blur.contentView|𝗛)
-    let vibrancy = UIVisualEffectView(effect: UIVibrancyEffect(forBlurEffect: UIBlurEffect(style: .Dark)))
-    vibrancy.setTranslatesAutoresizingMaskIntoConstraints(false)
-    blur.contentView.addSubview(vibrancy)
-    blur.contentView.constrain(𝗩|vibrancy|𝗩, 𝗛|vibrancy|𝗛)
-    vibrancy.contentView.setTranslatesAutoresizingMaskIntoConstraints(false)
-    vibrancy.constrain(𝗩|vibrancy.contentView|𝗩, 𝗛|vibrancy.contentView|𝗛)
-    contentView = vibrancy.contentView
+
     addSubview(blur)
+    contentView = blur.contentView
   }
 
   public override class func requiresConstraintBasedLayout() -> Bool { return true }
@@ -198,11 +163,19 @@ public class PopOverView: UIView {
   Method to add a new label with the specified text and action
 
   :param: string String
-  :param: action Action
+  :param: action (PopOverView, String) -> Void
   */
-  public func addLabel(label string: String, withAction action: Action) {
-    contentView.addSubview(newLabelWithText(string))
-    actions.append(action)
+  public func addLabel(label string: String, withAction action: (PopOverView, String) -> Void) {
+    let label = LabelButton(autolayout: true)
+    label.tag = labels.count
+    label.font = font
+    label.textColor = textColor
+    label.text = string
+    label.highlightedTextColor = highlightedTextColor
+    label.backgroundColor = UIColor.clearColor()
+    label.userInteractionEnabled = true
+    label.actions.append {_ in action(self, string)}
+    contentView.addSubview(label)
   }
 
 }

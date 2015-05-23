@@ -324,6 +324,7 @@
 		C25E63D619FD4B1400F54626 /* RemoteElementEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63D519FD4B1400F54626 /* RemoteElementEditingController.swift */; };
 		C25E63E31A01B4E500F54626 /* RemoteEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63E21A01B4E500F54626 /* RemoteEditingController.swift */; };
 		C265DBB81AE81E4600655C4C /* PNG.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265DBB71AE81E4600655C4C /* PNG.swift */; };
+		C268340E1B1118FF00A359A8 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C268340D1B1118FF00A359A8 /* MoonKit.framework */; };
 		C26863761AF990D600D664E8 /* MessageQueueEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26863731AF990D600D664E8 /* MessageQueueEntry.swift */; };
 		C268637A1AF9CE2200D664E8 /* ITachDeviceConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26863791AF9CE2200D664E8 /* ITachDeviceConnection.swift */; };
 		C26A16441B0E1941001FC95F /* NetworkDevice+Bank.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26A16431B0E1941001FC95F /* NetworkDevice+Bank.swift */; };
@@ -1401,6 +1402,7 @@
 		C265DBBB1AE8760800655C4C /* Remote.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Remote.sqlite-shm"; sourceTree = "<group>"; };
 		C265DBBC1AE8760800655C4C /* Remote.sqlite-wal */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Remote.sqlite-wal"; sourceTree = "<group>"; };
 		C265DBBD1AE8769500655C4C /* UI.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = UI.playground; sourceTree = "<group>"; };
+		C268340D1B1118FF00A359A8 /* MoonKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MoonKit.framework; path = "MoonKit/build/Debug-iphoneos/MoonKit.framework"; sourceTree = "<group>"; };
 		C26863731AF990D600D664E8 /* MessageQueueEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageQueueEntry.swift; sourceTree = "<group>"; };
 		C26863791AF9CE2200D664E8 /* ITachDeviceConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITachDeviceConnection.swift; sourceTree = "<group>"; };
 		C26A16431B0E1941001FC95F /* NetworkDevice+Bank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NetworkDevice+Bank.swift"; sourceTree = "<group>"; };
@@ -1888,6 +1890,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C268340E1B1118FF00A359A8 /* MoonKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2452,6 +2455,7 @@
 		C26BAEAA16DC10FE0093D5B4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C268340D1B1118FF00A359A8 /* MoonKit.framework */,
 				C233E5B01AE9449D00B0FD63 /* CocoaLumberjack.framework */,
 				C23E73641ADEB23700867028 /* Quick.framework */,
 				C23E73601ADE983700867028 /* Nimble.framework */,
@@ -5435,6 +5439,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -5490,6 +5495,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -5538,6 +5544,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -5586,6 +5593,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

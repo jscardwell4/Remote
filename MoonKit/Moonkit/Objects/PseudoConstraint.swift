@@ -18,22 +18,23 @@ public struct PseudoConstraint {
 
   public typealias ItemName = String
   public var firstItem: ItemName?
-  public var firstObject: AnyObject? {
-    didSet {
-      if let obj: AnyObject = firstObject where firstItem == nil {
-        firstItem = "item1"
-      }
-    }
+  public var firstObject: AnyObject? { didSet { updateFirstItem() } }
+
+  private mutating func updateFirstItem() {
+    if let f = firstObject as? Named { firstItem = itemNameFromString(f.name) }
+    else if let f = firstObject as? UIView, nametag = f.nametag { firstItem = itemNameFromString(nametag) }
+    else { firstItem = firstObject != nil ? "item1" : nil }
   }
+
+  private mutating func updateSecondItem() {
+    if let f = secondObject as? Named { secondItem = itemNameFromString(f.name) }
+    else if let f = secondObject as? UIView, nametag = f.nametag { secondItem = itemNameFromString(nametag) }
+    else { secondItem = secondObject != nil ? "item2" : nil }
+  }
+
   public var firstAttribute: Attribute = .NotAnAttribute
   public var relation: Relation = .Equal
-  public var secondObject: AnyObject? {
-    didSet {
-      if let obj: AnyObject = secondObject where secondItem == nil {
-        secondItem = "item2"
-      }
-    }
-  }
+  public var secondObject: AnyObject? { didSet { updateSecondItem() } }
   public var secondItem: ItemName?
   public var secondAttribute: Attribute = .NotAnAttribute
   public var constant: Float = 0
@@ -183,13 +184,11 @@ public struct PseudoConstraint {
   public init(constraint: NSLayoutConstraint) {
     identifier = constraint.identifier
     firstObject = constraint.firstItem
-    if let f = firstObject as? Named { firstItem = itemNameFromString(f.name) }
-    else if let f = firstObject as? UIView, nametag = f.nametag { firstItem = itemNameFromString(nametag) }
+    updateFirstItem()
     firstAttribute = Attribute(constraint.firstAttribute)
     relation = Relation(constraint.relation)
     secondObject = constraint.secondItem
-    if let s = secondObject as? Named { secondItem = itemNameFromString(s.name) }
-    else if let s = secondObject as? UIView, nametag = secondObject?.nametag { secondItem = itemNameFromString(nametag) }
+    updateSecondItem()
     secondAttribute = Attribute(constraint.secondAttribute)
     multiplier = Float(constraint.multiplier)
     constant = Float(constraint.constant)
@@ -244,6 +243,11 @@ public struct PseudoConstraint {
     } else { return nil }
   }
 
+  /**
+  constraint
+
+  :returns: NSLayoutConstraint?
+  */
   public func constraint() -> NSLayoutConstraint? {
     if !valid { return nil }
     else {
@@ -258,6 +262,40 @@ public struct PseudoConstraint {
       constraint.identifier = identifier
       return constraint
     }
+  }
+
+  /**
+  initWithFirst:PseudoConstraint.Attribute):second:PseudoConstraint.Attribute):
+
+  :param: first (V1
+  :param: PseudoConstraint.Attribute)
+  :param: second (V2
+  :param: PseudoConstraint.Attribute)
+  */
+  public init(first: ViewAttributePair, second: ViewAttributePair, relation r: Relation = .Equal) {
+    firstObject = first.0
+    updateFirstItem()
+    firstAttribute = first.1
+    secondObject = second.0
+    updateSecondItem()
+    secondAttribute = second.1
+    relation = r
+  }
+
+  /**
+  initWithPair:constant:
+
+  :param: pair ViewAttributePair
+  :param: c Float
+  */
+  public init(pair: ViewAttributePair, constant c: Float, relation r: Relation = .Equal) {
+    firstObject = pair.0
+    updateFirstItem()
+    firstAttribute = pair.1
+    secondObject = nil
+    secondAttribute = .NotAnAttribute
+    relation = r
+    constant = c
   }
 
 }
@@ -433,100 +471,36 @@ extension PseudoConstraint {
   }
 }
 
-infix operator => {precedence 160}
 infix operator --> {}
-
-public func -->(var lhs: PseudoConstraint, rhs: String?) -> PseudoConstraint {
-  lhs.identifier = rhs
-  return lhs
-}
-
-public func -->(lhs: [PseudoConstraint], rhs: String?) -> [PseudoConstraint] {
-  return lhs.map {var p = $0; p.identifier = rhs; return p}
-}
-
-public func -->(lhs: [[PseudoConstraint]], rhs: String?) -> [PseudoConstraint] {
-  return flatMap(lhs) {$0 --> rhs}
-}
+public func -->(var lhs: PseudoConstraint, rhs: String?) -> PseudoConstraint { lhs.identifier = rhs; return lhs }
+public func -->(lhs: [PseudoConstraint], rhs: String?) -> [PseudoConstraint] { return lhs.map {$0 --> rhs} }
+public func -->(lhs: [[PseudoConstraint]], rhs: String?) -> [PseudoConstraint] { return flatMap(lhs) {$0 --> rhs} }
 
 infix operator -!> {}
+public func -!>(var lhs: PseudoConstraint, rhs: Float) -> PseudoConstraint { lhs.priority = rhs; return lhs }
 
-public func -!>(var lhs: PseudoConstraint, rhs: Float) -> PseudoConstraint {
-  lhs.priority = rhs
-  return lhs
+public typealias ViewAttributePair = (UIView, PseudoConstraint.Attribute)
+infix operator => {precedence 160}
+public func =>(lhs: ViewAttributePair, rhs: ViewAttributePair) -> PseudoConstraint {
+  return PseudoConstraint(first: lhs, second: rhs)
 }
-
-public func =><V1: UIView, V2: UIView>(lhs: (V1, PseudoConstraint.Attribute), rhs: (V2, PseudoConstraint.Attribute)) -> PseudoConstraint {
-  var pseudo = PseudoConstraint()
-  pseudo.firstObject = lhs.0
-  pseudo.firstItem = lhs.0.nametag
-  pseudo.firstAttribute = lhs.1
-  pseudo.secondObject = rhs.0
-  pseudo.secondItem = rhs.0.nametag
-  pseudo.secondAttribute = rhs.1
-  pseudo.relation = .Equal
-  return pseudo
-}
-public func =><V: UIView>(lhs: (V, PseudoConstraint.Attribute), rhs: Float) -> PseudoConstraint {
-  var pseudo = PseudoConstraint()
-  pseudo.firstObject = lhs.0
-  pseudo.firstItem = lhs.0.nametag
-  pseudo.firstAttribute = lhs.1
-  pseudo.secondObject = nil
-  pseudo.secondAttribute = .NotAnAttribute
-  pseudo.relation = .Equal
-  pseudo.constant = rhs
-  return pseudo
-}
+public func =>(lhs: ViewAttributePair, rhs: Float) -> PseudoConstraint { return PseudoConstraint(pair: lhs, constant: rhs) }
 
 infix operator ≥ {precedence 160}
-public func ≥<V1: UIView, V2: UIView>(lhs: (V1, PseudoConstraint.Attribute), rhs: (V2, PseudoConstraint.Attribute)) -> PseudoConstraint {
-  var pseudo = PseudoConstraint()
-  pseudo.firstObject = lhs.0
-  pseudo.firstItem = lhs.0.nametag
-  pseudo.firstAttribute = lhs.1
-  pseudo.secondObject = rhs.0
-  pseudo.secondItem = rhs.0.nametag
-  pseudo.secondAttribute = rhs.1
-  pseudo.relation = .GreaterThanOrEqual
-  return pseudo
+public func ≥(lhs: ViewAttributePair, rhs: ViewAttributePair) -> PseudoConstraint {
+  return PseudoConstraint(first: lhs, second: rhs, relation: .GreaterThanOrEqual)
 }
-public func ≥<V: UIView>(lhs: (V, PseudoConstraint.Attribute), rhs: Float) -> PseudoConstraint {
-  var pseudo = PseudoConstraint()
-  pseudo.firstObject = lhs.0
-  pseudo.firstItem = lhs.0.nametag
-  pseudo.firstAttribute = lhs.1
-  pseudo.secondObject = nil
-  pseudo.secondAttribute = .NotAnAttribute
-  pseudo.relation = .GreaterThanOrEqual
-  pseudo.constant = rhs
-  return pseudo
+public func ≥(lhs: ViewAttributePair, rhs: Float) -> PseudoConstraint {
+  return PseudoConstraint(pair: lhs, constant: rhs, relation: .GreaterThanOrEqual)
 }
 
 infix operator ≤ {precedence 160}
-public func ≤<V1: UIView, V2: UIView>(lhs: (V1, PseudoConstraint.Attribute), rhs: (V2, PseudoConstraint.Attribute)) -> PseudoConstraint {
-  var pseudo = PseudoConstraint()
-  pseudo.firstObject = lhs.0
-  pseudo.firstItem = lhs.0.nametag
-  pseudo.firstAttribute = lhs.1
-  pseudo.secondObject = rhs.0
-  pseudo.secondItem = rhs.0.nametag
-  pseudo.secondAttribute = rhs.1
-  pseudo.relation = .LessThanOrEqual
-  return pseudo
+public func ≤(lhs: ViewAttributePair, rhs: ViewAttributePair) -> PseudoConstraint {
+  return PseudoConstraint(first: lhs, second: rhs, relation: .LessThanOrEqual)
 }
-public func ≤<V: UIView>(lhs: (V, PseudoConstraint.Attribute), rhs: Float) -> PseudoConstraint {
-  var pseudo = PseudoConstraint()
-  pseudo.firstObject = lhs.0
-  pseudo.firstItem = lhs.0.nametag
-  pseudo.firstAttribute = lhs.1
-  pseudo.secondObject = nil
-  pseudo.secondAttribute = .NotAnAttribute
-  pseudo.relation = .LessThanOrEqual
-  pseudo.constant = rhs
-  return pseudo
+public func ≤(lhs: ViewAttributePair, rhs: Float) -> PseudoConstraint {
+  return PseudoConstraint(pair: lhs, constant: rhs, relation: .LessThanOrEqual)
 }
-
 
 public func *(var lhs: PseudoConstraint, rhs: Float) -> PseudoConstraint { lhs.multiplier = rhs; return lhs }
 public func +(var lhs: PseudoConstraint, rhs: Float) -> PseudoConstraint { lhs.constant = rhs; return lhs }
