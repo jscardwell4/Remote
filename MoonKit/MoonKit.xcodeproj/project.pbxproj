@@ -334,6 +334,7 @@
 		C2CEFF281A32236B00F3BE24 /* HexIntegerInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CEFF271A32236B00F3BE24 /* HexIntegerInputView.swift */; };
 		C2CEFF2A1A32807E00F3BE24 /* TextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CEFF291A32807E00F3BE24 /* TextInputView.swift */; };
 		C2CEFF2C1A328B2000F3BE24 /* FloatInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CEFF2B1A328B2000F3BE24 /* FloatInputView.swift */; };
+		C2CF986A1B0FD12900E32E41 /* PopOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CF98691B0FD12900E32E41 /* PopOverView.swift */; };
 		C2E7C8321A1AA3F0006BC80E /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E7C8311A1AA3F0006BC80E /* Protocols.swift */; };
 		C2E8C8B71AE7325300F8AC45 /* UITableViewCell+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8C8B61AE7325300F8AC45 /* UITableViewCell+MoonKitAdditions.swift */; };
 		C2E937001ACE04D4003EB3E8 /* JSONParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E936FF1ACE04D4003EB3E8 /* JSONParser.swift */; };
@@ -654,6 +655,7 @@
 		C2CEFF271A32236B00F3BE24 /* HexIntegerInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HexIntegerInputView.swift; sourceTree = "<group>"; };
 		C2CEFF291A32807E00F3BE24 /* TextInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextInputView.swift; sourceTree = "<group>"; };
 		C2CEFF2B1A328B2000F3BE24 /* FloatInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatInputView.swift; sourceTree = "<group>"; };
+		C2CF98691B0FD12900E32E41 /* PopOverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopOverView.swift; sourceTree = "<group>"; };
 		C2E3777F181C2F900066ACDB /* MSLogMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSLogMacros.h; sourceTree = "<group>"; };
 		C2E37782181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAssertionHandler+MSKitAdditions.h"; sourceTree = "<group>"; };
 		C2E37783181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAssertionHandler+MSKitAdditions.m"; sourceTree = "<group>"; };
@@ -894,6 +896,8 @@
 				C2EEBA081B06BFD10041B1B1 /* NotificationReceptionist.swift */,
 				C28A61EA1B0CEA2100612469 /* LabeledStepper.swift */,
 				C2143B761B0D5DAE007863F0 /* ImageButtonView.swift */,
+				C2CF98691B0FD12900E32E41 /* PopOverView.swift */,
+				C2CF986B1B0FE6FB00E32E41 /* New Group */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -1274,6 +1278,21 @@
 				C2CE892A18138CF700555D63 /* MSView.m */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		C2CF986B1B0FE6FB00E32E41 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				C2CF986C1B0FE71200E32E41 /* 𝗛 */,
+			);
+			name = "New Group";
+			sourceTree = "<group>";
+		};
+		C2CF986C1B0FE71200E32E41 /* 𝗛 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "𝗛";
 			sourceTree = "<group>";
 		};
 		C2F9414019BE7D01007B5CC1 /* CocoaAsyncSocket */ = {
@@ -1680,6 +1699,7 @@
 				C2BE96E81A467E85007599B2 /* NSManagedObjectModel+MoonKitAdditions.swift in Sources */,
 				C2358F5B19C78E0C00920F8D /* MSPickerInputButton.m in Sources */,
 				C2358F5C19C78E0C00920F8D /* MSPopupBarButton.m in Sources */,
+				C2CF986A1B0FD12900E32E41 /* PopOverView.swift in Sources */,
 				C23592F519C8E04200920F8D /* OrderedDictionary.swift in Sources */,
 				C28E50991A13CB1E00DF3206 /* IntegerInputView.swift in Sources */,
 				C2358F5D19C78E0C00920F8D /* MSPopupBarButtonItem.m in Sources */,

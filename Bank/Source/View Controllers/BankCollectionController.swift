@@ -478,6 +478,18 @@ extension BankCollectionController: BankItemCreationController {
 
   /** createBankItem */
   func createBankItem() {
+    let popOverView = PopOverView(autolayout: true)
+    popOverView.addLabel(label: "Label 1", withAction: {MSLogDebug("\($1)"); popOverView.removeFromSuperview()})
+    popOverView.addLabel(label: "Label 2", withAction: {MSLogDebug("\($1)"); popOverView.removeFromSuperview()})
+    popOverView.addLabel(label: "Label 3", withAction: {MSLogDebug("\($1)"); popOverView.removeFromSuperview()})
+    popOverView.backgroundColor = UIColor.lightGrayColor()
+
+    if let v = createItemBarButton?.customView {
+      view.window?.addSubview(popOverView)
+      view.window?.constrain(popOverView.centerX => v.centerX, popOverView.bottom => v.top)
+      return
+    }
+
     switch (collectionDelegate.createItem, collectionDelegate.createCollection) {
       // Display popover if there are multiple valid create transactions
       case let (createItem, createCollection) where createItem != nil && createCollection != nil:

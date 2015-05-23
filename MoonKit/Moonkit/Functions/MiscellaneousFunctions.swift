@@ -33,9 +33,9 @@ delayedDispatchToMain:block:
 :param: delay Int
 :param: block dispatch_block_t
 */
-public func delayedDispatchToMain(delay: Int, block: dispatch_block_t) {
+public func delayedDispatchToMain(delay: Double, block: dispatch_block_t) {
   dispatch_after(
-    dispatch_time(DISPATCH_TIME_NOW, Int64(UInt64(delay) * NSEC_PER_MSEC)),
+    dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))),
     dispatch_get_main_queue(),
     block
   )

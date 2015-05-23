@@ -3,6 +3,36 @@ import Foundation
 import UIKit
 import MoonKit
 
+dispatch_time(DISPATCH_TIME_NOW, Int64(round(5.0 * Double(NSEC_PER_MSEC))))
+
+func wtf(x: Int)(y: Int)(z: Float) -> String { return "whatup" }
+
+func ftw(x: Int)(y: Int)(z: Int) -> String { return "bitches" }
+
+
+let party = wtf(0)(y: 1)
+
+
+let view = UIView(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
+let popOverView = PopOverView(autolayout: true)
+popOverView.addLabel(label: "Label 1", withAction: {println("\($1)")})
+popOverView.addLabel(label: "Label 2", withAction: {println("\($1)")})
+popOverView.addLabel(label: "Label 3", withAction: {println("\($1)")})
+popOverView.backgroundColor = UIColor.blueColor()
+popOverView.location = .Top
+popOverView.setNeedsLayout()
+popOverView.layoutIfNeeded()
+popOverView.setNeedsDisplay()
+view.addSubview(popOverView)
+view.constrain(popOverView.centerX => view.centerX, popOverView.centerY => view.centerY)
+view.setNeedsLayout()
+view.layoutIfNeeded()
+view.setNeedsDisplay()
+view
+
+popOverView.frame
+(popOverView.subviews as! [UIView])[0].userInteractionEnabled
+flattened(popOverView.subviews) as [UILabel]
 let s = "ComponentDevice"
 s.isDashcase
 s.isCamelcase
