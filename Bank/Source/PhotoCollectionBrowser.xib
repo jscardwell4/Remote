@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PhotoCollectionBrowser" customModule="Bank" customModuleProvider="target">
+            <connections>
+                <outlet property="collectionView" destination="i5M-Pr-FkT" id="VZy-Ek-c4S"/>
+                <outlet property="collectionViewLayout" destination="c7k-ch-oGk" id="Xf4-q7-uLG"/>
+                <outlet property="scaleSlider" destination="f6p-t7-uRg" id="CF3-VZ-CJ7"/>
+                <outlet property="view" destination="SNK-uX-yct" id="1lQ-lf-9dA"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="SNK-uX-yct">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c1k-Bn-rOO">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                    <items>
+                        <barButtonItem style="plain" systemItem="cancel" id="LhX-3d-Kwk">
+                            <connections>
+                                <action selector="cancel" destination="-1" id="PUB-eq-drZ"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="jZQ-TO-UZK"/>
+                        <barButtonItem title="Photo Library" style="plain" id="z1i-6N-Ysf"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="91y-pZ-MxT"/>
+                        <barButtonItem width="70" style="plain" systemItem="fixedSpace" id="6MU-4j-541"/>
+                    </items>
+                </toolbar>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Pv-Mg-mNb">
+                    <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                    <items>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Acw-Ts-K66"/>
+                        <barButtonItem style="plain" id="5AE-5l-Azq">
+                            <slider key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" minimumValueImage="822-photo-2-toolbar" maximumValueImage="822-photo-2" id="f6p-t7-uRg">
+                                <rect key="frame" x="14" y="6.5" width="278" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="updateScale:" destination="-1" eventType="valueChanged" id="wka-ed-WhF"/>
+                                </connections>
+                            </slider>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="scc-e0-8Gg"/>
+                    </items>
+                </toolbar>
+                <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="i5M-Pr-FkT">
+                    <rect key="frame" x="0.0" y="44" width="600" height="512"/>
+                    <color key="backgroundColor" red="0.16862699389457703" green="0.16862699389457703" blue="0.16862699389457703" alpha="1" colorSpace="calibratedRGB"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="c7k-ch-oGk" customClass="PhotoBrowserLayout" customModule="Bank" customModuleProvider="target">
+                        <size key="itemSize" width="50" height="50"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="Tng-2m-Rnh"/>
+                        <outlet property="delegate" destination="-1" id="9aC-8N-iBw"/>
+                    </connections>
+                </collectionView>
+            </subviews>
+            <color key="backgroundColor" red="0.16862699389457703" green="0.16862699389457703" blue="0.16862699389457703" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="c1k-Bn-rOO" firstAttribute="leading" secondItem="SNK-uX-yct" secondAttribute="leading" id="0VY-BQ-sXQ"/>
+                <constraint firstItem="3Pv-Mg-mNb" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="88e-bf-5gn"/>
+                <constraint firstItem="i5M-Pr-FkT" firstAttribute="leading" secondItem="SNK-uX-yct" secondAttribute="leading" id="K8A-ZY-HkG"/>
+                <constraint firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailing" id="YNb-RF-dea"/>
+                <constraint firstItem="3Pv-Mg-mNb" firstAttribute="leading" secondItem="SNK-uX-yct" secondAttribute="leading" id="gtg-L7-ZDb"/>
+                <constraint firstAttribute="bottom" secondItem="3Pv-Mg-mNb" secondAttribute="bottom" id="hbJ-hY-DDN"/>
+                <constraint firstItem="c1k-Bn-rOO" firstAttribute="top" secondItem="SNK-uX-yct" secondAttribute="top" id="kaQ-f7-Lgb"/>
+                <constraint firstAttribute="trailing" secondItem="c1k-Bn-rOO" secondAttribute="trailing" id="tBg-2Y-jA1"/>
+                <constraint firstItem="i5M-Pr-FkT" firstAttribute="top" secondItem="c1k-Bn-rOO" secondAttribute="bottom" id="ubA-ab-fQy"/>
+                <constraint firstAttribute="trailing" secondItem="3Pv-Mg-mNb" secondAttribute="trailing" id="xq0-PP-y4S"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <point key="canvasLocation" x="91" y="652"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="822-photo-2" width="42" height="33"/>
+        <image name="822-photo-2-toolbar" width="33" height="27"/>
+    </resources>
+</document>

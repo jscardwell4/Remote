@@ -325,6 +325,9 @@
 		C25E63E31A01B4E500F54626 /* RemoteEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63E21A01B4E500F54626 /* RemoteEditingController.swift */; };
 		C265DBB81AE81E4600655C4C /* PNG.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265DBB71AE81E4600655C4C /* PNG.swift */; };
 		C268340E1B1118FF00A359A8 /* MoonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C268340D1B1118FF00A359A8 /* MoonKit.framework */; };
+		C26834111B11503000A359A8 /* PhotoCollectionBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C268340F1B11503000A359A8 /* PhotoCollectionBrowser.swift */; };
+		C26834121B11503000A359A8 /* PhotoCollectionBrowser.xib in Resources */ = {isa = PBXBuildFile; fileRef = C26834101B11503000A359A8 /* PhotoCollectionBrowser.xib */; };
+		C26834141B12740100A359A8 /* PhotoBrowserLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26834131B12740100A359A8 /* PhotoBrowserLayout.swift */; };
 		C26863761AF990D600D664E8 /* MessageQueueEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26863731AF990D600D664E8 /* MessageQueueEntry.swift */; };
 		C268637A1AF9CE2200D664E8 /* ITachDeviceConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26863791AF9CE2200D664E8 /* ITachDeviceConnection.swift */; };
 		C26A16441B0E1941001FC95F /* NetworkDevice+Bank.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26A16431B0E1941001FC95F /* NetworkDevice+Bank.swift */; };
@@ -1403,6 +1406,9 @@
 		C265DBBC1AE8760800655C4C /* Remote.sqlite-wal */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Remote.sqlite-wal"; sourceTree = "<group>"; };
 		C265DBBD1AE8769500655C4C /* UI.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = UI.playground; sourceTree = "<group>"; };
 		C268340D1B1118FF00A359A8 /* MoonKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MoonKit.framework; path = "MoonKit/build/Debug-iphoneos/MoonKit.framework"; sourceTree = "<group>"; };
+		C268340F1B11503000A359A8 /* PhotoCollectionBrowser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCollectionBrowser.swift; sourceTree = "<group>"; };
+		C26834101B11503000A359A8 /* PhotoCollectionBrowser.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoCollectionBrowser.xib; sourceTree = "<group>"; };
+		C26834131B12740100A359A8 /* PhotoBrowserLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoBrowserLayout.swift; sourceTree = "<group>"; };
 		C26863731AF990D600D664E8 /* MessageQueueEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageQueueEntry.swift; sourceTree = "<group>"; };
 		C26863791AF9CE2200D664E8 /* ITachDeviceConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITachDeviceConnection.swift; sourceTree = "<group>"; };
 		C26A16431B0E1941001FC95F /* NetworkDevice+Bank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NetworkDevice+Bank.swift"; sourceTree = "<group>"; };
@@ -3097,6 +3103,9 @@
 				C221159B1AC58A980071F2D0 /* BankProtocols.swift */,
 				C2A12B931B0D3CA5003C17F8 /* BankController.swift */,
 				C2A12B991B0D59A8003C17F8 /* BankButton.swift */,
+				C26834131B12740100A359A8 /* PhotoBrowserLayout.swift */,
+				C268340F1B11503000A359A8 /* PhotoCollectionBrowser.swift */,
+				C26834101B11503000A359A8 /* PhotoCollectionBrowser.xib */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -4428,6 +4437,7 @@
 				C28A61EE1B0D302B00612469 /* BankController.xib in Resources */,
 				C22115B51AC59CD30071F2D0 /* modernpics.otf in Resources */,
 				C2345ACF1AE3005A000AA262 /* ForegroundColor_Normal.json in Resources */,
+				C26834121B11503000A359A8 /* PhotoCollectionBrowser.xib in Resources */,
 				C2345AD81AE3005A000AA262 /* Preset_ButtonGroup_1x3.json in Resources */,
 				C2345ACA1AE3005A000AA262 /* BackgroundColor_Dark_Normal.json in Resources */,
 				C2345AE11AE3005A000AA262 /* TitleAttributes_Default_Icon.json in Resources */,
@@ -4834,6 +4844,7 @@
 				C285D8461AC48C8400C527F6 /* DetailTwoToneSliderCell.swift in Sources */,
 				C285D8621AC48EB600C527F6 /* ITachDeviceDetailController.swift in Sources */,
 				C2EEBA231B08087D0041B1B1 /* IRCodeSet+Bank.swift in Sources */,
+				C26834111B11503000A359A8 /* PhotoCollectionBrowser.swift in Sources */,
 				C285D84A1AC48C9800C527F6 /* DetailCustomRow.swift in Sources */,
 				C285D8681AC4BFDF00C527F6 /* BankCollectionController.swift in Sources */,
 				C285D8341AC48C5500C527F6 /* DetailSection.swift in Sources */,
@@ -4863,6 +4874,7 @@
 				C285D8661AC4BF6300C527F6 /* BankCollectionCategoryCell.swift in Sources */,
 				C285D85C1AC48E4400C527F6 /* DetailListRow.swift in Sources */,
 				C285D8591AC48D3800C527F6 /* BankItemDetailController.swift in Sources */,
+				C26834141B12740100A359A8 /* PhotoBrowserLayout.swift in Sources */,
 				C26A16441B0E1941001FC95F /* NetworkDevice+Bank.swift in Sources */,
 				C285D8671AC4BF9800C527F6 /* BankCollectionItemCell.swift in Sources */,
 				C285D8431AC48C8400C527F6 /* DetailTextFieldCell.swift in Sources */,

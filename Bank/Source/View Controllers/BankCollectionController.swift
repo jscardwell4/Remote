@@ -13,7 +13,9 @@ import DataModel
 import Settings
 
 // TODO: Viewing mode changes need to respect whether category items are `previewable`
-  enum Mode { case Default, Selection }
+// ???: Is it possible to animate bottom toolbar changes?
+
+enum Mode { case Default, Selection }
 
 final class BankCollectionController: UICollectionViewController, BankItemSelectiveViewingModeController {
 
@@ -362,6 +364,56 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
     }
   }
 
+  // MARK: Private actions
+
+  /**
+  Creates a fresh `PopOverView` with the specified actions
+
+  :param: actions [String:(PopOverView) -> Void]
+
+  :returns: PopOverView
+  */
+  private func popOverWithActions(actions: [String:(PopOverView) -> Void], location: PopOverView.Location) -> PopOverView {
+    let popOverView = PopOverView(autolayout: true)
+    popOverView.location = location
+    popOverView.highlightedTextColor = Bank.actionColor
+    apply(actions) {popOverView.addLabel(label: $0, withAction: $1)}
+    return popOverView
+  }
+
+  /**
+  presentPopOverWithActions:
+
+  :param: actions [String:(PopOverView) -> Void]
+  :param: button UIBarButtonItem
+  */
+  private func presentPopOverWithActions(actions: [String:(PopOverView) -> Void], above button: UIBarButtonItem) {
+    // TODO: Add animation and more appearance customization
+    let popOverView = popOverWithActions(actions, location: .Bottom)
+
+    if let presentingView = createItemBarButton?.customView {
+      view.window?.addSubview(popOverView)
+      view.window?.constrain(popOverView.centerX => presentingView.centerX, popOverView.bottom => presentingView.top)
+    }
+  }
+  
+  /**
+  presentPopOverWithActions:below:
+
+  :param: actions [String:(PopOverView) -> Void]
+  :param: button UIBarButtonItem
+  */
+  private func presentPopOverWithActions(actions: [String:(PopOverView) -> Void], below button: UIBarButtonItem) {
+    // TODO: Add animation and more appearance customization
+    let popOverView = popOverWithActions(actions, location: .Top)
+
+    if let presentingView = button.customView {
+      view.window?.addSubview(popOverView)
+      view.window?.constrain(popOverView.centerX => presentingView.centerX, popOverView.top => presentingView.bottom)
+    }
+  }
+
+
 }
 
 // MARK: - Zooming an item
@@ -408,19 +460,21 @@ extension BankCollectionController: BankCollectionZoomViewDelegate {
 
 extension BankCollectionController: BankItemCreationController {
 
-  /**
-  presentForm:action:
+  private func transact(transaction: BankModelDelegate.CreationTransaction) { presentForm(transaction) }
+  private func transact(transaction: BankModelDelegate.DiscoveryTransaction) { beginDiscoveryTransaction(transaction) }
 
-  :param: form Form
-  :param: action (Form) -> Bool
+  /**
+  Presents a `FormViewController` using the specifed creation transaction
+
+  :param: transaction BankModelDelegate.CreationTransaction
   */
-  private func presentForm(form: Form, processedForm: ProcessedForm) {
+  private func presentForm(transaction: BankModelDelegate.CreationTransaction) {
     let dismissController = {self.dismissViewControllerAnimated(true) {self.createItemBarButton?.isToggled = false}}
     let didSubmit: FormSubmission = {
-      if processedForm($0) { DataManager.propagatingSaveFromContext(self.collectionDelegate.managedObjectContext) }
+      if transaction.processedForm($0) { DataManager.propagatingSaveFromContext(self.collectionDelegate.managedObjectContext) }
       dismissController()
     }
-    let formViewController = FormViewController(form: form, didSubmit: didSubmit, didCancel: dismissController)
+    let formViewController = FormViewController(form: transaction.form, didSubmit: didSubmit, didCancel: dismissController)
     presentViewController(formViewController, animated: true, completion: nil)
   }
 
@@ -460,14 +514,17 @@ extension BankCollectionController: BankItemCreationController {
 
         // Display popover if there are multiple valid discover transactions
         case let (discoverItem, discoverCollection) where discoverItem != nil && discoverCollection != nil:
-          // TODO: Present popover to choose which transaction to begin
-          break
+        if let button = discoverItemBarButton {
+          presentPopOverWithActions([discoverItem!.label: {$0.removeFromSuperview(); self.transact(discoverItem!)},
+                                     discoverCollection!.label: {$0.removeFromSuperview(); self.transact(discoverCollection!)}],
+                              above: button)
+        }
 
         case let (discoverItem, discoverCollection) where discoverItem != nil && discoverCollection == nil:
-          beginDiscoveryTransaction(discoverItem!)
+          transact(discoverItem!)
 
         case let (discoverItem, discoverCollection) where discoverItem == nil && discoverCollection != nil:
-          beginDiscoveryTransaction(discoverCollection!)
+          transact(discoverCollection!)
 
         // Don't do anything if we have no valid create transactions
         default:
@@ -478,30 +535,22 @@ extension BankCollectionController: BankItemCreationController {
 
   /** createBankItem */
   func createBankItem() {
-//    let popOverView = PopOverView(autolayout: true)
-//    popOverView.addLabel(label: "Label 1", withAction: {MSLogDebug("\($1)"); popOverView.removeFromSuperview()})
-//    popOverView.addLabel(label: "Label 2", withAction: {MSLogDebug("\($1)"); popOverView.removeFromSuperview()})
-//    popOverView.addLabel(label: "Label 3", withAction: {MSLogDebug("\($1)"); popOverView.removeFromSuperview()})
-//    popOverView.tintColor = Bank.actionColor
-//
-//    if let v = createItemBarButton?.customView {
-//      view.window?.addSubview(popOverView)
-//      view.window?.constrain(popOverView.centerX => v.centerX, popOverView.bottom => v.top)
-//      return
-//    }
-
     switch (collectionDelegate.createItem, collectionDelegate.createCollection) {
       // Display popover if there are multiple valid create transactions
       case let (createItem, createCollection) where createItem != nil && createCollection != nil:
-        // TODO: Present popover to choose which transaction to begin
-        break
+        if let button = createItemBarButton {
+          presentPopOverWithActions([createItem!.label: {$0.removeFromSuperview(); self.transact(createItem!)},
+                                     createCollection!.label: {$0.removeFromSuperview(); self.transact(createCollection!)}],
+                              above: button)
+        }
+
       // Display controller for item creation if collection transaction is nil
       case let (createItem, createCollection) where createItem != nil && createCollection == nil:
-        presentForm(createItem!.form, processedForm: createItem!.processedForm)
+        transact(createItem!)
 
       // Display controller for collection creation if item transaction is nil
       case let (createItem, createCollection) where createItem == nil && createCollection != nil:
-        presentForm(createCollection!.form, processedForm: createCollection!.processedForm)
+        transact(createCollection!)
 
       // Don't do anything if we have no valid create transactions
       default:

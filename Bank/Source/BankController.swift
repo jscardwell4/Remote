@@ -9,6 +9,7 @@
 import UIKit
 import MoonKit
 import DataModel
+import Photos
 
 public class BankController: UIViewController, BankItemImportExportController {
 
@@ -96,7 +97,11 @@ public class BankController: UIViewController, BankItemImportExportController {
 
    public override func viewDidLoad() {
     navigationController?.navigationBar.titleTextAttributes = Bank.titleTextAttributes
+
     toolbarItems = Bank.toolbarItemsForController(self)
+    let testPhotoLibraryButton = UIBarButtonItem(title: "Photo Library", style: .Plain, target: self, action: "openPhotoLibrary")
+    toolbarItems = toolbarItems! + [UIBarButtonItem.fixedSpace(-160), testPhotoLibraryButton]
+
     apply(buttons) {$0.actions.append(self.buttonAction)}
   }
 
@@ -115,6 +120,19 @@ public class BankController: UIViewController, BankItemImportExportController {
   override public func viewWillDisappear(animated: Bool) {
     super.viewWillDisappear(animated)
     title = ""
+  }
+
+  func openPhotoLibrary() {
+    MSLogDebug("open photo library bitches!!!")
+    if let userPhotoLibrary =
+      PHAssetCollection.fetchAssetCollectionsWithType(.SmartAlbum,
+                                              subtype: .SmartAlbumUserLibrary,
+                                              options: nil)?.firstObject as? PHAssetCollection
+    {
+      let photoBrowser = PhotoCollectionBrowser(collection: userPhotoLibrary)
+      presentViewController(photoBrowser, animated: true, completion: nil)
+    }
+
   }
 
   /** importBankObject */

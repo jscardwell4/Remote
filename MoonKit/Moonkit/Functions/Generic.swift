@@ -153,13 +153,13 @@ public func find<C: CollectionType where C.Generator.Element: Equatable>(domain:
 /**
 findFirst:predicate:
 
-:param: domain C
-:param: predicate (C.Generator.Element) -> Bool
+:param: domain S
+:param: predicate (S.Generator.Element) -> Bool
 
 :returns: (C.Generator.Element)?
 */
-public func findFirst<C: CollectionType>(domain: C?, predicate: (C.Generator.Element) -> Bool) -> (C.Generator.Element)? {
-  if let collection = domain { for element in collection { if predicate(element) { return element } } }
+public func findFirst<S: SequenceType>(domain: S?, predicate: (S.Generator.Element) -> Bool) -> (S.Generator.Element)? {
+  if let sequence = domain { for element in sequence { if predicate(element) { return element } } }
   return nil
 }
 

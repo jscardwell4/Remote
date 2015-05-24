@@ -165,7 +165,7 @@ public class PopOverView: UIView {
   :param: string String
   :param: action (PopOverView, String) -> Void
   */
-  public func addLabel(label string: String, withAction action: (PopOverView, String) -> Void) {
+  public func addLabel(label string: String, withAction action: (PopOverView) -> Void) {
     let label = LabelButton(autolayout: true)
     label.tag = labels.count
     label.font = font
@@ -174,7 +174,7 @@ public class PopOverView: UIView {
     label.highlightedTextColor = highlightedTextColor
     label.backgroundColor = UIColor.clearColor()
     label.userInteractionEnabled = true
-    label.actions.append {_ in action(self, string)}
+    label.actions.append {_ in action(self)}
     contentView.addSubview(label)
   }
 

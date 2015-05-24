@@ -9,6 +9,12 @@
 import Foundation
 import UIKit
 
+public struct Ratio: Printable {
+  public var numerator: CGFloat = 1
+  public var denominator: CGFloat = 1
+  public var description: String { return "\(numerator):\(denominator)" }
+}
+
 extension CGPoint {
   public init?(_ string: String?) { if let s = string { self = CGPointFromString(s) } else { return nil } }
   public static var nullPoint: CGPoint = CGPoint(x: CGFloat.NaN, y: CGFloat.NaN)
@@ -122,6 +128,18 @@ extension CGSize {
   	if size.height > height { size.height -= CGFloat(1) }
   	return size
   }
+
+  public mutating func scaleBy(ratio: Ratio) {
+    width = width * ratio.numerator
+    height = height * ratio.denominator
+  }
+
+  public func ratioForFittingSize(size: CGSize) -> Ratio {
+    let (w, h) = min(aspectMappedToWidth(size.width), aspectMappedToHeight(size.height)).unpack()
+    return Ratio(numerator: width/w, denominator: height/h)
+  }
+
+  public func scaledBy(ratio: Ratio) -> CGSize { var s = self; s.scaleBy(ratio); return s }
 
   public func aspectMappedToWidth(w: CGFloat) -> CGSize { return CGSize(width: w, height: (w * height) / width) }
   public func aspectMappedToHeight(h: CGFloat) -> CGSize { return CGSize(width: (h * width) / height, height: h) }
