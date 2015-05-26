@@ -4,15 +4,23 @@ import UIKit
 import MoonKit
 import XCPlayground
 
+func ~=<T:Equatable>(lhs: T?, rhs: T?) -> Bool {
+  if let l = lhs, r = rhs where l ~= r { return true }
+  else if lhs == nil && rhs == nil { return true }
+  else { return false }
+}
 
-let size = CGSize(width: 160, height: 160)
+let wtf1: Int? = 1
 
-let targetSize = CGSize(width: 320, height: 567)
+let wtf2: Int? = 1
 
-let ratio = size.ratioForFittingSize(targetSize)
+let wtf3: Int? = nil
 
-// size.width * x = 320
-let wtf1 = ["wtf1": 1, "wtf": 3]
-let wtf2 = ["wtf2": 2, "wtf": 4]
-var wtf3 = wtf1
-extend(&wtf3, wtf2)
+let wtf4: Int? = 2
+
+let wtf5: Int = 1
+
+switch wtf5 {
+  case wtf1: println("huzzah")
+  default: println("huh")
+}

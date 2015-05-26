@@ -55,7 +55,7 @@ public extension UIView {
 
   :returns: UIView?
   */
-  public subscript(nametag: String) -> UIView? { return viewWithNametag(nametag) }
+  public subscript(nametag: String) -> UIView? { return subviewWithNametag(nametag) }
 
   // MARK: - Ancestors
 

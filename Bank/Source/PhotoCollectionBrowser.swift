@@ -10,10 +10,13 @@ import UIKit
 import Photos
 import MoonKit
 
+// TODO: Add selection callback or delegate protocol
+// TODO: Remember previously used item scale
+
 private let reuseIdentifier = "Cell"
 private let imageViewNametag = "image"
 
-class PhotoCollectionBrowser: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+class PhotoCollectionBrowser: UIViewController, PhotoBrowserLayoutDelegate, UICollectionViewDataSource {
 
   // MARK: - Properties
 
@@ -22,44 +25,7 @@ class PhotoCollectionBrowser: UIViewController, UICollectionViewDelegateFlowLayo
   @IBOutlet var collectionView: UICollectionView!
   @IBOutlet var collectionViewLayout: PhotoBrowserLayout!
 
-  /** An enumeration to assist with translating scale slider values to collection view layout item size */
-  private enum ItemLayout: Float {
-    case OneAcross = 1, TwoAcross, ThreeAcross, FourAcross, FiveAcross, SixAcross, SevenAcross, EightAcross
-
-    static var minScale: ItemLayout { return .EightAcross }
-    static var maxScale: ItemLayout { return .OneAcross }
-    static var sliderStep: Float { return 100/(minScale.rawValue - 1) }
-
-    var itemSize: CGSize { return CGSize(square: UIScreen.mainScreen().bounds.width/CGFloat(rawValue)) }
-    var sliderValue: Float { return ItemLayout.sliderStep * (ItemLayout.minScale.rawValue - rawValue) }
-
-    var interval: ClosedInterval<Float> {
-      let halfStep = half(ItemLayout.sliderStep)
-      let value = sliderValue
-      return ClosedInterval(max(value - halfStep, 0), min(value + halfStep, 100))
-    }
-
-    static var all: [ItemLayout] {
-      return [.OneAcross, .TwoAcross, .ThreeAcross, .FourAcross, .FiveAcross, .SixAcross, .SevenAcross, .EightAcross]
-    }
-
-    init(rawValue: Float) {
-      if let layout = findFirst(ItemLayout.all, {$0.interval.contains(rawValue)}) { self = layout }
-      else if ItemLayout.minScale.rawValue > rawValue { self = ItemLayout.minScale }
-      else { self = ItemLayout.maxScale }
-    }
-  }
-
-  /** Specifies how many items per row to display */
-  private var itemLayout: ItemLayout = .EightAcross {
-    didSet {
-      collectionViewLayout.itemSize = itemLayout.itemSize
-      collectionViewLayout.invalidateLayout()
-      apply(collectionView.indexPathsForVisibleItems().filter({self.sizes[self.itemLayout]![$0.row] == CGSize.zeroSize})) {
-        self.requestImageAtIndex($0.row, forItemLayout: self.itemLayout)
-      }
-    }
-  }
+  typealias ItemScale = PhotoBrowserLayout.ItemScale
 
   /** The `PHAsset` objects fetched from the `PHAssetCollection` passed to `initWithCollection:` */
   let assets: PHFetchResult
@@ -70,12 +36,7 @@ class PhotoCollectionBrowser: UIViewController, UICollectionViewDelegateFlowLayo
   /** Holds IDs of outstanding `PHImageManager` requests */
   private var requests: Set<PHImageRequestID> = []
 
-  private lazy var sizes: [ItemLayout:[CGSize]] = {
-    let array = [CGSize](count: self.assets.count, repeatedValue: CGSize.zeroSize)
-    var sizes: [ItemLayout:[CGSize]] = [:]
-    apply(ItemLayout.all) {sizes[$0] = array}
-    return sizes
-  }()
+  private let sizes: [(width: Int, height: Int)]
 
   // MARK: - Actions
 
@@ -85,12 +46,18 @@ class PhotoCollectionBrowser: UIViewController, UICollectionViewDelegateFlowLayo
   :param: sender UISlider
   */
   @IBAction func updateScale(sender: UISlider) {
-    let newItemLayout = ItemLayout(rawValue: sender.value)
-    if newItemLayout != itemLayout { itemLayout = newItemLayout }
+    collectionViewLayout.itemScale = ItemScale(rawValue: sender.value)
+    apply(collectionView.indexPathsForVisibleItems() as! [NSIndexPath]){self.requestImageAtIndexPath($0)}
   }
 
   /** Dismiss the controller */
   @IBAction func cancel() { dismissViewControllerAnimated(true, completion: nil) }
+
+  /** Right toolbar button for the top toolbar */
+  @IBOutlet weak var selectButton: UIBarButtonItem!
+
+  /** Selects the zoomed item */
+  @IBAction func select() { MSLogDebug("picked an image muthafucka!!!!") }
 
   // MARK: - Initialization
 
@@ -100,9 +67,13 @@ class PhotoCollectionBrowser: UIViewController, UICollectionViewDelegateFlowLayo
   :param: collection PHAssetCollection
   */
   init(collection: PHAssetCollection) {
-    assets = PHAsset.fetchAssetsInAssetCollection(collection, options: nil)
+    let fetchResult = PHAsset.fetchAssetsInAssetCollection(collection, options: nil)
+    sizes = map(0..<fetchResult.count){
+      let asset = fetchResult[$0] as! PHAsset
+      return (width: asset.pixelWidth, height: asset.pixelHeight)
+    }
+    assets = fetchResult
     super.init(nibName: "PhotoCollectionBrowser", bundle: Bank.bundle)
-    MSLogDebug("assets = \(toString(assets))")
   }
 
   /**
@@ -115,11 +86,9 @@ class PhotoCollectionBrowser: UIViewController, UICollectionViewDelegateFlowLayo
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    scaleSlider.minimumValue = ItemLayout.minScale.sliderValue
-    scaleSlider.maximumValue = ItemLayout.maxScale.sliderValue
-    scaleSlider.value = itemLayout.sliderValue
-
-    collectionViewLayout.itemSize = itemLayout.itemSize
+    scaleSlider.minimumValue = ItemScale.minScale.normalized
+    scaleSlider.maximumValue = ItemScale.maxScale.normalized
+    scaleSlider.value = collectionViewLayout.itemScale.normalized
 
     // Register cell classes
     collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
@@ -168,6 +137,11 @@ class PhotoCollectionBrowser: UIViewController, UICollectionViewDelegateFlowLayo
     if let imageView = cell.contentView.subviewWithNametag(imageViewNametag) as? UIImageView {
       imageView.image = nil
     } else {
+      cell.backgroundColor = UIColor.clearColor()
+      cell.opaque = false
+      cell.contentView.backgroundColor = UIColor.clearColor()
+      cell.contentView.opaque = false
+
       let imageView = UIImageView(autolayout: true)
       imageView.nametag = imageViewNametag
       imageView.contentMode = .ScaleAspectFill
@@ -185,55 +159,53 @@ class PhotoCollectionBrowser: UIViewController, UICollectionViewDelegateFlowLayo
   Request the image for the asset at the specified index for the specified cell
 
   :param: index Int
+  :param: size CGSize
+  :param: mode PHImageContentMode
   */
-  private func requestImageAtIndex(index: Int, forItemLayout itemLayout: ItemLayout) {
-    precondition(index < assets.count, "index out of range")
-    let asset = assets[index] as! PHAsset
-    let size = itemLayout.itemSize
-    let mode: PHImageContentMode = .AspectFit
+  private func requestImageAtIndexPath(indexPath: NSIndexPath) {
+    precondition(indexPath.row < assets.count, "index out of range")
+
+    let asset = assets[indexPath.row] as! PHAsset
+
     let handler: (UIImage!, [NSObject:AnyObject]!) -> Void = { [weak self] in
-      self?.handleRequestResult((image: $0, info: $1),
-                   forIndexPath: NSIndexPath(forRow: index, inSection: 0),
-                     itemLayout: itemLayout)
+      self?.handleRequestResult((image: $0, info: $1), forIndexPath: indexPath)
     }
-    let id = manager.requestImageForAsset(asset, targetSize: size, contentMode: mode, options: nil, resultHandler: handler)
-    requests.insert(id)
+
+    let mode: PHImageContentMode
+    let size: CGSize
+
+    if indexPath == collectionViewLayout.zoomedItem { size = sizeForZoomedItemAtIndexPath(indexPath); mode = .AspectFit }
+    else { size = collectionViewLayout.itemScale.itemSize; mode = .AspectFill }
+
+    requests.insert(manager.requestImageForAsset(asset, targetSize: size, contentMode: mode, options: nil, resultHandler: handler))
   }
 
   /**
   A handler for `PHImageManager` request result. Updates cell's image view's image, logs cancellation, or handles error.
 
   :param: result RequestResult
-  :param: cell UICollectionViewCell
-  :param: idx Int
-  :param: layout ItemLayout
+  :param: indexPath NSIndexPath
   */
-  private func handleRequestResult(result: RequestResult,
-                      forIndexPath indexPath: NSIndexPath,
-                        itemLayout layout: ItemLayout)
-  {
+  private func handleRequestResult(result: RequestResult, forIndexPath indexPath: NSIndexPath) {
+
     let requestID = (result.info[PHImageResultRequestIDKey] as! NSNumber).intValue
+
     if let isCancelled = result.info[PHImageCancelledKey] as? Bool where isCancelled == true {
       MSLogDebug("request with id \(requestID) cancelled")
-    } else if let error = result.info[PHImageErrorKey] as? NSError {
+    }
+
+    else if let error = result.info[PHImageErrorKey] as? NSError {
       MSHandleError(error, message: "problem encountered loading image with request id \(requestID)")
-    } else if let image = result.image {
+    }
+
+    else if let image = result.image {
       requests.remove(requestID)
 
-      sizes[layout]![indexPath.row] = result.image.size
-      if let cell = collectionView.cellForItemAtIndexPath(indexPath),
-        imageView = cell.contentView.subviewWithNametag(imageViewNametag) as? UIImageView
-      {
-        if indexPath == collectionViewLayout.zoomedItem {
-          UIView.animateWithDuration(0.5, animations: { () -> Void in
-            imageView.contentMode = .ScaleAspectFit
-            imageView.clipsToBounds = false
-          })
-        }
+      if let imageView = collectionView.cellForItemAtIndexPath(indexPath)?.contentView[imageViewNametag] as? UIImageView {
         imageView.image = image
       }
     }
-}
+  }
 
   /**
   collectionView:cellForItemAtIndexPath:
@@ -247,8 +219,9 @@ class PhotoCollectionBrowser: UIViewController, UICollectionViewDelegateFlowLayo
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier,
                                                         forIndexPath: indexPath) as! UICollectionViewCell
     decorateCell(cell)
-    requestImageAtIndex(indexPath.row,
-          forItemLayout: indexPath == collectionViewLayout.zoomedItem ? ItemLayout.maxScale : itemLayout)
+
+    let scale = indexPath == collectionViewLayout.zoomedItem ? ItemScale.maxScale : collectionViewLayout.itemScale
+    requestImageAtIndexPath(indexPath)
 
     return cell
   }
@@ -262,48 +235,26 @@ class PhotoCollectionBrowser: UIViewController, UICollectionViewDelegateFlowLayo
   :param: indexPath NSIndexPath
   */
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-    if collectionViewLayout.zoomedItem != nil {
-      if let cell = collectionView.cellForItemAtIndexPath(indexPath),
-      imageView = cell.contentView.subviewWithNametag(imageViewNametag) as? UIImageView
-      {
-        UIView.animateWithDuration(0.5, animations: { () -> Void in
-          imageView.contentMode = .ScaleAspectFill
-          imageView.clipsToBounds = true
-        })
-      }
-      collectionViewLayout.zoomedItem = nil
-    }
-    else {
-      let layout = ItemLayout.maxScale
-      if sizes[layout]![indexPath.row] == CGSize.zeroSize {
-        requestImageAtIndex(indexPath.row, forItemLayout: layout)
-      }
-      collectionViewLayout.zoomedItem = indexPath
-    }
+    if collectionViewLayout.zoomedItem != nil { collectionViewLayout.zoomedItem = nil }
+    else { collectionViewLayout.zoomedItem = indexPath; requestImageAtIndexPath(indexPath) }
+    selectButton.enabled = collectionViewLayout.zoomedItem != nil
   }
 
-  // MARK: - UICollectionViewFlowLayoutDelegate
+  // MARK: - PhotoBrowserLayoutDelegate
 
   /**
-  collectionView:layout:sizeForItemAtIndexPath:
+  sizeForZoomedItemInCollectionView:layout:
 
   :param: collectionView UICollectionView
-  :param: collectionViewLayout UICollectionViewLayout
-  :param: indexPath NSIndexPath
+  :param: layout PhotoBrowserLayout
 
   :returns: CGSize
   */
-  func collectionView(collectionView: UICollectionView,
-               layout collectionViewLayout: UICollectionViewLayout,
-sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
-  {
-    if indexPath == self.collectionViewLayout.zoomedItem,
-      let size = sizes[ItemLayout.maxScale]?[indexPath.row] where size != CGSize.zeroSize
-    {
-      return size.aspectMappedToWidth(itemLayout.itemSize.width)
-    } else {
-      return itemLayout.itemSize
-    }
+  func sizeForZoomedItemAtIndexPath(indexPath: NSIndexPath) -> CGSize {
+    let ratio = Ratio(sizes[indexPath.row].width, sizes[indexPath.row].height)
+    let width  = ItemScale.maxScale.itemSize.width
+    let height = ratio.denominatorForNumerator(width)
+    return CGSize(width: width, height: height)
   }
 
 }

@@ -13,6 +13,15 @@ public struct Ratio: Printable {
   public var numerator: CGFloat = 1
   public var denominator: CGFloat = 1
   public var description: String { return "\(numerator):\(denominator)" }
+  public init<T: CGFloatable>(_ n: T, _ d: T) {
+    numerator = n.CGFloatValue; denominator = d.CGFloatValue
+  }
+  public func denominatorForNumerator(n: CGFloatable) -> CGFloat {
+    return denominator * n.CGFloatValue / numerator
+  }
+  public func numeratorForDenominator(d: CGFloatable) -> CGFloat {
+    return numerator * d.CGFloatValue / denominator
+  }
 }
 
 extension CGPoint {
@@ -136,7 +145,7 @@ extension CGSize {
 
   public func ratioForFittingSize(size: CGSize) -> Ratio {
     let (w, h) = min(aspectMappedToWidth(size.width), aspectMappedToHeight(size.height)).unpack()
-    return Ratio(numerator: width/w, denominator: height/h)
+    return Ratio(width/w, height/h)
   }
 
   public func scaledBy(ratio: Ratio) -> CGSize { var s = self; s.scaleBy(ratio); return s }

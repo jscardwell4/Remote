@@ -9,6 +9,7 @@
                 <outlet property="collectionView" destination="i5M-Pr-FkT" id="VZy-Ek-c4S"/>
                 <outlet property="collectionViewLayout" destination="c7k-ch-oGk" id="Xf4-q7-uLG"/>
                 <outlet property="scaleSlider" destination="f6p-t7-uRg" id="CF3-VZ-CJ7"/>
+                <outlet property="selectButton" destination="RqF-z8-PlL" id="PeZ-l1-I0p"/>
                 <outlet property="view" destination="SNK-uX-yct" id="1lQ-lf-9dA"/>
             </connections>
         </placeholder>
@@ -28,7 +29,11 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="jZQ-TO-UZK"/>
                         <barButtonItem title="Photo Library" style="plain" id="z1i-6N-Ysf"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="91y-pZ-MxT"/>
-                        <barButtonItem width="70" style="plain" systemItem="fixedSpace" id="6MU-4j-541"/>
+                        <barButtonItem enabled="NO" title="Select" style="done" id="RqF-z8-PlL">
+                            <connections>
+                                <action selector="select" destination="-1" id="noT-ru-gbj"/>
+                            </connections>
+                        </barButtonItem>
                     </items>
                 </toolbar>
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Pv-Mg-mNb">
@@ -36,7 +41,7 @@
                     <items>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Acw-Ts-K66"/>
                         <barButtonItem style="plain" id="5AE-5l-Azq">
-                            <slider key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" minimumValueImage="822-photo-2-toolbar" maximumValueImage="822-photo-2" id="f6p-t7-uRg">
+                            <slider key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" minimumValueImage="822-photo-2-toolbar" maximumValueImage="822-photo-2" id="f6p-t7-uRg">
                                 <rect key="frame" x="14" y="6.5" width="278" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>

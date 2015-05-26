@@ -23,6 +23,24 @@ public func half(x: UInt16)  -> UInt16  { return UInt16(Double(x) * 0.5) }
 public func half(x: UInt32)  -> UInt32  { return UInt32(Double(x) * 0.5) }
 public func half(x: UInt64)  -> UInt64  { return UInt64(Double(x) * 0.5) }
 
+public protocol CGFloatable {
+  var CGFloatValue: CGFloat { get }
+}
+
+extension CGFloat: CGFloatable { public var CGFloatValue: CGFloat { return self          } }
+extension Float:   CGFloatable { public var CGFloatValue: CGFloat { return CGFloat(self) } }
+extension Double:  CGFloatable { public var CGFloatValue: CGFloat { return CGFloat(self) } }
+extension Int:     CGFloatable { public var CGFloatValue: CGFloat { return CGFloat(self) } }
+extension Int8:    CGFloatable { public var CGFloatValue: CGFloat { return CGFloat(self) } }
+extension Int16:   CGFloatable { public var CGFloatValue: CGFloat { return CGFloat(self) } }
+extension Int32:   CGFloatable { public var CGFloatValue: CGFloat { return CGFloat(self) } }
+extension Int64:   CGFloatable { public var CGFloatValue: CGFloat { return CGFloat(self) } }
+extension UInt:    CGFloatable { public var CGFloatValue: CGFloat { return CGFloat(self) } }
+extension UInt8:   CGFloatable { public var CGFloatValue: CGFloat { return CGFloat(self) } }
+extension UInt16:  CGFloatable { public var CGFloatValue: CGFloat { return CGFloat(self) } }
+extension UInt32:  CGFloatable { public var CGFloatValue: CGFloat { return CGFloat(self) } }
+extension UInt64:  CGFloatable { public var CGFloatValue: CGFloat { return CGFloat(self) } }
+
 //public protocol FloatValueConvertible { var floatValue: Float { get }; init(_ floatValue: Float) }
 //public protocol CGFloatValueConvertible { var cgfloatValue: CGFloat { get }; init(_ cgfloatValue: CGFloat) }
 //public protocol DoubleValueConvertible { var doubleValue: Double { get }; init(_ doubleValue: Double) }

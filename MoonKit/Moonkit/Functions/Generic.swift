@@ -9,6 +9,11 @@
 import Foundation
 
 
+public func ~=<T:Equatable>(lhs: T?, rhs: T?) -> Bool {
+  if let l = lhs, r = rhs where l ~= r { return true }
+  else if lhs == nil && rhs == nil { return true }
+  else { return false }
+}
 
 public func typeCast<T,U>(t: T, u: U.Type) -> U? { return t as? U }
 public func typeCast<T,U>(t: T?, u: U.Type) -> U? { return t != nil ? typeCast(t!, u) : nil }
