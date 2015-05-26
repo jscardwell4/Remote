@@ -10,9 +10,16 @@ import UIKit
 
 public class ToggleImageSegmentedControl: UISegmentedControl {
 
-  private var defaultImages:  [UIImage?] = []
-  private var selectedImages: [UIImage?] = []
+  private var defaultImages:  [UIImage] = []
+  private var selectedImages: [UIImage] = []
   private var previouslySelectedSegmentIndex = UISegmentedControlNoSegment
+
+
+  private var disableImageToggle = false {
+    didSet {
+      if !disableImageToggle { super.setImage(selectedImages[selectedSegmentIndex], forSegmentAtIndex: selectedSegmentIndex) }
+    }
+  }
 
   /**
   removeSegmentAtIndex:animated:
@@ -22,10 +29,8 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
   */
   public override func removeSegmentAtIndex(segment: Int, animated: Bool) {
     super.removeSegmentAtIndex(segment, animated: animated)
-    precondition(defaultImages.count > segment && selectedImages.count > segment,
-                 "we should have had images in our arrays for the segment to remove")
     defaultImages.removeAtIndex(segment)
-    selectedImages.removeAtIndex(segment)
+    if !disableImageToggle { selectedImages.removeAtIndex(segment) }
   }
 
   /** removeAllSegments */
@@ -50,14 +55,17 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
   }
 
   /**
-  insertSegmentWithImage:atIndex:animated:
+  Overridden to suppress inserting segment unless `disableImageToggle` is true
 
   :param: image UIImage
   :param: segment Int
   :param: animated Bool
   */
   public override func insertSegmentWithImage(image: UIImage, atIndex segment: Int, animated: Bool) {
-    // Disallow setting only one image
+    if disableImageToggle {
+      super.insertSegmentWithImage(image, atIndex: segment, animated: animated)
+      defaultImages[segment] = image
+    }
   }
 
   /**
@@ -71,6 +79,14 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
     // Disallow segments with titles for now
   }
 
+  private func setup() {
+    UIGraphicsBeginImageContextWithOptions(frame.size, false, 0.0)
+    let image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    setBackgroundImage(image, forState: .Normal, barMetrics: .Default)
+    addTarget(self, action: "toggleImage:", forControlEvents: .ValueChanged)
+  }
+
   /**
   initWithFrame:
 
@@ -78,11 +94,7 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
   */
   override init(frame: CGRect) {
     super.init(frame: frame)
-    UIGraphicsBeginImageContextWithOptions(frame.size, false, 0.0)
-    let image = UIGraphicsGetImageFromCurrentImageContext()
-    UIGraphicsEndImageContext()
-    setBackgroundImage(image, forState: .Normal, barMetrics: .Default)
-    addTarget(self, action: "toggleImage:", forControlEvents: .ValueChanged)
+    setup()
   }
 
   /**
@@ -91,29 +103,28 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
   :param: items [AnyObject]!
   */
   override public init(items: [AnyObject]) {
-    var defaultImages: [UIImage]?
-    var selectedImages: [UIImage]?
-    if let images = items as? [UIImage] {
-      defaultImages = []
-      for idx in stride(from: 0, to: items.count, by: 2) { defaultImages!.append(images[idx]) }
-      selectedImages = []
-      for idx in stride(from: 1, to: items.count, by: 2) { selectedImages!.append(images[idx]) }
-    }
+    let defaultImages: [UIImage]?
+    let selectedImages: [UIImage]?
 
-    if defaultImages == nil || selectedImages == nil || defaultImages!.count != selectedImages!.count {
+    if let images = items as? [UIImage] {
+      if images.count % 2 == 0  {
+        defaultImages = map(stride(from: 0, to: items.count, by: 2)){images[$0]}
+        selectedImages = map(stride(from: 1, to: items.count, by: 2)){images[$0]}
+      } else {
+        defaultImages = images
+        selectedImages = nil
+      }
+    } else {
       defaultImages = nil
       selectedImages = nil
     }
 
-    super.init(items: defaultImages!)
+    super.init(items: defaultImages ?? [])
 
-    if defaultImages != nil {
-      for i in 0 ..< defaultImages!.count {
-        self.defaultImages.append(defaultImages![i])
-        self.selectedImages.append(selectedImages![i])
-      }
-    }
+    if let images = defaultImages { self.defaultImages = images; disableImageToggle = selectedImages == nil }
+    if let images = selectedImages { self.selectedImages = images }
 
+    // Generate an empty background image
     UIGraphicsBeginImageContextWithOptions(frame.size, false, 0.0)
     let image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
@@ -123,18 +134,8 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
 
   }
 
+  /** Optional action to execute when user changes the selected segment */
   public var toggleAction: ((ToggleImageSegmentedControl) -> Void)?
-
-  /**
-  initWithItems:action:
-
-  :param: items [AnyObject]!
-  :param: action ((ToggleImageSegmentedControl) -> Void)? = nil
-  */
-//  public convenience init?(items: [AnyObject]!, action: ((ToggleImageSegmentedControl) -> Void)? = nil) {
-//    self.init(items: items)
-//    toggleAction = action
-//  }
 
   /**
   initWithCoder:
@@ -142,19 +143,32 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
   :param: aDecoder NSCoder
   */
   required public init(coder aDecoder: NSCoder) {
-      super.init(coder: aDecoder)
+    super.init(coder: aDecoder)
+    disableImageToggle = true
+    setup()
   }
 
-  /** toggleImage */
-  func toggleImage(sender: ToggleImageSegmentedControl?) {
-    if previouslySelectedSegmentIndex != UISegmentedControlNoSegment {
-      super.setImage(defaultImages[previouslySelectedSegmentIndex], forSegmentAtIndex: previouslySelectedSegmentIndex)
+  /**
+  Toggles the image used for selected and previously selected segments when `disableImageToggle` is false. If `sender` is not
+  nil, the method also invokes `toggleAction`
+
+  :param: sender ToggleImageSegmentedControl?
+  */
+  func toggleImage() {
+    if !disableImageToggle {
+      if previouslySelectedSegmentIndex != UISegmentedControlNoSegment {
+        super.setImage(defaultImages[previouslySelectedSegmentIndex], forSegmentAtIndex: previouslySelectedSegmentIndex)
+      }
+      previouslySelectedSegmentIndex = selectedSegmentIndex
+      if selectedSegmentIndex != UISegmentedControlNoSegment {
+        super.setImage(selectedImages[selectedSegmentIndex], forSegmentAtIndex: selectedSegmentIndex)
+      }
     }
-    previouslySelectedSegmentIndex = selectedSegmentIndex
-    if selectedSegmentIndex != UISegmentedControlNoSegment {
-      super.setImage(selectedImages[selectedSegmentIndex], forSegmentAtIndex: selectedSegmentIndex)
-    }
-    if sender != nil { toggleAction?(self) }
+  }
+
+  @IBAction func toggleImage(sender: ToggleImageSegmentedControl) {
+    toggleImage()
+    toggleAction?(self)
   }
 
   /**
@@ -164,18 +178,25 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
   :param: selectedImage UIImage?
   :param: segment Int
   */
-  public func setImage(image: UIImage?, selectedImage: UIImage?, forSegmentAtIndex segment: Int) {
+  public func setImage(image: UIImage, selectedImage: UIImage, forSegmentAtIndex segment: Int) {
     if segment < numberOfSegments {
-      defaultImages[segment] = image
-      selectedImages[segment] = selectedImage
-      super.setImage(segment == selectedSegmentIndex ? selectedImage : image, forSegmentAtIndex: segment)
+      if defaultImages.count > segment { defaultImages[segment] = image }
+      else if defaultImages.count == segment { defaultImages.append(image) }
+      else { assert(false) }
+
+      if selectedImages.count > segment { selectedImages[segment] = selectedImage }
+      else if selectedImages.count == segment { selectedImages.append(selectedImage) }
+      else { assert(false) }
+
+      if disableImageToggle && defaultImages.count == selectedImages.count { disableImageToggle = false }
+      else if disableImageToggle { super.setImage(image, forSegmentAtIndex: segment) }
+      if !disableImageToggle {
+        super.setImage(segment == selectedSegmentIndex ? selectedImage : image, forSegmentAtIndex: segment)
+      }
     }
   }
 
-  override public var selectedSegmentIndex: Int {
-    didSet {
-      toggleImage(nil)
-    }
-  }
-
+  /** Overridden to add `didSet` observer to invoke `toggleImage` with `sender` equal to nil */
+  override public var selectedSegmentIndex: Int { didSet { toggleImage() } }
+  
 }

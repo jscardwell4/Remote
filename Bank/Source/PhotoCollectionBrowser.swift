@@ -18,27 +18,34 @@ private let imageViewNametag = "image"
 
 class PhotoCollectionBrowser: UIViewController, PhotoBrowserLayoutDelegate, UICollectionViewDataSource {
 
-  // MARK: - Properties
-
-  @IBOutlet weak var scaleSlider: UISlider!
-
-  @IBOutlet var collectionView: UICollectionView!
-  @IBOutlet var collectionViewLayout: PhotoBrowserLayout!
-
-  typealias ItemScale = PhotoBrowserLayout.ItemScale
+  // MARK: - Data properties
 
   /** The `PHAsset` objects fetched from the `PHAssetCollection` passed to `initWithCollection:` */
   let assets: PHFetchResult
 
-  /** Property of  convenience */
-  private let manager = PHImageManager.defaultManager()
-
-  /** Holds IDs of outstanding `PHImageManager` requests */
-  private var requests: Set<PHImageRequestID> = []
-
+  /** Holds the pixel width and height for each asset in `assets` */
   private let sizes: [(width: Int, height: Int)]
 
-  // MARK: - Actions
+  /** Property of  convenience */
+  private let manager = PHCachingImageManager()
+
+  // MARK: - UI properties
+
+  /** The bottom toolbar */
+  @IBOutlet weak var bottomToolbar: UIToolbar!
+
+  /** The collection view */
+  @IBOutlet var collectionView: UICollectionView!
+
+  /** The collection view layout */
+  @IBOutlet var collectionViewLayout: PhotoBrowserLayout!
+
+  // MARK: - Manipulating the scale of the image
+
+  typealias ItemScale = PhotoBrowserLayout.ItemScale
+
+  /** Bottom toolbar item for manipulating the currently used image scale */
+  @IBOutlet weak var scaleSlider: UISlider!
 
   /**
   Scales from 8 cells across to just 1 cell across
@@ -47,8 +54,85 @@ class PhotoCollectionBrowser: UIViewController, PhotoBrowserLayoutDelegate, UICo
   */
   @IBAction func updateScale(sender: UISlider) {
     collectionViewLayout.itemScale = ItemScale(rawValue: sender.value)
+    requestImagesForVisibleCells()
+  }
+
+  // MARK: - Manipulating the aspect ratio used to display images
+
+  enum Aspect: Int { case Fill, Fit }
+
+  /** Aspect to use for new image requests, this is ignored for a request servicing a 'zoomed' cell */
+  private var aspect = Aspect.Fill { didSet { requestImagesForVisibleCells() } }
+
+  /** Bottom toolbar item for manipulating the currently used aspect */
+  @IBOutlet weak var aspectControl: ToggleImageSegmentedControl!
+  
+
+  // MARK: - Asset image requests
+
+  /** Holds IDs of outstanding `PHImageManager` requests */
+  private var requests: Set<PHImageRequestID> = []
+
+  /** requestImagesForVisibleCells */
+  private func requestImagesForVisibleCells() {
     apply(collectionView.indexPathsForVisibleItems() as! [NSIndexPath]){self.requestImageAtIndexPath($0)}
   }
+
+  typealias RequestResult = (image: UIImage!, info: [NSObject:AnyObject]!)
+
+  /**
+  Request the image for the asset at the specified index for the specified cell
+
+  :param: index Int
+  :param: size CGSize
+  :param: mode PHImageContentMode
+  */
+  private func requestImageAtIndexPath(indexPath: NSIndexPath) {
+    precondition(indexPath.row < assets.count, "index out of range")
+
+    let asset = assets[indexPath.row] as! PHAsset
+
+    let handler: (UIImage!, [NSObject:AnyObject]!) -> Void = { [weak self] in
+      self?.handleRequestResult((image: $0, info: $1), forIndexPath: indexPath)
+    }
+
+    let mode: PHImageContentMode
+    let size: CGSize
+
+    if indexPath == collectionViewLayout.zoomedItem { size = sizeForZoomedItemAtIndexPath(indexPath); mode = .AspectFit }
+    else { size = collectionViewLayout.itemScale.itemSize; mode = aspect == .Fill ? .AspectFill : .AspectFit }
+
+    requests.insert(manager.requestImageForAsset(asset, targetSize: size, contentMode: mode, options: nil, resultHandler: handler))
+  }
+
+  /**
+  A handler for `PHImageManager` request result. Updates cell's image view's image, logs cancellation, or handles error.
+
+  :param: result RequestResult
+  :param: indexPath NSIndexPath
+  */
+  private func handleRequestResult(result: RequestResult, forIndexPath indexPath: NSIndexPath) {
+
+    let requestID = (result.info[PHImageResultRequestIDKey] as! NSNumber).intValue
+
+    if let isCancelled = result.info[PHImageCancelledKey] as? Bool where isCancelled == true {
+      MSLogDebug("request with id \(requestID) cancelled")
+    }
+
+    else if let error = result.info[PHImageErrorKey] as? NSError {
+      MSHandleError(error, message: "problem encountered loading image with request id \(requestID)")
+    }
+
+    else if let image = result.image {
+      requests.remove(requestID)
+
+      if let imageView = collectionView.cellForItemAtIndexPath(indexPath)?.contentView[imageViewNametag] as? UIImageView {
+        imageView.image = image
+      }
+    }
+  }
+
+  // MARK: - Select and cancel actions
 
   /** Dismiss the controller */
   @IBAction func cancel() { dismissViewControllerAnimated(true, completion: nil) }
@@ -83,8 +167,24 @@ class PhotoCollectionBrowser: UIViewController, PhotoBrowserLayoutDelegate, UICo
   */
   required init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
+  // MARK: - View management
+
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    aspectControl.setImage(Bank.bankImageNamed("aspect-fill")!,
+             selectedImage: Bank.bankImageNamed("aspect-fill-selected")!,
+         forSegmentAtIndex: 0)
+    aspectControl.setImage(Bank.bankImageNamed("aspect-fit")!,
+             selectedImage: Bank.bankImageNamed("aspect-fit-selected")!,
+         forSegmentAtIndex: 1)
+    aspectControl.selectedSegmentIndex = aspect.rawValue
+    aspectControl.toggleAction = {[unowned self]
+      control in
+
+        MSLogDebug("aspect change muthafucka!!!")
+        self.aspect = Aspect(rawValue: control.selectedSegmentIndex)!
+    }
 
     scaleSlider.minimumValue = ItemScale.minScale.normalized
     scaleSlider.maximumValue = ItemScale.maxScale.normalized
@@ -129,11 +229,19 @@ class PhotoCollectionBrowser: UIViewController, PhotoBrowserLayoutDelegate, UICo
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { return assets.count }
 
   /**
-  Method for setting various aspects of a collection view cell for display
+  collectionView:cellForItemAtIndexPath:
 
-  :param: cell UICollectionViewCell
+  :param: collectionView UICollectionView
+  :param: indexPath NSIndexPath
+
+  :returns: UICollectionViewCell
   */
-  private func decorateCell(cell: UICollectionViewCell) {
+  func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier,
+                                                        forIndexPath: indexPath) as! UICollectionViewCell
+
+    // decorate cell
+
     if let imageView = cell.contentView.subviewWithNametag(imageViewNametag) as? UIImageView {
       imageView.image = nil
     } else {
@@ -151,76 +259,9 @@ class PhotoCollectionBrowser: UIViewController, PhotoBrowserLayoutDelegate, UICo
       cell.contentView.addSubview(imageView)
       cell.contentView.constrain(𝗩|imageView|𝗩, 𝗛|imageView|𝗛)
     }
-  }
 
-  typealias RequestResult = (image: UIImage!, info: [NSObject:AnyObject]!)
+    // request image for cell
 
-  /**
-  Request the image for the asset at the specified index for the specified cell
-
-  :param: index Int
-  :param: size CGSize
-  :param: mode PHImageContentMode
-  */
-  private func requestImageAtIndexPath(indexPath: NSIndexPath) {
-    precondition(indexPath.row < assets.count, "index out of range")
-
-    let asset = assets[indexPath.row] as! PHAsset
-
-    let handler: (UIImage!, [NSObject:AnyObject]!) -> Void = { [weak self] in
-      self?.handleRequestResult((image: $0, info: $1), forIndexPath: indexPath)
-    }
-
-    let mode: PHImageContentMode
-    let size: CGSize
-
-    if indexPath == collectionViewLayout.zoomedItem { size = sizeForZoomedItemAtIndexPath(indexPath); mode = .AspectFit }
-    else { size = collectionViewLayout.itemScale.itemSize; mode = .AspectFill }
-
-    requests.insert(manager.requestImageForAsset(asset, targetSize: size, contentMode: mode, options: nil, resultHandler: handler))
-  }
-
-  /**
-  A handler for `PHImageManager` request result. Updates cell's image view's image, logs cancellation, or handles error.
-
-  :param: result RequestResult
-  :param: indexPath NSIndexPath
-  */
-  private func handleRequestResult(result: RequestResult, forIndexPath indexPath: NSIndexPath) {
-
-    let requestID = (result.info[PHImageResultRequestIDKey] as! NSNumber).intValue
-
-    if let isCancelled = result.info[PHImageCancelledKey] as? Bool where isCancelled == true {
-      MSLogDebug("request with id \(requestID) cancelled")
-    }
-
-    else if let error = result.info[PHImageErrorKey] as? NSError {
-      MSHandleError(error, message: "problem encountered loading image with request id \(requestID)")
-    }
-
-    else if let image = result.image {
-      requests.remove(requestID)
-
-      if let imageView = collectionView.cellForItemAtIndexPath(indexPath)?.contentView[imageViewNametag] as? UIImageView {
-        imageView.image = image
-      }
-    }
-  }
-
-  /**
-  collectionView:cellForItemAtIndexPath:
-
-  :param: collectionView UICollectionView
-  :param: indexPath NSIndexPath
-
-  :returns: UICollectionViewCell
-  */
-  func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier,
-                                                        forIndexPath: indexPath) as! UICollectionViewCell
-    decorateCell(cell)
-
-    let scale = indexPath == collectionViewLayout.zoomedItem ? ItemScale.maxScale : collectionViewLayout.itemScale
     requestImageAtIndexPath(indexPath)
 
     return cell
@@ -252,7 +293,7 @@ class PhotoCollectionBrowser: UIViewController, PhotoBrowserLayoutDelegate, UICo
   */
   func sizeForZoomedItemAtIndexPath(indexPath: NSIndexPath) -> CGSize {
     let ratio = Ratio(sizes[indexPath.row].width, sizes[indexPath.row].height)
-    let width  = ItemScale.maxScale.itemSize.width
+    let width  = min(ratio.numerator, ItemScale.maxScale.itemSize.width)
     let height = ratio.denominatorForNumerator(width)
     return CGSize(width: width, height: height)
   }

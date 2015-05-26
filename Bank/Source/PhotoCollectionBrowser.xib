@@ -6,6 +6,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PhotoCollectionBrowser" customModule="Bank" customModuleProvider="target">
             <connections>
+                <outlet property="aspectControl" destination="dp8-WS-pya" id="rZd-Or-AiS"/>
+                <outlet property="bottomToolbar" destination="3Pv-Mg-mNb" id="sqF-18-82u"/>
                 <outlet property="collectionView" destination="i5M-Pr-FkT" id="VZy-Ek-c4S"/>
                 <outlet property="collectionViewLayout" destination="c7k-ch-oGk" id="Xf4-q7-uLG"/>
                 <outlet property="scaleSlider" destination="f6p-t7-uRg" id="CF3-VZ-CJ7"/>
@@ -39,17 +41,29 @@
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Pv-Mg-mNb">
                     <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                     <items>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Acw-Ts-K66"/>
-                        <barButtonItem style="plain" id="5AE-5l-Azq">
-                            <slider key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" minimumValueImage="822-photo-2-toolbar" maximumValueImage="822-photo-2" id="f6p-t7-uRg">
-                                <rect key="frame" x="14" y="6.5" width="278" height="31"/>
+                        <barButtonItem width="80" style="plain" id="RrZ-mM-lNV">
+                            <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" id="dp8-WS-pya" customClass="ToggleImageSegmentedControl" customModule="MoonKit">
+                                <rect key="frame" x="16" y="7" width="80" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="" image="aspect-fill-selected" width="46"/>
+                                    <segment title="" image="aspect-fit" width="46"/>
+                                </segments>
+                                <color key="tintColor" red="0.16862699389457703" green="0.16862699389457703" blue="0.16862699389457703" alpha="1" colorSpace="calibratedRGB"/>
+                            </segmentedControl>
+                        </barButtonItem>
+                        <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="n5B-hY-Q6L"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Acw-Ts-K66"/>
+                        <barButtonItem width="170" style="plain" id="5AE-5l-Azq">
+                            <slider key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" minimumValueImage="822-photo-2-toolbar" maximumValueImage="822-photo-2" id="f6p-t7-uRg">
+                                <rect key="frame" x="200" y="6.5" width="170" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" red="0.16862699389457703" green="0.16862699389457703" blue="0.16862699389457703" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <action selector="updateScale:" destination="-1" eventType="valueChanged" id="wka-ed-WhF"/>
                                 </connections>
                             </slider>
                         </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="scc-e0-8Gg"/>
                     </items>
                 </toolbar>
                 <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="i5M-Pr-FkT">
@@ -87,5 +101,7 @@
     <resources>
         <image name="822-photo-2" width="42" height="33"/>
         <image name="822-photo-2-toolbar" width="33" height="27"/>
+        <image name="aspect-fill-selected" width="46" height="46"/>
+        <image name="aspect-fit" width="46" height="46"/>
     </resources>
 </document>

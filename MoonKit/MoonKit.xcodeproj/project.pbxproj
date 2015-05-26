@@ -348,6 +348,7 @@
 		C2F094471A32AA8600681AB3 /* KeyInputButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F094461A32AA8600681AB3 /* KeyInputButton.swift */; };
 		C2F39D2B1A3A51960024EE94 /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2F39D2A1A3A51960024EE94 /* FontAwesome.otf */; };
 		C2F39D2F1A3A6D5A0024EE94 /* NSAttributedString+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F39D2E1A3A6D5A0024EE94 /* NSAttributedString+MoonKitAdditions.swift */; };
+		C2F84F431B14C4B700AF891D /* NSIndexSet+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F84F421B14C4B700AF891D /* NSIndexSet+MoonKitAdditions.swift */; };
 		C2F8C30F1A36133E004229FE /* TwoToneSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F8C30E1A36133E004229FE /* TwoToneSlider.swift */; };
 		C2F8C3171A362606004229FE /* UIResponder+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F8C3161A362606004229FE /* UIResponder+MoonKitAdditions.swift */; };
 /* End PBXBuildFile section */
@@ -678,6 +679,7 @@
 		C2F39D2E1A3A6D5A0024EE94 /* NSAttributedString+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C2F4370219BB813F00B60FC3 /* MSKeyPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSKeyPath.h; sourceTree = "<group>"; };
 		C2F4370319BB813F00B60FC3 /* MSKeyPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSKeyPath.m; sourceTree = "<group>"; };
+		C2F84F421B14C4B700AF891D /* NSIndexSet+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSIndexSet+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C2F8C30E1A36133E004229FE /* TwoToneSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoToneSlider.swift; sourceTree = "<group>"; };
 		C2F8C3161A362606004229FE /* UIResponder+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIResponder+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C2F9414119BE7D01007B5CC1 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
@@ -792,6 +794,7 @@
 				C2874FBB1AE68D3800BD7634 /* NSShadow+MoonKitAdditions.swift */,
 				C2E8C8B61AE7325300F8AC45 /* UITableViewCell+MoonKitAdditions.swift */,
 				C2683F7A1AF142E60081C74B /* UIBezierPath+MoonKitAdditions.swift */,
+				C2F84F421B14C4B700AF891D /* NSIndexSet+MoonKitAdditions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1670,6 +1673,7 @@
 				C2358F5819C78E0C00920F8D /* MSPickerInputViewController.m in Sources */,
 				C24A22951ADB45340065E7EA /* RawOptionSetFunctions.swift in Sources */,
 				C2C4B72C1AA951D700912951 /* NSManagedObject+MoonKitAdditions.swift in Sources */,
+				C2F84F431B14C4B700AF891D /* NSIndexSet+MoonKitAdditions.swift in Sources */,
 				C2204D9C1AE1A0670079B731 /* JSONIncludeDirective.swift in Sources */,
 				C2874FBC1AE68D3800BD7634 /* NSShadow+MoonKitAdditions.swift in Sources */,
 				C29EECF81AFD010B00660EE6 /* MiscellaneousFunctions.swift in Sources */,

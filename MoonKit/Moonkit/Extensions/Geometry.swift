@@ -12,16 +12,14 @@ import UIKit
 public struct Ratio: Printable {
   public var numerator: CGFloat = 1
   public var denominator: CGFloat = 1
+  public var width: CGFloat { get { return numerator } set { numerator = newValue } }
+  public var height: CGFloat { get { return denominator } set { denominator = newValue } }
   public var description: String { return "\(numerator):\(denominator)" }
-  public init<T: CGFloatable>(_ n: T, _ d: T) {
-    numerator = n.CGFloatValue; denominator = d.CGFloatValue
-  }
-  public func denominatorForNumerator(n: CGFloatable) -> CGFloat {
-    return denominator * n.CGFloatValue / numerator
-  }
-  public func numeratorForDenominator(d: CGFloatable) -> CGFloat {
-    return numerator * d.CGFloatValue / denominator
-  }
+  public init<T: CGFloatable>(numerator: T, denominator: T) { self.init(numerator, denominator) }
+  public init<T: CGFloatable>(width: T, height: T) { self.init(numerator: width, denominator: height) }
+  public init<T: CGFloatable>(_ n: T, _ d: T) { numerator = n.CGFloatValue; denominator = d.CGFloatValue }
+  public func denominatorForNumerator(n: CGFloatable) -> CGFloat { return denominator * n.CGFloatValue / numerator }
+  public func numeratorForDenominator(d: CGFloatable) -> CGFloat { return numerator * d.CGFloatValue / denominator }
 }
 
 extension CGPoint {
