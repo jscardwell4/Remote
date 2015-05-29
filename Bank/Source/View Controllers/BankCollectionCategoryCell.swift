@@ -12,19 +12,13 @@ import DataModel
 
 final class BankCollectionCategoryCell: BankCollectionCell {
 
-  private static let _cellIdentifier = "CategoryCell"
-  override class var cellIdentifier: String { return _cellIdentifier }
+  override class var cellIdentifier: String { return "CategoryCell" }
 
   var collection: ModelCollection? { didSet { label.text = collection?.name } }
 
   override var exportItem: JSONValueConvertible? { return collection as? JSONValueConvertible }
 
-  private let label: UILabel = {
-    let view = UILabel()
-    view.setTranslatesAutoresizingMaskIntoConstraints(false)
-    view.font = Bank.infoFont
-    return view
-  }()
+  private let label: UILabel = { let view = UILabel(autolayout: true); view.font = Bank.infoFont; return view }()
 
   /** updateConstraints */
   override func updateConstraints() {
@@ -34,20 +28,18 @@ final class BankCollectionCategoryCell: BankCollectionCell {
 
     super.updateConstraints()
 
-    let format = "\n".join([
-      "[indicator]-20-[label]-8-[chevron]",
-      "label.centerY = content.centerY",
-      "indicator.centerY = content.centerY",
-      "indicator.right = content.left + \(indicatorImage == nil ? 0.0 : 40.0)"
-      ])
-    let views = ["label": label, "indicator": indicator, "chevron": chevron, "content": contentView]
-    constrain(format, views: views, identifier: identifier)
+    constrain(identifier: identifier,
+      indicator--20--label--8--chevron,
+      [label.centerY => contentView.centerY,
+      indicator.centerY => contentView.centerY,
+      indicator.right => contentView.left + (indicatorImage == nil ? 0 : 40)]
+    )
 
     let predicate = NSPredicate(format: "firstItem == %@" +
-      "AND secondItem == %@ " +
-      "AND firstAttribute == \(NSLayoutAttribute.Right.rawValue)" +
-      "AND secondAttribute == \(NSLayoutAttribute.Left.rawValue)" +
-      "AND relation == \(NSLayoutRelation.Equal.rawValue)", indicator, contentView)
+                                        "AND secondItem == %@ " +
+                                        "AND firstAttribute == \(NSLayoutAttribute.Right.rawValue)" +
+                                        "AND secondAttribute == \(NSLayoutAttribute.Left.rawValue)" +
+                                        "AND relation == \(NSLayoutRelation.Equal.rawValue)", indicator, contentView)
     indicatorConstraint = constraintMatching(predicate)
 
   }

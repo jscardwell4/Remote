@@ -55,7 +55,7 @@ public class BankController: UIViewController, BankItemImportExportController {
       switch rootCategory {
         case .Presets:
           collectionDelegate = BankModelDelegate(name: "Presets", context: context)
-          collectionDelegate.createItem = BankModelDelegate.createTransactionWithLabel("Category",
+          collectionDelegate.itemTransaction = BankModelDelegate.createTransactionWithLabel("Category",
                                                                          creatableType: PresetCategory.self,
                                                                                context: context)
         collectionDelegate.setFetchedCollections(PresetCategory.objectsInContext(context,
@@ -64,25 +64,25 @@ public class BankController: UIViewController, BankItemImportExportController {
         case .NetworkDevices:
           collectionDelegate = BankModelDelegate(name: "Network Devices", context: context)
           collectionDelegate.setFetchedItems(NetworkDevice.objectsInContext(context, sortedBy: "name"))
-          collectionDelegate.discoverItem = BankModelDelegate.discoverTransactionWithLabel("Network Device",
+          collectionDelegate.itemTransaction = BankModelDelegate.discoverTransactionWithLabel("Network Device",
                                                                           discoverableType: NetworkDevice.self,
                                                                                    context: context)
 
         case .ComponentDevices:
           collectionDelegate = BankModelDelegate(name: "Component Devices", context: context)
           collectionDelegate.setFetchedItems(ComponentDevice.objectsInContext(context, sortedBy: "name"))
-          collectionDelegate.createItem = BankModelDelegate.createTransactionWithLabel("Component Device",
+          collectionDelegate.itemTransaction = BankModelDelegate.createTransactionWithLabel("Component Device",
                                                                          creatableType: ComponentDevice.self,
                                                                                context: context)
         case .Manufacturers:
           collectionDelegate = BankModelDelegate(name: "Manufacturers", context: context)
-          collectionDelegate.createItem = BankModelDelegate.createTransactionWithLabel("Manufacturer",
+          collectionDelegate.itemTransaction = BankModelDelegate.createTransactionWithLabel("Manufacturer",
                                                                          creatableType: Manufacturer.self,
                                                                                context: context)
           collectionDelegate.setFetchedItems(Manufacturer.objectsInContext(context, sortedBy: "name"))
         case .Images:
           collectionDelegate = BankModelDelegate(name: "Images", context: context)
-          collectionDelegate.createItem = BankModelDelegate.createTransactionWithLabel("Category",
+          collectionDelegate.itemTransaction = BankModelDelegate.createTransactionWithLabel("Category",
                                                                          creatableType: ImageCategory.self,
                                                                                context: context)
           collectionDelegate.setFetchedCollections(ImageCategory.objectsInContext(context,
@@ -99,8 +99,6 @@ public class BankController: UIViewController, BankItemImportExportController {
     navigationController?.navigationBar.titleTextAttributes = Bank.titleTextAttributes
 
     toolbarItems = Bank.toolbarItemsForController(self)
-    let testPhotoLibraryButton = UIBarButtonItem(title: "Photo Library", style: .Plain, target: self, action: "openPhotoLibrary")
-    toolbarItems = toolbarItems! + [UIBarButtonItem.fixedSpace(-160), testPhotoLibraryButton]
 
     apply(buttons) {$0.actions.append(self.buttonAction)}
   }
@@ -120,19 +118,6 @@ public class BankController: UIViewController, BankItemImportExportController {
   override public func viewWillDisappear(animated: Bool) {
     super.viewWillDisappear(animated)
     title = ""
-  }
-
-  func openPhotoLibrary() {
-    MSLogDebug("open photo library bitches!!!")
-    if let userPhotoLibrary =
-      PHAssetCollection.fetchAssetCollectionsWithType(.SmartAlbum,
-                                              subtype: .SmartAlbumUserLibrary,
-                                              options: nil)?.firstObject as? PHAssetCollection
-    {
-      let photoBrowser = PhotoCollectionBrowser(collection: userPhotoLibrary)
-      presentViewController(photoBrowser, animated: true, completion: nil)
-    }
-
   }
 
   /** importBankObject */

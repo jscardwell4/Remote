@@ -18,9 +18,10 @@ import Glyphish
 
   // MARK: - ViewingMode type
 
-  enum ViewingMode: Int {
+  enum ViewingMode: Int, Printable {
     case List, Thumbnail
     init(rawValue: Int) { self = rawValue == 1 ? .Thumbnail : .List }
+    var description: String { return self == .List ? "List" : "Thumbnail" }
   }
 
   // MARK: - CreationMode type
@@ -88,6 +89,11 @@ import Glyphish
   static let thumbnailBarItemImageSelected = Glyphish.imageNamed("1076-grid-4-toolbar-selected")!
   static let indicatorImage                = Glyphish.imageNamed("1040-checkmark")!
   static let indicatorImageSelected        = Glyphish.imageNamed("1040-checkmark-selected")!
+  static let infoImage                     = Glyphish.imageNamed("724-info")!
+  static let infoImageSelected             = Glyphish.imageNamed("724-info-selected")!
+  static let editImage                     = Glyphish.imageNamed("830-pencil")!
+  static let editImageSelected             = Glyphish.imageNamed("830-pencil-selected")!
+  static let chevronImage                  = Glyphish.imageNamed("766-arrow-right")!
 
   static let defaultRowHeight: CGFloat = 38.0
   static let separatorStyle: UITableViewCellSeparatorStyle = .None

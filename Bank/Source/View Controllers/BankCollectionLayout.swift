@@ -10,97 +10,110 @@ import Foundation
 import UIKit
 import MoonKit
 
+@objc protocol BankCollectionLayoutDelegate: UICollectionViewDelegate {
+  optional func zoomedItemSize() -> CGSize
+}
+
 final class BankCollectionLayout: UICollectionViewLayout {
 
-  /// Default cell sizes
-  ////////////////////////////////////////////////////////////////////////////////
+  /** init */
+  override init() {
+    super.init()
+    registerClass(BlurDecoration.self, forDecorationViewOfKind: BlurDecoration.kind)
+  }
 
-  static let ListItemCellSize = CGSize(width: 320.0, height: 38.0)
-  static let ThumbnailItemCellSize = CGSize(width: 100.0, height: 100.0)
+  /**
+  init:
 
-  /// Customizable cell sizes, spacing, and viewing mode
-  ////////////////////////////////////////////////////////////////////////////////
+  :param: aDecoder NSCoder
+  */
+  required init(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    registerClass(BlurDecoration.self, forDecorationViewOfKind: BlurDecoration.kind)
+  }
 
-  var itemListSize      = BankCollectionLayout.ListItemCellSize
-  var itemThumbnailSize = BankCollectionLayout.ThumbnailItemCellSize
-  var categorySize      = BankCollectionLayout.ListItemCellSize
+  static let defaultSize   = CGSize(width: 320, height: 38)
+  static let thumbnailSize = CGSize(square: 100)
 
-  var verticalSpacing:   CGFloat = 10.0
-  var horizontalSpacing: CGFloat = 10.0
+  var verticalSpacing:   CGFloat = 10
+  var horizontalSpacing: CGFloat = 10
 
-  var viewingMode: Bank.ViewingMode = .List {
+  typealias ViewingMode = Bank.ViewingMode
+
+  var viewingMode: ViewingMode = .List {
     didSet {
       switch viewingMode {
-        case .List:      itemSize = itemListSize
-        case .Thumbnail: itemSize = itemThumbnailSize
+        case .List:      itemSize = BankCollectionLayout.defaultSize
+        case .Thumbnail: itemSize = BankCollectionLayout.thumbnailSize
         default: break
       }
       if oldValue != viewingMode { invalidateLayout() }
     }
   }
 
-  /// Private variables to hold calculations
-  ////////////////////////////////////////////////////////////////////////////////
+  private let blurPath = NSIndexPath(forRow: 0, inSection: 0)
 
-  private(set) var itemSize  = BankCollectionLayout.ListItemCellSize
+  var zoomedItem: NSIndexPath? {
+    didSet {
+      MSLogDebug("zoomedItem = \(toString(zoomedItem))")
+      if let collectionView = collectionView, indexPath = zoomedItem ?? oldValue {
+//        storedAttributes[indexPath]?.zoomed = zoomedItem != nil
+        collectionView.performBatchUpdates({
+//          collectionView.deleteItemsAtIndexPaths([indexPath])
+          self.invalidateLayout()
+//          collectionView.insertItemsAtIndexPaths([indexPath])
+          }, completion: nil)
+      }
+    }
+  }
 
-  private var categoryCount = 0
-  private var itemCount     = 0
+  private(set) var itemSize  = BankCollectionLayout.defaultSize
 
-  private var categorySectionHeight: CGFloat = 0
-  private var itemSectionHeight:     CGFloat = 0
+  private var itemsPerRow: Int { return viewingMode == .Thumbnail ? 3 : 1 }
 
-  private var categoryAttributes: [BankCollectionAttributes] = []
-  private var itemAttributes:     [BankCollectionAttributes] = []
+  private var categorySectionHeight: CGFloat {
+    return CGFloat(collectionView?.numberOfItemsInSection(0) ?? 0) * (BankCollectionLayout.defaultSize.height + verticalSpacing)
+  }
+
+  private var itemSectionHeight: CGFloat {
+    return CGFloat(collectionView?.numberOfItemsInSection(1) ?? 0 / itemsPerRow) * (itemSize.height + verticalSpacing)
+  }
+
+  private var storedAttributes: [NSIndexPath:BankCollectionAttributes] = [:]
 
   /** prepareLayout */
   override func prepareLayout() {
-    precondition(collectionView!.numberOfSections() == 2, "should only be a catgories section and an items section")
 
+    storedAttributes.removeAll(keepCapacity: true)
 
-    // Get the total number of categories and items
-    categoryCount = collectionView!.numberOfItemsInSection(0)
-    itemCount     = collectionView!.numberOfItemsInSection(1)
+    let categoryCount = collectionView?.numberOfItemsInSection(0) ?? 0
+    let itemCount     = collectionView?.numberOfItemsInSection(1) ?? 0
+    let indexPaths = (zip(0..<categoryCount, 0) + zip(0..<itemCount, 1)).map { NSIndexPath(forRow: $0, inSection: $1) }
 
-    // Calculate category section height
-    categorySectionHeight = CGFloat(categoryCount) * (categorySize.height + verticalSpacing)
+    apply(indexPaths) { self.storedAttributes[$0] = (self.layoutAttributesForItemAtIndexPath($0) as! BankCollectionAttributes) }
 
-    // Calculate item section height
-    let rowCount = CGFloat(itemCount / (viewingMode == .Thumbnail ? 3 : 1))
-    itemSectionHeight =  rowCount * (itemSize.height + verticalSpacing)
+  }
 
-    // Precalculate category attributes
-    categoryAttributes.removeAll()
-    categoryAttributes.reserveCapacity(categoryCount)
-    var frame = CGRect(origin: CGPoint(x: 0.0, y: verticalSpacing), size: categorySize)
-    for category in 0 ..< categoryCount {
-      let indexPath = NSIndexPath(forRow: category, inSection: 0)
-      let attributes = BankCollectionAttributes(forCellWithIndexPath: indexPath)
-      attributes.frame = frame
-      attributes.viewingMode = viewingMode
-      categoryAttributes.append(attributes)
-      frame.origin.y += categorySize.height + verticalSpacing
-    }
+  /**
+  indexPathsToInsertForDecorationViewOfKind:
 
-    // Precalculate item attributes
-    itemAttributes.removeAll()
-    itemAttributes.reserveCapacity(itemCount)
-    let itemsPerRow = viewingMode == .Thumbnail ? 3 : 1
-    frame.size = itemSize
-    for item in 0 ..< itemCount {
-      let indexPath = NSIndexPath(forRow: item, inSection: 1)
-      let attributes = BankCollectionAttributes(forCellWithIndexPath: indexPath)
-      attributes.frame = frame
-      attributes.viewingMode = viewingMode
-      itemAttributes.append(attributes)
-      let row = item / itemsPerRow
-      let col = item % 3 + 1
-      if col == 3 || itemsPerRow == 1 { frame.origin.y += itemSize.height + verticalSpacing }
+  :param: elementKind String
 
-      if col == 3 || itemsPerRow == 1 { frame.origin.x = 0.0 }
-      else { frame.origin.x += itemSize.width + horizontalSpacing }
-    }
+  :returns: [AnyObject]
+  */
+  override func indexPathsToInsertForDecorationViewOfKind(elementKind: String) -> [AnyObject] {
+    return zoomedItem != nil ? [blurPath] : []
+  }
 
+  /**
+  indexPathsToDeleteForDecorationViewOfKind:
+
+  :param: elementKind String
+
+  :returns: [AnyObject]
+  */
+  override func indexPathsToDeleteForDecorationViewOfKind(elementKind: String) -> [AnyObject] {
+    return [blurPath]
   }
 
   /**
@@ -113,7 +126,31 @@ final class BankCollectionLayout: UICollectionViewLayout {
 
   */
   override func layoutAttributesForElementsInRect(rect: CGRect) -> [AnyObject]? {
-    return categoryAttributes.filter{CGRectIntersectsRect($0.frame, rect)} + itemAttributes.filter{CGRectIntersectsRect($0.frame, rect)}
+    var attributes = filter(storedAttributes.values) { $0.frame.intersects(rect) }
+    if zoomedItem != nil {
+      let blurAttributes = layoutAttributesForDecorationViewOfKind(BlurDecoration.kind, atIndexPath: blurPath)
+        as! BankCollectionAttributes
+      attributes.append(blurAttributes)
+    }
+    return attributes
+  }
+
+  /**
+  layoutAttributesForDecorationViewOfKind:atIndexPath:
+
+  :param: elementKind String
+  :param: indexPath NSIndexPath
+
+  :returns: UICollectionViewLayoutAttributes!
+  */
+  override func layoutAttributesForDecorationViewOfKind(elementKind: String,
+                                             atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes!
+  {
+    let attributes = BankCollectionAttributes(forDecorationViewOfKind: BlurDecoration.kind, withIndexPath: indexPath)
+    attributes.frame = collectionView?.bounds ?? CGRect.zeroRect
+    attributes.blurStyle = .Dark
+    attributes.zIndex = 50
+    return attributes
   }
 
   /**
@@ -124,7 +161,29 @@ final class BankCollectionLayout: UICollectionViewLayout {
   :returns: UICollectionViewLayoutAttributes!
   */
   override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
-    return indexPath.section == 0 ? categoryAttributes[indexPath.row] : itemAttributes[indexPath.row]
+    let attributes = BankCollectionAttributes(forCellWithIndexPath: indexPath)
+    switch indexPath.section {
+    case 1:
+      attributes.size = itemSize
+      attributes.frame.origin.x =
+        CGFloat(indexPath.row % itemsPerRow) * (itemSize.width + horizontalSpacing)
+      attributes.frame.origin.y =
+        CGFloat(indexPath.row / itemsPerRow) * (itemSize.height + verticalSpacing) + max(categorySectionHeight, verticalSpacing)
+      break
+    default:
+      attributes.size = BankCollectionLayout.defaultSize
+      attributes.frame.origin.x = 0
+      attributes.frame.origin.y = CGFloat(indexPath.row) * (BankCollectionLayout.defaultSize.height + verticalSpacing)
+      break
+    }
+    attributes.viewingMode = viewingMode
+    attributes.zoomed = zoomedItem == indexPath
+    if attributes.zoomed {
+      attributes.size = (collectionView?.delegate as? BankCollectionLayoutDelegate)?.zoomedItemSize?() ?? attributes.size
+      attributes.center = collectionView?.bounds.center ?? CGPoint.zeroPoint
+      attributes.zIndex = 100
+    }
+    return attributes
   }
 
   /**
@@ -133,9 +192,7 @@ final class BankCollectionLayout: UICollectionViewLayout {
   :returns: CGSize
   */
   override func collectionViewContentSize() -> CGSize {
-    var size = CGSize(width: 320.0, height: categorySectionHeight + itemSectionHeight)
-    if categoryCount > 0 && itemCount > 0 { size.height += verticalSpacing }
-    return size
+    return CGSize(width: UIScreen.mainScreen().bounds.width, height: categorySectionHeight + itemSectionHeight + verticalSpacing)
   }
 
   /**
@@ -146,15 +203,36 @@ final class BankCollectionLayout: UICollectionViewLayout {
   override class func layoutAttributesClass() -> AnyClass { return BankCollectionAttributes.self }
 
   /**
+  initialLayoutAttributesForAppearingDecorationElementOfKind:atIndexPath:
 
-  shouldInvalidateLayoutForBoundsChange:
+  :param: elementKind String
+  :param: indexPath NSIndexPath
 
-  :param: newBounds CGRect
-
-  :returns: Bool
-
+  :returns: UICollectionViewLayoutAttributes?
   */
-   // override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool { return true }
+  override func initialLayoutAttributesForAppearingDecorationElementOfKind(elementKind: String,
+    atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
+  {
+    MSLogDebug("")
+    return layoutAttributesForDecorationViewOfKind(elementKind, atIndexPath: indexPath)
+  }
 
+  /**
+  finalLayoutAttributesForDisappearingDecorationElementOfKind:atIndexPath:
+
+  :param: elementKind String
+  :param: indexPath NSIndexPath
+
+  :returns: UICollectionViewLayoutAttributes?
+  */
+  override func finalLayoutAttributesForDisappearingDecorationElementOfKind(elementKind: String,
+    atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
+  {
+    MSLogDebug("")
+    let attributes = layoutAttributesForDecorationViewOfKind(elementKind, atIndexPath: indexPath)
+    attributes.hidden = true
+    return attributes
+  }
+  
 
 }

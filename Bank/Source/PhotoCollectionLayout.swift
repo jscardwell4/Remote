@@ -1,5 +1,5 @@
 //
-//  PhotoBrowserLayout.swift
+//  PhotoCollectionLayout.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 5/24/15.
@@ -9,24 +9,11 @@
 import UIKit
 import MoonKit
 
-@objc protocol PhotoBrowserLayoutDelegate: UICollectionViewDelegate {
+@objc protocol PhotoCollectionLayoutDelegate: UICollectionViewDelegate {
   optional func sizeForZoomedItemAtIndexPath(indexPath: NSIndexPath) -> CGSize
 }
 
-private class BlurDecoration: UICollectionReusableView {
-  static let kind = "Blur"
-  private func setup() {
-    let blur = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
-    blur.setTranslatesAutoresizingMaskIntoConstraints(false)
-    addSubview(blur)
-    constrain(𝗩|blur|𝗩, 𝗛|blur|𝗛)
-  }
-  override init(frame: CGRect) { super.init(frame: frame); setup() }
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); setup() }
-}
-
-
-class PhotoBrowserLayout: UICollectionViewLayout {
+class PhotoCollectionLayout: UICollectionViewLayout {
 
   /** init */
   override init() {
@@ -45,7 +32,7 @@ class PhotoBrowserLayout: UICollectionViewLayout {
   }
 
   /** An enumeration for specifying the scale of the layout's items */
-  enum ItemScale: Float {
+  enum ItemScale: Float, Printable {
     case OneAcross = 1, TwoAcross, ThreeAcross, FourAcross, FiveAcross, SixAcross, SevenAcross, EightAcross
 
     static var minScale: ItemScale { return .EightAcross }
@@ -69,6 +56,19 @@ class PhotoBrowserLayout: UICollectionViewLayout {
       if let layout = findFirst(ItemScale.all, {$0.interval.contains(rawValue)}) { self = layout }
       else if ItemScale.minScale.rawValue > rawValue { self = ItemScale.minScale }
       else { self = ItemScale.maxScale }
+    }
+
+    var description: String {
+      switch self {
+        case .OneAcross:   return "OneAcross"
+        case .TwoAcross:   return "TwoAcross"
+        case .ThreeAcross: return "ThreeAcross"
+        case .FourAcross:  return "FourAcross"
+        case .FiveAcross:  return "FiveAcross"
+        case .SixAcross:   return "SixAcross"
+        case .SevenAcross: return "SevenAcross"
+        case .EightAcross: return "EightAcross"
+      }
     }
   }
 
@@ -94,7 +94,7 @@ class PhotoBrowserLayout: UICollectionViewLayout {
 
   /** prepareLayout */
   override func prepareLayout() {
-    if let count = collectionView?.dataSource?.collectionView(collectionView!, numberOfItemsInSection: 0) {
+    if let count = collectionView?.numberOfItemsInSection(0) {
       itemCount = count
       storedAttributes.removeAll(keepCapacity: true)
       apply(map(0..<count){NSIndexPath(forRow: $0, inSection: 0)}) {
@@ -130,7 +130,6 @@ class PhotoBrowserLayout: UICollectionViewLayout {
     set {
       unzoomingItem = zoomingItem
       zoomingItem = newValue
-      let context = UICollectionViewLayoutInvalidationContext()
       if let collectionView = collectionView, indexPath = zoomingItem ?? unzoomingItem {
         collectionView.performBatchUpdates({
           collectionView.deleteItemsAtIndexPaths([indexPath])
@@ -190,7 +189,8 @@ class PhotoBrowserLayout: UICollectionViewLayout {
   :returns: UICollectionViewLayoutAttributes!
   */
   override func layoutAttributesForDecorationViewOfKind(elementKind: String,
-                                            atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
+                                            atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes!
+  {
     let attributes = UICollectionViewLayoutAttributes(forDecorationViewOfKind: BlurDecoration.kind, withIndexPath: indexPath)
     attributes.frame = collectionView?.bounds ?? CGRect.zeroRect
     attributes.zIndex = 50
@@ -230,7 +230,7 @@ class PhotoBrowserLayout: UICollectionViewLayout {
   }
 
   private func zoomifiedSizeForIndexPath(indexPath: NSIndexPath) -> CGSize {
-    return (collectionView?.delegate as? PhotoBrowserLayoutDelegate)?.sizeForZoomedItemAtIndexPath?(indexPath)
+    return (collectionView?.delegate as? PhotoCollectionLayoutDelegate)?.sizeForZoomedItemAtIndexPath?(indexPath)
       ?? ItemScale.maxScale.itemSize
   }
 
@@ -259,7 +259,8 @@ class PhotoBrowserLayout: UICollectionViewLayout {
 
   :returns: UICollectionViewLayoutAttributes?
   */
-  override func initialLayoutAttributesForAppearingItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
+  override func initialLayoutAttributesForAppearingItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
+  {
     let attributes: UICollectionViewLayoutAttributes?
     switch indexPath {
       case unzoomingItem: attributes = defaultAttributesForItemAtIndexPath(indexPath)

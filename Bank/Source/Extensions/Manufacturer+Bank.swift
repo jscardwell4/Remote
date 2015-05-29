@@ -13,6 +13,7 @@ import MoonKit
 
 extension Manufacturer: BankModelCollection {
   var collectionType: ModelCollection.Type { return IRCodeSet.self }
+  var collectionLabel: String { return "Code Set" }
 }
 
 extension Manufacturer: Detailable {

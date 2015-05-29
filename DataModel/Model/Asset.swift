@@ -13,23 +13,46 @@ import MoonKit
 @objc(Asset)
 public final class Asset: ModelObject {
 
-  @NSManaged public var location: String!
+  public enum StorageType: Int, Printable {
+    case Undefined, File, Bundle, Data
+    public var description: String {
+      switch self {
+        case .Undefined: return "Undefined"
+        case .File:      return "File"
+        case .Bundle:    return "Bundle"
+        case .Data:      return "Data"
+      }
+    }
+  }
+
+  public var storageType: StorageType {
+    switch (path, name, data) {
+      case (_, _, .Some):     return .Data
+      case (.Some, .Some, _): return .Bundle
+      case (.Some, _, _):     return .File
+      default:                return .Undefined
+    }
+  }
+
+  @NSManaged public var path: String?
   @NSManaged public var name: String?
+  @NSManaged public var data: NSData?
   @NSManaged public var images: Set<Image>?
 
   override public func updateWithData(data: ObjectJSONValue) {
+    MSLogDebug("data = \(data)")
     super.updateWithData(data)
-    if let location = String(data["location"]) {
-      self.location = location
-      name = location.lastPathComponent.stringByDeletingPathExtension
-    }
-    if let name = String(data["name"]) { self.name = name }
+    path = String(data["path"])
+    name = String(data["name"])
   }
 
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
-    obj["location"] = location?.jsonValue
-    obj["name"] = name?.jsonValue
+    switch storageType {
+      case .File:   obj["path"] = path?.jsonValue
+      case .Bundle: obj["name"] = name?.jsonValue
+      default:      break
+    }
     return obj.jsonValue
   }
 }

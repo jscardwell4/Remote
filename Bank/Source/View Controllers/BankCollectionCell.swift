@@ -16,31 +16,26 @@ class BankCollectionCell: UICollectionViewCell {
     collectionView.registerClass(self, forCellWithReuseIdentifier: cellIdentifier)
   }
 
-  private static let _cellIdentifier = "CollectionCell"
-  class var cellIdentifier: String { return _cellIdentifier }
+  class var cellIdentifier: String { return "CollectionCell" }
 
   let indicator: UIImageView = {
-    let view = UIImageView.newForAutolayout()
+    let view = UIImageView(autolayout: true)
     view.nametag = "indicator"
-    view.constrain("self.width ≤ self.height :: self.height = 22")
     return view
   }()
 
   let deleteButton: UIButton = {
-    let button = UIButton()
-    button.setTranslatesAutoresizingMaskIntoConstraints(false)
+    let button = UIButton(autolayout: true)
     button.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.75)
     button.setTitle("Delete", forState: .Normal)
-    button.constrain("self.width = 100")
     return button
   }()
 
   let chevron: UIImageView = {
-    let view = UIImageView()
-    view.setTranslatesAutoresizingMaskIntoConstraints(false)
-    view.image = UIImage(named: "766-arrow-right")
+    let view = UIImageView(autolayout: true)
+    view.image = Bank.chevronImage
     view.contentMode = .ScaleAspectFit
-    view.constrain("self.width = self.height :: self.height = 22")
+    view.constrain(view.width => view.height, view.height => 22)
     return view
   }()
 
@@ -96,13 +91,18 @@ class BankCollectionCell: UICollectionViewCell {
 
     // Refresh our constraints
     removeConstraintsWithIdentifier(identifier)
-    let format = "\n".join("delete.right = self.right",
-                           "delete.top = self.top",
-                           "delete.bottom = self.bottom",
-                           "chevron.centerY = content.centerY",
-                           "H:[chevron]-20-|")
-    let views = ["delete": deleteButton, "chevron": chevron, "content": contentView]
-    constrain(format, views: views, identifier: identifier)
+    constrain(identifier: identifier,
+      deleteButton.right => right,
+      deleteButton.top => top,
+      deleteButton.width => 100,
+      deleteButton.bottom => bottom,
+      chevron.centerY => contentView.centerY,
+      chevron.right => right - 20,
+      chevron.width ≤ chevron.height,
+      chevron.height => 22,
+      indicator.width ≤ indicator.height,
+      indicator.height => 22
+    )
 
     super.updateConstraints()
 
@@ -116,13 +116,7 @@ class BankCollectionCell: UICollectionViewCell {
     }
   }
 
-  var swipeToDelete: Bool = true {
-    didSet {
-      if oldValue != swipeToDelete {
-        panGesture.enabled = swipeToDelete
-      }
-    }
-  }
+  var swipeToDelete: Bool = true { didSet { if oldValue != swipeToDelete { panGesture.enabled = swipeToDelete } } }
 
   private weak var panGesture: PanGesture!
 
@@ -140,38 +134,8 @@ class BankCollectionCell: UICollectionViewCell {
   /** hideDelete */
   func hideDelete() {
     UIView.animateWithDuration(animationDurationForDistance(abs(contentView.transform.tx)),
-      animations: { self.contentView.transform.tx = 0.0 },
-      completion: {(completed: Bool) -> Void in _ = self.showingDeleteDidChange?(self) })
-  }
-
-  /**
-  handlePan:
-
-  :param: gesture PanGesture
-  */
-  func handlePan(gesture: PanGesture) {
-
-    let x = gesture.translationInView(view: self).x
-    let duration = animationDurationForDistance(abs(x))
-
-    switch gesture.state {
-
-      case .Began, .Changed:
-        if x < 0 { contentView.transform.tx = x }
-
-      case .Ended:
-        UIView.animateWithDuration(duration,
-          animations: {self.contentView.transform.tx = x <= -100.0 ? -100.0 : 0.0},
-          completion: { (completed: Bool) -> Void in _ = self.showingDeleteDidChange?(self) })
-
-      case .Cancelled, .Failed:
-        UIView.animateWithDuration(duration,
-          animations: {self.contentView.transform.tx = 0.0},
-          completion: { (completed: Bool) -> Void in _ = self.showingDeleteDidChange?(self) })
-
-      default: break
-    }
-
+                    animations: { self.contentView.transform.tx = 0.0 },
+                    completion: {(completed: Bool) -> Void in _ = self.showingDeleteDidChange?(self) })
   }
 
   /**
@@ -203,14 +167,14 @@ class BankCollectionCell: UICollectionViewCell {
           case .Ended:
             if previousState == .Changed {
               UIView.animateWithDuration(self.animationDurationForDistance(abs(x)),
-                animations: {self.contentView.transform.tx = x <= -100.0 ? -100.0 : 0.0},
-                completion: { (completed: Bool) -> Void in _ = self.showingDeleteDidChange?(self) })
+                              animations: {self.contentView.transform.tx = x <= -100.0 ? -100.0 : 0.0},
+                              completion: { (completed: Bool) -> Void in _ = self.showingDeleteDidChange?(self) })
             }
 
           case .Cancelled, .Failed:
             UIView.animateWithDuration(self.animationDurationForDistance(abs(x)),
-              animations: {self.contentView.transform.tx = 0.0},
-              completion: { (completed: Bool) -> Void in _ = self.showingDeleteDidChange?(self) })
+                            animations: {self.contentView.transform.tx = 0.0},
+                            completion: { (completed: Bool) -> Void in _ = self.showingDeleteDidChange?(self) })
 
           default: break
 

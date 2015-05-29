@@ -7,9 +7,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PhotoCollectionBrowser" customModule="Bank" customModuleProvider="target">
             <connections>
                 <outlet property="aspectControl" destination="dp8-WS-pya" id="rZd-Or-AiS"/>
-                <outlet property="bottomToolbar" destination="3Pv-Mg-mNb" id="sqF-18-82u"/>
                 <outlet property="collectionView" destination="i5M-Pr-FkT" id="VZy-Ek-c4S"/>
-                <outlet property="collectionViewLayout" destination="c7k-ch-oGk" id="Xf4-q7-uLG"/>
+                <outlet property="layout" destination="c7k-ch-oGk" id="1wM-ng-yUB"/>
                 <outlet property="scaleSlider" destination="f6p-t7-uRg" id="CF3-VZ-CJ7"/>
                 <outlet property="selectButton" destination="RqF-z8-PlL" id="PeZ-l1-I0p"/>
                 <outlet property="view" destination="SNK-uX-yct" id="1lQ-lf-9dA"/>
@@ -69,7 +68,7 @@
                 <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="i5M-Pr-FkT">
                     <rect key="frame" x="0.0" y="44" width="600" height="512"/>
                     <color key="backgroundColor" red="0.16862699389457703" green="0.16862699389457703" blue="0.16862699389457703" alpha="1" colorSpace="calibratedRGB"/>
-                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="c7k-ch-oGk" customClass="PhotoBrowserLayout" customModule="Bank" customModuleProvider="target">
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="c7k-ch-oGk" customClass="PhotoCollectionLayout" customModule="Bank" customModuleProvider="target">
                         <size key="itemSize" width="50" height="50"/>
                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
                         <size key="footerReferenceSize" width="0.0" height="0.0"/>

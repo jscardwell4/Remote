@@ -10,6 +10,7 @@ import Foundation
 import DataModel
 import MoonKit
 import CoreData
+import Photos
 
 extension Image: Previewable {}
 
@@ -17,30 +18,37 @@ extension Image: Detailable {
   func detailController() -> UIViewController { return ImageDetailController(model: self) }
 }
 
-// TODO: Fill out stubs for `FormCreatable`
-extension Image: FormCreatable {
+extension Image: CustomCreatable {
+  static func creationControllerWithContext(context: NSManagedObjectContext,
+                        cancellationHandler didCancel: () -> Void,
+                            creationHandler didCreate: (ModelObject) -> Void) -> UIViewController
+  {
+    let userPhotoLibrary =
+      PHAssetCollection.fetchAssetCollectionsWithType(.SmartAlbum,
+                                              subtype: .SmartAlbumUserLibrary,
+                                              options: nil)?.firstObject as! PHAssetCollection
 
-  /**
-  creationForm:
+    return PhotoCollectionBrowser(collection: userPhotoLibrary) {
+      controller, selection in
 
-  :param: #context NSManagedObjectContext
+        // Create the image if a selection has been made
+        if let data = selection?.data, image = UIImage(data: data) {
+          let form = Form(templates: ["Name": self.nameFormFieldTemplate(context: context)])
+          let didSubmit: FormViewController.Submission = {
+            if let name = $0.values?["Name"] as? String {
+              context.performBlock {
+                let imageModel = Image(image: image, context: context)
+                imageModel.name = name
+                didCreate(imageModel)
+              }
+            } else { didCancel() }
+          }
+          let formViewController = FormViewController(form: form, didSubmit: didSubmit, didCancel: didCancel)
+          controller.presentViewController(formViewController, animated: true, completion: nil)
+        }
 
-  :returns: Form
-  */
-  static func creationForm(#context: NSManagedObjectContext) -> Form {
-    return Form(templates: [:])
+        // Otherwise call the cancellation handler
+        else { didCancel() }
+    }
   }
-
-  /**
-  createWithForm:context:
-
-  :param: form Form
-  :param: context NSManagedObjectContext
-
-  :returns: Self?
-  */
-  static func createWithForm(form: Form, context: NSManagedObjectContext) -> Self? {
-    return nil
-  }
-
 }

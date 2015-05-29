@@ -1,5 +1,5 @@
 //
-//  PhotoBrowserLayout.swift
+//  PhotoCollectionLayout.swift
 //  Remote
 //
 //  Created by Jason Cardwell on 5/24/15.
@@ -9,7 +9,7 @@
 import UIKit
 import MoonKit
 
-class PhotoBrowserLayout: UICollectionViewFlowLayout {
+class PhotoCollectionLayout: UICollectionViewFlowLayout {
 
   typealias AttributesIndex = OrderedDictionary<NSIndexPath, UICollectionViewLayoutAttributes>
 

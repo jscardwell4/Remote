@@ -13,6 +13,18 @@ import MoonKit
 @objc(Image)
 final public class Image: EditableModelObject, CollectedModel {
 
+  /**
+  Create a new `Image` object with a data-backed asset
+
+  :param: image UIImage
+  :param: context NSManagedObjectContext?
+  */
+  public convenience init(image: UIImage, context: NSManagedObjectContext?) {
+    self.init(context: context)
+    asset = Asset(context: context)
+    asset?.data = UIImagePNGRepresentation(image)
+  }
+
   static var resourceRegistration: [String:NSBundle] = [:]
 
   /**
@@ -48,21 +60,24 @@ final public class Image: EditableModelObject, CollectedModel {
   @NSManaged public var remoteElements: Set<RemoteElement>
   @NSManaged public var views: Set<ImageView>
 
-  public var imageCategory: ImageCategory {
+  private var insideImageCategorySetter = false
+  public var imageCategory: ImageCategory! {
     get {
       willAccessValueForKey("imageCategory")
       var category = primitiveValueForKey("imageCategory") as? ImageCategory
       didAccessValueForKey("imageCategory")
-      if category == nil {
+      if category == nil && !insideImageCategorySetter {
         category = ImageCategory.defaultCollectionInContext(managedObjectContext!)
         setPrimitiveValue(category, forKey: "imageCategory")
       }
-      return category!
+      return category
     }
     set {
+      insideImageCategorySetter = true
       willChangeValueForKey("imageCategory")
       setPrimitiveValue(newValue, forKey: "imageCategory")
       didChangeValueForKey("imageCategory")
+      insideImageCategorySetter = false
     }
   }
 
@@ -78,14 +93,23 @@ final public class Image: EditableModelObject, CollectedModel {
 
   public var image: UIImage? {
     var img: UIImage? = nil
-    if let location = asset?.location {
-      img = UIImage(contentsOfFile: location)
-      if img == nil, let imageBundle = Image.resourceRegistration[location], assetName = asset?.name {
-        img = UIImage(named: assetName, inBundle: imageBundle, compatibleWithTraitCollection: nil)
+    if let asset = asset {
+      switch asset.storageType {
+        case .File:
+          if let path = asset.path { img = UIImage(contentsOfFile: path) }
+        case .Bundle:
+          if let name = asset.name, path = asset.path, bundle = Image.resourceRegistration[path] {
+            img = UIImage(named: name, inBundle: bundle, compatibleWithTraitCollection: nil)
+          }
+        case .Data:
+          if let data = asset.data { img = UIImage(data: data) }
+        default:
+          break
       }
     }
     return img
   }
+
   public var templateImage: UIImage? { return image?.imageWithRenderingMode(.AlwaysTemplate) }
 
   override public var jsonValue: JSONValue {

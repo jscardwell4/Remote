@@ -13,28 +13,31 @@ import MoonKit
 
 @objc class BankModelDelegate {
 
+  struct CustomTransaction: BankItemCreationControllerTransaction {
+    let label: String
+    let controller: CustomController
+  }
 
-  struct DiscoveryTransaction {
+  struct DiscoveryTransaction: BankItemCreationControllerTransaction {
     let label: String
     let beginDiscovery: ((Form, ProcessedForm) -> Void) -> Void
     let endDiscovery: () -> Void
   }
 
-  struct CreationTransaction {
+  struct CreationTransaction: BankItemCreationControllerTransaction {
     let label: String
     let form: Form
     let processedForm: ProcessedForm
   }
 
+  typealias CustomController = (didCancel: () -> Void, didCreate: (ModelObject) -> Void) -> UIViewController
   typealias BeginEndChangeCallback = (BankModelDelegate) -> Void
   typealias ChangeCallback = (BankModelDelegate, Change) -> Void
 
   // MARK: - Transactions
 
-  var createItem: CreationTransaction?
-  var createCollection: CreationTransaction?
-  var discoverItem: DiscoveryTransaction?
-  var discoverCollection: DiscoveryTransaction?
+  var itemTransaction: BankItemCreationControllerTransaction?
+  var collectionTransaction: BankItemCreationControllerTransaction?
 
   /**
   Generates a `CreateTransaction` given a label, a `FormCreatable` type, and a managed object context
@@ -77,6 +80,32 @@ import MoonKit
     return DiscoveryTransaction(label: label, beginDiscovery: beginDiscovery, endDiscovery: endDiscovery)
   }
 
+  /**
+  Generates a `CustomTransaction` given a `CustomCreatable` type, a label, and a managed object context
+
+  :param: label String
+  :param: customType T.Type
+  :param: context NSManagedObjectContext
+
+  :returns: CustomTransaction
+  */
+  class func customTransactionWithLabel<T:CustomCreatable>(label: String,
+                                                customType: T.Type,
+                                                   context: NSManagedObjectContext) -> CustomTransaction
+  {
+    return CustomTransaction(label: label) {
+      didCancel, didCreate -> UIViewController in
+      let handler: (ModelObject) -> Void = {
+        object in
+          let (_, error) = DataManager.saveContext(context)
+          MSHandleError(error)
+          didCreate(object)
+      }
+      return customType.creationControllerWithContext(context, cancellationHandler: didCancel, creationHandler: handler)
+
+    }
+  }
+
   // MARK: - Initialization
 
   /**
@@ -111,6 +140,24 @@ import MoonKit
 
   /** The context used for core data fetches */
   let managedObjectContext: NSManagedObjectContext
+
+
+  // MARK: - Retrieve by index path
+
+  /**
+  Return model corresponding to the specified index path
+
+  :param: indexPath NSIndexPath
+
+  :returns: NamedModel?
+  */
+  func modelAtIndexPath(indexPath: NSIndexPath) -> NamedModel? {
+    switch indexPath.section {
+      case 0:  return collectionAtIndex(indexPath.row)
+      case 1:  return itemAtIndex(indexPath.row)
+      default: return nil
+    }
+  }
 
   // MARK: - Items collection
 
@@ -240,14 +287,9 @@ extension BankModelDelegate: NSFetchedResultsControllerDelegate {
     if controller === fetchedItems { itemsDidChange?(self, change) }
     else if controller === fetchedCollections { collectionsDidChange?(self, change) }
 
-    let changeType: String
-    switch type {
-      case .Insert: changeType = "Insert"
-      case .Delete: changeType = "Delete"
-      case .Move:   changeType = "Move"
-      case .Update: changeType = "Update"
-    }
-    MSLogDebug("object = \((anObject as! NamedModel).name), indexPath = \(toString(indexPath)), type = \(changeType), newIndexPath = \(toString(newIndexPath))")
+    MSLogDebug(",".join("object = \((anObject as! NamedModel).name)",
+                        "indexPath = \(toString(indexPath)), type = \(type)",
+                        "newIndexPath = \(toString(newIndexPath))"))
   }
 
   func controller(controller: NSFetchedResultsController,
@@ -255,14 +297,7 @@ extension BankModelDelegate: NSFetchedResultsControllerDelegate {
           atIndex sectionIndex: Int,
     forChangeType type: NSFetchedResultsChangeType)
   {
-    let changeType: String
-    switch type {
-      case .Insert: changeType = "Insert"
-      case .Delete: changeType = "Delete"
-      case .Move:   changeType = "Move"
-      case .Update: changeType = "Update"
-    }
-    MSLogDebug("sectionInfo = \(toString(sectionInfo)), sectionIndex = \(sectionIndex), type = \(changeType)")
+    MSLogDebug("sectionInfo = \(toString(sectionInfo)), sectionIndex = \(sectionIndex), type = \(type)")
   }
 
 }
@@ -371,15 +406,20 @@ final class BankModelCollectionDelegate<C:BankModelCollection>: BankModelDelegat
 
         itemType = collection.itemType as? ModelObject.Type
         if itemType != nil {
-          itemToRootAttributeName = BankModelCollectionDelegate.propertyForRelationshipPair(rootEntity, itemType!.entityDescription)
+          itemToRootAttributeName =
+            BankModelCollectionDelegate.propertyForRelationshipPair(rootEntity, itemType!.entityDescription)
         } else { itemToRootAttributeName = nil }
 
         collectionType = collection.collectionType as? ModelObject.Type
         if collectionType != nil {
-          collectionToRootAttributeName = BankModelCollectionDelegate.propertyForRelationshipPair(rootEntity, collectionType!.entityDescription)
+          collectionToRootAttributeName =
+            BankModelCollectionDelegate.propertyForRelationshipPair(rootEntity, collectionType!.entityDescription)
         } else { collectionToRootAttributeName = nil }
 
         super.init(name: c.name, context: context)
+
+        itemTransaction = BankModelCollectionDelegate.itemTransactionForCollection(collection)
+        collectionTransaction = BankModelCollectionDelegate.collectionTransactionForCollection(collection)
 
         if let entity = itemType?.entityDescription, name = itemToRootAttributeName {
           fetchedItems = fetchedResultsForEntity(entity, withAttributeName: name)
@@ -404,12 +444,110 @@ final class BankModelCollectionDelegate<C:BankModelCollection>: BankModelDelegat
 
     // Without a valid context, initialization fails
     else {
-      rootType = ModelObject.self; itemType = nil; collectionType = nil; itemToRootAttributeName = nil; collectionToRootAttributeName = nil
+      rootType = ModelObject.self;
+      itemType = nil;
+      collectionType = nil;
+      itemToRootAttributeName = nil;
+      collectionToRootAttributeName = nil
       super.init(name: c.name, context: NSManagedObjectContext())
       return nil
     }
   }
 
+  /**
+  itemTransactionForCollection:
+
+  :param: collection C
+
+  :returns: BankItemCreationControllerTransaction?
+  */
+  private static func itemTransactionForCollection(collection: C) -> BankItemCreationControllerTransaction? {
+
+    if let context = collection.managedObjectContext {
+
+      let label = collection.itemLabel ?? "New Item"
+
+      switch collection {
+
+        case let c as FormCreatableItemBankModelCollection:
+          return CreationTransaction(label: label, form: c.itemCreationForm(context: context)) {
+            form in
+              let (success, error) = DataManager.saveContext(context) {_ = c.createItemWithForm(form, context: $0)}
+              MSHandleError(error)
+              return success
+          }
+
+        case let c as DiscoverCreatableItemBankModelCollection:
+          return DiscoveryTransaction(label: label,
+                                      beginDiscovery: {c.beginItemDiscovery(context: context, presentForm: $0)},
+                                      endDiscovery: {c.endItemDiscovery()})
+
+        case let c as CustomCreatableItemBankModelCollection:
+          return CustomTransaction(label: label) {
+            didCancel, didCreate -> UIViewController in
+
+            let handler: (ModelObject) -> Void = {
+              object in
+              let (_, error) = DataManager.saveContext(context)
+              MSHandleError(error)
+              didCreate(object)
+            }
+            return c.itemCreationControllerWithContext(context, cancellationHandler: didCancel, creationHandler: handler)
+          }
+
+        default: return nil
+      }
+
+    } else { return nil }
+  }
+
+
+  /**
+  collectionTransactionForCollection:
+
+  :param: collection C
+
+  :returns: BankItemCreationControllerTransaction?
+  */
+  private static func collectionTransactionForCollection(collection: C) -> BankItemCreationControllerTransaction? {
+
+    if let context = collection.managedObjectContext {
+
+      let label = collection.collectionLabel ?? "New Collection"
+
+      switch collection {
+
+        case let c as FormCreatableCollectionBankModelCollection:
+          return CreationTransaction(label: label, form: c.collectionCreationForm(context: context)) {
+            form in
+              let (success, error) = DataManager.saveContext(context) {_ = c.createCollectionWithForm(form, context: $0)}
+              MSHandleError(error)
+              return success
+          }
+
+        case let c as DiscoverCreatableCollectionBankModelCollection:
+          return DiscoveryTransaction(label: label,
+                                      beginDiscovery: {c.beginCollectionDiscovery(context: context, presentForm: $0)},
+                                      endDiscovery: {c.endCollectionDiscovery()})
+
+        case let c as CustomCreatableCollectionBankModelCollection:
+          return CustomTransaction(label: label) {
+            didCancel, didCreate -> UIViewController in
+
+            let handler: (ModelObject) -> Void = {
+              object in
+              let (_, error) = DataManager.saveContext(context)
+              MSHandleError(error)
+              didCreate(object)
+            }
+            return c.collectionCreationControllerWithContext(context, cancellationHandler: didCancel, creationHandler: handler)
+          }
+
+        default: return nil
+      }
+
+    } else { return nil }
+  }
 
 }
 

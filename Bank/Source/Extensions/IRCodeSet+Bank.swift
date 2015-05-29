@@ -13,6 +13,7 @@ import CoreData
 
 extension IRCodeSet: BankModelCollection {
   var itemType: CollectedModel.Type { return IRCode.self }
+  var itemLabel: String { return "Code" }
 }
 
 extension IRCodeSet: FormCreatable {

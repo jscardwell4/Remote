@@ -13,34 +13,22 @@ import MoonKit
 
 final class BankCollectionItemCell: BankCollectionCell {
 
-  private static let _cellIdentifier = "ItemCell"
-  override class var cellIdentifier: String { return _cellIdentifier }
+  override class var cellIdentifier: String { return "ItemCell" }
 
-  weak var item: protocol<Named>? {
-    didSet {
-      nameLabel.text = item?.name
-      previewable = item != nil && item! is Previewable
-    }
-  }
+  weak var item: protocol<Named>? { didSet { nameLabel.text = item?.name; previewable = item != nil && item! is Previewable } }
 
   override var exportItem: JSONValueConvertible? { return item as? JSONValueConvertible }
 
   private let thumbnailImageView: UIImageView = {
-    let view = UIImageView()
-    view.setTranslatesAutoresizingMaskIntoConstraints(false)
+    let view = UIImageView(autolayout: true)
     view.contentMode = .ScaleAspectFit
     view.userInteractionEnabled = true
-    view.constrain("self.width ≤ self.height")
+    view.constrain(view.width ≤ view.height)
     view.tintColor = UIColor.blackColor()
     return view
     }()
 
-  private let nameLabel: UILabel = {
-    let view = UILabel()
-    view.setTranslatesAutoresizingMaskIntoConstraints(false)
-    view.font = Bank.infoFont
-    return view
-  }()
+  private let nameLabel: UILabel = { let view = UILabel(autolayout: true); view.font = Bank.infoFont; return view }()
 
   private let previewGesture: UITapGestureRecognizer = UITapGestureRecognizer()
 
@@ -61,11 +49,19 @@ final class BankCollectionItemCell: BankCollectionCell {
 
   private var viewingMode: Bank.ViewingMode = .List {
     didSet {
-      previewGesture.enabled = (viewingMode == .List && previewable)
-      swipeToDelete = (viewingMode == .List)
-      setNeedsUpdateConstraints()
+      if oldValue != viewingMode {
+        updateEnabledGestures()
+        setNeedsUpdateConstraints()
+      }
     }
   }
+
+  private func updateEnabledGestures() {
+    previewGesture.enabled = !zoomed && (viewingMode == .List && previewable)
+    swipeToDelete = !zoomed && (viewingMode == .List)
+  }
+
+  private var zoomed = false { didSet { if oldValue != zoomed { updateEnabledGestures(); setNeedsUpdateConstraints() } } }
 
   var previewActionHandler: ((Void) -> Void)?
 
@@ -76,7 +72,10 @@ final class BankCollectionItemCell: BankCollectionCell {
   */
   override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes!) {
     super.applyLayoutAttributes(layoutAttributes)
-    if let attributes = layoutAttributes as? BankCollectionAttributes { viewingMode = attributes.viewingMode }
+    if let attributes = layoutAttributes as? BankCollectionAttributes {
+      zoomed = attributes.zoomed
+      viewingMode = attributes.viewingMode
+    }
     if let previewImage = thumbnailImageView.image {
       thumbnailImageView.contentMode = contentSize.contains(previewImage.size) ? .Center : .ScaleAspectFit
     }
@@ -96,35 +95,25 @@ final class BankCollectionItemCell: BankCollectionCell {
 
     switch viewingMode {
 
-      case .List:
+      case .List where zoomed == false:
 
-        var formatStrings = [
-          "label.centerY = content.centerY",
-          "label.height = content.height",
-          "chevron.left = label.right + 8",
-          "indicator.centerY = content.centerY",
-          "indicator.right = content.left + \(indicatorImage == nil ? 0.0 : 40.0)"
-        ]
+        constrain(identifier: listIdentifier,
+          nameLabel.centerY => contentView.centerY,
+          nameLabel.height => contentView.height,
+          chevron.left => nameLabel.right + 8,
+          indicator.centerY => contentView.centerY,
+          indicator.right => contentView.left + (indicatorImage == nil ? 0 : 40)
+        )
 
         if previewable {
-          formatStrings += [
-            "image.left = indicator.right + 20",
-            "image.height = content.height",
-            "label.left = image.right + 8"
-          ]
+          constrain(identifier: listIdentifier,
+            thumbnailImageView.left => indicator.right + 20,
+            thumbnailImageView.height => contentView.height,
+            nameLabel.left => thumbnailImageView.right + 8
+          )
         } else {
-          formatStrings += ["label.left = indicator.right + 20"]
+          constrain(identifier: listIdentifier, nameLabel.left => indicator.right + 20)
         }
-
-        let format = "\n".join(formatStrings)
-
-        let views = [ "indicator": indicator,
-                      "image"    : thumbnailImageView,
-                      "label"    : nameLabel,
-                      "chevron"  : chevron,
-                      "content"  : contentView]
-
-        constrain(format, views: views, identifier: listIdentifier)
 
         let predicate = NSPredicate(format: "firstItem == %@" +
                                             "AND secondItem == %@ " +
@@ -137,17 +126,14 @@ final class BankCollectionItemCell: BankCollectionCell {
         chevron.hidden      = !showChevron
 
 
-      case .Thumbnail:
+      case .Thumbnail, .List where zoomed == true:
 
-        let format = "\n".join(
-          "|[image]|",
-          "image.height = image.width",
-          "indicator.left = content.left + 8",
-          "indicator.top = content.top + 8"
-          )
-
-        let views = ["image": thumbnailImageView, "content": contentView, "indicator": indicator]
-        constrain(format, views:views, identifier: thumbnailIdentifier)
+        constrain(identifier: thumbnailIdentifier,
+          𝗛|thumbnailImageView|𝗛,
+          [ thumbnailImageView.height => thumbnailImageView.width,
+            indicator.left => contentView.left + 8,
+            indicator.top => contentView.top + 8]
+        )
 
         indicator.hidden    = indicatorImage == nil
         chevron.hidden      = true

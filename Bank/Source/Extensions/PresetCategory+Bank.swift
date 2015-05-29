@@ -15,6 +15,8 @@ extension PresetCategory: BankModelCollection {
   var itemType: CollectedModel.Type { return Preset.self }
   var collectionType: ModelCollection.Type { return PresetCategory.self }
   var previewable: Bool { return true }
+  var itemLabel: String { return "Preset" }
+  var collectionLabel: String { return "Category" }
 }
 
 extension PresetCategory: FormCreatable {
@@ -45,7 +47,7 @@ extension PresetCategory: FormCreatable {
 
 }
 
-extension PresetCategory: CreatableItemBankModelCollection {
+//extension PresetCategory: CreatableItemBankModelCollection {
 
 //  static func itemTypeFormFields(#context: NSManagedObjectContext) -> FormViewController.FieldCollection {
 //    return Preset.formFields(context: context)
@@ -57,9 +59,9 @@ extension PresetCategory: CreatableItemBankModelCollection {
 //    return Preset.createWithFormValues(values, context: context)
 //  }
 
-}
+//}
 
-extension PresetCategory: CreatableCollectionBankModelCollection {
+//extension PresetCategory: CreatableCollectionBankModelCollection {
 
 //  static func collectionTypeFormFields(#context: NSManagedObjectContext) -> FormViewController.FieldCollection {
 //    return PresetCategory.formFields(context: context)
@@ -71,4 +73,4 @@ extension PresetCategory: CreatableCollectionBankModelCollection {
 //    return PresetCategory.createWithFormValues(values, context: context)
 //  }
 
-}
+//}

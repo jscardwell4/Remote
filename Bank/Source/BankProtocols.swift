@@ -41,6 +41,12 @@ protocol DiscoverCreatable: Model {
   static func endDiscovery()
 }
 
+protocol CustomCreatable: Model {
+  static func creationControllerWithContext(context: NSManagedObjectContext,
+                        cancellationHandler didCancel: () -> Void,
+                            creationHandler didCreate: (ModelObject) -> Void) -> UIViewController
+}
+
 // MARK: - Bank colleciton protocols
 
 /** Protocol for objects that can supply bank items or collections */
@@ -50,21 +56,37 @@ protocol DiscoverCreatable: Model {
   optional var items: [CollectedModel] { get }
   optional var collections: [ModelCollection] { get }
   optional var previewable: Bool { get }
+  optional var itemLabel: String { get }
+  optional var collectionLabel: String { get }
 }
 
 /** Protocol for models that implement `BankItemCollection` */
 @objc protocol BankModelCollection: BankItemCollection, NamedModel {}
-protocol CreatableItemBankModelCollection: BankModelCollection {
-  // typealias ItemType
-//  static func itemTypeFormFields(#context: NSManagedObjectContext) -> FormViewController.FieldCollection
-//  static func createItemTypeWithFormValues(values: FormViewController.FieldValues,
-//                                           context: NSManagedObjectContext) -> CollectedModel?
+protocol FormCreatableItemBankModelCollection: BankModelCollection {
+  func itemCreationForm(#context: NSManagedObjectContext) -> Form
+  func createItemWithForm(form: Form, context: NSManagedObjectContext) -> Bool
 }
-protocol CreatableCollectionBankModelCollection: BankModelCollection {
-  // typealias CollectionType
-//  static func collectionTypeFormFields(#context: NSManagedObjectContext) -> FormViewController.FieldCollection
-//  static func createCollectionTypeWithFormValues(values: FormViewController.FieldValues,
-//                                                 context: NSManagedObjectContext) -> ModelCollection?
+protocol FormCreatableCollectionBankModelCollection: BankModelCollection {
+  func collectionCreationForm(#context: NSManagedObjectContext) -> Form
+  func createCollectionWithForm(form: Form, context: NSManagedObjectContext) -> Bool
+}
+protocol DiscoverCreatableItemBankModelCollection: BankModelCollection {
+  func beginItemDiscovery(#context: NSManagedObjectContext, presentForm: (Form, ProcessedForm) -> Void) -> Bool
+  func endItemDiscovery()
+}
+protocol DiscoverCreatableCollectionBankModelCollection: BankModelCollection {
+  func beginCollectionDiscovery(#context: NSManagedObjectContext, presentForm: (Form, ProcessedForm) -> Void) -> Bool
+  func endCollectionDiscovery()
+}
+protocol CustomCreatableItemBankModelCollection: BankModelCollection {
+  func itemCreationControllerWithContext(context: NSManagedObjectContext,
+                   cancellationHandler didCancel: () -> Void,
+                       creationHandler didCreate: (ModelObject) -> Void) -> UIViewController
+}
+protocol CustomCreatableCollectionBankModelCollection: BankModelCollection {
+  func collectionCreationControllerWithContext(context: NSManagedObjectContext,
+                         cancellationHandler didCancel: () -> Void,
+                             creationHandler didCreate: (ModelObject) -> Void) -> UIViewController
 }
 
 // MARK: - View controller related protocols
@@ -95,10 +117,14 @@ protocol BankItemImportExportController: class {
 /** Protocol for types that want create bar button item in bottom toolbar */
 protocol BankItemCreationController: class {
   var creationMode: Bank.CreationMode { get } // Whether new items are created manually, via discovery, both, or neither
-  func discoverBankItem()  // Called from create item bar button action when creationMode == .Discovery
-  func createBankItem()    // Called from create item bar button action when creationMode == .Manual
+  func discoverBankItem()                     // Called from create item bar button action when creationMode == .Discovery
+  func createBankItem()                       // Called from create item bar button action when creationMode == .Manual
   weak var createItemBarButton: ToggleBarButtonItem? { get set }
   weak var discoverItemBarButton: ToggleBarButtonItem? { get set }
+}
+
+protocol BankItemCreationControllerTransaction {
+  var label: String { get }
 }
 
 /** Protocol for types that want search bar button item in bottom toolbar */

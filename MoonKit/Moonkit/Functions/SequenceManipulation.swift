@@ -8,6 +8,16 @@
 
 import Foundation
 
+public struct InfiniteSequenceOf<T>: SequenceType {
+  private let value: T
+  public init(_ v: T) { value = v }
+  public func generate() -> GeneratorOf<T> { return GeneratorOf<T>({self.value}) }
+}
+
+public func zip<S:SequenceType, T>(seq: S, value: T) -> [(S.Generator.Element, T)] {
+  return Array(zip(seq, InfiniteSequenceOf(value)))
+}
+
 /**
 sequence:T):
 

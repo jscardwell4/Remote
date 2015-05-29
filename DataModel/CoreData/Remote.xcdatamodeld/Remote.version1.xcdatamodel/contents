@@ -21,8 +21,9 @@
         <relationship name="topToolbar" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="ButtonGroup" inverseName="topToolbarForController" inverseEntity="ButtonGroup" syncable="YES"/>
     </entity>
     <entity name="Asset" representedClassName="Asset" syncable="YES">
-        <attribute name="location" attributeType="String" syncable="YES"/>
+        <attribute name="data" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="path" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Image" inverseName="asset" inverseEntity="Image" syncable="YES"/>
     </entity>
     <entity name="Button" representedClassName="Button" parentEntity="RemoteElement" syncable="YES">
@@ -262,7 +263,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="user" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <relationship name="childCategories" toMany="YES" deletionRule="Nullify" destinationEntity="ImageCategory" inverseName="parentCategory" inverseEntity="ImageCategory" syncable="YES"/>
-        <relationship name="images" toMany="YES" deletionRule="Nullify" destinationEntity="Image" inverseName="imageCategory" inverseEntity="Image" syncable="YES"/>
+        <relationship name="images" toMany="YES" deletionRule="Cascade" destinationEntity="Image" inverseName="imageCategory" inverseEntity="Image" syncable="YES"/>
         <relationship name="parentCategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ImageCategory" inverseName="childCategories" inverseEntity="ImageCategory" syncable="YES"/>
     </entity>
     <entity name="ImageView" representedClassName="ImageView" syncable="YES">

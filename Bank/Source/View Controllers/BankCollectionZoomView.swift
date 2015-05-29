@@ -20,16 +20,16 @@ protocol BankCollectionZoomViewDelegate {
 
 final class BankCollectionZoomView: UIView {
 
-  static let LabelHeight: CGFloat = 21.0
-  static let ButtonSize = CGSize(width: 44.0, height: 44.0)
+  let labelHeight: Float = 21
+  let buttonWidth: Float = 44
+  let buttonHeight: Float = 44
 
   var item: Previewable? {
     didSet {
-      if let namedItem = item as? Named { nameLabel.text = namedItem.name }
+      nameLabel.text = (item as? Named)?.name
       image = item?.preview
-      if let editableItem = item as? Editable { editButton.enabled = editableItem.editable }
-      else { editButton.enabled = false }
-      detailButton.enabled = item != nil
+      editButton.enabled = (item as? Editable)?.editable == true
+      detailButton.enabled = (item as? Detailable) != nil
     }
   }
 
@@ -38,30 +38,20 @@ final class BankCollectionZoomView: UIView {
     set {
       imageView?.image = newValue
       if let actualSize = newValue?.size {
-        let maxImageSize = CGSize(width: maxImageWidth, height: maxImageHeight)
-        if CGSizeContainsSize(maxImageSize, actualSize) { imageSize = actualSize }
-        else { imageSize = CGSizeIntegralRoundingDown(CGSizeAspectMappedToSize(actualSize, maxImageSize, true)) }
-        setNeedsUpdateConstraints()
+        if maxImageSize.contains(actualSize) { imageSize = actualSize }
+        else { imageSize = actualSize.aspectMappedToSize(maxImageSize, binding: true).integralSizeRoundingDown }
       }
     }
   }
 
-  var backgroundImage: UIImage? {
-    get { return backgroundImageView?.image }
-    set { backgroundImageView?.image = newValue }
-  }
-
-  var maxImageWidth: CGFloat { return w - BankCollectionZoomView.ButtonSize.width * 3.0 }
-
-  var maxImageHeight: CGFloat {
-    return h - BankCollectionZoomView.ButtonSize.height * 3.0 - BankCollectionZoomView.LabelHeight
-  }
-  var imageSize: CGSize = CGSize.zeroSize
+  var maxImageWidth: Float { return Float(w) - buttonWidth * 3.0 }
+  var maxImageHeight: Float { return Float(h) - buttonHeight * 3.0 - labelHeight }
+  var maxImageSize: CGSize { return CGSize(width: CGFloat(maxImageWidth), height: CGFloat(maxImageHeight)) }
+  private var imageSize: CGSize = CGSize.zeroSize { didSet { setNeedsUpdateConstraints() } }
 
   var delegate: BankCollectionZoomViewDelegate?
 
-  var showEditButton: Bool { get {  return !editButton.hidden } set { editButton.hidden = !newValue } }
-
+  var showEditButton:   Bool { get {  return !editButton.hidden   } set { editButton.hidden = !newValue   } }
   var showDetailButton: Bool { get {  return !detailButton.hidden } set { detailButton.hidden = !newValue } }
 
   /**
@@ -73,48 +63,45 @@ final class BankCollectionZoomView: UIView {
 
     super.init(frame: frame)
 
+    MSLogDebug("frame: \(frame)")
     setTranslatesAutoresizingMaskIntoConstraints(false)
 
-    backgroundImageView = {
-      let backgroundImageView = UIImageView.newForAutolayout()
-      backgroundImageView.opaque = true
-      backgroundImageView.contentMode = .Center
-      self.addSubview(backgroundImageView)
-      return backgroundImageView
-      }()
+    let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
+    blurView.frame = bounds
+//    blurView.setTranslatesAutoresizingMaskIntoConstraints(false)
+//    blurView.contentView.setTranslatesAutoresizingMaskIntoConstraints(false)
+    addSubview(blurView)
+    self.blurView = blurView
+    contentView = blurView.contentView
 
-    imageView = {
-      let imageView = UIImageView.newForAutolayout()
-      imageView.contentMode = .ScaleAspectFit
-      self.addSubview(imageView)
-      return imageView
-      }()
+    let imageView = UIImageView(autolayout: true)
+    imageView.contentMode = .ScaleAspectFit
+    imageView.tintColor = UIColor.blackColor()
+    contentView.addSubview(imageView)
+    self.imageView = imageView
 
-    nameLabel = {
-      let nameLabel = UILabel.newForAutolayout()
-      nameLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
-      nameLabel.textAlignment = .Center
-      self.addSubview(nameLabel)
-      return nameLabel
-    }()
+    let nameLabel = UILabel(autolayout: true)
+    nameLabel.font = Bank.boldLabelFont
+    nameLabel.textAlignment = .Center
+    nameLabel.constrain(nameLabel.height => labelHeight)
+    contentView.addSubview(nameLabel)
+    self.nameLabel = nameLabel
 
-    detailButton = {
-      let detailButton = UIButton.newForAutolayout()
-      detailButton.setImage(UIImage(named: "724-info"), forState: .Normal)
-      detailButton.setImage(UIImage(named: "724-info-selected"), forState: .Highlighted)
-      detailButton.addTarget(self, action: "dismiss:", forControlEvents: .TouchUpInside)
-      self.addSubview(detailButton)
-      return detailButton
-      }()
+    let detailButton = UIButton(autolayout: true)
+    detailButton.constrain(detailButton.width => detailButton.height)
+    detailButton.setImage(Bank.infoImage, forState: .Normal)
+    detailButton.setImage(Bank.infoImageSelected, forState: .Highlighted)
+    detailButton.addTarget(self, action: "dismiss:", forControlEvents: .TouchUpInside)
+    contentView.addSubview(detailButton)
+    self.detailButton = detailButton
 
-    editButton = {
-      let editButton = UIButton.newForAutolayout()
-      editButton.setImage(UIImage(named: "830-pencil"), forState: .Normal)
-      editButton.setImage(UIImage(named: "830-pencil-selected"), forState: .Highlighted)
-      editButton.addTarget(self, action: "dismiss:", forControlEvents: .TouchUpInside)
-      self.addSubview(editButton)
-      return editButton
-      }()
+    let editButton = UIButton(autolayout: true)
+    editButton.constrain(editButton.width => editButton.height)
+    editButton.setImage(Bank.editImage, forState: .Normal)
+    editButton.setImage(Bank.editImageSelected, forState: .Highlighted)
+    editButton.addTarget(self, action: "dismiss:", forControlEvents: .TouchUpInside)
+    contentView.addSubview(editButton)
+    self.editButton = editButton
 
     addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismiss:"))
 
@@ -126,10 +113,7 @@ final class BankCollectionZoomView: UIView {
   :param: frame CGRect
   :param: delegate BankCollectionZoomViewDelegate
   */
-  convenience init(frame: CGRect, delegate: BankCollectionZoomViewDelegate) {
-    self.init(frame: frame)
-    self.delegate = delegate
-  }
+  convenience init(frame: CGRect, delegate d: BankCollectionZoomViewDelegate) { self.init(frame: frame); delegate = d }
 
   /**
   init:
@@ -138,13 +122,12 @@ final class BankCollectionZoomView: UIView {
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
+  private weak var contentView:           UIView!
+  private weak var blurView:              UIVisualEffectView!
   private weak var detailButton:          UIButton!
   private weak var editButton:            UIButton!
   private weak var nameLabel:             UILabel!
   private weak var imageView:             UIImageView!
-  private weak var backgroundImageView:   UIImageView!
-  private weak var imageWidthConstraint:  NSLayoutConstraint!
-  private weak var imageHeightConstraint: NSLayoutConstraint!
 
   /**
   requiresConstraintBasedLayout
@@ -153,104 +136,37 @@ final class BankCollectionZoomView: UIView {
   */
   override class func requiresConstraintBasedLayout() -> Bool { return true }
 
-  /**
-  updateConstraints
-  */
+  /** updateConstraints */
   override func updateConstraints() {
-
-    let identifierPrefix = "Internal"
-
-    // Check for our internal constraints
-    if constraintsWithIdentifierPrefix(identifierPrefix).count == 0 {
-
-      // Double check that our name label doesn't have our constraint
-      if nameLabel.constraintWithIdentifier(identifierPrefix) == nil {
-        nameLabel.constrain("self.height = \(BankCollectionZoomView.LabelHeight)", identifier: identifierPrefix)
-      }
-
-      // Double check that our detail button doesn't have our constraint
-      if detailButton.constraintWithIdentifier(identifierPrefix) == nil {
-        detailButton.constrain("self.width = self.height", identifier: identifierPrefix)
-      }
-
-      // Double check that our edit button doesn't have our constraint
-      if editButton.constraintWithIdentifier(identifierPrefix) == nil {
-        editButton.constrain("self.width = self.height", identifier: identifierPrefix)
-      }
-
-      // Create the format string for our constraints
-      let format = "\n".join([
-        "|[background]|",                             // Make the background as wide as us
-        "V:|[background]|",                           // Make the background as tall as us
-        "image.center = self.center",                 // Center the image
-        "detail.centerY = image.top - 33",            // Align detail with the top of image
-        "detail.left = name.right + 8",               // Align detail with the right of the name
-        "name.bottom = image.top - 8",                // Place the name above the image
-        "name.width ≥ image.width",                   // Make the name at least as wide as the image
-        "name.width ≤ \(maxImageWidth)",              // Make sure the name isn't too wide
-        "name.centerX = self.centerX",                // Center the name
-        "edit.centerY = image.bottom + 33",           // Align edit with the bottom of image
-        "edit.right = detail.right"                   // Align the right edge of edit and detail
-        ])
-
-      // Create the dictionary of views for our constraints
-      let views = [ "background": backgroundImageView,
-                    "image"     : imageView,
-                    "name"      : nameLabel,
-                    "edit"      : editButton,
-                    "detail"    : detailButton ]
-
-      // Create and add our constraints
-      constrain(format, views: views, identifier: identifierPrefix)
-    }
-
-    // Check if we have a size set for displaying our image
-    if !CGSizeEqualToSize(imageSize, CGSize.zeroSize) {
-
-      // Check if we need to create the image sizing constraints
-      if imageWidthConstraint == nil && imageHeightConstraint == nil {
-
-        imageWidthConstraint = {[unowned self] in
-          let imageWidthConstraint = NSLayoutConstraint(item: self.imageView,
-                                              attribute: .Width,
-                                              relatedBy: .Equal,
-                                                 toItem: nil,
-                                              attribute: .NotAnAttribute,
-                                             multiplier: 1.0,
-                                               constant: self.imageSize.width)
-          imageWidthConstraint.identifier = identifierPrefix
-          self.imageView.addConstraint(imageWidthConstraint)
-          return imageWidthConstraint
-        }()
-
-        imageHeightConstraint = {[unowned self] in
-          let imageHeightConstraint = NSLayoutConstraint(item: self.imageView,
-                                               attribute: .Height,
-                                               relatedBy: .Equal,
-                                                  toItem: nil,
-                                               attribute: .NotAnAttribute,
-                                              multiplier: 1.0,
-                                                constant: self.imageSize.height)
-          imageHeightConstraint.identifier = identifierPrefix
-          self.imageView.addConstraint(imageHeightConstraint)
-          return imageHeightConstraint
-        }()
-
-      }
-
-      // Otherwise we just need to check that the constraint constants are in sync with our display size
-      else {
-
-        precondition(imageWidthConstraint != nil && imageHeightConstraint != nil, "we should have image constraints")
-
-        imageWidthConstraint.constant  = imageSize.width
-        imageHeightConstraint.constant = imageSize.height
-
-      }
-
-    }
-
+    MSLogDebug("before update… constraints = {\n\t" + "\n\t".join(constraints()) + "\n}")
+    removeAllConstraints()
+//    blurView.removeAllConstraints()
+//    contentView.removeAllConstraints()
     super.updateConstraints()
+
+    constrain(𝗩|blurView|𝗩, 𝗛|blurView|𝗛)
+    constrain(𝗩|contentView|𝗩, 𝗛|contentView|𝗛)
+//    blurView.constrain(𝗩|contentView|𝗩, 𝗛|contentView|𝗛)
+    contentView.constrain(
+      imageView.centerX => contentView.centerX,     // Horizontally center the image
+      imageView.centerY => contentView.centerY,     // Vertically center the image
+      detailButton.centerY => imageView.top - 33,   // Align detail with the top of image
+      detailButton.left => nameLabel.right + 8,     // Align detail with the right of the name
+      nameLabel.bottom => imageView.top - 8,        // Place the name above the image
+      nameLabel.width ≥ imageView.width,            // Make the name at least as wide as the image
+      nameLabel.width ≤ maxImageWidth,              // Make sure the name isn't too wide
+      nameLabel.centerX => contentView.centerX,     // Center the name
+      editButton.centerY => imageView.bottom + 33,  // Align edit with the bottom of image
+      editButton.right => detailButton.right        // Align the right edge of edit and detail
+    )
+
+    // Create the image sizing constraints if we have a non-zero size
+    if imageSize != CGSize.zeroSize {
+      imageView.removeAllConstraints()
+      imageView.constrain(imageView.width => Float(imageSize.width), imageView.height => Float(imageSize.height))
+    }
+
+    MSLogDebug("after update… constraints = {\n\t" + "\n\t".join(constraints()) + "\n}")
 
   }
 

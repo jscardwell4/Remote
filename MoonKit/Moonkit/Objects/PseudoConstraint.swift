@@ -579,9 +579,7 @@ public func --(lhs: UIView, rhs: Float) -> (UIView, Float) { return (lhs, rhs) }
 public func --(lhs: ([PseudoConstraint], Float), rhs: UIView) -> [PseudoConstraint] {
   var pseudoConstraints = lhs.0
   if let lhsView = pseudoConstraints.first?.firstObject as? UIView,
-    superview = pseudoConstraints.first?.secondObject as? UIView
-      where superview === lhsView.superview && rhs.isDescendantOfView(superview),
-    let axis = pseudoConstraints.first?.firstAttribute.axis,
+    axis = pseudoConstraints.first?.firstAttribute.axis,
     lastView = pseudoConstraints.last?.firstObject as? UIView
   {
     switch axis {
@@ -602,6 +600,10 @@ public func --(lhs: (UILayoutConstraintAxis, Float), rhs: UIView) -> PseudoConst
 }
 public func --(lhs: (PseudoConstraint, Float), rhs: UIView) -> [PseudoConstraint]  {
   return ([lhs.0], lhs.1) -- rhs
+}
+
+public func --(lhs: (UIView, Float), rhs: UIView) -> PseudoConstraint {
+  return rhs.left => lhs.0.right + lhs.1
 }
 
 public func |(lhs: UIView, rhs: UILayoutConstraintAxis) -> PseudoConstraint {

@@ -16,33 +16,47 @@ import MoonKit
 private let reuseIdentifier = "Cell"
 private let imageViewNametag = "image"
 
-class PhotoCollectionBrowser: UIViewController, PhotoBrowserLayoutDelegate, UICollectionViewDataSource {
+class PhotoCollectionBrowser: UIViewController, PhotoCollectionLayoutDelegate, UICollectionViewDataSource {
+
+  typealias ImageSelection = (data: NSData, uti: String, orientation: UIImageOrientation)
+
+  let callback: (PhotoCollectionBrowser, ImageSelection?) -> Void
+  private(set) var cancelled = false
 
   // MARK: - Data properties
 
   /** The `PHAsset` objects fetched from the `PHAssetCollection` passed to `initWithCollection:` */
-  let assets: PHFetchResult
+  let assets: [PHAsset]
 
-  /** Holds the pixel width and height for each asset in `assets` */
-  private let sizes: [(width: Int, height: Int)]
+  /** Holds the currently selected asset, if any */
+  private var selectedAsset: PHAsset?
 
   /** Property of  convenience */
   private let manager = PHCachingImageManager()
 
   // MARK: - UI properties
 
-  /** The bottom toolbar */
-  @IBOutlet weak var bottomToolbar: UIToolbar!
-
   /** The collection view */
   @IBOutlet var collectionView: UICollectionView!
 
   /** The collection view layout */
-  @IBOutlet var collectionViewLayout: PhotoBrowserLayout!
+  @IBOutlet var layout: PhotoCollectionLayout!
 
   // MARK: - Manipulating the scale of the image
 
-  typealias ItemScale = PhotoBrowserLayout.ItemScale
+  typealias ItemScale = PhotoCollectionLayout.ItemScale
+
+  /** The current scale for items */
+  private var itemScale: ItemScale = .EightAcross {
+    didSet {
+      layout.itemScale = itemScale
+      if oldValue != itemScale {
+        stopCachingForScale(oldValue, aspect: aspect)
+        startCachingForScale(itemScale, aspect: aspect)
+        requestImagesForVisibleCells()
+      }
+    }
+  }
 
   /** Bottom toolbar item for manipulating the currently used image scale */
   @IBOutlet weak var scaleSlider: UISlider!
@@ -52,17 +66,48 @@ class PhotoCollectionBrowser: UIViewController, PhotoBrowserLayoutDelegate, UICo
 
   :param: sender UISlider
   */
-  @IBAction func updateScale(sender: UISlider) {
-    collectionViewLayout.itemScale = ItemScale(rawValue: sender.value)
-    requestImagesForVisibleCells()
+  @IBAction func updateScale(sender: UISlider) { itemScale = ItemScale(rawValue: sender.value) }
+
+  // MARK: - Caching
+
+  private struct CacheType: Hashable { let scale: ItemScale; let aspect: Aspect; var hashValue: Int { return 0 } }
+
+  /**
+  startCachingForScale:mode:
+
+  :param: scale ItemScale
+  */
+  private func startCachingForScale(scale: ItemScale, aspect: Aspect) {
+    MSLogDebug("starting to cache images for item scale '\(scale)'")
+    caches.insert(CacheType(scale: scale, aspect: aspect))
+    manager.startCachingImagesForAssets(assets, targetSize: scale.itemSize, contentMode: aspect.contentMode, options: nil)
+  }
+
+  /**
+  stopCachingForScale:mode:
+
+  :param: scale ItemScale
+  */
+  private func stopCachingForScale(scale: ItemScale, aspect: Aspect) {
+    MSLogDebug("no longer caching images for item scale '\(scale)'")
+    caches.remove(CacheType(scale: scale, aspect: aspect))
+    manager.stopCachingImagesForAssets(assets, targetSize: scale.itemSize, contentMode: .AspectFill, options: nil)
   }
 
   // MARK: - Manipulating the aspect ratio used to display images
 
-  enum Aspect: Int { case Fill, Fit }
+  enum Aspect: Int { case Fill, Fit; var contentMode: PHImageContentMode { return self == .Fill ? .AspectFill : .AspectFit } }
 
   /** Aspect to use for new image requests, this is ignored for a request servicing a 'zoomed' cell */
-  private var aspect = Aspect.Fill { didSet { requestImagesForVisibleCells() } }
+  private var aspect = Aspect.Fill {
+    didSet {
+      if oldValue != aspect {
+        stopCachingForScale(itemScale, aspect: oldValue)
+        startCachingForScale(itemScale, aspect: aspect)
+        requestImagesForVisibleCells()
+      }
+    }
+  }
 
   /** Bottom toolbar item for manipulating the currently used aspect */
   @IBOutlet weak var aspectControl: ToggleImageSegmentedControl!
@@ -73,9 +118,14 @@ class PhotoCollectionBrowser: UIViewController, PhotoBrowserLayoutDelegate, UICo
   /** Holds IDs of outstanding `PHImageManager` requests */
   private var requests: Set<PHImageRequestID> = []
 
+  /** Holds the scales currently being cached by the image manager */
+  private var caches: Set<CacheType> = []
+
   /** requestImagesForVisibleCells */
   private func requestImagesForVisibleCells() {
-    apply(collectionView.indexPathsForVisibleItems() as! [NSIndexPath]){self.requestImageAtIndexPath($0)}
+    let indexPaths = collectionView.indexPathsForVisibleItems() as! [NSIndexPath]
+    MSLogDebug("requesting images for cells: \(indexPaths.map({$0.row}))")
+    apply(indexPaths){self.requestImageAtIndexPath($0)}
   }
 
   typealias RequestResult = (image: UIImage!, info: [NSObject:AnyObject]!)
@@ -90,17 +140,17 @@ class PhotoCollectionBrowser: UIViewController, PhotoBrowserLayoutDelegate, UICo
   private func requestImageAtIndexPath(indexPath: NSIndexPath) {
     precondition(indexPath.row < assets.count, "index out of range")
 
-    let asset = assets[indexPath.row] as! PHAsset
-
-    let handler: (UIImage!, [NSObject:AnyObject]!) -> Void = { [weak self] in
-      self?.handleRequestResult((image: $0, info: $1), forIndexPath: indexPath)
-    }
+    let asset = assets[indexPath.row]
 
     let mode: PHImageContentMode
     let size: CGSize
 
-    if indexPath == collectionViewLayout.zoomedItem { size = sizeForZoomedItemAtIndexPath(indexPath); mode = .AspectFit }
-    else { size = collectionViewLayout.itemScale.itemSize; mode = aspect == .Fill ? .AspectFill : .AspectFit }
+    if indexPath == layout.zoomedItem { size = sizeForZoomedItemAtIndexPath(indexPath); mode = .AspectFit }
+    else { size = layout.itemScale.itemSize; mode = aspect.contentMode }
+
+    let handler: (UIImage!, [NSObject:AnyObject]!) -> Void = { [weak self] in
+      self?.handleRequestResult((image: $0, info: $1), forIndexPath: indexPath, contentMode: mode)
+    }
 
     requests.insert(manager.requestImageForAsset(asset, targetSize: size, contentMode: mode, options: nil, resultHandler: handler))
   }
@@ -111,37 +161,45 @@ class PhotoCollectionBrowser: UIViewController, PhotoBrowserLayoutDelegate, UICo
   :param: result RequestResult
   :param: indexPath NSIndexPath
   */
-  private func handleRequestResult(result: RequestResult, forIndexPath indexPath: NSIndexPath) {
+  private func handleRequestResult(result: RequestResult, forIndexPath indexPath: NSIndexPath, contentMode: PHImageContentMode) {
 
-    let requestID = (result.info[PHImageResultRequestIDKey] as! NSNumber).intValue
+    let id = (result.info[PHImageResultRequestIDKey] as! NSNumber).intValue
 
-    if let isCancelled = result.info[PHImageCancelledKey] as? Bool where isCancelled == true {
-      MSLogDebug("request with id \(requestID) cancelled")
-    }
+    if result.info[PHImageCancelledKey] as? Bool == true { MSLogDebug("request with id \(id) cancelled"); requests.remove(id) }
 
     else if let error = result.info[PHImageErrorKey] as? NSError {
-      MSHandleError(error, message: "problem encountered loading image with request id \(requestID)")
+      MSHandleError(error, message: "problem encountered loading image with request id \(id)")
+      requests.remove(id)
     }
 
     else if let image = result.image {
-      requests.remove(requestID)
-
       if let imageView = collectionView.cellForItemAtIndexPath(indexPath)?.contentView[imageViewNametag] as? UIImageView {
         imageView.image = image
+        imageView.contentMode = contentMode == .AspectFit ? .ScaleAspectFit : .ScaleAspectFill
       }
+
+      if result.info[PHImageResultIsDegradedKey] as? Bool != true { requests.remove(id) }
     }
   }
 
   // MARK: - Select and cancel actions
 
   /** Dismiss the controller */
-  @IBAction func cancel() { dismissViewControllerAnimated(true, completion: nil) }
+  @IBAction func cancel() { cancelled = true; callback(self, nil) }
 
   /** Right toolbar button for the top toolbar */
   @IBOutlet weak var selectButton: UIBarButtonItem!
 
   /** Selects the zoomed item */
-  @IBAction func select() { MSLogDebug("picked an image muthafucka!!!!") }
+  @IBAction func select() {
+    if let asset = selectedAsset {
+      manager.requestImageDataForAsset(asset, options: nil) {[unowned self]
+        (data:NSData!, uti:String!, orientation:UIImageOrientation, info:[NSObject : AnyObject]!) -> Void in
+        if let error = info[PHImageErrorKey] as? NSError { MSHandleError(error); self.cancel() }
+        else { self.callback(self, (data: data, uti: uti, orientation: orientation)) }
+      }
+    }
+  }
 
   // MARK: - Initialization
 
@@ -150,13 +208,10 @@ class PhotoCollectionBrowser: UIViewController, PhotoBrowserLayoutDelegate, UICo
 
   :param: collection PHAssetCollection
   */
-  init(collection: PHAssetCollection) {
+  init(collection: PHAssetCollection, callback c: (PhotoCollectionBrowser, ImageSelection?) -> Void) {
+    callback = c
     let fetchResult = PHAsset.fetchAssetsInAssetCollection(collection, options: nil)
-    sizes = map(0..<fetchResult.count){
-      let asset = fetchResult[$0] as! PHAsset
-      return (width: asset.pixelWidth, height: asset.pixelHeight)
-    }
-    assets = fetchResult
+    assets = fetchResult.objectsAtIndexes(NSIndexSet(range: 0 ..< fetchResult.count)) as! [PHAsset]
     super.init(nibName: "PhotoCollectionBrowser", bundle: Bank.bundle)
   }
 
@@ -188,7 +243,9 @@ class PhotoCollectionBrowser: UIViewController, PhotoBrowserLayoutDelegate, UICo
 
     scaleSlider.minimumValue = ItemScale.minScale.normalized
     scaleSlider.maximumValue = ItemScale.maxScale.normalized
-    scaleSlider.value = collectionViewLayout.itemScale.normalized
+    scaleSlider.value = itemScale.normalized
+
+    layout.itemScale = itemScale
 
     // Register cell classes
     collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
@@ -196,13 +253,24 @@ class PhotoCollectionBrowser: UIViewController, PhotoBrowserLayoutDelegate, UICo
   }
 
   /**
-  viewWillDisappear:
+  Begin caching for current scale and aspect
+
+  :param: animated Bool
+  */
+  override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    startCachingForScale(itemScale, aspect: aspect)
+  }
+
+  /**
+  Stop all image requests and stop all caching
 
   :param: animated Bool
   */
   override func viewWillDisappear(animated: Bool) {
     super.viewWillDisappear(animated)
     apply(requests){[manager = self.manager] in manager.cancelImageRequest($0)}
+    manager.stopCachingImagesForAllAssets()
   }
 
 
@@ -276,26 +344,31 @@ class PhotoCollectionBrowser: UIViewController, PhotoBrowserLayoutDelegate, UICo
   :param: indexPath NSIndexPath
   */
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-    if collectionViewLayout.zoomedItem != nil { collectionViewLayout.zoomedItem = nil }
-    else { collectionViewLayout.zoomedItem = indexPath; requestImageAtIndexPath(indexPath) }
-    selectButton.enabled = collectionViewLayout.zoomedItem != nil
+    assert(collectionView.cellForItemAtIndexPath(indexPath)?.selected == true)
+    if layout.zoomedItem != nil { selectedAsset = nil; layout.zoomedItem = nil }
+    else { selectedAsset = assets[indexPath.row]; layout.zoomedItem = indexPath; requestImageAtIndexPath(indexPath) }
+    selectButton.enabled = layout.zoomedItem != nil
   }
 
-  // MARK: - PhotoBrowserLayoutDelegate
+  // MARK: - PhotoCollectionLayoutDelegate
 
   /**
   sizeForZoomedItemInCollectionView:layout:
 
   :param: collectionView UICollectionView
-  :param: layout PhotoBrowserLayout
+  :param: layout PhotoCollectionLayout
 
   :returns: CGSize
   */
   func sizeForZoomedItemAtIndexPath(indexPath: NSIndexPath) -> CGSize {
-    let ratio = Ratio(sizes[indexPath.row].width, sizes[indexPath.row].height)
+    let ratio = Ratio(assets[indexPath.row].pixelWidth, assets[indexPath.row].pixelHeight)
     let width  = min(ratio.numerator, ItemScale.maxScale.itemSize.width)
     let height = ratio.denominatorForNumerator(width)
     return CGSize(width: width, height: height)
   }
 
+}
+
+private func ==(lhs: PhotoCollectionBrowser.CacheType, rhs: PhotoCollectionBrowser.CacheType) -> Bool {
+  return lhs.scale == rhs.scale && lhs.aspect == rhs.aspect
 }
