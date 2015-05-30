@@ -18,7 +18,13 @@ final class BankCollectionCategoryCell: BankCollectionCell {
 
   override var exportItem: JSONValueConvertible? { return collection as? JSONValueConvertible }
 
-  private let label: UILabel = { let view = UILabel(autolayout: true); view.font = Bank.infoFont; return view }()
+  private let label: UILabel = {
+    let view = UILabel(autolayout: true)
+    view.font = Bank.infoFont
+    view.backgroundColor = UIColor.clearColor()
+    view.opaque = false
+    return view
+    }()
 
   /** updateConstraints */
   override func updateConstraints() {
@@ -44,21 +50,21 @@ final class BankCollectionCategoryCell: BankCollectionCell {
 
   }
 
-  /** initializeSubviews */
-  private func initializeSubviews() { contentView.addSubview(label) }
+  /** initializeIVARs */
+  private func initializeIVARs() { contentView.addSubview(label) }
 
   /**
   initWithFrame:
 
   :param: frame CGRect
   */
-  override init(frame: CGRect) { super.init(frame: frame); initializeSubviews() }
+  override init(frame: CGRect) { super.init(frame: frame); initializeIVARs() }
 
   /**
   init:
 
   :param: aDecoder NSCoder
   */
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeSubviews() }
+  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
 
 }

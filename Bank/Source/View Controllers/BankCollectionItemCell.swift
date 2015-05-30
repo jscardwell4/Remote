@@ -21,6 +21,8 @@ final class BankCollectionItemCell: BankCollectionCell {
 
   private let thumbnailImageView: UIImageView = {
     let view = UIImageView(autolayout: true)
+    view.backgroundColor = UIColor.clearColor()
+    view.opaque = false
     view.contentMode = .ScaleAspectFit
     view.userInteractionEnabled = true
     view.constrain(view.width ≤ view.height)
@@ -28,7 +30,13 @@ final class BankCollectionItemCell: BankCollectionCell {
     return view
     }()
 
-  private let nameLabel: UILabel = { let view = UILabel(autolayout: true); view.font = Bank.infoFont; return view }()
+  private let nameLabel: UILabel = {
+    let view = UILabel(autolayout: true)
+    view.font = Bank.infoFont
+    view.backgroundColor = UIColor.clearColor()
+    view.opaque = false
+    return view
+    }()
 
   private let previewGesture: UITapGestureRecognizer = UITapGestureRecognizer()
 
@@ -37,7 +45,6 @@ final class BankCollectionItemCell: BankCollectionCell {
       if previewable {
         if let previewImage = (item as? Previewable)?.thumbnail {
           thumbnailImageView.image = previewImage
-          thumbnailImageView.contentMode = contentSize.contains(previewImage.size) ? .Center : .ScaleAspectFit
         } else {
           thumbnailImageView.image = nil
         }
@@ -51,17 +58,47 @@ final class BankCollectionItemCell: BankCollectionCell {
     didSet {
       if oldValue != viewingMode {
         updateEnabledGestures()
+        updateSubviews()
         setNeedsUpdateConstraints()
       }
     }
   }
 
+  /** updateEnabledGestures */
   private func updateEnabledGestures() {
     previewGesture.enabled = !zoomed && (viewingMode == .List && previewable)
     swipeToDelete = !zoomed && (viewingMode == .List)
   }
 
-  private var zoomed = false { didSet { if oldValue != zoomed { updateEnabledGestures(); setNeedsUpdateConstraints() } } }
+  /** updateSubviews */
+  private func updateSubviews() {
+    switch viewingMode {
+      case .List where zoomed == false:
+        indicator.hidden    = false
+        nameLabel.hidden    = false
+        chevron.hidden      = !showChevron
+        thumbnailImageView.contentMode = .ScaleAspectFit
+      case .Thumbnail, .List where zoomed == true:
+        indicator.hidden = zoomed || indicatorImage == nil
+        chevron.hidden      = true
+        nameLabel.hidden    = true
+        thumbnailImageView.contentMode = contentSize.contains(thumbnailImageView.image?.size ?? CGSize.zeroSize)
+                                           ? .Center
+                                           : .ScaleAspectFit
+      default:
+        break
+    }
+  }
+
+  private var zoomed = false {
+    didSet {
+      if oldValue != zoomed {
+        updateEnabledGestures()
+        updateSubviews()
+        setNeedsUpdateConstraints()
+      }
+    }
+  }
 
   var previewActionHandler: ((Void) -> Void)?
 
@@ -75,9 +112,7 @@ final class BankCollectionItemCell: BankCollectionCell {
     if let attributes = layoutAttributes as? BankCollectionAttributes {
       zoomed = attributes.zoomed
       viewingMode = attributes.viewingMode
-    }
-    if let previewImage = thumbnailImageView.image {
-      thumbnailImageView.contentMode = contentSize.contains(previewImage.size) ? .Center : .ScaleAspectFit
+      MSLogDebug("attributes = \(attributes)")
     }
   }
 
@@ -108,7 +143,9 @@ final class BankCollectionItemCell: BankCollectionCell {
         if previewable {
           constrain(identifier: listIdentifier,
             thumbnailImageView.left => indicator.right + 20,
-            thumbnailImageView.height => contentView.height,
+            thumbnailImageView.height => contentView.height - 8,
+            thumbnailImageView.width => thumbnailImageView.height,
+            thumbnailImageView.centerY => contentView.centerY,
             nameLabel.left => thumbnailImageView.right + 8
           )
         } else {
@@ -121,51 +158,54 @@ final class BankCollectionItemCell: BankCollectionCell {
                                             "AND secondAttribute == \(NSLayoutAttribute.Left.rawValue)" +
                                             "AND relation == \(NSLayoutRelation.Equal.rawValue)", indicator, contentView)
         indicatorConstraint = constraintMatching(predicate)
-        indicator.hidden    = false
-        nameLabel.hidden    = false
-        chevron.hidden      = !showChevron
-
+        MSLogDebug("indicatorConstraint = \(toString(indicatorConstraint))")
 
       case .Thumbnail, .List where zoomed == true:
+        if zoomed, let (w, h) = thumbnailImageView.image?.size.unpack() where w > 0 && h > 0 {
+            constrain(identifier: thumbnailIdentifier,
+              𝗛|--(≥0)--thumbnailImageView--(≤0)--|𝗛,
+              [thumbnailImageView.height => thumbnailImageView.width * Float(Ratio(w, h).inverseValue),
+              thumbnailImageView.width => Float(w) -!> 500,
+              thumbnailImageView.centerX => contentView.centerX,
+              thumbnailImageView.centerY => contentView.centerY]
+            )
+        } else {
+          constrain(identifier: thumbnailIdentifier,
+            𝗛|thumbnailImageView|𝗛,
+            [ thumbnailImageView.height => thumbnailImageView.width,
+              indicator.left => contentView.left + 8,
+              indicator.top => contentView.top + 8]
+          )
+        }
 
-        constrain(identifier: thumbnailIdentifier,
-          𝗛|thumbnailImageView|𝗛,
-          [ thumbnailImageView.height => thumbnailImageView.width,
-            indicator.left => contentView.left + 8,
-            indicator.top => contentView.top + 8]
-        )
-
-        indicator.hidden    = indicatorImage == nil
-        chevron.hidden      = true
-        nameLabel.hidden    = true
-
-      default: break
+      default:
+        break
 
     }
 
   }
 
-  /** initializeSubviews */
-  private func initializeSubviews() {
+  /** initializeIVARs */
+  private func initializeIVARs() {
     contentView.addSubview(nameLabel)
     contentView.addSubview(thumbnailImageView)
     previewGesture.addTarget(self, action: "previewAction")
     thumbnailImageView.addGestureRecognizer(previewGesture)
-  }
+}
 
   /**
   initWithFrame:
 
   :param: frame CGRect
   */
-  override init(frame: CGRect) { super.init(frame: frame); initializeSubviews() }
+  override init(frame: CGRect) { super.init(frame: frame); initializeIVARs() }
 
   /**
   init:
 
   :param: aDecoder NSCoder
   */
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeSubviews() }
+  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
 
   /**
 

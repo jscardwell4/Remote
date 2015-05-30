@@ -12,33 +12,30 @@ class BlurDecoration: UICollectionReusableView {
 
   static let kind = "Blur"
 
-  private weak var blur: UIVisualEffectView!
-
-  private func createBlurWithStyle(style: UIBlurEffectStyle) {
-    self.blur?.removeFromSuperview()
-    let blur = UIVisualEffectView(effect: UIBlurEffect(style: style))
-    blur.setTranslatesAutoresizingMaskIntoConstraints(false)
-    addSubview(blur)
-    constrain(𝗩|blur|𝗩, 𝗛|blur|𝗛)
-    self.blur = blur
-  }
-
   private func setup() {
     backgroundColor = UIColor.clearColor()
-    createBlurWithStyle(.Dark)
+    opaque = false
+    let blur = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
+    blur.setTranslatesAutoresizingMaskIntoConstraints(false)
+    blur.backgroundColor = UIColor.clearColor()
+    blur.opaque = false
+    blur.contentView.backgroundColor = UIColor.clearColor()
+    blur.contentView.opaque = false
+    addSubview(blur)
+    constrain(𝗩|blur|𝗩, 𝗛|blur|𝗛)
   }
   override init(frame: CGRect) { super.init(frame: frame); setup() }
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); setup() }
 }
 
-@objc protocol ZoomingCollectionViewLayoutDelegate: UICollectionViewDelegate {
+@objc public protocol ZoomingCollectionViewLayoutDelegate: UICollectionViewDelegate {
   optional func sizeForZoomedItemAtIndexPath(indexPath: NSIndexPath) -> CGSize
 }
 
 public class ZoomingCollectionViewLayout: UICollectionViewLayout {
 
   /** init */
-  override init() {
+  override public init() {
     super.init()
     registerClass(BlurDecoration.self, forDecorationViewOfKind: BlurDecoration.kind)
   }
@@ -54,50 +51,103 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
   }
 
   /** An enumeration for specifying the scale of the layout's items */
-  enum ItemScale: Float, Printable {
-    case OneAcross = 1, TwoAcross, ThreeAcross, FourAcross, FiveAcross, SixAcross, SevenAcross, EightAcross
+  public struct ItemScale: Printable, Equatable {
 
-    static var minScale: ItemScale { return .EightAcross }
-    static var maxScale: ItemScale { return .OneAcross }
-    static var step: Float { return 1/(minScale.rawValue - 1) }
+    /** An enumeration for specifying the width of the scale value */
+    public enum Width: Float, Printable {
+      case OneAcross = 1, TwoAcross, ThreeAcross, FourAcross, FiveAcross, SixAcross, SevenAcross, EightAcross
 
-    var itemSize: CGSize { return CGSize(square: UIScreen.mainScreen().bounds.width/CGFloat(rawValue)) }
-    var normalized: Float { return ItemScale.step * (ItemScale.minScale.rawValue - rawValue) }
-
-    var interval: ClosedInterval<Float> {
-      let halfStep = half(ItemScale.step)
-      let value = normalized
-      return ClosedInterval(max(value - halfStep, 0), min(value + halfStep, 1))
-    }
-
-    static var all: [ItemScale] {
-      return [.OneAcross, .TwoAcross, .ThreeAcross, .FourAcross, .FiveAcross, .SixAcross, .SevenAcross, .EightAcross]
-    }
-
-    init(rawValue: Float) {
-      if let layout = findFirst(ItemScale.all, {$0.interval.contains(rawValue)}) { self = layout }
-      else if ItemScale.minScale.rawValue > rawValue { self = ItemScale.minScale }
-      else { self = ItemScale.maxScale }
-    }
-
-    var description: String {
-      switch self {
-      case .OneAcross:   return "OneAcross"
-      case .TwoAcross:   return "TwoAcross"
-      case .ThreeAcross: return "ThreeAcross"
-      case .FourAcross:  return "FourAcross"
-      case .FiveAcross:  return "FiveAcross"
-      case .SixAcross:   return "SixAcross"
-      case .SevenAcross: return "SevenAcross"
-      case .EightAcross: return "EightAcross"
+      public var description: String {
+        switch self {
+        case .OneAcross:   return "OneAcross"
+        case .TwoAcross:   return "TwoAcross"
+        case .ThreeAcross: return "ThreeAcross"
+        case .FourAcross:  return "FourAcross"
+        case .FiveAcross:  return "FiveAcross"
+        case .SixAcross:   return "SixAcross"
+        case .SevenAcross: return "SevenAcross"
+        case .EightAcross: return "EightAcross"
+        }
       }
+
+      public static var minScale: Width { return .EightAcross }
+      public static var maxScale: Width { return .OneAcross }
+      public static var step: Float { return 1/(minScale.rawValue - 1) }
+
+      public var normalized: Float { return Width.step * (Width.minScale.rawValue - rawValue) }
+      public var width: CGFloat { return  UIScreen.mainScreen().bounds.width/CGFloat(rawValue) }
+
+      public var interval: ClosedInterval<Float> {
+        let halfStep = half(Width.step)
+        let value = normalized
+        return ClosedInterval(max(value - halfStep, 0), min(value + halfStep, 1))
+      }
+
+      public static var all: [Width] {
+        return [.OneAcross, .TwoAcross, .ThreeAcross, .FourAcross, .FiveAcross, .SixAcross, .SevenAcross, .EightAcross]
+      }
+
+      public init(rawValue: Float) {
+        if let layout = findFirst(Width.all, {$0.interval.contains(rawValue)}) { self = layout }
+        else if Width.minScale.rawValue > rawValue { self = Width.minScale }
+        else { self = Width.maxScale }
+      }
+    }
+
+    public var square = true
+    private var _height: CGFloat = 0
+    public var height: CGFloat { get { return square ? width.width : _height } set { _height = newValue } }
+    public var width: Width = .OneAcross
+    public var size: CGSize { return CGSize(width: width.width, height: height) }
+
+    public var description: String { return "(\(width.width)(\(width)), \(height))" }
+
+    public init(width w: Width, height h: CGFloat? = nil) {
+      width = w
+      if h != nil { height = h!; square = false } else { square = true }
     }
   }
 
-  var itemScale = ItemScale.minScale { didSet { if oldValue != itemScale { invalidateLayout() } } }
+  public var itemScale = ItemScale(width: .OneAcross) { didSet { if oldValue != itemScale { invalidateLayout() } } }
 
-  private var itemCount = 0
-  private var itemsPerRow: Int { return Int(itemScale.rawValue) }
+  private var itemScalesPerSection: [Int:ItemScale] = [:]
+
+  /**
+  setItemScale:forSection:
+
+  :param: scale ItemScale
+  :param: section Int
+  */
+  public func setItemScale(scale: ItemScale, forSection section: Int) {
+    let oldValue = itemScalesPerSection.updateValue(scale, forKey: section)
+    if oldValue != scale { invalidateLayout() }
+  }
+
+  /**
+  itemScaleForSection:
+
+  :param: section Int
+
+  :returns: ItemScale
+  */
+  public func itemScaleForSection(section: Int) -> ItemScale { return itemScalesPerSection[section] ?? itemScale }
+
+  /**
+  itemsPerRowInSection:
+
+  :param: section Int
+
+  :returns: Int
+  */
+  public func itemsPerRowInSection(section: Int) -> Int { return Int(itemScaleForSection(section).width.rawValue) }
+
+  public func heightForSection(section: Int) -> CGFloat {
+    if let collectionView = collectionView {
+      let itemScale = itemScaleForSection(section)
+      let rowCount = collectionView.numberOfItemsInSection(section) / Int(itemScale.width.rawValue)
+      return CGFloat(rowCount) * itemScale.height
+    } else { return 0 }
+  }
 
   /**
   prepareForCollectionViewUpdates:
@@ -116,13 +166,17 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
 
   /** prepareLayout */
   override public func prepareLayout() {
-    if let count = collectionView?.numberOfItemsInSection(0) {
-      itemCount = count
-      storedAttributes.removeAll(keepCapacity: true)
-      apply(map(0..<count){NSIndexPath(forRow: $0, inSection: 0)}) {
-        self.storedAttributes[$0] = self.layoutAttributesForItemAtIndexPath($0)
-      }
-
+    if let collectionView = collectionView {
+      storedAttributes = AttributesIndex(
+        flatMap(0 ..< collectionView.numberOfSections()) {
+          s in map(0 ..< collectionView.numberOfItemsInSection(s)) {
+            r in NSIndexPath(forRow: r, inSection: s)
+          }
+        } .map {
+          ($0, self.layoutAttributesForItemAtIndexPath($0))
+        }
+      )
+      MSLogDebug("storedAttributes = \(storedAttributes)")
     }
   }
 
@@ -132,22 +186,23 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
   :returns: CGSize
   */
   override public func collectionViewContentSize() -> CGSize {
-    let w = itemScale.itemSize.width * CGFloat(itemsPerRow)
-    let h = ceil(CGFloat(itemCount) / CGFloat(itemsPerRow)) * itemScale.itemSize.height
+    let w = reduce(storedAttributes.values, 0, {max($0, $1.frame.maxX)})
+    let h = reduce(storedAttributes.values, 0, {max($0, $1.frame.maxY)})
+    MSLogDebug("w = \(w), h = \(h)")
     return CGSize(width: w, height: h)
   }
 
-  typealias AttributesIndex = OrderedDictionary<NSIndexPath, UICollectionViewLayoutAttributes>
+  private typealias AttributesIndex = OrderedDictionary<NSIndexPath, UICollectionViewLayoutAttributes!>
 
   private var storedAttributes: AttributesIndex = [:]
 
-  private enum ZoomState { case Default, ZoomingStage1, ZoomingStage2, UnzoomingStage1, UnzoomingStage2 }
+  public enum ZoomState { case Default, ZoomingStage1, ZoomingStage2, UnzoomingStage1, UnzoomingStage2 }
 
-  private var zoomState = ZoomState.Default
-  private var unzoomingItem: NSIndexPath? { didSet {  zoomState = unzoomingItem != nil ? .UnzoomingStage2 : .Default } }
-  private var zoomingItem: NSIndexPath? { didSet { if zoomingItem != nil { zoomState = .ZoomingStage2 } } }
+  private(set) var zoomState = ZoomState.Default
+  private(set) var unzoomingItem: NSIndexPath? { didSet {  zoomState = unzoomingItem != nil ? .UnzoomingStage2 : .Default } }
+  private(set) var zoomingItem: NSIndexPath? { didSet { if zoomingItem != nil { zoomState = .ZoomingStage2 } } }
 
-  var zoomedItem: NSIndexPath? {
+  public var zoomedItem: NSIndexPath? {
     get { return zoomingItem }
     set {
       unzoomingItem = zoomingItem
@@ -169,7 +224,7 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
   :returns: [AnyObject]
   */
   override public func indexPathsToInsertForDecorationViewOfKind(elementKind: String) -> [AnyObject] {
-    return zoomingItem != nil ? [NSIndexPath(forRow: itemCount, inSection: 0)] : []
+    return zoomingItem != nil ? [NSIndexPath(forRow: 0, inSection: 0)] : []
   }
 
   /**
@@ -180,7 +235,7 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
   :returns: [AnyObject]
   */
   override public func indexPathsToDeleteForDecorationViewOfKind(elementKind: String) -> [AnyObject] {
-    return unzoomingItem != nil ? [NSIndexPath(forRow: itemCount, inSection: 0)] : []
+    return unzoomingItem != nil ? [NSIndexPath(forRow: 0, inSection: 0)] : []
   }
 
   /**
@@ -191,13 +246,10 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
   :returns: [AnyObject]?
   */
   override public func layoutAttributesForElementsInRect(rect: CGRect) -> [AnyObject]? {
-    let yToRow = {$0/self.itemScale.itemSize.height * CGFloat(self.itemsPerRow)}
-    let minRow = Int(floor(yToRow(max(rect.minY, 0))))
-    let maxRow = Int(ceil(yToRow(rect.maxY)))
-    var result: [AnyObject]? = itemCount > minRow ? Array(storedAttributes.values.array[minRow..<min(maxRow, itemCount)]) : nil
+    var result = filter(storedAttributes.values) { $0.frame.intersects(rect) }
     if zoomingItem != nil {
-      result?.append(layoutAttributesForDecorationViewOfKind(BlurDecoration.kind,
-        atIndexPath: NSIndexPath(forRow: itemCount, inSection: 0)))
+      result.append(layoutAttributesForDecorationViewOfKind(BlurDecoration.kind,
+        atIndexPath: NSIndexPath(forRow: 0, inSection: 0)))
     }
     return result
   }
@@ -213,10 +265,26 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
   override public func layoutAttributesForDecorationViewOfKind(elementKind: String,
     atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes!
   {
-    let attributes = UICollectionViewLayoutAttributes(forDecorationViewOfKind: BlurDecoration.kind, withIndexPath: indexPath)
+    let attributesClass = self.dynamicType.layoutAttributesClass() as! UICollectionViewLayoutAttributes.Type
+    let attributes = attributesClass(forDecorationViewOfKind: BlurDecoration.kind, withIndexPath: indexPath)
     attributes.frame = collectionView?.bounds ?? CGRect.zeroRect
     attributes.zIndex = 50
     return attributes
+  }
+
+  /**
+  numberOfItemsBeforeSection:
+
+  :param: section Int
+
+  :returns: Int
+  */
+  private func numberOfItemsBeforeSection(section: Int) -> Int {
+    if let collectionView = collectionView where section < collectionView.numberOfSections() {
+      return reduce(0 ..< section, 0) {$0 + collectionView.numberOfItemsInSection($1)}
+    } else {
+      return 0
+    }
   }
 
   /**
@@ -226,12 +294,19 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
 
   :returns: UICollectionViewLayoutAttributes
   */
-  private func defaultAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes {
-    let attributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
+  public func defaultAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes {
+    let attributesClass = self.dynamicType.layoutAttributesClass() as! UICollectionViewLayoutAttributes.Type
+    let attributes = attributesClass(forCellWithIndexPath: indexPath)
+
+    let yOffset = reduce(0 ..< indexPath.section, CGFloat(0)) {$0 + self.heightForSection($1)}
+
+    let itemsPerRow = itemsPerRowInSection(indexPath.section)
     let col = CGFloat(indexPath.row % itemsPerRow)
     let row = CGFloat(indexPath.row / itemsPerRow)
-    let (w, h) = itemScale.itemSize.unpack()
-    attributes.frame = CGRect(x: col * w, y: row * h, width: w, height: h)
+    let (w, h) = itemScaleForSection(indexPath.section).size.unpack()
+
+    attributes.frame = CGRect(x: col * w, y: row * h + yOffset, width: w, height: h)
+
     return attributes
   }
 
@@ -253,7 +328,7 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
 
   private func zoomifiedSizeForIndexPath(indexPath: NSIndexPath) -> CGSize {
     return (collectionView?.delegate as? ZoomingCollectionViewLayoutDelegate)?.sizeForZoomedItemAtIndexPath?(indexPath)
-      ?? ItemScale.maxScale.itemSize
+      ?? ItemScale(width: ItemScale.Width.maxScale).size
   }
 
   /**
@@ -271,6 +346,7 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
     default:
       attributes = defaultAttributesForItemAtIndexPath(indexPath)
     }
+    MSLogDebug("attributes = \(attributes)")
     return attributes
   }
 
@@ -336,5 +412,17 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
     }
     return attributes
   }
-  
+
+}
+
+/**
+Equatable support for `ZoomingCollectionViewLayout.ItemScale`
+
+:param: lhs ZoomingCollectionViewLayout.ItemScale
+:param: rhs ZoomingCollectionViewLayout.ItemScale
+
+:returns: Bool
+*/
+public func ==(lhs: ZoomingCollectionViewLayout.ItemScale, rhs: ZoomingCollectionViewLayout.ItemScale) -> Bool {
+  return lhs.width == rhs.width && lhs.height == rhs.height
 }

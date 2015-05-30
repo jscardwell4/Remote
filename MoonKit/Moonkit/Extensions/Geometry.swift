@@ -14,6 +14,8 @@ public struct Ratio: Printable {
   public var denominator: CGFloat = 1
   public var width: CGFloat { get { return numerator } set { numerator = newValue } }
   public var height: CGFloat { get { return denominator } set { denominator = newValue } }
+  public var value: CGFloat { return numerator / denominator }
+  public var inverseValue: CGFloat { return denominator / numerator }
   public var description: String { return "\(numerator):\(denominator)" }
   public init<T: CGFloatable>(numerator: T, denominator: T) { self.init(numerator, denominator) }
   public init<T: CGFloatable>(width: T, height: T) { self.init(numerator: width, denominator: height) }

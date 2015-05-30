@@ -18,6 +18,8 @@ class BankCollectionCell: UICollectionViewCell {
 
   class var cellIdentifier: String { return "CollectionCell" }
 
+  static let deleteButtonWidth: CGFloat = 100
+
   let indicator: UIImageView = {
     let view = UIImageView(autolayout: true)
     view.nametag = "indicator"
@@ -94,7 +96,7 @@ class BankCollectionCell: UICollectionViewCell {
     constrain(identifier: identifier,
       deleteButton.right => right,
       deleteButton.top => top,
-      deleteButton.width => 100,
+      deleteButton.width => Float(BankCollectionCell.deleteButtonWidth),
       deleteButton.bottom => bottom,
       chevron.centerY => contentView.centerY,
       chevron.right => right - 20,
@@ -109,12 +111,7 @@ class BankCollectionCell: UICollectionViewCell {
 	}
 
   /** deleteButtonAction */
-  func deleteButtonAction() {
-    deleteAction?()
-    UIView.animateWithDuration(animationDurationForDistance(deleteButton.bounds.size.width)){
-      self.contentView.transform.tx = 0.0
-    }
-  }
+  func deleteButtonAction() { deleteAction?(); hideDelete() }
 
   var swipeToDelete: Bool = true { didSet { if oldValue != swipeToDelete { panGesture.enabled = swipeToDelete } } }
 
@@ -128,14 +125,35 @@ class BankCollectionCell: UICollectionViewCell {
   :returns: NSTimeInterval
   */
   private func animationDurationForDistance(distance: CGFloat) -> NSTimeInterval {
-    return NSTimeInterval(CGFloat(0.25) * distance / deleteButton.bounds.size.width)
+    return NSTimeInterval(CGFloat(0.25) * distance / BankCollectionCell.deleteButtonWidth)
   }
 
-  /** hideDelete */
-  func hideDelete() {
-    UIView.animateWithDuration(animationDurationForDistance(abs(contentView.transform.tx)),
-                    animations: { self.contentView.transform.tx = 0.0 },
-                    completion: {(completed: Bool) -> Void in _ = self.showingDeleteDidChange?(self) })
+  /**
+  revealDelete:
+
+  :param: distance CGFloat
+  */
+  func revealDelete(distance: CGFloat = deleteButtonWidth) {
+    contentView.backgroundColor = Bank.backgroundColor
+    deleteButton.hidden = false
+    UIView.animateWithDuration(animationDurationForDistance(distance),
+                    animations: { self.contentView.transform.tx = -BankCollectionCell.deleteButtonWidth },
+                    completion: {_ in _ = self.showingDeleteDidChange?(self) })
+  }
+
+  /**
+  hideDelete:
+
+  :param: distance CGFloat
+  */
+  func hideDelete(distance: CGFloat = deleteButtonWidth) {
+    UIView.animateWithDuration(animationDurationForDistance(distance),
+                    animations: { self.contentView.transform.tx = 0 },
+                    completion: {_ in
+                      self.contentView.backgroundColor = UIColor.clearColor()
+                      self.deleteButton.hidden = true
+                      self.showingDeleteDidChange?(self)
+    })
   }
 
   /**
@@ -146,8 +164,13 @@ class BankCollectionCell: UICollectionViewCell {
   override class func requiresConstraintBasedLayout() -> Bool { return true }
 
 
-  /** initializeSubviews */
-  private func initializeSubviews() {
+  /** initializeIVARs */
+  private func initializeIVARs() {
+    backgroundColor = UIColor.clearColor()
+    opaque = false
+    contentView.backgroundColor = UIColor.clearColor()
+    contentView.opaque = false
+
     contentView.addSubview(chevron)
     panGesture = {
       var previousState: UIGestureRecognizerState = .Possible
@@ -161,20 +184,21 @@ class BankCollectionCell: UICollectionViewCell {
 
         switch pan.state {
 
-          case .Began, .Changed:
+          case .Began:
+            self.contentView.backgroundColor = Bank.backgroundColor
+            self.deleteButton.hidden = false
+            fallthrough
+          case .Changed:
             if x < 0 { self.contentView.transform.tx = x }
 
           case .Ended:
             if previousState == .Changed {
-              UIView.animateWithDuration(self.animationDurationForDistance(abs(x)),
-                              animations: {self.contentView.transform.tx = x <= -100.0 ? -100.0 : 0.0},
-                              completion: { (completed: Bool) -> Void in _ = self.showingDeleteDidChange?(self) })
+              let animate = x <= -BankCollectionCell.deleteButtonWidth ? self.revealDelete : self.hideDelete
+              animate(distance: abs(x))
             }
 
           case .Cancelled, .Failed:
-            UIView.animateWithDuration(self.animationDurationForDistance(abs(x)),
-                            animations: {self.contentView.transform.tx = 0.0},
-                            completion: { (completed: Bool) -> Void in _ = self.showingDeleteDidChange?(self) })
+            self.hideDelete(distance: abs(x))
 
           default: break
 
@@ -189,8 +213,9 @@ class BankCollectionCell: UICollectionViewCell {
 
     insertSubview(deleteButton, belowSubview: contentView)
     deleteButton.addTarget(self, action: "deleteButtonAction", forControlEvents: .TouchUpInside)
+    deleteButton.hidden = true
     contentView.addSubview(indicator)
-    contentView.backgroundColor = Bank.backgroundColor
+    contentView.backgroundColor = UIColor.clearColor()
     contentView.nametag = "content"
     setNeedsUpdateConstraints()
     animateIndicator = {
@@ -205,13 +230,13 @@ class BankCollectionCell: UICollectionViewCell {
 
   :param: frame CGRect
   */
-  override init(frame: CGRect) { super.init(frame: frame); initializeSubviews() }
+  override init(frame: CGRect) { super.init(frame: frame); initializeIVARs() }
 
   /**
   init:
 
   :param: aDecoder NSCoder
   */
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeSubviews() }
+  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
 
 }

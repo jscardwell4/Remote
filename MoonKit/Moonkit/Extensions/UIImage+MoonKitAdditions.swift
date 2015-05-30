@@ -23,3 +23,11 @@ extension UIImageOrientation: Printable {
     }
   }
 }
+
+extension UIImage {
+  public func heightScaledToWidth(width: CGFloat) -> CGFloat {
+    let (w, h) = size.unpack()
+    let ratio = Ratio(w, h)
+    return ratio.denominatorForNumerator(width)
+  }
+}

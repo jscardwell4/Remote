@@ -15,9 +15,11 @@ import class Settings.SettingsManager
 // TODO: Viewing mode changes need to respect whether category items are `previewable`
 // ???: Is it possible to animate bottom toolbar changes?
 
-enum Mode { case Default, Selection }
 
 final class BankCollectionController: UICollectionViewController, BankItemSelectiveViewingModeController {
+
+  typealias ViewingMode = Bank.ViewingMode
+  typealias ItemScale = BankCollectionLayout.ItemScale
 
   // MARK: - Descriptions
   override var description: String {
@@ -88,6 +90,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   // MARK: Private
 
   /** Enumeration for specifying the controller's current role, browsing or selecting */
+  enum Mode { case Default, Selection }
 
   private let mode: Mode
 
@@ -176,7 +179,10 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   */
   init(collectionDelegate d: BankModelDelegate, mode m: Mode = .Default) {
   	collectionDelegate = d; mode = m
-    super.init(collectionViewLayout: BankCollectionLayout())
+    let layout = BankCollectionLayout()
+    layout.itemScale = ItemScale(width: .OneAcross, height: 38)
+//    super.init(collectionViewLayout: BankCollectionLayout())
+    super.init(collectionViewLayout: layout)
     d.beginItemsChanges = beginDelegateItemsChanges
     d.endItemsChanges = endDelegateItemsChanges
     d.itemsDidChange = delegateItemsDidChange
@@ -378,7 +384,8 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   :param: indexPath NSIndexPath
   */
   func zoomItemForCell(cell: BankCollectionCell) {
-    if let indexPath = collectionView?.indexPathForCell(cell), item = itemForIndexPath(indexPath) as? Previewable {
+    if layout.zoomedItem != nil { layout.zoomedItem = nil }
+    else if let indexPath = collectionView?.indexPathForCell(cell), item = itemForIndexPath(indexPath) as? Previewable {
       layout.zoomedItem = indexPath
 //      zoomedItemIndexPath = indexPath
 //      let zoomView = BankCollectionZoomView(frame: view.bounds, delegate: self)
@@ -737,21 +744,21 @@ extension BankCollectionController: UICollectionViewDataSource {
 
 }
 
-extension BankCollectionController: BankCollectionLayoutDelegate {
+extension BankCollectionController: ZoomingCollectionViewLayoutDelegate {
 
   /**
   zoomedItemSize
 
   :returns: CGSize
   */
-  func zoomedItemSize() -> CGSize {
-    if let indexPath = layout.zoomedItem, model = modelForIndexPath(indexPath) as? Previewable, image = model.preview {
+  func sizeForZoomedItemAtIndexPath(indexPath: NSIndexPath) -> CGSize {
+    if indexPath == layout.zoomedItem, let model = modelForIndexPath(indexPath) as? Previewable, image = model.preview {
       let (w, h) = image.size.unpack()
       let ratio = Ratio(w, h)
       let width = min(w, collectionView?.bounds.width ?? 0)
       let height = ratio.denominatorForNumerator(width)
       return CGSize(width: width, height: height)
-    } else { return layout.itemSize }
+    } else { return CGSize.zeroSize } //layout.itemSize }
   }
 }
 
@@ -808,6 +815,9 @@ extension BankCollectionController: UICollectionViewDelegate {
 
   	// Check if the cell is showing it's delete control
   	if cellShowingDelete != nil { cellShowingDelete!.hideDelete() }
+
+    // Dismiss zoomed item
+    else if layout.zoomedItem == indexPath { layout.zoomedItem = nil }
 
   	// Otherwise get the cell
   	else if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
