@@ -215,16 +215,16 @@ public extension UIView {
 
   // MARK: - PseudoConstraint helpers
 
-  public var right: (UIView, PseudoConstraint.Attribute) { return (self, .Right) }
-  public var left: (UIView, PseudoConstraint.Attribute) { return (self, .Left) }
-  public var top: (UIView, PseudoConstraint.Attribute) { return (self, .Top) }
-  public var bottom: (UIView, PseudoConstraint.Attribute) { return (self, .Bottom) }
-  public var centerX: (UIView, PseudoConstraint.Attribute) { return (self, .CenterX) }
-  public var centerY: (UIView, PseudoConstraint.Attribute) { return (self, .CenterY) }
-  public var width: (UIView, PseudoConstraint.Attribute) { return (self, .Width) }
-  public var height: (UIView, PseudoConstraint.Attribute) { return (self, .Height) }
+  public var right:    (UIView, PseudoConstraint.Attribute) { return (self, .Right   ) }
+  public var left:     (UIView, PseudoConstraint.Attribute) { return (self, .Left    ) }
+  public var top:      (UIView, PseudoConstraint.Attribute) { return (self, .Top     ) }
+  public var bottom:   (UIView, PseudoConstraint.Attribute) { return (self, .Bottom  ) }
+  public var centerX:  (UIView, PseudoConstraint.Attribute) { return (self, .CenterX ) }
+  public var centerY:  (UIView, PseudoConstraint.Attribute) { return (self, .CenterY ) }
+  public var width:    (UIView, PseudoConstraint.Attribute) { return (self, .Width   ) }
+  public var height:   (UIView, PseudoConstraint.Attribute) { return (self, .Height  ) }
   public var baseline: (UIView, PseudoConstraint.Attribute) { return (self, .Baseline) }
-  public var leading: (UIView, PseudoConstraint.Attribute) { return (self, .Leading) }
+  public var leading:  (UIView, PseudoConstraint.Attribute) { return (self, .Leading ) }
   public var trailing: (UIView, PseudoConstraint.Attribute) { return (self, .Trailing) }
 
   // MARK: - Adding constraints
@@ -296,7 +296,7 @@ public extension UIView {
 
     }
 
-    let result = flatMap(constraints, {$0.expanded}).compressedMap({$0.constraint()}) ➤| {$0.identifier = id}
+    let result = flatMap(constraints, {$0.expanded}).compressedMap({$0.constraint}) ➤| {if id != nil { $0.identifier = id }}
     addConstraints(result)
     return result
   }

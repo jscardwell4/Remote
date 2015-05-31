@@ -28,6 +28,7 @@ class BankCollectionCell: UICollectionViewCell {
 
   let deleteButton: UIButton = {
     let button = UIButton(autolayout: true)
+    button.nametag = "delete"
     button.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.75)
     button.setTitle("Delete", forState: .Normal)
     return button
@@ -35,9 +36,9 @@ class BankCollectionCell: UICollectionViewCell {
 
   let chevron: UIImageView = {
     let view = UIImageView(autolayout: true)
+    view.nametag = "chevron"
     view.image = Bank.chevronImage
     view.contentMode = .ScaleAspectFit
-    view.constrain(view.width => view.height, view.height => 22)
     return view
   }()
 
@@ -89,24 +90,35 @@ class BankCollectionCell: UICollectionViewCell {
   /** updateConstraints */
   override func updateConstraints() {
 
-  	let identifier = createIdentifier(self, "Internal")
+  	let identifier = createIdentifierGenerator(createIdentifier(self, "Internal"))
 
     // Refresh our constraints
-    removeConstraintsWithIdentifier(identifier)
-    constrain(identifier: identifier,
-      deleteButton.right => right,
-      deleteButton.top => top,
-      deleteButton.width => Float(BankCollectionCell.deleteButtonWidth),
-      deleteButton.bottom => bottom,
-      chevron.centerY => contentView.centerY,
-      chevron.right => right - 20,
-      chevron.width ≤ chevron.height,
-      chevron.height => 22,
-      indicator.width ≤ indicator.height,
-      indicator.height => 22
-    )
+    removeAllConstraints()
 
     super.updateConstraints()
+
+    constrain(
+      deleteButton.right => right
+        --> identifier(suffixes: "DeleteButton", "Right"),
+      deleteButton.top => top
+        --> identifier(suffixes: "DeleteButton", "Top"),
+      deleteButton.width => Float(BankCollectionCell.deleteButtonWidth)
+        --> identifier(suffixes: "DeleteButton", "Width"),
+      deleteButton.bottom => bottom
+        --> identifier(suffixes: "DeleteButton", "Bottom"),
+      chevron.centerY => contentView.centerY
+        --> identifier(suffixes: "Chevron", "Vertical"),
+      chevron.right => right - 20
+        --> identifier(suffixes: "Chevron", "Right"),
+      chevron.width ≤ chevron.height
+        --> identifier(suffixes: "Chevron", "Proportion"),
+      chevron.height => 22
+        --> identifier(suffixes: "Chevron", "Size"),
+      indicator.width ≤ indicator.height
+        --> identifier(suffixes: "Indicator", "Proportion"),
+      indicator.height => 22
+        --> identifier(suffixes: "Indicator", "Size")
+    )
 
 	}
 
@@ -166,6 +178,7 @@ class BankCollectionCell: UICollectionViewCell {
 
   /** initializeIVARs */
   private func initializeIVARs() {
+    nametag = "cell"
     backgroundColor = UIColor.clearColor()
     opaque = false
     contentView.backgroundColor = UIColor.clearColor()

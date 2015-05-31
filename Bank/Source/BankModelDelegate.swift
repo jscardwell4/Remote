@@ -49,8 +49,8 @@ import MoonKit
   :returns: CreateTransaction
   */
   class func createTransactionWithLabel<T:FormCreatable>(label: String,
-                                           creatableType: T.Type,
-                                                 context: NSManagedObjectContext) -> CreationTransaction
+                                              creatableType: T.Type,
+                                              context: NSManagedObjectContext) -> CreationTransaction
   {
     return CreationTransaction(label: label, form: creatableType.creationForm(context: context)) {
       form in

@@ -51,52 +51,6 @@ public func sum<S:SequenceType where S.Generator.Element:IntegerArithmeticType>(
 }
 
 /**
-createIdentifier:suffix:
-
-:param: object Any
-:param: suffix String? = nil
-
-:returns: String
-*/
-public func createIdentifier(object: Any, _ suffix: String? = nil) -> String {
-  return createIdentifier(object, suffix == nil ? nil : [suffix!])
-}
-
-/**
-createIdentifier:suffix:
-
-:param: object Any
-:param: suffix String...
-
-:returns: String
-*/
-public func createIdentifier(object: Any, suffix: String...) -> String {
-  return _stdlib_getDemangledTypeName(object) + "-" + "-".join(suffix)
-}
-
-/**
-createIdentifier:suffix:
-
-:param: object Any
-:param: suffix [String]? = nil
-
-:returns: String
-*/
-public func createIdentifier(object: Any, _ suffix: [String]? = nil) -> String {
-  let identifier = _stdlib_getDemangledTypeName(object)
-  return suffix == nil ? identifier : "-".join([identifier] + suffix!)
-}
-
-/**
-tagsFromIdentifier:
-
-:param: identifier String
-
-:returns: [String]
-*/
-public func tagsFromIdentifier(identifier: String) -> [String] { return "-".split(identifier) }
-
-/**
 advance:amount:
 
 :param: range Range<T>

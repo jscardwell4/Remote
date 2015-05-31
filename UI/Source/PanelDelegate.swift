@@ -199,25 +199,25 @@ extension PanelDelegate: Printable {
     result += "\tviewTuckedConstraint = " +
       (viewTuckedConstraint == nil
         ? "nil\n"
-        : "\(PseudoConstraint(constraint: viewTuckedConstraint!).description)" + (viewTuckedConstraint!.active
+        : "\(PseudoConstraint(viewTuckedConstraint!).description)" + (viewTuckedConstraint!.active
                                                                                    ? " (active)\n"
                                                                                    : "\n"))
     result += "\tviewUntuckedConstraint = " +
       (viewUntuckedConstraint == nil
         ? "nil\n"
-        : "\(PseudoConstraint(constraint: viewUntuckedConstraint!).description)" + (viewUntuckedConstraint!.active
+        : "\(PseudoConstraint(viewUntuckedConstraint!).description)" + (viewUntuckedConstraint!.active
                                                                                    ? " (active)\n"
                                                                                    : "\n"))
     result += "\topposingViewTuckedConstraint = " +
       (opposingViewTuckedConstraint == nil
         ? "nil\n"
-        : "\(PseudoConstraint(constraint: opposingViewTuckedConstraint!).description)" + (opposingViewTuckedConstraint!.active
+        : "\(PseudoConstraint(opposingViewTuckedConstraint!).description)" + (opposingViewTuckedConstraint!.active
                                                                                    ? " (active)\n"
                                                                                    : "\n"))
     result += "\topposingViewUntuckedConstraint = " +
       (opposingViewUntuckedConstraint == nil
         ? "nil\n"
-        : "\(PseudoConstraint(constraint: opposingViewUntuckedConstraint!).description)" + (opposingViewUntuckedConstraint!.active
+        : "\(PseudoConstraint(opposingViewUntuckedConstraint!).description)" + (opposingViewUntuckedConstraint!.active
                                                                                    ? " (active)\n"
                                                                                    : "\n"))
     result += "\tview = \(toString(view))\n"

@@ -519,78 +519,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "MoonKit/Moonkit/Objects/AKPickerView.swift",
-			"settings":
-			{
-				"buffer_size": 21401,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "MoonKit/Moonkit/Objects/LabeledStepper.swift",
-			"settings":
-			{
-				"buffer_size": 7593,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "Bank/Source/BankController.swift",
-			"settings":
-			{
-				"buffer_size": 5604,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/darcula (Flake8Lint).JSON-tmTheme",
-			"settings":
-			{
-				"buffer_size": 11006,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/MoonYAMLSwift.sublime-syntax",
-			"settings":
-			{
-				"buffer_size": 8336,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "MoonKit/Moonkit/Objects/FieldView.swift",
-			"settings":
-			{
-				"buffer_size": 14031,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "Bank/Source/Extensions/NetworkDevice+Bank.swift",
-			"settings":
-			{
-				"buffer_size": 4038,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "Bank/Source/View Controllers/BankCollectionController.swift",
-			"settings":
-			{
-				"buffer_size": 25881,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "Bank/Source/BankModelDelegate.swift",
-			"settings":
-			{
-				"buffer_size": 15201,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -1083,22 +1011,29 @@
 	],
 	"file_history":
 	[
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/ZoomingCollectionViewLayout.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/AKPickerView.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/LabeledStepper.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/BankController.swift",
+		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/darcula (Flake8Lint).JSON-tmTheme",
+		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/MoonYAMLSwift.sublime-syntax",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/FieldView.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/NetworkDevice+Bank.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionController.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/BankModelDelegate.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Resources/JSON/ImageCategory.json",
 		"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Website/Peaceful Pathways.sublime-project",
 		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/Default (OSX).sublime-keymap",
-		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/MoonYAMLSwift.sublime-syntax",
 		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/wtf.sublime-syntax",
 		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/MoonSwift.sublime-syntax",
 		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/MoonSwift.sublime-syntax.YAML-tmLanguage",
 		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
-		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/FieldView.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/Form.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/Field.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/FormViewController.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/FormView.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/Field2.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/AKPickerView.swift",
 		"/Users/Moondeer/Downloads/swiftslowly-master/Playground Secrets and Power Tips/Playground Support/SimulatorSupport.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/BankModelDelegate.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/ComponentDevice+Bank.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankRootController.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/Manufacturer.swift",
@@ -1120,7 +1055,6 @@
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/ITachDevice+Bank.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/IRCode+Bank.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/DataModelProtocols.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionController.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/IRCodeSet.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/BankModelCollectionDelegate.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/Image.swift",
@@ -1146,7 +1080,6 @@
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionItemCell.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionCell.swift",
 		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/Chameleon.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Resources/JSON/ImageCategory.json",
 		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/UIColor+Chameleon.swift",
 		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/CSSColors.playground/contents.xcplayground",
 		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/CSSColors.playground/Contents.swift",
@@ -1205,12 +1138,7 @@
 		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Parsing/JSONIncludeDirective.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Parsing/JSONSerialization.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/UI/Source/RemoteView.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/UI/Source/PanelDelegate.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Resources/JSON/Remote.json",
-		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Functions/RawOptionSetFunctions.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit Tests/TitleAttributes_Default_Text.json",
-		"/Users/Moondeer/Projects/MSRemote/Remote/UI/Source/ButtonGroupView.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/RemoteElement/Models/RemoteElement.swift"
+		"/Users/Moondeer/Projects/MSRemote/Remote/UI/Source/PanelDelegate.swift"
 	],
 	"find":
 	{
@@ -1251,6 +1179,8 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"glyphish",
+			"location",
 			"createCollection",
 			"createItem",
 			"= ",
@@ -1376,9 +1306,7 @@
 			"MountainMist",
 			"AthensGray",
 			"Mauve",
-			"self",
-			"UIColor",
-			"FlatColor"
+			"self"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1524,409 +1452,13 @@
 	"groups":
 	[
 		{
-			"selected": 9,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "MoonKit/Moonkit/Objects/AKPickerView.swift",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 21401,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								20140,
-								20140
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/User/MoonSwift.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 4899.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "MoonKit/Moonkit/Objects/LabeledStepper.swift",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7593,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								638,
-								638
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/User/MoonSwift.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "Bank/Source/BankController.swift",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5604,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/User/MoonSwift.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 444.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/darcula (Flake8Lint).JSON-tmTheme",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 11006,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 647.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/MoonYAMLSwift.sublime-syntax",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 8336,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4523,
-								4523
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/YAML/YAML.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 549.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "Bank/Source/BankController.swift",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5604,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/User/MoonSwift.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 90.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "MoonKit/Moonkit/Objects/FieldView.swift",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 14031,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								766,
-								766
-							],
-							[
-								777,
-								777
-							],
-							[
-								915,
-								915
-							],
-							[
-								926,
-								926
-							],
-							[
-								1020,
-								1020
-							],
-							[
-								1031,
-								1031
-							],
-							[
-								1156,
-								1156
-							],
-							[
-								1167,
-								1167
-							],
-							[
-								1298,
-								1298
-							],
-							[
-								1309,
-								1309
-							],
-							[
-								1415,
-								1415
-							],
-							[
-								1426,
-								1426
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/User/MoonSwift.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "Bank/Source/Extensions/NetworkDevice+Bank.swift",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4038,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3337,
-								3337
-							],
-							[
-								3460,
-								3460
-							],
-							[
-								3583,
-								3583
-							],
-							[
-								3706,
-								3706
-							],
-							[
-								3829,
-								3829
-							],
-							[
-								3952,
-								3952
-							],
-							[
-								3968,
-								3968
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/User/MoonSwift.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 23.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "Bank/Source/View Controllers/BankCollectionController.swift",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 25881,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								15743,
-								15743
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/User/MoonSwift.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 4365.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "Bank/Source/BankModelDelegate.swift",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 15201,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2379,
-								2379
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/User/MoonSwift.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				}
 			]
 		},
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 6,
-					"file": "Bank/Source/Extensions/NetworkDevice+Bank.swift",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4038,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/User/MoonSwift.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 45.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -1985,6 +1517,10 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"imagec",
+				"Remote/Bank/Resources/JSON/ImageCategory.json"
+			],
 			[
 				"networkde",
 				"Remote/Bank/Source/Extensions/NetworkDevice+Bank.swift"
@@ -2052,10 +1588,6 @@
 			[
 				"bankmo",
 				"Remote/Bank/Source/BankModelDelegate.swift"
-			],
-			[
-				"imagec",
-				"Remote/DataModel/Model/ImageCategory.swift"
 			],
 			[
 				"ircodeset",
@@ -2518,13 +2050,13 @@
 		],
 		"width": 568.0
 	},
-	"selected_group": 1,
+	"selected_group": 0,
 	"settings":
 	{
 	},
 	"show_minimap": false,
 	"show_open_files": true,
-	"show_tabs": false,
+	"show_tabs": true,
 	"side_bar_visible": false,
 	"side_bar_width": 439.0,
 	"status_bar_visible": true,

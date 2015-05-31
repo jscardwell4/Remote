@@ -11,6 +11,11 @@ import Foundation
 
 extension NSLayoutConstraint {
 
+  public var prettyDescription: String {
+    let pseudo = PseudoConstraint(self)
+    return pseudo.validPseudo ? pseudo.description : description
+  }
+
   /**
   splitFormat:
 
@@ -25,7 +30,7 @@ extension NSLayoutConstraint {
   }
 
   public convenience init(_ pseudoConstraint: PseudoConstraint) {
-    assert(pseudoConstraint.valid)
+    assert(pseudoConstraint.validConstraint)
     self.init(item: pseudoConstraint.firstObject!,
               attribute: pseudoConstraint.firstAttribute.NSLayoutAttributeValue,
               relatedBy: pseudoConstraint.relation.NSLayoutRelationValue,
@@ -55,7 +60,7 @@ extension NSLayoutConstraint {
     var constraints: [NSLayoutConstraint] = []
 
     for string in splitFormat(format) {
-      if let c = PseudoConstraint(string)?.expanded.compressedMap({$0.constraintWithItems(views)}) where c.count > 0 {
+      if let c = PseudoConstraint(string)?.expanded.compressedMap({$0.constraintWithObjects(views)}) where c.count > 0 {
           constraints.extend(c)
       } else {
         let c = constraintsWithVisualFormat(string, options: options, metrics: metrics, views: views) as! [NSLayoutConstraint]

@@ -166,7 +166,7 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
                               usingDirectory directory: OrderedDictionary<String, RemoteElement>) -> Constraint?
   {
     var constraint: Constraint?
-    if pseudo.valid, let firstElement = elementFromDirectory(directory, forString: pseudo.firstItem!) {
+    if pseudo.validPseudo, let firstElement = elementFromDirectory(directory, forString: pseudo.firstItem!) {
       var secondElement: RemoteElement?
       if pseudo.secondItem != nil { secondElement = elementFromDirectory(directory, forString: pseudo.secondItem!) }
       if pseudo.secondAttribute == .NotAnAttribute || secondElement != nil {

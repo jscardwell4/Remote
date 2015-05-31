@@ -176,7 +176,6 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
           ($0, self.layoutAttributesForItemAtIndexPath($0))
         }
       )
-      MSLogDebug("storedAttributes = \(storedAttributes)")
     }
   }
 
@@ -188,7 +187,6 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
   override public func collectionViewContentSize() -> CGSize {
     let w = reduce(storedAttributes.values, 0, {max($0, $1.frame.maxX)})
     let h = reduce(storedAttributes.values, 0, {max($0, $1.frame.maxY)})
-    MSLogDebug("w = \(w), h = \(h)")
     return CGSize(width: w, height: h)
   }
 
@@ -346,7 +344,6 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
     default:
       attributes = defaultAttributesForItemAtIndexPath(indexPath)
     }
-    MSLogDebug("attributes = \(attributes)")
     return attributes
   }
 

@@ -21,6 +21,7 @@ final class BankCollectionItemCell: BankCollectionCell {
 
   private let thumbnailImageView: UIImageView = {
     let view = UIImageView(autolayout: true)
+    view.nametag = "thumbnail"
     view.backgroundColor = UIColor.clearColor()
     view.opaque = false
     view.contentMode = .ScaleAspectFit
@@ -32,6 +33,7 @@ final class BankCollectionItemCell: BankCollectionCell {
 
   private let nameLabel: UILabel = {
     let view = UILabel(autolayout: true)
+    view.nametag = "label"
     view.font = Bank.infoFont
     view.backgroundColor = UIColor.clearColor()
     view.opaque = false
@@ -120,11 +122,8 @@ final class BankCollectionItemCell: BankCollectionCell {
   /** updateConstraints */
   override func updateConstraints() {
 
-    let listIdentifier      = createIdentifier(self, ["Internal", "List"])
-    let thumbnailIdentifier = createIdentifier(self, ["Internal", "Thumbnail"])
-
-    removeConstraintsWithIdentifier(listIdentifier)
-    removeConstraintsWithIdentifier(thumbnailIdentifier)
+    let listIdentifier      = createIdentifierGenerator(createIdentifier(self, "Internal", "List"))
+    let thumbnailIdentifier = createIdentifierGenerator(createIdentifier(self, "Internal", "Thumbnail"))
 
     super.updateConstraints()
 
@@ -132,49 +131,65 @@ final class BankCollectionItemCell: BankCollectionCell {
 
       case .List where zoomed == false:
 
-        constrain(identifier: listIdentifier,
-          nameLabel.centerY => contentView.centerY,
-          nameLabel.height => contentView.height,
-          chevron.left => nameLabel.right + 8,
-          indicator.centerY => contentView.centerY,
+        constrain(
+          nameLabel.centerY => contentView.centerY
+            --> listIdentifier(suffixes: "Label", "Vertical"),
+          nameLabel.height => contentView.height
+            --> listIdentifier(suffixes: "Label", "Height"),
+          chevron.left => nameLabel.right + 8
+            --> listIdentifier(suffixes: "Chevron", "Label", "Spacing", "Horizontal"),
+          indicator.centerY => contentView.centerY
+            --> listIdentifier(suffixes: "Indicator", "Vertical"),
           indicator.right => contentView.left + (indicatorImage == nil ? 0 : 40)
+            --> listIdentifier(suffixes: "Indicator", "Left")
         )
 
         if previewable {
-          constrain(identifier: listIdentifier,
-            thumbnailImageView.left => indicator.right + 20,
-            thumbnailImageView.height => contentView.height - 8,
-            thumbnailImageView.width => thumbnailImageView.height,
-            thumbnailImageView.centerY => contentView.centerY,
+          constrain(
+            thumbnailImageView.left => indicator.right + 20
+              --> listIdentifier(suffixes: "Thumbnail", "Indicator", "Spacing", "Horizontal"),
+            thumbnailImageView.height => contentView.height - 8
+              --> listIdentifier(suffixes: "Thumbnail", "Height"),
+            thumbnailImageView.width => thumbnailImageView.height
+              --> listIdentifier(suffixes: "Thumbnail", "Width"),
+            thumbnailImageView.centerY => contentView.centerY
+              --> listIdentifier(suffixes: "Thumbnail", "Vertical"),
             nameLabel.left => thumbnailImageView.right + 8
+              --> listIdentifier(suffixes: "Label", "Thumbnail", "Spacing", "Horizontal")
           )
         } else {
-          constrain(identifier: listIdentifier, nameLabel.left => indicator.right + 20)
+          constrain(
+            nameLabel.left => indicator.right + 20
+              --> listIdentifier(suffixes: "Label", "Indicator", "Spacing", "Horizontal")
+          )
         }
 
-        let predicate = NSPredicate(format: "firstItem == %@" +
-                                            "AND secondItem == %@ " +
-                                            "AND firstAttribute == \(NSLayoutAttribute.Right.rawValue)" +
-                                            "AND secondAttribute == \(NSLayoutAttribute.Left.rawValue)" +
-                                            "AND relation == \(NSLayoutRelation.Equal.rawValue)", indicator, contentView)
-        indicatorConstraint = constraintMatching(predicate)
-        MSLogDebug("indicatorConstraint = \(toString(indicatorConstraint))")
+        indicatorConstraint = constraintWithIdentifier(listIdentifier(suffixes: "Indicator", "Left"))
 
       case .Thumbnail, .List where zoomed == true:
         if zoomed, let (w, h) = thumbnailImageView.image?.size.unpack() where w > 0 && h > 0 {
-            constrain(identifier: thumbnailIdentifier,
-              𝗛|--(≥0)--thumbnailImageView--(≤0)--|𝗛,
-              [thumbnailImageView.height => thumbnailImageView.width * Float(Ratio(w, h).inverseValue),
-              thumbnailImageView.width => Float(w) -!> 500,
-              thumbnailImageView.centerX => contentView.centerX,
-              thumbnailImageView.centerY => contentView.centerY]
+            constrain(
+              𝗛|--(≥0)--thumbnailImageView--(≤0)--|𝗛
+                --> thumbnailIdentifier(suffixes: "Zoomed", "Thumbnail", "Spacing", "Horizontal"),
+              [thumbnailImageView.height => thumbnailImageView.width * Float(Ratio(w, h).inverseValue)
+                --> thumbnailIdentifier(suffixes: "Zoomed", "Thumbnail", "Proportion"),
+              thumbnailImageView.width => Float(w) -!> 500
+                --> thumbnailIdentifier(suffixes: "Zoomed", "Thumbnail", "Width"),
+              thumbnailImageView.centerX => contentView.centerX
+                --> thumbnailIdentifier(suffixes: "Zoomed", "Thumbnail", "Horizontal"),
+              thumbnailImageView.centerY => contentView.centerY
+                --> thumbnailIdentifier(suffixes: "Zoomed", "Thumbnail", "Vertical")]
             )
         } else {
-          constrain(identifier: thumbnailIdentifier,
-            𝗛|thumbnailImageView|𝗛,
-            [ thumbnailImageView.height => thumbnailImageView.width,
-              indicator.left => contentView.left + 8,
-              indicator.top => contentView.top + 8]
+          constrain(
+            𝗛|thumbnailImageView|𝗛
+              --> thumbnailIdentifier(suffixes: "Thumbnail", "Spacing", "Horizontal"),
+            [thumbnailImageView.height => thumbnailImageView.width
+              --> thumbnailIdentifier(suffixes: "Thumbnail", "Proportion"),
+             indicator.left => contentView.left + 8
+              --> thumbnailIdentifier(suffixes: "Indicator", "Left"),
+             indicator.top => contentView.top + 8
+              --> thumbnailIdentifier(suffixes: "Indicator", "Top")]
           )
         }
 
@@ -182,6 +197,10 @@ final class BankCollectionItemCell: BankCollectionCell {
         break
 
     }
+
+    MSLogDebug("viewingMode = \(viewingMode), constraints = {\n\t" +
+               "\n\t".join((constraints() as! [NSLayoutConstraint]).map {$0.prettyDescription}) +
+               "\n}")
 
   }
 

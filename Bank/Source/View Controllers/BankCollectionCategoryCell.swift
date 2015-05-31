@@ -20,6 +20,7 @@ final class BankCollectionCategoryCell: BankCollectionCell {
 
   private let label: UILabel = {
     let view = UILabel(autolayout: true)
+    view.nametag = "label"
     view.font = Bank.infoFont
     view.backgroundColor = UIColor.clearColor()
     view.opaque = false
@@ -29,24 +30,22 @@ final class BankCollectionCategoryCell: BankCollectionCell {
   /** updateConstraints */
   override func updateConstraints() {
 
-    let identifier = createIdentifier(self, "Internal")
-    removeConstraintsWithIdentifier(identifier)
+    let identifier = createIdentifierGenerator(createIdentifier(self, "Internal"))
 
     super.updateConstraints()
 
-    constrain(identifier: identifier,
-      indicator--20--label--8--chevron,
-      [label.centerY => contentView.centerY,
-      indicator.centerY => contentView.centerY,
-      indicator.right => contentView.left + (indicatorImage == nil ? 0 : 40)]
+    constrain(
+      indicator--20--label--8--chevron
+        --> identifier(suffixes: "Spacing", "Horizontal"),
+      [label.centerY => contentView.centerY
+        --> identifier(suffixes: "Label", "Vertical"),
+      indicator.centerY => contentView.centerY
+        --> identifier(suffixes: "Indicator", "Vertical"),
+      indicator.right => contentView.left + (indicatorImage == nil ? 0 : 40)
+        --> identifier(suffixes: "Indicator", "Horizontal")]
     )
 
-    let predicate = NSPredicate(format: "firstItem == %@" +
-                                        "AND secondItem == %@ " +
-                                        "AND firstAttribute == \(NSLayoutAttribute.Right.rawValue)" +
-                                        "AND secondAttribute == \(NSLayoutAttribute.Left.rawValue)" +
-                                        "AND relation == \(NSLayoutRelation.Equal.rawValue)", indicator, contentView)
-    indicatorConstraint = constraintMatching(predicate)
+    indicatorConstraint = constraintWithIdentifier(identifier(suffixes: "Indicator", "Horizontal"))
 
   }
 
