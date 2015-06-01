@@ -13,6 +13,24 @@ import MoonKit
 final class BankCollectionLayout: ZoomingCollectionViewLayout {
 
   /**
+  stringForAttributes:
+
+  :param: attributes BankCollectionAttributes?
+
+  :returns: String
+  */
+  private func stringForAttributes(attributes: BankCollectionAttributes?) -> String {
+    if let attr = attributes {
+      return "attributes: " + "; ".join(
+        "zoomState = \(toString(attr.zoomState))",
+        "indexPath = (row: \(attr.indexPath.row), section: \(attr.indexPath.section)",
+        "frame = \(attr.frame)",
+        "zIndex = \(attr.zIndex)"
+      )
+    } else { return "attributes: nil; zoomState = \(zoomState)" }
+  }
+
+  /**
   layoutAttributeClass
 
   :returns: AnyClass
@@ -44,6 +62,41 @@ final class BankCollectionLayout: ZoomingCollectionViewLayout {
     let attributes = super.layoutAttributesForItemAtIndexPath(indexPath) as! BankCollectionAttributes
     attributes.viewingMode = viewingMode
     attributes.zoomed = zoomedItem == indexPath
+    MSLogDebug(stringForAttributes(attributes))
+    return attributes
+  }
+
+  /**
+  initialLayoutAttributesForAppearingItemAtIndexPath:
+
+  :param: indexPath NSIndexPath
+
+  :returns: UICollectionViewLayoutAttributes?
+  */
+  override func initialLayoutAttributesForAppearingItemAtIndexPath(indexPath: NSIndexPath)
+    -> UICollectionViewLayoutAttributes?
+  {
+    let attributes = super.finalLayoutAttributesForDisappearingItemAtIndexPath(indexPath) as? BankCollectionAttributes
+    attributes?.viewingMode = viewingMode
+    attributes?.zoomed = zoomedItem == indexPath
+    MSLogDebug(stringForAttributes(attributes))
+    return attributes
+  }
+
+  /**
+  finalLayoutAttributesForDisappearingItemAtIndexPath:
+
+  :param: indexPath NSIndexPath
+
+  :returns: UICollectionViewLayoutAttributes?
+  */
+  override func finalLayoutAttributesForDisappearingItemAtIndexPath(indexPath: NSIndexPath)
+    -> UICollectionViewLayoutAttributes?
+  {
+    let attributes = super.finalLayoutAttributesForDisappearingItemAtIndexPath(indexPath) as? BankCollectionAttributes
+    attributes?.viewingMode = viewingMode
+    attributes?.zoomed = zoomedItem == indexPath
+    MSLogDebug(stringForAttributes(attributes))
     return attributes
   }
 }

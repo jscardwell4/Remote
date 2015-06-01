@@ -194,11 +194,26 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
 
   private var storedAttributes: AttributesIndex = [:]
 
-  public enum ZoomState { case Default, ZoomingStage1, ZoomingStage2, UnzoomingStage1, UnzoomingStage2 }
+  public enum ZoomState: Printable {
+    case Default, ZoomingStage1, ZoomingStage2, UnzoomingStage1, UnzoomingStage2
+    public var description: String {
+      switch self {
+        case .Default:         return "Default"
+        case .ZoomingStage1:   return "ZoomingStage1"
+        case .ZoomingStage2:   return "ZoomingStage2"
+        case .UnzoomingStage1: return "UnzoomingStage1"
+        case .UnzoomingStage2: return "UnzoomingStage2"
+      }
+    }
+  }
 
-  private(set) var zoomState = ZoomState.Default
-  private(set) var unzoomingItem: NSIndexPath? { didSet {  zoomState = unzoomingItem != nil ? .UnzoomingStage2 : .Default } }
-  private(set) var zoomingItem: NSIndexPath? { didSet { if zoomingItem != nil { zoomState = .ZoomingStage2 } } }
+  public private(set) var zoomState = ZoomState.Default
+  public private(set) var unzoomingItem: NSIndexPath? {
+    didSet { zoomState = unzoomingItem != nil ? .UnzoomingStage2 : .Default }
+  }
+  public private(set) var zoomingItem: NSIndexPath? {
+    didSet { if zoomingItem != nil { zoomState = .ZoomingStage2 } }
+  }
 
   public var zoomedItem: NSIndexPath? {
     get { return zoomingItem }
@@ -339,10 +354,10 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
   override public func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
     let attributes: UICollectionViewLayoutAttributes
     switch indexPath {
-    case zoomingItem where zoomState == .ZoomingStage2, unzoomingItem where zoomState == .ZoomingStage1:
-      attributes = zoomify(defaultAttributesForItemAtIndexPath(indexPath))
-    default:
-      attributes = defaultAttributesForItemAtIndexPath(indexPath)
+      case zoomingItem where zoomState == .ZoomingStage2, unzoomingItem where zoomState == .ZoomingStage1:
+        attributes = zoomify(defaultAttributesForItemAtIndexPath(indexPath))
+      default:
+        attributes = defaultAttributesForItemAtIndexPath(indexPath)
     }
     return attributes
   }
@@ -354,13 +369,14 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
 
   :returns: UICollectionViewLayoutAttributes?
   */
-  override public func initialLayoutAttributesForAppearingItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
+  override public func initialLayoutAttributesForAppearingItemAtIndexPath(indexPath: NSIndexPath)
+    -> UICollectionViewLayoutAttributes?
   {
     let attributes: UICollectionViewLayoutAttributes?
     switch indexPath {
-    case unzoomingItem: attributes = defaultAttributesForItemAtIndexPath(indexPath)
-    case zoomingItem:   attributes = zoomify(defaultAttributesForItemAtIndexPath(indexPath))
-    default:            attributes = nil
+      case unzoomingItem: attributes = defaultAttributesForItemAtIndexPath(indexPath)
+      case zoomingItem:   attributes = zoomify(defaultAttributesForItemAtIndexPath(indexPath))
+      default:            attributes = nil
     }
     return attributes
   }
@@ -400,13 +416,16 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
 
   :returns: UICollectionViewLayoutAttributes?
   */
-  override public func finalLayoutAttributesForDisappearingItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
+  override public func finalLayoutAttributesForDisappearingItemAtIndexPath(indexPath: NSIndexPath)
+    -> UICollectionViewLayoutAttributes?
+  {
     let attributes: UICollectionViewLayoutAttributes?
     switch indexPath {
-    case unzoomingItem: attributes = zoomify(defaultAttributesForItemAtIndexPath(indexPath))
-    case zoomingItem:   attributes = defaultAttributesForItemAtIndexPath(indexPath)
-    default:            attributes = nil
+      case unzoomingItem: attributes = zoomify(defaultAttributesForItemAtIndexPath(indexPath))
+      case zoomingItem:   attributes = defaultAttributesForItemAtIndexPath(indexPath)
+      default:            attributes = nil
     }
+    if zoomState == .ZoomingStage1 { attributes?.zIndex = 100 }
     return attributes
   }
 

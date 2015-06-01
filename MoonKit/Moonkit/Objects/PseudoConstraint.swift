@@ -533,26 +533,26 @@ public func -!>(var lhs: Pseudo, rhs: Float) -> Pseudo { lhs.priority = rhs; ret
 // MARK: - Equal operator
 infix operator => {precedence 160}
 
-public func =>(lhs: ViewAttribute, rhs: ViewAttribute) -> Pseudo { return Pseudo(first: lhs, second: rhs  ) }
-public func =>(lhs: ViewAttribute, rhs: Float        ) -> Pseudo { return Pseudo(pair: lhs,  constant: rhs) }
+public func =>(lhs: ViewAttribute, rhs: ViewAttribute) -> Pseudo { return Pseudo(first: lhs, second: rhs) }
+public func =>(lhs: ViewAttribute, rhs: Floatable) -> Pseudo { return Pseudo(pair: lhs, constant: rhs.FloatValue) }
 
 // MARK: - GreaterThanOrEqual operator
 infix operator ≥ {precedence 160}
 
-public func ≥(lhs: ViewAttribute, rhs: ViewAttribute) -> Pseudo { return Pseudo(first: lhs, second: rhs,   relation: Greater) }
-public func ≥(lhs: ViewAttribute, rhs: Float        ) -> Pseudo { return Pseudo(pair: lhs,  constant: rhs, relation: Greater) }
+public func ≥(lhs: ViewAttribute, rhs: ViewAttribute) -> Pseudo { return Pseudo(first: lhs, second: rhs, relation: Greater) }
+public func ≥(lhs: ViewAttribute, rhs: Floatable) -> Pseudo { return Pseudo(pair: lhs, constant: rhs.FloatValue, relation: Greater) }
 
 // MARK: - LessThanOrEqual operator
 infix operator ≤ {precedence 160}
 
-public func ≤(lhs: ViewAttribute, rhs: ViewAttribute) -> Pseudo { return Pseudo(first: lhs, second: rhs,   relation: Less) }
-public func ≤(lhs: ViewAttribute, rhs: Float        ) -> Pseudo { return Pseudo(pair: lhs,  constant: rhs, relation: Less) }
+public func ≤(lhs: ViewAttribute, rhs: ViewAttribute) -> Pseudo { return Pseudo(first: lhs, second: rhs, relation: Less) }
+public func ≤(lhs: ViewAttribute, rhs: Floatable) -> Pseudo { return Pseudo(pair: lhs, constant: rhs.FloatValue, relation: Less) }
 
 // MARK: - Multiplication, division, and subtraction operators
 
-public func *(var lhs: Pseudo, rhs: Float) -> Pseudo { lhs.multiplier =  rhs; return lhs }
-public func +(var lhs: Pseudo, rhs: Float) -> Pseudo { lhs.constant   =  rhs; return lhs }
-public func -(var lhs: Pseudo, rhs: Float) -> Pseudo { lhs.constant   = -rhs; return lhs }
+public func *(var lhs: Pseudo, rhs: Floatable) -> Pseudo { lhs.multiplier =  rhs.FloatValue; return lhs }
+public func +(var lhs: Pseudo, rhs: Floatable) -> Pseudo { lhs.constant   =  rhs.FloatValue; return lhs }
+public func -(var lhs: Pseudo, rhs: Floatable) -> Pseudo { lhs.constant   = -rhs.FloatValue; return lhs }
 
 // MARK: - Flush to superview left/top operator
 
@@ -589,8 +589,8 @@ public func |(var lhs: [Pseudo], rhs: Axis) -> [Pseudo] {
 // MARK: - Offset from superview left/top operator
 infix operator |-- {associativity left precedence 140}
 
-public func |--(lhs: Axis, rhs: Float            ) -> (Axis, Float, Relation) { return (lhs,   rhs,  Equal) }
-public func |--(lhs: Axis, rhs: (Float, Relation)) -> (Axis, Float, Relation) { return (lhs, rhs.0,  rhs.1) }
+public func |--(lhs: Axis, rhs: Floatable        ) -> (Axis, Float, Relation) { return (lhs, rhs.FloatValue, Equal) }
+public func |--(lhs: Axis, rhs: (Float, Relation)) -> (Axis, Float, Relation) { return (lhs, rhs.0,          rhs.1) }
 
 // MARK: - Offset from superview right/bottom operator
 infix operator --| {associativity left precedence 140}
@@ -665,12 +665,12 @@ infix operator -- {associativity left precedence 140}
 
 // MARK: Prefix
 
-public func --(lhs: [Pseudo], rhs: Float            ) -> ([Pseudo], Float, Relation) { return (lhs, rhs,   Equal) }
-public func --(lhs:   Pseudo, rhs: Float            ) -> (  Pseudo, Float, Relation) { return (lhs, rhs,   Equal) }
-public func --(lhs:   UIView, rhs: Float            ) -> (  UIView, Float, Relation) { return (lhs, rhs,   Equal) }
-public func --(lhs: [Pseudo], rhs: (Float, Relation)) -> ([Pseudo], Float, Relation) { return (lhs, rhs.0, rhs.1) } 
-public func --(lhs:   Pseudo, rhs: (Float, Relation)) -> (  Pseudo, Float, Relation) { return (lhs, rhs.0, rhs.1) }
-public func --(lhs:   UIView, rhs: (Float, Relation)) -> (  UIView, Float, Relation) { return (lhs, rhs.0, rhs.1) }
+public func --(lhs: [Pseudo], rhs: Floatable        ) -> ([Pseudo], Float, Relation) { return (lhs, rhs.FloatValue,   Equal) }
+public func --(lhs:   Pseudo, rhs: Floatable        ) -> (  Pseudo, Float, Relation) { return (lhs, rhs.FloatValue,   Equal) }
+public func --(lhs:   UIView, rhs: Floatable        ) -> (  UIView, Float, Relation) { return (lhs, rhs.FloatValue,   Equal) }
+public func --(lhs: [Pseudo], rhs: (Float, Relation)) -> ([Pseudo], Float, Relation) { return (lhs, rhs.0,            rhs.1) }
+public func --(lhs:   Pseudo, rhs: (Float, Relation)) -> (  Pseudo, Float, Relation) { return (lhs, rhs.0,            rhs.1) }
+public func --(lhs:   UIView, rhs: (Float, Relation)) -> (  UIView, Float, Relation) { return (lhs, rhs.0,            rhs.1) }
 
 // MARK: Resolution
 
@@ -728,9 +728,9 @@ public func --(lhs: (UIView, Float, Relation), rhs: UIView) -> Pseudo {
 // MARK: - GreaterThanOrEqual spacing prefix operator
 prefix operator ≥ {}
 
-public prefix func ≥(value: Float) -> (Float, Relation) { return (value, Greater) }
+public prefix func ≥(value: Floatable) -> (Float, Relation) { return (value.FloatValue, Greater) }
 
 // MARK: - LessThanOrEqual spacing prefix operator
 prefix operator ≤ {}
 
-public prefix func ≤(value: Float) -> (Float, Relation) { return (value, Less) }
+public prefix func ≤(value: Floatable) -> (Float, Relation) { return (value.FloatValue, Less) }

@@ -56,15 +56,7 @@ final class BankCollectionItemCell: BankCollectionCell {
     }
   }
 
-  private var viewingMode: Bank.ViewingMode = .List {
-    didSet {
-      if oldValue != viewingMode {
-        updateEnabledGestures()
-        updateSubviews()
-        setNeedsUpdateConstraints()
-      }
-    }
-  }
+  private var viewingMode: Bank.ViewingMode = .List
 
   /** updateEnabledGestures */
   private func updateEnabledGestures() {
@@ -94,14 +86,13 @@ final class BankCollectionItemCell: BankCollectionCell {
 
   private var zoomed = false {
     didSet {
-      if oldValue != zoomed {
-        updateEnabledGestures()
-        updateSubviews()
-        setNeedsUpdateConstraints()
-      }
+//      removeAllConstraints()
+      suppressChevronConstraints   = zoomed
+      suppressDeleteConstraints    = zoomed
+      suppressIndicatorConstraints = zoomed
     }
   }
-
+  
   var previewActionHandler: ((Void) -> Void)?
 
   /**
@@ -110,20 +101,26 @@ final class BankCollectionItemCell: BankCollectionCell {
   :param: layoutAttributes UICollectionViewLayoutAttributes!
   */
   override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes!) {
-    super.applyLayoutAttributes(layoutAttributes)
     if let attributes = layoutAttributes as? BankCollectionAttributes {
       zoomed = attributes.zoomed
       viewingMode = attributes.viewingMode
+      updateEnabledGestures()
+      updateSubviews()
+      setNeedsUpdateConstraints()
       MSLogDebug("attributes = \(attributes)")
     }
+    super.applyLayoutAttributes(layoutAttributes)
   }
 
 
   /** updateConstraints */
   override func updateConstraints() {
 
+    let identifierBase = createIdentifier(self, "Internal")
     let listIdentifier      = createIdentifierGenerator(createIdentifier(self, "Internal", "List"))
     let thumbnailIdentifier = createIdentifierGenerator(createIdentifier(self, "Internal", "Thumbnail"))
+
+    removeConstraintsWithIdentifierPrefix(identifierBase)
 
     super.updateConstraints()
 
@@ -173,14 +170,14 @@ final class BankCollectionItemCell: BankCollectionCell {
                 --> thumbnailIdentifier(suffixes: "Zoomed", "Thumbnail", "Spacing", "Horizontal"),
               [thumbnailImageView.height => thumbnailImageView.width * Float(Ratio(w, h).inverseValue)
                 --> thumbnailIdentifier(suffixes: "Zoomed", "Thumbnail", "Proportion"),
-              thumbnailImageView.width => Float(w) -!> 500
+              thumbnailImageView.width => w -!> 500
                 --> thumbnailIdentifier(suffixes: "Zoomed", "Thumbnail", "Width"),
               thumbnailImageView.centerX => contentView.centerX
                 --> thumbnailIdentifier(suffixes: "Zoomed", "Thumbnail", "Horizontal"),
               thumbnailImageView.centerY => contentView.centerY
                 --> thumbnailIdentifier(suffixes: "Zoomed", "Thumbnail", "Vertical")]
             )
-        } else {
+        } else if !zoomed {
           constrain(
             𝗛|thumbnailImageView|𝗛
               --> thumbnailIdentifier(suffixes: "Thumbnail", "Spacing", "Horizontal"),
@@ -198,9 +195,9 @@ final class BankCollectionItemCell: BankCollectionCell {
 
     }
 
-    MSLogDebug("viewingMode = \(viewingMode), constraints = {\n\t" +
-               "\n\t".join((constraints() as! [NSLayoutConstraint]).map {$0.prettyDescription}) +
-               "\n}")
+//    MSLogDebug("viewingMode = \(viewingMode), constraints = {\n\t" +
+//               "\n\t".join((constraints() as! [NSLayoutConstraint]).map {$0.prettyDescription}) +
+//               "\n}")
 
   }
 

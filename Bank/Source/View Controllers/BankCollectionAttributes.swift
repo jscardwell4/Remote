@@ -14,9 +14,18 @@ final class BankCollectionAttributes: UICollectionViewLayoutAttributes {
   var viewingMode: Bank.ViewingMode = .List
   var zoomed = false
   var blurStyle: UIBlurEffectStyle = .Dark
+  var zoomState: BankCollectionLayout.ZoomState?
 
   override var description: String {
-    return super.description + " viewingMode = \(viewingMode); zoomed = \(zoomed); blurStyle = \(blurStyle);"
+    var result = super.description
+    result.sub("\\(<NSIndexPath[^\\)]+\\)", "(row: \(indexPath.row), section: \(indexPath.section))")
+    result += "; ".join(
+      " viewingMode = \(viewingMode)",
+      "zoomed = \(zoomed)",
+      "zoomState = \(toString(zoomState))",
+      "blurStyle = \(blurStyle)"
+    )
+    return result
   }
 
   /**

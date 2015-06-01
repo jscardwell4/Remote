@@ -50,7 +50,7 @@ class BankCollectionCell: UICollectionViewCell {
 
   var exportItem: JSONValueConvertible? { return nil }
 
-  private(set) var contentSize = CGSize.zeroSize
+  private(set) var contentSize = CGSize.zeroSize //{ didSet { removeAllConstraints(); setNeedsUpdateConstraints() } }
 
   var indicatorImage: UIImage? {
     didSet {
@@ -61,6 +61,10 @@ class BankCollectionCell: UICollectionViewCell {
   }
 
   var showChevron: Bool = true { didSet { chevron.hidden = !showChevron } }
+
+  var suppressIndicatorConstraints = false
+  var suppressChevronConstraints   = false
+  var suppressDeleteConstraints    = false
 
   var animateIndicator: ((Void) -> Void)?
 
@@ -81,8 +85,7 @@ class BankCollectionCell: UICollectionViewCell {
   :param: layoutAttributes UICollectionViewLayoutAttributes!
   */
   override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes!) {
-    super.applyLayoutAttributes(layoutAttributes)
-    contentSize = layoutAttributes.frame.size
+    contentSize = layoutAttributes.size
   }
 
   var indicatorConstraint: NSLayoutConstraint?
@@ -90,35 +93,49 @@ class BankCollectionCell: UICollectionViewCell {
   /** updateConstraints */
   override func updateConstraints() {
 
-  	let identifier = createIdentifierGenerator(createIdentifier(self, "Internal"))
+    let identifierBase = createIdentifier(self, "Internal")
+  	let identifier = createIdentifierGenerator(identifierBase)
 
     // Refresh our constraints
     removeAllConstraints()
 
     super.updateConstraints()
 
+    removeAllConstraints()
+
     constrain(
-      deleteButton.right => right
-        --> identifier(suffixes: "DeleteButton", "Right"),
-      deleteButton.top => top
-        --> identifier(suffixes: "DeleteButton", "Top"),
-      deleteButton.width => Float(BankCollectionCell.deleteButtonWidth)
-        --> identifier(suffixes: "DeleteButton", "Width"),
-      deleteButton.bottom => bottom
-        --> identifier(suffixes: "DeleteButton", "Bottom"),
-      chevron.centerY => contentView.centerY
-        --> identifier(suffixes: "Chevron", "Vertical"),
-      chevron.right => right - 20
-        --> identifier(suffixes: "Chevron", "Right"),
-      chevron.width ≤ chevron.height
-        --> identifier(suffixes: "Chevron", "Proportion"),
-      chevron.height => 22
-        --> identifier(suffixes: "Chevron", "Size"),
-      indicator.width ≤ indicator.height
-        --> identifier(suffixes: "Indicator", "Proportion"),
-      indicator.height => 22
-        --> identifier(suffixes: "Indicator", "Size")
+      𝗛|contentView|𝗛 --> identifier(suffixes: "ContainContent", "Horizontal"),
+      𝗩|contentView|𝗩 --> identifier(suffixes: "ContainContent", "Vertical")
     )
+    constrain(
+      contentView.width => contentSize.width   --> identifier(suffixes: "Content", "Width"),
+      contentView.height => contentSize.height --> identifier(suffixes: "Content", "Height")
+    )
+
+    if !suppressDeleteConstraints {
+      constrain(
+        deleteButton.right => right                                       --> identifier(suffixes: "DeleteButton", "Right"),
+        deleteButton.top => top                                           --> identifier(suffixes: "DeleteButton", "Top"),
+        deleteButton.width => Float(BankCollectionCell.deleteButtonWidth) --> identifier(suffixes: "DeleteButton", "Width"),
+        deleteButton.bottom => bottom                                     --> identifier(suffixes: "DeleteButton", "Bottom")
+      )
+    }
+
+    if !suppressChevronConstraints {
+      constrain(
+        chevron.centerY => contentView.centerY --> identifier(suffixes: "Chevron", "Vertical"),
+        chevron.right => right - 20            --> identifier(suffixes: "Chevron", "Right"),
+        chevron.width ≤ chevron.height         --> identifier(suffixes: "Chevron", "Proportion"),
+        chevron.height => 22                   --> identifier(suffixes: "Chevron", "Size")
+      )
+    }
+
+    if !suppressIndicatorConstraints {
+      constrain(
+        indicator.width ≤ indicator.height --> identifier(suffixes: "Indicator", "Proportion"),
+        indicator.height => 22             --> identifier(suffixes: "Indicator", "Size")
+      )
+    }
 
 	}
 
@@ -178,12 +195,13 @@ class BankCollectionCell: UICollectionViewCell {
 
   /** initializeIVARs */
   private func initializeIVARs() {
+    setTranslatesAutoresizingMaskIntoConstraints(false)
     nametag = "cell"
     backgroundColor = UIColor.clearColor()
     opaque = false
     contentView.backgroundColor = UIColor.clearColor()
     contentView.opaque = false
-
+    contentView.setTranslatesAutoresizingMaskIntoConstraints(false)
     contentView.addSubview(chevron)
     panGesture = {
       var previousState: UIGestureRecognizerState = .Possible

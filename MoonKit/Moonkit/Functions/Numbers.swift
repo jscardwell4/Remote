@@ -41,6 +41,24 @@ extension UInt16:  CGFloatable { public var CGFloatValue: CGFloat { return CGFlo
 extension UInt32:  CGFloatable { public var CGFloatValue: CGFloat { return CGFloat(self) } }
 extension UInt64:  CGFloatable { public var CGFloatValue: CGFloat { return CGFloat(self) } }
 
+public protocol Floatable {
+  var FloatValue: Float { get }
+}
+
+extension CGFloat: Floatable { public var FloatValue: Float { return Float(self) } }
+extension Float:   Floatable { public var FloatValue: Float { return self        } }
+extension Double:  Floatable { public var FloatValue: Float { return Float(self) } }
+extension Int:     Floatable { public var FloatValue: Float { return Float(self) } }
+extension Int8:    Floatable { public var FloatValue: Float { return Float(self) } }
+extension Int16:   Floatable { public var FloatValue: Float { return Float(self) } }
+extension Int32:   Floatable { public var FloatValue: Float { return Float(self) } }
+extension Int64:   Floatable { public var FloatValue: Float { return Float(self) } }
+extension UInt:    Floatable { public var FloatValue: Float { return Float(self) } }
+extension UInt8:   Floatable { public var FloatValue: Float { return Float(self) } }
+extension UInt16:  Floatable { public var FloatValue: Float { return Float(self) } }
+extension UInt32:  Floatable { public var FloatValue: Float { return Float(self) } }
+extension UInt64:  Floatable { public var FloatValue: Float { return Float(self) } }
+
 //public protocol FloatValueConvertible { var floatValue: Float { get }; init(_ floatValue: Float) }
 //public protocol CGFloatValueConvertible { var cgfloatValue: CGFloat { get }; init(_ cgfloatValue: CGFloat) }
 //public protocol DoubleValueConvertible { var doubleValue: Double { get }; init(_ doubleValue: Double) }

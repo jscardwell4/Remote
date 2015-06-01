@@ -30,8 +30,11 @@ final class BankCollectionCategoryCell: BankCollectionCell {
   /** updateConstraints */
   override func updateConstraints() {
 
-    let identifier = createIdentifierGenerator(createIdentifier(self, "Internal"))
+    let identifierBase = createIdentifier(self, "Internal")
+    let identifier = createIdentifierGenerator(identifierBase)
 
+    removeConstraintsWithIdentifierPrefix(identifierBase)
+    
     super.updateConstraints()
 
     constrain(
