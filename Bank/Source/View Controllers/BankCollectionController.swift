@@ -210,6 +210,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
       v.backgroundColor = Bank.backgroundColor
       BankCollectionCategoryCell.registerWithCollectionView(v)
       BankCollectionItemCell.registerWithCollectionView(v)
+      v.registerClass(ItemCellZoom.self, forSupplementaryViewOfKind: BankCollectionLayout.SupplementaryZoomKind, withReuseIdentifier: "Zoom")
       return v
     }()
 
@@ -734,6 +735,27 @@ extension BankCollectionController: UICollectionViewDataSource {
   }
 
   /**
+  collectionView:viewForSupplementaryElementOfKind:atIndexPath:
+
+  :param: collectionView UICollectionView
+  :param: kind String
+  :param: indexPath NSIndexPath
+
+  :returns: UICollectionReusableView
+  */
+  override func collectionView(collectionView: UICollectionView,
+    viewForSupplementaryElementOfKind kind: String,
+    atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView
+  {
+    let zoomView = collectionView.dequeueReusableSupplementaryViewOfKind(kind,
+                                                     withReuseIdentifier: "Zoom",
+                                                            forIndexPath: indexPath) as! ItemCellZoom
+    if let item = itemForIndexPath(indexPath) as? Previewable { zoomView.image = item.preview }
+    zoomView.action = {[unowned self] in self.layout.zoomedItem = nil}
+    return zoomView
+  }
+
+  /**
   numberOfSectionsInCollectionView:
 
   :param: collectionView UICollectionView
@@ -752,7 +774,7 @@ extension BankCollectionController: ZoomingCollectionViewLayoutDelegate {
   :returns: CGSize
   */
   func sizeForZoomedItemAtIndexPath(indexPath: NSIndexPath) -> CGSize {
-    if indexPath == layout.zoomedItem, let model = modelForIndexPath(indexPath) as? Previewable, image = model.preview {
+    if indexPath == layout.zoomingItem ?? layout.unzoomingItem, let model = modelForIndexPath(indexPath) as? Previewable, image = model.preview {
       let (w, h) = image.size.unpack()
       let ratio = Ratio(w, h)
       let width = min(w, collectionView?.bounds.width ?? 0)

@@ -773,6 +773,7 @@
 		C2FA4B891AC5E2FC0071429E /* Bank.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C293C7441AC3164700408D35 /* Bank.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C2FA4B8B1AC5E3250071429E /* DataModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* DataModel.framework */; };
 		C2FA4B8C1AC5E3250071429E /* DataModel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* DataModel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C2FE796D1B1D10FD0087F72C /* ItemCellZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FE796C1B1D10FD0087F72C /* ItemCellZoom.swift */; };
 		C2FFB602170B986C0079C283 /* REPresetCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2FFB601170B986B0079C283 /* REPresetCollectionViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -1881,6 +1882,7 @@
 		C2F9410A19BE5E90007B5CC1 /* MSViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MSViewController.h; sourceTree = "<group>"; };
 		C2F9410B19BE5E90007B5CC1 /* MSViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MSViewController.m; sourceTree = "<group>"; };
 		C2F9410D19BE5E90007B5CC1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		C2FE796C1B1D10FD0087F72C /* ItemCellZoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemCellZoom.swift; sourceTree = "<group>"; };
 		C2FFB600170B986A0079C283 /* REPresetCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REPresetCollectionViewController.h; sourceTree = "<group>"; };
 		C2FFB601170B986B0079C283 /* REPresetCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REPresetCollectionViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -3151,6 +3153,7 @@
 				C2E9F4A91ABCA395007581F2 /* FilteringDetailSection.swift */,
 				C2E9F4AA1ABCA395007581F2 /* FilteringDetailSectionHeader.swift */,
 				C27978E11B17A33D00B36BAD /* BlurDecoration.swift */,
+				C2FE796C1B1D10FD0087F72C /* ItemCellZoom.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -4843,6 +4846,7 @@
 				C285D8531AC48C9800C527F6 /* DetailTextFieldRow.swift in Sources */,
 				C285D8381AC48C8400C527F6 /* DetailAttributedTextCell.swift in Sources */,
 				C26D84B61AC33738000230B9 /* DocumentSelectionController.swift in Sources */,
+				C2FE796D1B1D10FD0087F72C /* ItemCellZoom.swift in Sources */,
 				C285D85D1AC48E8500C527F6 /* RemotePresetDetailController.swift in Sources */,
 				C221159C1AC58A980071F2D0 /* BankProtocols.swift in Sources */,
 				C285D82F1AC48BA500C527F6 /* BankCollectionAttributes.swift in Sources */,

@@ -45,11 +45,7 @@ final class BankCollectionItemCell: BankCollectionCell {
   private var previewable: Bool = false {
     didSet {
       if previewable {
-        if let previewImage = (item as? Previewable)?.thumbnail {
-          thumbnailImageView.image = previewImage
-        } else {
-          thumbnailImageView.image = nil
-        }
+        thumbnailImageView.image = (item as? Previewable)?.thumbnail
       }
       thumbnailImageView.hidden = !previewable
       previewGesture.enabled = previewable && viewingMode == .List
@@ -60,20 +56,20 @@ final class BankCollectionItemCell: BankCollectionCell {
 
   /** updateEnabledGestures */
   private func updateEnabledGestures() {
-    previewGesture.enabled = !zoomed && (viewingMode == .List && previewable)
-    swipeToDelete = !zoomed && (viewingMode == .List)
+    previewGesture.enabled = (viewingMode == .List && previewable)
+    swipeToDelete = (viewingMode == .List)
   }
 
   /** updateSubviews */
   private func updateSubviews() {
     switch viewingMode {
-      case .List where zoomed == false:
+      case .List:
         indicator.hidden    = false
         nameLabel.hidden    = false
         chevron.hidden      = !showChevron
         thumbnailImageView.contentMode = .ScaleAspectFit
-      case .Thumbnail, .List where zoomed == true:
-        indicator.hidden = zoomed || indicatorImage == nil
+      case .Thumbnail:
+        indicator.hidden = indicatorImage == nil
         chevron.hidden      = true
         nameLabel.hidden    = true
         thumbnailImageView.contentMode = contentSize.contains(thumbnailImageView.image?.size ?? CGSize.zeroSize)
@@ -84,15 +80,6 @@ final class BankCollectionItemCell: BankCollectionCell {
     }
   }
 
-  private var zoomed = false {
-    didSet {
-//      removeAllConstraints()
-      suppressChevronConstraints   = zoomed
-      suppressDeleteConstraints    = zoomed
-      suppressIndicatorConstraints = zoomed
-    }
-  }
-  
   var previewActionHandler: ((Void) -> Void)?
 
   /**
@@ -102,16 +89,13 @@ final class BankCollectionItemCell: BankCollectionCell {
   */
   override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes!) {
     if let attributes = layoutAttributes as? BankCollectionAttributes {
-      zoomed = attributes.zoomed
       viewingMode = attributes.viewingMode
       updateEnabledGestures()
       updateSubviews()
       setNeedsUpdateConstraints()
-      MSLogDebug("attributes = \(attributes)")
     }
     super.applyLayoutAttributes(layoutAttributes)
   }
-
 
   /** updateConstraints */
   override func updateConstraints() {
@@ -126,7 +110,7 @@ final class BankCollectionItemCell: BankCollectionCell {
 
     switch viewingMode {
 
-      case .List where zoomed == false:
+      case .List:
 
         constrain(
           nameLabel.centerY => contentView.centerY
@@ -163,41 +147,22 @@ final class BankCollectionItemCell: BankCollectionCell {
 
         indicatorConstraint = constraintWithIdentifier(listIdentifier(suffixes: "Indicator", "Left"))
 
-      case .Thumbnail, .List where zoomed == true:
-        if zoomed, let (w, h) = thumbnailImageView.image?.size.unpack() where w > 0 && h > 0 {
-            constrain(
-              𝗛|--(≥0)--thumbnailImageView--(≤0)--|𝗛
-                --> thumbnailIdentifier(suffixes: "Zoomed", "Thumbnail", "Spacing", "Horizontal"),
-              [thumbnailImageView.height => thumbnailImageView.width * Float(Ratio(w, h).inverseValue)
-                --> thumbnailIdentifier(suffixes: "Zoomed", "Thumbnail", "Proportion"),
-              thumbnailImageView.width => w -!> 500
-                --> thumbnailIdentifier(suffixes: "Zoomed", "Thumbnail", "Width"),
-              thumbnailImageView.centerX => contentView.centerX
-                --> thumbnailIdentifier(suffixes: "Zoomed", "Thumbnail", "Horizontal"),
-              thumbnailImageView.centerY => contentView.centerY
-                --> thumbnailIdentifier(suffixes: "Zoomed", "Thumbnail", "Vertical")]
-            )
-        } else if !zoomed {
-          constrain(
-            𝗛|thumbnailImageView|𝗛
-              --> thumbnailIdentifier(suffixes: "Thumbnail", "Spacing", "Horizontal"),
-            [thumbnailImageView.height => thumbnailImageView.width
-              --> thumbnailIdentifier(suffixes: "Thumbnail", "Proportion"),
-             indicator.left => contentView.left + 8
-              --> thumbnailIdentifier(suffixes: "Indicator", "Left"),
-             indicator.top => contentView.top + 8
-              --> thumbnailIdentifier(suffixes: "Indicator", "Top")]
-          )
-        }
+      case .Thumbnail:
+        constrain(
+          𝗛|thumbnailImageView|𝗛
+            --> thumbnailIdentifier(suffixes: "Thumbnail", "Spacing", "Horizontal"),
+          [thumbnailImageView.height => thumbnailImageView.width
+            --> thumbnailIdentifier(suffixes: "Thumbnail", "Proportion"),
+           indicator.left => contentView.left + 8
+            --> thumbnailIdentifier(suffixes: "Indicator", "Left"),
+           indicator.top => contentView.top + 8
+            --> thumbnailIdentifier(suffixes: "Indicator", "Top")]
+        )
 
       default:
         break
 
     }
-
-//    MSLogDebug("viewingMode = \(viewingMode), constraints = {\n\t" +
-//               "\n\t".join((constraints() as! [NSLayoutConstraint]).map {$0.prettyDescription}) +
-//               "\n}")
 
   }
 
@@ -207,27 +172,11 @@ final class BankCollectionItemCell: BankCollectionCell {
     contentView.addSubview(thumbnailImageView)
     previewGesture.addTarget(self, action: "previewAction")
     thumbnailImageView.addGestureRecognizer(previewGesture)
-}
+  }
 
-  /**
-  initWithFrame:
-
-  :param: frame CGRect
-  */
   override init(frame: CGRect) { super.init(frame: frame); initializeIVARs() }
-
-  /**
-  init:
-
-  :param: aDecoder NSCoder
-  */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
 
-  /**
-
-  prepareForReuse
-
-  */
   override func prepareForReuse() { super.prepareForReuse(); item = nil }
 
   /** previewAction */

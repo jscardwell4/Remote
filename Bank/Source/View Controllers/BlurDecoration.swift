@@ -30,10 +30,6 @@ class BlurDecoration: UICollectionReusableView {
     createBlurWithStyle(.Dark)
   }
 
-  override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes!) {
-    if let style = (layoutAttributes as? BankCollectionAttributes)?.blurStyle { createBlurWithStyle(style) }
-  }
-
   override init(frame: CGRect) { super.init(frame: frame); setup() }
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); setup() }
 }
