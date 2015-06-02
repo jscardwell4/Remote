@@ -24,6 +24,15 @@ extension Preset: Detailable {
   }
 }
 
+extension Preset: DelegateDetailable {
+    func sectionIndexForController(controller: BankCollectionDetailController) -> BankModelDetailDelegate.SectionIndex {
+      var sections: BankModelDetailDelegate.SectionIndex = [:]
+
+
+      return sections
+    }
+}
+
 // TODO: Fill out `FormCreatable` stubs
 extension Preset: FormCreatable {
 

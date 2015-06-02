@@ -79,6 +79,18 @@ public func apply<T>(x: T, f: (T) -> Void) { f(x) }
 public func applyMaybe<S:SequenceType>(sequence: S?, f: (S.Generator.Element) -> Void) { if let s = sequence { apply(s, f) } }
 public func applyMaybe<T>(x: T?, f: (T) -> Void) { if let x = x { apply(x, f) } }
 
+public func pairwiseApply<S:SequenceType>(sequence: S, f: (S.Generator.Element, S.Generator.Element) -> Void) {
+  apply(SequenceOf<(S.Generator.Element, S.Generator.Element)>({() -> GeneratorOf<(S.Generator.Element, S.Generator.Element)> in
+    let sequenceArray = Array(sequence)
+    var i = 1
+    return GeneratorOf<(S.Generator.Element, S.Generator.Element)>({
+      let result: (S.Generator.Element, S.Generator.Element)?
+      if i < sequenceArray.count { result = (sequenceArray[i - 1], sequenceArray[i]) } else { result = nil }
+      i++
+      return result
+    })
+  }), f)
+}
 
 /**
 A function that simply calls `apply` and then returns the sequence

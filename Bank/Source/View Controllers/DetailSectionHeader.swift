@@ -13,9 +13,6 @@ import MoonKit
 class DetailSectionHeader: UITableViewHeaderFooterView {
 
   /// MARK: Identifiers
-  ////////////////////////////////////////////////////////////////////////////////
-
-  class var headerFont: UIFont { return UIFont(name: "Elysio-Medium", size: 18)! }
 
   private let identifier: Identifier
 
@@ -77,7 +74,16 @@ class DetailSectionHeader: UITableViewHeaderFooterView {
     opaque = false
     contentView.opaque = false
     contentView.backgroundColor = UIColor.clearColor()
-    contentView.constrain("self.height ≥ 44 @999")
+  }
+
+  override func updateConstraints() {
+    removeAllConstraints()
+    contentView.removeAllConstraints()
+    super.updateConstraints()
+
+    constrain(𝗩|contentView|𝗩 -!> 999, 𝗛|contentView|𝗛 -!> 999)
+    if title != nil { contentView.constrain(contentView.height ≥ 44 -!> 999) }
+    else { contentView.constrain(contentView.height => 10 -!> 999) }
   }
 
   /**
@@ -142,7 +148,7 @@ class DetailSectionHeader: UITableViewHeaderFooterView {
       let textStyle = NSMutableParagraphStyle.defaultParagraphStyle().mutableCopy() as! NSMutableParagraphStyle
       textStyle.alignment = NSTextAlignment.Left
 
-      let textFontAttributes = [NSFontAttributeName: DetailSectionHeader.headerFont,
+      let textFontAttributes = [NSFontAttributeName: Bank.sectionHeaderFont,
                                 NSForegroundColorAttributeName: tableBackgroundColor,
                                 NSParagraphStyleAttributeName: textStyle]
 
@@ -187,7 +193,7 @@ class DetailSectionHeader: UITableViewHeaderFooterView {
 
       textOpaqueTextShadow.setFill()
 
-      let textInnerShadowFontAttributes = [NSFontAttributeName: DetailSectionHeader.headerFont,
+      let textInnerShadowFontAttributes = [NSFontAttributeName: Bank.sectionHeaderFont,
                                            NSForegroundColorAttributeName: textInnerShadow.shadowColor!,
                                            NSParagraphStyleAttributeName: textStyle]
 

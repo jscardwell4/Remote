@@ -26,7 +26,7 @@ class DetailImageCell: DetailCell {
     backgroundView = nil
     backgroundColor = UIColor.clearColor()
     contentView.backgroundColor = UIColor.clearColor()
-    contentView.constrain("|-[image]-| :: V:|-[image]-|", views: ["image": preview])
+    contentView.constrain(𝗛|preview|𝗛, 𝗩|preview|𝗩)
   }
 
   /**
@@ -49,8 +49,8 @@ class DetailImageCell: DetailCell {
     get { return preview.image }
     set {
       preview.image = newValue as? UIImage
-      if let imageSize = (newValue as? UIImage)?.size {
-        preview.contentMode = CGSizeContainsSize(bounds.size, imageSize) ? .Center : .ScaleAspectFit
+      if let size = (newValue as? UIImage)?.size {
+        preview.contentMode = bounds.size.contains(size) ? .Center : .ScaleAspectFit
       }
     }
   }

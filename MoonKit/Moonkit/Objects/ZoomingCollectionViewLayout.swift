@@ -236,47 +236,9 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
   }
 
   public private(set) var zoomState = ZoomState.Default
-  public private(set) var unzoomingItem: NSIndexPath? {
-    didSet { zoomState = unzoomingItem != nil ? .UnzoomingStage2 : .Default }
-  }
-  public private(set) var zoomingItem: NSIndexPath? {
-    didSet { if zoomingItem != nil { zoomState = .ZoomingStage2 } }
-  }
 
   public var zoomedItem: NSIndexPath? {
-    get { return zoomingItem }
-    set {
-      unzoomingItem = zoomingItem
-      zoomingItem = newValue
-      if let collectionView = collectionView {
-        collectionView.performBatchUpdates({
-          self.invalidateLayout()
-//          collectionView.deleteItemsAtIndexPaths([indexPath])
-//          collectionView.insertItemsAtIndexPaths([indexPath])
-          }, completion: {_ in self.unzoomingItem = nil})
-      }
-    }
-  }
-
-  /**
-  zoomify:
-
-  :param: attr UICollectionViewLayoutAttributes
-
-  :returns: UICollectionViewLayoutAttributes
-  */
-  private func zoomify(attr: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-    if let collectionView = collectionView {
-      attr.size = zoomifiedSizeForIndexPath(attr.indexPath)
-      attr.center = collectionView.bounds.center
-      attr.zIndex = 100
-    }
-    return attr
-  }
-
-  private func zoomifiedSizeForIndexPath(indexPath: NSIndexPath) -> CGSize {
-    return (collectionView?.delegate as? ZoomingCollectionViewLayoutDelegate)?.sizeForZoomedItemAtIndexPath?(indexPath)
-      ?? ItemScale(width: ItemScale.Width.maxScale).size
+    didSet { collectionView?.performBatchUpdates({ self.invalidateLayout() }, completion: nil) }
   }
 
   public static let SupplementaryZoomKind = "SupplementaryZoomKind"
@@ -303,28 +265,6 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
   // MARK: Blur decoration
 
   /**
-  indexPathsToInsertForDecorationViewOfKind:
-
-  :param: elementKind String
-
-  :returns: [AnyObject]
-  */
-//  override public func indexPathsToInsertForDecorationViewOfKind(elementKind: String) -> [AnyObject] {
-//    return /*zoomingItem != nil ? [NSIndexPath(forRow: 0, inSection: 0)] :*/ []
-//  }
-
-  /**
-  indexPathsToDeleteForDecorationViewOfKind:
-
-  :param: elementKind String
-
-  :returns: [AnyObject]
-  */
-//  override public func indexPathsToDeleteForDecorationViewOfKind(elementKind: String) -> [AnyObject] {
-//    return /*unzoomingItem != nil ? [NSIndexPath(forRow: 0, inSection: 0)] :*/ []
-//  }
-
-  /**
   layoutAttributesForDecorationViewOfKind:atIndexPath:
 
   :param: elementKind String
@@ -341,64 +281,6 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
     attributes.zIndex = 50
     return attributes
   }
-
-  /**
-  initialLayoutAttributesForAppearingDecorationElementOfKind:atIndexPath:
-
-  :param: elementKind String
-  :param: indexPath NSIndexPath
-
-  :returns: UICollectionViewLayoutAttributes?
-  */
-//  override public func initialLayoutAttributesForAppearingDecorationElementOfKind(elementKind: String,
-//    atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
-//  {
-//    return layoutAttributesForDecorationViewOfKind(elementKind, atIndexPath: indexPath)
-//  }
-
-  /**
-  finalLayoutAttributesForDisappearingDecorationElementOfKind:atIndexPath:
-
-  :param: elementKind String
-  :param: indexPath NSIndexPath
-
-  :returns: UICollectionViewLayoutAttributes?
-  */
-//  override public func finalLayoutAttributesForDisappearingDecorationElementOfKind(elementKind: String,
-//    atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
-//  {
-//    return layoutAttributesForDecorationViewOfKind(elementKind, atIndexPath: indexPath)
-//  }
-
-  // MARK: - Supplementary zoom view
-
-  /**
-  initialLayoutAttributesForAppearingSupplementaryElementOfKind:atIndexPath:
-
-  :param: elementKind String
-  :param: elementIndexPath NSIndexPath
-
-  :returns: UICollectionViewLayoutAttributes?
-  */
-//  public override func initialLayoutAttributesForAppearingSupplementaryElementOfKind(elementKind: String,
-//    atIndexPath elementIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
-//  {
-//    return nil
-//  }
-
-  /**
-  finalLayoutAttributesForDisappearingSupplementaryElementOfKind:atIndexPath:
-
-  :param: elementKind String
-  :param: elementIndexPath NSIndexPath
-
-  :returns: UICollectionViewLayoutAttributes?
-  */
-//  public override func finalLayoutAttributesForDisappearingSupplementaryElementOfKind(elementKind: String,
-//    atIndexPath elementIndexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
-//  {
-//    return nil
-//  }
 
   /**
   layoutAttributesForSupplementaryViewOfKind:atIndexPath:
@@ -421,13 +303,13 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
   // MARK: Items
 
   /**
-  defaultAttributesForItemAtIndexPath:
+  layoutAttributesForItemAtIndexPath:
 
   :param: indexPath NSIndexPath
 
-  :returns: UICollectionViewLayoutAttributes
+  :returns: UICollectionViewLayoutAttributes!
   */
-  public func defaultAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes {
+  override public func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
     let attributesClass = self.dynamicType.layoutAttributesClass() as! UICollectionViewLayoutAttributes.Type
     let attributes = attributesClass(forCellWithIndexPath: indexPath)
 
@@ -442,61 +324,6 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
 
     return attributes
   }
-
-  /**
-  layoutAttributesForItemAtIndexPath:
-
-  :param: indexPath NSIndexPath
-
-  :returns: UICollectionViewLayoutAttributes!
-  */
-  override public func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
-    let attributes: UICollectionViewLayoutAttributes
-//    switch indexPath {
-//      case zoomingItem where zoomState == .ZoomingStage2, unzoomingItem where zoomState == .ZoomingStage1:
-//        attributes = zoomify(defaultAttributesForItemAtIndexPath(indexPath))
-//      default:
-        attributes = defaultAttributesForItemAtIndexPath(indexPath)
-//    }
-//    if indexPath == zoomedItem { attributes.zIndex = 2; attributes.alpha = 0.5 }
-    return attributes
-  }
-
-  /**
-  initialLayoutAttributesForAppearingItemAtIndexPath:
-
-  :param: indexPath NSIndexPath
-
-  :returns: UICollectionViewLayoutAttributes?
-  */
-//  override public func initialLayoutAttributesForAppearingItemAtIndexPath(indexPath: NSIndexPath)
-//    -> UICollectionViewLayoutAttributes?
-//  {
-//    let attributes: UICollectionViewLayoutAttributes?
-//    switch indexPath {
-//      case unzoomingItem: attributes = zoomify(defaultAttributesForItemAtIndexPath(indexPath))
-//      default:            attributes = defaultAttributesForItemAtIndexPath(indexPath)
-//    }
-//    return attributes
-//  }
-
-  /**
-  finalLayoutAttributesForDisappearingItemAtIndexPath:
-
-  :param: itemIndexPath NSIndexPath
-
-  :returns: UICollectionViewLayoutAttributes?
-  */
-//  override public func finalLayoutAttributesForDisappearingItemAtIndexPath(indexPath: NSIndexPath)
-//    -> UICollectionViewLayoutAttributes?
-//  {
-//    let attributes: UICollectionViewLayoutAttributes?
-//    switch indexPath {
-//      case zoomingItem: attributes = zoomify(defaultAttributesForItemAtIndexPath(indexPath))
-//      default:          attributes = defaultAttributesForItemAtIndexPath(indexPath)
-//    }
-//    return attributes
-//  }
 
 }
 

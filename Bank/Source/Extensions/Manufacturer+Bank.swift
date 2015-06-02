@@ -20,6 +20,76 @@ extension Manufacturer: Detailable {
   func detailController() -> UIViewController { return ManufacturerDetailController(model: self) }
 }
 
+extension Manufacturer: DelegateDetailable {
+  func sectionIndexForController(controller: BankCollectionDetailController) -> BankModelDetailDelegate.SectionIndex {
+
+    var sections: BankModelDetailDelegate.SectionIndex = [:]
+
+    struct SectionKey {
+      static let Devices  = "Devices"
+      static let CodeSets = "Code Sets"
+    }
+
+    struct RowKey {
+      static let Devices  = "Devices"
+      static let CodeSets = "Code Sets"
+    }
+
+    /** loadDevicesSection */
+    func loadDevicesSection() {
+
+      let manufacturer = self
+
+      // Devices
+      // section 0 - row 0
+      ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+      let devicesSection = BankCollectionDetailSection(section: 0, title: "Devices")
+      for (idx, device) in enumerate(sortedByName(manufacturer.devices)) {
+        devicesSection.addRow({
+          let row = BankCollectionDetailListRow()
+          row.info = device
+          row.select = BankCollectionDetailRow.selectPushableItem(device)
+          return row
+          }, forKey: "\(RowKey.Devices)\(idx)")
+      }
+
+      sections[SectionKey.Devices] = devicesSection
+    }
+
+    /** loadCodeSetsSection */
+    func loadCodeSetsSection() {
+
+      let manufacturer = self
+
+      // Code Sets
+      // section 1 - row 0
+      ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+      let codeSetsSection = BankCollectionDetailSection(section: 1, title: "Code Sets")
+      for (idx, codeSet) in enumerate(sortedByName(manufacturer.codeSets)) {
+        codeSetsSection.addRow({
+          let row = BankCollectionDetailListRow()
+          row.info = codeSet
+          row.select = BankCollectionDetailRow.selectPushableCollection(codeSet)
+          return row
+          }, forKey: "\(RowKey.CodeSets)\(idx)")
+      }
+
+      /// Create the sections
+      ////////////////////////////////////////////////////////////////////////////////
+
+      sections[SectionKey.CodeSets] = codeSetsSection
+
+    }
+
+    loadDevicesSection()
+    loadCodeSetsSection()
+
+    return sections
+  }
+}
+
 extension Manufacturer: FormCreatable {
 
   /**

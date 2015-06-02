@@ -75,7 +75,7 @@ class ImageDetailController: BankItemDetailController {
     let previewSection = DetailSection(section: 1)
     previewSection.addRow({
       let row = DetailImageRow()
-      row.info = image
+      row.info = image.image
       return row
       }, forKey: RowKey.Preview)
 

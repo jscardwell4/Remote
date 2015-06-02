@@ -181,7 +181,6 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   	collectionDelegate = d; mode = m
     let layout = BankCollectionLayout()
     layout.itemScale = ItemScale(width: .OneAcross, height: 38)
-//    super.init(collectionViewLayout: BankCollectionLayout())
     super.init(collectionViewLayout: layout)
     d.beginItemsChanges = beginDelegateItemsChanges
     d.endItemsChanges = endDelegateItemsChanges
@@ -210,7 +209,9 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
       v.backgroundColor = Bank.backgroundColor
       BankCollectionCategoryCell.registerWithCollectionView(v)
       BankCollectionItemCell.registerWithCollectionView(v)
-      v.registerClass(ItemCellZoom.self, forSupplementaryViewOfKind: BankCollectionLayout.SupplementaryZoomKind, withReuseIdentifier: "Zoom")
+      v.registerClass(ItemCellZoom.self,
+        forSupplementaryViewOfKind: BankCollectionLayout.SupplementaryZoomKind,
+        withReuseIdentifier: "Zoom")
       return v
     }()
 
@@ -369,8 +370,10 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
 
       default:
         if mode == .Default {
-          if let detailableItem = itemForIndexPath(indexPath) as? Detailable {
-            navigationController?.pushViewController(detailableItem.detailController(), animated: true)
+          if let detailableItem = itemForIndexPath(indexPath) as? DelegateDetailable {
+            let itemDelegate = BankModelDetailDelegate(item: detailableItem)
+            let itemDetailController = BankCollectionDetailController(itemDelegate: itemDelegate)
+            navigationController?.pushViewController(itemDetailController, animated: true)
           }
         }
     }
@@ -388,14 +391,6 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
     if layout.zoomedItem != nil { layout.zoomedItem = nil }
     else if let indexPath = collectionView?.indexPathForCell(cell), item = itemForIndexPath(indexPath) as? Previewable {
       layout.zoomedItem = indexPath
-//      zoomedItemIndexPath = indexPath
-//      let zoomView = BankCollectionZoomView(frame: view.bounds, delegate: self)
-//      zoomView.item = item
-////      zoomView.backgroundImage = view.blurredSnapshot()
-//      zoomView.showEditButton = mode == .Default
-//      zoomView.showDetailButton = mode == .Default
-//      collectionView?.addSubview(zoomView)
-//      collectionView?.constrain("zoom.center = self.center", views: ["zoom": zoomView])
     }
   }
 
@@ -531,7 +526,9 @@ extension BankCollectionController: BankItemCreationController {
   private func presentForm(transaction: BankModelDelegate.CreationTransaction) {
     let dismissController = {self.dismissViewControllerAnimated(true) {self.createItemBarButton?.isToggled = false}}
     let didSubmit: FormSubmission = {
-      if transaction.processedForm($0) { DataManager.propagatingSaveFromContext(self.collectionDelegate.managedObjectContext) }
+      if transaction.processedForm($0) {
+        DataManager.propagatingSaveFromContext(self.collectionDelegate.managedObjectContext)
+      }
       dismissController()
     }
     let formViewController = FormViewController(form: transaction.form, didSubmit: didSubmit, didCancel: dismissController)
@@ -577,8 +574,10 @@ extension BankCollectionController: BankItemCreationController {
         // Display popover if there are multiple valid discover transactions
         case let (discoverItem, discoverCollection) where discoverItem != nil && discoverCollection != nil:
         if let button = discoverItemBarButton {
-          presentPopOverWithActions([discoverItem!.label: {$0.removeFromSuperview(); self.transact(discoverItem!)},
-                                     discoverCollection!.label: {$0.removeFromSuperview(); self.transact(discoverCollection!)}],
+          presentPopOverWithActions([discoverItem!.label:
+                                       {$0.removeFromSuperview(); self.transact(discoverItem!)},
+                                     discoverCollection!.label:
+                                       {$0.removeFromSuperview(); self.transact(discoverCollection!)}],
                               above: button)
         }
 
@@ -708,7 +707,9 @@ extension BankCollectionController: UICollectionViewDataSource {
         if let collection = collectionDelegate.collectionAtIndex(indexPath.row) {
           cell.collection = collection
           if mode == .Default {
-            if (collection as? Editable)?.editable == true { cell.deleteAction = {[unowned cell] in self.deleteModelForCel(cell)} }
+            if (collection as? Editable)?.editable == true {
+              cell.deleteAction = {[unowned cell] in self.deleteModelForCel(cell)}
+            }
             cell.showingDeleteDidChange = showingDeleteDidChange
           } else {
             cell.swipeToDelete = false
@@ -764,24 +765,6 @@ extension BankCollectionController: UICollectionViewDataSource {
   */
   override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int { return 2 }
 
-}
-
-extension BankCollectionController: ZoomingCollectionViewLayoutDelegate {
-
-  /**
-  zoomedItemSize
-
-  :returns: CGSize
-  */
-  func sizeForZoomedItemAtIndexPath(indexPath: NSIndexPath) -> CGSize {
-    if indexPath == layout.zoomingItem ?? layout.unzoomingItem, let model = modelForIndexPath(indexPath) as? Previewable, image = model.preview {
-      let (w, h) = image.size.unpack()
-      let ratio = Ratio(w, h)
-      let width = min(w, collectionView?.bounds.width ?? 0)
-      let height = ratio.denominatorForNumerator(width)
-      return CGSize(width: width, height: height)
-    } else { return CGSize.zeroSize } //layout.itemSize }
-  }
 }
 
 // MARK: - UICollectionViewDelegate

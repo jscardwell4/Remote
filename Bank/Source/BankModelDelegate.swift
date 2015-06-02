@@ -201,7 +201,9 @@ import MoonKit
 
   // MARK: - Collections collection
 
-  var numberOfCollections: Int { return (fetchedCollections?.sections?[0] as? NSFetchedResultsSectionInfo)?.numberOfObjects ?? 0 }
+  var numberOfCollections: Int {
+    return (fetchedCollections?.sections?[0] as? NSFetchedResultsSectionInfo)?.numberOfObjects ?? 0
+  }
 
   /**
   collectionAtIndex:
@@ -340,7 +342,9 @@ final class BankModelCollectionDelegate<C:BankModelCollection>: BankModelDelegat
       itemToCollection = itemToCollection.filter {$0.toMany == false}
       let collectionToItemInverted = compressedMap(collectionToItem) {$0.inverseRelationship}
       let itemToCollectionInverted = compressedMap(itemToCollection) {$0.inverseRelationship}
-      if collectionToItemInverted.count == collectionToItem.count && itemToCollectionInverted.count == itemToCollection.count {
+      if collectionToItemInverted.count == collectionToItem.count
+         && itemToCollectionInverted.count == itemToCollection.count
+      {
         collectionToItem = collectionToItem.filter {contains(itemToCollectionInverted, $0)}
         itemToCollection = itemToCollection.filter {contains(collectionToItemInverted, $0)}
         if let collectionRelationship = collectionToItem.first where collectionToItem.count == 1,
@@ -373,7 +377,9 @@ final class BankModelCollectionDelegate<C:BankModelCollection>: BankModelDelegat
 
   :returns: NSFetchedResultsController
   */
-  private func fetchedResultsForEntity(entity: NSEntityDescription, withAttributeName name: String) -> NSFetchedResultsController {
+  private func fetchedResultsForEntity(entity: NSEntityDescription,
+                     withAttributeName name: String) -> NSFetchedResultsController
+  {
     let request = NSFetchRequest()
     request.entity = entity
     request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
@@ -540,7 +546,9 @@ final class BankModelCollectionDelegate<C:BankModelCollection>: BankModelDelegat
               MSHandleError(error)
               didCreate(object)
             }
-            return c.collectionCreationControllerWithContext(context, cancellationHandler: didCancel, creationHandler: handler)
+            return c.collectionCreationControllerWithContext(context,
+                                         cancellationHandler: didCancel,
+                                             creationHandler: handler)
           }
 
         default: return nil
@@ -550,22 +558,3 @@ final class BankModelCollectionDelegate<C:BankModelCollection>: BankModelDelegat
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

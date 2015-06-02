@@ -23,7 +23,7 @@ final class FilteringDetailSectionHeader: DetailSectionHeader {
     super.init(reuseIdentifier: reuseIdentifier)
     contentView.removeAllConstraints()
     contentView.addSubview(checkBoxContainer)
-    contentView.constrain("[container]-| :: V:|-(>=\(DetailSectionHeader.headerFont.pointSize)@999)-[container]-(>=8@999)-|",
+    contentView.constrain("[container]-| :: V:|-(>=\(Bank.sectionHeaderFont.pointSize)@999)-[container]-(>=8@999)-|",
                     views: ["container": checkBoxContainer])
   }
 

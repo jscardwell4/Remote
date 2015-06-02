@@ -18,6 +18,10 @@ protocol Detailable {
   func detailController() -> UIViewController
 }
 
+protocol DelegateDetailable: NamedModel, EditableModel {
+  func sectionIndexForController(controller: BankCollectionDetailController) -> BankModelDetailDelegate.SectionIndex
+}
+
 // MARK: - Previewable protocol
 
 /** Protocol for objects that can supply an image representation */

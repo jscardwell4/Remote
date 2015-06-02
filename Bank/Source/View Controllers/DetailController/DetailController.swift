@@ -13,6 +13,8 @@ import DataModel
 
 class DetailController: UITableViewController {
 
+  // MARK: - Properties
+
   var sections: OrderedDictionary<String, DetailSection> = [:] { didSet { apply(sections.values){$0.controller = self} } }
 
   private(set) var item: Detailable!
@@ -20,6 +22,8 @@ class DetailController: UITableViewController {
   private(set) var didCancel: Bool = false
 
   private(set) weak var cellDisplayingPicker: DetailButtonCell?
+
+  // MARK: - Initializers
 
   /**
   init:bundle:
@@ -30,12 +34,6 @@ class DetailController: UITableViewController {
   override init!(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
   }
-  /**
-  initWithStyle:
-
-  :param: style UITableViewStyle
-  */
-//  override init(style: UITableViewStyle) { super.init(style: style) }
 
   /**
   initWithCoder:
@@ -44,17 +42,14 @@ class DetailController: UITableViewController {
   */
   required init(coder aDecoder: NSCoder) { fatalError("must use init(item:)") }
 
-
   /**
   initWithItem:
 
   :param: item Detailable
   */
-  init(item: Detailable) {
-    super.init(style: .Grouped)
-    self.item = item
-    hidesBottomBarWhenPushed = true
-  }
+  init(item: Detailable) { super.init(style: .Grouped); self.item = item; hidesBottomBarWhenPushed = true }
+
+  // MARK: - Loading
 
   /** loadSections */
   func loadSections() { sections.removeAll(keepCapacity: true) }
@@ -75,8 +70,10 @@ class DetailController: UITableViewController {
     navigationItem.rightBarButtonItem = editButtonItem()
   }
 
+  // MARK: - Updating
 
-  /** updateDisplay */
+
+  /** Configures right bar button item, resets `didCancel` flag, configures visible cells, loads sections and reloads data */
   func updateDisplay() {
     if let editableItem = item as? Editable {
       navigationItem.rightBarButtonItem?.enabled = editableItem.editable
@@ -90,14 +87,116 @@ class DetailController: UITableViewController {
  }
 
   /**
-  viewWillAppear:
+  Updates display
 
   :param: animated Bool
   */
   override func viewWillAppear(animated: Bool) { super.viewWillAppear(animated); updateDisplay() }
 
   /**
-  setEditing:animated:
+  Invokes table view section reload wrapped inside `beginUpdates` and `endUpdates`
+
+  :param: section Int
+  :param: animation UITableViewRowAnimation = .Automatic
+  */
+  func reloadSection(section: Int, withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
+    tableView.beginUpdates()
+    tableView.reloadSections(NSIndexSet(index: section), withRowAnimation: animation)
+    tableView.endUpdates()
+  }
+
+  /**
+  Invokes table view section reload wrapped inside `beginUpdates` and `endUpdates`
+
+  :param: section DetailSection
+  :param: animation UITableViewRowAnimation = .Automatic
+  */
+  func reloadSection(section: DetailSection, withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
+    reloadSection(section.section, withRowAnimation: animation)
+  }
+
+  /**
+  Calls the table view's `reloadRowAtIndexPath` method wrapped inside `beginUpdates` and `endUpdates`
+
+  :param: indexPath NSIndexPath
+  :param: animation UITableViewRowAnimation = .Automatic
+  */
+  func reloadRowAtIndexPath(indexPath: NSIndexPath, withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
+    reloadRowsAtIndexPaths([indexPath], withRowAnimation: animation)
+  }
+
+  /**
+  Calls the table view's `reloadRowsAtIndexPaths` method wrapped inside `beginUpdates` and `endUpdates`
+
+  :param: indexPaths [NSIndexPath]
+  :param: animation UITableViewRowAnimation = .Automatic
+  */
+  func reloadRowsAtIndexPaths(indexPaths: [NSIndexPath], withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
+    tableView.beginUpdates()
+    tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: animation)
+    tableView.endUpdates()
+  }
+
+  /**
+  Calls the table view's `removeRowAtIndexPath` method wrapped inside `beginUpdates` and `endUpdates`
+
+  :param: indexPath NSIndexPath
+  :param: animation UITableViewRowAnimation = .Automatic
+  */
+  func removeRowAtIndexPath(indexPath: NSIndexPath, withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
+    tableView.beginUpdates()
+    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: animation)
+    tableView.endUpdates()
+  }
+
+  /**
+  Calls the table view's `insertRowAtIndexPath` method wrapped inside `beginUpdates` and `endUpdates`
+
+  :param: indexPath NSIndexPath
+  :param: animation UITableViewRowAnimation = .Automatic
+  */
+  func insertRowAtIndexPath(indexPath: NSIndexPath, withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
+    tableView.beginUpdates()
+    tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: animation)
+    tableView.endUpdates()
+  }
+
+  /** Invokes `configureCell` for each `DetailRow` associated with a visible cell */
+  func configureVisibleCells() {
+    if let visibleIndexPaths = tableView.indexPathsForVisibleRows() as? [NSIndexPath] {
+      configureCellsAtIndexPaths(visibleIndexPaths)
+    }
+  }
+
+  /**
+  Invokes `configureCell` for each `DetailRow` associated with the index paths specified
+
+  :param: indexPaths [NSIndexPath]
+  */
+  func configureCellsAtIndexPaths(indexPaths: [NSIndexPath]) {
+    applyToRowsAtIndexPaths(indexPaths) {
+      if let cell = self.tableView.cellForRowAtIndexPath($0.indexPath!) as? DetailCell {
+        $0.configureCell(cell)
+      }
+    }
+  }
+
+  /**
+  Performs the specified block for each `DetailRow` retrieved via the specified index paths
+
+  :param: indexPaths [NSIndexPath]
+  :param: block (DetailRow) -> Void
+  */
+  func applyToRowsAtIndexPaths(indexPaths: [NSIndexPath], block: (DetailRow) -> Void) {
+    if let visibleIndexPaths = tableView.indexPathsForVisibleRows() as? [NSIndexPath] {
+      apply(compressed((indexPaths ∩ visibleIndexPaths).map({self[$0]})), block)
+    }
+  }
+
+  // MARK: - Navigation bar actions
+
+  /**
+  Updates `navigationItem` and the calls `super`'s implementation, if current value for `editing` differs from parameter
 
   :param: editing Bool
   :param: animated Bool
@@ -113,7 +212,7 @@ class DetailController: UITableViewController {
     }
   }
 
-  /** cancel */
+  /** Invokes `rollback` on `item`, sets `didCancel` flag to true, sets `editing` to false and refresh display */
   func cancel() {
     (item as? Editable)?.rollback()
     didCancel = true
@@ -124,11 +223,13 @@ class DetailController: UITableViewController {
   /** edit */
   func edit() { if !editing { setEditing(true, animated: true) } }
 
-  /** save */
+  /** Invokes `save` on `item` if the item is `Editable`. Afterwards, `editing` is set to `false` */
   func save() { (item as? Editable)?.save(); setEditing(false, animated: true) }
 
+  // MARK: - Subscripting
+
   /**
-  subscript:
+  Accessor for `DetailRow` objects by `NSIndexPath`
 
   :param: indexPath NSIndexPath
 
@@ -137,7 +238,7 @@ class DetailController: UITableViewController {
   subscript(indexPath: NSIndexPath) -> DetailRow? { return self[indexPath.row, indexPath.section] }
 
   /**
-  subscript:
+  Accessor for `DetailSection` objects by index
 
   :param: section Int
 
@@ -146,30 +247,7 @@ class DetailController: UITableViewController {
   subscript(section: Int) -> DetailSection? { return section < sections.count ? sections.values[section] : nil }
 
   /**
-  reloadSection:
-
-  :param: section Int
-  :param: animation UITableViewRowAnimation = .Automatic
-  */
-  func reloadSection(section: Int, withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
-    tableView.beginUpdates()
-    // TODO: reload individual `DetailSection` objects
-    tableView.reloadSections(NSIndexSet(index: section), withRowAnimation: animation)
-    tableView.endUpdates()
-  }
-
-  /**
-  reloadSection:
-
-  :param: section DetailSection
-  :param: animation UITableViewRowAnimation = .Automatic
-  */
-  func reloadSection(section: DetailSection, withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
-    reloadSection(section.section, withRowAnimation: animation)
-  }
-
-  /**
-  subscript:section:
+  Accessor for the `DetailRow` identified by row and section
 
   :param: row Int
   :param: section Int
@@ -178,180 +256,10 @@ class DetailController: UITableViewController {
   */
   subscript(row: Int, section: Int) -> DetailRow? { return self[section]?[row] }
 
-  /**
-  reloadRowAtIndexPath:withRowAnimation:
-
-  :param: indexPath NSIndexPath
-  :param: animation UITableViewRowAnimation = .Automatic
-  */
-  func reloadRowAtIndexPath(indexPath: NSIndexPath, withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
-    reloadRowsAtIndexPaths([indexPath], withRowAnimation: animation)
-  }
-
-  /**
-  reloadRowsAtIndexPaths:animated:
-
-  :param: indexPaths [NSIndexPath]
-  :param: animation UITableViewRowAnimation = .Automatic
-  */
-  func reloadRowsAtIndexPaths(indexPaths: [NSIndexPath], withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
-    tableView.beginUpdates()
-    tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: animation)
-    tableView.endUpdates()
-  }
-
-  /**
-  removeRowAtIndexPath:withRowAnimation:
-
-  :param: indexPath NSIndexPath
-  :param: animation UITableViewRowAnimation = .Automatic
-  */
-  func removeRowAtIndexPath(indexPath: NSIndexPath, withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
-    tableView.beginUpdates()
-    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: animation)
-    tableView.endUpdates()
-  }
-
-  /**
-  insertRowAtIndexPath:withRowAnimation:
-
-  :param: indexPath NSIndexPath
-  :param: animation UITableViewRowAnimation = .Automatic
-  */
-  func insertRowAtIndexPath(indexPath: NSIndexPath, withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
-    tableView.beginUpdates()
-    tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: animation)
-    tableView.endUpdates()
-  }
-
-  /** configureVisibleCells */
-  func configureVisibleCells() {
-    if let visibleIndexPaths = tableView.indexPathsForVisibleRows() as? [NSIndexPath] {
-      configureCellsAtIndexPaths(visibleIndexPaths)
-    }
-  }
-
-  /**
-  configureCellsAtIndexPaths:
-
-  :param: indexPaths [NSIndexPath]
-  */
-  func configureCellsAtIndexPaths(indexPaths: [NSIndexPath]) {
-    applyToRowsAtIndexPaths(indexPaths) {
-      if let cell = self.tableView.cellForRowAtIndexPath($0.indexPath!) as? DetailCell {
-        $0.configureCell(cell)
-      }
-    }
-  }
-
-  /**
-  applyToRowsAtIndexPaths:block:
-
-  :param: indexPaths [NSIndexPath]
-  :param: block (DetailRow) -> Void
-  */
-  func applyToRowsAtIndexPaths(indexPaths: [NSIndexPath], block: (DetailRow) -> Void) {
-    if let visibleIndexPaths = tableView.indexPathsForVisibleRows() as? [NSIndexPath] {
-      apply(compressed((indexPaths ∩ visibleIndexPaths).map({self[$0]})), block)
-    }
-  }
-
-  /**
-  dequeueCellForIndexPath:
-
-  :param: indexPath NSIndexPath
-
-  :returns: DetailCell?
-  */
-  func dequeueCellForIndexPath(indexPath: NSIndexPath) -> DetailCell? {
-
-    var cell: DetailCell?
-
-    if let identifier = self[indexPath]?.identifier {
-
-      cell = tableView.dequeueReusableCellWithIdentifier(identifier.rawValue, forIndexPath: indexPath) as? DetailCell
-
-      // Set picker related handlers if the cell is a button cell
-      if let buttonCell = cell as? DetailButtonCell {
-
-        // Set handler for showing picker row for this button cell
-        buttonCell.showPickerRow = {
-
-          // Check if we are already showing a picker row
-          if let cell = self.cellDisplayingPicker {
-
-            // Remove existing picker row
-            cell.hidePickerView()
-
-            // Return false if this handler was invoked by the same cell
-            if cell === $0 { return false }
-
-          }
-
-          // Ensure we actually have a picker row to insert
-          if $0.detailPickerRow == nil { return false }
-
-          if let cellIndexPath = self.tableView.indexPathForCell($0) {
-
-            // Create an index path for the row after the button cell's row
-            let pickerPath = NSIndexPath(forRow: cellIndexPath.row + 1, inSection: cellIndexPath.section)
-
-
-            // Insert row into our section
-            self.sections.values[pickerPath.section].insertRow($0.detailPickerRow!, atIndex: pickerPath.row, forKey: "Picker")
-
-            self.insertRowAtIndexPath(pickerPath)
-
-            // Scroll to the inserted row
-            self.tableView.scrollToRowAtIndexPath(pickerPath, atScrollPosition: .Middle, animated: true)
-
-            // Update reference to cell displaying picker row
-            self.cellDisplayingPicker = $0
-
-            return true
-          }
-
-          return false
-        }
-
-        // Set handler for hiding picker row for this button cell
-        buttonCell.hidePickerRow = {
-
-          // Check if the cell invoking this handler is actually the cell whose picker we are showing
-          if self.cellDisplayingPicker !== $0 { return false }
-
-          if let cellIndexPath = self.tableView.indexPathForCell($0) {
-
-            // Create an index path for the row after the button cell's row
-            let pickerPath = NSIndexPath(forRow: cellIndexPath.row + 1, inSection: cellIndexPath.section)
-
-            if !(self[pickerPath] is DetailPickerRow) { return false }
-
-            // Remove the row from our section
-            self[pickerPath.section]?.removeRowAtIndex(pickerPath.row)
-
-            self.removeRowAtIndexPath(pickerPath)
-
-            // Update reference to cell displaying picker row
-            self.cellDisplayingPicker = nil
-
-            return true
-          }
-
-          return false
-        }
-
-      } // end if
-
-    } // end if
-
-    return cell
-  }
-
 }
 
 /// MARK: - UITableViewDelegate
-////////////////////////////////////////////////////////////////////////////////
+
 extension DetailController: UITableViewDelegate {
 
   /**
@@ -390,7 +298,6 @@ extension DetailController: UITableViewDelegate {
   */
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     self[indexPath]?.select?()
-    sqrt(4.0)
   }
 
   /**
@@ -408,7 +315,7 @@ extension DetailController: UITableViewDelegate {
 }
 
 /// MARK: - UITableViewDataSource
-////////////////////////////////////////////////////////////////////////////////
+
 extension DetailController: UITableViewDataSource {
 
   /**
@@ -420,10 +327,85 @@ extension DetailController: UITableViewDataSource {
   :returns: UITableViewCell
   */
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = dequeueCellForIndexPath(indexPath)
-    precondition(cell != nil, "we should have been able to dequeue a valid cell")
-    self[indexPath]?.configureCell(cell!)
-    return cell!
+
+    let identifier = self[indexPath]!.identifier
+
+    let cell = tableView.dequeueReusableCellWithIdentifier(identifier.rawValue, forIndexPath: indexPath) as! DetailCell
+
+    // Set picker related handlers if the cell is a button cell
+    if let buttonCell = cell as? DetailButtonCell {
+
+      // Set handler for showing picker row for this button cell
+      buttonCell.showPickerRow = {
+
+        // Check if we are already showing a picker row
+        if let cell = self.cellDisplayingPicker {
+
+          // Remove existing picker row
+          cell.hidePickerView()
+
+          // Return false if this handler was invoked by the same cell
+          if cell === $0 { return false }
+
+        }
+
+        // Ensure we actually have a picker row to insert
+        if $0.detailPickerRow == nil { return false }
+
+        if let cellIndexPath = self.tableView.indexPathForCell($0) {
+
+          // Create an index path for the row after the button cell's row
+          let pickerPath = NSIndexPath(forRow: cellIndexPath.row + 1, inSection: cellIndexPath.section)
+
+
+          // Insert row into our section
+          self.sections.values[pickerPath.section].insertRow($0.detailPickerRow!, atIndex: pickerPath.row, forKey: "Picker")
+
+          self.insertRowAtIndexPath(pickerPath)
+
+          // Scroll to the inserted row
+          self.tableView.scrollToRowAtIndexPath(pickerPath, atScrollPosition: .Middle, animated: true)
+
+          // Update reference to cell displaying picker row
+          self.cellDisplayingPicker = $0
+
+          return true
+        }
+
+        return false
+      }
+
+      // Set handler for hiding picker row for this button cell
+      buttonCell.hidePickerRow = {
+
+        // Check if the cell invoking this handler is actually the cell whose picker we are showing
+        if self.cellDisplayingPicker !== $0 { return false }
+
+        if let cellIndexPath = self.tableView.indexPathForCell($0) {
+
+          // Create an index path for the row after the button cell's row
+          let pickerPath = NSIndexPath(forRow: cellIndexPath.row + 1, inSection: cellIndexPath.section)
+
+          if !(self[pickerPath] is DetailPickerRow) { return false }
+
+          // Remove the row from our section
+          self[pickerPath.section]?.removeRowAtIndex(pickerPath.row)
+
+          self.removeRowAtIndexPath(pickerPath)
+
+          // Update reference to cell displaying picker row
+          self.cellDisplayingPicker = nil
+
+          return true
+        }
+
+        return false
+      }
+
+    } // end if
+
+    self[indexPath]?.configureCell(cell)
+    return cell
   }
 
   /**
@@ -514,12 +496,11 @@ extension DetailController: UITableViewDataSource {
 }
 
 /// MARK: - Utility functions
-////////////////////////////////////////////////////////////////////////////////
 
 extension DetailController {
 
   /**
-  pushController:
+  Attempts to have navigation controller push the specified view controller
 
   :param: controller UIViewController
   */

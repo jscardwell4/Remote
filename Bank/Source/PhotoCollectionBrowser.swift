@@ -13,10 +13,10 @@ import MoonKit
 // TODO: Add selection callback or delegate protocol
 // TODO: Remember previously used item scale
 
-private let reuseIdentifier = "Cell"
-private let imageViewNametag = "image"
-
 class PhotoCollectionBrowser: UIViewController, PhotoCollectionLayoutDelegate, UICollectionViewDataSource {
+
+  private let reuseIdentifier = "Cell"
+  private let imageViewNametag = "image"
 
   typealias ImageSelection = (data: NSData, uti: String, orientation: UIImageOrientation)
 

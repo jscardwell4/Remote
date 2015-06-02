@@ -18,6 +18,78 @@ extension Image: Detailable {
   func detailController() -> UIViewController { return ImageDetailController(model: self) }
 }
 
+extension Image: DelegateDetailable {
+    func sectionIndexForController(controller: BankCollectionDetailController) -> BankModelDetailDelegate.SectionIndex {
+      var sections: BankModelDetailDelegate.SectionIndex = [:]
+
+      struct SectionKey {
+        static let Details = "Details"
+        static let Preview = "Preview"
+      }
+
+      struct RowKey {
+        static let Category = "Category"
+        static let Asset    = "Asset"
+        static let Size     = "Size"
+        static let Preview  = "Preview"
+      }
+
+
+      /** loadDetailsSection */
+      func loadDetailsSection() {
+
+        let image = self
+
+        let detailsSection = BankCollectionDetailSection(section: 0)
+
+        detailsSection.addRow({
+          let row = BankCollectionDetailLabelRow()
+          row.name = "Category"
+          row.info = image.imageCategory
+          row.select = BankCollectionDetailRow.selectPushableCollection(image.imageCategory)
+          return row
+          }, forKey: RowKey.Category)
+
+        detailsSection.addRow({
+          let row = BankCollectionDetailLabelRow()
+          row.name = "Asset"
+          row.info = image.asset?.name
+          return row
+          }, forKey: RowKey.Asset)
+
+        detailsSection.addRow({
+          let row = BankCollectionDetailLabelRow()
+          row.name = "Size"
+          row.info = PrettySize(image.size)
+          return row
+          }, forKey: RowKey.Size)
+
+        sections[SectionKey.Details] = detailsSection
+      }
+
+      /** loadPreviewSection */
+      func loadPreviewSection() {
+
+        let image = self
+
+        let previewSection = BankCollectionDetailSection(section: 1)
+        previewSection.addRow({
+          let row = BankCollectionDetailImageRow()
+          row.info = image.image
+          return row
+          }, forKey: RowKey.Preview)
+
+        sections[SectionKey.Preview] = previewSection
+
+      }
+
+      loadDetailsSection()
+      loadPreviewSection()
+
+      return sections
+    }
+}
+
 extension Image: CustomCreatable {
   static func creationControllerWithContext(context: NSManagedObjectContext,
                         cancellationHandler didCancel: () -> Void,

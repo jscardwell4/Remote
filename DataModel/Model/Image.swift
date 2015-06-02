@@ -21,6 +21,7 @@ final public class Image: EditableModelObject, CollectedModel {
   */
   public convenience init(image: UIImage, context: NSManagedObjectContext?) {
     self.init(context: context)
+    size = image.size
     asset = Asset(context: context)
     asset?.data = UIImagePNGRepresentation(image)
   }
@@ -38,10 +39,35 @@ final public class Image: EditableModelObject, CollectedModel {
     resourceRegistration[locationValue] = bundle
   }
 
-  @NSManaged public var asset: Asset?
+  public var asset: Asset? {
+    get {
+      willAccessValueForKey("asset")
+      let asset = primitiveValueForKey("asset") as? Asset
+      didAccessValueForKey("asset")
+      return asset
+    }
+    set {
+      if let asset = newValue, image = imageFromAsset(asset) { size = image.size }
+      else if newValue != nil { managedObjectContext?.deleteObject(newValue!); return }
+      willChangeValueForKey("asset")
+      setPrimitiveValue(newValue, forKey: "asset")
+      didChangeValueForKey("asset")
+    }
+  }
 
-  @NSManaged public var leftCap: Int32
-  @NSManaged public var topCap: Int32
+  public var capInsets: UIEdgeInsets {
+    get {
+      willAccessValueForKey("capInsets")
+      let insets = primitiveValueForKey("capInsets") as! NSValue
+      didAccessValueForKey("capInsets")
+      return insets.UIEdgeInsetsValue()
+    }
+    set {
+      willChangeValueForKey("capInsets")
+      setPrimitiveValue(NSValue(UIEdgeInsets: newValue), forKey: "capInsets")
+      didChangeValueForKey("capInsets")
+    }
+  }
 
   public var size: CGSize {
     get {
@@ -87,28 +113,61 @@ final public class Image: EditableModelObject, CollectedModel {
     super.updateWithData(data)
     updateRelationshipFromData(data, forAttribute: "imageCategory", lookupKey: "category")
     updateRelationshipFromData(data, forAttribute: "asset")
-    if let leftCap = Int32(data["leftCap"]) { self.leftCap = leftCap }
-    if let topCap = Int32(data["topCap"]) { self.topCap = topCap }
+    if let capInsets = UIEdgeInsets(data["capInsets"]) { self.capInsets = capInsets }
   }
 
-  public var image: UIImage? {
-    var img: UIImage? = nil
-    if let asset = asset {
-      switch asset.storageType {
-        case .File:
-          if let path = asset.path { img = UIImage(contentsOfFile: path) }
-        case .Bundle:
-          if let name = asset.name, path = asset.path, bundle = Image.resourceRegistration[path] {
-            img = UIImage(named: name, inBundle: bundle, compatibleWithTraitCollection: nil)
-          }
-        case .Data:
-          if let data = asset.data { img = UIImage(data: data) }
-        default:
-          break
-      }
-    }
-    return img
+  /**
+  imageFromFileAsset:
+
+  :param: asset Asset
+
+  :returns: UIImage?
+  */
+  private func imageFromFileAsset(asset: Asset) -> UIImage? {
+    if let path = asset.path { return UIImage(contentsOfFile: path) } else { return nil }
   }
+
+  /**
+  imageFromBundleAsset:
+
+  :param: asset Asset
+
+  :returns: UIImage?
+  */
+  private func imageFromBundleAsset(asset: Asset) -> UIImage? {
+    if let name = asset.name, path = asset.path, bundle = Image.resourceRegistration[path] {
+      return UIImage(named: name, inBundle: bundle, compatibleWithTraitCollection: nil)
+    } else { return nil }
+  }
+
+  /**
+  imageFromDataAsset:
+
+  :param: asset Asset
+
+  :returns: UIImage?
+  */
+  private func imageFromDataAsset(asset: Asset) -> UIImage? {
+    if let data = asset.data { return UIImage(data: data) } else { return nil }
+  }
+
+  /**
+  imageFromAsset:
+
+  :param: asset Asset
+
+  :returns: UIImage?
+  */
+  private func imageFromAsset(asset: Asset) -> UIImage? {
+    switch asset.storageType {
+      case .File:      return imageFromFileAsset(asset)
+      case .Bundle:    return imageFromBundleAsset(asset)
+      case .Data:      return imageFromDataAsset(asset)
+      case .Undefined: return nil
+    }
+  }
+
+  public var image: UIImage? { if let asset = asset { return imageFromAsset(asset) } else { return nil } }
 
   public var templateImage: UIImage? { return image?.imageWithRenderingMode(.AlwaysTemplate) }
 
@@ -116,14 +175,11 @@ final public class Image: EditableModelObject, CollectedModel {
     var obj = ObjectJSONValue(super.jsonValue)!
     obj["category.index"] = imageCategory.index.jsonValue
     obj["asset"] = asset?.jsonValue
-    obj["leftCap"] = leftCap.jsonValue
-    obj["topCap"] = topCap.jsonValue
+    obj["capInsets"] = capInsets.jsonValue
     return obj.jsonValue
   }
 
-  public var stretchableImage: UIImage? {
-    return image?.stretchableImageWithLeftCapWidth(Int(leftCap), topCapHeight: Int(topCap))
-  }
+  public var stretchableImage: UIImage? { return image?.resizableImageWithCapInsets(capInsets) }
 
   public var preview: UIImage? { return image }
   public var thumbnail: UIImage? { return preview }
@@ -131,8 +187,7 @@ final public class Image: EditableModelObject, CollectedModel {
   override public var description: String {
     return "\(super.description)\n\t" + "\n\t".join(
       "asset = \(toString(asset))",
-      "left cap = \(leftCap)",
-      "top cap = \(topCap)",
+      "cap insets = \(capInsets)",
       "category = \(imageCategory.index)"
     )
   }
