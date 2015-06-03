@@ -17,7 +17,12 @@ class BankCollectionDetailTwoToneSliderCell: BankCollectionDetailCell {
     sliderView.userInteractionEnabled = false
     contentView.addSubview(nameLabel)
     contentView.addSubview(sliderView)
-    contentView.constrain(𝗛|-nameLabel--sliderView-|𝗛, 𝗩|-sliderView-|𝗩, 𝗩|-nameLabel-|𝗩)
+  }
+
+  override func updateConstraints() {
+    removeAllConstraints()
+    super.updateConstraints()
+    constrain(𝗛|-nameLabel--sliderView-|𝗛, 𝗩|-sliderView-|𝗩, 𝗩|-nameLabel-|𝗩)
   }
 
   /**

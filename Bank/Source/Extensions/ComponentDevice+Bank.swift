@@ -58,20 +58,18 @@ extension ComponentDevice: DelegateDetailable {
           row.info = componentDevice.manufacturer
           row.select = BankCollectionDetailRow.selectPushableItem(componentDevice.manufacturer)
 
-          var pickerRow = BankCollectionDetailPickerRow()
-          pickerRow.nilItemTitle = "No Manufacturer"
-          pickerRow.createItemTitle = "⨁ New Manufacturer"
-          pickerRow.didSelectItem = {
+          row.nilItem = .NilItem(title: "No Manufacturer")
+          row.didSelectItem = {
             if !controller.didCancel {
               if let manufacturer = $0 as? Manufacturer {
                 componentDevice.manufacturer = manufacturer
               }
-              controller.reloadItemAtIndexPath(NSIndexPath(forRow: 1, inSection: 0))
-              controller.cellDisplayingPicker?.info = $0
-              pickerRow.info = $0
+//              controller.reloadItemAtIndexPath(NSIndexPath(forRow: 1, inSection: 0))
+//              controller.cellDisplayingPicker?.info = $0
+//              row.info = $0
             }
           }
-          pickerRow.createItem = {
+          row.createItem = .CreateItem(title: "⨁ New Manufacturer", createItem: {
             let alert = UIAlertController(title: "Create Manufacturer",
               message: "Enter a name for the manufacturer",
               preferredStyle: .Alert)
@@ -101,12 +99,10 @@ extension ComponentDevice: DelegateDetailable {
             })
 
             controller.presentViewController(alert, animated: true, completion: nil)
-          }
+          })
           let data = sortedByName((Manufacturer.objectsInContext(moc) as? [Manufacturer] ?? []))
-          pickerRow.data = data
-          pickerRow.info = componentDevice.manufacturer
-
-          row.detailPickerRow = pickerRow
+          row.data = data
+          row.info = componentDevice.manufacturer
 
           return row
         }, forKey: RowKey.Manufacturer)
@@ -118,18 +114,16 @@ extension ComponentDevice: DelegateDetailable {
           row.info = componentDevice.codeSet
           row.select = BankCollectionDetailRow.selectPushableCollection(componentDevice.codeSet)
 
-          var pickerRow = BankCollectionDetailPickerRow()
-          pickerRow.nilItemTitle = "No Code Set"
-          pickerRow.createItemTitle = "⨁ New Code Set"
-          pickerRow.didSelectItem = {
+          row.nilItem = .NilItem(title: "No Code Set")
+          row.didSelectItem = {
             if !controller.didCancel {
               componentDevice.codeSet = $0 as? IRCodeSet
               controller.reloadItemAtIndexPath(NSIndexPath(forRow: 0, inSection: 0))
-              controller.cellDisplayingPicker?.info = $0
-              pickerRow.info = $0
+//              controller.cellDisplayingPicker?.info = $0
+//              row.info = $0
             }
           }
-          pickerRow.createItem = {
+          row.createItem = .CreateItem(title: "⨁ New Code Set", createItem: {
             let alert = UIAlertController(title: "Create Code Set",
               message: "Enter a name for the code set",
               preferredStyle: .Alert)
@@ -157,12 +151,10 @@ extension ComponentDevice: DelegateDetailable {
               })
 
             controller.presentViewController(alert, animated: true, completion: nil)
-          }
+          })
           let data = sortedByName(componentDevice.manufacturer.codeSets)
-          pickerRow.data = data
-          pickerRow.info = componentDevice.codeSet
-
-          row.detailPickerRow = pickerRow
+          row.data = data
+          row.info = componentDevice.codeSet
 
           return row
         }, forKey: RowKey.CodeSet)
@@ -194,20 +186,17 @@ extension ComponentDevice: DelegateDetailable {
               }
             }
 
-          var pickerRow = BankCollectionDetailPickerRow()
-          pickerRow.nilItemTitle = "No Network Device"
-          pickerRow.didSelectItem = {
+          row.nilItem = .NilItem(title: "No Network Device")
+          row.didSelectItem = {
             if !controller.didCancel {
               componentDevice.networkDevice = $0 as? NetworkDevice
-              controller.cellDisplayingPicker?.info = $0
-              pickerRow.info = $0
+//              controller.cellDisplayingPicker?.info = $0
+//              row.info = $0
             }
           }
           let data = sortedByName(NetworkDevice.objectsInContext(moc) as? [NetworkDevice] ?? [])
-          pickerRow.data = data
-          pickerRow.info = componentDevice.networkDevice
-
-          row.detailPickerRow = pickerRow
+          row.data = data
+          row.info = componentDevice.networkDevice
 
           return row
         }, forKey: RowKey.NetworkDevice)
@@ -215,7 +204,8 @@ extension ComponentDevice: DelegateDetailable {
         networkDeviceSection.addRow({
           var row = BankCollectionDetailStepperRow()
           row.name = "Port"
-          row.info = Int(componentDevice.port)
+          row.infoDataType = .IntData(1...3)
+          row.info = NSNumber(short: componentDevice.port)
           row.stepperMinValue = 1
           row.stepperMaxValue = 3
           row.stepperWraps = true
@@ -247,9 +237,8 @@ extension ComponentDevice: DelegateDetailable {
           row.name = "On"
           row.info = componentDevice.onCommand ?? "No On Command"
 
-          var pickerRow = BankCollectionDetailPickerRow()
-          pickerRow.nilItemTitle = "No On Command"
-          pickerRow.didSelectItem = {
+          row.nilItem = .NilItem(title: "No On Command")
+          row.didSelectItem = {
             (selection: AnyObject?) -> Void in
               if !controller.didCancel {
                 moc.performBlock {
@@ -265,15 +254,13 @@ extension ComponentDevice: DelegateDetailable {
                     componentDevice.onCommand = nil
                   }
                 }
-                controller.cellDisplayingPicker?.info = selection
-                pickerRow.info = selection
+//                controller.cellDisplayingPicker?.info = selection
+//                row.info = selection
               }
           }
           let data = sortedByName(componentDevice.codeSet?.codes)
-          pickerRow.data = data
-          pickerRow.info = componentDevice.onCommand?.code
-
-          row.detailPickerRow = pickerRow
+          row.data = data
+          row.info = componentDevice.onCommand?.code
 
           return row
         }, forKey: RowKey.On)
@@ -283,9 +270,8 @@ extension ComponentDevice: DelegateDetailable {
           row.name = "Off"
           row.info = componentDevice.offCommand ?? "No Off Command"
 
-          var pickerRow = BankCollectionDetailPickerRow()
-          pickerRow.nilItemTitle = "No Off Command"
-          pickerRow.didSelectItem = {
+          row.nilItem = .NilItem(title: "No Off Command")
+          row.didSelectItem = {
             (selection: AnyObject?) -> Void in
               if !controller.didCancel {
                 moc.performBlock {
@@ -301,15 +287,13 @@ extension ComponentDevice: DelegateDetailable {
                     componentDevice.offCommand = nil
                   }
                 }
-                controller.cellDisplayingPicker?.info = selection
-                pickerRow.info = selection
+//                controller.cellDisplayingPicker?.info = selection
+//                row.info = selection
               }
           }
           let data = sortedByName(componentDevice.codeSet?.codes)
-          pickerRow.data = data
-          pickerRow.info = componentDevice.offCommand?.code
-
-          row.detailPickerRow = pickerRow
+          row.data = data
+          row.info = componentDevice.offCommand?.code
 
           return row
         }, forKey: RowKey.Off)

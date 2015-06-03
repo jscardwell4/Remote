@@ -34,7 +34,12 @@ final class BankCollectionDetailLabeledImageCell: BankCollectionDetailCell {
   override func initializeIVARs() {
     contentView.addSubview(nameLabel)
     contentView.addSubview(preview)
-    contentView.constrain(𝗛|-nameLabel--preview-|𝗛, 𝗩|-nameLabel-|𝗩, 𝗩|-preview-|𝗩)
+  }
+
+  override func updateConstraints() {
+    removeAllConstraints()
+    super.updateConstraints()
+    constrain(𝗛|-nameLabel--preview-|𝗛, 𝗩|-nameLabel-|𝗩, 𝗩|-preview-|𝗩)
   }
 
   /** prepareForReuse */

@@ -14,9 +14,11 @@ final class BankCollectionDetailButtonRow: BankCollectionDetailRow {
 
   override var identifier: BankCollectionDetailCell.Identifier { return .Button }
 
-  var showPickerRow: ((BankCollectionDetailButtonCell) -> Bool)?
-  var hidePickerRow: ((BankCollectionDetailButtonCell) -> Bool)?
-  var detailPickerRow: BankCollectionDetailPickerRow?
+  var nilItem: BankCollectionDetailButtonCell.Item?
+  var createItem: BankCollectionDetailButtonCell.Item?
+  var didSelectItem: ((AnyObject?) -> Void)?
+  var titleForInfo: ((AnyObject?) -> String)?
+  var data: [AnyObject]?
 
   /**
   configure:
@@ -25,13 +27,15 @@ final class BankCollectionDetailButtonRow: BankCollectionDetailRow {
   */
   override func configureCell(cell: BankCollectionDetailCell) {
     if let buttonCell = cell as? BankCollectionDetailButtonCell {
-      // Set picker row first so data is there when `info` gets set by `super`
-      buttonCell.detailPickerRow = detailPickerRow
+      // Set picker properties first so data is there when `info` gets set by `super`
+      buttonCell.titleForInfo = titleForInfo
+      buttonCell.nilItem = nilItem
+      buttonCell.createItem = createItem
+      buttonCell.didSelectItem = didSelectItem
+      if data != nil {buttonCell.data = data! }
 
       super.configureCell(cell)
 
-      buttonCell.showPickerRow = showPickerRow
-      buttonCell.hidePickerRow = hidePickerRow
     }
   }
 

@@ -25,9 +25,14 @@ final class BankCollectionDetailTextFieldCell: BankCollectionDetailTextInputCell
     field.delegate = self
     field.clipsToBounds = false
     contentView.addSubview(field)
-    contentView.constrain(𝗛|-nameLabel--field-|𝗛, 𝗩|-nameLabel-|𝗩, 𝗩|-field-|𝗩)
-
     textInput = field
+  }
+
+  override func updateConstraints() {
+    removeAllConstraints()
+    super.updateConstraints()
+    let field = textInput as! UITextField
+    constrain(𝗛|-nameLabel--field-|𝗛, 𝗩|-nameLabel-|𝗩, 𝗩|-field-|𝗩)
   }
 
   /** prepareForReuse */

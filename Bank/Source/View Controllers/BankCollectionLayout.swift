@@ -43,7 +43,6 @@ final class BankCollectionLayout: ZoomingCollectionViewLayout {
   override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
     let attributes = super.layoutAttributesForItemAtIndexPath(indexPath) as! BankCollectionAttributes
     attributes.viewingMode = viewingMode
-    MSLogDebug(toString(attributes))
     return attributes
   }
 

@@ -14,7 +14,12 @@ class BankCollectionDetailListCell: BankCollectionDetailCell {
 
   override func initializeIVARs() {
     contentView.addSubview(infoLabel)
-    contentView.constrain(𝗛|-infoLabel-|𝗛, 𝗩|-infoLabel-|𝗩)
+  }
+
+  override func updateConstraints() {
+    removeAllConstraints()
+    super.updateConstraints()
+    constrain(𝗛|-infoLabel-|𝗛, 𝗩|-infoLabel-|𝗩)
   }
 
   /** prepareForReuse */

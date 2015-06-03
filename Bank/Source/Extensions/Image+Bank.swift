@@ -43,6 +43,7 @@ extension Image: DelegateDetailable {
         let detailsSection = BankCollectionDetailSection(section: 0)
 
         detailsSection.addRow({
+          // TODO: This should be editable
           let row = BankCollectionDetailLabelRow()
           row.name = "Category"
           row.info = image.imageCategory

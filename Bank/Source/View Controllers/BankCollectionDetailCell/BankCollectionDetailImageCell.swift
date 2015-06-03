@@ -19,7 +19,12 @@ class BankCollectionDetailImageCell: BankCollectionDetailCell {
     backgroundView = nil
     backgroundColor = UIColor.clearColor()
     contentView.backgroundColor = UIColor.clearColor()
-    contentView.constrain(𝗛|preview|𝗛, 𝗩|preview|𝗩)
+  }
+
+  override func updateConstraints() {
+    removeAllConstraints()
+    super.updateConstraints()
+    constrain(𝗛|preview|𝗛, 𝗩|preview|𝗩)
   }
 
   /** prepareForReuse */

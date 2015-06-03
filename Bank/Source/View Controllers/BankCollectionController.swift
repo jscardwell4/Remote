@@ -198,6 +198,14 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
 
   // MARK: - View lifecycle
 
+  /** updateViewingMode */
+  private func updateViewingMode() {
+    if collectionDelegate.previewable != true { viewingMode = .List }
+    else if let viewingModeSetting: Bank.ViewingMode = SettingsManager.valueForSetting(Bank.ViewingModeKey) {
+      viewingMode = viewingModeSetting
+    }
+  }
+
   /** loadView */
   override func loadView() {
 
@@ -218,6 +226,8 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
     // Get the bottom toolbar items when not in `Selection` mode
     if mode == .Default { toolbarItems = Bank.toolbarItemsForController(self) }
 
+    updateViewingMode()
+
   }
 
   /**
@@ -230,10 +240,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
     title = collectionDelegate.name
     exportSelectionMode = false
     navigationItem.rightBarButtonItem = Bank.dismissButton
-    if collectionDelegate.previewable != true { viewingMode = .List }
-    else if let viewingModeSetting: Bank.ViewingMode = SettingsManager.valueForSetting(Bank.ViewingModeKey) {
-      viewingMode = viewingModeSetting
-    }
+    updateViewingMode()
   }
 
   override func viewWillDisappear(animated: Bool) {

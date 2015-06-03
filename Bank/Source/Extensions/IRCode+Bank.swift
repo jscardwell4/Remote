@@ -58,19 +58,16 @@ extension IRCode: DelegateDetailable {
     //        }
     //      }
 
-          var pickerRow = BankCollectionDetailPickerRow()
-          pickerRow.nilItemTitle = "No Manufacturer"
-    //      pickerRow.didSelectItem = {
+          row.nilItem = .NilItem(title: "No Manufacturer")
+    //      row.didSelectItem = {
     //        if !self.didCancel {
     //          irCode.manufacturer = $0 as? Manufacturer
     //          self.updateDisplay()
     //        }
     //      }
 
-          pickerRow.data = manufacturers
-          pickerRow.info = irCode.manufacturer
-
-          row.detailPickerRow = pickerRow
+          row.data = manufacturers
+          row.info = irCode.manufacturer
 
           return row
         }, forKey: RowKey.Manufacturer)
@@ -90,12 +87,9 @@ extension IRCode: DelegateDetailable {
             }
           }
 
-          var pickerRow = BankCollectionDetailPickerRow()
-          pickerRow.didSelectItem = { if !controller.didCancel { if let codeSet = $0 as? IRCodeSet { irCode.codeSet = codeSet } } }
-          pickerRow.data = codeSets
-          pickerRow.info = irCode.codeSet
-
-          row.detailPickerRow = pickerRow
+          row.didSelectItem = { if !controller.didCancel { if let codeSet = $0 as? IRCodeSet { irCode.codeSet = codeSet } } }
+          row.data = codeSets
+          row.info = irCode.codeSet
 
           return row
         }, forKey: RowKey.CodeSet)

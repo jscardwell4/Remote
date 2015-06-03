@@ -26,8 +26,6 @@ class BankCollectionDetailController: UICollectionViewController {
 
   private(set) var didCancel: Bool = false
 
-  private(set) weak var cellDisplayingPicker: BankCollectionDetailButtonCell?
-
   // MARK: - Initializers
 
   /**
@@ -127,6 +125,8 @@ class BankCollectionDetailController: UICollectionViewController {
         textField.userInteractionEnabled = editing
         if textField.isFirstResponder() { textField.resignFirstResponder() }
       }
+      if let cells = collectionView?.visibleCells() as? [Cell] { apply(cells) {$0.editing = editing} }
+      // TODO: Need to propagate changes here when editing has been completed
       super.setEditing(editing, animated: animated)
     }
   }
@@ -220,81 +220,8 @@ extension BankCollectionDetailController: UICollectionViewDataSource {
     let identifier = self[indexPath]!.identifier
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier.rawValue,
                                                         forIndexPath: indexPath) as! Cell
-
-    // Set picker related handlers if the cell is a button cell
-    if let buttonCell = cell as? BankCollectionDetailButtonCell {
-
-      // Set handler for showing picker row for this button cell
-      buttonCell.showPickerRow = {
-
-        // Check if we are already showing a picker row
-        if let cell = self.cellDisplayingPicker {
-
-          // Remove existing picker row
-          cell.hidePickerView()
-
-          // Return false if this handler was invoked by the same cell
-          if cell === $0 { return false }
-
-        }
-
-        // Ensure we actually have a picker row to insert
-        if $0.detailPickerRow == nil { return false }
-
-        if let cellIndexPath = self.collectionView?.indexPathForCell($0) {
-
-          // Create an index path for the row after the button cell's row
-          let pickerPath = NSIndexPath(forRow: cellIndexPath.row + 1, inSection: cellIndexPath.section)
-
-          // Insert row into our section
-          self.itemDelegate.sections.values[pickerPath.section].insertRow($0.detailPickerRow!,
-                                                                  atIndex: pickerPath.row,
-                                                                   forKey: "Picker")
-
-          self.collectionView?.insertItemsAtIndexPaths([pickerPath])
-
-          // Scroll to the inserted row
-          self.collectionView?.scrollToItemAtIndexPath(pickerPath, atScrollPosition: .CenteredVertically, animated: true)
-
-          // Update reference to cell displaying picker row
-          self.cellDisplayingPicker = $0
-
-          return true
-        }
-
-        return false
-      }
-
-      // Set handler for hiding picker row for this button cell
-      buttonCell.hidePickerRow = {
-
-        // Check if the cell invoking this handler is actually the cell whose picker we are showing
-        if self.cellDisplayingPicker !== $0 { return false }
-
-        if let cellIndexPath = self.collectionView?.indexPathForCell($0) {
-
-          // Create an index path for the row after the button cell's row
-          let pickerPath = NSIndexPath(forRow: cellIndexPath.row + 1, inSection: cellIndexPath.section)
-
-          if !(self[pickerPath] is BankCollectionDetailPickerRow) { return false }
-
-          // Remove the row from our section
-          self[pickerPath.section]?.removeRowAtIndex(pickerPath.row)
-
-          self.collectionView?.deleteItemsAtIndexPaths([pickerPath])
-
-          // Update reference to cell displaying picker row
-          self.cellDisplayingPicker = nil
-
-          return true
-        }
-
-        return false
-      }
-
-    } // end if
-
     self[indexPath]?.configureCell(cell)
+
     return cell
   }
 
@@ -375,7 +302,7 @@ extension BankCollectionDetailController: UICollectionViewDelegate {
   :param: indexPath NSIndexPath
   */
   override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-    self[indexPath]?.select?()
+    (collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionDetailCell)?.select?()
   }
 
 }

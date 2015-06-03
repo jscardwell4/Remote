@@ -17,8 +17,12 @@ class BankCollectionDetailColorCell: BankCollectionDetailCell {
 
     colorSwatch.delegate = self
     contentView.addSubview(colorSwatch)
+  }
 
-    contentView.constrain(𝗛|-nameLabel--colorSwatch-|𝗛, 𝗩|-nameLabel-|𝗩, 𝗩|-colorSwatch-|𝗩)
+  override func updateConstraints() {
+    removeAllConstraints()
+    super.updateConstraints()
+    constrain(𝗛|-nameLabel--colorSwatch-|𝗛, 𝗩|-nameLabel-|𝗩, 𝗩|-colorSwatch-|𝗩)
   }
 
   /** prepareForReuse */

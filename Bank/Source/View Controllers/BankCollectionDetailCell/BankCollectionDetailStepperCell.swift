@@ -19,14 +19,18 @@ class BankCollectionDetailStepperCell: BankCollectionDetailCell {
     contentView.addSubview(nameLabel)
     contentView.addSubview(infoLabel)
     contentView.addSubview(stepper)
-    contentView.constrain(
-      𝗛|-nameLabel--infoLabel-|𝗛,
+  }
+
+  override func updateConstraints() {
+    removeAllConstraints()
+    super.updateConstraints()
+    constrain(
+      𝗛|-nameLabel--infoLabel,
       𝗩|-nameLabel-|𝗩,
       𝗩|-infoLabel-|𝗩, 𝗩|-stepper-|𝗩,
-      [infoLabel.trailing => stepper.leading - contentView.layoutMargins.right,
-       stepper.leading => contentView.trailing --> "stepper leading"]
+      [infoLabel--20--stepper, stepper.left => right --> "stepper leading"]
     )
-    stepperConstraint = contentView.constraintWithIdentifier("stepper leading")
+    stepperConstraint = constraintWithIdentifier("stepper leading")
   }
 
   /** prepareForReuse */

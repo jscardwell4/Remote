@@ -20,8 +20,6 @@ class BankCollectionDetailRow {
   var indexPath: NSIndexPath?
   var select: ((Void) -> Void)?
   var delete: ((Void) -> Void)?
-  var editActions: [UITableViewRowAction]?
-  var editingStyle: UITableViewCellEditingStyle { return delete != nil || editActions != nil ? .Delete : .None }
   var deleteRemovesRow: Bool = true
 
   var backgroundColor: UIColor?
@@ -64,14 +62,12 @@ class BankCollectionDetailRow {
     if infoDataType != nil                { cell.infoDataType = infoDataType!                               }
     if backgroundColor != nil             { cell.backgroundColor = backgroundColor!                         }
     if name != nil                        { cell.name = name!                                               }
-    if info != nil                        { cell.info = info!                                               }
     if shouldAllowNonDataTypeValue != nil { cell.shouldAllowNonDataTypeValue = shouldAllowNonDataTypeValue! }
     if valueIsValid != nil                { cell.valueIsValid = valueIsValid!                               }
     if valueDidChange != nil              { cell.valueDidChange = valueDidChange!                           }
+    cell.info = info
+    cell.select = select
+    cell.delete = delete
   }
 
-//  var load: (BankCollectionDetailRow) -> Void = {_ in }
-
-  /** init */
-//  init(){}
 }

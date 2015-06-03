@@ -172,7 +172,6 @@ final class BankCollectionDetailAttributedTextCell: BankCollectionDetailCell {
     super.updateConstraints()
 
     if name != nil {
-      let format = "|-[name]-[text(==name)]-| :: V:|-[name]-| :: V:|-[text(==name)]-|"
       contentView.constrain(
         𝗛|-nameLabel--attributedTextDisplay-|𝗛,
         𝗩|-nameLabel-|𝗩, 𝗩|-attributedTextDisplay-|𝗩,

@@ -16,7 +16,12 @@ class BankCollectionDetailPickerCell: BankCollectionDetailCell {
     picker.delegate = self
     picker.dataSource = self
     contentView.addSubview(picker)
-    contentView.stretchSubview(picker)
+  }
+
+  override func updateConstraints() {
+    removeAllConstraints()
+    super.updateConstraints()
+    constrain(𝗩|picker|𝗩, 𝗛|picker|𝗛)
   }
 
   /** prepareForReuse */

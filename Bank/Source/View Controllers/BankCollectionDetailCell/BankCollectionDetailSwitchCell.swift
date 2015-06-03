@@ -22,7 +22,12 @@ class BankCollectionDetailSwitchCell: BankCollectionDetailCell {
     switchView.addTarget(self, action: "switchValueDidChange:", forControlEvents: .ValueChanged)
     contentView.addSubview(nameLabel)
     contentView.addSubview(switchView)
-    contentView.constrain(𝗛|-nameLabel--switchView-|𝗛, 𝗩|-nameLabel-|𝗩, 𝗩|-switchView-|𝗩)
+  }
+
+  override func updateConstraints() {
+    removeAllConstraints()
+    super.updateConstraints()
+    constrain(𝗛|-nameLabel--switchView-|𝗛, 𝗩|-nameLabel-|𝗩, 𝗩|-switchView-|𝗩)
   }
 
   /**
@@ -50,6 +55,7 @@ class BankCollectionDetailSwitchCell: BankCollectionDetailCell {
     let view = UISwitch()
     view.setTranslatesAutoresizingMaskIntoConstraints(false)
     view.userInteractionEnabled = false
+    view.setContentHuggingPriority(1000, forAxis: .Horizontal)
     return view
   }()
 

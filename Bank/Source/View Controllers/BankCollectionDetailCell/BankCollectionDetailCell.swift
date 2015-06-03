@@ -101,7 +101,8 @@ class BankCollectionDetailCell: UICollectionViewCell {
   var valueDidChange: ((AnyObject?) -> Void)?
   var valueIsValid: ((AnyObject?) -> Bool)?
   var sizeDidChange: ((DetailCell) -> Void)?
-
+  var select: (() -> Void)?
+  var delete: (() -> Void)?
 
   /// MARK: Name and info properties
 
@@ -265,6 +266,7 @@ class BankCollectionDetailCell: UICollectionViewCell {
     label.font      = Bank.labelFont
     label.textColor = Bank.labelColor
     label.setContentCompressionResistancePriority(1000, forAxis: .Horizontal)
+    label.setContentHuggingPriority(900, forAxis: .Horizontal)
     return label
   }()
 
@@ -299,6 +301,12 @@ class BankCollectionDetailCell: UICollectionViewCell {
   override class func requiresConstraintBasedLayout() -> Bool { return true }
 
   var editing: Bool = false
+
+  override func updateConstraints() {
+    removeAllConstraints()
+    super.updateConstraints()
+    constrain(𝗩|contentView|𝗩, 𝗛|contentView|𝗛)
+  }
 
   /** prepareForReuse */
   override func prepareForReuse() {
