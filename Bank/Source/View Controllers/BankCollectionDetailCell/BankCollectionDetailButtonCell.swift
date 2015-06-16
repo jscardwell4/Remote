@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 import MoonKit
 
+// TODO: This class should be renamed since it no longer users a button view
+
 class BankCollectionDetailButtonCell: BankCollectionDetailCell {
 
   /**

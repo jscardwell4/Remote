@@ -4,6 +4,234 @@
 		"selected_items":
 		[
 			[
+				"opt",
+				"optional_binding_list"
+			],
+			[
+				"else",
+				"else_clause"
+			],
+			[
+				"option",
+				"optional_binding_head"
+			],
+			[
+				"ident",
+				"identifier_pattern"
+			],
+			[
+				"gener",
+				"generic-argument-clause"
+			],
+			[
+				"defaul",
+				"default_argument_clause"
+			],
+			[
+				"generic",
+				"generic_parameter"
+			],
+			[
+				"pro",
+				"protocol_composition"
+			],
+			[
+				"type",
+				"type_inheritance_clause"
+			],
+			[
+				"closure_se",
+				"closure_signature"
+			],
+			[
+				"closure",
+				"closure-expression"
+			],
+			[
+				"capt",
+				"capture-list"
+			],
+			[
+				"closure_si",
+				"closure_signature_identifier_list"
+			],
+			[
+				"func",
+				"function_result"
+			],
+			[
+				"function",
+				"function-result"
+			],
+			[
+				"clos",
+				"closure_signature_no_capture_list"
+			],
+			[
+				"cap",
+				"capture_list"
+			],
+			[
+				"paren",
+				"parenthesized-expression"
+			],
+			[
+				"opti",
+				"optional-chaining"
+			],
+			[
+				"num",
+				"numeric_literal"
+			],
+			[
+				"strin",
+				"string_literal"
+			],
+			[
+				"binary",
+				"binary-expression"
+			],
+			[
+				"prefix",
+				"prefix_expression"
+			],
+			[
+				"arr",
+				"array-or-dictionary"
+			],
+			[
+				"dynami",
+				"dynamicType"
+			],
+			[
+				"e",
+				"expression"
+			],
+			[
+				"post",
+				"postfix_expression"
+			],
+			[
+				"Com",
+				"CombiningDiacriticalMarks"
+			],
+			[
+				"param",
+				"parameter_list"
+			],
+			[
+				"decla",
+				"declaration_modifiers"
+			],
+			[
+				"pos",
+				"postfix_expression"
+			],
+			[
+				"meta_",
+				"meta_include_prototype"
+			],
+			[
+				"head",
+				"headerTypes"
+			],
+			[
+				"sectio",
+				"sectionItemHeights"
+			],
+			[
+				"height",
+				"heightForSection"
+			],
+			[
+				"Bank",
+				"BankCollectionDetailLayout"
+			],
+			[
+				"BankC",
+				"BankCollectionDetailLayoutDataSource"
+			],
+			[
+				"BankCollec",
+				"BankCollectionDetailLayout"
+			],
+			[
+				"Bankode",
+				"BankModelDetailDelegate"
+			],
+			[
+				"load",
+				"loadComponentDevicesSection"
+			],
+			[
+				"Sec",
+				"SectionKey"
+			],
+			[
+				"title",
+				"titleView"
+			],
+			[
+				"BankCollectio",
+				"BankCollectionDetailController"
+			],
+			[
+				"tit",
+				"titleView"
+			],
+			[
+				"navig",
+				"navigationItem"
+			],
+			[
+				"SEctio",
+				"SectionKey"
+			],
+			[
+				"BankCo",
+				"BankCollectionDetailSectionHeader"
+			],
+			[
+				"UIColle",
+				"UICollectionViewCell"
+			],
+			[
+				"BankCollection",
+				"BankCollectionDetailCell"
+			],
+			[
+				"indexPaths",
+				"indexPathsForVisibleItems"
+			],
+			[
+				"ini",
+				"initializeIVARs"
+			],
+			[
+				"sequ",
+				"sequenceArray"
+			],
+			[
+				"check",
+				"checkBoxContainer"
+			],
+			[
+				"remove",
+				"removeAllConstraints"
+			],
+			[
+				"UIC",
+				"UICollectionViewDelegate"
+			],
+			[
+				"name",
+				"nameLabel"
+			],
+			[
+				"attr",
+				"attributedTextDisplay"
+			],
+			[
 				"valid",
 				"validation"
 			],
@@ -160,10 +388,6 @@
 				"BankModelDelegate"
 			],
 			[
-				"Bank",
-				"BankModelDelegate"
-			],
-			[
 				"BankMode",
 				"BankModelCollectionDelegate"
 			],
@@ -232,10 +456,6 @@
 				"registerWithCollectionView"
 			],
 			[
-				"BankCo",
-				"BankCollectionCategoryCell"
-			],
-			[
 				"dark",
 				"darkColor"
 			],
@@ -294,231 +514,27 @@
 			[
 				"Sh",
 				"ShadeStyle"
-			],
-			[
-				"back",
-				"backgroundColor"
-			],
-			[
-				"navi",
-				"navigationController"
-			],
-			[
-				"num",
-				"numberOfPossibleColors"
-			],
-			[
-				"genera",
-				"generateRandomNumberWithMax"
-			],
-			[
-				"randomC",
-				"randomColorChosen"
-			],
-			[
-				"previ",
-				"previousRandomNumber"
-			],
-			[
-				"stand",
-				"standardUserDefaults"
-			],
-			[
-				"rgb",
-				"rgbColorFromPatternColor"
-			],
-			[
-				"CGC",
-				"CGColor"
-			],
-			[
-				"gradientIm",
-				"gradientImageKey"
-			],
-			[
-				"total",
-				"totalDifferences"
-			],
-			[
-				"flat",
-				"flatColors"
-			],
-			[
-				"sum",
-				"totalSumOfDifferencesFromL1"
-			],
-			[
-				"small",
-				"smallestDistance"
-			],
-			[
-				"nearest",
-				"nearestFlatColorForL"
-			],
-			[
-				"tria",
-				"triadicColorSchemeFromHue"
-			],
-			[
-				"comple",
-				"complementaryColorSchemeFromHue"
-			],
-			[
-				"anal",
-				"analogousColorSchemeFromHue"
-			],
-			[
-				"regi",
-				"registerFonts"
-			],
-			[
-				"comp",
-				"completion"
-			],
-			[
-				"LEar",
-				"LearnerEnabled"
-			],
-			[
-				"Unkon",
-				"UnknownCommand"
-			],
-			[
-				"ITachE",
-				"ITachError"
-			],
-			[
-				"lis",
-				"listening"
-			],
-			[
-				"Any",
-				"AnyObject"
-			],
-			[
-				"attr",
-				"attributeKeys"
-			],
-			[
-				"par",
-				"parameters"
-			],
-			[
-				"URL",
-				"URLConnection"
-			],
-			[
-				"rese",
-				"request"
-			],
-			[
-				"con",
-				"connections"
-			],
-			[
-				"ISY",
-				"ISYConnectionManager"
-			],
-			[
-				"ISYD",
-				"ISYDeviceConnection"
-			],
-			[
-				"becaon",
-				"beaconsReceived"
-			],
-			[
-				"Multi",
-				"MulticastAddress"
-			],
-			[
-				"beacons",
-				"beaconsReceived"
-			],
-			[
-				"muli",
-				"multicastConnection"
-			],
-			[
-				"det",
-				"detectingNetworkDevices"
-			],
-			[
-				"multi",
-				"multicastConnection"
-			],
-			[
-				"mult",
-				"multicastConnection"
-			],
-			[
-				"mu",
-				"multicastGroupActive"
-			],
-			[
-				"Mutl",
-				"MulticastPort"
-			],
-			[
-				"Mult",
-				"MulticastAddress"
-			],
-			[
-				"simulated",
-				"simulatedCommandDelay"
-			],
-			[
-				"NSU",
-				"NSUnderlyingErrorKey"
-			],
-			[
-				"compl",
-				"completion"
-			],
-			[
-				"simul",
-				"simulateCommandSuccess"
-			],
-			[
-				"ITach",
-				"ITachConnectionManager"
-			],
-			[
-				"Itach",
-				"ITachConnectionManager"
-			],
-			[
-				"wifi",
-				"wifiAvailable"
-			],
-			[
-				"SendIR",
-				"SendIRCommand"
-			],
-			[
-				"Devc",
-				"DeviceResponse"
-			],
-			[
-				"message",
-				"messagesSending"
-			],
-			[
-				"Conn",
-				"ConnectionManagerErrorDomain"
-			],
-			[
-				"It",
-				"ITachDeviceConnection"
-			],
-			[
-				"IRC",
-				"IRConfig"
 			]
 		]
 	},
 	"buffers":
 	[
+		{
+			"file": "MoonKit/Moonkit/Objects/AKPickerView.swift",
+			"settings":
+			{
+				"buffer_size": 21401,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Bank/Source/View Controllers/BankCollectionDetailLayout.swift",
+			"settings":
+			{
+				"buffer_size": 6093,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -1007,60 +1023,130 @@
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailCell",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailController",
 		"/Users/Moondeer/Projects/MSRemote/Remote/iTachClient"
 	],
 	"file_history":
 	[
-		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/ZoomingCollectionViewLayout.swift",
+		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/MoonYAMLSwift.sublime-syntax",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailLayout.swift",
+		"/Users/Moondeer/Desktop/Python/Python.sublime-syntax",
 		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/AKPickerView.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailCell/BankCollectionDetailCell.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/BankModelDetailDelegate.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailController.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailSection.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailSectionHeader.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailRow/BankCollectionDetailLabelRow.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailRow/BankCollectionDetailListRow.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/BankProtocols.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/ComponentDevice+Bank.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/Image+Bank.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/IRCode+Bank.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/ISYDevice+Bank.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/ITachDevice+Bank.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/Manufacturer+Bank.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/Preset+Bank.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailController/ButtonGroupPresetDetailController.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailController/ButtonPresetDetailController.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailController/PresetDetailController.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailController/RemotePresetDetailController.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailController/TitleAttributesDetailController.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionController.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailRow/BankCollectionDetailRow.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailController/RemoteDetailController.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailController/ComponentDeviceDetailController.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailController/ImageDetailController.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailController/IRCodeDetailController.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailController/ISYDeviceDetailController.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailController/ITachDeviceDetailController.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailController/ManufacturerDetailController.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailController/ActivityDetailController.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/BankModelDelegate.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailController/NamedItemDetailController.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailController/DetailController.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionFilteringDetailSection.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailController.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/FilteringDetailSection.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailSection.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailRow/BankCollectionDetailAttributedTextRow.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailRow/BankCollectionDetailButtonRow.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailRow/BankCollectionDetailColorRow.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailRow/BankCollectionDetailCustomRow.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailRow/BankCollectionDetailImageRow.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailRow/BankCollectionDetailLabeledImageRow.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailRow/BankCollectionDetailPickerRow.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailRow/BankCollectionDetailSliderRow.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailRow/BankCollectionDetailStepperRow.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailRow/BankCollectionDetailSwitchRow.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailRow/BankCollectionDetailTextFieldRow.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailRow/BankCollectionDetailTextInputRow.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailRow/BankCollectionDetailTextViewRow.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailRow/BankCollectionDetailTwoToneSliderRow.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailCell/BankCollectionDetailCell.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Bank.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionFilteringDetailSectionHeader.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/FilteringDetailSectionHeader.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Functions/FunctionManipulation.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Functions/SequenceManipulation.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailSectionHeader.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailCell/BankCollectionDetailColorCell.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailCell/BankCollectionDetailCustomCell.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailCell/BankCollectionDetailImageCell.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailCell/BankCollectionDetailLabelCell.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailCell/BankCollectionDetailLabeledImageCell.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailCell/BankCollectionDetailListCell.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailCell/BankCollectionDetailSliderCell.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailCell/BankCollectionDetailPickerCell.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailCell/BankCollectionDetailStepperCell.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailCell/BankCollectionDetailTextInputCell.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailCell/BankCollectionDetailSwitchCell.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailCell/BankCollectionDetailTextFieldCell.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailCell/BankCollectionDetailTextViewCell.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailCell/BankCollectionDetailTwoToneSliderCell.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailCell/BankCollectionDetailAttributedTextCell.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/DetailCell/BankCollectionDetailButtonCell.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/PseudoConstraint.swift",
+		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionCell.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/ZoomingCollectionViewLayout.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/LabeledStepper.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/BankController.swift",
 		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/darcula (Flake8Lint).JSON-tmTheme",
-		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/MoonYAMLSwift.sublime-syntax",
 		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/FieldView.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/NetworkDevice+Bank.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionController.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/BankModelDelegate.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Resources/JSON/ImageCategory.json",
 		"/Users/Moondeer/Box Documents/Projects/Peaceful Pathways/Website/Peaceful Pathways.sublime-project",
 		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/Default (OSX).sublime-keymap",
 		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/wtf.sublime-syntax",
 		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/MoonSwift.sublime-syntax",
 		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/MoonSwift.sublime-syntax.YAML-tmLanguage",
-		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/Form.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/Field.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/FormViewController.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/FormView.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/Field2.swift",
 		"/Users/Moondeer/Downloads/swiftslowly-master/Playground Secrets and Power Tips/Playground Support/SimulatorSupport.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/ComponentDevice+Bank.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankRootController.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/Manufacturer.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/Manufacturer+Bank.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/NamedModelObject+Bank.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/ModelObject.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Extensions/String+MoonKitAdditions.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/NamedModelObject.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/ComponentDevice.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/BankProtocols.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/Preset+Bank.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/IRCodeSet+Bank.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/ImageCategory+Bank.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/PresetCategory+Bank.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/PresetCategory.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/ImageCategory.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/Image+Bank.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/ISYDevice+Bank.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/ITachDevice+Bank.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions/IRCode+Bank.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/DataModelProtocols.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/IRCodeSet.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/BankModelCollectionDelegate.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/Image.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/IRCode.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/Preset.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Bank.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/DataManager.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Apps/LearnerApp/LearnerAppViewController.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankRootCell.swift",
@@ -1071,74 +1157,7 @@
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/BankSurrogateCategory.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Elysio/Elysio.swift",
 		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/SchemeEditor.swift",
-		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/Chameleon.CSSColor.swift",
-		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/Chameleon.KelleyColor.swift",
-		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/Chameleon.DarculaColor.swift",
-		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/Chameleon.QuietLightColor.swift",
-		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/Chameleon.FlatColor.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionCategoryCell.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionItemCell.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionCell.swift",
-		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/Chameleon.swift",
-		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/UIColor+Chameleon.swift",
-		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/CSSColors.playground/contents.xcplayground",
-		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/CSSColors.playground/Contents.swift",
-		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/CSSColors.playground/timeline.xctimeline",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Remote.sublime-project",
-		"/Users/Moondeer/Desktop/NearestFlatColor.csv",
-		"/Users/Moondeer/Desktop/wtf.csv",
-		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/UIViewController+Chameleon.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ITachDeviceConnection.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ITachDeviceConnection.Command.swift",
-		"/Users/Moondeer/GitHub/Chameleon/Pod/Classes/Chameleon.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Extensions/UIView+MoonKitAdditions.swift",
-		"/Users/Moondeer/GitHub/Chameleon/Pod/Classes/Objective-C/UIViewController+Chameleon.m",
-		"/Users/Moondeer/GitHub/Chameleon/Pod/Classes/Objective-C/UIColor+CIELAB.m",
-		"/Users/Moondeer/GitHub/Chameleon/Pod/Classes/Objective-C/UIColor+Chameleon.m",
-		"/Users/Moondeer/GitHub/Chameleon/Pod/Classes/UIColor+CIELab.swift",
-		"/Users/Moondeer/GitHub/Chameleon/Pod/Classes/UIColor+Chameleon.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ISYDeviceConnection.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/NetworkDeviceConnection.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ITachConnectionManager.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/MulticastConnection.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ISYConnectionManager.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/NetworkDeviceMulticastConnection.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/NetworkDeviceMulticastConnection.m",
-		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/MSKit/Source/Objects/MSDictionary.m",
-		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/MSKit/Source/Objects/MSXMLParserDelegate.m",
-		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/MSKit/Source/Objects/MSXMLParserDelegate.h",
-		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Parsing/XMLParserDelegate.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Data Structures/OrderedDictionary.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ISYDeviceConnection.m",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/MessageQueueEntry.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ConnectionManager.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/ISYDevice.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ISYDeviceConnection.h",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ISYConnectionManager.m",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ISYConnectionManager.h",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ITachConnectionManager.m",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ITachConnectionManager.h",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ConnectionManager.h",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ConnectionManager.m",
-		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/CocoaAsyncSocket/GCDAsyncSocket.m",
-		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/CocoaAsyncSocket/GCDAsyncSocket.h",
-		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Extensions/Dictionary+MoonKitAdditions.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ITachDeviceConnection.m",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/ITachDeviceConnection.h",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/NetworkDeviceMulticastConnection.h",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/NetworkDeviceConnection.h",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/NetworkDeviceConnection.m",
-		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Data Structures/Queue.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/MSKit/Source/Objects/MSQueue.m",
-		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/MSKit/Source/Objects/MSQueue.h",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/MessageQueueEntry.m",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Networking/Source/MessageQueueEntry.h",
-		"/Users/Moondeer/Projects/MSRemote/Remote/DataModel/Model/RemoteElement/Models/Remote.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/MSKit/Source/Categories/UIFont+MSKitAdditions.m",
-		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Parsing/JSONIncludeDirective.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Parsing/JSONSerialization.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/UI/Source/RemoteView.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/UI/Source/PanelDelegate.swift"
+		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/Chameleon.CSSColor.swift"
 	],
 	"find":
 	{
@@ -1149,6 +1168,7 @@
 		"height": 93.0,
 		"where_history":
 		[
+			"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailRow",
 			"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source",
 			"/Users/Moondeer/Projects/Gyre",
 			"/Users/Moondeer/Box Documents/Projects/Gyre",
@@ -1179,6 +1199,116 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"(?<=[0-9]: ).*",
+			"(?<=scope: ).*",
+			"parameter_list",
+			"declaration_modifiers",
+			"\\s*",
+			"access_modifiers",
+			"\\\\w",
+			"storage",
+			"type_inheritance_clause",
+			"type_annota",
+			"protocol_body",
+			"protocol_ide",
+			"white_space",
+			"protocol_body",
+			"type_inheritance_clause",
+			"\\\\s",
+			"\\[\\\\s\\\\n\\]\\*",
+			"\\(\\?<=\\[\\\\s\\\\n\\]\\*(.+?)\\[\\\\s\\\\n\\]\\*",
+			"\\(\\?=\\[\\\\s\\\\n\\]\\*(.+?)\\[\\\\s\\\\n\\]\\*",
+			"]*[?])'",
+			"\\+",
+			"\\[\\]\\]",
+			"\\[\\[\\]",
+			"with_prototype",
+			"parameter_clause",
+			"parenthesized_expression",
+			"literal",
+			"pop",
+			"true",
+			"ostfix",
+			"meta",
+			"x",
+			"u",
+			"In",
+			" ",
+			"operator.prefix",
+			"]*(",
+			"expression",
+			"^  (?=[^ ])",
+			"headerTypes.count",
+			"itemTypes",
+			"collectionView",
+			"#",
+			"case",
+			"private ",
+			"\\bDetail",
+			"model as! ComponentDevice",
+			"private ",
+			"\\bDetail(?=[^s])",
+			"model as! Image",
+			"private ",
+			"BankCollectionDetails",
+			"\\bDetail",
+			"model as! IRCode",
+			"private ",
+			"\\bDetail",
+			"model as! ISYDevice",
+			"private ",
+			"Detail",
+			"private ",
+			"sections",
+			"loadSections",
+			"item",
+			"v",
+			"Detail",
+			"identifier",
+			"BankCollectionDetailRow",
+			"OrderedDictionary<SectionKey, Section>",
+			"BankCollectionDetailCell",
+			"BankCollectionDetailSectionHeader",
+			"BankCollectionDetailSection",
+			"\\bDetailSection",
+			"DetailSection",
+			"DetailSectionHeader",
+			"BankCollectionRow",
+			"DetailRow",
+			"BankCollectionDetailController",
+			"BankCollectionDetailSectionHeader",
+			"RowIndex",
+			"String",
+			"OrderedDictionary<String, RowConstructor>",
+			"BankCollectionDetailRow",
+			"DetailController",
+			"DetailSectionHeader",
+			"DetailRow",
+			"Detail",
+			"insertRowAtIndexPath",
+			"applyToRowsAtIndexPaths",
+			"configureCellsAtIndexPaths",
+			"reloadRowAtIndexPath",
+			"reloadRowsAtIndexPaths",
+			"tableView",
+			"table",
+			"tableBackgroundColor",
+			"tableView",
+			"TableView",
+			"predicate",
+			"identifier",
+			"headerFont",
+			"isEditingState",
+			"320",
+			"-8--",
+			"this operator",
+			"isEditingState",
+			"identifier",
+			"Table",
+			"tableView",
+			"TableView",
+			"DetailAttributedTextCell",
+			"DetailCell",
 			"glyphish",
 			"location",
 			"createCollection",
@@ -1196,117 +1326,7 @@
 			"componentDeviceCollection",
 			";",
 			"- match",
-			"(",
-			"scope",
-			"scope: ",
-			"'",
-			"code-block",
-			"name",
-			":",
-			"func updateFromControl",
-			"updateFromControl",
-			"override func valueDidChange(sender: AnyObject) {",
-			" get { return _value }",
-			"text",
-			"super.valueDidChange(sender",
-			"changeHandler?(self)",
-			"FieldTemplate",
-			"FieldCollection",
-			"private class",
-			"TextValidation",
-			"FieldValues",
-			"field",
-			"name",
-			"FieldValues",
-			"FieldCollection",
-			"fields",
-			"var _value",
-			"self._value",
-			"value",
-			"func control() ->",
-			"private ",
-			"return",
-			"v",
-			"let",
-			"textField",
-			"picker",
-			"initial",
-			"Type",
-			"private let",
-			"didChangeValue",
-			"{",
-			"fieldControlForField",
-			"=",
-			"result",
-			"(String?) -> Bool",
-			":",
-			"manufacturer",
-			"Manufacturer",
-			"itemEntity",
-			"rootCollectionType",
-			"owningCollectionType",
-			"manufacturer",
-			"Image",
-			"manufacturer",
-			"Manufacturer",
-			"manufacturer",
-			"Manufacturer",
-			"CollectionType",
-			"ItemType",
-			"BankModelCollectionDelegate",
-			"T",
-			"fetchedCollections",
-			".fetchedItems",
-			"BankItemCollection",
-			"collection",
-			"BankItemCollection",
-			"OrderedDictionary<String, Any>",
-			"!",
-			"label",
-			"scope",
-			"category",
-			"rootCategory",
-			"generateCollections",
-			"image",
-			"componentDevice",
-			"selectAllBarButtonItemForController",
-			"ForIndexPath",
-			"Bank.ViewingMode",
-			"exportSelection",
-			",",
-			"_",
-			"//",
-			"Darcula",
-			"darcula",
-			"Base",
-			"displayOptions",
-			"viewingModeKey",
-			"viewingMode",
-			"importFromFile",
-			"exportSelection",
-			"deselectAll",
-			"SearchableBankController",
-			"BankItemCreation",
-			"BankItemImportExport",
-			"collectionView",
-			"case CSSColor",
-			"self = .",
-			"CSSColor",
-			":",
-			"UIColor",
-			"DarculaColor",
-			":",
-			"MayaBlue",
-			"Limerick",
-			"Flamenco",
-			"MoonstoneBlue",
-			"Celery",
-			"Axolotl",
-			"HippieGreen",
-			"MountainMist",
-			"AthensGray",
-			"Mauve",
-			"self"
+			"("
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1314,6 +1334,21 @@
 		"regex": true,
 		"replace_history":
 		[
+			"\\\\s",
+			"\\s",
+			"",
+			"(?<=\\1",
+			"(?=\\1",
+			"[\\\\]]",
+			"[\\\\[]",
+			"[\\[]",
+			"\\n  ",
+			"BankCollectionDetail",
+			"BankCollectionDetailSection",
+			"BankCollectionDetailController",
+			"BankCollectionDetailSectionHeader",
+			"BankCollectionDetailRow",
+			"BankCollectionDetail",
 			"selectAllButtonForController",
 			"BankItemSearchableController",
 			"BankItemCreationController",
@@ -1426,22 +1461,7 @@
 			"$",
 			",",
 			"\"",
-			"",
-			"/alt/img/",
-			"/alt/img",
-			"img",
-			".flex",
-			"> .flex",
-			"> .\\1",
-			",",
-			"@import \"bootstrap-variables.less\"",
-			"#flexbox",
-			"section",
-			"",
-			"p ",
-			"h2 ",
-			"",
-			"img(\\1, \\2, \\3, \\4)"
+			""
 		],
 		"reverse": false,
 		"show_context": true,
@@ -1452,8 +1472,69 @@
 	"groups":
 	[
 		{
+			"selected": 1,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "MoonKit/Moonkit/Objects/AKPickerView.swift",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 21401,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								856,
+								856
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/User/MoonYAMLSwift.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "Bank/Source/View Controllers/BankCollectionDetailLayout.swift",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6093,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								780,
+								780
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/User/MoonYAMLSwift.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		},
 		{
@@ -1464,7 +1545,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 19.0
+		"height": 21.0
 	},
 	"input":
 	{
@@ -1518,6 +1599,130 @@
 		"selected_items":
 		[
 			[
+				"bankcollectiondetaillist",
+				"Remote/Bank/Source/View Controllers/BankCollectionDetailRow/BankCollectionDetailListRow.swift"
+			],
+			[
+				"bankcollectiondetaillabelr",
+				"Remote/Bank/Source/View Controllers/BankCollectionDetailRow/BankCollectionDetailLabelRow.swift"
+			],
+			[
+				"bankcollectiondetailsectionhe",
+				"Remote/Bank/Source/View Controllers/BankCollectionDetailSectionHeader.swift"
+			],
+			[
+				"bankcollectiondetailsection",
+				"Remote/Bank/Source/View Controllers/BankCollectionDetailSection.swift"
+			],
+			[
+				"bankcollectiondetailcontr",
+				"Remote/Bank/Source/View Controllers/BankCollectionDetailController.swift"
+			],
+			[
+				"bankmodeldeta",
+				"Remote/Bank/Source/BankModelDetailDelegate.swift"
+			],
+			[
+				"bankcollectiondetailce",
+				"Remote/Bank/Source/View Controllers/BankCollectionDetailCell/BankCollectionDetailCell.swift"
+			],
+			[
+				"bankcollectiondetaill",
+				"Remote/Bank/Source/View Controllers/BankCollectionDetailLayout.swift"
+			],
+			[
+				"bankmodel",
+				"Remote/Bank/Source/BankModelDetailDelegate.swift"
+			],
+			[
+				"bankpr",
+				"Remote/Bank/Source/BankProtocols.swift"
+			],
+			[
+				"bankcollectiondetailrow",
+				"Remote/Bank/Source/View Controllers/BankCollectionDetailRow/BankCollectionDetailRow.swift"
+			],
+			[
+				"bankcollectioncont",
+				"Remote/Bank/Source/View Controllers/BankCollectionController.swift"
+			],
+			[
+				"itachde",
+				"Remote/Bank/Source/Extensions/ITachDevice+Bank.swift"
+			],
+			[
+				"manuf",
+				"Remote/Bank/Source/Extensions/Manufacturer+Bank.swift"
+			],
+			[
+				"bankmod",
+				"Remote/Bank/Source/BankModelDelegate.swift"
+			],
+			[
+				"detail",
+				"Remote/Bank/Source/View Controllers/DetailController.swift"
+			],
+			[
+				"bankcollectiondeta",
+				"Remote/Bank/Source/View Controllers/BankCollectionDetailSectionHeader.swift"
+			],
+			[
+				"bankcollecitoncont",
+				"Remote/Bank/Source/View Controllers/BankCollectionController.swift"
+			],
+			[
+				"bankcol",
+				"Remote/Bank/Source/View Controllers/DetailCell/BankCollectionDetailCell.swift"
+			],
+			[
+				"bank",
+				"Remote/Bank/Source/Bank.swift"
+			],
+			[
+				"func",
+				"Remote/MoonKit/Moonkit/Functions/FunctionManipulation.swift"
+			],
+			[
+				"seq",
+				"Remote/MoonKit/Moonkit/Functions/SequenceManipulation.swift"
+			],
+			[
+				"filter",
+				"Remote/Bank/Source/View Controllers/FilteringDetailSectionHeader.swift"
+			],
+			[
+				"detailse",
+				"Remote/Bank/Source/View Controllers/DetailSectionHeader.swift"
+			],
+			[
+				"bankcollectiond",
+				"Remote/Bank/Source/View Controllers/DetailCell/BankCollectionDetailCell.swift"
+			],
+			[
+				"bankpro",
+				"Remote/Bank/Source/BankProtocols.swift"
+			],
+			[
+				"bankcollectioncon",
+				"Remote/Bank/Source/View Controllers/BankCollectionController.swift"
+			],
+			[
+				"detailc",
+				"Remote/Bank/Source/View Controllers/DetailController.swift"
+			],
+			[
+				"bankcollectionde",
+				"Remote/Bank/Source/View Controllers/BankCollectionDetailController.swift"
+			],
+			[
+				"pse",
+				"Remote/MoonKit/Moonkit/Objects/PseudoConstraint.swift"
+			],
+			[
+				"bankcollectioncell",
+				"Remote/Bank/Source/View Controllers/BankCollectionCell.swift"
+			],
+			[
 				"imagec",
 				"Remote/Bank/Resources/JSON/ImageCategory.json"
 			],
@@ -1532,10 +1737,6 @@
 			[
 				"man",
 				"Remote/DataModel/Model/Manufacturer.swift"
-			],
-			[
-				"bankmod",
-				"Remote/Bank/Source/BankModelDelegate.swift"
 			],
 			[
 				"bankroo",
@@ -1602,20 +1803,12 @@
 				"Remote/MoonKit/Moonkit/Objects/FormViewController.swift"
 			],
 			[
-				"bankpr",
-				"Remote/Bank/Source/BankProtocols.swift"
-			],
-			[
 				"modelobj",
 				"Remote/DataModel/Model/ModelObject.swift"
 			],
 			[
 				"ir",
 				"Remote/DataModel/Model/IRCodeSet.swift"
-			],
-			[
-				"bankcollectioncon",
-				"Remote/Bank/Source/View Controllers/BankCollectionController.swift"
 			],
 			[
 				"ircodese",
@@ -1636,10 +1829,6 @@
 			[
 				"datam",
 				"Remote/DataModel/Model/DataModelProtocols.swift"
-			],
-			[
-				"bankpro",
-				"Remote/Bank/Source/BankProtocols.swift"
 			],
 			[
 				"formview",
@@ -1700,10 +1889,6 @@
 			[
 				"bankcollectioni",
 				"Remote/Bank/Source/View Controllers/BankCollectionItemCell.swift"
-			],
-			[
-				"bankcollectioncell",
-				"Remote/Bank/Source/View Controllers/BankCollectionCell.swift"
 			],
 			[
 				"bankcollectioncat",
@@ -1846,10 +2031,6 @@
 				"Remote/Bank/Resources/JSON/ActivityController.json"
 			],
 			[
-				"bank",
-				"Remote/Bank/Source/Bank.swift"
-			],
-			[
 				"systemcom",
 				"Remote/DataModel/Model/RemoteElement/Commands/Command Subclasses/SystemCommand.swift"
 			],
@@ -1928,106 +2109,6 @@
 			[
 				"home",
 				"Website/Codekit-Compass/jade/home-page.jade"
-			],
-			[
-				"res",
-				"Website/Codekit-Compass/sass/resources.sass"
-			],
-			[
-				"ser",
-				"Website/Codekit-Compass/sass/services.sass"
-			],
-			[
-				"contact-",
-				"Website/Codekit-Compass/jade/contact-us.jade"
-			],
-			[
-				"_home",
-				"Website/Codekit-Compass/sass/_home-page-tab-panes.sass"
-			],
-			[
-				"memro",
-				"Website/Codekit-Compass/sass/memorials.sass"
-			],
-			[
-				"_mix",
-				"Website/Codekit-Compass/sass/_mixins.sass"
-			],
-			[
-				"contact",
-				"Website/Codekit-Compass/coffee/contact-us.coffee"
-			],
-			[
-				"resources",
-				"Website/Codekit-Compass/jade/resources.jade"
-			],
-			[
-				"serv",
-				"Website/Codekit-Compass/coffee/services.coffee"
-			],
-			[
-				"conf",
-				"Website/Codekit-Compass/config.rb"
-			],
-			[
-				"config",
-				"Website/Codekit-Compass/config.rb"
-			],
-			[
-				"about",
-				"Website/Codekit-Compass/jade/about-us.jade"
-			],
-			[
-				"abou",
-				"Website/Codekit-Compass/sass/about-us.sass"
-			],
-			[
-				"scaffol",
-				"Website/Codekit-Compass/sass/scaffold.sass"
-			],
-			[
-				"pixel",
-				"Website/Codekit-Compass/coffee/pixel-ratio.coffee"
-			],
-			[
-				"class.m",
-				"Website/Codekit-Compass/php/class.memorial.php"
-			],
-			[
-				"defa",
-				"puppet/manifests/default.pp"
-			],
-			[
-				"_head",
-				"Codekit-Compass/sass/_header.sass"
-			],
-			[
-				"contact-u",
-				"Codekit-Compass/coffee/contact-us.coffee"
-			],
-			[
-				"memor",
-				"Website/Codekit-Compass/jade/memorials.jade"
-			],
-			[
-				"sty",
-				"Website/Codekit-Compass/sass/styles.sass"
-			],
-			[
-				"_mixin",
-				"bootstrap-sass-3.0.2.1/vendor/assets/stylesheets/bootstrap/_mixins.scss"
-			],
-			[
-				"_create",
-				"Website/Codekit-Compass/sass/_create-memorial.sass"
-			],
-			[
-				"_sca",
-				"Website/Codekit-Compass/jade/_scaffold.jade"
-			],
-			[
-				"style",
-				"Website/Codekit-Compass/sass/styles.sass"
 			]
 		],
 		"width": 0.0
@@ -2050,7 +2131,7 @@
 		],
 		"width": 568.0
 	},
-	"selected_group": 0,
+	"selected_group": 1,
 	"settings":
 	{
 	},

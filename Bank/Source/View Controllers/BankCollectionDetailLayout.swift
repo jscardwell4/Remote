@@ -84,11 +84,7 @@ class BankCollectionDetailLayout: UICollectionViewLayout {
   :returns: CGFloat
   */
   func heightForHeaderInSection(section: Int) -> CGFloat {
-    if let headerType = headerTypes[section] {
-      return 44
-    } else {
-      return 0
-    }
+    if let headerType = headerTypes[section] { return 44 } else { return 0 }
   }
 
   /**
