@@ -51,7 +51,7 @@ public final class MacroCommand: Command {
   /**
   execute:
 
-  :param: completion Optional block to invoke after command execution completes
+  - parameter completion: Optional block to invoke after command execution completes
   */
   // override public func execute(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
   //   if commands.count > 0 {
@@ -79,7 +79,7 @@ public final class MacroCommand: Command {
     if commands.count == 0 { result += "\n\tcommands = {}" }
     else {
       result += "\n\tcommands = {\n"
-      result += ",\n".join(map(commands){"{\($0.description.indentedBy(12))\n}".indentedBy(8)})
+      result += ",\n".join(commands.map{"{\($0.description.indentedBy(12))\n}".indentedBy(8)})
       result += "\n\t}"
     }
     return result
@@ -88,7 +88,7 @@ public final class MacroCommand: Command {
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
@@ -107,7 +107,7 @@ public final class MacroCommand: Command {
 
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
-    obj["commands"] = .Array(map(commands, {$0.jsonValue}))
+    obj["commands"] = .Array(commands.map({$0.jsonValue}))
     return obj.jsonValue
   }
 

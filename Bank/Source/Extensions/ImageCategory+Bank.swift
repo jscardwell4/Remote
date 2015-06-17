@@ -24,21 +24,21 @@ extension ImageCategory: FormCreatable {
   /**
   creationForm:
 
-  :param: #context NSManagedObjectContext
+  - parameter #context: NSManagedObjectContext
 
-  :returns: Form
+  - returns: Form
   */
-  static func creationForm(#context: NSManagedObjectContext) -> Form {
+  static func creationForm(context context: NSManagedObjectContext) -> Form {
     return Form(templates: OrderedDictionary<String, FieldTemplate>(["Name": nameFormFieldTemplate(context: context)]))
   }
 
   /**
   createWithForm:context:
 
-  :param: form Form
-  :param: context NSManagedObjectContext
+  - parameter form: Form
+  - parameter context: NSManagedObjectContext
 
-  :returns: ImageCategory?
+  - returns: ImageCategory?
   */
   static func createWithForm(form: Form, context: NSManagedObjectContext) -> ImageCategory? {
     if let name = form.values?["Name"] as? String { return ImageCategory(name: name, context: context) } else { return nil }
@@ -56,7 +56,7 @@ extension ImageCategory: CustomCreatableItemBankModelCollection {
 }
 
 extension ImageCategory: FormCreatableCollectionBankModelCollection {
-  func collectionCreationForm(#context: NSManagedObjectContext) -> Form { return ImageCategory.creationForm(context: context) }
+  func collectionCreationForm(context context: NSManagedObjectContext) -> Form { return ImageCategory.creationForm(context: context) }
   func createCollectionWithForm(form: Form, context: NSManagedObjectContext) -> Bool {
     var success = false
     context.performBlockAndWait {

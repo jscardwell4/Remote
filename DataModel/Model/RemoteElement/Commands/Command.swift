@@ -29,13 +29,13 @@ public class Command: ModelObject {
   /**
   execute:error:
 
-  :param: completion The block to invoke upon completing command execution
+  - parameter completion: The block to invoke upon completing command execution
   */
   public func execute(completion: ((success: Bool, error: NSError?) -> Void)? = nil) {
     MSLogDebug("beginning execution of \(self.dynamicType.className())…")
     let operation = self.operation
     operation.completionBlock = {
-      MSLogDebug("execution complete  - success = \(operation.success) error = \(toString(descriptionForError(operation.error)))")
+      MSLogDebug("execution complete  - success = \(operation.success) error = \(String(descriptionForError(operation.error)))")
       completion?(success: operation.success, error: operation.error)
     }
     operation.start()
@@ -53,9 +53,9 @@ public class Command: ModelObject {
   /**
   importTypeForKeys:
 
-  :param: keys [String]
+  - parameter keys: [String]
 
-  :returns: Command.Type
+  - returns: Command.Type
   */
   private static func importTypeForKeys(keys: [String]) -> Command.Type? {
     if ActivityCommandKeys ⊇ keys { return ActivityCommand.self}
@@ -72,10 +72,10 @@ public class Command: ModelObject {
   /**
   importObjectWithData:context:
 
-  :param: data ObjectJSONValue
-  :param: context NSManagedObjectContext!
+  - parameter data: ObjectJSONValue
+  - parameter context: NSManagedObjectContext!
 
-  :returns: Command?
+  - returns: Command?
   */
   override public class func importObjectWithData(data: ObjectJSONValue, context: NSManagedObjectContext) -> Command? {
     if self === Command.self, let type = importTypeForKeys(data.keys.array) {

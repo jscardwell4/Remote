@@ -21,11 +21,11 @@ extension IRCodeSet: FormCreatable {
   /**
   creationForm:
 
-  :param: #context NSManagedObjectContext
+  - parameter #context: NSManagedObjectContext
 
-  :returns: Form
+  - returns: Form
   */
-  static func creationForm(#context: NSManagedObjectContext) -> Form {
+  static func creationForm(context context: NSManagedObjectContext) -> Form {
 
     var fields: OrderedDictionary<String, FieldTemplate> = [:]
 

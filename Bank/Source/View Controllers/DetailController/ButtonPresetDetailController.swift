@@ -22,7 +22,7 @@ class ButtonPresetDetailController: PresetDetailController {
     /**
     rowKeyForState:
 
-    :param: state UIControlState
+    - parameter state: UIControlState
     */
     func rowKeyForState(state: UIControlState) -> String {
       return "\(rawValue) - \(state.stringValue.titlecaseString)"
@@ -62,9 +62,9 @@ class ButtonPresetDetailController: PresetDetailController {
   /**
   generateBackgroundColorDisplayRowForState:
 
-  :param: state UIControlState
+  - parameter state: UIControlState
 
-  :returns: DetailColorRow
+  - returns: DetailColorRow
   */
   private func generateBackgroundColorDisplayRowForState(state: UIControlState) -> DetailColorRow {
     let preset = model as! Preset
@@ -92,9 +92,9 @@ class ButtonPresetDetailController: PresetDetailController {
   /**
   generateBackgroundColorCreationRowForState:
 
-  :param: state UIControlState
+  - parameter state: UIControlState
 
-  :returns: DetailListRow
+  - returns: DetailListRow
   */
   private func generateBackgroundColorCreationRowForState(state: UIControlState) -> DetailListRow {
     let preset = model as! Preset
@@ -131,9 +131,9 @@ class ButtonPresetDetailController: PresetDetailController {
   /**
   generateBackgroundColorRowForState:
 
-  :param: state UIControlState
+  - parameter state: UIControlState
 
-  :returns: DetailRow
+  - returns: DetailRow
   */
   private func generateBackgroundColorRowForState(state: UIControlState) -> DetailRow {
     let row = ((model as! Preset).backgroundColors?.keys.array ?? []) ∋ state.stringValue
@@ -197,9 +197,9 @@ class ButtonPresetDetailController: PresetDetailController {
   /**
   generateTitleDisplayRowForState:
 
-  :param: state UIControlState
+  - parameter state: UIControlState
 
-  :returns: DetailAttributedTextRow
+  - returns: DetailAttributedTextRow
   */
   private func generateTitleDisplayRowForState(state: UIControlState) -> DetailAttributedTextRow {
     let preset = model as! Preset
@@ -232,9 +232,9 @@ class ButtonPresetDetailController: PresetDetailController {
   /**
   generateTitleCreationRowForState:
 
-  :param: state UIControlState
+  - parameter state: UIControlState
 
-  :returns: DetailListRow
+  - returns: DetailListRow
   */
   private func generateTitleCreationRowForState(state: UIControlState) -> DetailListRow {
     let preset = model as! Preset
@@ -268,9 +268,9 @@ class ButtonPresetDetailController: PresetDetailController {
   /**
   generateTitleRowForState:
 
-  :param: state UIControlState
+  - parameter state: UIControlState
 
-  :returns: DetailRow
+  - returns: DetailRow
   */
   private func generateTitleRowForState(state: UIControlState) -> DetailRow {
     let row = ((model as! Preset).titles?.keys.array ?? []) ∋ state.stringValue
@@ -334,9 +334,9 @@ class ButtonPresetDetailController: PresetDetailController {
   /**
   generateIconDisplayRowForState:
 
-  :param: state UIControlState
+  - parameter state: UIControlState
 
-  :returns: DetailImageRow
+  - returns: DetailImageRow
   */
   private func generateIconDisplayRowForState(state: UIControlState) -> DetailImageRow {
 
@@ -370,9 +370,9 @@ class ButtonPresetDetailController: PresetDetailController {
   /**
   generateIconCreationRowForState:
 
-  :param: state UIControlState
+  - parameter state: UIControlState
 
-  :returns: DetailListRow
+  - returns: DetailListRow
   */
   private func generateIconCreationRowForState(state: UIControlState) -> DetailListRow {
     let preset = model as! Preset
@@ -406,9 +406,9 @@ class ButtonPresetDetailController: PresetDetailController {
   /**
   generateIconRowForState:
 
-  :param: state UIControlState
+  - parameter state: UIControlState
 
-  :returns: DetailRow
+  - returns: DetailRow
   */
   private func generateIconRowForState(state: UIControlState) -> DetailRow {
     let row = ((model as! Preset).icons?.keys.array ?? []) ∋ state.stringValue
@@ -471,9 +471,9 @@ class ButtonPresetDetailController: PresetDetailController {
   /**
   generateImageDisplayRowForState:
 
-  :param: state UIControlState
+  - parameter state: UIControlState
 
-  :returns: DetailImageRow
+  - returns: DetailImageRow
   */
   private func generateImageDisplayRowForState(state: UIControlState) -> DetailImageRow {
     let preset = model as! Preset
@@ -506,9 +506,9 @@ class ButtonPresetDetailController: PresetDetailController {
   /**
   generateImageCreationRowForState:
 
-  :param: state UIControlState
+  - parameter state: UIControlState
 
-  :returns: DetailListRow
+  - returns: DetailListRow
   */
   private func generateImageCreationRowForState(state: UIControlState) -> DetailListRow {
     let preset = model as! Preset
@@ -542,9 +542,9 @@ class ButtonPresetDetailController: PresetDetailController {
   /**
   generateImageRowForState:
 
-  :param: state UIControlState
+  - parameter state: UIControlState
 
-  :returns: DetailRow
+  - returns: DetailRow
   */
   private func generateImageRowForState(state: UIControlState) -> DetailRow {
     let row = ((model as! Preset).images?.keys.array ?? []) ∋ state.stringValue
@@ -606,7 +606,7 @@ extension ButtonPresetDetailController: TitleAttributesDelegateObserver {
   /**
   saveInvokedForTitleAttributesDelegate:
 
-  :param: titleAttributesDelegate TitleAttributesDelegate
+  - parameter titleAttributesDelegate: TitleAttributesDelegate
   */
   func saveInvokedForTitleAttributesDelegate(titleAttributesDelegate: TitleAttributesDelegate) {
     assert(pushedTitleAttributesKey != nil)
@@ -623,7 +623,7 @@ extension ButtonPresetDetailController: TitleAttributesDelegateObserver {
   /**
   deleteInvokedForTitleAttributesDelegate:
 
-  :param: titleAttributesDelegate TitleAttributesDelegate
+  - parameter titleAttributesDelegate: TitleAttributesDelegate
   */
   func deleteInvokedForTitleAttributesDelegate(titleAttributesDelegate: TitleAttributesDelegate) {
     assert(pushedTitleAttributesKey != nil)
@@ -639,7 +639,7 @@ extension ButtonPresetDetailController: TitleAttributesDelegateObserver {
   /**
   rollbackInvokedForTitleAttributesDelegate:
 
-  :param: titleAttributesDelegate TitleAttributesDelegate
+  - parameter titleAttributesDelegate: TitleAttributesDelegate
   */
   func rollbackInvokedForTitleAttributesDelegate(titleAttributesDelegate: TitleAttributesDelegate) {
     // TODO: Double check we don't need to rollback the preset here

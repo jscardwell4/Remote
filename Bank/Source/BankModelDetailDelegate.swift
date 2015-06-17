@@ -23,6 +23,6 @@ class BankModelDetailDelegate {
 
   private(set) var sections: SectionIndex = [:]
 
-  func loadSections(#controller: BankCollectionDetailController) { sections = item.sectionIndexForController(controller) }
+  func loadSections(controller controller: BankCollectionDetailController) { sections = item.sectionIndexForController(controller) }
 
 }

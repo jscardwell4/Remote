@@ -24,21 +24,21 @@ extension PresetCategory: FormCreatable {
   /**
   creationForm:
 
-  :param: #context NSManagedObjectContext
+  - parameter #context: NSManagedObjectContext
 
-  :returns: Form
+  - returns: Form
   */
-  static func creationForm(#context: NSManagedObjectContext) -> Form {
+  static func creationForm(context context: NSManagedObjectContext) -> Form {
     return Form(templates: OrderedDictionary<String, FieldTemplate>(["Name": nameFormFieldTemplate(context: context)]))
   }
 
   /**
   createWithForm:context:
 
-  :param: form Form
-  :param: context NSManagedObjectContext
+  - parameter form: Form
+  - parameter context: NSManagedObjectContext
 
-  :returns: PresetCategory?
+  - returns: PresetCategory?
   */
   static func createWithForm(form: Form, context: NSManagedObjectContext) -> PresetCategory? {
     if let name = form.values?["Name"] as? String { return PresetCategory(name: name, context: context) }

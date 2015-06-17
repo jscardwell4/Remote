@@ -25,7 +25,7 @@ public final class Remote: RemoteElement {
   /**
   updateWithPreset:
 
-  :param: preset Preset
+  - parameter preset: Preset
   */
   override func updateWithPreset(preset: Preset) {
     super.updateWithPreset(preset)
@@ -36,8 +36,8 @@ public final class Remote: RemoteElement {
   /**
   setButtonGroup:forPanelAssignment:
 
-  :param: buttonGroup ButtonGroup?
-  :param: assignment PanelAssignment
+  - parameter buttonGroup: ButtonGroup?
+  - parameter assignment: PanelAssignment
   */
   public func setButtonGroup(buttonGroup: ButtonGroup?, forPanelAssignment assignment: PanelAssignment) {
     if buttonGroup == nil || subelements ∋ buttonGroup! {
@@ -50,9 +50,9 @@ public final class Remote: RemoteElement {
   /**
   buttonGroupForPanelAssignment:
 
-  :param: assignment PanelAssignment
+  - parameter assignment: PanelAssignment
 
-  :returns: ButtonGroup?
+  - returns: ButtonGroup?
   */
   public func buttonGroupForPanelAssignment(assignment: PanelAssignment) -> ButtonGroup? {
     if let moc = managedObjectContext, uuid = panels[assignment] { return ButtonGroup.objectWithUUID(uuid, context: moc) }
@@ -63,7 +63,7 @@ public final class Remote: RemoteElement {
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
@@ -94,13 +94,13 @@ public final class Remote: RemoteElement {
       let panels = primitiveValueForKey("panels") as! [Int:String]
       didAccessValueForKey("panels")
 
-      let keys = map(panels.keys) {PanelAssignment(rawValue: $0)}
-      let values = map(panels.values) {UUIDIndex(rawValue: $0)!}
+      let keys = panels.keys.map {PanelAssignment(rawValue: $0)}
+      let values = panels.values.map {UUIDIndex(rawValue: $0)!}
       return zipDict(keys, values)
     }
     set {
-      let keys = map(newValue.keys) {$0.rawValue}
-      let values = map(newValue.values) {$0.rawValue}
+      let keys = newValue.keys.map {$0.rawValue}
+      let values = newValue.values.map {$0.rawValue}
       willChangeValueForKey("panels")
       setPrimitiveValue(zipDict(keys,values), forKey: "panels")
       didChangeValueForKey("panels")
@@ -108,7 +108,7 @@ public final class Remote: RemoteElement {
   }
 
   public struct PanelAssignment: RawOptionSetType, Hashable, StringValueConvertible,
-                                 JSONValueConvertible, JSONValueInitializable, Printable
+                                 JSONValueConvertible, JSONValueInitializable, CustomStringConvertible
   {
 
     private(set) public var rawValue: Int
@@ -116,7 +116,7 @@ public final class Remote: RemoteElement {
     public init(nilLiteral:()) { rawValue = 0 }
 
     /** Enumeration to hold the location associated with a panel assignment */
-    public enum Location: Int, JSONValueConvertible, JSONValueInitializable, Printable {
+    public enum Location: Int, JSONValueConvertible, JSONValueInitializable, CustomStringConvertible {
       case Top = 1, Bottom = 2, Left = 3, Right = 4
 
       public enum Axis: String { case Horizontal = "Horizontal", Vertical = "Vertical" }
@@ -159,7 +159,7 @@ public final class Remote: RemoteElement {
     }
 
     /** Enumeration to hold the number of touches to associate with a panel assignment */
-    public enum Trigger: Int, JSONValueConvertible, Printable  {
+    public enum Trigger: Int, JSONValueConvertible, CustomStringConvertible  {
       case OneFinger = 1, TwoFinger = 2, ThreeFinger = 3
       public var jsonValue: JSONValue {
         switch self {
@@ -200,22 +200,22 @@ public final class Remote: RemoteElement {
     /**
     initWithLocation:trigger:
 
-    :param: location Location
-    :param: trigger Trigger
+    - parameter location: Location
+    - parameter trigger: Trigger
     */
     public init(location: Location, trigger: Trigger) { rawValue = location.rawValue | (trigger.rawValue << 3) }
 
     public init?(_ stringValue: String?) {
       if let string = stringValue where string ~= ~/"(?:left|right|top|bottom)(?:1|2|3)" {
         rawValue = 0
-        switch string[0..<count(string)-1] {
+        switch string[0..<string.characters.count-1] {
           case "left":   location = .Left
           case "right":  location = .Right
           case "top":    location = .Top
           case "bottom": location = .Bottom
         default:       assert(false)
         }
-        switch string[count(string)-1..<count(string)] {
+        switch string[string.characters.count-1..<string.characters.count] {
           case "1": trigger = .OneFinger
           case "2": trigger = .TwoFinger
           case "3": trigger = .ThreeFinger
@@ -245,7 +245,7 @@ public final class Remote: RemoteElement {
   override public var description: String {
     var result = super.description
     result += "\n\ttopBarHidden = \(topBarHidden)"
-    result += "\n\tactivity = \(toString(activity?.index))"
+    result += "\n\tactivity = \(String(activity?.index))"
     result += "\n\tpanels = {"
     let panelEntries = keyValuePairs(panels)
     if panelEntries.count == 0 { result += "}" }
@@ -257,7 +257,7 @@ public final class Remote: RemoteElement {
 
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
-    obj["panels"] = .Object(OrderedDictionary(zip(map(panels.keys, {$0.stringValue}), map(panels.values, {$0.jsonValue}))))
+    obj["panels"] = .Object(OrderedDictionary(zip(panels.keys.map({$0.stringValue}), panels.values.map({$0.jsonValue}))))
     return obj.jsonValue
   }
 

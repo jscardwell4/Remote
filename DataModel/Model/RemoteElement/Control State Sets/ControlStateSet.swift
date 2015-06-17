@@ -28,7 +28,7 @@ extension UIControlState: JSONValueConvertible {
 extension UIControlState: JSONValueInitializable {
   public init?(_ jsonValue: JSONValue?) {
     let flags = "-".split(String(jsonValue)?.dashcaseString ?? "")
-    if !contains(1...3, flags.count) { return nil }
+    if !(1...3).contains(flags.count) { return nil }
     var state = UIControlState.Normal
     for flag in flags {
       switch flag {
@@ -50,10 +50,10 @@ extension UIControlState: EnumerableType {
             UIControlState.Highlighted,
             UIControlState.Selected,
             UIControlState.Disabled,
-            UIControlState.Selected | UIControlState.Disabled,
-            UIControlState.Highlighted | UIControlState.Selected,
-            UIControlState.Highlighted | UIControlState.Disabled,
-            UIControlState.Highlighted | UIControlState.Selected | UIControlState.Disabled]
+            [UIControlState.Selected, UIControlState.Disabled],
+            [UIControlState.Highlighted, UIControlState.Selected],
+            [UIControlState.Highlighted, UIControlState.Disabled],
+            [UIControlState.Highlighted, UIControlState.Selected, UIControlState.Disabled]]
   }
   public static func enumerate(block: (UIControlState) -> Void) { apply(all, block) }
 }
@@ -69,13 +69,13 @@ extension UIControlState {
   /** Corresponding property name suitable for use in methods such as `valueForKey:` */
   public var controlStateSetProperty: String? {
     let string = jsonValue.value as! String
-    return count(string) > 0 ? string.camelcaseString : nil
+    return string.characters.count > 0 ? string.camelcaseString : nil
   }
 
   /**
   Initialize the state using a `ControlStateSet` property name
 
-  :param: controlStateSetProperty String
+  - parameter controlStateSetProperty: String
   */
   public init?(controlStateSetProperty: String) {
     switch controlStateSetProperty {
@@ -83,10 +83,10 @@ extension UIControlState {
       case "disabled":                    self = .Disabled
       case "selected":                    self = .Selected
       case "highlighted":                 self = .Highlighted
-      case "highlightedDisabled":         self = .Highlighted | .Disabled
-      case "highlightedSelected":         self = .Highlighted | .Selected
-      case "highlightedSelectedDisabled": self = .Highlighted | .Selected | .Disabled
-      case "selectedDisabled":            self = .Selected | .Disabled
+      case "highlightedDisabled":         self = [.Highlighted, .Disabled]
+      case "highlightedSelected":         self = [.Highlighted, .Selected]
+      case "highlightedSelectedDisabled": self = [.Highlighted, .Selected, .Disabled]
+      case "selectedDisabled":            self = [.Selected, .Disabled]
       default:                            return nil
     }
   }
@@ -114,9 +114,9 @@ public class ControlStateSet: ModelObject {
   /**
   Accessor employs fallthrough logic for properties with nil values
 
-  :param: idx UInt
+  - parameter idx: UInt
 
-  :returns: AnyObject?
+  - returns: AnyObject?
   */
   public subscript(idx: UInt) -> AnyObject? {
     get {
@@ -132,9 +132,9 @@ public class ControlStateSet: ModelObject {
   /**
   Provides raw property access
 
-  :param: property String
+  - parameter property: String
 
-  :returns: AnyObject?
+  - returns: AnyObject?
   */
   public subscript(property: String) -> AnyObject? {
     get { return UIControlState(controlStateSetProperty: property) != nil ? valueForKey(property) : nil }
@@ -147,7 +147,7 @@ public class ControlStateSet: ModelObject {
       if let propertyName = $0.controlStateSetProperty {
         let value: AnyObject? = self.valueForKey(propertyName)
         if value == nil { result += "\n\t\(propertyName) = nil" }
-        else { result += "\n\t\(propertyName) = {\n\(toString(value!).indentedBy(8))\n\t}" }
+        else { result += "\n\t\(propertyName) = {\n\(String(value!).indentedBy(8))\n\t}" }
       }
     }
     return result

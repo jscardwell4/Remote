@@ -19,14 +19,14 @@ final public class Manufacturer: EditableModelObject {
   /**
   requiresUniqueNaming
 
-  :returns: Bool
+  - returns: Bool
   */
   public override class func requiresUniqueNaming() -> Bool { return true }
 
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
@@ -37,15 +37,15 @@ final public class Manufacturer: EditableModelObject {
 
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
-    obj["devices.index"] = .Array(map(devices, {$0.index.jsonValue}))
+    obj["devices.index"] = .Array(devices.map({$0.index.jsonValue}))
     obj["codeSets"] = JSONValue(codeSets)
     return obj.jsonValue
   }
 
   override public var description: String {
     return "\(super.description)\n\t" + "\n\t".join(
-      "code sets = [" + ", ".join(map(codeSets, {$0.name})) + "]",
-      "devices = [" + ", ".join(map(devices, {$0.name})) + "]"
+      "code sets = [" + ", ".join(codeSets.map({$0.name})) + "]",
+      "devices = [" + ", ".join(devices.map({$0.name})) + "]"
     )
   }
   
@@ -61,7 +61,7 @@ extension Manufacturer: DefaultingModelCollection {
     if let manufacturer = modelWithIndex(PathIndex(name), context: context) {
       return manufacturer
     } else {
-      var manufacturer = self(context: context)
+      let manufacturer = self(context: context)
       manufacturer.name = name
       return manufacturer
     }

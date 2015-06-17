@@ -50,7 +50,7 @@ public class ISYDeviceNode: IndexedModelObject {
     obj["propertyID"] = propertyID.jsonValue
     obj["propertyUOM"] = propertyUOM.jsonValue
     obj["propertyValue"] = propertyValue.jsonValue
-    obj["groups.index"] = JSONValue(map(groups, {$0.index}))
+    obj["groups.index"] = JSONValue(groups.map({$0.index}))
     return obj.jsonValue
   }
 

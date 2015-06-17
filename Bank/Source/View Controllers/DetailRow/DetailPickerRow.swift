@@ -26,7 +26,7 @@ final class DetailPickerRow: DetailRow {
   /**
   configure:
 
-  :param: cell DetailCell
+  - parameter cell: DetailCell
   */
   override func configureCell(cell: DetailCell) {
     // Set picker cell properties first so data is there when `info` gets set by `super`

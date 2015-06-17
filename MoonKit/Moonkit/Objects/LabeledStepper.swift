@@ -131,13 +131,13 @@ public class LabeledStepper: UIControl {
   public override var tracking: Bool { return stepper.tracking }
   public override var touchInside: Bool { return stepper.touchInside }
 
-  public override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) -> Bool {
+  public override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
     return stepper.beginTrackingWithTouch(touch, withEvent: event)
   }
-  public override func continueTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) -> Bool {
+  public override func continueTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
     return stepper.continueTrackingWithTouch(touch, withEvent: event)
   }
-  public override func endTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) {
+  public override func endTrackingWithTouch(touch: UITouch?, withEvent event: UIEvent?) {
     stepper.endTrackingWithTouch(touch, withEvent: event)
   }
   public override func cancelTrackingWithEvent(event: UIEvent?) {
@@ -161,8 +161,8 @@ public class LabeledStepper: UIControl {
   public override func allTargets() -> Set<NSObject> { return stepper.allTargets() }
   public override func allControlEvents() -> UIControlEvents { return stepper.allControlEvents() }
 
-  public override func actionsForTarget(target: AnyObject,
-                        forControlEvent controlEvent: UIControlEvents) -> [AnyObject]?
+  public override func actionsForTarget(target: AnyObject?,
+                        forControlEvent controlEvent: UIControlEvents) -> [String]?
   {
     return stepper.actionsForTarget(target, forControlEvent: controlEvent)
   }

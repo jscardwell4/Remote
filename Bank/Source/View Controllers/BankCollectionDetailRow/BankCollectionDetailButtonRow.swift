@@ -23,7 +23,7 @@ final class BankCollectionDetailButtonRow: BankCollectionDetailRow {
   /**
   configure:
 
-  :param: cell BankCollectionDetailCell
+  - parameter cell: BankCollectionDetailCell
   */
   override func configureCell(cell: BankCollectionDetailCell) {
     if let buttonCell = cell as? BankCollectionDetailButtonCell {

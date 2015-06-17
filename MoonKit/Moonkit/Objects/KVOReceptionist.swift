@@ -27,12 +27,12 @@ public final class KVOReceptionist: NSObject {
   /**
   init:keyPath:object:options:queue:handler:
 
-  :param: obs AnyObject
-  :param: kp String
-  :param: obj AnyObject
-  :param: opt NSKeyValueObservingOptions
-  :param: q NSOperationQueue
-  :param: h (KVOReceptionist) -> Void
+  - parameter obs: AnyObject
+  - parameter kp: String
+  - parameter obj: AnyObject
+  - parameter opt: NSKeyValueObservingOptions
+  - parameter q: NSOperationQueue
+  - parameter h: (KVOReceptionist) -> Void
   */
   public init(observer obs: AnyObject,
               keyPath kp: String,
@@ -52,14 +52,14 @@ public final class KVOReceptionist: NSObject {
   /**
   observeValueForKeyPath:ofObject:change:context:
 
-  :param: keyPath String
-  :param: object AnyObject
-  :param: change [NSObject AnyObject]
-  :param: context UnsafeMutablePointer<Void>
+  - parameter keyPath: String
+  - parameter object: AnyObject
+  - parameter change: [NSObject AnyObject]
+  - parameter context: UnsafeMutablePointer<Void>
   */
-  public override func observeValueForKeyPath(keyPath: String,
-                                     ofObject object: AnyObject,
-                                       change: [NSObject:AnyObject],
+  public override func observeValueForKeyPath(keyPath: String?,
+                                     ofObject object: AnyObject?,
+                                       change: [NSObject:AnyObject]?,
                                       context: UnsafeMutablePointer<Void>)
   {
     if self.keyPath == keyPath && self.object === object && context == observingContext {

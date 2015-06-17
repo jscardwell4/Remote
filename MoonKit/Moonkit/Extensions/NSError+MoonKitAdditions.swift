@@ -12,10 +12,10 @@ extension NSError {
   /**
   initWithDomain:code:underlyingErrors:var:
 
-  :param: domain String
-  :param: code Int
-  :param: underlyingErrors [NSError]
-  :param: userInfo [NSObject
+  - parameter domain: String
+  - parameter code: Int
+  - parameter underlyingErrors: [NSError]
+  - parameter userInfo: [NSObject
   */
   public
   convenience init(domain: String, code: Int, underlyingErrors: [NSError], var userInfo: [NSObject:AnyObject]? = nil) {

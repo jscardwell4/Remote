@@ -15,8 +15,8 @@ class DetailPickerCell: DetailCell {
   /**
   initWithStyle:reuseIdentifier:
 
-  :param: style UITableViewCellStyle
-  :param: reuseIdentifier String?
+  - parameter style: UITableViewCellStyle
+  - parameter reuseIdentifier: String?
   */
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -29,7 +29,7 @@ class DetailPickerCell: DetailCell {
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
@@ -51,10 +51,10 @@ class DetailPickerCell: DetailCell {
       }
     }
     set {
-      var searchIndex: Index = newValue == nil
+      let searchIndex: Index = newValue == nil
                                  ? .NilItem(title: nilItemTitle ?? "")
                                  : .DataItem(object: newValue!, title: titleForInfo?(newValue!) ?? "")
-      if let idx = find(_data, searchIndex) {
+      if let idx = _data.indexOf(searchIndex) {
         selection = _data[idx]
         picker.selectRow(idx, inComponent: 0, animated: false)
       }
@@ -125,9 +125,9 @@ extension DetailPickerCell: UIPickerViewDataSource, UIPickerViewDelegate {
   /**
   numberOfComponentsInPickerView:
 
-  :param: pickerView UIPickerView
+  - parameter pickerView: UIPickerView
 
-  :returns: Int
+  - returns: Int
   */
   func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
     return 1
@@ -136,10 +136,10 @@ extension DetailPickerCell: UIPickerViewDataSource, UIPickerViewDelegate {
   /**
   pickerView:numberOfRowsInComponent:
 
-  :param: pickerView UIPickerView
-  :param: component Int
+  - parameter pickerView: UIPickerView
+  - parameter component: Int
 
-  :returns: Int
+  - returns: Int
   */
   func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
     return _data.count
@@ -148,11 +148,11 @@ extension DetailPickerCell: UIPickerViewDataSource, UIPickerViewDelegate {
   /**
   pickerView:titleForRow:forComponent:
 
-  :param: pickerView UIPickerView
-  :param: row Int
-  :param: component Int
+  - parameter pickerView: UIPickerView
+  - parameter row: Int
+  - parameter component: Int
 
-  :returns: String?
+  - returns: String?
   */
   func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
     return _data[row].title
@@ -161,9 +161,9 @@ extension DetailPickerCell: UIPickerViewDataSource, UIPickerViewDelegate {
   /**
   Handles selection of `nil`, `create`, or `data` row
 
-  :param: pickerView UIPickerView
-  :param: row Int
-  :param: component Int
+  - parameter pickerView: UIPickerView
+  - parameter row: Int
+  - parameter component: Int
   */
   func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
     selection = _data[row]
@@ -181,10 +181,10 @@ extension DetailPickerCell.Index: Equatable {}
 /**
 Whether lhs is equal to rhs
 
-:param: lhs DetailPickerCell.Index
-:param: rhs DetailPickerCell.Index
+- parameter lhs: DetailPickerCell.Index
+- parameter rhs: DetailPickerCell.Index
 
-:returns: Bool
+- returns: Bool
 */
 func ==(lhs: DetailPickerCell.Index, rhs: DetailPickerCell.Index) -> Bool {
   switch (lhs, rhs) {

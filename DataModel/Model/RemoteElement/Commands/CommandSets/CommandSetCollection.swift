@@ -30,9 +30,9 @@ public final class CommandSetCollection: CommandContainer {
   /**
   subscript:
 
-  :param: label String
+  - parameter label: String
 
-  :returns: CommandSet?
+  - returns: CommandSet?
   */
   public subscript(label: String) -> CommandSet? {
     get { return (containerIndex[label] ?>> managedObjectContext!.objectForURI) as? CommandSet }
@@ -44,9 +44,9 @@ public final class CommandSetCollection: CommandContainer {
   /**
   labelForCommandSet:
 
-  :param: commandSet CommandSet
+  - parameter commandSet: CommandSet
 
-  :returns: String?
+  - returns: String?
   */
   public func labelForCommandSet(commandSet: CommandSet) -> String? {
     return findFirst(containerIndex.keyValuePairs, {$1 as! String == commandSet.uuid})?.0
@@ -55,25 +55,25 @@ public final class CommandSetCollection: CommandContainer {
   /**
   commandSetAtIndex:
 
-  :param: idx Int
+  - parameter idx: Int
 
-  :returns: CommandSet?
+  - returns: CommandSet?
   */
   public func commandSetAtIndex(idx: Int) -> CommandSet? { return commandSets.count > idx ? commandSets[idx] : nil }
 
   /**
   labelAtIndex:
 
-  :param: idx Int
+  - parameter idx: Int
 
-  :returns: String?
+  - returns: String?
   */
   public func labelAtIndex(idx: Int) -> String? { return idx < commandSets.count ? labelForCommandSet(commandSets[idx]) : nil }
 
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)

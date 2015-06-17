@@ -20,9 +20,9 @@ public class ImageButtonView: UIImageView {
 
   private func initializeIVARs() { userInteractionEnabled = true }
 
-  public override init(image: UIImage!) { super.init(image: image); initializeIVARs() }
+  public override init(image: UIImage?) { super.init(image: image); initializeIVARs() }
 
-  public override init(image: UIImage!, highlightedImage: UIImage?) {
+  public override init(image: UIImage?, highlightedImage: UIImage?) {
     super.init(image: image, highlightedImage: highlightedImage)
     initializeIVARs()
   }
@@ -38,11 +38,11 @@ public class ImageButtonView: UIImageView {
 
   public var actions: [Action] = []
 
-  public override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+  public override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
     if let touches = touches as? Set<UITouch> where trackingTouch == nil { trackingTouch = touches.first }
   }
 
-  public override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
+  public override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
     if let touches = touches as? Set<UITouch>, trackingTouch = trackingTouch
       where touches.contains(trackingTouch) && !pointInside(trackingTouch.locationInView(self), withEvent: event)
     {
@@ -50,14 +50,14 @@ public class ImageButtonView: UIImageView {
     }
   }
 
-  public override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+  public override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
     if let touches = touches as? Set<UITouch>, trackingTouch = trackingTouch where touches.contains(trackingTouch) {
       if pointInside(trackingTouch.locationInView(self), withEvent: event) { apply(actions) {[unowned self] in $0(self)} }
       self.trackingTouch = nil
     }
   }
 
-  public override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+  public override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
     if let touches = touches as? Set<UITouch>, trackingTouch = trackingTouch where touches.contains(trackingTouch) {
       self.trackingTouch = nil
     }

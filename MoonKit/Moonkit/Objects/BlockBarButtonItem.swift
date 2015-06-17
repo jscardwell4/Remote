@@ -60,14 +60,14 @@ public class BlockBarButtonItem: UIBarButtonItem {
   /**
   encodeWithCoder:
 
-  :param: aCoder NSCoder
+  - parameter aCoder: NSCoder
   */
   public override func encodeWithCoder(aCoder: NSCoder) { super.encodeWithCoder(aCoder) }
 
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   public required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 

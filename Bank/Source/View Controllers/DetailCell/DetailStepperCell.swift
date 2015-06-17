@@ -15,8 +15,8 @@ class DetailStepperCell: DetailCell {
   /**
   initWithStyle:reuseIdentifier:
 
-  :param: style UITableViewCellStyle
-  :param: reuseIdentifier String?
+  - parameter style: UITableViewCellStyle
+  - parameter reuseIdentifier: String?
   */
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -37,7 +37,7 @@ class DetailStepperCell: DetailCell {
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
@@ -69,7 +69,7 @@ class DetailStepperCell: DetailCell {
 
   private let stepper: UIStepper =  {
     let view = UIStepper()
-    view.setTranslatesAutoresizingMaskIntoConstraints(false)
+    view.translatesAutoresizingMaskIntoConstraints = false
     view.userInteractionEnabled = false
     return view
   }()
@@ -78,7 +78,7 @@ class DetailStepperCell: DetailCell {
   /**
   stepperValueDidChange:
 
-  :param: sender UIStepper
+  - parameter sender: UIStepper
   */
   func stepperValueDidChange(sender: UIStepper) {
     valueDidChange?(sender.value)

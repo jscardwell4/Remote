@@ -18,7 +18,7 @@ import Glyphish
 
   // MARK: - ViewingMode type
 
-  enum ViewingMode: Int, Printable {
+  enum ViewingMode: Int, CustomStringConvertible {
     case List, Thumbnail
     init(rawValue: Int) { self = rawValue == 1 ? .Thumbnail : .List }
     var description: String { return self == .List ? "List" : "Thumbnail" }
@@ -43,9 +43,9 @@ import Glyphish
   /**
   bankImageNamed:
 
-  :param: named String
+  - parameter named: String
 
-  :returns: UIImage?
+  - returns: UIImage?
   */
   public static func bankImageNamed(named: String) -> UIImage? {
     return UIImage(named: named, inBundle: bundle, compatibleWithTraitCollection: nil)
@@ -112,9 +112,9 @@ import Glyphish
       ┃ export  import        viewing mode  search  discover  create ┃
       ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
-  :param: controller UIViewController
+  - parameter controller: UIViewController
 
-  :returns: [UIBarButtonItem]
+  - returns: [UIBarButtonItem]
   */
   static func toolbarItemsForController(controller: UIViewController) -> [UIBarItem] {
 
@@ -170,7 +170,7 @@ import Glyphish
             if let rootViewController =  UIApplication.sharedApplication().keyWindow?.rootViewController {
               let rootView = rootViewController.view
               rootViewController.addChildViewController(fileController!)
-              fileController!.view.setTranslatesAutoresizingMaskIntoConstraints(false)
+              fileController!.view.translatesAutoresizingMaskIntoConstraints = false
               if rootViewController is UINavigationController {
                 rootViewController.view.insertSubview(fileController!.view, atIndex: 1)
               } else {
@@ -287,9 +287,9 @@ import Glyphish
   /**
   Bar button item for the right side of the navigation bar
 
-  :param: controller BankItemImportExportController
+  - parameter controller: BankItemImportExportController
 
-  :returns: BlockBarButtonItem
+  - returns: BlockBarButtonItem
   */
   static func exportBarButtonItemForController(controller: BankItemImportExportController) -> BlockBarButtonItem {
     return BlockBarButtonItem(title: "Export", style: .Done, action: {
@@ -303,9 +303,9 @@ import Glyphish
   /**
   selectAllButtonForController:
 
-  :param: controller BankItemImportExportController
+  - parameter controller: BankItemImportExportController
 
-  :returns: BlockBarButtonItem
+  - returns: BlockBarButtonItem
   */
   static func selectAllButtonForController(controller: BankItemImportExportController) -> BlockBarButtonItem {
     return BlockBarButtonItem(title: "Select All", style: .Plain) { controller.selectAllExportableItems() }
@@ -314,8 +314,8 @@ import Glyphish
   /** A bar button item that asks the application to return to the main menu */
   static let dismissButton: UIBarButtonItem? = {
     var dismissButton: UIBarButtonItem? = nil
-    let isBankTest = Bool(string: NSProcessInfo.processInfo().environment["BANK_TEST"] as? String)
-    if !Bool(string: NSProcessInfo.processInfo().environment["BANK_TEST"] as? String) {
+    let isBankTest = Bool(NSProcessInfo.processInfo().environment["BANK_TEST"] as? String)
+    if !Bool(NSProcessInfo.processInfo().environment["BANK_TEST"] as? String) {
       dismissButton = BlockBarButtonItem(barButtonSystemItem: .Done) {
         if let url = NSURL(string: "mainmenu") { UIApplication.sharedApplication().openURL(url) }
       }
@@ -326,7 +326,7 @@ import Glyphish
   /**
   Applies font and text color to the provided form
 
-  :param: form FormViewController
+  - parameter form: FormViewController
   */
   static func decorateForm(form: FormViewController) {
     form.labelFont           = formLabelFont

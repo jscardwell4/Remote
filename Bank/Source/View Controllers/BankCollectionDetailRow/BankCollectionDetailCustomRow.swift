@@ -19,7 +19,7 @@ class BankCollectionDetailCustomRow: BankCollectionDetailRow {
   /**
   configure:
 
-  :param: cell BankCollectionDetailCell
+  - parameter cell: BankCollectionDetailCell
   */
   override func configureCell(cell: BankCollectionDetailCell) {
     super.configureCell(cell)

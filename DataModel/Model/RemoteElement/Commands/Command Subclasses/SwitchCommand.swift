@@ -49,7 +49,7 @@ public final class SwitchCommand: Command {
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)

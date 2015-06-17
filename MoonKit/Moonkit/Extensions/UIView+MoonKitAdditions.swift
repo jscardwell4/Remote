@@ -16,11 +16,11 @@ public extension UIView {
   /**
   initWithAutolayout:
 
-  :param: autolayout Bool
+  - parameter autolayout: Bool
   */
   public convenience init(autolayout: Bool) {
     self.init(frame: CGRect.zeroRect)
-    setTranslatesAutoresizingMaskIntoConstraints(!autolayout)
+    translatesAutoresizingMaskIntoConstraints = !autolayout
   }
 
   // MARK: - Descriptions
@@ -28,7 +28,7 @@ public extension UIView {
   /**
   framesDescription
 
-  :returns: String
+  - returns: String
   */
   public func framesDescription() -> String {
   	return self.viewTreeDescriptionWithProperties(["frame"])
@@ -38,9 +38,9 @@ public extension UIView {
   /**
   descriptionTree:
 
-  :param: properties String ...
+  - parameter properties: String ...
 
-  :returns: String
+  - returns: String
   */
   public func descriptionTree(properties: String ...) -> String {
   	return self.viewTreeDescriptionWithProperties(properties)
@@ -51,9 +51,9 @@ public extension UIView {
   /**
   subscript:
 
-  :param: nametag String
+  - parameter nametag: String
 
-  :returns: UIView?
+  - returns: UIView?
   */
   public subscript(nametag: String) -> UIView? { return subviewWithNametag(nametag) }
 
@@ -62,9 +62,9 @@ public extension UIView {
   /**
   nearestCommonAncestorWithView:
 
-  :param: view UIView
+  - parameter view: UIView
 
-  :returns: UIView?
+  - returns: UIView?
   */
   public func nearestCommonAncestorWithView(view: UIView) -> UIView? {
     var ancestor: UIView? = nil
@@ -81,27 +81,27 @@ public extension UIView {
   /**
   subviewsOfKind:
 
-  :param: kind T.Type
+  - parameter kind: T.Type
 
-  :returns: [T]
+  - returns: [T]
   */
   public func subviewsOfKind<T:UIView>(kind: T.Type) -> [T] { return subviews.compressedMap({$0 as? T}) }
 
   /**
   firstSubviewOfKind:
 
-  :param: kind T.Type
+  - parameter kind: T.Type
 
-  :returns: T?
+  - returns: T?
   */
-  public func firstSubviewOfKind<T:UIView>(kind: T.Type) -> T? { return findFirst(subviews, {$0 as? T != nil}) as? T }
+  public func firstSubviewOfKind<T:UIView>(kind: T.Type) -> T? { return findFirst(subviews, predicate: {$0 as? T != nil}) as? T }
 
   /**
   subviewsOfType:
 
-  :param: type T.Type
+  - parameter type: T.Type
 
-  :returns: [T]
+  - returns: [T]
   */
   public func subviewsOfType<T:UIView>(type: T.Type) -> [T] {
     let filtered = subviews.filter { (s:AnyObject) -> Bool in return s.dynamicType.self === T.self }
@@ -111,66 +111,66 @@ public extension UIView {
   /**
   firstSubviewOfType:
 
-  :param: type T.Type
+  - parameter type: T.Type
 
-  :returns: T?
+  - returns: T?
   */
   public func firstSubviewOfType<T:UIView>(type: T.Type) -> T? {
-    return findFirst(subviews, {(s:AnyObject) -> Bool in return s.dynamicType.self === T.self}) as? T
+    return findFirst(subviews, predicate: {(s:AnyObject) -> Bool in return s.dynamicType.self === T.self}) as? T
   }
 
   /**
   subviewsMatching:
 
-  :param: predicate NSPredicate
+  - parameter predicate: NSPredicate
 
-  :returns: [UIView]
+  - returns: [UIView]
   */
   @objc(subviewsMatchingPredicate:)
   public func subviewsMatching(predicate: NSPredicate) -> [UIView] {
-    return subviews.filter({(s:AnyObject) -> Bool in return predicate.evaluateWithObject(s)}) as! [UIView]
+    return subviews.filter({(s:AnyObject) -> Bool in return predicate.evaluateWithObject(s)}) as [UIView]
   }
 
   /**
   firstSubviewMatching:
 
-  :param: predicate NSPredicate
+  - parameter predicate: NSPredicate
 
-  :returns: UIView?
+  - returns: UIView?
   */
   @objc(firstSubviewMatchingPredicate:)
   public func firstSubviewMatching(predicate: NSPredicate) -> UIView? {
-    return findFirst(subviews, {(s:AnyObject) -> Bool in return predicate.evaluateWithObject(s)}) as? UIView
+    return findFirst(subviews, predicate: {(s:AnyObject) -> Bool in return predicate.evaluateWithObject(s)}) as? UIView
   }
 
   /**
   subviewsMatching:
 
-  :param: predicate (AnyObject) -> Bool
+  - parameter predicate: (AnyObject) -> Bool
 
-  :returns: [UIView]
+  - returns: [UIView]
   */
   public func subviewsMatching(predicate: (AnyObject) -> Bool) -> [UIView] {
-    return subviews.filter(predicate) as! [UIView]
+    return subviews.filter(predicate) as [UIView]
   }
 
   /**
   firstSubviewMatching:
 
-  :param: predicate (AnyObject) -> Bool
+  - parameter predicate: (AnyObject) -> Bool
 
-  :returns: UIView?
+  - returns: UIView?
   */
   public func firstSubviewMatching(predicate: (AnyObject) -> Bool) -> UIView? {
-    return findFirst(subviews, predicate) as? UIView
+    return findFirst(subviews, predicate: predicate) as? UIView
   }
 
   /**
   subviewsWithIdentifier:
 
-  :param: id String
+  - parameter id: String
 
-  :returns: [UIView]
+  - returns: [UIView]
   */
   public func subviewsWithIdentifier(id: String) -> [UIView] {
     return subviewsMatching(∀"self.identifier == '\(id)'")
@@ -179,9 +179,9 @@ public extension UIView {
   /**
   subviewsWithIdentiferPrefix:
 
-  :param: prefix String
+  - parameter prefix: String
 
-  :returns: [UIView]
+  - returns: [UIView]
   */
   public func subviewsWithIdentiferPrefix(prefix: String) -> [UIView] {
     return subviewsMatching(∀"self.identifier beginsWith '\(prefix)'")
@@ -190,9 +190,9 @@ public extension UIView {
   /**
   subviewsWithIdentiferSuffix:
 
-  :param: suffix String
+  - parameter suffix: String
 
-  :returns: [UIView]
+  - returns: [UIView]
   */
   public func subviewsWithIdentiferSuffix(suffix: String) -> [UIView] {
     return subviewsMatching(∀"self.identifier endsWith '\(suffix)'")
@@ -203,12 +203,12 @@ public extension UIView {
   /**
   constraintsWithIdentifierTag:
 
-  :param: tag String
+  - parameter tag: String
 
-  :returns: [NSLayoutConstraint]
+  - returns: [NSLayoutConstraint]
   */
   public func constraintsWithIdentifierTag(tag: String) -> [NSLayoutConstraint] {
-    return (constraints() as! [NSLayoutConstraint]).filter {
+    return (constraints as [NSLayoutConstraint]).filter {
       if let identifier = $0.identifier where tagsFromIdentifier(identifier) ∋ tag { return true } else { return false }
     }
   }
@@ -232,11 +232,11 @@ public extension UIView {
   /**
   constrain:views:identifier:
 
-  :param: format String
-  :param: views [String AnyObject]? = nil
-  :param: identifier String? = nil
+  - parameter format: String
+  - parameter views: [String AnyObject]? = nil
+  - parameter identifier: String? = nil
 
-  :returns: [NSLayoutConstraint]
+  - returns: [NSLayoutConstraint]
   */
   public func constrain(format: String, views: [String:AnyObject]? = nil, identifier: String? = nil) -> [NSLayoutConstraint] {
     if format.isEmpty { return [] }
@@ -252,23 +252,23 @@ public extension UIView {
   /**
   constrain:pseudo:
 
-  :param: id String? = nil
-  :param: pseudo [PseudoConstraint] ...
+  - parameter id: String? = nil
+  - parameter pseudo: [PseudoConstraint] ...
 
-  :returns: [NSLayoutConstraint]
+  - returns: [NSLayoutConstraint]
   */
   public func constrain(selfAsSuperview: Bool = true,
              identifier id: String? = nil,
                       _ pseudo: [PseudoConstraint] ...) -> [NSLayoutConstraint]
   {
-    var constraints: [PseudoConstraint] = flatMap(pseudo) {$0}
+    var constraints: [PseudoConstraint] = pseudo.flatMap {$0}
 
     // If `selfAsSuperview` is `true` then process the constraints to make sure the deepest ancestor is the view
     if selfAsSuperview {
       // Find the deepest ancestor shared by all constraint objects
       var deepestAncestor: UIView?
       for constraint in constraints {
-        let ancestor = discernNearestAncestor(constraint.firstObject, constraint.secondObject)
+        let ancestor = discernNearestAncestor(constraint.firstObject, obj2: constraint.secondObject)
         switch (ancestor, deepestAncestor) {
           case let (a, d) where d == nil && a != nil:
             deepestAncestor = a
@@ -296,7 +296,7 @@ public extension UIView {
 
     }
 
-    let result = flatMap(constraints, {$0.expanded}).compressedMap({$0.constraint}) ➤| {if id != nil { $0.identifier = id }}
+    let result = constraints.flatMap({$0.expanded}).compressedMap({$0.constraint}) ➤| {if id != nil { $0.identifier = id }}
     addConstraints(result)
     return result
   }
@@ -304,10 +304,10 @@ public extension UIView {
   /**
   constrain:pseudo:
 
-  :param: id String? = nil
-  :param: pseudo PseudoConstraint ...
+  - parameter id: String? = nil
+  - parameter pseudo: PseudoConstraint ...
 
-  :returns: [NSLayoutConstraint]
+  - returns: [NSLayoutConstraint]
   */
   public func constrain(identifier id: String? = nil, _ pseudo: PseudoConstraint ...) -> [NSLayoutConstraint] {
     return constrain(identifier: id, pseudo)
@@ -318,10 +318,10 @@ public extension UIView {
   /**
   constrainSize:identifier:
 
-  :param: size CGSize
-  :param: id String? = nil
+  - parameter size: CGSize
+  - parameter id: String? = nil
 
-  :returns: (w: NSLayoutConstraint, h: NSLayoutConstraint)
+  - returns: (w: NSLayoutConstraint, h: NSLayoutConstraint)
   */
   public func constrainSize(size: CGSize, identifier id: String? = nil) -> (w: NSLayoutConstraint, h: NSLayoutConstraint) {
     return (w: constrainWidth(Float(size.width), identifier: id), h: constrainHeight(Float(size.height), identifier: id))
@@ -330,10 +330,10 @@ public extension UIView {
   /**
   constrainWidth:identifier:
 
-  :param: width Float
-  :param: id String? = nil
+  - parameter width: Float
+  - parameter id: String? = nil
 
-  :returns: NSLayoutConstraint
+  - returns: NSLayoutConstraint
   */
   public func constrainWidth(width: Float, identifier id: String? = nil) -> NSLayoutConstraint {
     let constraint = NSLayoutConstraint(self.width => abs(width) --> id)
@@ -344,10 +344,10 @@ public extension UIView {
   /**
   constrainHeight:identifier:
 
-  :param: height Float
-  :param: id String? = nil
+  - parameter height: Float
+  - parameter id: String? = nil
 
-  :returns: NSLayoutConstraint
+  - returns: NSLayoutConstraint
   */
   public func constrainHeight(height: Float, identifier id: String? = nil) -> NSLayoutConstraint {
     let constraint = NSLayoutConstraint(self.height => abs(height) --> id)
@@ -358,10 +358,10 @@ public extension UIView {
   /**
   constrainAspect:identifier:
 
-  :param: aspect Float
-  :param: id String? = nil
+  - parameter aspect: Float
+  - parameter id: String? = nil
 
-  :returns: NSLayoutConstraint
+  - returns: NSLayoutConstraint
   */
   public func constrainAspect(aspect: Float, identifier id: String? = nil) -> NSLayoutConstraint {
     let constraint = NSLayoutConstraint(self.width => self.height * aspect --> id)
@@ -374,11 +374,11 @@ public extension UIView {
   /**
   insetSubview:insets:identifier:
 
-  :param: subview UIView
-  :param: insets UIEdgeInsets
-  :param: id String? = nil
+  - parameter subview: UIView
+  - parameter insets: UIEdgeInsets
+  - parameter id: String? = nil
 
-  :returns: [NSLayoutConstraint]
+  - returns: [NSLayoutConstraint]
   */
   public func insetSubview(subview: UIView, insets: UIEdgeInsets, identifier id: String? = nil) -> [NSLayoutConstraint] {
     if !subview.isDescendantOfView(self) { return [] }
@@ -395,10 +395,10 @@ public extension UIView {
   /**
   stretchSubview:
 
-  :param: subview UIView
-  :param: id String? = nil
+  - parameter subview: UIView
+  - parameter id: String? = nil
 
-  :returns: [NSLayoutConstraint]
+  - returns: [NSLayoutConstraint]
   */
   public func stretchSubview(subview: UIView, identifier id: String? = nil) -> [NSLayoutConstraint] {
     if !subview.isDescendantOfView(self) { return [] }
@@ -408,10 +408,10 @@ public extension UIView {
   /**
   horizontallyStretchSubview:identifier:
 
-  :param: subview UIView
-  :param: id String? = nil
+  - parameter subview: UIView
+  - parameter id: String? = nil
 
-  :returns: [NSLayoutConstraint]
+  - returns: [NSLayoutConstraint]
   */
   public func horizontallyStretchSubview(subview: UIView, identifier id: String? = nil) -> [NSLayoutConstraint] {
     if !subview.isDescendantOfView(self) { return [] }
@@ -421,10 +421,10 @@ public extension UIView {
   /**
   verticallyStretchSubview:identifier:
 
-  :param: subview UIView
-  :param: id String? = nil
+  - parameter subview: UIView
+  - parameter id: String? = nil
 
-  :returns: [NSLayoutConstraint]
+  - returns: [NSLayoutConstraint]
   */
   public func verticallyStretchSubview(subview: UIView, identifier id: String? = nil) -> [NSLayoutConstraint] {
     if !subview.isDescendantOfView(self) { return [] }
@@ -434,14 +434,14 @@ public extension UIView {
   /**
   stretchSubview:toSubview:identifier:
 
-  :param: s1 UIView
-  :param: s2 UIView
-  :param: id String? = nil
+  - parameter s1: UIView
+  - parameter s2: UIView
+  - parameter id: String? = nil
 
-  :returns: [NSLayoutConstraint]
+  - returns: [NSLayoutConstraint]
   */
   public func stretchSubview(s1: UIView, toSubview s2: UIView, identifier id: String? = nil) -> [NSLayoutConstraint] {
-    if !((subviews as! [UIView]) ⊃ [s1, s2]) { return [] }
+    if !((subviews as [UIView]) ⊃ [s1, s2]) { return [] }
     return constrain(identifier: id, s1.left => s2.left, s1.right => s2.right, s1.top => s2.top, s1.bottom => s2.bottom)
   }
 
@@ -450,11 +450,11 @@ public extension UIView {
   /**
   horizontallyCenterSubview:offset:identifier:
 
-  :param: subview UIView
-  :param: offset Float = 0.0
-  :param: id String? = nil
+  - parameter subview: UIView
+  - parameter offset: Float = 0.0
+  - parameter id: String? = nil
 
-  :returns: [NSLayoutConstraint]
+  - returns: [NSLayoutConstraint]
   */
   public func horizontallyCenterSubview(subview: UIView,
                                  offset: Float = 0.0,
@@ -467,11 +467,11 @@ public extension UIView {
   /**
   verticallyCenterSubview:offset:identifier:
 
-  :param: subview UIView
-  :param: offset Float = 0.0
-  :param: id String? = nil
+  - parameter subview: UIView
+  - parameter offset: Float = 0.0
+  - parameter id: String? = nil
 
-  :returns: [NSLayoutConstraint]
+  - returns: [NSLayoutConstraint]
   */
   public func verticallyCenterSubview(subview: UIView,
                                offset: Float = 0.0,
@@ -484,11 +484,11 @@ public extension UIView {
   /**
   centerSubview:offset:identifier:
 
-  :param: subview UIView
-  :param: offset Float = 0.0
-  :param: id String? = nil
+  - parameter subview: UIView
+  - parameter offset: Float = 0.0
+  - parameter id: String? = nil
 
-  :returns: [NSLayoutConstraint]
+  - returns: [NSLayoutConstraint]
   */
   public func centerSubview(subview: UIView, offset: Float = 0.0, identifier id: String? = nil) -> [NSLayoutConstraint] {
     if !subview.isDescendantOfView(self) { return [] }
@@ -500,11 +500,11 @@ public extension UIView {
   /**
   leftAlignSubview:offset:identifier:
 
-  :param: subview UIView
-  :param: offset Float = 0.0
-  :param: id String? = nil
+  - parameter subview: UIView
+  - parameter offset: Float = 0.0
+  - parameter id: String? = nil
 
-  :returns: [NSLayoutConstraint]
+  - returns: [NSLayoutConstraint]
   */
   public func leftAlignSubview(subview: UIView, offset: Float = 0.0, identifier id: String? = nil) -> [NSLayoutConstraint] {
     if !subview.isDescendantOfView(self) { return [] }
@@ -514,11 +514,11 @@ public extension UIView {
   /**
   rightAlignSubview:offset:identifier:
 
-  :param: subview UIView
-  :param: offset Float = 0.0
-  :param: id String? = nil
+  - parameter subview: UIView
+  - parameter offset: Float = 0.0
+  - parameter id: String? = nil
 
-  :returns: [NSLayoutConstraint]
+  - returns: [NSLayoutConstraint]
   */
   public func rightAlignSubview(subview: UIView, offset: Float = 0.0, identifier id: String? = nil) -> [NSLayoutConstraint] {
     if !subview.isDescendantOfView(self) { return [] }
@@ -528,11 +528,11 @@ public extension UIView {
   /**
   topAlignSubview:offset:identifier:
 
-  :param: subview UIView
-  :param: offset Float = 0.0
-  :param: identifier String? = nil
+  - parameter subview: UIView
+  - parameter offset: Float = 0.0
+  - parameter identifier: String? = nil
 
-  :returns: [NSLayoutConstraint]
+  - returns: [NSLayoutConstraint]
   */
   public func topAlignSubview(subview: UIView, offset: Float = 0.0, identifier id: String? = nil) -> [NSLayoutConstraint] {
     if !subview.isDescendantOfView(self) { return [] }
@@ -542,11 +542,11 @@ public extension UIView {
   /**
   bottomAlignSubview:offset:identifier:
 
-  :param: subview UIView
-  :param: offset Float = 0.0
-  :param: id String? = nil
+  - parameter subview: UIView
+  - parameter offset: Float = 0.0
+  - parameter id: String? = nil
 
-  :returns: [NSLayoutConstraint]
+  - returns: [NSLayoutConstraint]
   */
   public func bottomAlignSubview(subview: UIView, offset: Float = 0.0, identifier id: String? = nil) -> [NSLayoutConstraint] {
     if !subview.isDescendantOfView(self) { return [] }
@@ -556,38 +556,38 @@ public extension UIView {
   /**
   alignSubview:besideSubview:offset:identifier:
 
-  :param: s1 UIView
-  :param: s2 UIView
-  :param: offset Float
-  :param: id String? = nil
+  - parameter s1: UIView
+  - parameter s2: UIView
+  - parameter offset: Float
+  - parameter id: String? = nil
 
-  :returns: [NSLayoutConstraint]
+  - returns: [NSLayoutConstraint]
   */
   public func alignSubview(s1: UIView,
              besideSubview s2: UIView,
                     offset: Float,
                 identifier id: String? = nil) -> [NSLayoutConstraint]
   {
-    if !((subviews as! [UIView]) ⊃ [s1, s2]) { return [] }
+    if !((subviews as [UIView]) ⊃ [s1, s2]) { return [] }
     return constrain(identifier: id, s2.left => s1.right + offset)
   }
 
   /**
   alignSubview:aboveSubview:offset:identifier:
 
-  :param: s1 UIView
-  :param: s2 UIView
-  :param: offset Float
-  :param: id String? = nil
+  - parameter s1: UIView
+  - parameter s2: UIView
+  - parameter offset: Float
+  - parameter id: String? = nil
 
-  :returns: [NSLayoutConstraint]
+  - returns: [NSLayoutConstraint]
   */
   public func alignSubview(s1: UIView,
               aboveSubview s2: UIView,
                     offset: Float,
                 identifier id: String? = nil) -> [NSLayoutConstraint]
   {
-    if !((subviews as! [UIView]) ⊃ [s1, s2]) { return [] }
+    if !((subviews as [UIView]) ⊃ [s1, s2]) { return [] }
     return constrain(identifier: id, s2.top => s1.bottom + offset)
   }
 

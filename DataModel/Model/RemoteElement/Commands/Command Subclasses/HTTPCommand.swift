@@ -29,14 +29,14 @@ public final class HTTPCommand: SendCommand {
 
   override public var description: String {
     var result = super.description
-    result += "\n\turl = \(toString(url.absoluteString))"
+    result += "\n\turl = \(String(url.absoluteString))"
     return result
   }
 
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)

@@ -19,9 +19,9 @@ extension NSLayoutConstraint {
   /**
   splitFormat:
 
-  :param: format String
+  - parameter format: String
 
-  :returns: [String]
+  - returns: [String]
   */
   public class func splitFormat(format: String) -> [String] {
     return "\n".split(format.subbed("::", "\n").subbed("[⏎;]", "\n").subbed("  +", " "))
@@ -45,12 +45,12 @@ extension NSLayoutConstraint {
   /**
   constraintsByParsingFormat:options:metrics:views:
 
-  :param: format String
-  :param: options NSLayoutFormatOptions = nil
-  :param: metrics [String AnyObject]? = nil
-  :param: views [String AnyObject]? = nil
+  - parameter format: String
+  - parameter options: NSLayoutFormatOptions = nil
+  - parameter metrics: [String AnyObject]? = nil
+  - parameter views: [String AnyObject]? = nil
 
-  :returns: [NSLayoutConstraint]
+  - returns: [NSLayoutConstraint]
   */
   public class func constraintsByParsingFormat(format: String,
                                        options: NSLayoutFormatOptions = nil,
@@ -63,7 +63,7 @@ extension NSLayoutConstraint {
       if let c = PseudoConstraint(string)?.expanded.compressedMap({$0.constraintWithObjects(views)}) where c.count > 0 {
           constraints.extend(c)
       } else {
-        let c = constraintsWithVisualFormat(string, options: options, metrics: metrics, views: views) as! [NSLayoutConstraint]
+        let c = constraintsWithVisualFormat(string, options: options, metrics: metrics, views: views) as [NSLayoutConstraint]
         constraints.extend(c)
       }
     }

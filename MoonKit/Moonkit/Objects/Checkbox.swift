@@ -27,7 +27,7 @@ public class Checkbox: UIControl {
   /**
   initWithFrame:
 
-  :param: frame CGRect
+  - parameter frame: CGRect
   */
   public override init(frame: CGRect) {
     super.init(frame: frame)
@@ -41,28 +41,28 @@ public class Checkbox: UIControl {
   /**
   initWithAutolayout:
 
-  :param: autolayout Bool
+  - parameter autolayout: Bool
   */
-  public convenience init(autolayout: Bool) { self.init(); setTranslatesAutoresizingMaskIntoConstraints(!autolayout) }
+  public convenience init(autolayout: Bool) { self.init(); translatesAutoresizingMaskIntoConstraints = !autolayout }
 
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   public required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
   /**
   intrinsicContentSize
 
-  :returns: CGSize
+  - returns: CGSize
   */
   public override func intrinsicContentSize() -> CGSize { return CGSize(square: 28.0) }
 
   /**
   alignmentRectInsets
 
-  :returns: UIEdgeInsets
+  - returns: UIEdgeInsets
   */
   // public override func alignmentRectInsets() -> UIEdgeInsets {
   //   let dx = floor(bounds.width * 0.15909 + 0.5)
@@ -76,7 +76,7 @@ public class Checkbox: UIControl {
   /**
   drawRect:
 
-  :param: rect CGRect
+  - parameter rect: CGRect
   */
   public override func drawRect(rect: CGRect) {
 
@@ -139,7 +139,7 @@ public class Checkbox: UIControl {
 
       if (checked) {
           //// checkmark Drawing
-          var checkmarkPath = UIBezierPath()
+          let checkmarkPath = UIBezierPath()
           checkmarkPath.moveToPoint(     CGPoint(x: rect.minX + 0.95455 * rect.width, y: rect.minY + 0.09047 * rect.height))
           checkmarkPath.addCurveToPoint( CGPoint(x: rect.minX + 0.88555 * rect.width, y: rect.minY + 0.02273 * rect.height),
                           controlPoint1: CGPoint(x: rect.minX + 0.95455 * rect.width, y: rect.minY + 0.05305 * rect.height),

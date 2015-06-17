@@ -29,7 +29,7 @@ public final class ButtonGroup: RemoteElement {
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
@@ -57,7 +57,7 @@ public final class ButtonGroup: RemoteElement {
   /**
   updateWithPreset:
 
-  :param: preset Preset
+  - parameter preset: Preset
   */
   override func updateWithPreset(preset: Preset) {
     super.updateWithPreset(preset)
@@ -75,7 +75,7 @@ public final class ButtonGroup: RemoteElement {
   /**
   updateForMode:
 
-  :param: mode String
+  - parameter mode: String
   */
   override func updateForMode(mode: String) {
     super.updateForMode(mode)
@@ -127,9 +127,9 @@ public final class ButtonGroup: RemoteElement {
   /**
   labelAttributesForMode:
 
-  :param: mode Mode
+  - parameter mode: Mode
 
-  :returns: TitleAttributes?
+  - returns: TitleAttributes?
   */
   public func labelAttributesForMode(mode: Mode) -> TitleAttributes? {
     return TitleAttributes(storage: labelAttributes[mode]?.dictionary)
@@ -138,8 +138,8 @@ public final class ButtonGroup: RemoteElement {
   /**
   setLabelAttributes:forMode:
 
-  :param: attributes TitleAttributes
-  :param: mode Mode
+  - parameter attributes: TitleAttributes
+  - parameter mode: Mode
   */
   public func setLabelAttributes(attributes: TitleAttributes?, forMode mode: Mode) {
     if attributes == nil {
@@ -158,12 +158,12 @@ public final class ButtonGroup: RemoteElement {
   /**
   labelForCommandSetAtIndex:
 
-  :param: idx Int
+  - parameter idx: Int
 
-  :returns: NSAttributedString?
+  - returns: NSAttributedString?
   */
   public func labelForCommandSetAtIndex(idx: Int) -> NSAttributedString? {
-    if let collection = commandSetCollection where contains(0 ..< Int(collection.count), idx),
+    if let collection = commandSetCollection where (0 ..< Int(collection.count)).contains(idx),
      let text = collection.labelAtIndex(idx), var titleAttributes = labelAttributesForMode(currentMode)
     {
       titleAttributes.text = text
@@ -199,8 +199,8 @@ public final class ButtonGroup: RemoteElement {
   /**
   setCommandContainer:forMode:
 
-  :param: container CommandContainer?
-  :param: mode String
+  - parameter container: CommandContainer?
+  - parameter mode: String
   */
   public func setCommandContainer(container: CommandContainer?, forMode mode: Mode) {
     setValue(container, forMode: mode, inStorage: commandContainers)
@@ -209,9 +209,9 @@ public final class ButtonGroup: RemoteElement {
   /**
   commandContainerForMode:
 
-  :param: mode String
+  - parameter mode: String
 
-  :returns: CommandContainer?
+  - returns: CommandContainer?
   */
   public func commandContainerForMode(mode: Mode) -> CommandContainer? { return commandContainers[mode] }
 
@@ -219,7 +219,7 @@ public final class ButtonGroup: RemoteElement {
   public var commandSetIndex: Int = 0 {
     didSet {
       if let collection = commandSetCollection {
-        if !contains((0 ..< Int(collection.count)), commandSetIndex) { commandSetIndex = 0 }
+        if !(0 ..< Int(collection.count)).contains(commandSetIndex) { commandSetIndex = 0 }
         updateButtons()
       }
     }
@@ -256,7 +256,7 @@ public final class ButtonGroup: RemoteElement {
     var result = super.description
     result += "\n\tautohide = \(autohide)"
     result += "\n\tlabelAttributes = {\n\(labelAttributes.description.indentedBy(8))\n\t}"
-    result += "\n\tlabel = \(toString(label))"
+    result += "\n\tlabel = \(String(label))"
     result += "\n\tcommandContainers = {\n\(commandContainers.description.indentedBy(8))\n\t}"
     if let container = commandContainer { result += "\n\tcommandContainer = {\n\(container.description.indentedBy(8))\n\t}" }
     else { result += "\n\tcommandContainer = nil" }

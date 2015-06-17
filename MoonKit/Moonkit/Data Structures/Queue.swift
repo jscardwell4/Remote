@@ -23,7 +23,7 @@ public struct Queue<T> {
   /**
   dequeue
 
-  :returns: T?
+  - returns: T?
   */
   public mutating func dequeue() -> T? {
     let value = head?.value
@@ -39,11 +39,11 @@ public struct Queue<T> {
   /**
   enqueue:
 
-  :param: value T
+  - parameter value: T
   */
   public mutating func enqueue(value: T) {
     let node = QueueNode(value)
-    if var t = tail {
+    if let t = tail {
       t.next = node
       tail = node
     } else {

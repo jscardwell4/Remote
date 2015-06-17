@@ -17,27 +17,27 @@ public struct ColorLog {
   public static let RESET = ESCAPE + ";"   // Clear any foreground or background color
 
   public static func red<T>(object:T) {
-    println("\(ESCAPE)fg255,0,0;\(object)\(RESET)")
+    print("\(ESCAPE)fg255,0,0;\(object)\(RESET)")
   }
 
   public static func green<T>(object:T) {
-    println("\(ESCAPE)fg0,255,0;\(object)\(RESET)")
+    print("\(ESCAPE)fg0,255,0;\(object)\(RESET)")
   }
 
   public static func blue<T>(object:T) {
-    println("\(ESCAPE)fg0,0,255;\(object)\(RESET)")
+    print("\(ESCAPE)fg0,0,255;\(object)\(RESET)")
   }
 
   public static func yellow<T>(object:T) {
-    println("\(ESCAPE)fg255,255,0;\(object)\(RESET)")
+    print("\(ESCAPE)fg255,255,0;\(object)\(RESET)")
   }
 
   public static func purple<T>(object:T) {
-    println("\(ESCAPE)fg255,0,255;\(object)\(RESET)")
+    print("\(ESCAPE)fg255,0,255;\(object)\(RESET)")
   }
 
   public static func cyan<T>(object:T) {
-    println("\(ESCAPE)fg0,255,255;\(object)\(RESET)")
+    print("\(ESCAPE)fg0,255,255;\(object)\(RESET)")
   }
 }
 
@@ -80,9 +80,9 @@ public class LogManager {
   /**
   logLevelForFile:
 
-  :param: file String
+  - parameter file: String
 
-  :returns: LogLevel
+  - returns: LogLevel
   */
   public class func logLevelForFile(file: String) -> LogManager.LogLevel {
     return registeredLogLevels[file] ?? logLevel
@@ -91,8 +91,8 @@ public class LogManager {
   /**
   setLogLevel:forFile:
 
-  :param: level LogManager.LogLevel
-  :param: file String = __FILE__
+  - parameter level: LogManager.LogLevel
+  - parameter file: String = __FILE__
   */
   public class func setLogLevel(level: LogManager.LogLevel, forFile file: String = __FILE__) {
     registeredLogLevels[file] = level
@@ -120,13 +120,13 @@ public class LogManager {
 /**
 MSLogMessage:flag:function:line:file:className:context:
 
-:param: message String
-:param: flag LogManager.LogFlag
-:param: function String = __FUNCTION__
-:param: line Int32 = __LINE__
-:param: file String = __FILE__
-:param: className String? = nil
-:param: context Int32 = LOG_CONTEXT_CONSOLE
+- parameter message: String
+- parameter flag: LogManager.LogFlag
+- parameter function: String = __FUNCTION__
+- parameter line: Int32 = __LINE__
+- parameter file: String = __FILE__
+- parameter className: String? = nil
+- parameter context: Int32 = LOG_CONTEXT_CONSOLE
 */
 public func MSLogMessage(message: String,
             asynchronous: Bool,
@@ -151,10 +151,10 @@ public func MSLogMessage(message: String,
 /**
 MSLogDebug:function:line:level:context:
 
-:param: message String
-:param: function String = __FUNCTION__
-:param: line Int = __LINE__
-:param: context Int32 = LOG_CONTEXT_CONSOLE
+- parameter message: String
+- parameter function: String = __FUNCTION__
+- parameter line: Int = __LINE__
+- parameter context: Int32 = LOG_CONTEXT_CONSOLE
 */
 public func MSLogDebug(message: String,
               function: String = __FUNCTION__,
@@ -162,16 +162,16 @@ public func MSLogDebug(message: String,
                   file: String = __FILE__,
                context: Int32 = LOG_CONTEXT_CONSOLE)
 {
-  MSLogMessage(message, false, .Debug, function: function, file: file, line: line, context: context)
+  MSLogMessage(message, asynchronous: false, flag: .Debug, function: function, file: file, line: line, context: context)
 }
 
 /**
 MSLogError:function:line:level:context:
 
-:param: message String
-:param: function String = __FUNCTION__
-:param: line Int = __LINE__
-:param: context Int32 = LOG_CONTEXT_CONSOLE
+- parameter message: String
+- parameter function: String = __FUNCTION__
+- parameter line: Int = __LINE__
+- parameter context: Int32 = LOG_CONTEXT_CONSOLE
 */
 public func MSLogError(message: String,
               function: String = __FUNCTION__,
@@ -179,16 +179,16 @@ public func MSLogError(message: String,
                   file: String = __FILE__,
                context: Int32 = LOG_CONTEXT_CONSOLE)
 {
-  MSLogMessage(message, false, .Error, function: function, file: file, line: line, context: context)
+  MSLogMessage(message, asynchronous: false, flag: .Error, function: function, file: file, line: line, context: context)
 }
 
 /**
 MSLogInfo:function:line:level:context:
 
-:param: message String
-:param: function String = __FUNCTION__
-:param: line Int = __LINE__
-:param: context Int32 = LOG_CONTEXT_CONSOLE
+- parameter message: String
+- parameter function: String = __FUNCTION__
+- parameter line: Int = __LINE__
+- parameter context: Int32 = LOG_CONTEXT_CONSOLE
 */
 public func MSLogInfo(message: String,
              function: String = __FUNCTION__,
@@ -196,16 +196,16 @@ public func MSLogInfo(message: String,
                  file: String = __FILE__,
               context: Int32 = LOG_CONTEXT_CONSOLE)
 {
-  MSLogMessage(message, true, .Info, function: function, file: file, line: line, context: context)
+  MSLogMessage(message, asynchronous: true, flag: .Info, function: function, file: file, line: line, context: context)
 }
 
 /**
 MSLogWarn:function:line:level:context:
 
-:param: message String
-:param: function String = __FUNCTION__
-:param: line Int = __LINE__
-:param: context Int32 = LOG_CONTEXT_CONSOLE
+- parameter message: String
+- parameter function: String = __FUNCTION__
+- parameter line: Int = __LINE__
+- parameter context: Int32 = LOG_CONTEXT_CONSOLE
 */
 public func MSLogWarn(message: String,
              function: String = __FUNCTION__,
@@ -213,16 +213,16 @@ public func MSLogWarn(message: String,
                  file: String = __FILE__,
               context: Int32 = LOG_CONTEXT_CONSOLE)
 {
-  MSLogMessage(message, true, .Warn, function: function, file: file, line: line, context: context)
+  MSLogMessage(message, asynchronous: true, flag: .Warn, function: function, file: file, line: line, context: context)
 }
 
 /**
 MSLogVerbose:function:line:level:context:
 
-:param: message String
-:param: function String = __FUNCTION__
-:param: line Int = __LINE__
-:param: context Int32 = LOG_CONTEXT_CONSOLE
+- parameter message: String
+- parameter function: String = __FUNCTION__
+- parameter line: Int = __LINE__
+- parameter context: Int32 = LOG_CONTEXT_CONSOLE
 */
 public func MSLogVerbose(message: String,
                 function: String = __FUNCTION__,
@@ -230,16 +230,16 @@ public func MSLogVerbose(message: String,
                     file: String = __FILE__,
                  context: Int32 = LOG_CONTEXT_CONSOLE)
 {
-  MSLogMessage(message, true, .Verbose, function: function, file: file, line: line, context: context)
+  MSLogMessage(message, asynchronous: true, flag: .Verbose, function: function, file: file, line: line, context: context)
 }
 
 /**
 detailedDescriptionForError:depth:
 
-:param: error NSError
-:param: depth Int = 0
+- parameter error: NSError
+- parameter depth: Int = 0
 
-:returns: String
+- returns: String
 */
 public func detailedDescriptionForError(error: NSError, depth: Int = 0) -> String {
 
@@ -248,16 +248,16 @@ public func detailedDescriptionForError(error: NSError, depth: Int = 0) -> Strin
   var message = "\(depthIndent)domain: \(error.domain)\n\(depthIndent)code: \(error.code)\n"
   if let coreDataErrorDescription = coreDataErrorCodeDescriptions[error.code] {
     message += "\(depthIndent)description: \(coreDataErrorDescription)\n"
-    if let key: AnyObject = error.userInfo?[NSValidationKeyErrorKey] {
+    if let key: AnyObject = error.userInfo[NSValidationKeyErrorKey] {
       message += "\(depthIndent)key: \(key)\n"
     }
-    if let value: AnyObject = error.userInfo?[NSValidationValueErrorKey] {
+    if let value: AnyObject = error.userInfo[NSValidationValueErrorKey] {
       message += "\(depthIndent)value: \(value)\n"
     }
-    if let predicate: AnyObject = error.userInfo?[NSValidationPredicateErrorKey] {
+    if let predicate: AnyObject = error.userInfo[NSValidationPredicateErrorKey] {
       message += "\(depthIndent)predicate: \(predicate)\n"
     }
-    if let object: AnyObject = error.userInfo?[NSValidationObjectErrorKey] {
+    if let object: AnyObject = error.userInfo[NSValidationObjectErrorKey] {
       message += "\(depthIndent)object: \(object)\n"
     }
   }
@@ -272,14 +272,14 @@ public func detailedDescriptionForError(error: NSError, depth: Int = 0) -> Strin
   if let suggestion = error.localizedRecoverySuggestion { message += "\(depthIndent)suggestion: \(suggestion)\n" }
 
   // Check for any undelrying errors
-  if let underlyingError = error.userInfo?[NSUnderlyingErrorKey] as? NSError {
+  if let underlyingError = error.userInfo[NSUnderlyingErrorKey] as? NSError {
     // Add information gathered from the underlying error
     message += "\(depthIndent)underlyingError:\n\(detailedDescriptionForError(underlyingError, depth: depth + 1))\n"
-  } else if let underlyingErrors = error.userInfo?[NSUnderlyingErrorKey] as? [NSError] {
+  } else if let underlyingErrors = error.userInfo[NSUnderlyingErrorKey] as? [NSError] {
       // Add information gathered from each underlying error
       message += "\(depthIndent)underlyingErrors:\n"
       message += ",\n".join(underlyingErrors.map{detailedDescriptionForError($0, depth: depth + 1)}) + "\n"
-  } else if let detailedErrors = error.userInfo?[NSDetailedErrorsKey] as? [NSError] {
+  } else if let detailedErrors = error.userInfo[NSDetailedErrorsKey] as? [NSError] {
     // Add information gathered from each underlying error
     message += "\(depthIndent)detailedErrors:\n"
     message += ",\n".join(detailedErrors.map{detailedDescriptionForError($0, depth: depth + 1)})// + "\n"
@@ -292,9 +292,9 @@ public func detailedDescriptionForError(error: NSError, depth: Int = 0) -> Strin
 /**
 descriptionForError:
 
-:param: error NSError?
+- parameter error: NSError?
 
-:returns: String?
+- returns: String?
 */
 public func descriptionForError(error: NSError?) -> String? {
   if let e = error { return detailedDescriptionForError(e, depth: 0) } else { return nil }
@@ -303,12 +303,12 @@ public func descriptionForError(error: NSError?) -> String? {
 /**
 MSHandleError:message:function:line:
 
-:param: error NSError?
-:param: message String? = nil
-:param: function String = __FUNCTION__
-:param: line Int = __LINE__
+- parameter error: NSError?
+- parameter message: String? = nil
+- parameter function: String = __FUNCTION__
+- parameter line: Int = __LINE__
 
-:returns: Bool
+- returns: Bool
 */
 public func MSHandleError(error: NSError?,
                   message: String? = nil,
@@ -324,9 +324,9 @@ public func MSHandleError(error: NSError?,
 /**
 recursiveDescription<T>:description:subelements:
 
-:param: base [T]
-:param: description (T) -> String
-:param: subelements (T) -> [T]
+- parameter base: [T]
+- parameter description: (T) -> String
+- parameter subelements: (T) -> [T]
 */
 public func recursiveDescription<T>(base: [T], level: Int = 0, description: (T) -> String, subelements:(T) -> [T]) -> String {
   var result = ""
@@ -334,7 +334,7 @@ public func recursiveDescription<T>(base: [T], level: Int = 0, description: (T) 
   for object in base {
     result += indent + description(object) + "\n"
     for subelement in subelements(object) {
-      result += recursiveDescription([subelement], level: level + 1, description, subelements)
+      result += recursiveDescription([subelement], level: level + 1, description: description, subelements: subelements)
     }
   }
   return result

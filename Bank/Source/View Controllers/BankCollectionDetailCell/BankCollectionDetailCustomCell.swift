@@ -18,7 +18,7 @@ class BankCollectionDetailCustomCell: BankCollectionDetailCell {
     didSet {
       if customView != nil { customView!.removeFromSuperview() }
       if let newCustomView = generateCustomView?() {
-        newCustomView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        newCustomView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(newCustomView)
         customView = newCustomView
       } else {

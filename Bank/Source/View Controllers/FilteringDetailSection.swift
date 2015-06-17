@@ -56,9 +56,9 @@ final class FilteringDetailSection: DetailSection {
   /**
   subscript:
 
-  :param: row Int
+  - parameter row: Int
 
-  :returns: DetailRow?
+  - returns: DetailRow?
   */
   override subscript(row: Int) -> DetailRow {
     assert(row < count)
@@ -73,7 +73,7 @@ final class FilteringDetailSection: DetailSection {
   /**
   configureHeader:
 
-  :param: header DetailSectionHeader
+  - parameter header: DetailSectionHeader
   */
   override func configureHeader(header: DetailSectionHeader) {
     super.configureHeader(header)

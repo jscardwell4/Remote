@@ -13,21 +13,21 @@ public class JSONSerialization {
   /**
   objectByParsingDirectivesForFile:options:error:
 
-  :param: filePath String
-  :param: options ReadOptions = .None
-  :param: error NSErrorPointer = nil
+  - parameter filePath: String
+  - parameter options: ReadOptions = .None
+  - parameter error: NSErrorPointer = nil
 
-  :returns: JSONValue?
+  - returns: JSONValue?
   */
   public class func stringByParsingDirectivesForFile(filePath: String,
-                                             options: ReadOptions = .None,
-                                               error: NSErrorPointer = nil) -> String?
+                                             options: ReadOptions = .None) throws -> String
   {
+    var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
     var localError: NSError?      // So we can intercept errors before passing them along to caller
 
     // Get the contents of the file to parse
-    if var string = String(contentsOfFile: filePath, encoding: NSUTF8StringEncoding, error: &localError)
-      where !handledError(localError, errorCode: NSFileReadUnknownError, error: error)
+    if var string = String(contentsOfFile: filePath, encoding: NSUTF8StringEncoding)
+      where !handledError(localError, errorCode: NSFileReadUnknownError)
     {
       // Look for include entries in the file-loaded string
       let directory = filePath.stringByDeletingLastPathComponent
@@ -36,74 +36,81 @@ public class JSONSerialization {
       return result
     }
 
-    return nil
+    throw error
   }
 
 
   /**
   objectByParsingString:options:error:
 
-  :param: string String
-  :param: options JSONSerializationReadOptions = .None
-  :param: error NSErrorPointer = nil
+  - parameter string: String
+  - parameter options: JSONSerializationReadOptions = .None
+  - parameter error: NSErrorPointer = nil
 
-  :returns: AnyObject?
+  - returns: AnyObject?
   */
   public class func objectByParsingString(string: String?,
-                                  options: ReadOptions = .None,
-                                    error: NSErrorPointer = nil) -> JSONValue?
+                                  options: ReadOptions = .None) throws -> JSONValue
   {
-    if string == nil { return nil }
+    var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
+    if string == nil { throw error }
     var object: JSONValue? // Our return object
 
     // Create the parser with the provided string
-    let ignoreExcess = hasOption(ReadOptions.IgnoreExcess, options)
+    let ignoreExcess = hasOption(ReadOptions.IgnoreExcess, optionSet: options)
     let parser = JSONParser(string: string!, ignoreExcess: ignoreExcess)
-    object = parser.parse(error: error)
+    do {
+      object = try parser.parse()
+    } catch var error1 as NSError {
+      error = error1
+      object = nil
+    }
 
     // Inflate key paths
-    if hasOption(ReadOptions.InflateKeypaths, options) { object = object?.inflatedValue }
+    if hasOption(ReadOptions.InflateKeypaths, optionSet: options) { object = object?.inflatedValue }
 
-    return object
+    if var value = object {
+      return value
+    }
+    throw error
   }
 
   /**
   handledError:errorCode:error:
 
-  :param: localError NSError?
-  :param: errorCode Int
-  :param: error NSErrorPointer
+  - parameter localError: NSError?
+  - parameter errorCode: Int
+  - parameter error: NSErrorPointer
 
-  :returns: Bool
+  - returns: Bool
   */
-  private class func handledError(localError: NSError?, errorCode: Int, error: NSErrorPointer) -> Bool {
-    if localError == nil { return false }
-    if error != nil {
-      error.memory = NSError(domain: "MSJSONSerializationErrorDomain",
-        code: errorCode,
-        underlyingErrors: [localError!])
-    }
-    return true
+  private class func handledError(localError: NSError?, errorCode: Int) throws {
+    var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
+    if localError == nil { throw error }
+    error = NSError(domain: "MSJSONSerializationErrorDomain",
+      code: errorCode,
+      underlyingErrors: [localError!])
   }
 
   /**
   This method calls `objectByParsingString:options:error` with the content of the specified file after attempting to replace
   any '<@include file/to/include.json>' directives with their respective file content.
 
-  :param: filePath String
-  :param: options JSONSerializationReadOptions = .None
-  :param: error NSErrorPointer = nil
+  - parameter filePath: String
+  - parameter options: JSONSerializationReadOptions = .None
+  - parameter error: NSErrorPointer = nil
 
-  :returns: JSONValue?
+  - returns: JSONValue?
   */
-  public class func objectByParsingFile(filePath: String, options: ReadOptions = .None, error: NSErrorPointer = nil) -> JSONValue? {
+  public class func objectByParsingFile(filePath: String, options: ReadOptions = .None) throws -> JSONValue {
+    var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
     var localError: NSError?      // So we can intercept errors before passing them along to caller
 
-    if let string = stringByParsingDirectivesForFile(filePath, options: options, error: error)
-      where !handledError(localError, errorCode: NSFileReadUnknownError, error: error)
+    if let string = stringByParsingDirectivesForFile(filePath, options: options)
+      where !handledError(localError, errorCode: NSFileReadUnknownError)
     {
-      return objectByParsingString(string, options: options, error: error)
-    } else { return nil }
+      return try objectByParsingString(string, options: options)
+    } else { throw error }
   }
 
 }

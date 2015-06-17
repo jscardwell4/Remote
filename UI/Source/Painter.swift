@@ -28,7 +28,7 @@ public final class Painter {
 
   // MARK: - Attributes structure to simplify method parameters
 
-  public struct Attributes: DictionaryLiteralConvertible, Printable {
+  public struct Attributes: DictionaryLiteralConvertible, CustomStringConvertible {
     public var color: UIColor?
     public var accentColor: UIColor?
     public var foregroundColor: UIColor?
@@ -49,46 +49,46 @@ public final class Painter {
 
     public var description: String {
       var result = "Painter.Attributes:\n"
-      result += "\tcolor = \(toString(color))\n"
-      result += "\taccentColor = \(toString(accentColor))\n"
-      result += "\tforegroundColor = \(toString(foregroundColor))\n"
-      result += "\trect = \(toString(rect))\n"
-      result += "\tlineWidth = \(toString(lineWidth))\n"
-      result += "\tcorners = \(toString(corners))\n"
-      result += "\tradii = \(toString(radii))\n"
-      result += "\tshadow = \(toString(shadow))\n"
-      result += "\taccentShadow = \(toString(accentShadow))\n"
-      result += "\tblendMode = \(toString(blendMode))\n"
-      result += "\tstroke = \(toString(stroke))\n"
-      result += "\tfill = \(toString(fill))\n"
-      result += "\talpha = \(toString(alpha))\n"
-      result += "\timage = \(toString(image))\n"
-      result += "\ttext = \(toString(text))\n"
-      result += "\tfontAttributes = \(toString(fontAttributes))\n"
-      result += "\tadjustFontSize = \(toString(adjustFontSize))\n"
+      result += "\tcolor = \(String(color))\n"
+      result += "\taccentColor = \(String(accentColor))\n"
+      result += "\tforegroundColor = \(String(foregroundColor))\n"
+      result += "\trect = \(String(rect))\n"
+      result += "\tlineWidth = \(String(lineWidth))\n"
+      result += "\tcorners = \(String(corners))\n"
+      result += "\tradii = \(String(radii))\n"
+      result += "\tshadow = \(String(shadow))\n"
+      result += "\taccentShadow = \(String(accentShadow))\n"
+      result += "\tblendMode = \(String(blendMode))\n"
+      result += "\tstroke = \(String(stroke))\n"
+      result += "\tfill = \(String(fill))\n"
+      result += "\talpha = \(String(alpha))\n"
+      result += "\timage = \(String(image))\n"
+      result += "\ttext = \(String(text))\n"
+      result += "\tfontAttributes = \(String(fontAttributes))\n"
+      result += "\tadjustFontSize = \(String(adjustFontSize))\n"
       return result
     }
 
     /**
     Initialize with `rect` and any other options desired
 
-    :param: rect CGRect
-    :param: color UIColor? = nil
-    :param: accentColor UIColor? = nil
-    :param: foregroundColor UIColor? = nil
-    :param: shadow NSShadow? = nil
-    :param: accentShadow NSShadow? = nil
-    :param: lineWidth CGFloat = 0
-    :param: corners UIRectCorner = Painter.defaultCorners
-    :param: radii CGSize = Painter.defaultRadii
-    :param: blendMode CGBlendMode = kCGBlendModeNormal
-    :param: stroke Bool = false
-    :param: fill Bool = true
-    :param: alpha CGFloat = 1.0
-    :param: image UIImage? = nil
-    :param: text String? = nil
-    :param: fontAttributes [NSObject AnyObject]? = nil
-    :param: adjustFontSize Bool = false
+    - parameter rect: CGRect
+    - parameter color: UIColor? = nil
+    - parameter accentColor: UIColor? = nil
+    - parameter foregroundColor: UIColor? = nil
+    - parameter shadow: NSShadow? = nil
+    - parameter accentShadow: NSShadow? = nil
+    - parameter lineWidth: CGFloat = 0
+    - parameter corners: UIRectCorner = Painter.defaultCorners
+    - parameter radii: CGSize = Painter.defaultRadii
+    - parameter blendMode: CGBlendMode = kCGBlendModeNormal
+    - parameter stroke: Bool = false
+    - parameter fill: Bool = true
+    - parameter alpha: CGFloat = 1.0
+    - parameter image: UIImage? = nil
+    - parameter text: String? = nil
+    - parameter fontAttributes: [NSObject AnyObject]? = nil
+    - parameter adjustFontSize: Bool = false
     */
     public init(
       rect: CGRect,
@@ -230,10 +230,10 @@ public final class Painter {
   /**
   pathForShape:withAttributes:
 
-  :param: shape Shape
-  :param: attrs Attributes
+  - parameter shape: Shape
+  - parameter attrs: Attributes
 
-  :returns: UIBezierPath
+  - returns: UIBezierPath
   */
   public class func pathForShape(shape: Shape, withAttributes attrs: Attributes) -> UIBezierPath {
     let path: UIBezierPath
@@ -258,10 +258,10 @@ public final class Painter {
   /**
   inscribedRectangleForShape:withAttributes:
 
-  :param: shape Shape
-  :param: attrs Attributes
+  - parameter shape: Shape
+  - parameter attrs: Attributes
 
-  :returns: UIBezierPath
+  - returns: UIBezierPath
   */
   public class func inscribedRectangleForShape(shape: Shape, withAttributes attrs: Attributes) -> UIBezierPath {
     switch shape {
@@ -288,9 +288,9 @@ public final class Painter {
   /**
   drawText:withAttributes:boundByShape:
 
-  :param: text String
-  :param: attrs Attributes
-  :param: shape Shape = .Rectangle
+  - parameter text: String
+  - parameter attrs: Attributes
+  - parameter shape: Shape = .Rectangle
   */
   public class func drawText(text: String, withAttributes attrs: Attributes, boundByShape shape: Shape = .Rectangle) {
 
@@ -298,7 +298,7 @@ public final class Painter {
     let bounds = path.bounds
     if bounds.isEmpty { return }
 
-    let appliedFontSize: CGFloat = min(bounds.width / CGFloat(count(text.utf16)), bounds.height)
+    let appliedFontSize: CGFloat = min(bounds.width / CGFloat(text.utf16.count), bounds.height)
 
     let context = UIGraphicsGetCurrentContext()
 
@@ -350,9 +350,9 @@ public final class Painter {
   /**
   drawImage:withAttributes:boundByShape:
 
-  :param: image UIImage
-  :param: withAttributes Attributes
-  :param: shape Shape = .Rectangle
+  - parameter image: UIImage
+  - parameter withAttributes: Attributes
+  - parameter shape: Shape = .Rectangle
   */
   public class func drawImage(image: UIImage, withAttributes attrs: Attributes, boundByShape shape: Shape = .Rectangle) {
     let path = inscribedRectangleForShape(shape, withAttributes: attrs)
@@ -391,8 +391,8 @@ public final class Painter {
   /**
   drawShape:withAttributes:
 
-  :param: shape Shape
-  :param: attributes Attributes
+  - parameter shape: Shape
+  - parameter attributes: Attributes
   */
   public class func drawShape(shape: Shape, var withAttributes attributes: Attributes) {
 
@@ -429,8 +429,8 @@ public final class Painter {
   /**
   drawBackgroundWithShape:attributes:
 
-  :param: shape Shape
-  :param: attributes Attributes
+  - parameter shape: Shape
+  - parameter attributes: Attributes
   */
   public class func drawBackgroundWithShape(shape: Shape, attributes: Attributes) {
     let context = UIGraphicsGetCurrentContext()
@@ -455,8 +455,8 @@ public final class Painter {
   /**
   strokeShape:withAttributes:
 
-  :param: shape Shape
-  :param: attributes Attributes
+  - parameter shape: Shape
+  - parameter attributes: Attributes
   */
   public class func strokeShape(shape: Shape, withAttributes attributes: Attributes) {
     var strokeAttrs = attributes
@@ -470,8 +470,8 @@ public final class Painter {
   /**
   drawGlossWithShape:attributes:
 
-  :param: shape Shape
-  :param: attributes Attributes
+  - parameter shape: Shape
+  - parameter attributes: Attributes
   */
   public class func drawGlossWithShape(shape: Shape, attributes: Attributes)
   {
@@ -497,8 +497,8 @@ public final class Painter {
   /**
   drawBaseWithShape:attributes:
 
-  :param: shape Shape
-  :param: attributes Attributes
+  - parameter shape: Shape
+  - parameter attributes: Attributes
   */
   public class func drawBaseWithShape(shape: Shape, attributes: Attributes) {
 
@@ -520,10 +520,10 @@ public final class Painter {
   /**
   drawButtonWithShape:attributes:gloss:highlighted:
 
-  :param: shape Shape
-  :param: attributes Attributes
-  :param: gloss Bool = true
-  :param: highlighted Bool = false
+  - parameter shape: Shape
+  - parameter attributes: Attributes
+  - parameter gloss: Bool = true
+  - parameter highlighted: Bool = false
   */
   public class func drawButtonWithShape(shape: Shape, attributes: Attributes, gloss: Bool = true, highlighted: Bool = false) {
     let context = UIGraphicsGetCurrentContext()
@@ -605,12 +605,12 @@ public final class Painter {
   /**
   drawBatteryStatus:hasPower:chargeLevel:frame:
 
-  :param: #color UIColor
-  :param: hasPower Bool
-  :param: chargeLevel CGFloat
-  :param: frame CGRect
+  - parameter #color: UIColor
+  - parameter hasPower: Bool
+  - parameter chargeLevel: CGFloat
+  - parameter frame: CGRect
   */
-  public class func drawBatteryStatus(#color: UIColor, hasPower: Bool, chargeLevel: CGFloat, frame: CGRect) {
+  public class func drawBatteryStatus(color color: UIColor, hasPower: Bool, chargeLevel: CGFloat, frame: CGRect) {
     let context = UIGraphicsGetCurrentContext()
     let squaredSize = CGSize(width: min(frame.width, frame.height),
                                             height: min(frame.width, frame.height))
@@ -638,14 +638,14 @@ public final class Painter {
   /**
   drawBatteryIcon:hasPower:chargeLevel:
 
-  :param: #color UIColor
-  :param: hasPower Bool
-  :param: chargeLevel CGFloat
+  - parameter #color: UIColor
+  - parameter hasPower: Bool
+  - parameter chargeLevel: CGFloat
   */
-  public class func drawBatteryIcon(#color: UIColor, hasPower: Bool, chargeLevel: CGFloat) {
+  public class func drawBatteryIcon(color color: UIColor, hasPower: Bool, chargeLevel: CGFloat) {
 
     // Draw battery outline
-    var outlinePath = UIBezierPath()
+    let outlinePath = UIBezierPath()
     outlinePath.moveToPoint(CGPoint(x: 208, y: 44))
     outlinePath.addLineToPoint(CGPoint(x: 208, y: 84))
     outlinePath.addCurveToPoint(CGPoint(x: 216, y: 76),
@@ -747,7 +747,7 @@ public final class Painter {
 
     // Draw charge fill
     let chargeMaxX: CGFloat = 16 + 175 * chargeLevel
-    var chargePath = UIBezierPath()
+    let chargePath = UIBezierPath()
     chargePath.moveToPoint(CGPoint(x: 16, y: 112))
     chargePath.addLineToPoint(CGPoint(x: chargeMaxX, y: 112))
     chargePath.addLineToPoint(CGPoint(x: chargeMaxX, y: 16))
@@ -761,7 +761,7 @@ public final class Painter {
     let batteryIconColor = color.colorWithHighlight(0.3)
 
     if hasPower && chargeLevel < 1 {
-        var lightningBoltPath = UIBezierPath()
+        let lightningBoltPath = UIBezierPath()
         lightningBoltPath.moveToPoint(CGPoint(x: 130.91, y: 51.57))
         lightningBoltPath.addLineToPoint(CGPoint(x: 109.6, y: 51.57))
         lightningBoltPath.addLineToPoint(CGPoint(x: 120.26, y: 14.27))
@@ -779,7 +779,7 @@ public final class Painter {
 
 
     else if hasPower && chargeLevel == 1 {
-        var plugPath = UIBezierPath()
+        let plugPath = UIBezierPath()
         plugPath.moveToPoint(CGPoint(x: 161.55, y: 56))
         plugPath.addLineToPoint(CGPoint(x: 161.55, y: 48))
         plugPath.addLineToPoint(CGPoint(x: 141.55, y: 48))
@@ -826,12 +826,12 @@ public final class Painter {
   /**
   drawWifiIcon:connected:
 
-  :param: #color UIColor
-  :param: connected Bool
+  - parameter #color: UIColor
+  - parameter connected: Bool
   */
-  public class func drawWifiIcon(#color: UIColor, connected: Bool) {
+  public class func drawWifiIcon(color color: UIColor, connected: Bool) {
 
-    var path = UIBezierPath()
+    let path = UIBezierPath()
 
     if (connected) {
         path.moveToPoint(CGPoint(x: 181.46, y: 43.82))
@@ -1233,11 +1233,11 @@ public final class Painter {
   /**
   drawWifiStatus:connected:frame:
 
-  :param: #color UIColor
-  :param: connected Bool
-  :param: frame CGRect
+  - parameter #color: UIColor
+  - parameter connected: Bool
+  - parameter frame: CGRect
   */
-  public class func drawWifiStatus(#color: UIColor, connected: Bool, frame: CGRect) {
+  public class func drawWifiStatus(color color: UIColor, connected: Bool, frame: CGRect) {
     let context = UIGraphicsGetCurrentContext()
 
     let squaredSize = CGSize(width: min(frame.width, frame.height), height:  min(frame.width, frame.height))

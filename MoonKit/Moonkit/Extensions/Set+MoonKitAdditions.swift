@@ -46,5 +46,5 @@ public func ∆<S:SequenceType, T where S.Generator.Element == T>(lhs: Set<T>, r
 public func ∆=<S:SequenceType, T where S.Generator.Element == T>(inout lhs: Set<T>, rhs: S) { lhs.exclusiveOrInPlace(rhs) }
 
 public func filter<T>(source: Set<T>, includeElement: (T) -> Bool) -> Set<T> {
-  return Set(filter(Array(source), includeElement))
+  return Set(Array(source).filter(includeElement))
 }

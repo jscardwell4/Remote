@@ -30,7 +30,7 @@ extension UIColor {
   /**
   initWithString:
 
-  :param: string String
+  - parameter string: String
   */
   public convenience init?(string: String) {
     if let color = UIColor(name: string), let (r, g, b, a) = color.rgba {
@@ -38,13 +38,13 @@ extension UIColor {
     } else if string.matchesRegEx("@.*%") {
       let (base, alpha) = disperse2("@".split(string))
       if let color = UIColor(name: base), let (r, g, b, a) = color.rgba {
-        self.init(red: r, green: g, blue: b, alpha: CGFloat((dropLast(alpha) as NSString).floatValue / 100.0))
+        self.init(red: r, green: g, blue: b, alpha: CGFloat((String(dropLast(alpha.characters)) as NSString).floatValue / 100.0))
       } else {
         self.init()
         return nil
       }
     } else if string[0] == "#" {
-      if let color = (count(string) < 8 ? UIColor(RGBHexString: string) : UIColor(RGBAHexString: string)),
+      if let color = (string.characters.count < 8 ? UIColor(RGBHexString: string) : UIColor(RGBAHexString: string)),
         let (r, g, b, a) = color.rgba {
           self.init(red: r, green: g, blue: b, alpha: a)
       } else {
@@ -163,7 +163,7 @@ extension UIColor {
   /**
   randomColor
 
-  :returns: UIColor
+  - returns: UIColor
   */
   public class func randomColor() -> UIColor {
     let max = Int(RAND_MAX)
@@ -175,19 +175,19 @@ extension UIColor {
   }
 
   public var colorSpaceModel: CGColorSpaceModel { return CGColorSpaceGetModel(CGColorGetColorSpace(CGColor)) }
-  public var isPatternBased: Bool { return colorSpaceModel.value == kCGColorSpaceModelPattern.value }
+  public var isPatternBased: Bool { return colorSpaceModel.rawValue == kCGColorSpaceModelPattern.rawValue }
 
   public var isRGBCompatible: Bool {
-    switch colorSpaceModel.value {
-      case kCGColorSpaceModelRGB.value, kCGColorSpaceModelMonochrome.value: return true
+    switch colorSpaceModel.rawValue {
+      case kCGColorSpaceModelRGB.rawValue, kCGColorSpaceModelMonochrome.rawValue: return true
       default: return false
     }
   }
 
   public var rgbColor: UIColor? {
 
-    switch colorSpaceModel.value {
-      case kCGColorSpaceModelRGB.value:
+    switch colorSpaceModel.rawValue {
+      case kCGColorSpaceModelRGB.rawValue:
         return self
       default:
         if let rgba = self.rgba {
@@ -201,12 +201,12 @@ extension UIColor {
   /**
   lightenedToRed:green:blue:alpha:
 
-  :param: r CGFloat
-  :param: g CGFloat
-  :param: b CGFloat
-  :param: a CGFloat
+  - parameter r: CGFloat
+  - parameter g: CGFloat
+  - parameter b: CGFloat
+  - parameter a: CGFloat
 
-  :returns: UIColor?
+  - returns: UIColor?
   */
   public func lightenedToRed(r: CGFloat, green g: CGFloat, blue b: CGFloat, alpha a: CGFloat) -> UIColor? {
     if let rgba = self.rgba {
@@ -219,18 +219,18 @@ extension UIColor {
   /**
   lightenedTo:
 
-  :param: value CGFloat
+  - parameter value: CGFloat
 
-  :returns: UIColor?
+  - returns: UIColor?
   */
   public func lightenedTo(value: CGFloat) -> UIColor? { return lightenedToRed(value, green: value, blue: value, alpha: value) }
 
   /**
   lightenedToColor:
 
-  :param: color UIColor
+  - parameter color: UIColor
 
-  :returns: UIColor?
+  - returns: UIColor?
   */
   public func lightenedToColor(color: UIColor) -> UIColor? {
     if let rgba = color.rgba {
@@ -243,12 +243,12 @@ extension UIColor {
   /**
   darkenedToRed:green:blue:alpha:
 
-  :param: r CGFloat
-  :param: g CGFloat
-  :param: b CGFloat
-  :param: a CGFloat
+  - parameter r: CGFloat
+  - parameter g: CGFloat
+  - parameter b: CGFloat
+  - parameter a: CGFloat
 
-  :returns: UIColor?
+  - returns: UIColor?
   */
   public func darkenedToRed(r: CGFloat, green g: CGFloat, blue b: CGFloat, alpha a: CGFloat) -> UIColor? {
     if let rgba = self.rgba {
@@ -261,18 +261,18 @@ extension UIColor {
   /**
   darkenedTo:
 
-  :param: value CGFloat
+  - parameter value: CGFloat
 
-  :returns: UIColor?
+  - returns: UIColor?
   */
   public func darkenedTo(value: CGFloat) -> UIColor? { return darkenedToRed(value, green: value, blue: value, alpha: value) }
 
   /**
   darkenedToColor:
 
-  :param: color UIColor
+  - parameter color: UIColor
 
-  :returns: UIColor?
+  - returns: UIColor?
   */
   public func darkenedToColor(color: UIColor) -> UIColor? {
     if let rgba = color.rgba {
@@ -285,12 +285,12 @@ extension UIColor {
   /**
   addedWithRed:green:blue:alpha:
 
-  :param: r CGFloat
-  :param: g CGFloat
-  :param: b CGFloat
-  :param: a CGFloat
+  - parameter r: CGFloat
+  - parameter g: CGFloat
+  - parameter b: CGFloat
+  - parameter a: CGFloat
 
-  :returns: UIColor?
+  - returns: UIColor?
   */
   public func addedWithRed(r: CGFloat, green g: CGFloat, blue b: CGFloat, alpha a: CGFloat) -> UIColor? {
     if let rgba = self.rgba {
@@ -307,18 +307,18 @@ extension UIColor {
   /**
   addedWith:
 
-  :param: value CGFloat
+  - parameter value: CGFloat
 
-  :returns: UIColor?
+  - returns: UIColor?
   */
   public func addedWith(value: CGFloat) -> UIColor? { return addedWithRed(value, green: value, blue: value, alpha: value) }
 
   /**
   addedWithColor:
 
-  :param: color UIColor
+  - parameter color: UIColor
 
-  :returns: UIColor?
+  - returns: UIColor?
   */
   public func addedWithColor(color: UIColor) -> UIColor? {
     if let rgba = color.rgba {
@@ -331,9 +331,9 @@ extension UIColor {
   /**
   multipliedBy:
 
-  :param: value CGFloat
+  - parameter value: CGFloat
 
-  :returns: UIColor
+  - returns: UIColor
   */
   public func multipliedBy(value: CGFloat) -> UIColor? {
     return multipliedByRed(value, green: value, blue: value, alpha: value)
@@ -342,12 +342,12 @@ extension UIColor {
   /**
   multipliedByRed:green:blue:alpha:
 
-  :param: r CGFloat
-  :param: g CGFloat
-  :param: b CGFloat
-  :param: a CGFloat
+  - parameter r: CGFloat
+  - parameter g: CGFloat
+  - parameter b: CGFloat
+  - parameter a: CGFloat
 
-  :returns: UIColor?
+  - returns: UIColor?
   */
   public func multipliedByRed(r: CGFloat, green g: CGFloat, blue b: CGFloat, alpha a: CGFloat) -> UIColor? {
     if let rgba = self.rgba {
@@ -364,9 +364,9 @@ extension UIColor {
   /**
   multipliedByColor:
 
-  :param: color UIColor
+  - parameter color: UIColor
 
-  :returns: UIColor?
+  - returns: UIColor?
   */
   public func multipliedByColor(color: UIColor) -> UIColor? {
     if let rgba = color.rgba {
@@ -379,9 +379,9 @@ extension UIColor {
   /**
   colorWithRed:
 
-  :param: red CGFloat
+  - parameter red: CGFloat
 
-  :returns: UIColor
+  - returns: UIColor
   */
   public func colorWithRed(red: CGFloat) -> UIColor {
     if let rgba = self.rgba { return UIColor(red: red, green: rgba.g, blue: rgba.b, alpha: rgba.a) }
@@ -391,9 +391,9 @@ extension UIColor {
   /**
   colorWithGreen:
 
-  :param: green CGFloat
+  - parameter green: CGFloat
 
-  :returns: UIColor
+  - returns: UIColor
   */
   public func colorWithGreen(green: CGFloat) -> UIColor {
     if let rgba = self.rgba { return UIColor(red: rgba.r, green: green, blue: rgba.b, alpha: rgba.a) }
@@ -403,9 +403,9 @@ extension UIColor {
   /**
   colorWithBlue:
 
-  :param: blue CGFloat
+  - parameter blue: CGFloat
 
-  :returns: UIColor
+  - returns: UIColor
   */
   public func colorWithBlue(blue: CGFloat) -> UIColor {
     if let rgba = self.rgba { return UIColor(red: rgba.r, green: rgba.g, blue: blue, alpha: rgba.a) }
@@ -415,9 +415,9 @@ extension UIColor {
   /**
   colorWithHue:
 
-  :param: hue CGFloat
+  - parameter hue: CGFloat
 
-  :returns: UIColor
+  - returns: UIColor
   */
    public func colorWithHue(hue: CGFloat) -> UIColor {
      if let hsba = self.hsba { return UIColor(hue: hue, saturation: hsba.s, brightness: hsba.b, alpha: hsba.a) }
@@ -427,9 +427,9 @@ extension UIColor {
   /**
   colorWithSaturation:
 
-  :param: saturation CGFloat
+  - parameter saturation: CGFloat
 
-  :returns: UIColor
+  - returns: UIColor
   */
    public func colorWithSaturation(saturation: CGFloat) -> UIColor {
      if let hsba = self.hsba { return UIColor(hue: hsba.h, saturation: saturation, brightness: hsba.b, alpha: hsba.a) }
@@ -439,9 +439,9 @@ extension UIColor {
   /**
   colorWithBrightness:
 
-  :param: brightness CGFloat
+  - parameter brightness: CGFloat
 
-  :returns: UIColor
+  - returns: UIColor
   */
    public func colorWithBrightness(brightness: CGFloat) -> UIColor {
      if let hsba = self.hsba { return UIColor(hue: hsba.h, saturation: hsba.s, brightness: brightness, alpha: hsba.a) }
@@ -451,18 +451,18 @@ extension UIColor {
   /**
   colorWithAlpha:
 
-  :param: alpha CGFloat
+  - parameter alpha: CGFloat
 
-  :returns: UIColor
+  - returns: UIColor
   */
   public func colorWithAlpha(alpha: CGFloat) -> UIColor { return colorWithAlphaComponent(alpha) }
 
   /**
   colorWithHighlight:
 
-  :param: highlight CGFloat
+  - parameter highlight: CGFloat
 
-  :returns: UIColor
+  - returns: UIColor
   */
   public func colorWithHighlight(highlight: CGFloat) -> UIColor {
     if let rgba = self.rgba {
@@ -478,9 +478,9 @@ extension UIColor {
   /**
   colorWithShadow:
 
-  :param: shadow CGFloat
+  - parameter shadow: CGFloat
 
-  :returns: UIColor
+  - returns: UIColor
   */
   public func colorWithShadow(shadow: CGFloat) -> UIColor {
     if let rgba = self.rgba {
@@ -496,10 +496,10 @@ extension UIColor {
   /**
   blendedColorWithFraction:ofColor:
 
-  :param: fraction CGFloat
-  :param: color UIColor
+  - parameter fraction: CGFloat
+  - parameter color: UIColor
 
-  :returns: UIColor
+  - returns: UIColor
   */
   public func blendedColorWithFraction(fraction: CGFloat, ofColor color: UIColor) -> UIColor {
     var r1: CGFloat = 1.0, g1: CGFloat = 1.0, b1: CGFloat = 1.0, a1: CGFloat = 1.0

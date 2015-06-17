@@ -58,9 +58,9 @@ final class BankCollectionFilteringDetailSection: BankCollectionDetailSection {
   /**
   subscript:
 
-  :param: row Int
+  - parameter row: Int
 
-  :returns: Row
+  - returns: Row
   */
   override subscript(row: Int) -> Row {
     assert(row < count)
@@ -75,7 +75,7 @@ final class BankCollectionFilteringDetailSection: BankCollectionDetailSection {
   /**
   configureHeader:
 
-  :param: header Header
+  - parameter header: Header
   */
   override func configureHeader(header: Header) {
     super.configureHeader(header)

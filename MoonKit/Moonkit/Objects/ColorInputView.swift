@@ -21,8 +21,8 @@ public final class ColorInputView: UIInputView {
   /**
   initWithFrame:colorInput:
 
-  :param: frame CGRect
-  :param: colorInput ColorInput
+  - parameter frame: CGRect
+  - parameter colorInput: ColorInput
   */
   public init(frame: CGRect, colorInput: ColorInput) {
     super.init(frame: frame, inputViewStyle: .Keyboard)
@@ -66,7 +66,7 @@ public final class ColorInputView: UIInputView {
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required public init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 

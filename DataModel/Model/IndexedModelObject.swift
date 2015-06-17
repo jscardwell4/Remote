@@ -21,10 +21,10 @@ public class IndexedModelObject: NamedModelObject, PathIndexedModel {
   /**
   modelWithIndex:context:
 
-  :param: index PathIndex
-  :param: context NSManagedObjectContext
+  - parameter index: PathIndex
+  - parameter context: NSManagedObjectContext
 
-  :returns: Self?
+  - returns: Self?
   */
   public class func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> Self? {
     return objectWithValue(index.rawValue.pathDecoded, forAttribute: "name", context: context)
@@ -33,10 +33,10 @@ public class IndexedModelObject: NamedModelObject, PathIndexedModel {
   /**
   objectWithIndex:context:
 
-  :param: index ModelIndex
-  :param: context NSManagedObjectContext
+  - parameter index: ModelIndex
+  - parameter context: NSManagedObjectContext
 
-  :returns: Self?
+  - returns: Self?
   */
   public override class func objectWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Self? {
     if let pathIndex = index.pathIndex { return modelWithIndex(pathIndex, context: context) }

@@ -17,8 +17,8 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
   /**
   initWithStyle:reuseIdentifier:
 
-  :param: style UITableViewCellStyle
-  :param: reuseIdentifier String?
+  - parameter style: UITableViewCellStyle
+  - parameter reuseIdentifier: String?
   */
   override func initializeIVARs() {
     picker.delegate = self
@@ -59,16 +59,16 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
   /**
   swapSelectWithAction:
 
-  :param: action () -> Void
+  - parameter action: () -> Void
   */
   private func swapSelectWithAction(action: () -> Void) { _select = select; select = action }
 
   /**
   titleForObject:
 
-  :param: object AnyObject
+  - parameter object: AnyObject
 
-  :returns: String?
+  - returns: String?
   */
   private func titleForObject(object: AnyObject) -> String? {
     return titleForInfo?(object) ?? self.infoDataType.textualRepresentationForObject(object) as? String
@@ -85,7 +85,7 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
       } else {
         searchItem = nil
       }
-      if let item = searchItem, idx = find(_data, item) {
+      if let item = searchItem, idx = _data.indexOf(item) {
         selection = _data[idx]
         picker.selectItem(idx, animated: showingPicker)
       }
@@ -254,27 +254,27 @@ extension BankCollectionDetailButtonCell: AKPickerViewDataSource, AKPickerViewDe
   /**
   numberOfItemsInPickerView:
 
-  :param: pickerView AKPickerView
+  - parameter pickerView: AKPickerView
 
-  :returns: Int
+  - returns: Int
   */
   @objc func numberOfItemsInPickerView(pickerView: AKPickerView) -> Int { return _data.count }
 
   /**
   pickerView:titleForItem:
 
-  :param: pickerView AKPickerView
-  :param: item Int
+  - parameter pickerView: AKPickerView
+  - parameter item: Int
 
-  :returns: String
+  - returns: String
   */
   @objc func pickerView(pickerView: AKPickerView, titleForItem item: Int) -> String { return _data[item].title }
 
   /**
   pickerView:didSelectItem:
 
-  :param: pickerView AKPickerView
-  :param: item Int
+  - parameter pickerView: AKPickerView
+  - parameter item: Int
   */
   @objc func pickerView(pickerView: AKPickerView, didSelectItem item: Int) {
     selection = _data[item]
@@ -291,10 +291,10 @@ extension BankCollectionDetailButtonCell.Item: Equatable {}
 /**
 Whether lhs is equal to rhs
 
-:param: lhs DetailPickerCell.Index
-:param: rhs DetailPickerCell.Index
+- parameter lhs: DetailPickerCell.Index
+- parameter rhs: DetailPickerCell.Index
 
-:returns: Bool
+- returns: Bool
 */
 func ==(lhs: BankCollectionDetailButtonCell.Item, rhs: BankCollectionDetailButtonCell.Item) -> Bool {
   switch (lhs, rhs) {

@@ -21,7 +21,7 @@ public final class Activity: IndexedModelObject {
   /**
   requiresUniqueNaming
 
-  :returns: Bool
+  - returns: Bool
   */
   override public class func requiresUniqueNaming() -> Bool { return true }
 
@@ -32,7 +32,7 @@ public final class Activity: IndexedModelObject {
   /**
   Launches the activity by invoking the launch macro and switching to the activity's remote.
 
-  :param: completion Block to execute upon completing the task
+  - parameter completion: Block to execute upon completing the task
   */
   public func launchActivity(completion: ((success: Bool, error: NSError?) -> Void)?) {
     if let controller = activityController where controller.currentActivity != self, let macro = launchMacro {
@@ -50,7 +50,7 @@ public final class Activity: IndexedModelObject {
   /**
   Halts the activity by invoking the halt macro and switching to the home remote.
 
-  :param: completion Block to execute upon completing the task
+  - parameter completion: Block to execute upon completing the task
   */
   public func haltActivity(completion: ((success: Bool, error: NSError?) -> Void)?) {
     if let controller = activityController where controller.currentActivity == self, let macro = haltMacro {
@@ -68,7 +68,7 @@ public final class Activity: IndexedModelObject {
   /**
   If activity is active, this method calls `haltActivity:`, otherwise it calls `launchActvity:`.
 
-  :param: completion The completion block to pass through to the halting or launching method
+  - parameter completion: The completion block to pass through to the halting or launching method
   */
   public func launchOrHaltActivity(completion: ((success: Bool, error: NSError?) -> Void)?) {
     if let controller = activityController {
@@ -87,7 +87,7 @@ public final class Activity: IndexedModelObject {
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)

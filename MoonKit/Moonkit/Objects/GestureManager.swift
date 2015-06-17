@@ -22,11 +22,11 @@ public class GestureManager: NSObject {
 		/**
 		initWithBegin:receiveTouch:recognizeSimultaneously:beRequiredToFail:requireFailureOf:
 
-		:param: begin (() -> Bool)? = nil
-		:param: receiveTouch ((UITouch) -> Bool)? = nil
-		:param: recognizeSimultaneously ((UIGestureRecognizer) -> Bool)? = nil
-		:param: beRequiredToFail ((UIGestureRecognizer) -> Bool)? = nil
-		:param: requireFailureOf ((UIGestureRecognizer) -> Bool)? = nil
+		- parameter begin: (() -> Bool)? = nil
+		- parameter receiveTouch: ((UITouch) -> Bool)? = nil
+		- parameter recognizeSimultaneously: ((UIGestureRecognizer) -> Bool)? = nil
+		- parameter beRequiredToFail: ((UIGestureRecognizer) -> Bool)? = nil
+		- parameter requireFailureOf: ((UIGestureRecognizer) -> Bool)? = nil
 		*/
 		public init(begin: (() -> Bool)? = nil,
 								receiveTouch: ((UITouch) -> Bool)? = nil,
@@ -51,7 +51,7 @@ public class GestureManager: NSObject {
   /**
   initWithGestures:
 
-  :param: gestures [UIGestureRecognizer [ResponseType Any]]
+  - parameter gestures: [UIGestureRecognizer [ResponseType Any]]
   */
   public init(gestures: [UIGestureRecognizer:ResponseCollection]) {
     super.init()
@@ -61,8 +61,8 @@ public class GestureManager: NSObject {
   /**
   setResponses:forGesture:
 
-  :param: responses [ResponseType Any]
-  :param: gesture UIGestureRecognizer
+  - parameter responses: [ResponseType Any]
+  - parameter gesture: UIGestureRecognizer
   */
   public func setResponses(responseCollection: ResponseCollection, forGesture gesture: UIGestureRecognizer) {
     gesture.delegate = self
@@ -76,9 +76,9 @@ extension GestureManager: UIGestureRecognizerDelegate {
   /**
   gestureRecognizerShouldBegin:
 
-  :param: gesture UIGestureRecognizer
+  - parameter gesture: UIGestureRecognizer
 
-  :returns: Bool
+  - returns: Bool
   */
   public func gestureRecognizerShouldBegin(gesture: UIGestureRecognizer) -> Bool {
   	return _gestures[gesture]?.begin?() ?? true
@@ -87,10 +87,10 @@ extension GestureManager: UIGestureRecognizerDelegate {
   /**
   gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:
 
-  :param: gesture UIGestureRecognizer
-  :param: otherGesture UIGestureRecognizer
+  - parameter gesture: UIGestureRecognizer
+  - parameter otherGesture: UIGestureRecognizer
 
-  :returns: Bool
+  - returns: Bool
   */
   public func                       gestureRecognizer(gesture: UIGestureRecognizer,
     shouldRecognizeSimultaneouslyWithGestureRecognizer otherGesture: UIGestureRecognizer) -> Bool
@@ -101,10 +101,10 @@ extension GestureManager: UIGestureRecognizerDelegate {
   /**
   gestureRecognizer:shouldRequireFailureOfGestureRecognizer:
 
-  :param: gesture UIGestureRecognizer
-  :param: otherGesture UIGestureRecognizer
+  - parameter gesture: UIGestureRecognizer
+  - parameter otherGesture: UIGestureRecognizer
 
-  :returns: Bool
+  - returns: Bool
   */
   public func             gestureRecognizer(gesture: UIGestureRecognizer,
     shouldRequireFailureOfGestureRecognizer otherGesture: UIGestureRecognizer) -> Bool
@@ -115,10 +115,10 @@ extension GestureManager: UIGestureRecognizerDelegate {
   /**
   gestureRecognizer:shouldBeRequiredToFailByGestureRecognizer:
 
-  :param: gesture UIGestureRecognizer
-  :param: otherGesture UIGestureRecognizer
+  - parameter gesture: UIGestureRecognizer
+  - parameter otherGesture: UIGestureRecognizer
 
-  :returns: Bool
+  - returns: Bool
   */
   public func               gestureRecognizer(gesture: UIGestureRecognizer,
     shouldBeRequiredToFailByGestureRecognizer otherGesture: UIGestureRecognizer) -> Bool
@@ -129,10 +129,10 @@ extension GestureManager: UIGestureRecognizerDelegate {
   /**
   gestureRecognizer:shouldReceiveTouch:
 
-  :param: gesture UIGestureRecognizer
-  :param: touch UITouch
+  - parameter gesture: UIGestureRecognizer
+  - parameter touch: UITouch
 
-  :returns: Bool
+  - returns: Bool
   */
   public func gestureRecognizer(gesture: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
   	return _gestures[gesture]?.receiveTouch?(touch) ?? true

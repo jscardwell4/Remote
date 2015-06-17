@@ -31,14 +31,14 @@ class BankCollectionDetailSectionHeader: UICollectionReusableView {
     /**
     enumerate:
 
-    :param: block (Identifier) -> Void
+    - parameter block: (Identifier) -> Void
     */
     static func enumerate(block: (Identifier) -> Void) { apply(all, block) }
 
     /**
     registerWithCollectionView:
 
-    :param: collectionView UICollectionView
+    - parameter collectionView: UICollectionView
     */
     func registerWithCollectionView(collectionView: UICollectionView) {
       collectionView.registerClass(headerType, forSupplementaryViewOfKind: "Header", withReuseIdentifier: rawValue)
@@ -47,7 +47,7 @@ class BankCollectionDetailSectionHeader: UICollectionReusableView {
     /**
     registerAllWithCollectionView:
 
-    :param: collectionView UICollectionView
+    - parameter collectionView: UICollectionView
     */
     static func registerAllWithCollectionView(collectionView: UICollectionView) {
       enumerate { $0.registerWithCollectionView(collectionView) }
@@ -58,7 +58,7 @@ class BankCollectionDetailSectionHeader: UICollectionReusableView {
   /**
   registerIdentifiersWithCollectionView:
 
-  :param: collectionView UICollectionView
+  - parameter collectionView: UICollectionView
   */
   class func registerIdentifiersWithCollectionView(collectionView: UICollectionView) {
     Identifier.registerAllWithCollectionView(collectionView)
@@ -75,14 +75,14 @@ class BankCollectionDetailSectionHeader: UICollectionReusableView {
   /**
   initWithFrame:
 
-  :param: frame CGRect
+  - parameter frame: CGRect
   */
   override init(frame: CGRect) { super.init(frame: frame); initializeIVARs() }
 
   /**
   initWithCoder:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
 
@@ -92,14 +92,14 @@ class BankCollectionDetailSectionHeader: UICollectionReusableView {
   /**
   requiresConstraintBasedLayout
 
-  :returns: Bool
+  - returns: Bool
   */
   override class func requiresConstraintBasedLayout() -> Bool { return true }
 
   /**
   drawRect:
 
-  :param: rect CGRect
+  - parameter rect: CGRect
   */
   override func drawRect(rect: CGRect) {
 

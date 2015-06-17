@@ -64,7 +64,7 @@ class PhotoCollectionBrowser: UIViewController, PhotoCollectionLayoutDelegate, U
   /**
   Scales from 8 cells across to just 1 cell across
 
-  :param: sender UISlider
+  - parameter sender: UISlider
   */
   @IBAction func updateScale(sender: UISlider) { itemScale = ItemScale(rawValue: sender.value) }
 
@@ -75,7 +75,7 @@ class PhotoCollectionBrowser: UIViewController, PhotoCollectionLayoutDelegate, U
   /**
   startCachingForScale:mode:
 
-  :param: scale ItemScale
+  - parameter scale: ItemScale
   */
   private func startCachingForScale(scale: ItemScale, aspect: Aspect) {
     MSLogDebug("starting to cache images for item scale '\(scale)'")
@@ -86,7 +86,7 @@ class PhotoCollectionBrowser: UIViewController, PhotoCollectionLayoutDelegate, U
   /**
   stopCachingForScale:mode:
 
-  :param: scale ItemScale
+  - parameter scale: ItemScale
   */
   private func stopCachingForScale(scale: ItemScale, aspect: Aspect) {
     MSLogDebug("no longer caching images for item scale '\(scale)'")
@@ -123,7 +123,7 @@ class PhotoCollectionBrowser: UIViewController, PhotoCollectionLayoutDelegate, U
 
   /** requestImagesForVisibleCells */
   private func requestImagesForVisibleCells() {
-    let indexPaths = collectionView.indexPathsForVisibleItems() as! [NSIndexPath]
+    let indexPaths = collectionView.indexPathsForVisibleItems() as [NSIndexPath]
     MSLogDebug("requesting images for cells: \(indexPaths.map({$0.row}))")
     apply(indexPaths){self.requestImageAtIndexPath($0)}
   }
@@ -133,9 +133,9 @@ class PhotoCollectionBrowser: UIViewController, PhotoCollectionLayoutDelegate, U
   /**
   Request the image for the asset at the specified index for the specified cell
 
-  :param: index Int
-  :param: size CGSize
-  :param: mode PHImageContentMode
+  - parameter index: Int
+  - parameter size: CGSize
+  - parameter mode: PHImageContentMode
   */
   private func requestImageAtIndexPath(indexPath: NSIndexPath) {
     precondition(indexPath.row < assets.count, "index out of range")
@@ -158,8 +158,8 @@ class PhotoCollectionBrowser: UIViewController, PhotoCollectionLayoutDelegate, U
   /**
   A handler for `PHImageManager` request result. Updates cell's image view's image, logs cancellation, or handles error.
 
-  :param: result RequestResult
-  :param: indexPath NSIndexPath
+  - parameter result: RequestResult
+  - parameter indexPath: NSIndexPath
   */
   private func handleRequestResult(result: RequestResult, forIndexPath indexPath: NSIndexPath, contentMode: PHImageContentMode) {
 
@@ -206,7 +206,7 @@ class PhotoCollectionBrowser: UIViewController, PhotoCollectionLayoutDelegate, U
   /**
   initWithCollection:
 
-  :param: collection PHAssetCollection
+  - parameter collection: PHAssetCollection
   */
   init(collection: PHAssetCollection, callback c: (PhotoCollectionBrowser, ImageSelection?) -> Void) {
     callback = c
@@ -218,7 +218,7 @@ class PhotoCollectionBrowser: UIViewController, PhotoCollectionLayoutDelegate, U
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
@@ -255,7 +255,7 @@ class PhotoCollectionBrowser: UIViewController, PhotoCollectionLayoutDelegate, U
   /**
   Begin caching for current scale and aspect
 
-  :param: animated Bool
+  - parameter animated: Bool
   */
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
@@ -265,7 +265,7 @@ class PhotoCollectionBrowser: UIViewController, PhotoCollectionLayoutDelegate, U
   /**
   Stop all image requests and stop all caching
 
-  :param: animated Bool
+  - parameter animated: Bool
   */
   override func viewWillDisappear(animated: Bool) {
     super.viewWillDisappear(animated)
@@ -279,9 +279,9 @@ class PhotoCollectionBrowser: UIViewController, PhotoCollectionLayoutDelegate, U
   /**
   numberOfSectionsInCollectionView:
 
-  :param: collectionView UICollectionView
+  - parameter collectionView: UICollectionView
 
-  :returns: Int
+  - returns: Int
   */
   func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int { return 1 }
 
@@ -289,24 +289,24 @@ class PhotoCollectionBrowser: UIViewController, PhotoCollectionLayoutDelegate, U
   /**
   collectionView:numberOfItemsInSection:
 
-  :param: collectionView UICollectionView
-  :param: section Int
+  - parameter collectionView: UICollectionView
+  - parameter section: Int
 
-  :returns: Int
+  - returns: Int
   */
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { return assets.count }
 
   /**
   collectionView:cellForItemAtIndexPath:
 
-  :param: collectionView UICollectionView
-  :param: indexPath NSIndexPath
+  - parameter collectionView: UICollectionView
+  - parameter indexPath: NSIndexPath
 
-  :returns: UICollectionViewCell
+  - returns: UICollectionViewCell
   */
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier,
-                                                        forIndexPath: indexPath) as! UICollectionViewCell
+                                                        forIndexPath: indexPath) as UICollectionViewCell
 
     // decorate cell
 
@@ -340,8 +340,8 @@ class PhotoCollectionBrowser: UIViewController, PhotoCollectionLayoutDelegate, U
   /**
   collectionView:didSelectItemAtIndexPath:
 
-  :param: collectionView UICollectionView
-  :param: indexPath NSIndexPath
+  - parameter collectionView: UICollectionView
+  - parameter indexPath: NSIndexPath
   */
   func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
     assert(collectionView.cellForItemAtIndexPath(indexPath)?.selected == true)
@@ -355,10 +355,10 @@ class PhotoCollectionBrowser: UIViewController, PhotoCollectionLayoutDelegate, U
   /**
   sizeForZoomedItemInCollectionView:layout:
 
-  :param: collectionView UICollectionView
-  :param: layout PhotoCollectionLayout
+  - parameter collectionView: UICollectionView
+  - parameter layout: PhotoCollectionLayout
 
-  :returns: CGSize
+  - returns: CGSize
   */
   func sizeForZoomedItemAtIndexPath(indexPath: NSIndexPath) -> CGSize {
     let ratio = Ratio(assets[indexPath.row].pixelWidth, assets[indexPath.row].pixelHeight)

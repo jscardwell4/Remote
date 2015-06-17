@@ -27,9 +27,9 @@ public class CoreDataStack {
   /**
   initWithManagedObjectModel:persistentStoreURL:options:
 
-  :param: managedObjectModel NSManagedObjectModel
-  :param: persistentStoreURL NSURL
-  :param: options [NSObject:AnyObject]? = nil
+  - parameter managedObjectModel: NSManagedObjectModel
+  - parameter persistentStoreURL: NSURL
+  - parameter options: [NSObject:AnyObject]? = nil
   */
   public init?(managedObjectModel: NSManagedObjectModel, persistentStoreURL: NSURL?, options: [NSObject:AnyObject]? = nil) {
     self.managedObjectModel = managedObjectModel
@@ -37,27 +37,24 @@ public class CoreDataStack {
 
     let storeType = persistentStoreURL == nil ? NSInMemoryStoreType : NSSQLiteStoreType
     var error: NSError?
-    if let store = persistentStoreCoordinator.addPersistentStoreWithType(storeType,
-                                                           configuration: nil,
-                                                                     URL: persistentStoreURL,
-                                                                 options: options,
-                                                                   error: &error)
-    {
+    do {
+      let store = try persistentStoreCoordinator.addPersistentStoreWithType(storeType,
+                                                             configuration: nil,
+                                                                       URL: persistentStoreURL,
+                                                                   options: options)
       persistentStore = store
       rootContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
       stackInstances[ObjectIdentifier(self)] = ++stackInstanceCount
       rootContext.persistentStoreCoordinator = persistentStoreCoordinator
       rootContext.nametag = "\(nametag)<root>"
       MSLogDebug("\(nametag) initialized")
-    }
-
-    else { MSHandleError(error); rootContext = NSManagedObjectContext(); persistentStore = NSPersistentStore(); return nil }
+    } catch var error1 as NSError { error = error1; MSHandleError(error); rootContext = NSManagedObjectContext(); persistentStore = NSPersistentStore(); return nil }
   }
 
   /**
   mainContext
 
-  :returns: NSManagedObjectContext
+  - returns: NSManagedObjectContext
   */
   public func mainContext() -> NSManagedObjectContext {
     let context = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
@@ -70,7 +67,7 @@ public class CoreDataStack {
   /**
   isolatedContext
 
-  :returns: NSManagedObjectContext
+  - returns: NSManagedObjectContext
   */
   public func isolatedContext() -> NSManagedObjectContext {
     let context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
@@ -82,7 +79,7 @@ public class CoreDataStack {
   /**
   privateContext
 
-  :returns: NSManagedObjectContext
+  - returns: NSManagedObjectContext
   */
   public func privateContext() -> NSManagedObjectContext {
     let context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
@@ -96,11 +93,11 @@ public class CoreDataStack {
   /**
   saveContext:withBlock::propagate:nonBlocking:completion:
 
-  :param: moc NSManagedObjectContext
-  :param: block ((NSManagedObjectContext) -> Void)? = nil
-  :param: propagate Bool = false
-  :param: nonBlocking Bool = false
-  :param: completion ((Bool, NSError?) -> Void)? = nil
+  - parameter moc: NSManagedObjectContext
+  - parameter block: ((NSManagedObjectContext) -> Void)? = nil
+  - parameter propagate: Bool = false
+  - parameter nonBlocking: Bool = false
+  - parameter completion: ((Bool, NSError?) -> Void)? = nil
   */
   public func saveContext(context: NSManagedObjectContext,
                 withBlock block: ((NSManagedObjectContext) -> Void)? = nil,
@@ -126,7 +123,7 @@ public class CoreDataStack {
         moc.processPendingChanges()
         if moc.hasChanges == true {
           MSLogDebug("saving context '\(toString(moc.nametag))'")
-          success = moc.save(&error) == true
+          success = moc.save() == true
         }
       }
     }

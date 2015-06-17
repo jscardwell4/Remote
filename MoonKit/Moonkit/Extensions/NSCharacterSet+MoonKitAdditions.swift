@@ -13,11 +13,11 @@ extension UInt16 {
   /**
   init:
 
-  :param: character Character
+  - parameter character: Character
   */
   public init?(_ character: Character) {
     let characterString = String(character)
-    if count(characterString.utf16) == 1 { self = Array(characterString.utf16).first! }
+    if characterString.utf16.count == 1 { self = Array(characterString.utf16).first! }
     else { return nil }
   }
 
@@ -28,7 +28,7 @@ extension UnicodeScalar {
   /**
   init:
 
-  :param: character Character
+  - parameter character: Character
   */
   public init(_ character: Character) { self = Array(String(character).unicodeScalars).first! }
 
@@ -40,7 +40,7 @@ extension NSCharacterSet {
   /**
   initWithCharacter:
 
-  :param: character Character
+  - parameter character: Character
   */
   public convenience init(character: Character) { self.init(charactersInString:String(character)) }
 
@@ -51,19 +51,19 @@ extension NSCharacterSet {
 /**
 Get inverted character set
 
-:param: lhs NSCharacterSet
+- parameter lhs: NSCharacterSet
 
-:returns: NSCharacterSet The inverted set
+- returns: NSCharacterSet The inverted set
 */
 public prefix func ~(lhs: NSCharacterSet) -> NSCharacterSet { return lhs.invertedSet }
 
 /**
 Combine two character sets
 
-:param: lhs NSCharacterSet
-:param: rhs NSCharacterSet
+- parameter lhs: NSCharacterSet
+- parameter rhs: NSCharacterSet
 
-:returns: NSCharacterSet
+- returns: NSCharacterSet
 */
 public func +(lhs: NSCharacterSet, rhs: NSCharacterSet) -> NSCharacterSet {
   var lbytes = [UInt8](count: 8192, repeatedValue: 0)
@@ -91,10 +91,10 @@ public func ~=(lhs: NSCharacterSet, rhs: unichar) -> Bool {
 /**
 Subtract rhs character set members from lhs character set
 
-:param: lhs NSCharacterSet
-:param: rhs NSCharacterSet
+- parameter lhs: NSCharacterSet
+- parameter rhs: NSCharacterSet
 
-:returns: NSCharacterSet
+- returns: NSCharacterSet
 */
 public func -(lhs: NSCharacterSet, rhs: NSCharacterSet) -> NSCharacterSet {
   var lbytes = [UInt8](count: 8192, repeatedValue: 0)
@@ -112,10 +112,10 @@ public func ∖(inout lhs: NSCharacterSet, rhs: NSCharacterSet) { lhs = lhs ∖ 
 /**
 Intersection of two character sets
 
-:param: lhs NSCharacterSet
-:param: rhs NSCharacterSet
+- parameter lhs: NSCharacterSet
+- parameter rhs: NSCharacterSet
 
-:returns: NSCharacterSet
+- returns: NSCharacterSet
 */
 public func ∩(lhs: NSCharacterSet, rhs: NSCharacterSet) -> NSCharacterSet {
   var lbytes = [UInt8](count: 8192, repeatedValue: 0)
@@ -131,46 +131,46 @@ public func ∩=(inout lhs: NSCharacterSet, rhs: NSCharacterSet) { lhs = lhs ∩
 /**
 Returns true if lhs is a superset of rhs
 
-:param: lhs NSCharacterSet
-:param: rhs NSCharacterSet
-:returns: Bool
+- parameter lhs: NSCharacterSet
+- parameter rhs: NSCharacterSet
+- returns: Bool
 */
 public func ⊃(lhs:NSCharacterSet, rhs:NSCharacterSet) -> Bool { return lhs.isSupersetOfSet(rhs) }
 
 /**
 Returns true if lhs is not a superset of rhs
 
-:param: lhs NSCharacterSet
-:param: rhs NSCharacterSet
-:returns: Bool
+- parameter lhs: NSCharacterSet
+- parameter rhs: NSCharacterSet
+- returns: Bool
 */
 public func ⊅(lhs: NSCharacterSet, rhs: NSCharacterSet) -> Bool { return !(lhs ⊃ rhs) }
 
 /**
 Returns true if lhs is a subset of rhs
 
-:param: lhs NSCharacterSet
-:param: rhs NSCharacterSet
-:returns: Bool
+- parameter lhs: NSCharacterSet
+- parameter rhs: NSCharacterSet
+- returns: Bool
 */
 public func ⊂(lhs: NSCharacterSet, rhs: NSCharacterSet) -> Bool { return rhs ⊃ lhs }
 
 /**
 Returns true if lhs is not a subset of rhs
 
-:param: lhs NSCharacterSet
-:param: rhs NSCharacterSet
-:returns: Bool
+- parameter lhs: NSCharacterSet
+- parameter rhs: NSCharacterSet
+- returns: Bool
 */
 public func ⊄(lhs:NSCharacterSet, rhs:NSCharacterSet) -> Bool { return rhs ⊅ lhs }
 
 /**
 Returns true if character is a member of character set
 
-:param: lhs Character
-:param: rhs NSCharacterSet
+- parameter lhs: Character
+- parameter rhs: NSCharacterSet
 
-:returns: Bool
+- returns: Bool
 */
 public func ∈(lhs: Character, rhs: NSCharacterSet) -> Bool {
   if let unichar = UInt16(lhs) { return rhs.characterIsMember(unichar) }
@@ -180,30 +180,30 @@ public func ∈(lhs: Character, rhs: NSCharacterSet) -> Bool {
 /**
 Returns true if character is not a member of character set
 
-:param: lhs Character
-:param: rhs NSCharacterSet
+- parameter lhs: Character
+- parameter rhs: NSCharacterSet
 
-:returns: Bool
+- returns: Bool
 */
 public func ∉(lhs: Character, rhs: NSCharacterSet) -> Bool { return !(lhs ∈ rhs) }
 
 /**
 Returns true if character set has character as a member
 
-:param: lhs NSCharacterSet
-:param: rhs Character
+- parameter lhs: NSCharacterSet
+- parameter rhs: Character
 
-:returns: Bool
+- returns: Bool
 */
 public func ∋(lhs: NSCharacterSet, rhs: Character) -> Bool { return rhs ∈ lhs }
 
 /**
 Returns true if character set does not have character as a member
 
-:param: lhs NSCharacterSet
-:param: rhs Character
+- parameter lhs: NSCharacterSet
+- parameter rhs: Character
 
-:returns: Bool
+- returns: Bool
 */
 public func ∌(lhs: NSCharacterSet, rhs: Character) -> Bool { return rhs ∉ lhs }
 

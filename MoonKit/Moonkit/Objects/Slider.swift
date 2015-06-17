@@ -90,7 +90,7 @@ public class Slider: UISlider {
   /**
   initWithFrame:
 
-  :param: frame CGRect
+  - parameter frame: CGRect
   */
   public override init(frame: CGRect) {
     super.init(frame: frame)
@@ -101,19 +101,19 @@ public class Slider: UISlider {
   /**
   initWithAutolayout:
 
-  :param: autolayout Bool
+  - parameter autolayout: Bool
   */
   public convenience init(autolayout: Bool = false) {
     self.init(frame: CGRect.zeroRect)
-    setTranslatesAutoresizingMaskIntoConstraints(!autolayout)
+    translatesAutoresizingMaskIntoConstraints = !autolayout
     updateThumbImage()
   }
 
   /**
   initWithType:autolayout:
 
-  :param: style SliderStyle
-  :param: autolayout Bool = false
+  - parameter style: SliderStyle
+  - parameter autolayout: Bool = false
   */
   public convenience init(style: SliderStyle, autolayout: Bool = false) {
     self.init(autolayout: autolayout)
@@ -124,7 +124,7 @@ public class Slider: UISlider {
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   public required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 

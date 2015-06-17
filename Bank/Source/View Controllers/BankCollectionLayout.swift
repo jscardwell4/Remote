@@ -15,7 +15,7 @@ final class BankCollectionLayout: ZoomingCollectionViewLayout {
   /**
   layoutAttributeClass
 
-  :returns: AnyClass
+  - returns: AnyClass
   */
   override class func layoutAttributesClass() -> AnyClass { return BankCollectionAttributes.self }
 
@@ -36,9 +36,9 @@ final class BankCollectionLayout: ZoomingCollectionViewLayout {
   /**
   layoutAttributesForItemAtIndexPath:
 
-  :param: indexPath NSIndexPath
+  - parameter indexPath: NSIndexPath
 
-  :returns: UICollectionViewLayoutAttributes!
+  - returns: UICollectionViewLayoutAttributes!
   */
   override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
     let attributes = super.layoutAttributesForItemAtIndexPath(indexPath) as! BankCollectionAttributes

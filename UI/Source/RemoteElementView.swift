@@ -18,9 +18,9 @@ public class RemoteElementView: UIView, Named {
  /**
   viewWithPreset:
 
-  :param: preset Preset
+  - parameter preset: Preset
 
-  :returns: RemoteElementView?
+  - returns: RemoteElementView?
   */
   public class func viewWithPreset(preset: Preset) -> RemoteElementView? {
     let model = RemoteElement.remoteElementFromPreset(preset)
@@ -30,9 +30,9 @@ public class RemoteElementView: UIView, Named {
   /**
   viewWithModel:
 
-  :param: model RemoteElement
+  - parameter model: RemoteElement
 
-  :returns: RemoteElementView
+  - returns: RemoteElementView
   */
   class func viewWithModel(model: RemoteElement) -> RemoteElementView? {
     switch model.elementType {
@@ -56,18 +56,18 @@ public class RemoteElementView: UIView, Named {
   /**
   initWithFrame:
 
-  :param: frame CGRect
+  - parameter frame: CGRect
   */
   public override init(frame: CGRect) { super.init(frame: frame) }
 
   /**
   initWithModel:
 
-  :param: model RemoteElement
+  - parameter model: RemoteElement
   */
   required public init(model: RemoteElement) {
     super.init(frame: CGRect.zeroRect)
-    setTranslatesAutoresizingMaskIntoConstraints(false)
+    translatesAutoresizingMaskIntoConstraints = false
     self.model = model
     self.model.refresh()
     registerForChangeNotification()
@@ -77,7 +77,7 @@ public class RemoteElementView: UIView, Named {
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required public init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
@@ -99,7 +99,7 @@ public class RemoteElementView: UIView, Named {
   // MARK: - Constraints
 
   public var modeledConstraints: [RemoteElementViewConstraint] {
-    return constraints().filter{$0 is RemoteElementViewConstraint} as! [RemoteElementViewConstraint]
+    return constraints.filter{$0 is RemoteElementViewConstraint} as! [RemoteElementViewConstraint]
   }
 
   /** updateConstraints */
@@ -123,8 +123,8 @@ public class RemoteElementView: UIView, Named {
   /**
   translateSubelements:translation:
 
-  :param: subelementViews NSSet
-  :param: translation CGPoint
+  - parameter subelementViews: NSSet
+  - parameter translation: CGPoint
   */
   public func translateSubelements(subelementViews: OrderedSet<RemoteElementView>, translation: CGPoint) {
 
@@ -141,8 +141,8 @@ public class RemoteElementView: UIView, Named {
   /**
   scaleSubelement:scale:
 
-  :param: subelementViews NSSet
-  :param: scale CGFloat
+  - parameter subelementViews: NSSet
+  - parameter scale: CGFloat
   */
   public func scaleSubelement(subelementViews: OrderedSet<RemoteElementView>, scale: CGFloat) {
     for subelementView in subelementViews {
@@ -163,9 +163,9 @@ public class RemoteElementView: UIView, Named {
   /**
   alignSubelements:toSibling:attribute:
 
-  :param: subelementViews NSSet
-  :param: siblingView RemoteElementView
-  :param: attribute NSLayoutAttribute
+  - parameter subelementViews: NSSet
+  - parameter siblingView: RemoteElementView
+  - parameter attribute: NSLayoutAttribute
   */
   public func alignSubelements(subelementViews: OrderedSet<RemoteElementView>,
                       toSibling siblingView: RemoteElementView,
@@ -187,9 +187,9 @@ public class RemoteElementView: UIView, Named {
   /**
   resizeSubelements:toSibling:attribute:
 
-  :param: subelementViews NSSet
-  :param: siblingView RemoteElementView
-  :param: attribute NSLayoutAttribute
+  - parameter subelementViews: NSSet
+  - parameter siblingView: RemoteElementView
+  - parameter attribute: NSLayoutAttribute
   */
   public func resizeSubelements(subelementViews: OrderedSet<RemoteElementView>,
                       toSibling siblingView: RemoteElementView,
@@ -207,7 +207,7 @@ public class RemoteElementView: UIView, Named {
   /**
   scale:
 
-  :param: scale CGFloat
+  - parameter scale: CGFloat
   */
   public func scale(scale: CGFloat) {
     model.constraintManager.resizeElement(model,
@@ -223,9 +223,9 @@ public class RemoteElementView: UIView, Named {
   /**
   objectIsSubelementKind:
 
-  :param: object AnyObject
+  - parameter object: AnyObject
 
-  :returns: Bool
+  - returns: Bool
   */
   public func objectIsSubelementKind(object: AnyObject) -> Bool {
     switch model.elementType {
@@ -247,9 +247,9 @@ public class RemoteElementView: UIView, Named {
   /**
   subscript:
 
-  :param: key String
+  - parameter key: String
 
-  :returns: RemoteElementView?
+  - returns: RemoteElementView?
   */
   override public subscript(key: String) -> RemoteElementView? {
     if model.isIdentifiedByString(key) { return self }
@@ -259,9 +259,9 @@ public class RemoteElementView: UIView, Named {
   /**
   subscript:
 
-  :param: idx Int
+  - parameter idx: Int
 
-  :returns: RemoteElementView?
+  - returns: RemoteElementView?
   */
   public subscript(idx: Int) -> RemoteElementView? {
     let subelements = subelementViews
@@ -276,36 +276,36 @@ public class RemoteElementView: UIView, Named {
   /**
   addSubelementView:
 
-  :param: view RemoteElementView
+  - parameter view: RemoteElementView
   */
   public func addSubelementView(view: RemoteElementView) { addSubview(view) }
 
   /**
   removeSubelementView:
 
-  :param: view RemoteElementView
+  - parameter view: RemoteElementView
   */
   public func removeSubelementView(view: RemoteElementView) { view.removeFromSuperview() }
 
   /**
   bringSubelementViewToFront:
 
-  :param: view RemoteElementView
+  - parameter view: RemoteElementView
   */
   public func bringSubelementViewToFront(view: RemoteElementView) { bringSubviewToFront(view) }
 
   /**
   sendSubelementViewToBack:
 
-  :param: view RemoteElementView
+  - parameter view: RemoteElementView
   */
   public func sendSubelementViewToBack(view: RemoteElementView) { sendSubviewToBack(view) }
 
   /**
   insertSubelementView:aboveSubelementView:
 
-  :param: view RemoteElementView
-  :param: sibling RemoteElementView
+  - parameter view: RemoteElementView
+  - parameter sibling: RemoteElementView
   */
   public func insertSubelementView(view: RemoteElementView, aboveSubelementView sibling: RemoteElementView) {
     insertSubview(view, aboveSubview: sibling)
@@ -314,16 +314,16 @@ public class RemoteElementView: UIView, Named {
   /**
   insertSubelementView:atIndex:
 
-  :param: view RemoteElementView
-  :param: index Int
+  - parameter view: RemoteElementView
+  - parameter index: Int
   */
   public func insertSubelementView(view: RemoteElementView, atIndex index: Int) { insertSubview(view, atIndex: index) }
 
   /**
   insertSubelementView:belowSubelementView:
 
-  :param: view RemoteElementView
-  :param: sibling RemoteElementView
+  - parameter view: RemoteElementView
+  - parameter sibling: RemoteElementView
   */
   public func insertSubelementView(view: RemoteElementView, belowSubelementView sibling: RemoteElementView) {
     insertSubview(view, belowSubview: sibling)
@@ -354,8 +354,8 @@ public class RemoteElementView: UIView, Named {
         xAxisIntervals.append(HalfOpenInterval(origin.x, (origin.x + min.width)))
         yAxisIntervals.append(HalfOpenInterval(origin.y, (origin.y + min.height)))
       }
-      xAxisIntervals.sort{$0.start < $1.start}
-      yAxisIntervals.sort{$0.start < $1.start}
+      xAxisIntervals.sortInPlace {$0.start < $1.start}
+      yAxisIntervals.sortInPlace {$0.start < $1.start}
 
       var tmpInterval = xAxisIntervals[0]
       var tmpAxisIntervals: [HalfOpenInterval<CGFloat>] = []
@@ -443,7 +443,7 @@ public class RemoteElementView: UIView, Named {
   /**
   kvoRegistration
 
-  :returns: [Property:KVOReceptionist.Observation]
+  - returns: [Property:KVOReceptionist.Observation]
   */
   func kvoRegistration() -> [Property:KVOReceptionist.Observation] {
     var registry: [Property:KVOReceptionist.Observation] = [:]

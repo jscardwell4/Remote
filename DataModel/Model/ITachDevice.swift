@@ -104,8 +104,8 @@ public class ITachDevice: NetworkDevice {
   /**
   initWithBeacon:context:
 
-  :param: beacon String
-  :param: context NSManagedObjectContext
+  - parameter beacon: String
+  - parameter context: NSManagedObjectContext
   */
   public convenience init?(beacon: String, context: NSManagedObjectContext) {
     let entries = beacon.matchingSubstringsForRegEx(~/"(?<=<-)(.*?)(?=>)")
@@ -130,7 +130,7 @@ public class ITachDevice: NetworkDevice {
   /**
   updateWithBeacon:
 
-  :param: beacon String
+  - parameter beacon: String
   */
   public func updateWithBeacon(beacon: String) {
     let entries = beacon.matchingSubstringsForRegEx(~/"(?<=<-)(.*?)(?=>)")
@@ -146,7 +146,11 @@ public class ITachDevice: NetworkDevice {
     {
       setValuesForKeysWithDictionary(attributes)
       var error: NSError?
-      managedObjectContext?.save(&error)
+      do {
+        try managedObjectContext?.save()
+      } catch var error1 as NSError {
+        error = error1
+      }
       MSHandleError(error, message: "failed to update from beacon '\(beacon)'")
     }
   }
@@ -154,7 +158,7 @@ public class ITachDevice: NetworkDevice {
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)

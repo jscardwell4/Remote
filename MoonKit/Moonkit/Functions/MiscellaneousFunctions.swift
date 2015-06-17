@@ -11,15 +11,15 @@ import Foundation
 /**
 nonce
 
-:returns: String
+- returns: String
 */
 public func nonce() -> String { return NSUUID().UUIDString }
 
 /**
 dispatchToMain:block:
 
-:param: synchronous Bool = false
-:param: block dispatch_block_t
+- parameter synchronous: Bool = false
+- parameter block: dispatch_block_t
 */
 public func dispatchToMain(synchronous: Bool = false, block: dispatch_block_t) {
   if NSThread.isMainThread() { block() }
@@ -30,8 +30,8 @@ public func dispatchToMain(synchronous: Bool = false, block: dispatch_block_t) {
 /**
 delayedDispatchToMain:block:
 
-:param: delay Int
-:param: block dispatch_block_t
+- parameter delay: Int
+- parameter block: dispatch_block_t
 */
 public func delayedDispatchToMain(delay: Double, block: dispatch_block_t) {
   dispatch_after(
@@ -44,20 +44,20 @@ public func delayedDispatchToMain(delay: Double, block: dispatch_block_t) {
 /**
 append:toIdentifier:
 
-:param: s String
-:param: identifier String
+- parameter s: String
+- parameter identifier: String
 
-:returns: String
+- returns: String
 */
 public func append(s: String, toIdentifier identifier: String) -> String { return "-".join(s, identifier) }
 
 /**
 createIdentifierGenerator:suffixes:
 
-:param: base String
-:param: suffixes String...
+- parameter base: String
+- parameter suffixes: String...
 
-:returns: String
+- returns: String
 */
 public func createIdentifierGenerator(base: String)(suffixes: String...) -> String {
   return "-".join([base] + suffixes)
@@ -66,10 +66,10 @@ public func createIdentifierGenerator(base: String)(suffixes: String...) -> Stri
 /**
 createIdentifier:suffix:
 
-:param: object Any
-:param: suffix String? = nil
+- parameter object: Any
+- parameter suffix: String? = nil
 
-:returns: String
+- returns: String
 */
 public func createIdentifier(object: Any, _ suffix: String? = nil) -> String {
   return createIdentifier(object, suffix == nil ? nil : [suffix!])
@@ -78,10 +78,10 @@ public func createIdentifier(object: Any, _ suffix: String? = nil) -> String {
 /**
 createIdentifier:suffix:
 
-:param: object Any
-:param: suffix String...
+- parameter object: Any
+- parameter suffix: String...
 
-:returns: String
+- returns: String
 */
 public func createIdentifier(object: Any, suffix: String...) -> String {
   return _stdlib_getDemangledTypeName(object) + "-" + "-".join(suffix)
@@ -90,10 +90,10 @@ public func createIdentifier(object: Any, suffix: String...) -> String {
 /**
 createIdentifier:suffix:
 
-:param: object Any
-:param: suffix [String]? = nil
+- parameter object: Any
+- parameter suffix: [String]? = nil
 
-:returns: String
+- returns: String
 */
 public func createIdentifier(object: Any, _ suffix: [String]? = nil) -> String {
   let identifier = _stdlib_getDemangledTypeName(object)
@@ -103,9 +103,9 @@ public func createIdentifier(object: Any, _ suffix: [String]? = nil) -> String {
 /**
 tagsFromIdentifier:
 
-:param: identifier String
+- parameter identifier: String
 
-:returns: [String]
+- returns: [String]
 */
 public func tagsFromIdentifier(identifier: String) -> [String] { return "-".split(identifier) }
 

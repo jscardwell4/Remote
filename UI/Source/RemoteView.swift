@@ -16,7 +16,7 @@ public final class RemoteView: RemoteElementView {
   /**
   intrinsicContentSize
 
-  :returns: CGSize
+  - returns: CGSize
   */
   override public func intrinsicContentSize() -> CGSize { return UIScreen.mainScreen().bounds.size }
 
@@ -47,7 +47,7 @@ public final class RemoteView: RemoteElementView {
   /** attachGestureRecognizers */
   override func attachGestureRecognizers() {
     super.attachGestureRecognizers()
-    apply(flatMap(flatMap(panelDelegates.values.array){$0.values.array}){$0.gestures}) {
+    apply(panelDelegates.values.array.flatMap{$0.values.array}.flatMap{$0.gestures}) {
       self.addGestureRecognizer($0)
       $0.addTarget(self, action: "handleSwipe:")
     }
@@ -56,10 +56,10 @@ public final class RemoteView: RemoteElementView {
   /**
   handleSwipe:
 
-  :param: gesture UISwipeGestureRecognizer
+  - parameter gesture: UISwipeGestureRecognizer
   */
   func handleSwipe(gesture: UISwipeGestureRecognizer) {
-    assert(contains(1...3, gesture.numberOfTouchesRequired))
+    assert((1...3).contains(gesture.numberOfTouchesRequired))
 
     let trigger = Trigger(rawValue: gesture.numberOfTouchesRequired)
     let location: Location?
@@ -87,7 +87,7 @@ public final class RemoteView: RemoteElementView {
   /**
   actionTriggeredForPanelAssignment:
 
-  :param: panelAssignment PanelAssignment
+  - parameter panelAssignment: PanelAssignment
   */
   func actionTriggeredForPanelAssignment(assignment: PanelAssignment) {
     if let delegate = panelDelegates[assignment.trigger]?[assignment.location.axis] {
@@ -99,7 +99,7 @@ public final class RemoteView: RemoteElementView {
   /**
   addSubelementView:
 
-  :param: view RemoteElementView
+  - parameter view: RemoteElementView
   */
   override public func addSubelementView(view: RemoteElementView) {
     if let buttonGroupView = view as? ButtonGroupView {
@@ -126,7 +126,7 @@ public final class RemoteView: RemoteElementView {
   /**
   removeSubelementView:
 
-  :param: view RemoteElementView
+  - parameter view: RemoteElementView
   */
   override public func removeSubelementView(view: RemoteElementView) {
     if let buttonGroupView = view as? ButtonGroupView {
@@ -152,7 +152,7 @@ public final class RemoteView: RemoteElementView {
   override public var description: String {
     var result = super.description
     result += "\n\tpanelDelegates = "
-    let delegates = flatMap(panelDelegates.values.array, {$0.values.array}).map({$0.description.indentedBy(8)})
+    let delegates = panelDelegates.values.array.flatMap({$0.values.array}).map({$0.description.indentedBy(8)})
     if delegates.isEmpty { result += "nil" }
     else { result += "{\n" + ",\n\n".join(delegates) + "\n\t}" }
     return result
@@ -161,7 +161,7 @@ public final class RemoteView: RemoteElementView {
   /**
   drawRect:
 
-  :param: rect CGRect
+  - parameter rect: CGRect
   */
   override public func drawRect(rect: CGRect) {
     if let image = backgroundImage {

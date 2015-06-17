@@ -35,7 +35,7 @@ import DataModel
   /**
   initWithAttributes:
 
-  :param: titleAttributes TitleAttributes
+  - parameter titleAttributes: TitleAttributes
   */
   init(titleAttributes: TitleAttributes, observer: TitleAttributesDelegateObserver? = nil) {
     initialAttributes = titleAttributes
@@ -46,16 +46,16 @@ import DataModel
   /**
   detailController
 
-  :returns: UIViewController
+  - returns: UIViewController
   */
   func detailController() -> UIViewController { return TitleAttributesDetailController(item: self) }
 
   /**
   defaultSuppliedForProperty:
 
-  :param: property TitleAttributes.PropertyKey
+  - parameter property: TitleAttributes.PropertyKey
 
-  :returns: Bool
+  - returns: Bool
   */
   func defaultSuppliedForProperty(property: TitleAttributes.PropertyKey) -> Bool { return titleAttributes[property] == nil }
 

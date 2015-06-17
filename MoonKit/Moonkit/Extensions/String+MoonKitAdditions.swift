@@ -42,7 +42,7 @@ public extension String {
   public static let Quote:       String = "'"
   public static let DoubleQuote: String = "\""
 
-  public var length: Int { return count(self) }
+  public var length: Int { return self.characters.count }
 
   public var dashcaseString: String {
     if isDashcase { return self }
@@ -60,10 +60,10 @@ public extension String {
 
   public var titlecaseString: String {
     if isTitlecase { return self }
-    else if isDashcase { return String(map(self){$0 == "-" ? " " : $0}).capitalizedString }
+    else if isDashcase { return String(self.characters.map{$0 == "-" ? " " : $0}).capitalizedString }
     else if isCamelcase {
       var s = String(self[startIndex]).uppercaseString
-      for c in String(dropFirst(self)).unicodeScalars {
+      for c in String(String(dropFirst(self.characters))).unicodeScalars {
         switch c.value {
           case 65...90: s += " "; s.append(c)
           default: s.append(c)
@@ -77,11 +77,11 @@ public extension String {
 
   public var camelcaseString: String {
     if isCamelcase { return self }
-    else if isTitlecase { return String(self[startIndex]).lowercaseString + String(filter(dropFirst(self)){$0 != " "}) }
+    else if isTitlecase { return String(self[startIndex]).lowercaseString + String(String(dropFirst(self.characters)).filter{$0 != " "}) }
     else if isDashcase {
       var s = String(self[startIndex]).lowercaseString
       var previousCharacterWasDash = false
-      for c in String(dropFirst(self)).unicodeScalars {
+      for c in String(String(dropFirst(self.characters))).unicodeScalars {
         switch c.value {
           case 45: previousCharacterWasDash = true
           default:
@@ -139,32 +139,32 @@ public extension String {
   /**
   join:
 
-  :param: strings String...
+  - parameter strings: String...
 
-  :returns: String
+  - returns: String
   */
   public func join(strings: String...) -> String { return join(strings) }
 
   /**
   sandwhich:
 
-  :param: string String
+  - parameter string: String
 
-  :returns: String
+  - returns: String
   */
   public func sandwhich(string: String) -> String { return self + string + self }
 
   /**
   split:
 
-  :param: string String
+  - parameter string: String
 
-  :returns: [String]
+  - returns: [String]
   */
   public func split(string: String) -> [String] { return string.componentsSeparatedByString(self) }
 
-  public var pathStack: Stack<String> { return Stack(pathComponents.reverse()) }
-  public var keypathStack: Stack<String> { return Stack(".".split(self).reverse()) }
+  public var pathStack: Stack<String> { return Stack(Array(pathComponents.reverse())) }
+  public var keypathStack: Stack<String> { return Stack(Array(".".split(self).reverse())) }
 
   // MARK: - Initializers
 
@@ -179,8 +179,8 @@ public extension String {
       self = toString(Int(d))
     default:
       let string = toString(d)
-      if let decimal = find(string, ".") {
-        self = ".".join(string[..<decimal], prefix(string[advance(decimal, 1)..<], precision))
+      if let decimal = string.characters.indexOf(".".characters) {
+        self = ".".join(string[..<decimal], String(prefix(string[advance(decimal, 1)..<].characters, precision)))
       } else { self = string }
     }
   }
@@ -188,28 +188,27 @@ public extension String {
   /**
   initWithContentsOfFile:error:
 
-  :param: contentsOfFile String
-  :param: error NSErrorPointer = nil
+  - parameter contentsOfFile: String
+  - parameter error: NSErrorPointer = nil
   */
-  public init?(contentsOfFile: String, error: NSErrorPointer = nil) {
-    if let string = NSString(contentsOfFile: contentsOfFile, encoding: NSUTF8StringEncoding, error: error) {
-      self = string as String
-    } else { return nil }
+  public init(contentsOfFile: String) throws {
+    let string = try NSString(contentsOfFile: contentsOfFile, encoding: NSUTF8StringEncoding)
+    self = string as String
   }
 
   /**
   init:ofType:error:
 
-  :param: resource String
-  :param: type String?
-  :param: error NSErrorPointer = nil
+  - parameter resource: String
+  - parameter type: String?
+  - parameter error: NSErrorPointer = nil
   */
-  public init?(contentsOfBundleResource resource: String, ofType type: String?, error: NSErrorPointer = nil) {
+  public init(contentsOfBundleResource resource: String, ofType type: String?) throws {
+    let error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
     if let filePath = NSBundle.mainBundle().pathForResource(resource, ofType: type) {
-      if let string = NSString(contentsOfFile: filePath, encoding: NSUTF8StringEncoding, error: error) {
-        self = string as String
-      } else { return nil }
-    } else { return nil }
+      let string = try NSString(contentsOfFile: filePath, encoding: NSUTF8StringEncoding)
+      self = string as String
+    } else { throw error }
   }
 
   // MARK: - Regular Expressions
@@ -217,23 +216,23 @@ public extension String {
   /**
   sub:replacement:
 
-  :param: target String
-  :param: replacement String
+  - parameter target: String
+  - parameter replacement: String
 
-  :returns: String
+  - returns: String
   */
   public func subbed(target: String, _ replacement: String) -> String {
     return stringByReplacingOccurrencesOfString(target,
                                      withString: replacement,
-                                        options: nil,
+                                        options: [],
                                           range: startIndex..<endIndex)
   }
 
   /**
   sub:replacement:
 
-  :param: target String
-  :param: replacement String
+  - parameter target: String
+  - parameter replacement: String
   */
   public mutating func sub(target: String, _ replacement: String) {
     if let range = rangeForCapture(0, inFirstMatchFor: ~/target) {
@@ -244,18 +243,18 @@ public extension String {
   /**
   substringFromRange:
 
-  :param: range Range<Int>
+  - parameter range: Range<Int>
 
-  :returns: String
+  - returns: String
   */
   public func substringFromRange(range: Range<Int>) -> String { return self[range] }
 
   /**
   subscript:
 
-  :param: i Int
+  - parameter i: Int
 
-  :returns: Character
+  - returns: Character
   */
   public subscript (i: Int) -> Character {
     get { return self[advance(i < 0 ? self.endIndex : self.startIndex, i)] }
@@ -265,8 +264,8 @@ public extension String {
   /**
   replaceRange:with:
 
-  :param: subRange Range<Int>
-  :param: newElements C
+  - parameter subRange: Range<Int>
+  - parameter newElements: C
   */
   public mutating func replaceRange<C : CollectionType where C.Generator.Element == Character>(subRange: Range<Int>, with newElements: C) {
     let range = indexRangeFromIntRange(subRange)
@@ -276,9 +275,9 @@ public extension String {
   /**
   subscript:
 
-  :param: r Range<Int>
+  - parameter r: Range<Int>
 
-  :returns: String
+  - returns: String
   */
   public subscript (r: Range<Int>) -> String {
     get { return self[indexRangeFromIntRange(r)] }
@@ -288,9 +287,9 @@ public extension String {
   /**
   subscript:
 
-  :param: r Range<UInt>
+  - parameter r: Range<UInt>
 
-  :returns: String
+  - returns: String
   */
   public subscript (r: Range<UInt>) -> String {
     let rangeStart: String.Index = advance(startIndex, Int(r.startIndex))
@@ -302,9 +301,9 @@ public extension String {
   /**
   subscript:
 
-  :param: r NSRange
+  - parameter r: NSRange
 
-  :returns: String
+  - returns: String
   */
   public subscript (r: NSRange) -> String {
     let rangeStart: String.Index = advance(startIndex, r.location)
@@ -316,17 +315,17 @@ public extension String {
   /**
   matchFirst:
 
-  :param: pattern String
-  :returns: [String?]
+  - parameter pattern: String
+  - returns: [String?]
   */
   public func matchFirst(pattern: String) -> [String?] { return matchFirst(~/pattern) }
 
   /**
   matchesRegEx:
 
-  :param: regex NSRegularExpression
+  - parameter regex: NSRegularExpression
 
-  :returns: Bool
+  - returns: Bool
   */
   public func matchesRegEx(regex: RegularExpression) -> Bool {
     return match(regex)
@@ -335,23 +334,23 @@ public extension String {
   /**
   matchesRegEx:
 
-  :param: regex String
+  - parameter regex: String
 
-  :returns: Bool
+  - returns: Bool
   */
   public func matchesRegEx(regex: String) -> Bool { return matchesRegEx(~/regex) }
 
   /**
   substringFromFirstMatchForRegEx:
 
-  :param: regex NSRegularExpression
+  - parameter regex: NSRegularExpression
 
-  :returns: String?
+  - returns: String?
   */
   public func substringFromFirstMatchForRegEx(regex: RegularExpression) -> String? {
     var matchString: String?
-    let range = NSRange(location: 0, length: count(self))
-    if let match = regex.regex?.firstMatchInString(self, options: nil, range: range) {
+    let range = NSRange(location: 0, length: self.characters.count)
+    if let match = regex.regex?.firstMatchInString(self, options: [], range: range) {
       let matchRange = match.rangeAtIndex(0)
       precondition(matchRange.location != NSNotFound, "didn't expect a match object with no overall match range")
       matchString = self[matchRange]
@@ -364,14 +363,14 @@ public extension String {
   /**
   stringByReplacingMatchesForRegEx:withTemplate:
 
-  :param: regex NSRegularExpression
-  :param: template String
+  - parameter regex: NSRegularExpression
+  - parameter template: String
 
-  :returns: String
+  - returns: String
   */
   public func stringByReplacingMatchesForRegEx(regex: RegularExpression, withTemplate template: String) -> String {
     return regex.regex?.stringByReplacingMatchesInString(self,
-                                          options: nil,
+                                          options: [],
                                             range: NSRange(location: 0, length: characterCount),
                                      withTemplate: template) ?? self
   }
@@ -379,24 +378,24 @@ public extension String {
   /**
   replaceMatchesForRegEx:withTemplate:
 
-  :param: regex NSRegularExpression
-  :param: template String
+  - parameter regex: NSRegularExpression
+  - parameter template: String
 
-  :returns: String
+  - returns: String
   */
   public mutating func replaceMatchesForRegEx(regex: RegularExpression, withTemplate template: String) {
     self = stringByReplacingMatchesForRegEx(regex, withTemplate: template)
   }
 
-  public var characterCount: Int { return count(self) }
+  public var characterCount: Int { return self.characters.count }
 
   /**
   substringForCapture:inFirstMatchFor:
 
-  :param: capture Int
-  :param: regex NSRegularExpression
+  - parameter capture: Int
+  - parameter regex: NSRegularExpression
 
-  :returns: String?
+  - returns: String?
   */
   public func substringForCapture(capture: Int, inFirstMatchFor regex: RegularExpression) -> String? {
     let captures = matchFirst(regex)
@@ -406,14 +405,14 @@ public extension String {
   /**
   matchingSubstringsForRegEx:
 
-  :param: regex NSRegularExpression
+  - parameter regex: NSRegularExpression
 
-  :returns: [String]
+  - returns: [String]
   */
   public func matchingSubstringsForRegEx(regex: RegularExpression) -> [String] {
     var substrings: [String] = []
-    let range = NSRange(location: 0, length: count(self))
-    if let matches = regex.regex?.matchesInString(self, options: nil, range: range) as? [NSTextCheckingResult] {
+    let range = NSRange(location: 0, length: self.characters.count)
+    if let matches = regex.regex?.matchesInString(self, options: [], range: range) as? [NSTextCheckingResult] {
       for match in matches {
         let matchRange = match.rangeAtIndex(0)
         precondition(matchRange.location != NSNotFound, "didn't expect a match object with no overall match range")
@@ -427,10 +426,10 @@ public extension String {
   /**
   rangesForCapture:byMatching:
 
-  :param: capture Int
-  :param: pattern String
+  - parameter capture: Int
+  - parameter pattern: String
 
-  :returns: [Range<Int>?]
+  - returns: [Range<Int>?]
   */
   public func rangesForCapture(capture: Int, byMatching pattern: String) -> [Range<Int>?] {
     return rangesForCapture(capture, byMatching: ~/pattern)
@@ -439,14 +438,14 @@ public extension String {
   /**
   rangeForCapture:inFirstMatchFor:
 
-  :param: capture Int
-  :param: regex NSRegularExpression
+  - parameter capture: Int
+  - parameter regex: NSRegularExpression
 
-  :returns: Range<Int>?
+  - returns: Range<Int>?
   */
   public func rangeForCapture(capture: Int, inFirstMatchFor regex: RegularExpression) -> Range<Int>? {
     var range: Range<Int>?
-    if let match = regex.regex?.firstMatchInString(self, options: nil, range: NSRange(location: 0, length: count(self))) {
+    if let match = regex.regex?.firstMatchInString(self, options: [], range: NSRange(location: 0, length: self.characters.count)) {
       if capture >= 0 && capture <= regex.regex!.numberOfCaptureGroups {
         let matchRange = match.rangeAtIndex(capture)
         if matchRange.location != NSNotFound {
@@ -460,15 +459,15 @@ public extension String {
   /**
   rangesForCapture:byMatching:
 
-  :param: capture Int
-  :param: regex NSRegularExpression
+  - parameter capture: Int
+  - parameter regex: NSRegularExpression
 
-  :returns: [Range<Int>?]
+  - returns: [Range<Int>?]
   */
   public func rangesForCapture(capture: Int, byMatching regex: RegularExpression) -> [Range<Int>?] {
     var ranges: [Range<Int>?] = []
-    let r = NSRange(location: 0, length: count(self))
-    if let matches = regex.regex?.matchesInString(self, options: nil, range: r) as? [NSTextCheckingResult] {
+    let r = NSRange(location: 0, length: self.characters.count)
+    if let matches = regex.regex?.matchesInString(self, options: [], range: r) as? [NSTextCheckingResult] {
       for match in matches {
         var range: Range<Int>?
         if capture >= 0 && capture <= regex.regex!.numberOfCaptureGroups {
@@ -486,11 +485,11 @@ public extension String {
   /**
   toRegEx
 
-  :returns: NSRegularExpression?
+  - returns: NSRegularExpression?
   */
   public func toRegEx() -> RegularExpression {
     var error: NSError? = nil
-    let regex = RegularExpression(pattern: count(self) > 0 ? self : "(?:)", options: nil, error: &error)
+    let regex = RegularExpression(pattern: self.characters.count > 0 ? self : "(?:)", options: [], error: &error)
     #if os(iOS)
       MSHandleError(error, message: "failed to create regular expression object")
     #endif
@@ -500,12 +499,12 @@ public extension String {
   /**
   matchFirst:
 
-  :param: regex NSRegularExpression
-  :returns: [String?]
+  - parameter regex: NSRegularExpression
+  - returns: [String?]
   */
   public func matchFirst(regex: RegularExpression) -> [String?] {
   	var captures: [String?] = []
-    if let match: NSTextCheckingResult? = regex.regex?.firstMatchInString(self, options: nil, range: NSRange(0..<length)) {
+    if let match: NSTextCheckingResult? = regex.regex?.firstMatchInString(self, options: [], range: NSRange(0..<length)) {
       for i in 1...regex.regex!.numberOfCaptureGroups {
         if let range = match?.rangeAtIndex(i) { captures.append(range.location != NSNotFound ? self[range] : nil) }
         else { captures.append(nil) }
@@ -518,13 +517,13 @@ public extension String {
   /**
   matchAll:
 
-  :param: regex RegularExpression
+  - parameter regex: RegularExpression
 
-  :returns: [[String?]]
+  - returns: [[String?]]
   */
   public func matchAll(regex: RegularExpression) -> [[String?]] {
     var result: [[String?]] = []
-    if let matches = regex.regex?.matchesInString(self, options: nil, range: NSRange(0..<length)) as? [NSTextCheckingResult],
+    if let matches = regex.regex?.matchesInString(self, options: [], range: NSRange(0..<length)) as? [NSTextCheckingResult],
       captureCount = regex.regex?.numberOfCaptureGroups
     {
       for match in matches {
@@ -545,9 +544,9 @@ public extension String {
   /**
   indexRangeFromIntRange:
 
-  :param: range Range<Int>
+  - parameter range: Range<Int>
 
-  :returns: Range<String
+  - returns: Range<String
   */
   public func indexRangeFromIntRange(range: Range<Int>) -> Range<String.Index> {
     let s = advance(startIndex, range.startIndex)
@@ -567,7 +566,7 @@ public func enumerateMatches(pattern: String,
                              string: String,
                              block: (NSTextCheckingResult!, NSMatchingFlags, UnsafeMutablePointer<ObjCBool>) -> Void)
 {
-  (~/pattern).regex?.enumerateMatchesInString(string, options: nil, range: NSRange(0..<string.length), usingBlock: block)
+  (~/pattern).regex?.enumerateMatchesInString(string, options: [], range: NSRange(0..<string.length), usingBlock: block)
 }
 
 // MARK: - Operators

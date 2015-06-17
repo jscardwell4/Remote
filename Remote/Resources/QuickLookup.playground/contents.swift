@@ -2,15 +2,15 @@
 import Foundation
 import UIKit
 let excluded = ["device", "code.uuid", "some.other.key", "yetAnotherKey"]
-let expandedKeys = excluded.map({split($0, isSeparator: {$0 == "."})})
+let expandedKeys = excluded.map({split($0.characters, isSeparator: {$0 == "."}).map { String($0) }})
 expandedKeys
-let depth = reduce(expandedKeys.map({$0.count}), 0, max)
+let depth = expandedKeys.map({$0.count}).reduce(0, combine: max)
 depth
-let zippedExpandedKeys = reduce(enumerate(expandedKeys), Array<[String]>(count: depth, repeatedValue: []), {
+let zippedExpandedKeys = expandedKeys.enumerate().reduce(Array<[String]>(count: depth, repeatedValue: []), {
   (var result: [[String]], element: (Int, [String])) -> [[String]] in
   toString(result)
   toString(element)
-  for (i, s) in enumerate(element.1) {
+  for (i, s) in element.enumerate() {
     toString((i , s))
     result[i].append(s)
   }
@@ -42,14 +42,14 @@ for h in hex {
   let color = UIColor(red: rgba.0, green: rgba.1, blue: rgba.2, alpha: rgba.3)
 }
 
-class BumFuck: NSObject, Printable {
+class BumFuck: NSObject, CustomStringConvertible {
   override var description: String { return "I'm a bum fuck" }
 }
 
 let fakeBumFuck: BumFuck? = nil
 let realBumFuck: BumFuck? = BumFuck()
-println("fakeBumFuck = \(fakeBumFuck ?? nil)")
-println("realBumFuck = \(toString(realBumFuck!))")
+print("fakeBumFuck = \(fakeBumFuck ?? nil)")
+print("realBumFuck = \(String(realBumFuck!))")
 
 postfix operator -?? {}
 postfix func -??(lhs: AnyObject?) -> String {
@@ -63,4 +63,4 @@ func toString<T>(x: T?) -> String {
   }
 }
 realBumFuck-??
-println("realBumFuck = \(toString(realBumFuck))")
+print

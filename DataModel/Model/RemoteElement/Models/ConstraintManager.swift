@@ -47,7 +47,7 @@ public final class ConstraintManager: NSObject {
   /**
   initWithElement:
 
-  :param: element RemoteElement
+  - parameter element: RemoteElement
   */
   public init(element: RemoteElement) { super.init(); remoteElement = element; refreshConfig() }
 
@@ -55,9 +55,9 @@ public final class ConstraintManager: NSObject {
   /**
   replacementFormatForString:
 
-  :param: format String
+  - parameter format: String
 
-  :returns: String
+  - returns: String
   */
   public func replacementFormatForString(format: String) -> String {
 
@@ -73,15 +73,15 @@ public final class ConstraintManager: NSObject {
     for r in matchingRanges {
       if let matchRange = r {
         let matchedSubstring = format[matchRange]
-        let i = dropFirst(matchedSubstring).toInt()!
+        let i = Int(String(dropFirst(matchedSubstring.characters)))!
         let replacement = identifiers[i]
         let start = advance(replacementFormat.startIndex, matchRange.startIndex + insertCount - removeCount)
         let end = advance(replacementFormat.startIndex, matchRange.endIndex + insertCount - removeCount)
         let indexRange = Range<String.Index>(start: start, end: end)
 
         replacementFormat.replaceRange(indexRange, with: identifiers[i])
-        removeCount += count(matchedSubstring)
-        insertCount += count(replacement)
+        removeCount += matchedSubstring.characters.count
+        insertCount += replacement.characters.count
       }
     }
     let result = replacementFormat.stringByReplacingOccurrencesOfString("self", withString: remoteElement.identifier)
@@ -91,7 +91,7 @@ public final class ConstraintManager: NSObject {
   /**
   Creates and adds new `Constraint` objects for the managed element.
 
-  :param: format String Extended visual format string from which the constraints should be parsed.
+  - parameter format: String Extended visual format string from which the constraints should be parsed.
   */
   public func setConstraintsFromString(format: String) {
 
@@ -122,9 +122,9 @@ public final class ConstraintManager: NSObject {
   /**
   freezeSize:forSubelement:attribute:
 
-  :param: size CGSize
-  :param: subelement RemoteElement
-  :param: attribute NSLayoutAttribute
+  - parameter size: CGSize
+  - parameter subelement: RemoteElement
+  - parameter attribute: NSLayoutAttribute
   */
   public func freezeSize(size: CGSize, forSubelement subelement: RemoteElement, attribute: NSLayoutAttribute) {
 
@@ -183,9 +183,9 @@ public final class ConstraintManager: NSObject {
  Modifies constraints such that any sibling co-dependencies are converted to parent-dependencies.
  To be frozen, the `firstAttribute` of a constraint must be included in the set of `attributes`.
 
- :param: constraints [Constraint] Constraints to freeze
- :param: attributes [NSLayoutAttribute] `NSLayoutAttributes` used to filter whether a constraint is frozen
- :param: metrics Metrics Dictionary of element frames keyed by their `identifier` property
+ - parameter constraints: [Constraint] Constraints to freeze
+ - parameter attributes: [NSLayoutAttribute] `NSLayoutAttributes` used to filter whether a constraint is frozen
+ - parameter metrics: Metrics Dictionary of element frames keyed by their `identifier` property
  */
   public func freezeConstraints(constraints: Set<Constraint>, attributes: [NSLayoutAttribute], metrics: Metrics) {
     remoteElement.managedObjectContext?.performBlockAndWait {
@@ -247,10 +247,10 @@ public final class ConstraintManager: NSObject {
   /**
   resizeSubelements:toSibling:attribute:metrics:
 
-  :param: subelements [RemoteElement]
-  :param: sibling RemoteElement
-  :param: attribute NSLayoutAttribute
-  :param: metrics Metrics
+  - parameter subelements: [RemoteElement]
+  - parameter sibling: RemoteElement
+  - parameter attribute: NSLayoutAttribute
+  - parameter metrics: Metrics
   */
   public func resizeSubelements(subelements: [RemoteElement], toSibling sibling: RemoteElement, attribute: NSLayoutAttribute,
                  metrics: Metrics)
@@ -282,10 +282,10 @@ public final class ConstraintManager: NSObject {
   /**
   resizeElement:fromSize:toSize:metrics:
 
-  :param: element RemoteElement
-  :param: fromSize CGSize
-  :param: toSize CGSize
-  :param: metrics Metrics
+  - parameter element: RemoteElement
+  - parameter fromSize: CGSize
+  - parameter toSize: CGSize
+  - parameter metrics: Metrics
   */
   public func resizeElement(element: RemoteElement, fromSize: CGSize, toSize: CGSize, metrics: Metrics) {
     remoteElement.managedObjectContext?.performBlockAndWait {
@@ -319,10 +319,10 @@ public final class ConstraintManager: NSObject {
   /**
   alignSubelements:toSibling:attribute:metrics:
 
-  :param: subelements [RemoteElement]
-  :param: sibling RemoteElement
-  :param: attribute NSLayoutAttribute
-  :param: metrics Metrics
+  - parameter subelements: [RemoteElement]
+  - parameter sibling: RemoteElement
+  - parameter attribute: NSLayoutAttribute
+  - parameter metrics: Metrics
   */
   public func alignSubelements(subelements: [RemoteElement],
                      toSibling sibling: RemoteElement,
@@ -356,7 +356,7 @@ public final class ConstraintManager: NSObject {
   /**
   shrinkwrapSubelementsUsingMetrics:
 
-  :param: metrics [String CGRect]
+  - parameter metrics: [String CGRect]
   */
   public func shrinkwrapSubelementsUsingMetrics(metrics: Metrics) {
 
@@ -424,9 +424,9 @@ public final class ConstraintManager: NSObject {
   /**
   Translates the specified subelements by the specified amount.
 
-  :param: subelements [RemoteElement] elements to be translated
-  :param: translation CGPoint Amount by which s will be translated
-  :param: metrics Metrics Dictionary of element frames keyed by their `identifier` property
+  - parameter subelements: [RemoteElement] elements to be translated
+  - parameter translation: CGPoint Amount by which s will be translated
+  - parameter metrics: Metrics Dictionary of element frames keyed by their `identifier` property
   */
   public func translateSubelements(subelements: [RemoteElement], translation: CGPoint, metrics: Metrics) {
     remoteElement.managedObjectContext?.performBlockAndWait {
@@ -451,7 +451,7 @@ public final class ConstraintManager: NSObject {
   /**
   removeMultipliersUsingMetrics:
 
-  :param: metrics [String CGRect]
+  - parameter metrics: [String CGRect]
   */
   public func removeMultipliersUsingMetrics(metrics: Metrics) {
 
@@ -493,8 +493,8 @@ public final class ConstraintManager: NSObject {
   /**
   Modifies the constraints of an element such that width and height are not co-dependent.
 
-  :param: element RemoteElement The element whose constraints should be altered
-  :param: currentSize CGSize The size to use when calculating static width and height
+  - parameter element: RemoteElement The element whose constraints should be altered
+  - parameter currentSize: CGSize The size to use when calculating static width and height
   */
   public func removeProportionLockForElement(element: RemoteElement, currentSize: CGSize) {
     self.remoteElement.managedObjectContext?.performBlockAndWait {
@@ -522,8 +522,8 @@ public final class ConstraintManager: NSObject {
   /**
   Modifies `remoteElement` constraints to avoid unsatisfiable conditions when adding the specified constraint.
 
-  :param: constraint Constraint `Constraint` whose addition may require conflict resolution
-  :param: metrics Metrics Dictionary of element frames keyed by their `identifier` property
+  - parameter constraint: Constraint `Constraint` whose addition may require conflict resolution
+  - parameter metrics: Metrics Dictionary of element frames keyed by their `identifier` property
   */
   public func resolveConflictsForConstraint(constraint: Constraint, metrics: Metrics) {
 
@@ -591,9 +591,9 @@ public final class ConstraintManager: NSObject {
   /**
   subscript:
 
-  :param: attribute NSLayoutAttribute
+  - parameter attribute: NSLayoutAttribute
 
-  :returns: NSNumber?
+  - returns: NSNumber?
   */
   private(set) public subscript(attribute: Attribute) -> Bool {
     get { return layoutBits.isBitSet(attribute.rawValue) }
@@ -629,7 +629,7 @@ public final class ConstraintManager: NSObject {
     /**
     init:
 
-    :param: attribute NSLayoutAttribute
+    - parameter attribute: NSLayoutAttribute
     */
     public init?(_ attribute: NSLayoutAttribute) {
       switch attribute {
@@ -652,9 +652,9 @@ public final class ConstraintManager: NSObject {
   /**
   dependencyForAttribute:
 
-  :param: attribute NSLayoutAttribute
+  - parameter attribute: NSLayoutAttribute
 
-  :returns: Dependency
+  - returns: Dependency
   */
   public func dependencyForAttribute(attribute: Attribute) -> Dependency {
     if !self[attribute] { return .None }
@@ -671,9 +671,9 @@ public final class ConstraintManager: NSObject {
   /**
   replacementCandidatesForAddingAttribute:
 
-  :param: attribute NSLayoutAttribute
+  - parameter attribute: NSLayoutAttribute
 
-  :returns: ([NSLayoutAttribute], [NSLayoutAttribute])
+  - returns: ([NSLayoutAttribute], [NSLayoutAttribute])
   */
   public func replacementCandidatesForAddingAttribute(attribute: NSLayoutAttribute) -> ([NSLayoutAttribute], [NSLayoutAttribute]) {
     switch attribute {
@@ -781,10 +781,10 @@ public final class ConstraintManager: NSObject {
   /**
   constraintsForAttribute:ofOrder:
 
-  :param: attribute NSLayoutAttribute
-  :param: order Order = .None
+  - parameter attribute: NSLayoutAttribute
+  - parameter order: Order = .None
 
-  :returns: [Constraint]
+  - returns: [Constraint]
   */
   public func constraintsForAttribute(attribute: NSLayoutAttribute, ofOrder order: Order = .None) -> Set<Constraint> {
     switch order {
@@ -796,9 +796,9 @@ public final class ConstraintManager: NSObject {
   /**
   constraintWithValues:
 
-  :param: values [String AnyObject]
+  - parameter values: [String AnyObject]
 
-  :returns: Constraint?
+  - returns: Constraint?
   */
 //  public func constraintWithValues(values: [String:AnyObject]) -> Constraint? {
 //    assert(false, "what is using this? why are we checking the first item constraints?")

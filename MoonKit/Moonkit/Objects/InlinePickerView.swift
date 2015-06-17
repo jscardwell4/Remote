@@ -14,14 +14,14 @@ public class InlinePickerView: UIView {
   /**
   initWithFrame:
 
-  :param: frame CGRect
+  - parameter frame: CGRect
   */
   override public init(frame: CGRect) { super.init(frame: frame); initializeIVARs() }
 
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required public init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
 
@@ -53,9 +53,9 @@ public class InlinePickerView: UIView {
   /**
   selectRow:inComponent:animated:
 
-  :param: row Int
-  :param: component Int
-  :param: animated Bool
+  - parameter row: Int
+  - parameter component: Int
+  - parameter animated: Bool
   */
   public func selectRow(row: Int, animated: Bool) { picker.selectRow(row, inComponent: 0, animated: animated) }
 

@@ -25,14 +25,14 @@ public final class ActivityCommand: Command {
 
   override public var description: String {
     var result = super.description
-    result += "\n\tactivity = \(toString(activity?.index.rawValue))"
+    result += "\n\tactivity = \(String(activity?.index.rawValue))"
     return result
   }
 
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)

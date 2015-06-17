@@ -42,7 +42,7 @@ public class TwoToneSlider: UISlider {
   /**
   initWithFrame:
 
-  :param: frame CGRect
+  - parameter frame: CGRect
   */
   public override init(frame: CGRect) {
     super.init(frame: frame)
@@ -52,18 +52,18 @@ public class TwoToneSlider: UISlider {
   /**
   initWithAutolayout:
 
-  :param: autolayout Bool
+  - parameter autolayout: Bool
   */
   public convenience init(autolayout: Bool = false) {
     self.init(frame: CGRect.zeroRect)
-    setTranslatesAutoresizingMaskIntoConstraints(!autolayout)
+    translatesAutoresizingMaskIntoConstraints = !autolayout
   }
 
   /**
   initWithType:autolayout:
 
-  :param: type GeneratedColorType
-  :param: autolayout Bool = false
+  - parameter type: GeneratedColorType
+  - parameter autolayout: Bool = false
   */
   public convenience init(type: GeneratedColorType, autolayout: Bool = false) {
     self.init(autolayout: autolayout)
@@ -73,7 +73,7 @@ public class TwoToneSlider: UISlider {
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   public required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 

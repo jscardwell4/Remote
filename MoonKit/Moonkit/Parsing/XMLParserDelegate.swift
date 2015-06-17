@@ -87,7 +87,7 @@ import Foundation
      didStartElement elementName: String,
         namespaceURI: String?,
        qualifiedName qName: String?,
-          attributes:[NSObject:AnyObject])
+          attributes:[String: String])
   {
     startElement?(parser, elementName, namespaceURI, qName, attributes)
   }
@@ -126,7 +126,7 @@ import Foundation
     foundProcessing?(parser, target, data)
   }
 
-  public func parser(parser: NSXMLParser, foundComment comment: String?) {
+  public func parser(parser: NSXMLParser, foundComment comment: String) {
     foundComment?(parser, comment)
   }
 

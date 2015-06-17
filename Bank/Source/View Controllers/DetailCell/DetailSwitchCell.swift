@@ -15,8 +15,8 @@ class DetailSwitchCell: DetailCell {
   /**
   initWithStyle:reuseIdentifier:
 
-  :param: style UITableViewCellStyle
-  :param: reuseIdentifier String?
+  - parameter style: UITableViewCellStyle
+  - parameter reuseIdentifier: String?
   */
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -30,7 +30,7 @@ class DetailSwitchCell: DetailCell {
   /**
   switchValueDidChange:
 
-  :param: sender UISwitch
+  - parameter sender: UISwitch
   */
   func switchValueDidChange(sender: UISwitch) { valueDidChange?(NSNumber(bool: sender.on)) }
 
@@ -38,7 +38,7 @@ class DetailSwitchCell: DetailCell {
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
@@ -62,7 +62,7 @@ class DetailSwitchCell: DetailCell {
 
   private let switchView: UISwitch = {
     let view = UISwitch()
-    view.setTranslatesAutoresizingMaskIntoConstraints(false)
+    view.translatesAutoresizingMaskIntoConstraints = false
     view.userInteractionEnabled = false
     return view
   }()

@@ -28,14 +28,14 @@ public enum JSONValue {
   /**
   Initialize from a convertible type
 
-  :param: v T:JSONValueConvertible
+  - parameter v: T:JSONValueConvertible
   */
   public init<T:JSONValueConvertible>(_ v: T) { self = v.jsonValue }
 
   /**
   Initialize to case `Array` using a `JSONValue` sequence
 
-  :param: s S
+  - parameter s: S
   */
   public init<S:SequenceType where S.Generator.Element == JSONValue>(_ s: S) {
     self = Array(Swift.Array(s))
@@ -44,7 +44,7 @@ public enum JSONValue {
   /**
   Initialize to case `Array` using a `JSONValueConvertible` sequence
 
-  :param: s S
+  - parameter s: S
   */
   public init<S:SequenceType where S.Generator.Element:JSONValueConvertible>(_ s: S) {
     self = Array(Swift.Array(map(s, {$0.jsonValue})))
@@ -53,7 +53,7 @@ public enum JSONValue {
   /**
   Initialize to case `Object` using a key-value collection
 
-  :param: c C
+  - parameter c: C
   */
   public init<C:KeyValueCollectionType where C.KeysLazyCollectionType.Generator.Element == Swift.String,
                                              C.ValuesLazyCollectionType.Generator.Element == JSONValue>(_ c: C)
@@ -64,12 +64,12 @@ public enum JSONValue {
   /**
   Initialize to case `Object` using a key-value collection
 
-  :param: c C
+  - parameter c: C
   */
   public init<C:KeyValueCollectionType where C.KeysLazyCollectionType.Generator.Element == Swift.String,
     C.ValuesLazyCollectionType.Generator.Element:JSONValueConvertible>(_ c: C)
   {
-    self = Object(OrderedDictionary<Swift.String, JSONValue>(keys: c.keys, values: map(c.values, {$0.jsonValue})))
+    self = Object(OrderedDictionary<Swift.String, JSONValue>(keys: c.keys, values: c.values.map({$0.jsonValue})))
   }
 
   public init?(_ v: Any) {
@@ -79,12 +79,12 @@ public enum JSONValue {
     else if let x = v as? BooleanType { self = Boolean(x.boolValue) }
     else if let x = v as? NSNull { self = Null }
     else if let x = v as? NSArray {
-      let converted = compressedMap(x, {JSONValue($0)})
+      let converted = compressedMap(x, transform: {JSONValue($0)})
       if converted.count == x.count { self = Array(converted) }
       else { return nil }
     }
     else if let x = v as? [Any] {
-      let converted = compressedMap(x, {JSONValue($0)})
+      let converted = compressedMap(x, transform: {JSONValue($0)})
       if converted.count == x.count { self = Array(converted) }
       else { return nil }
     }
@@ -95,7 +95,7 @@ public enum JSONValue {
     }
     else if let x = v as? NSDictionary {
       let keys = x.allKeys.map({toString($0)})
-      let values = compressedMap(x.allValues, {JSONValue($0)})
+      let values = compressedMap(x.allValues, transform: {JSONValue($0)})
       if keys.count == values.count { self = Object(OrderedDictionary(Swift.Array(zip(keys, values)))) }
       else { return nil }
     }
@@ -105,7 +105,7 @@ public enum JSONValue {
   /**
   Initialize with any object or return nil upon conversion failure
 
-  :param: v AnyObject
+  - parameter v: AnyObject
   */
   public init?(_ value: Any?) {
     if let v = value {
@@ -116,9 +116,9 @@ public enum JSONValue {
   /**
   stringValueWithDepth:
 
-  :param: depth Int
+  - parameter depth: Int
 
-  :returns: Swift.String
+  - returns: Swift.String
   */
   private func stringValueWithDepth(depth: Int) -> Swift.String {
     switch self {
@@ -224,7 +224,7 @@ public enum JSONValue {
           while let k = keypath.pop() { leaf = [k:.Object(leaf)] }
           return .Object(leaf)
         }
-        return .Object(o.inflated(expand: expand).map({$2.inflatedValue}))
+        return .Object(o.inflated(expand).map({$2.inflatedValue}))
       default: return self
     }
   }
@@ -232,9 +232,9 @@ public enum JSONValue {
   /**
   Returns the value at the specified index when self is Array or Object and index is valid, nil otherwise
 
-  :param: idx Int
+  - parameter idx: Int
 
-  :returns: JSONValue?
+  - returns: JSONValue?
   */
   public subscript(idx: Int) -> JSONValue? {
     switch self {
@@ -247,9 +247,9 @@ public enum JSONValue {
   /**
   Returns the value for the specified key when self is Object and nil otherwise
 
-  :param: key Swift.String
+  - parameter key: Swift.String
 
-  :returns: JSONValue?
+  - returns: JSONValue?
   */
   public subscript(key: Swift.String) -> JSONValue? {
     switch self { case .Object(let o): return o[key]; default: return nil }
@@ -270,8 +270,8 @@ extension JSONValue: RawRepresentable {
   }
   public init?(rawValue: Swift.String) {
     let parser = JSONParser(string: rawValue, allowFragment: true)
-    var error: NSError?
-    if let value = parser.parse(error: &error) where !MSHandleError(error) { self = value }
+    let error: NSError?
+    if let value = parser.parse() where !MSHandleError(error) { self = value }
     else { return nil }
   }
 }
@@ -327,7 +327,7 @@ extension JSONValue: StringLiteralConvertible {
 
 // MARK: StringInterpolationConvertible
 extension JSONValue: StringInterpolationConvertible {
-  public init(stringInterpolation strings: JSONValue...) { self = String(reduce(strings, "", {$0 + ($1.stringValue ?? "")})) }
+  public init(stringInterpolation strings: JSONValue...) { self = String(strings.reduce("", combine: {$0 + ($1.stringValue ?? "")})) }
   public init<T>(stringInterpolationSegment expr: T) { self = String(toString(expr)) }
 }
 
@@ -335,10 +335,10 @@ extension JSONValue: StringInterpolationConvertible {
 extension JSONValue: Streamable { public func writeTo<T:OutputStreamType>(inout target: T) { target.write(rawValue) } }
 
 // MARK: Printable
-extension JSONValue: Printable { public var description: Swift.String { return rawValue } }
+extension JSONValue: CustomStringConvertible { public var description: Swift.String { return rawValue } }
 
 // MARK: DebugPrintable
-extension JSONValue: DebugPrintable {
+extension JSONValue: CustomDebugStringConvertible {
   public var debugDescription: Swift.String {
     var description: Swift.String = "\n"
     switch self {

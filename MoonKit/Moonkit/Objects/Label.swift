@@ -15,7 +15,7 @@ public class Label: UILabel {
   /**
   drawRect:
 
-  :param: rect CGRect
+  - parameter rect: CGRect
   */
 //  public override func drawRect(rect: CGRect) {
 //    attributedText.drawInRect(gutter.insetRect(rect))
@@ -24,7 +24,7 @@ public class Label: UILabel {
   /**
   alignmentRectInsets
 
-  :returns: UIEdgeInsets
+  - returns: UIEdgeInsets
   */
 //  public override func alignmentRectInsets() -> UIEdgeInsets {
 //    return gutter
@@ -33,7 +33,7 @@ public class Label: UILabel {
   /**
   intrinsicContentSize
 
-  :returns: CGSize
+  - returns: CGSize
   */
   public override func intrinsicContentSize() -> CGSize {
     return gutter.insetRect(CGRect(size: super.intrinsicContentSize())).size

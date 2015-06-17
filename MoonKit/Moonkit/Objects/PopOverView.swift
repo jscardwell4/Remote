@@ -37,7 +37,7 @@ public class PopOverView: UIView {
   /**
   Overridden to account for the top/bottom arrow
 
-  :returns: UIEdgeInsets
+  - returns: UIEdgeInsets
   */
   public override func alignmentRectInsets() -> UIEdgeInsets {
     switch location {
@@ -121,8 +121,8 @@ public class PopOverView: UIView {
 
     let blurEffect = UIBlurEffect(style: .Dark)
     let blur = UIVisualEffectView(effect: blurEffect)
-    blur.setTranslatesAutoresizingMaskIntoConstraints(false)
-    blur.contentView.setTranslatesAutoresizingMaskIntoConstraints(false)
+    blur.translatesAutoresizingMaskIntoConstraints = false
+    blur.contentView.translatesAutoresizingMaskIntoConstraints = false
     blur.constrain(𝗩|blur.contentView|𝗩, 𝗛|blur.contentView|𝗛)
 
     addSubview(blur)
@@ -134,14 +134,14 @@ public class PopOverView: UIView {
   /**
   initWithFrame:
 
-  :param: frame CGRect
+  - parameter frame: CGRect
   */
   public override init(frame: CGRect) { super.init(frame: frame); initializeIVARs() }
 
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required public init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
 
@@ -150,11 +150,11 @@ public class PopOverView: UIView {
   /**
   Overridden to return a size composed of the stacked `labels`
 
-  :returns: CGSize
+  - returns: CGSize
   */
   public override func intrinsicContentSize() -> CGSize {
     let labelSizes = labels.map {$0.intrinsicContentSize()}
-    let w = min(maxElement(labelSizes.map {$0.width}), UIScreen.mainScreen().bounds.width - 8)
+    let w = min(labelSizes.map {$0.width}.maxElement()!, UIScreen.mainScreen().bounds.width - 8)
     let h = sum(labelSizes.map {$0.height}) + CGFloat(labelSizes.count + 1) * CGFloat(10)
     return CGSize(width: w, height: h)
   }
@@ -162,8 +162,8 @@ public class PopOverView: UIView {
   /**
   Method to add a new label with the specified text and action
 
-  :param: string String
-  :param: action (PopOverView, String) -> Void
+  - parameter string: String
+  - parameter action: (PopOverView, String) -> Void
   */
   public func addLabel(label string: String, withAction action: (PopOverView) -> Void) {
     let label = LabelButton(autolayout: true)

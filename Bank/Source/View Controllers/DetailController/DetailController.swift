@@ -28,24 +28,24 @@ class DetailController: UITableViewController {
   /**
   init:bundle:
 
-  :param: nibNameOrNil String?
-  :param: nibBundleOrNil NSBundle?
+  - parameter nibNameOrNil: String?
+  - parameter nibBundleOrNil: NSBundle?
   */
-  override init!(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
   }
 
   /**
   initWithCoder:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required init(coder aDecoder: NSCoder) { fatalError("must use init(item:)") }
 
   /**
   initWithItem:
 
-  :param: item Detailable
+  - parameter item: Detailable
   */
   init(item: Detailable) { super.init(style: .Grouped); self.item = item; hidesBottomBarWhenPushed = true }
 
@@ -89,15 +89,15 @@ class DetailController: UITableViewController {
   /**
   Updates display
 
-  :param: animated Bool
+  - parameter animated: Bool
   */
   override func viewWillAppear(animated: Bool) { super.viewWillAppear(animated); updateDisplay() }
 
   /**
   Invokes table view section reload wrapped inside `beginUpdates` and `endUpdates`
 
-  :param: section Int
-  :param: animation UITableViewRowAnimation = .Automatic
+  - parameter section: Int
+  - parameter animation: UITableViewRowAnimation = .Automatic
   */
   func reloadSection(section: Int, withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
     tableView.beginUpdates()
@@ -108,8 +108,8 @@ class DetailController: UITableViewController {
   /**
   Invokes table view section reload wrapped inside `beginUpdates` and `endUpdates`
 
-  :param: section DetailSection
-  :param: animation UITableViewRowAnimation = .Automatic
+  - parameter section: DetailSection
+  - parameter animation: UITableViewRowAnimation = .Automatic
   */
   func reloadSection(section: DetailSection, withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
     reloadSection(section.section, withRowAnimation: animation)
@@ -118,8 +118,8 @@ class DetailController: UITableViewController {
   /**
   Calls the table view's `reloadRowAtIndexPath` method wrapped inside `beginUpdates` and `endUpdates`
 
-  :param: indexPath NSIndexPath
-  :param: animation UITableViewRowAnimation = .Automatic
+  - parameter indexPath: NSIndexPath
+  - parameter animation: UITableViewRowAnimation = .Automatic
   */
   func reloadRowAtIndexPath(indexPath: NSIndexPath, withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
     reloadRowsAtIndexPaths([indexPath], withRowAnimation: animation)
@@ -128,8 +128,8 @@ class DetailController: UITableViewController {
   /**
   Calls the table view's `reloadRowsAtIndexPaths` method wrapped inside `beginUpdates` and `endUpdates`
 
-  :param: indexPaths [NSIndexPath]
-  :param: animation UITableViewRowAnimation = .Automatic
+  - parameter indexPaths: [NSIndexPath]
+  - parameter animation: UITableViewRowAnimation = .Automatic
   */
   func reloadRowsAtIndexPaths(indexPaths: [NSIndexPath], withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
     tableView.beginUpdates()
@@ -140,8 +140,8 @@ class DetailController: UITableViewController {
   /**
   Calls the table view's `removeRowAtIndexPath` method wrapped inside `beginUpdates` and `endUpdates`
 
-  :param: indexPath NSIndexPath
-  :param: animation UITableViewRowAnimation = .Automatic
+  - parameter indexPath: NSIndexPath
+  - parameter animation: UITableViewRowAnimation = .Automatic
   */
   func removeRowAtIndexPath(indexPath: NSIndexPath, withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
     tableView.beginUpdates()
@@ -152,8 +152,8 @@ class DetailController: UITableViewController {
   /**
   Calls the table view's `insertRowAtIndexPath` method wrapped inside `beginUpdates` and `endUpdates`
 
-  :param: indexPath NSIndexPath
-  :param: animation UITableViewRowAnimation = .Automatic
+  - parameter indexPath: NSIndexPath
+  - parameter animation: UITableViewRowAnimation = .Automatic
   */
   func insertRowAtIndexPath(indexPath: NSIndexPath, withRowAnimation animation: UITableViewRowAnimation = .Automatic) {
     tableView.beginUpdates()
@@ -163,7 +163,7 @@ class DetailController: UITableViewController {
 
   /** Invokes `configureCell` for each `DetailRow` associated with a visible cell */
   func configureVisibleCells() {
-    if let visibleIndexPaths = tableView.indexPathsForVisibleRows() as? [NSIndexPath] {
+    if let visibleIndexPaths = tableView.indexPathsForVisibleRows as? [NSIndexPath] {
       configureCellsAtIndexPaths(visibleIndexPaths)
     }
   }
@@ -171,7 +171,7 @@ class DetailController: UITableViewController {
   /**
   Invokes `configureCell` for each `DetailRow` associated with the index paths specified
 
-  :param: indexPaths [NSIndexPath]
+  - parameter indexPaths: [NSIndexPath]
   */
   func configureCellsAtIndexPaths(indexPaths: [NSIndexPath]) {
     applyToRowsAtIndexPaths(indexPaths) {
@@ -184,11 +184,11 @@ class DetailController: UITableViewController {
   /**
   Performs the specified block for each `DetailRow` retrieved via the specified index paths
 
-  :param: indexPaths [NSIndexPath]
-  :param: block (DetailRow) -> Void
+  - parameter indexPaths: [NSIndexPath]
+  - parameter block: (DetailRow) -> Void
   */
   func applyToRowsAtIndexPaths(indexPaths: [NSIndexPath], block: (DetailRow) -> Void) {
-    if let visibleIndexPaths = tableView.indexPathsForVisibleRows() as? [NSIndexPath] {
+    if let visibleIndexPaths = tableView.indexPathsForVisibleRows as? [NSIndexPath] {
       apply(compressed((indexPaths ∩ visibleIndexPaths).map({self[$0]})), block)
     }
   }
@@ -198,8 +198,8 @@ class DetailController: UITableViewController {
   /**
   Updates `navigationItem` and the calls `super`'s implementation, if current value for `editing` differs from parameter
 
-  :param: editing Bool
-  :param: animated Bool
+  - parameter editing: Bool
+  - parameter animated: Bool
   */
   override func setEditing(editing: Bool, animated: Bool) {
     if self.editing != editing {
@@ -231,28 +231,28 @@ class DetailController: UITableViewController {
   /**
   Accessor for `DetailRow` objects by `NSIndexPath`
 
-  :param: indexPath NSIndexPath
+  - parameter indexPath: NSIndexPath
 
-  :returns: DetailRow?
+  - returns: DetailRow?
   */
   subscript(indexPath: NSIndexPath) -> DetailRow? { return self[indexPath.row, indexPath.section] }
 
   /**
   Accessor for `DetailSection` objects by index
 
-  :param: section Int
+  - parameter section: Int
 
-  :returns: DetailSection?
+  - returns: DetailSection?
   */
   subscript(section: Int) -> DetailSection? { return section < sections.count ? sections.values[section] : nil }
 
   /**
   Accessor for the `DetailRow` identified by row and section
 
-  :param: row Int
-  :param: section Int
+  - parameter row: Int
+  - parameter section: Int
 
-  :returns: DetailRow?
+  - returns: DetailRow?
   */
   subscript(row: Int, section: Int) -> DetailRow? { return self[section]?[row] }
 
@@ -265,10 +265,10 @@ extension DetailController: UITableViewDelegate {
   /**
   tableView:editingStyleForRowAtIndexPath:
 
-  :param: tableView UITableView
-  :param: indexPath NSIndexPath
+  - parameter tableView: UITableView
+  - parameter indexPath: NSIndexPath
 
-  :returns: UITableViewCellEditingStyle
+  - returns: UITableViewCellEditingStyle
   */
   override func         tableView(tableView: UITableView,
     editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle
@@ -279,9 +279,9 @@ extension DetailController: UITableViewDelegate {
   /**
   tableView:willDisplayCell:forRowAtIndexPath:
 
-  :param: tableView UITableView
-  :param: cell UITableViewCell
-  :param: indexPath NSIndexPath
+  - parameter tableView: UITableView
+  - parameter cell: UITableViewCell
+  - parameter indexPath: NSIndexPath
   */
   override func tableView(tableView: UITableView,
           willDisplayCell cell: UITableViewCell,
@@ -293,8 +293,8 @@ extension DetailController: UITableViewDelegate {
   /**
   tableView:didSelectRowAtIndexPath:
 
-  :param: tableView UITableView
-  :param: indexPath NSIndexPath
+  - parameter tableView: UITableView
+  - parameter indexPath: NSIndexPath
   */
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     self[indexPath]?.select?()
@@ -303,10 +303,10 @@ extension DetailController: UITableViewDelegate {
   /**
   tableView:heightForHeaderInSection:
 
-  :param: tableView UITableView
-  :param: section Int
+  - parameter tableView: UITableView
+  - parameter section: Int
 
-  :returns: CGFloat
+  - returns: CGFloat
   */
   // override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
   //   return sections[section] is FilteringDetailSection ? 64.0 : 44.0
@@ -321,10 +321,10 @@ extension DetailController: UITableViewDataSource {
   /**
   tableView:cellForRowAtIndexPath:
 
-  :param: tableView UITableView
-  :param: indexPath NSIndexPath
+  - parameter tableView: UITableView
+  - parameter indexPath: NSIndexPath
 
-  :returns: UITableViewCell
+  - returns: UITableViewCell
   */
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
@@ -411,9 +411,9 @@ extension DetailController: UITableViewDataSource {
   /**
   numberOfSectionsInTableView:
 
-  :param: tableView UITableView
+  - parameter tableView: UITableView
 
-  :returns: Int
+  - returns: Int
   */
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
     return sections.count
@@ -423,10 +423,10 @@ extension DetailController: UITableViewDataSource {
   /**
   tableView:numberOfRowsInSection:
 
-  :param: tableView UITableView
-  :param: section Int
+  - parameter tableView: UITableView
+  - parameter section: Int
 
-  :returns: Int
+  - returns: Int
   */
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return self[section]?.count ?? 0
@@ -435,10 +435,10 @@ extension DetailController: UITableViewDataSource {
   /**
   tableView:viewForHeaderInSection:
 
-  :param: tableView UITableView
-  :param: section Int
+  - parameter tableView: UITableView
+  - parameter section: Int
 
-  :returns: UIView?
+  - returns: UIView?
   */
   override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let detailSection = sections.values[section]
@@ -451,19 +451,19 @@ extension DetailController: UITableViewDataSource {
   /**
   tableView:canEditRowAtIndexPath:
 
-  :param: tableView UITableView
-  :param: indexPath NSIndexPath
+  - parameter tableView: UITableView
+  - parameter indexPath: NSIndexPath
 
-  :returns: Bool
+  - returns: Bool
   */
   override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool { return true }
 
   /**
   tableView:commitEditingStyle:forRowAtIndexPath:
 
-  :param: tableView UITableView
-  :param: editingStyle UITableViewCellEditingStyle
-  :param: indexPath NSIndexPath
+  - parameter tableView: UITableView
+  - parameter editingStyle: UITableViewCellEditingStyle
+  - parameter indexPath: NSIndexPath
   */
   override func tableView(tableView: UITableView,
        commitEditingStyle editingStyle: UITableViewCellEditingStyle,
@@ -484,12 +484,12 @@ extension DetailController: UITableViewDataSource {
   /**
   tableView:editActionsForRowAtIndexPath:
 
-  :param: tableView UITableView
-  :param: indexPath NSIndexPath
+  - parameter tableView: UITableView
+  - parameter indexPath: NSIndexPath
 
-  :returns: [AnyObject]?
+  - returns: [AnyObject]?
   */
-  override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+  override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
     return self[indexPath]?.editActions
   }
 
@@ -502,7 +502,7 @@ extension DetailController {
   /**
   Attempts to have navigation controller push the specified view controller
 
-  :param: controller UIViewController
+  - parameter controller: UIViewController
   */
   func pushController(controller: UIViewController) {
     (UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController)?

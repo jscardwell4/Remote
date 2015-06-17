@@ -22,7 +22,7 @@ final class BankCollectionDetailStepperRow: BankCollectionDetailRow {
   /**
   configure:
 
-  :param: cell BankCollectionDetailCell
+  - parameter cell: BankCollectionDetailCell
   */
   override func configureCell(cell: BankCollectionDetailCell) {
     super.configureCell(cell)

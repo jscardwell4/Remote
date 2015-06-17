@@ -42,10 +42,10 @@ class BankCollectionDetailPickerCell: BankCollectionDetailCell {
       }
     }
     set {
-      var searchIndex: Index = newValue == nil
+      let searchIndex: Index = newValue == nil
                                  ? .NilItem(title: nilItemTitle ?? "")
                                  : .DataItem(object: newValue!, title: titleForInfo?(newValue!) ?? "")
-      if let idx = find(_data, searchIndex) {
+      if let idx = _data.indexOf(searchIndex) {
         selection = _data[idx]
         picker.selectRow(idx, inComponent: 0, animated: false)
       }
@@ -116,9 +116,9 @@ extension BankCollectionDetailPickerCell: UIPickerViewDataSource, UIPickerViewDe
   /**
   numberOfComponentsInPickerView:
 
-  :param: pickerView UIPickerView
+  - parameter pickerView: UIPickerView
 
-  :returns: Int
+  - returns: Int
   */
   func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
     return 1
@@ -127,10 +127,10 @@ extension BankCollectionDetailPickerCell: UIPickerViewDataSource, UIPickerViewDe
   /**
   pickerView:numberOfRowsInComponent:
 
-  :param: pickerView UIPickerView
-  :param: component Int
+  - parameter pickerView: UIPickerView
+  - parameter component: Int
 
-  :returns: Int
+  - returns: Int
   */
   func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
     return _data.count
@@ -139,11 +139,11 @@ extension BankCollectionDetailPickerCell: UIPickerViewDataSource, UIPickerViewDe
   /**
   pickerView:titleForRow:forComponent:
 
-  :param: pickerView UIPickerView
-  :param: row Int
-  :param: component Int
+  - parameter pickerView: UIPickerView
+  - parameter row: Int
+  - parameter component: Int
 
-  :returns: String?
+  - returns: String?
   */
   func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
     return _data[row].title
@@ -152,9 +152,9 @@ extension BankCollectionDetailPickerCell: UIPickerViewDataSource, UIPickerViewDe
   /**
   Handles selection of `nil`, `create`, or `data` row
 
-  :param: pickerView UIPickerView
-  :param: row Int
-  :param: component Int
+  - parameter pickerView: UIPickerView
+  - parameter row: Int
+  - parameter component: Int
   */
   func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
     selection = _data[row]
@@ -172,10 +172,10 @@ extension BankCollectionDetailPickerCell.Index: Equatable {}
 /**
 Whether lhs is equal to rhs
 
-:param: lhs DetailPickerCell.Index
-:param: rhs DetailPickerCell.Index
+- parameter lhs: DetailPickerCell.Index
+- parameter rhs: DetailPickerCell.Index
 
-:returns: Bool
+- returns: Bool
 */
 func ==(lhs: BankCollectionDetailPickerCell.Index, rhs: BankCollectionDetailPickerCell.Index) -> Bool {
   switch (lhs, rhs) {

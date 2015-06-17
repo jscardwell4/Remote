@@ -50,9 +50,9 @@ public final class ActivityController: ModelObject {
   /**
   sharedController:
 
-  :param: context NSManagedObjectContext
+  - parameter context: NSManagedObjectContext
 
-  :returns: ActivityController
+  - returns: ActivityController
   */
   public class func sharedController(context: NSManagedObjectContext) -> ActivityController {
     if let activityController = (objectsInContext(context) as? [ActivityController])?.first {
@@ -77,8 +77,8 @@ public final class ActivityController: ModelObject {
     description += "\n\t".join(
       "home remote = \(homeRemote.index)",
       "top toolbar = {\(topToolbar.description.indentedBy(4))\n\t}",
-      "activities = " + toString(activities.map {$0.name}),
-      "current activity = \(toString(currentActivity?.name))"
+      "activities = " + String(activities.map {$0.name}),
+      "current activity = \(String(currentActivity?.name))"
     )
     return description
   }
@@ -86,7 +86,7 @@ public final class ActivityController: ModelObject {
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)

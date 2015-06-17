@@ -57,14 +57,14 @@ final class BankCollectionZoomView: UIView {
   /**
   initWithFrame:
 
-  :param: frame CGRect
+  - parameter frame: CGRect
   */
   override init(frame: CGRect) {
 
     super.init(frame: frame)
 
     MSLogDebug("frame: \(frame)")
-    setTranslatesAutoresizingMaskIntoConstraints(false)
+    translatesAutoresizingMaskIntoConstraints = false
 
     let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
     blurView.frame = bounds
@@ -110,15 +110,15 @@ final class BankCollectionZoomView: UIView {
   /**
   initWithFrame:delegate:
 
-  :param: frame CGRect
-  :param: delegate BankCollectionZoomViewDelegate
+  - parameter frame: CGRect
+  - parameter delegate: BankCollectionZoomViewDelegate
   */
   convenience init(frame: CGRect, delegate d: BankCollectionZoomViewDelegate) { self.init(frame: frame); delegate = d }
 
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
@@ -132,13 +132,13 @@ final class BankCollectionZoomView: UIView {
   /**
   requiresConstraintBasedLayout
 
-  :returns: Bool
+  - returns: Bool
   */
   override class func requiresConstraintBasedLayout() -> Bool { return true }
 
   /** updateConstraints */
   override func updateConstraints() {
-    MSLogDebug("before update… constraints = {\n\t" + "\n\t".join(constraints()) + "\n}")
+    MSLogDebug("before update… constraints = {\n\t" + "\n\t".join(constraints) + "\n}")
     removeAllConstraints()
 //    blurView.removeAllConstraints()
 //    contentView.removeAllConstraints()
@@ -166,14 +166,14 @@ final class BankCollectionZoomView: UIView {
       imageView.constrain(imageView.width => Float(imageSize.width), imageView.height => Float(imageSize.height))
     }
 
-    MSLogDebug("after update… constraints = {\n\t" + "\n\t".join(constraints()) + "\n}")
+    MSLogDebug("after update… constraints = {\n\t" + "\n\t".join(constraints) + "\n}")
 
   }
 
   /**
   dismiss:
 
-  :param: sender AnyObject
+  - parameter sender: AnyObject
   */
   func dismiss(sender: AnyObject) {
     if delegate != nil {

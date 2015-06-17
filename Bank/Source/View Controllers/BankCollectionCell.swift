@@ -71,8 +71,8 @@ class BankCollectionCell: UICollectionViewCell {
   /**
   showIndicator:selected:
 
-  :param: show Bool
-  :param: selected Bool = false
+  - parameter show: Bool
+  - parameter selected: Bool = false
   */
   func showIndicator(show: Bool, selected: Bool = false) {
     indicatorImage = (show ? (selected ? Bank.indicatorImageSelected : Bank.indicatorImage) : nil)
@@ -82,9 +82,9 @@ class BankCollectionCell: UICollectionViewCell {
   /**
   applyLayoutAttributes:
 
-  :param: layoutAttributes UICollectionViewLayoutAttributes!
+  - parameter layoutAttributes: UICollectionViewLayoutAttributes!
   */
-  override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes!) {
+  override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {
     contentSize = layoutAttributes.size
   }
 
@@ -149,9 +149,9 @@ class BankCollectionCell: UICollectionViewCell {
   /**
   animationDurationForDistance:
 
-  :param: distance CGFloat
+  - parameter distance: CGFloat
 
-  :returns: NSTimeInterval
+  - returns: NSTimeInterval
   */
   private func animationDurationForDistance(distance: CGFloat) -> NSTimeInterval {
     return NSTimeInterval(CGFloat(0.25) * distance / BankCollectionCell.deleteButtonWidth)
@@ -160,7 +160,7 @@ class BankCollectionCell: UICollectionViewCell {
   /**
   revealDelete:
 
-  :param: distance CGFloat
+  - parameter distance: CGFloat
   */
   func revealDelete(distance: CGFloat = deleteButtonWidth) {
     contentView.backgroundColor = Bank.backgroundColor
@@ -173,7 +173,7 @@ class BankCollectionCell: UICollectionViewCell {
   /**
   hideDelete:
 
-  :param: distance CGFloat
+  - parameter distance: CGFloat
   */
   func hideDelete(distance: CGFloat = deleteButtonWidth) {
     UIView.animateWithDuration(animationDurationForDistance(distance),
@@ -188,20 +188,20 @@ class BankCollectionCell: UICollectionViewCell {
   /**
   requiresConstraintBasedLayout
 
-  :returns: Bool
+  - returns: Bool
   */
   override class func requiresConstraintBasedLayout() -> Bool { return true }
 
 
   /** initializeIVARs */
   private func initializeIVARs() {
-    setTranslatesAutoresizingMaskIntoConstraints(false)
+    translatesAutoresizingMaskIntoConstraints = false
     nametag = "cell"
     backgroundColor = UIColor.clearColor()
     opaque = false
     contentView.backgroundColor = UIColor.clearColor()
     contentView.opaque = false
-    contentView.setTranslatesAutoresizingMaskIntoConstraints(false)
+    contentView.translatesAutoresizingMaskIntoConstraints = false
     contentView.addSubview(chevron)
     panGesture = {
       var previousState: UIGestureRecognizerState = .Possible
@@ -259,14 +259,14 @@ class BankCollectionCell: UICollectionViewCell {
   /**
   initWithFrame:
 
-  :param: frame CGRect
+  - parameter frame: CGRect
   */
   override init(frame: CGRect) { super.init(frame: frame); initializeIVARs() }
 
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
 

@@ -63,7 +63,7 @@ public final class RockerView: ButtonGroupView {
   /**
   addSubelementView:
 
-  :param: view RemoteElementView
+  - parameter view: RemoteElementView
   */
   override public func addSubelementView(view: RemoteElementView) {
     super.addSubelementView(view)
@@ -73,7 +73,7 @@ public final class RockerView: ButtonGroupView {
   /**
   kvoRegistration
 
-  :returns: [Property:KVOReceptionist.Observation]
+  - returns: [Property:KVOReceptionist.Observation]
   */
   override func kvoRegistration() -> [Property:KVOReceptionist.Observation] {
     var registry = super.kvoRegistration()
@@ -117,8 +117,8 @@ public final class RockerView: ButtonGroupView {
   /**
   This method animates the label "paged" to via the panning gesture and calls `updateCommandSet` upon completion
 
-  :param: idx Int The label index for the destination label.
-  :param: duration CGFloat The time in seconds it should take the animation to complete.
+  - parameter idx: Int The label index for the destination label.
+  - parameter duration: CGFloat The time in seconds it should take the animation to complete.
   */
   func animateLabelContainerToIndex(idx: Int, withDuration duration: CGFloat) {
     let constant = -bounds.size.width * CGFloat(idx)
@@ -127,7 +127,7 @@ public final class RockerView: ButtonGroupView {
       delay: 0.0,
       usingSpringWithDamping: 0.3,
       initialSpringVelocity: 0.5,
-      options: nil,
+      options: [],
       animations: {
         () -> Void in
           self.labelContainerLeftConstraint.constant = constant
@@ -166,7 +166,7 @@ public final class RockerView: ButtonGroupView {
   Handler for pan gesture attached to `labelContainer` that behaves similar to a scroll view for selecting among the
   labels attached.
 
-  :param: gestureRecognizer UIPanGestureRecognizer The gesture that responded to a pan event in the view.
+  - parameter gestureRecognizer: UIPanGestureRecognizer The gesture that responded to a pan event in the view.
   */
   func handlePan(gestureRecognizer: UIPanGestureRecognizer) {
 

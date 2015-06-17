@@ -16,45 +16,45 @@ public func ~=<T:Equatable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 public func typeCast<T,U>(t: T, u: U.Type) -> U? { return t as? U }
-public func typeCast<T,U>(t: T?, u: U.Type) -> U? { return t != nil ? typeCast(t!, u) : nil }
+public func typeCast<T,U>(t: T?, u: U.Type) -> U? { return t != nil ? typeCast(t!, u: u) : nil }
 
 public func **<T:IntegerArithmeticType>(lhs: T, rhs: T) -> T {
-  return reduce(1..<rhs.toIntMax(), lhs, {n, _ in n * lhs})
+  return (1..<rhs.toIntMax()).reduce(lhs, combine: {n, _ in n * lhs})
 }
 
 public func **(lhs: Float, rhs: Int) -> Float {
-  return reduce(0..<rhs, Float(0.0), {n, _ in n * lhs})
+  return (0..<rhs).reduce(Float(0.0), combine: {n, _ in n * lhs})
 }
 
 public func **(lhs: Double, rhs: Int) -> Double {
-  return reduce(0..<rhs, 0.0, {n, _ in n * lhs})
+  return (0..<rhs).reduce(0.0, combine: {n, _ in n * lhs})
 }
 
 public func **(lhs: CGFloat, rhs: Int) -> CGFloat {
-  return reduce(0..<rhs, CGFloat(0.0), {n, _ in n * lhs})
+  return (0..<rhs).reduce(CGFloat(0.0), combine: {n, _ in n * lhs})
 }
 
 public func sum<S:SequenceType where S.Generator.Element == CGFloat>(s: S) -> CGFloat {
-  return reduce(s, CGFloat(), {$0 + $1})
+  return s.reduce(CGFloat(), combine: {$0 + $1})
 }
 
 public func sum<S:SequenceType where S.Generator.Element == Float>(s: S) -> Float {
-  return reduce(s, Float(), {$0 + $1})
+  return s.reduce(Float(), combine: {$0 + $1})
 }
 
 public func sum<S:SequenceType where S.Generator.Element == Double>(s: S) -> Double {
-  return reduce(s, 0.0, {$0 + $1})
+  return s.reduce(0.0, combine: {$0 + $1})
 }
 
 public func sum<S:SequenceType where S.Generator.Element:IntegerArithmeticType>(s: S) -> IntMax {
-  return reduce(s, 0, {$0 + $1.toIntMax()})
+  return s.reduce(0, combine: {$0 + $1.toIntMax()})
 }
 
 /**
 advance:amount:
 
-:param: range Range<T>
-:param: amount T.Distance
+- parameter range: Range<T>
+- parameter amount: T.Distance
 */
 public func advance<T: ForwardIndexType>(inout range: Range<T>, amount: T.Distance) {
   let d = distance(range.startIndex, range.endIndex)
@@ -66,10 +66,10 @@ public func advance<T: ForwardIndexType>(inout range: Range<T>, amount: T.Distan
 /**
 join:elements:
 
-:param: seperator T
-:param: elements [T]
+- parameter seperator: T
+- parameter elements: [T]
 
-:returns: [T]
+- returns: [T]
 */
 public func join<T>(seperator: T, elements: [T]) -> [T] {
   if elements.count > 1 {
@@ -88,10 +88,10 @@ public func join<T>(seperator: T, elements: [T]) -> [T] {
 /**
 advance:amount:
 
-:param: range Range<T>
-:param: amount T.Distance
+- parameter range: Range<T>
+- parameter amount: T.Distance
 
-:returns: Range<T>
+- returns: Range<T>
 */
 public func advance<T: ForwardIndexType>(range: Range<T>, amount: T.Distance) -> Range<T> {
   return Range<T>(start: advance(range.startIndex, amount), end: advance(range.endIndex, amount))
@@ -100,22 +100,22 @@ public func advance<T: ForwardIndexType>(range: Range<T>, amount: T.Distance) ->
 /**
 find:value:
 
-:param: domain C
-:param: value C.Generator.Element?
+- parameter domain: C
+- parameter value: C.Generator.Element?
 
-:returns: C.Index?
+- returns: C.Index?
 */
 public func find<C: CollectionType where C.Generator.Element: Equatable>(domain: C, value: C.Generator.Element?) -> C.Index? {
-  if let v = value { return find(domain, v) } else { return nil }
+  if let v = value { return domain.indexOf(v) } else { return nil }
 }
 
 /**
 findFirst:predicate:
 
-:param: domain S
-:param: predicate (S.Generator.Element) -> Bool
+- parameter domain: S
+- parameter predicate: (S.Generator.Element) -> Bool
 
-:returns: (C.Generator.Element)?
+- returns: (C.Generator.Element)?
 */
 public func findFirst<S: SequenceType>(domain: S?, predicate: (S.Generator.Element) -> Bool) -> (S.Generator.Element)? {
   if let sequence = domain { for element in sequence { if predicate(element) { return element } } }
@@ -125,9 +125,9 @@ public func findFirst<S: SequenceType>(domain: S?, predicate: (S.Generator.Eleme
 /**
 length:
 
-:param: interval ClosedInterval<T>
+- parameter interval: ClosedInterval<T>
 
-:returns: T.Stride
+- returns: T.Stride
 */
 public func length<T:Strideable>(interval: ClosedInterval<T>) -> T.Stride { return interval.start.distanceTo(interval.end) }
 
@@ -135,9 +135,9 @@ public func length<T:Strideable>(interval: ClosedInterval<T>) -> T.Stride { retu
 /**
 toString:
 
-:param: x T?
+- parameter x: T?
 
-:returns: String
+- returns: String
 */
 public func toString<T>(x: T?) -> String { if let xx = x { return toString(xx) } else { return "nil" } }
 

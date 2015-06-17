@@ -41,7 +41,7 @@ internal class CommandOperation: NSOperation {
   /**
   initWithCommand:
 
-  :param: command Command
+  - parameter command: Command
   */
   init(command: Command) {
     self.command = command

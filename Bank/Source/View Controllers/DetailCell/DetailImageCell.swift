@@ -17,8 +17,8 @@ class DetailImageCell: DetailCell {
   /**
   initWithStyle:reuseIdentifier:
 
-  :param: style UITableViewCellStyle
-  :param: reuseIdentifier String?
+  - parameter style: UITableViewCellStyle
+  - parameter reuseIdentifier: String?
   */
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -32,7 +32,7 @@ class DetailImageCell: DetailCell {
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
@@ -57,7 +57,7 @@ class DetailImageCell: DetailCell {
 
   private let preview: UIImageView = {
     let view = UIImageView()
-    view.setTranslatesAutoresizingMaskIntoConstraints(false)
+    view.translatesAutoresizingMaskIntoConstraints = false
     view.userInteractionEnabled = false
     view.contentMode = .ScaleAspectFit
     view.tintColor = UIColor.blackColor()

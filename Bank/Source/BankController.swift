@@ -15,7 +15,7 @@ public class BankController: UIViewController, BankItemImportExportController {
 
   @IBOutlet var buttons: [ImageButtonView]!
 
-  enum RootCategory: Int, Printable {
+  enum RootCategory: Int, CustomStringConvertible {
     case Presets, NetworkDevices, ComponentDevices, Manufacturers, Images
     var description: String {
       switch self {
@@ -39,14 +39,14 @@ public class BankController: UIViewController, BankItemImportExportController {
   /**
   importFromFile:
 
-  :param: fileURL NSURL
+  - parameter fileURL: NSURL
   */
   func importFromFile(fileURL: NSURL) {}
 
   /**
   Invoked by buttons to push a root category's items
 
-  :param: button ImageButtonView
+  - parameter button: ImageButtonView
   */
   private func buttonAction(button: ImageButtonView) {
     if let rootCategory = RootCategory(rawValue: button.tag) {
@@ -106,7 +106,7 @@ public class BankController: UIViewController, BankItemImportExportController {
   /**
   viewWillAppear:
 
-  :param: animated Bool
+  - parameter animated: Bool
   */
   override public func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)

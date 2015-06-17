@@ -78,13 +78,13 @@ private class AKCollectionViewCell: UICollectionViewCell {
     label.lineBreakMode = .ByTruncatingTail
     label.highlightedTextColor = UIColor.blackColor()
     label.font = font
-    label.autoresizingMask = .FlexibleTopMargin | .FlexibleLeftMargin | .FlexibleBottomMargin | .FlexibleRightMargin;
+    label.autoresizingMask = [.FlexibleTopMargin, .FlexibleLeftMargin, .FlexibleBottomMargin, .FlexibleRightMargin];
     contentView.addSubview(label)
 
     imageView = UIImageView(frame: contentView.bounds)
     imageView.backgroundColor = UIColor.clearColor()
     imageView.contentMode = .Center
-    imageView.autoresizingMask = .FlexibleWidth | .FlexibleHeight;
+    imageView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight];
     contentView.addSubview(imageView)
   }
 
@@ -136,7 +136,7 @@ private class AKCollectionViewLayout: UICollectionViewFlowLayout {
     }
   }
 
-  private override func layoutAttributesForElementsInRect(rect: CGRect) -> [AnyObject]? {
+  private override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
     switch delegate.pickerViewStyleForCollectionViewLayout(self) {
     case .Flat:
       return super.layoutAttributesForElementsInRect(rect)
@@ -260,7 +260,7 @@ public class AKPickerView: UIView, UICollectionViewDataSource, UICollectionViewD
     collectionView.showsHorizontalScrollIndicator = false
     collectionView.backgroundColor = UIColor.clearColor()
     collectionView.decelerationRate = UIScrollViewDecelerationRateFast
-    collectionView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+    collectionView.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
     collectionView.dataSource = self
     collectionView.registerClass(AKCollectionViewCell.self,
       forCellWithReuseIdentifier: NSStringFromClass(AKCollectionViewCell.self))
@@ -297,8 +297,8 @@ public class AKPickerView: UIView, UICollectionViewDataSource, UICollectionViewD
 
   /**
   Private. Used to calculate bounding size of given string with picker view's font and highlightedFont
-  :param: string A NSString to calculate size
-  :returns: A CGSize which contains given string just.
+  - parameter string: A NSString to calculate size
+  - returns: A CGSize which contains given string just.
   */
   private func sizeForString(string: NSString) -> CGSize {
     let size = string.sizeWithAttributes([NSFontAttributeName: font])
@@ -309,8 +309,8 @@ public class AKPickerView: UIView, UICollectionViewDataSource, UICollectionViewD
 
   /**
   Private. Used to calculate the x-coordinate of the content offset of specified item.
-  :param: item An integer value which indicates the index of cell.
-  :returns: An x-coordinate of the cell whose index is given one.
+  - parameter item: An integer value which indicates the index of cell.
+  - returns: An x-coordinate of the cell whose index is given one.
   */
   private func offsetForItem(item: Int) -> CGFloat {
     var offset: CGFloat = 0
@@ -348,8 +348,8 @@ public class AKPickerView: UIView, UICollectionViewDataSource, UICollectionViewD
 
   /**
   Move to the cell whose index is given one without selection change.
-  :param: item     An integer value which indicates the index of cell.
-  :param: animated True if the scrolling should be animated, false if it should be immediate.
+  - parameter item:     An integer value which indicates the index of cell.
+  - parameter animated: True if the scrolling should be animated, false if it should be immediate.
   */
   public func scrollToItem(item: Int, animated: Bool = false) {
     switch pickerViewStyle {
@@ -364,16 +364,16 @@ public class AKPickerView: UIView, UICollectionViewDataSource, UICollectionViewD
 
   /**
   Select a cell whose index is given one and move to it.
-  :param: item     An integer value which indicates the index of cell.
-  :param: animated True if the scrolling should be animated, false if it should be immediate.
+  - parameter item:     An integer value which indicates the index of cell.
+  - parameter animated: True if the scrolling should be animated, false if it should be immediate.
   */
   public func selectItem(item: Int, animated: Bool = false) { selectItem(item, animated: animated, notifySelection: true) }
 
   /**
   Private. Select a cell whose index is given one and move to it, with specifying whether it calls delegate method.
-  :param: item            An integer value which indicates the index of cell.
-  :param: animated        True if the scrolling should be animated, false if it should be immediate.
-  :param: notifySelection True if the delegate method should be called, false if not.
+  - parameter item:            An integer value which indicates the index of cell.
+  - parameter animated:        True if the scrolling should be animated, false if it should be immediate.
+  - parameter notifySelection: True if the delegate method should be called, false if not.
   */
   private func selectItem(item: Int, animated: Bool, notifySelection: Bool) {
     collectionView.selectItemAtIndexPath(NSIndexPath(forItem: item, inSection: 0), animated: animated, scrollPosition: .None)

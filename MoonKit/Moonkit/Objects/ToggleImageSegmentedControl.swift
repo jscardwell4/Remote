@@ -24,8 +24,8 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
   /**
   removeSegmentAtIndex:animated:
 
-  :param: segment Int
-  :param: animated Bool
+  - parameter segment: Int
+  - parameter animated: Bool
   */
   public override func removeSegmentAtIndex(segment: Int, animated: Bool) {
     super.removeSegmentAtIndex(segment, animated: animated)
@@ -43,10 +43,10 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
   /**
   insertSegmentWithImage:selectedImage:atIndex:animated:
 
-  :param: image UIImage
-  :param: selectedImage UIImage
-  :param: segment Int
-  :param: animated Bool
+  - parameter image: UIImage
+  - parameter selectedImage: UIImage
+  - parameter segment: Int
+  - parameter animated: Bool
   */
   public func insertSegmentWithImage(image: UIImage, selectedImage: UIImage, atIndex segment: Int, animated: Bool) {
     super.insertSegmentWithImage(image, atIndex: segment, animated: animated)
@@ -57,11 +57,11 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
   /**
   Overridden to suppress inserting segment unless `disableImageToggle` is true
 
-  :param: image UIImage
-  :param: segment Int
-  :param: animated Bool
+  - parameter image: UIImage
+  - parameter segment: Int
+  - parameter animated: Bool
   */
-  public override func insertSegmentWithImage(image: UIImage, atIndex segment: Int, animated: Bool) {
+  public override func insertSegmentWithImage(image: UIImage?, atIndex segment: Int, animated: Bool) {
     if disableImageToggle {
       super.insertSegmentWithImage(image, atIndex: segment, animated: animated)
       defaultImages[segment] = image
@@ -71,11 +71,11 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
   /**
   insertSegmentWithTitle:atIndex:animated:
 
-  :param: title String!
-  :param: segment Int
-  :param: animated Bool
+  - parameter title: String!
+  - parameter segment: Int
+  - parameter animated: Bool
   */
-  public override func insertSegmentWithTitle(title: String!, atIndex segment: Int, animated: Bool) {
+  public override func insertSegmentWithTitle(title: String?, atIndex segment: Int, animated: Bool) {
     // Disallow segments with titles for now
   }
 
@@ -90,7 +90,7 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
   /**
   initWithFrame:
 
-  :param: frame CGRect
+  - parameter frame: CGRect
   */
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -100,9 +100,9 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
   /**
   initWithItems:
 
-  :param: items [AnyObject]!
+  - parameter items: [AnyObject]!
   */
-  override public init(items: [AnyObject]) {
+  override public init(items: [AnyObject]?) {
     let defaultImages: [UIImage]?
     let selectedImages: [UIImage]?
 
@@ -140,7 +140,7 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
   /**
   initWithCoder:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required public init(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
@@ -152,7 +152,7 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
   Toggles the image used for selected and previously selected segments when `disableImageToggle` is false. If `sender` is not
   nil, the method also invokes `toggleAction`
 
-  :param: sender ToggleImageSegmentedControl?
+  - parameter sender: ToggleImageSegmentedControl?
   */
   func toggleImage() {
     if !disableImageToggle {
@@ -174,9 +174,9 @@ public class ToggleImageSegmentedControl: UISegmentedControl {
   /**
   setImage:selectedImage:forSegmentAtIndex:
 
-  :param: image UIImage?
-  :param: selectedImage UIImage?
-  :param: segment Int
+  - parameter image: UIImage?
+  - parameter selectedImage: UIImage?
+  - parameter segment: Int
   */
   public func setImage(image: UIImage, selectedImage: UIImage, forSegmentAtIndex segment: Int) {
     if segment < numberOfSegments {

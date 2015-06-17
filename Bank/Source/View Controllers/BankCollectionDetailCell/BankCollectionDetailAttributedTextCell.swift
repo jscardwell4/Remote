@@ -29,7 +29,7 @@ final class BankCollectionDetailAttributedTextCell: BankCollectionDetailCell {
     var baseColor: UIColor {
       var color: UIColor?
       var parentView = superview
-      do {
+      repeat {
         color = parentView?.backgroundColor
         parentView = parentView?.superview
       } while color == nil && parentView != nil
@@ -45,7 +45,7 @@ final class BankCollectionDetailAttributedTextCell: BankCollectionDetailCell {
     /**
     initWithFrame:
 
-    :param: frame CGRect
+    - parameter frame: CGRect
     */
     override init(frame: CGRect) {
       super.init(frame: frame)
@@ -58,24 +58,24 @@ final class BankCollectionDetailAttributedTextCell: BankCollectionDetailCell {
     /**
     initWithAutolayout:
 
-    :param: autolayout Bool
+    - parameter autolayout: Bool
     */
     init(autolayout: Bool) {
       super.init(frame: CGRect.zeroRect)
-      setTranslatesAutoresizingMaskIntoConstraints(!autolayout)
+      translatesAutoresizingMaskIntoConstraints = !autolayout
     }
 
     /**
     init:
 
-    :param: aDecoder NSCoder
+    - parameter aDecoder: NSCoder
     */
     required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
     /**
     intrinsicContentSize
 
-    :returns: CGSize
+    - returns: CGSize
     */
     override func intrinsicContentSize() -> CGSize {
       if let text = attributedText {
@@ -90,7 +90,7 @@ final class BankCollectionDetailAttributedTextCell: BankCollectionDetailCell {
     /**
     drawRect:
 
-    :param: rect CGRect
+    - parameter rect: CGRect
     */
     override func drawRect(rect: CGRect) {
 
@@ -147,7 +147,7 @@ final class BankCollectionDetailAttributedTextCell: BankCollectionDetailCell {
         } else {
 
           let multiplier = frame.size.height / naturalSize.height
-          text.enumerateAttribute(NSFontAttributeName, inRange: NSRange(0..<text.length), options: nil) {
+          text.enumerateAttribute(NSFontAttributeName, inRange: NSRange(0..<text.length), options: []) {
             (value: AnyObject!, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
 
             if let font = value as? UIFont {

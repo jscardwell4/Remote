@@ -18,8 +18,8 @@ class NamedItemDetailController: DetailController {
   /**
   init:bundle:
 
-  :param: nibNameOrNil String?
-  :param: nibBundleOrNil NSBundle?
+  - parameter nibNameOrNil: String?
+  - parameter nibBundleOrNil: NSBundle?
   */
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -28,21 +28,21 @@ class NamedItemDetailController: DetailController {
   /**
   initWithStyle:
 
-  :param: style UITableViewStyle
+  - parameter style: UITableViewStyle
   */
 //  override init(style: UITableViewStyle) { super.init(style: style) }
 
   /**
   initWithCoder:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
   /**
   initWithModel:
 
-  :param: model BankableModelObject
+  - parameter model: BankableModelObject
   */
   init(namedItem: protocol<Named, Detailable>) {
     super.init(item: namedItem)
@@ -76,8 +76,8 @@ class NamedItemDetailController: DetailController {
   /**
   setEditing:animated:
 
-  :param: editing Bool
-  :param: animated Bool
+  - parameter editing: Bool
+  - parameter animated: Bool
   */
   override func setEditing(editing: Bool, animated: Bool) {
     if self.editing != editing {
@@ -97,9 +97,9 @@ extension NamedItemDetailController: UITextFieldDelegate {
   /**
   textFieldShouldReturn:
 
-  :param: textField UITextField
+  - parameter textField: UITextField
 
-  :returns: Bool
+  - returns: Bool
   */
   func textFieldShouldReturn(textField: UITextField) -> Bool {
     precondition(textField === nameTextField, "what other text fields are we delegating besides name label?")
@@ -110,7 +110,7 @@ extension NamedItemDetailController: UITextFieldDelegate {
   /**
   textFieldDidEndEditing:
 
-  :param: textField UITextField
+  - parameter textField: UITextField
   */
   func textFieldDidEndEditing(textField: UITextField) {
     precondition(textField === nameTextField, "what other text fields are we delegating besides name label?")

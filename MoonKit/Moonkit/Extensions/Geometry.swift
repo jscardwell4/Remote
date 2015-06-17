@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public struct Ratio: Printable {
+public struct Ratio: CustomStringConvertible {
   public var numerator: CGFloat = 1
   public var denominator: CGFloat = 1
   public var width: CGFloat { get { return numerator } set { numerator = newValue } }
@@ -53,7 +53,7 @@ extension CGPoint: Unpackable2 {
   public func unpack() -> (CGFloat, CGFloat) { return (x, y) }
 }
 
-extension CGPoint: Printable { public var description: String { return NSStringFromCGPoint(self) } }
+extension CGPoint: CustomStringConvertible { public var description: String { return NSStringFromCGPoint(self) } }
 
 public func -(lhs: CGPoint, rhs: CGPoint) -> CGPoint {
   return lhs.isNull ? rhs : (rhs.isNull ? lhs : CGPoint(x: lhs.x - rhs.x, y: lhs.y - rhs.y))
@@ -97,7 +97,7 @@ extension CGVector: NilLiteralConvertible {
   public init(nilLiteral: ()) { self = CGVector.nullVector }
 }
 
-extension CGVector: Printable {
+extension CGVector: CustomStringConvertible {
   public var description: String { return NSStringFromCGVector(self) }
 }
 
@@ -145,7 +145,7 @@ extension CGSize {
   }
 
   public func ratioForFittingSize(size: CGSize) -> Ratio {
-    let (w, h) = min(aspectMappedToWidth(size.width), aspectMappedToHeight(size.height)).unpack()
+    let (w, h) = min(aspectMappedToWidth(size.width), s2: aspectMappedToHeight(size.height)).unpack()
     return Ratio(width/w, height/h)
   }
 
@@ -156,7 +156,7 @@ extension CGSize {
   public func aspectMappedToSize(size: CGSize, binding: Bool = false) -> CGSize {
   	let widthMapped = aspectMappedToWidth(size.width)
   	let heightMapped = aspectMappedToHeight(size.height)
-  	return binding ? min(widthMapped, heightMapped) : max(widthMapped, heightMapped)
+  	return binding ? min(widthMapped, s2: heightMapped) : max(widthMapped, s2: heightMapped)
   }
   public mutating func transform(transform: CGAffineTransform) {
     self = sizeByApplyingTransform(transform)
@@ -165,7 +165,7 @@ extension CGSize {
     return CGSizeApplyAffineTransform(self, transform)
   }
 }
-extension CGSize: Printable { public var description: String { return NSStringFromCGSize(self) } }
+extension CGSize: CustomStringConvertible { public var description: String { return NSStringFromCGSize(self) } }
 extension CGSize: Unpackable2 {
   public func unpack() -> (CGFloat, CGFloat) { return (width, height) }
 }
@@ -204,7 +204,7 @@ extension UIEdgeInsets {
   public init(inset: CGFloat) { self = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset) }
 }
 
-extension UIEdgeInsets: Printable {
+extension UIEdgeInsets: CustomStringConvertible {
   public var description: String { return NSStringFromUIEdgeInsets(self) }
 }
 
@@ -216,7 +216,7 @@ extension UIOffset {
   public init?(_ string: String?) { if let s = string { self = UIOffsetFromString(s) } else { return nil } }
 }
 
-extension UIOffset: Printable { public var description: String { return NSStringFromUIOffset(self) } }
+extension UIOffset: CustomStringConvertible { public var description: String { return NSStringFromUIOffset(self) } }
 
 extension CGAffineTransform {
   public init(tx: CGFloat, ty: CGFloat) { self = CGAffineTransformMakeTranslation(tx, ty) }
@@ -236,7 +236,7 @@ extension CGAffineTransform {
   public init?(_ string: String?) { if let s = string { self = CGAffineTransformFromString(s) } else { return nil } }
 }
 
-extension CGAffineTransform: Printable { public var description: String { return NSStringFromCGAffineTransform(self) } }
+extension CGAffineTransform: CustomStringConvertible { public var description: String { return NSStringFromCGAffineTransform(self) } }
 
 public func +(lhs: CGAffineTransform, rhs: CGAffineTransform) -> CGAffineTransform { return CGAffineTransformConcat(lhs, rhs) }
 public func +=(inout lhs: CGAffineTransform, rhs: CGAffineTransform) { lhs = lhs + rhs }
@@ -286,7 +286,7 @@ extension CGRect {
   public func rectByProportionallyInsettingY(dy: CGFloat) -> CGRect {
     var r = self; r.proportionallyInsetY(dy); return r
   }
-  public mutating func proportionallyInset(#dx: CGFloat, dy: CGFloat) {
+  public mutating func proportionallyInset(dx dx: CGFloat, dy: CGFloat) {
     let xRect = rectByProportionallyInsettingX(dx)
     let yRect = rectByProportionallyInsettingY(dy)
     // self = xRect.size > yRect.size ? xRect : yRect
@@ -296,7 +296,7 @@ extension CGRect {
     let y = (height - h) * 0.5
     self = CGRect(x: x, y: y, width: w, height: h)
   }
-  public func rectByProportionallyInsetting(#dx: CGFloat, dy: CGFloat) -> CGRect {
+  public func rectByProportionallyInsetting(dx dx: CGFloat, dy: CGFloat) -> CGRect {
     var r = self; r.proportionallyInset(dx: dx, dy: dy); return r
   }
   public mutating func transform(transform: CGAffineTransform) {
@@ -335,7 +335,7 @@ extension CGRect {
   }
 }
 
-extension CGRect: Printable { public var description: String { return NSStringFromCGRect(self) } }
+extension CGRect: CustomStringConvertible { public var description: String { return NSStringFromCGRect(self) } }
 
 extension CGRect: Unpackable4 {
   public func unpack() -> (CGFloat, CGFloat, CGFloat, CGFloat) { return (origin.x, origin.y, size.width, size.height) }

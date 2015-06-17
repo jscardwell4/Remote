@@ -55,13 +55,16 @@ import class DataModel.NetworkDevice
   /**
   Join multicast group and listen for beacons broadcast by iTach devices.
 
-  :param: context NSManagedObjectContext = DataManager.rootContext
+  - parameter context: NSManagedObjectContext = DataManager.rootContext
   */
   class func startDetectingNetworkDevices(context: NSManagedObjectContext = DataManager.rootContext) {
     if !detectingNetworkDevices {
       self.context = context
       detectingNetworkDevices = true
-      multicastConnection.listen()
+      do {
+        try multicastConnection.listen()
+      } catch _ {
+      }
       MSLogDebug("listening for iTach devices…")
     }
   }
@@ -78,9 +81,9 @@ import class DataModel.NetworkDevice
   /**
   connectionForDevice:
 
-  :param: device Device
+  - parameter device: Device
 
-  :returns: Connection
+  - returns: Connection
   */
   class func connectionForDevice(device: Device) -> Connection {
     let result: Connection
@@ -98,7 +101,10 @@ import class DataModel.NetworkDevice
 
   /** Resume multicast connection and any device connections that were active on suspension */
   class func resume() {
-    if detectingNetworkDevices { multicastConnection.listen() }
+    if detectingNetworkDevices { do {
+        try multicastConnection.listen()
+      } catch _ {
+      } }
     apply(connections) { if ITachConnectionManager.activeConnections ∋ $0 { $1.connect() } }
   }
 
@@ -107,7 +113,7 @@ import class DataModel.NetworkDevice
   /**
   Processes messages received through `NetworkDeviceConnection` objects.
 
-  :param: message String Contents of the message received by the device connection
+  - parameter message: String Contents of the message received by the device connection
   */
   class func messageReceived(message: String) {
 
@@ -165,9 +171,9 @@ import class DataModel.NetworkDevice
 
   Sends an IR command to the device identified by the specified `uuid`.
 
-  :param: command ITachIRCommand The command to execute
+  - parameter command: ITachIRCommand The command to execute
 
-  :param: completion The block to execute upon task completion
+  - parameter completion: The block to execute upon task completion
 
   */
   class func sendCommand(command: ITachIRCommand, completion: Callback? = nil) {

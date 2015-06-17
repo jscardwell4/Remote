@@ -37,7 +37,7 @@ public class ButtonGroupView: RemoteElementView {
   /**
   kvoRegistration
 
-  :returns: [String:(MSKVOReceptionist) -> Void]
+  - returns: [String:(MSKVOReceptionist) -> Void]
   */
   override func kvoRegistration() -> [Property:KVOReceptionist.Observation] {
     var registry = super.kvoRegistration()
@@ -69,7 +69,7 @@ public class ButtonGroupView: RemoteElementView {
   /**
   addSubelementView:
 
-  :param: view RemoteElementView
+  - parameter view: RemoteElementView
   */
   override public func addSubelementView(view: RemoteElementView) {
     if let buttonView = view as? ButtonView {
@@ -100,7 +100,7 @@ public class ButtonGroupView: RemoteElementView {
   /**
   intrinsicContentSize
 
-  :returns: CGSize
+  - returns: CGSize
   */
   override public func intrinsicContentSize() -> CGSize {
     if buttonGroup.role & .Toolbar == RemoteElement.Role.Toolbar {
@@ -113,14 +113,14 @@ public class ButtonGroupView: RemoteElementView {
   /**
   buttonViewDidExecute:
 
-  :param: buttonView ButtonView
+  - parameter buttonView: ButtonView
   */
   func buttonViewDidExecute(buttonView: ButtonView) { if buttonGroup.autohide { MSRunAsyncOnMain{self.tuckAction?()} } }
 
   /**
   drawRect:
 
-  :param: rect CGRect
+  - parameter rect: CGRect
   */
   override public func drawRect(rect: CGRect) {
     if model.shape == .Undefined { return }

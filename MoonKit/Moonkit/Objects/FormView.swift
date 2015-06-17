@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public final class Form: Printable {
+public final class Form: CustomStringConvertible {
 
   public var fields: OrderedDictionary<String, Field>
   public var changeHandler: ((Form, Field, String) -> Void)?
@@ -22,7 +22,7 @@ public final class Form: Printable {
   func didChangeField(field: Field) { if let name = nameForField(field) { changeHandler?(self, field, name) } }
 
   func nameForField(field: Field) -> String? {
-    if let idx = find(fields.values, field) { return fields.keys[idx] } else { return nil }
+    if let idx = fields.values.indexOf(field) { return fields.keys[idx] } else { return nil }
   }
 
   public var invalidFields: [(Int, String, Field)] {
@@ -40,7 +40,7 @@ public final class Form: Printable {
   }
 
   public var description: String {
-    return "Form: {\n\t" + "\n\t".join(map(fields) {"\($0): \($1) = \(toString($2.value))"}) + "\n}"
+    return "Form: {\n\t" + "\n\t".join(fields.map {"\($0): \($1) = \(toString($2.value))"}) + "\n}"
   }
 
 }
@@ -62,13 +62,13 @@ final class FormView: UIView {
   /**
   initWithForm:appearance:
 
-  :param: form Form
-  :param: appearance Appearance? = nil
+  - parameter form: Form
+  - parameter appearance: Appearance? = nil
   */
   init(form f: Form, appearance: Appearance? = nil) {
     form = f; fieldAppearance = appearance
     super.init(frame: CGRect.zeroRect)
-    setTranslatesAutoresizingMaskIntoConstraints(false)
+    translatesAutoresizingMaskIntoConstraints = false
     backgroundColor = UIColor(white: 0.9, alpha: 0.75)
     layer.shadowOpacity = 0.75
     layer.shadowRadius = 8
@@ -122,7 +122,7 @@ final class FormView: UIView {
 
   override func intrinsicContentSize() -> CGSize {
     let fieldSizes = fieldViews.map {$0.intrinsicContentSize()}
-    let w = min(maxElement(fieldSizes.map {$0.width}), UIScreen.mainScreen().bounds.width - 8)
+    let w = min(fieldSizes.map {$0.width}.maxElement()!, UIScreen.mainScreen().bounds.width - 8)
     let h = sum(fieldSizes.map {$0.height}) + CGFloat(fieldSizes.count + 1) * CGFloat(10)
     return CGSize(width: w, height: h)
   }

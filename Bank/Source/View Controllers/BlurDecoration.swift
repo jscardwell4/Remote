@@ -19,7 +19,7 @@ class BlurDecoration: UICollectionReusableView {
   private func createBlurWithStyle(style: UIBlurEffectStyle) {
     self.blur?.removeFromSuperview()
     let blur = UIVisualEffectView(effect: UIBlurEffect(style: style))
-    blur.setTranslatesAutoresizingMaskIntoConstraints(false)
+    blur.translatesAutoresizingMaskIntoConstraints = false
     addSubview(blur)
     constrain(𝗩|blur|𝗩, 𝗛|blur|𝗛)
     self.blur = blur

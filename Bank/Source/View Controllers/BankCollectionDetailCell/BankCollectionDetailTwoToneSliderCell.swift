@@ -28,7 +28,7 @@ class BankCollectionDetailTwoToneSliderCell: BankCollectionDetailCell {
   /**
   sliderValueDidChange:
 
-  :param: sender UISlider
+  - parameter sender: UISlider
   */
   func sliderValueDidChange(sender: UISlider) { valueDidChange?(sender.value) }
 

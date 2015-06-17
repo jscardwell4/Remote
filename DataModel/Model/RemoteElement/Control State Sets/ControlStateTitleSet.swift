@@ -26,8 +26,8 @@ public final class ControlStateTitleSet: ControlStateSet {
   /**
   setTitleAttributes:forState:
 
-  :param: attributes TitleAttributes?
-  :param: state UIControlState
+  - parameter attributes: TitleAttributes?
+  - parameter state: UIControlState
   */
   public func setTitleAttributes(attributes: TitleAttributes?, forState state: UIControlState) {
     var property: String?
@@ -36,10 +36,10 @@ public final class ControlStateTitleSet: ControlStateSet {
       case UIControlState.Highlighted:                                                 property = "highlighted"
       case UIControlState.Selected:                                                    property = "selected"
       case UIControlState.Disabled:                                                    property = "disabled"
-      case UIControlState.Highlighted|UIControlState.Selected:                         property = "highlightedSelected"
-      case UIControlState.Highlighted|UIControlState.Disabled:                         property = "highlightedDisabled"
-      case UIControlState.Selected|UIControlState.Disabled:                            property = "selectedDisabled"
-      case UIControlState.Highlighted|UIControlState.Selected|UIControlState.Disabled: property = "highlightedSelectedDisabled"
+      case [UIControlState.Highlighted, UIControlState.Selected]:                         property = "highlightedSelected"
+      case [UIControlState.Highlighted, UIControlState.Disabled]:                         property = "highlightedDisabled"
+      case [UIControlState.Selected, UIControlState.Disabled]:                            property = "selectedDisabled"
+      case [UIControlState.Highlighted, UIControlState.Selected, UIControlState.Disabled]: property = "highlightedSelectedDisabled"
       default:                                                                         break
     }
 
@@ -62,9 +62,9 @@ public final class ControlStateTitleSet: ControlStateSet {
   /**
   titleAttributesForState:
 
-  :param: state UIControlState
+  - parameter state: UIControlState
 
-  :returns: TitleAttributes?
+  - returns: TitleAttributes?
   */
   public func titleAttributesForState(state: UIControlState) -> TitleAttributes? {
     var property: String?
@@ -73,10 +73,10 @@ public final class ControlStateTitleSet: ControlStateSet {
       case UIControlState.Highlighted:                                                 property = "highlighted"
       case UIControlState.Selected:                                                    property = "selected"
       case UIControlState.Disabled:                                                    property = "disabled"
-      case UIControlState.Highlighted|UIControlState.Selected:                         property = "highlightedSelected"
-      case UIControlState.Highlighted|UIControlState.Disabled:                         property = "highlightedDisabled"
-      case UIControlState.Selected|UIControlState.Disabled:                            property = "selectedDisabled"
-      case UIControlState.Highlighted|UIControlState.Selected|UIControlState.Disabled: property = "highlightedSelectedDisabled"
+      case [UIControlState.Highlighted, UIControlState.Selected]:                         property = "highlightedSelected"
+      case [UIControlState.Highlighted, UIControlState.Disabled]:                         property = "highlightedDisabled"
+      case [UIControlState.Selected, UIControlState.Disabled]:                            property = "selectedDisabled"
+      case [UIControlState.Highlighted, UIControlState.Selected, UIControlState.Disabled]: property = "highlightedSelectedDisabled"
       default:
         break
     }
@@ -104,7 +104,7 @@ public final class ControlStateTitleSet: ControlStateSet {
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)

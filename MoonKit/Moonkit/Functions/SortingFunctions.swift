@@ -11,71 +11,71 @@ import Foundation
 /**
 sortedByName:
 
-:param: seq S
+- parameter seq: S
 
-:returns: [S.Generator.Element]
+- returns: [S.Generator.Element]
 */
 public func sortedByName<S:SequenceType where S.Generator.Element:Nameable>(seq: S) -> [S.Generator.Element] {
-  return Array(seq).sorted{$0.0.name < $0.1.name}
+  return Array(seq).sort {$0.0.name < $0.1.name}
 }
 
 /**
 sortedByName:
 
-:param: seq S?
+- parameter seq: S?
 
-:returns: [S.Generator.Element]?
+- returns: [S.Generator.Element]?
 */
 public func sortedByName<S:SequenceType where S.Generator.Element:Nameable>(seq: S?) -> [S.Generator.Element]? {
-  if seq != nil {  return Array(seq!).sorted{$0.0.name < $0.1.name} } else { return nil }
+  if seq != nil {  return Array(seq!).sort {$0.0.name < $0.1.name} } else { return nil }
 }
 
 /**
 sortByName:
 
-:param: array [T]
+- parameter array: [T]
 */
-public func sortByName<T: Nameable>(inout array: [T]) { array.sort{$0.0.name < $0.1.name} }
+public func sortByName<T: Nameable>(inout array: [T]) { array.sortInPlace {$0.0.name < $0.1.name} }
 
 /**
 sortByName:
 
-:param: array [T]?
+- parameter array: [T]?
 */
-public func sortByName<T: Nameable>(inout array: [T]?) { array?.sort{$0.0.name < $0.1.name} }
+public func sortByName<T: Nameable>(inout array: [T]?) { array?.sortInPlace {$0.0.name < $0.1.name} }
 
 /**
 sortedByName:
 
-:param: seq S
+- parameter seq: S
 
-:returns: [S.Generator.Element]
+- returns: [S.Generator.Element]
 */
 public func sortedByName<S:SequenceType where S.Generator.Element:Named>(seq: S) -> [S.Generator.Element] {
-  return Array(seq).sorted{$0.0.name < $0.1.name}
+  return Array(seq).sort {$0.0.name < $0.1.name}
 }
 
 /**
 sortedByName:
 
-:param: seq S?
+- parameter seq: S?
 
-:returns: [S.Generator.Element]?
+- returns: [S.Generator.Element]?
 */
 public func sortedByName<S:SequenceType where S.Generator.Element:Named>(seq: S?) -> [S.Generator.Element]? {
-  if seq != nil {  return Array(seq!).sorted{$0.0.name < $0.1.name} } else { return nil }
+  if seq != nil {  return Array(seq!).sort {$0.0.name < $0.1.name} } else { return nil }
 }
 
 /**
 sortByName:
 
-:param: array [T]
+- parameter array: [T]
 */
-public func sortByName<T: Named>(inout array: [T]) { array.sort{$0.0.name < $0.1.name} }
+public func sortByName<T: Named>(inout array: [T]) { array.sortInPlace {$0.0.name < $0.1.name} }
 
 /**
 sortByName:
 
-:param: array [T]?
+- parameter array: [T]?
 */
-public func sortByName<T: Named>(inout array: [T]?) { array?.sort{$0.0.name < $0.1.name} }
+public func sortByName<T: Named>(inout array: [T]?) { array?.sortInPlace {$0.0.name < $0.1.name} }

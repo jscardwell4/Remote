@@ -49,16 +49,16 @@ class DetailSection {
   /**
   Decorates the specified header using stored property values
 
-  :param: header DetailSectionHeader
+  - parameter header: DetailSectionHeader
   */
   func configureHeader(header: DetailSectionHeader) { header.title = title }
 
   /**
   Access an individual row
 
-  :param: row Int
+  - parameter row: Int
 
-  :returns: DetailRow
+  - returns: DetailRow
   */
   subscript(row: Int) -> DetailRow {
     precondition(row < count)
@@ -68,9 +68,9 @@ class DetailSection {
   /**
   Insert a row by wrapping in a creation block that simply returns the row
 
-  :param: row DetailRow
-  :param: idx Int
-  :param: key String
+  - parameter row: DetailRow
+  - parameter idx: Int
+  - parameter key: String
   */
   func insertRow(row: DetailRow, atIndex idx: Int, forKey key: String) {
     precondition(idx <= blocks.count)
@@ -81,8 +81,8 @@ class DetailSection {
   /**
   insertRow:atIndex:
 
-  :param: createRow (Void) -> DetailRow
-  :param: idx Int
+  - parameter createRow: (Void) -> DetailRow
+  - parameter idx: Int
   */
   func insertRow(createRow: RowConstructor, atIndex idx: Int, forKey key: String) {
     precondition(idx <= blocks.count)
@@ -93,7 +93,7 @@ class DetailSection {
   /**
   removeRowAtIndex:
 
-  :param: idx Int
+  - parameter idx: Int
   */
   func removeRowAtIndex(idx: Int) {
     precondition(idx < blocks.count)
@@ -104,7 +104,7 @@ class DetailSection {
   /**
   removeRowForKey:
 
-  :param: key String
+  - parameter key: String
   */
   func removeRowForKey(key: String) {
     cache[key] = nil
@@ -114,8 +114,8 @@ class DetailSection {
   /**
   replaceRowAtIndex:withRow:
 
-  :param: idx Int
-  :param: row (Void) -> DetailRow
+  - parameter idx: Int
+  - parameter row: (Void) -> DetailRow
   */
   func replaceRowAtIndex(idx: Int, withRow row: RowConstructor) {
     precondition(idx < blocks.count)
@@ -126,7 +126,7 @@ class DetailSection {
   /**
   removeAllRows:
 
-  :param: keepCapacity Bool = false
+  - parameter keepCapacity: Bool = false
   */
   func removeAllRows(keepCapacity: Bool = false) {
     cache.removeAll(keepCapacity: keepCapacity)
@@ -136,7 +136,7 @@ class DetailSection {
   /**
   addRow:
 
-  :param: createRow (Void) -> DetailRow
+  - parameter createRow: (Void) -> DetailRow
   */
   func addRow(createRow: RowConstructor, forKey key: String) {
     blocks[key] = createRow
@@ -145,9 +145,9 @@ class DetailSection {
   /**
   initWithSectionNumber:title:
 
-  :param: section Int
-  :param: title String? = nil
-  :param: controller DetailController? = nil
+  - parameter section: Int
+  - parameter title: String? = nil
+  - parameter controller: DetailController? = nil
   */
   init(section: Int, title: String? = nil, controller: DetailController? = nil) {
     self.section = section

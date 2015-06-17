@@ -17,9 +17,9 @@ extension NSManagedObject {
   /**
   entityDescription:
 
-  :param: context NSManagedObjectContext
+  - parameter context: NSManagedObjectContext
 
-  :returns: NSEntityDescription?
+  - returns: NSEntityDescription?
   */
   public class func entityDescription(context: NSManagedObjectContext) -> NSEntityDescription? {
     if let modelEntities = context.persistentStoreCoordinator?.managedObjectModel.entitiesByName as? [String:NSEntityDescription] {

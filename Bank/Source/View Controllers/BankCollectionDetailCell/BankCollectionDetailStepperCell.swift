@@ -59,7 +59,7 @@ class BankCollectionDetailStepperCell: BankCollectionDetailCell {
 
   private let stepper: UIStepper =  {
     let view = UIStepper()
-    view.setTranslatesAutoresizingMaskIntoConstraints(false)
+    view.translatesAutoresizingMaskIntoConstraints = false
     view.userInteractionEnabled = false
     return view
   }()
@@ -68,7 +68,7 @@ class BankCollectionDetailStepperCell: BankCollectionDetailCell {
   /**
   stepperValueDidChange:
 
-  :param: sender UIStepper
+  - parameter sender: UIStepper
   */
   func stepperValueDidChange(sender: UIStepper) {
     valueDidChange?(sender.value)

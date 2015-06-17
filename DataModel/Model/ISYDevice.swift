@@ -79,7 +79,7 @@ public class ISYDevice: NetworkDevice {
 /**
 updateWithData:
 
-:param: data ObjectJSONValue
+- parameter data: ObjectJSONValue
 */
 override public func updateWithData(data: ObjectJSONValue) {
   super.updateWithData(data)
@@ -99,7 +99,7 @@ override public func updateWithData(data: ObjectJSONValue) {
 /**
 detailController
 
-:returns: UIViewController
+- returns: UIViewController
 */
 //  func detailController() -> UIViewController { return ISYDeviceDetailController(model: self) }
 

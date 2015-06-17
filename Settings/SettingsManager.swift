@@ -25,9 +25,9 @@ public final class SettingsManager {
   /**
   registerSettingWithKey:fromDefaults:toDefaults:
 
-  :param: key String
-  :param: fromDefaults (AnyObject?) -> T?
-  :param: toDefaults (T) -> AnyObject?
+  - parameter key: String
+  - parameter fromDefaults: (AnyObject?) -> T?
+  - parameter toDefaults: (T) -> AnyObject?
   */
   public static func registerSettingWithKey<T>(key: String,
                               withDefaultValue value: T? = nil,
@@ -43,8 +43,8 @@ public final class SettingsManager {
   /**
   registerBoolSettingWithKey:withDefaultValue:
 
-  :param: key String
-  :param: value Bool
+  - parameter key: String
+  - parameter value: Bool
   */
   public static func registerBoolSettingWithKey(key: String, withDefaultValue value: Bool) {
     registeredSettings[key] = Box<Any>(Transformer<Bool>(fromUserDefaults: {($0 as? NSNumber)?.boolValue},
@@ -54,8 +54,8 @@ public final class SettingsManager {
   /**
   setValue:forSetting:
 
-  :param: value T
-  :param: setting String
+  - parameter value: T
+  - parameter setting: String
   */
   public static func setValue<T>(value: T, forSetting setting: String) {
     if let transformer = (registeredSettings[setting]?.unbox as? Transformer<T>)?.toUserDefaults {
@@ -70,9 +70,9 @@ public final class SettingsManager {
   /**
   valueForSetting:
 
-  :param: setting String
+  - parameter setting: String
 
-  :returns: T?
+  - returns: T?
   */
   public static func valueForSetting<T>(setting: String) -> T? {
     if let transformer = (registeredSettings[setting]?.unbox as? Transformer<T>)?.fromUserDefaults {

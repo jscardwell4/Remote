@@ -11,10 +11,10 @@ import Foundation
 /**
 Compose operator
 
-:param: f A -> B
-:param: g B -> C
+- parameter f: A -> B
+- parameter g: B -> C
 
-:returns: A -> C
+- returns: A -> C
 */
 public func ∘<A, B, C>(f: A -> B, g: B -> C) -> A -> C { return {g(f($0))} }
 
@@ -33,10 +33,10 @@ public func curry<A, B, C, D>( f: (A, B, C) -> D) -> A -> B -> C -> D {
 /**
 Apple's memoized function producer
 
-:param: body ((T) -> U
-:param: T
+- parameter body: ((T) -> U
+- parameter T:
 
-:returns: U) -> (T) -> U
+- returns: U) -> (T) -> U
 */
 public func memoize<T: Hashable, U>(body: ((T) -> U, T) -> U) -> (T) -> U {
   var memo: [T:U] = [:]
@@ -60,57 +60,57 @@ public func flip<A, B, C>( f: (B, A) -> C) -> (A, B) -> C { return {f($1, $0)} }
 /**
 A func for inverting a closure that returns a `Bool` given a single parameter `T`
 
-:param: f T -> Bool
+- parameter f: T -> Bool
 
-:returns: T -> Bool
+- returns: T -> Bool
 */
 public func invert<T>(f: T -> Bool) -> T -> Bool { return {!f($0)} }
 
 /**
 The function is a simple wrapper around `reduce` that ignores the actual reduction as a way to visit every element
 
-:param: sequence S
-:param: block (S.Generator.Element) -> Void
+- parameter sequence: S
+- parameter block: (S.Generator.Element) -> Void
 */
-public func apply<S:SequenceType>(sequence: S, f: (S.Generator.Element) -> Void) { reduce(sequence, Void(), { f($0.1) }) }
+public func apply<S:SequenceType>(sequence: S, f: (S.Generator.Element) -> Void) { sequence.reduce(Void(), combine: { f($0.1) }) }
 public func apply<T>(x: T, f: (T) -> Void) { f(x) }
 //public func apply<T, U>(x: T, f: (T) -> U) -> U { return f(x) }
 
-public func applyMaybe<S:SequenceType>(sequence: S?, f: (S.Generator.Element) -> Void) { if let s = sequence { apply(s, f) } }
-public func applyMaybe<T>(x: T?, f: (T) -> Void) { if let x = x { apply(x, f) } }
+public func applyMaybe<S:SequenceType>(sequence: S?, f: (S.Generator.Element) -> Void) { if let s = sequence { apply(s, f: f) } }
+public func applyMaybe<T>(x: T?, f: (T) -> Void) { if let x = x { apply(x, f: f) } }
 
 public func pairwiseApply<S:SequenceType>(sequence: S, f: (S.Generator.Element, S.Generator.Element) -> Void) {
-  apply(SequenceOf<(S.Generator.Element, S.Generator.Element)>({() -> GeneratorOf<(S.Generator.Element, S.Generator.Element)> in
+  apply(AnySequence({() -> AnyGenerator<(S.Generator.Element, S.Generator.Element)> in
     let sequenceArray = Array(sequence)
     var i = 1
-    return GeneratorOf<(S.Generator.Element, S.Generator.Element)>({
+    return anyGenerator({
       let result: (S.Generator.Element, S.Generator.Element)?
       if i < sequenceArray.count { result = (sequenceArray[i - 1], sequenceArray[i]) } else { result = nil }
       i++
       return result
     })
-  }), f)
+  }), f: f)
 }
 
 /**
 A function that simply calls `apply` and then returns the sequence
 
-:param: sequence S
-:param: block (S.Generator.Element) -> Void
+- parameter sequence: S
+- parameter block: (S.Generator.Element) -> Void
 
-:returns: S
+- returns: S
 */
-public func pipedApply<S:SequenceType>(x: S, f: (S.Generator.Element) -> Void) -> S { apply(x, f); return x }
+public func pipedApply<S:SequenceType>(x: S, f: (S.Generator.Element) -> Void) -> S { apply(x, f: f); return x }
 public func pipedApply<T>(x: T, f: (T) -> Void) -> T { f(x); return x }
 
 /** Operator function for the `apply` function */
-public func ➤<S:SequenceType>(lhs: S, rhs: (S.Generator.Element) -> Void) { apply(lhs, rhs) }
-public func ➤<T>(lhs: T, rhs: (T) -> Void) { apply(lhs, rhs) }
+public func ➤<S:SequenceType>(lhs: S, rhs: (S.Generator.Element) -> Void) { apply(lhs, f: rhs) }
+public func ➤<T>(lhs: T, rhs: (T) -> Void) { apply(lhs, f: rhs) }
 public func ➤|<T, U>(lhs: T, rhs: (T) -> U) -> U { return rhs(lhs) }
 
 /** Operator function for the `chainApply` function */
-public func ➤|<S:SequenceType>(lhs: S, rhs: (S.Generator.Element) -> Void) -> S { return pipedApply(lhs, rhs) }
-public func ➤|<T>(lhs: T, rhs: (T) -> Void) -> T { return pipedApply(lhs, rhs) }
+public func ➤|<S:SequenceType>(lhs: S, rhs: (S.Generator.Element) -> Void) -> S { return pipedApply(lhs, f: rhs) }
+public func ➤|<T>(lhs: T, rhs: (T) -> Void) -> T { return pipedApply(lhs, f: rhs) }
 
 /** Piping operator */
 public func >>><T>(lhs: T, rhs: T -> Void) { rhs(lhs) }

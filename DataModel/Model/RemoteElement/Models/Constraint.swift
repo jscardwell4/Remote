@@ -12,7 +12,7 @@ import CoreData
 import MoonKit
 
 @objc(Constraint)
-public final class Constraint: ModelObject, Printable, DebugPrintable {
+public final class Constraint: ModelObject, CustomStringConvertible, CustomDebugStringConvertible {
 
   @NSManaged public var identifier: String?
   @NSManaged public var tag: Int
@@ -85,13 +85,13 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
   /**
   init:attribute:relatedBy:toItem:attribute:multiplier:constant:
 
-  :param: firstItem RemoteElement
-  :param: firstAttribute NSLayoutAttribute
-  :param: relation NSLayoutRelation
-  :param: seconditem RemoteElement?
-  :param: secondAttribute NSLayoutAttribute
-  :param: multiplier CGFloat
-  :param: constant CGFloat
+  - parameter firstItem: RemoteElement
+  - parameter firstAttribute: NSLayoutAttribute
+  - parameter relation: NSLayoutRelation
+  - parameter seconditem: RemoteElement?
+  - parameter secondAttribute: NSLayoutAttribute
+  - parameter multiplier: CGFloat
+  - parameter constant: CGFloat
   */
   public convenience init(item firstItem: RemoteElement,
                          attribute firstAttribute: NSLayoutAttribute,
@@ -114,7 +114,7 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
   /**
   initWithValues:
 
-  :param: values [String AnyObject]
+  - parameter values: [String AnyObject]
   */
   public class func constraintWithValues(values: [String:AnyObject]) -> Constraint? {
     let firstItem = values["firstItem"] as? RemoteElement
@@ -137,19 +137,19 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
   /**
   elementFromDirectory:RemoteElement>:forString:
 
-  :param: directory OrderedDictionary<String
-  :param: RemoteElement>
-  :param: string String
+  - parameter directory: OrderedDictionary<String
+  - parameter RemoteElement>:
+  - parameter string: String
 
-  :returns: RemoteElement?
+  - returns: RemoteElement?
   */
   public class func elementFromDirectory(directory: OrderedDictionary<String, RemoteElement>,
                         forString string: String) -> RemoteElement?
   {
     var element: RemoteElement?
     if string.hasPrefix("$") {
-      let i = dropFirst(string).toInt()!
-      if contains(0..<directory.count, i) { element = directory.values[i] }
+      let i = Int(String(dropFirst(string.characters)))!
+      if (0..<directory.count).contains(i) { element = directory.values[i] }
     }
     else { element = directory[string] }
     return element
@@ -158,9 +158,9 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
   /**
   constraintFromPseudoConstraint:
 
-  :param: pseudo PseudoConstraint
+  - parameter pseudo: PseudoConstraint
 
-  :returns: Constraint?
+  - returns: Constraint?
   */
   public class func constraintFromPseudoConstraint(pseudo: PseudoConstraint,
                               usingDirectory directory: OrderedDictionary<String, RemoteElement>) -> Constraint?
@@ -217,9 +217,9 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
   /**
   hasAttributeValues:
 
-  :param: values [String AnyObject]
+  - parameter values: [String AnyObject]
 
-  :returns: Bool
+  - returns: Bool
   */
   public func hasAttributeValues(values: [String:AnyObject]) -> Bool {
     if let item: AnyObject = values["firstItem"] {
@@ -263,10 +263,10 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
   /**
   constraintFromFormat:index:
 
-  :param: format String
-  :param: index [String:String] Dictionary with entries in the format ["placeholder":"uuid"]
+  - parameter format: String
+  - parameter index: [String:String] Dictionary with entries in the format ["placeholder":"uuid"]
 
-  :returns: Constraint?
+  - returns: Constraint?
   */
   public class func constraintFromFormat(format: String, withIndex index: [String:String], context: NSManagedObjectContext) -> Constraint? {
     var constraint: Constraint?
@@ -293,10 +293,10 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
   /**
   constraintFromFormat:context:
 
-  :param: format String
-  :param: context NSManagedObjectContext
+  - parameter format: String
+  - parameter context: NSManagedObjectContext
 
-  :returns: Constraint?
+  - returns: Constraint?
   */
   public class func constraintFromFormat(format: String, context: NSManagedObjectContext) -> Constraint? {
     var constraint: Constraint?
@@ -319,10 +319,10 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
   /**
   importObjectsWithData:context:
 
-  :param: data AnyObject?
-  :param: context NSManagedObjectContext
+  - parameter data: AnyObject?
+  - parameter context: NSManagedObjectContext
 
-  :returns: [Constraint]
+  - returns: [Constraint]
   */
   public class func importObjectsWithData(data: ObjectJSONValue, context: NSManagedObjectContext) -> [ModelObject] {
     // TODO: Pre-parse constraint format for $[0-9] and self
@@ -340,13 +340,13 @@ public final class Constraint: ModelObject, Printable, DebugPrintable {
   /**
   importObjectsWithData:context:
 
-  :param: data ArrayJSONValue
-  :param: context NSManagedObjectContext
+  - parameter data: ArrayJSONValue
+  - parameter context: NSManagedObjectContext
 
-  :returns: [Constraint]
+  - returns: [Constraint]
   */
   override public class func importObjectsWithData(data: ArrayJSONValue, context: NSManagedObjectContext) -> [ModelObject] {
-    return compressedMap(flatMap(data.compressedMap({String($0)}), {NSLayoutConstraint.splitFormat($0)}),
+    return compressedMap(data.compressedMap({String($0)}).flatMap({NSLayoutConstraint.splitFormat($0)}),
                          {self.constraintFromFormat($0, context: context)})
   }
 

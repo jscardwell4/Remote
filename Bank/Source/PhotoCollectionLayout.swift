@@ -24,7 +24,7 @@ class PhotoCollectionLayout: UICollectionViewLayout {
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required init(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
@@ -32,7 +32,7 @@ class PhotoCollectionLayout: UICollectionViewLayout {
   }
 
   /** An enumeration for specifying the scale of the layout's items */
-  enum ItemScale: Float, Printable {
+  enum ItemScale: Float, CustomStringConvertible {
     case OneAcross = 1, TwoAcross, ThreeAcross, FourAcross, FiveAcross, SixAcross, SevenAcross, EightAcross
 
     static var minScale: ItemScale { return .EightAcross }
@@ -80,9 +80,9 @@ class PhotoCollectionLayout: UICollectionViewLayout {
   /**
   prepareForCollectionViewUpdates:
 
-  :param: updateItems [AnyObject]!
+  - parameter updateItems: [AnyObject]!
   */
-  override func prepareForCollectionViewUpdates(updateItems: [AnyObject]!) {
+  override func prepareForCollectionViewUpdates(updateItems: [UICollectionViewUpdateItem]) {
     switch zoomState {
       case .ZoomingStage2:   zoomState = .ZoomingStage1
       case .UnzoomingStage2: zoomState = .UnzoomingStage1
@@ -97,7 +97,7 @@ class PhotoCollectionLayout: UICollectionViewLayout {
     if let count = collectionView?.numberOfItemsInSection(0) {
       itemCount = count
       storedAttributes.removeAll(keepCapacity: true)
-      apply(map(0..<count){NSIndexPath(forRow: $0, inSection: 0)}) {
+      apply((0..<count).map{NSIndexPath(forRow: $0, inSection: 0)}) {
         self.storedAttributes[$0] = self.layoutAttributesForItemAtIndexPath($0)
       }
 
@@ -107,7 +107,7 @@ class PhotoCollectionLayout: UICollectionViewLayout {
   /**
   collectionViewContentSize
 
-  :returns: CGSize
+  - returns: CGSize
   */
   override func collectionViewContentSize() -> CGSize {
     let w = itemScale.itemSize.width * CGFloat(itemsPerRow)
@@ -142,33 +142,33 @@ class PhotoCollectionLayout: UICollectionViewLayout {
   /**
   indexPathsToInsertForDecorationViewOfKind:
 
-  :param: elementKind String
+  - parameter elementKind: String
 
-  :returns: [AnyObject]
+  - returns: [AnyObject]
   */
-  override func indexPathsToInsertForDecorationViewOfKind(elementKind: String) -> [AnyObject] {
+  override func indexPathsToInsertForDecorationViewOfKind(elementKind: String) -> [NSIndexPath] {
     return zoomingItem != nil ? [NSIndexPath(forRow: itemCount, inSection: 0)] : []
   }
 
   /**
   indexPathsToDeleteForDecorationViewOfKind:
 
-  :param: elementKind String
+  - parameter elementKind: String
 
-  :returns: [AnyObject]
+  - returns: [AnyObject]
   */
-  override func indexPathsToDeleteForDecorationViewOfKind(elementKind: String) -> [AnyObject] {
+  override func indexPathsToDeleteForDecorationViewOfKind(elementKind: String) -> [NSIndexPath] {
     return unzoomingItem != nil ? [NSIndexPath(forRow: itemCount, inSection: 0)] : []
   }
 
   /**
   layoutAttributesForElementsInRect:
 
-  :param: rect CGRect
+  - parameter rect: CGRect
 
-  :returns: [AnyObject]?
+  - returns: [AnyObject]?
   */
-  override func layoutAttributesForElementsInRect(rect: CGRect) -> [AnyObject]? {
+  override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
     let yToRow = {$0/self.itemScale.itemSize.height * CGFloat(self.itemsPerRow)}
     let minRow = Int(floor(yToRow(max(rect.minY, 0))))
     let maxRow = Int(ceil(yToRow(rect.maxY)))
@@ -183,10 +183,10 @@ class PhotoCollectionLayout: UICollectionViewLayout {
   /**
   layoutAttributesForDecorationViewOfKind:atIndexPath:
 
-  :param: elementKind String
-  :param: indexPath NSIndexPath
+  - parameter elementKind: String
+  - parameter indexPath: NSIndexPath
 
-  :returns: UICollectionViewLayoutAttributes!
+  - returns: UICollectionViewLayoutAttributes!
   */
   override func layoutAttributesForDecorationViewOfKind(elementKind: String,
                                             atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes!
@@ -200,9 +200,9 @@ class PhotoCollectionLayout: UICollectionViewLayout {
   /**
   defaultAttributesForItemAtIndexPath:
 
-  :param: indexPath NSIndexPath
+  - parameter indexPath: NSIndexPath
 
-  :returns: UICollectionViewLayoutAttributes
+  - returns: UICollectionViewLayoutAttributes
   */
   private func defaultAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes {
     let attributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
@@ -216,9 +216,9 @@ class PhotoCollectionLayout: UICollectionViewLayout {
   /**
   zoomify:
 
-  :param: attr UICollectionViewLayoutAttributes
+  - parameter attr: UICollectionViewLayoutAttributes
 
-  :returns: UICollectionViewLayoutAttributes
+  - returns: UICollectionViewLayoutAttributes
   */
   private func zoomify(attr: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
     if let collectionView = collectionView {
@@ -237,9 +237,9 @@ class PhotoCollectionLayout: UICollectionViewLayout {
   /**
   layoutAttributesForItemAtIndexPath:
 
-  :param: indexPath NSIndexPath
+  - parameter indexPath: NSIndexPath
 
-  :returns: UICollectionViewLayoutAttributes!
+  - returns: UICollectionViewLayoutAttributes!
   */
   override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
     let attributes: UICollectionViewLayoutAttributes
@@ -255,9 +255,9 @@ class PhotoCollectionLayout: UICollectionViewLayout {
   /**
   initialLayoutAttributesForAppearingItemAtIndexPath:
 
-  :param: indexPath NSIndexPath
+  - parameter indexPath: NSIndexPath
 
-  :returns: UICollectionViewLayoutAttributes?
+  - returns: UICollectionViewLayoutAttributes?
   */
   override func initialLayoutAttributesForAppearingItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
   {
@@ -273,10 +273,10 @@ class PhotoCollectionLayout: UICollectionViewLayout {
   /**
   initialLayoutAttributesForAppearingDecorationElementOfKind:atIndexPath:
 
-  :param: elementKind String
-  :param: indexPath NSIndexPath
+  - parameter elementKind: String
+  - parameter indexPath: NSIndexPath
 
-  :returns: UICollectionViewLayoutAttributes?
+  - returns: UICollectionViewLayoutAttributes?
   */
   override func initialLayoutAttributesForAppearingDecorationElementOfKind(elementKind: String,
     atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
@@ -287,10 +287,10 @@ class PhotoCollectionLayout: UICollectionViewLayout {
   /**
   finalLayoutAttributesForDisappearingDecorationElementOfKind:atIndexPath:
 
-  :param: elementKind String
-  :param: indexPath NSIndexPath
+  - parameter elementKind: String
+  - parameter indexPath: NSIndexPath
 
-  :returns: UICollectionViewLayoutAttributes?
+  - returns: UICollectionViewLayoutAttributes?
   */
   override func finalLayoutAttributesForDisappearingDecorationElementOfKind(elementKind: String,
     atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
@@ -301,9 +301,9 @@ class PhotoCollectionLayout: UICollectionViewLayout {
   /**
   finalLayoutAttributesForDisappearingItemAtIndexPath:
 
-  :param: itemIndexPath NSIndexPath
+  - parameter itemIndexPath: NSIndexPath
 
-  :returns: UICollectionViewLayoutAttributes?
+  - returns: UICollectionViewLayoutAttributes?
   */
   override func finalLayoutAttributesForDisappearingItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
     let attributes: UICollectionViewLayoutAttributes?

@@ -18,7 +18,7 @@ class DetailCustomCell: DetailCell {
     didSet {
       if customView != nil { customView!.removeFromSuperview() }
       if let newCustomView = generateCustomView?() {
-        newCustomView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        newCustomView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(newCustomView)
         customView = newCustomView
       } else {
@@ -39,8 +39,8 @@ class DetailCustomCell: DetailCell {
   /**
   initWithStyle:reuseIdentifier:
 
-  :param: style UITableViewCellStyle
-  :param: reuseIdentifier String?
+  - parameter style: UITableViewCellStyle
+  - parameter reuseIdentifier: String?
   */
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -53,7 +53,7 @@ class DetailCustomCell: DetailCell {
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 

@@ -23,24 +23,24 @@ public struct Stack<T> {
   /**
   map<U>:
 
-  :param: transform (T) -> U
+  - parameter transform: (T) -> U
 
-  :returns: [U]
+  - returns: [U]
   */
   public func map<U>(transform: (T) -> U) -> [U] { return storage.map(transform) }
 
   /**
   pop
 
-  :returns: T?
+  - returns: T?
   */
   public mutating func pop() -> T? { var obj: T? = nil; if count > 0 { obj = storage.removeLast() }; return obj }
 
   /**
   push:
 
-  :param: obj T
-  :param: count Int = 1
+  - parameter obj: T
+  - parameter count: Int = 1
   */
   public mutating func push(obj:T, count:Int = 1) { storage += [T](count: count, repeatedValue: obj) }
 
@@ -48,18 +48,18 @@ public struct Stack<T> {
   public mutating func empty() { storage.removeAll(keepCapacity: false) }
 
   /** reverse */
-  public mutating func reverse() { storage = storage.reverse() }
+  public mutating func reverse() { storage = Array(storage.reverse()) }
 
   /**
   reversed
 
-  :returns: Stack<T>
+  - returns: Stack<T>
   */
-  public func reversed() -> Stack<T> { return Stack<T>(storage.reverse()) }
+  public func reversed() -> Stack<T> { return Stack<T>(Array(storage.reverse())) }
 
 }
 
-extension Stack: Printable {
+extension Stack: CustomStringConvertible {
   public var description: String { return storage.description }
 }
 

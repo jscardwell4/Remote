@@ -98,10 +98,10 @@ extension ITachDeviceConnection {
         case let .SendIR(id, command):
           let port = command.port
           let frequency = command.code.frequency
-          let repeat = command.code.repeatCount
+          let `repeat` = command.code.repeatCount
           let offset = command.code.offset
           let pattern = command.code.onOffPattern
-          return "sendir,1:\(port),\(id),\(frequency),\(repeat),\(offset),\(pattern)\\r"
+          return "sendir,1:\(port),\(id),\(frequency),\(`repeat`),\(offset),\(pattern)\\r"
       }
     }
 

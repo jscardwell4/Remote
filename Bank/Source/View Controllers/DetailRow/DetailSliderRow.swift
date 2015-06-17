@@ -20,7 +20,7 @@ final class DetailSliderRow: DetailRow {
   /**
   configure:
 
-  :param: cell DetailCell
+  - parameter cell: DetailCell
   */
   override func configureCell(cell: DetailCell) {
     super.configureCell(cell)

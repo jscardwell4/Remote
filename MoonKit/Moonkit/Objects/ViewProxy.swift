@@ -16,7 +16,7 @@ public final class ViewProxy: UIView {
   /**
   drawRect:
 
-  :param: rect CGRect
+  - parameter rect: CGRect
   */
   override public func drawRect(rect: CGRect) { draw(UIGraphicsGetCurrentContext(), rect) }
   
@@ -24,17 +24,17 @@ public final class ViewProxy: UIView {
   /**
   addSubview:
 
-  :param: view UIView
+  - parameter view: UIView
   */
-  override public func addSubview(view: UIView) { if let v = typeCast(view, subviewType) { super.addSubview(v) } }
+  override public func addSubview(view: UIView) { if let v = typeCast(view, u: subviewType) { super.addSubview(v) } }
 
   public var draw: (CGContext, CGRect) -> Void = { _, _ in }
 
   /**
   initWithFrame:draw:
 
-  :param: frame CGRect
-  :param: draw (CGContext, CGRect) -> Void
+  - parameter frame: CGRect
+  - parameter draw: (CGContext, CGRect) -> Void
   */
   public convenience init(frame: CGRect, draw: (CGContext, CGRect) -> Void) {
     self.init(frame: frame)

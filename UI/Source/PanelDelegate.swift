@@ -37,8 +37,8 @@ class PanelDelegate {
   /**
   setView:forLocation:
 
-  :param: v ButtonGroupView?
-  :param: l Location
+  - parameter v: ButtonGroupView?
+  - parameter l: Location
   */
   func setView(v: ButtonGroupView?, forLocation l: Location) {
     if l == location { view = v } else if l == opposingLocation { opposingView = v }
@@ -113,7 +113,7 @@ class PanelDelegate {
   /**
   updateViewStateForSwipeLocation:
 
-  :param: loc Location
+  - parameter loc: Location
   */
   func updateViewStateForSwipeLocation(loc: Location) {
     switch viewState {
@@ -163,8 +163,8 @@ class PanelDelegate {
   /**
   init:trigger:
 
-  :param: a Axis
-  :param: t Trigger
+  - parameter a: Axis
+  - parameter t: Trigger
   */
   init(axis a: Axis, trigger t: Trigger) {
     axis = a; trigger = t
@@ -188,7 +188,7 @@ class PanelDelegate {
 
 }
 
-extension PanelDelegate: Printable {
+extension PanelDelegate: CustomStringConvertible {
   var description: String {
     var result = "PanelDelegate:\n"
     result += "\taxis = \(axis.rawValue)\n"
@@ -220,8 +220,8 @@ extension PanelDelegate: Printable {
         : "\(PseudoConstraint(opposingViewUntuckedConstraint!).description)" + (opposingViewUntuckedConstraint!.active
                                                                                    ? " (active)\n"
                                                                                    : "\n"))
-    result += "\tview = \(toString(view))\n"
-    result += "\topposingView = \(toString(opposingView))\n"
+    result += "\tview = \(String(view))\n"
+    result += "\topposingView = \(String(opposingView))\n"
     result += "\tgesture = \(gesture)\n"
     result += "\topposingGesture = \(opposingGesture)"
     return result

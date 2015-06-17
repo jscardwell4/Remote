@@ -41,11 +41,11 @@ public class PanGesture: ConfiningBlockActionGesture {
   was reported. Apply the translation value to the state of the view when the gesture is first recognized—do not concatenate the
   value each time the handler is called.
 
-  :param: view UIView? The view in whose coordinate system the translation of the pan gesture should be computed. If you want to
+  - parameter view: UIView? The view in whose coordinate system the translation of the pan gesture should be computed. If you want to
   adjust a view's location to keep it under the user's finger, request the translation in that view's superview's coordinate
   system.
 
-  :returns: CGPoint A point identifying the new location of a view in the coordinate system of its designated superview.
+  - returns: CGPoint A point identifying the new location of a view in the coordinate system of its designated superview.
   */
   public func translationInView(view: UIView? = nil) -> CGPoint {
     var s = initialPoint
@@ -63,8 +63,8 @@ public class PanGesture: ConfiningBlockActionGesture {
 
   Changing the translation value resets the velocity of the pan.
 
-  :param: translation CGPoint A point that identifies the new translation value.
-  :param: view UIView! A view in whose coordinate system the translation is to occur.
+  - parameter translation: CGPoint A point that identifies the new translation value.
+  - parameter view: UIView! A view in whose coordinate system the translation is to occur.
   */
   public func setTranslation(translation: CGPoint, inView view: UIView) {
     initialPoint = view == self.view ? translation : view.convertPoint(translation, toView: self.view)
@@ -73,9 +73,9 @@ public class PanGesture: ConfiningBlockActionGesture {
   /**
   The velocity of the pan gesture in the coordinate system of the specified view.
 
-  :param: view UIView! The view in whose coordinate system the velocity of the pan gesture is computed.
+  - parameter view: UIView! The view in whose coordinate system the velocity of the pan gesture is computed.
 
-  :returns: CGPoint The velocity of the pan gesture, which is expressed in points per second. The velocity is broken into
+  - returns: CGPoint The velocity of the pan gesture, which is expressed in points per second. The velocity is broken into
   horizontal and vertical components.
   */
   public func velocityInView(view: UIView) -> CGPoint { return CGPoint(finalVelocity.isNull ? currentVelocity : finalVelocity) }
@@ -142,13 +142,13 @@ public class PanGesture: ConfiningBlockActionGesture {
   /**
   touchesBegan:withEvent:
 
-  :param: touches NSSet
-  :param: event UIEvent
+  - parameter touches: NSSet
+  - parameter event: UIEvent
   */
-  public override func touchesBegan(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+  public override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent) {
     let beginningTouches = (touches as NSSet).allObjects as! [UITouch]
     if panningTouches.count == 0 {
-      if contains(minimumNumberOfTouches ... maximumNumberOfTouches, beginningTouches.count) {
+      if (minimumNumberOfTouches ... maximumNumberOfTouches).contains(beginningTouches.count) {
         if validateTouchLocations(beginningTouches, withEvent: event) {
           panningTouches = OrderedSet(beginningTouches)
         }
@@ -161,10 +161,10 @@ public class PanGesture: ConfiningBlockActionGesture {
   /**
   touchesMoved:withEvent:
 
-  :param: touches NSSet
-  :param: event UIEvent
+  - parameter touches: NSSet
+  - parameter event: UIEvent
   */
-  public override func touchesMoved(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+  public override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent) {
     if validateTouchLocations((touches as NSSet).allObjects as! [UITouch], withEvent: event) {
       updateVelocity()
       if panRecognized {
@@ -179,10 +179,10 @@ public class PanGesture: ConfiningBlockActionGesture {
   /**
   touchesCancelled:withEvent:
 
-  :param: touches NSSet
-  :param: event UIEvent
+  - parameter touches: NSSet
+  - parameter event: UIEvent
   */
-  public override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+  public override func touchesCancelled(touches: Set<UITouch>, withEvent event: UIEvent) {
     if panningTouches ⊃ ((touches as NSSet).allObjects as! [UITouch]) {
       state = .Cancelled
     }
@@ -191,10 +191,10 @@ public class PanGesture: ConfiningBlockActionGesture {
   /**
   touchesEnded:withEvent:
 
-  :param: touches NSSet
-  :param: event UIEvent
+  - parameter touches: NSSet
+  - parameter event: UIEvent
   */
-  public override func touchesEnded(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+  public override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent) {
     let endedTouches = (touches as NSSet).allObjects as! [UITouch]
     if panningTouches ⊃ endedTouches {
       if !(panRecognized && validateTouchLocations(endedTouches, withEvent: event)) { state = .Failed }

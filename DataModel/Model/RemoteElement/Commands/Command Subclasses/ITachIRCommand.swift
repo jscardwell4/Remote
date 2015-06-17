@@ -31,7 +31,7 @@ public final class ITachIRCommand: SendCommand {
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
@@ -40,7 +40,7 @@ public final class ITachIRCommand: SendCommand {
 
   override public var description: String {
     var result = super.description
-    result += "\n\tcode = \(toString(code?.index.rawValue))"
+    result += "\n\tcode = \(String(code?.index.rawValue))"
     return result
   }
 

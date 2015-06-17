@@ -37,14 +37,14 @@ extension UIFont {
   /**
   fontFamilyAvailable:
 
-  :param: family String
+  - parameter family: String
 
-  :returns: Bool
+  - returns: Bool
   */
   public class func fontFamilyAvailable(family: String) -> Bool {
     let families = UIFont.familyNames() as? [String]
     if families == nil { fatalError("could not downcast family names") }
-    return contains(families!, family)
+    return (families!).contains(family.characters)
   }
 
 }
@@ -58,7 +58,7 @@ extension UIFont /*: JSONValueInitializable */ {
     if let string = String(jsonValue) {
       let captures = disperse2(string.matchFirst("^([^@]*)@?([0-9]*\\.?[0-9]*)"))
 
-      if let name = captures.0 where UIFont.familyNames() as! [String] ∋ name {
+      if let name = captures.0 where UIFont.familyNames() as [String] ∋ name {
 
         let size: CGFloat
 

@@ -25,7 +25,7 @@ public final class Button: RemoteElement {
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
@@ -73,7 +73,7 @@ public final class Button: RemoteElement {
   /**
   updateWithPreset:
 
-  :param: preset Preset
+  - parameter preset: Preset
   */
   override func updateWithPreset(preset: Preset) {
     super.updateWithPreset(preset)
@@ -111,7 +111,7 @@ public final class Button: RemoteElement {
   /**
   updateForMode:
 
-  :param: mode Mode
+  - parameter mode: Mode
   */
   override func updateForMode(mode: Mode) {
     super.updateForMode(mode)
@@ -129,7 +129,7 @@ public final class Button: RemoteElement {
   /**
   updateForState:
 
-  :param: state UIControlState
+  - parameter state: UIControlState
   */
   func updateForState(state: UIControlState) {
     title = titleSet?.attributedStringForState(state)
@@ -170,8 +170,8 @@ public final class Button: RemoteElement {
   /**
   setTitles:forMode:
 
-  :param: titleSet ControlStateTitleSet?
-  :param: mode String
+  - parameter titleSet: ControlStateTitleSet?
+  - parameter mode: String
   */
   public func setTitles(titleSet: ControlStateTitleSet?, forMode mode: Mode) {
     setValue(titleSet, forMode: mode, inStorage: titleSets)
@@ -181,9 +181,9 @@ public final class Button: RemoteElement {
   /**
   titlesForMode:
 
-  :param: mode String
+  - parameter mode: String
 
-  :returns: ControlStateTitleSet?
+  - returns: ControlStateTitleSet?
   */
   public func titlesForMode(mode: Mode) -> ControlStateTitleSet? { return titleSets[mode] }
 
@@ -218,8 +218,8 @@ public final class Button: RemoteElement {
   /**
   setIconSet:forMode:
 
-  :param: iconSet ControlStateImageSet?
-  :param: mode String
+  - parameter iconSet: ControlStateImageSet?
+  - parameter mode: String
   */
   public func setIconSet(iconSet: ControlStateImageSet?, forMode mode: Mode) {
     setValue(iconSet, forMode: mode, inStorage: iconSets)
@@ -230,9 +230,9 @@ public final class Button: RemoteElement {
   /**
   iconSetForMode:
 
-  :param: mode String
+  - parameter mode: String
 
-  :returns: ControlStateImageSet?
+  - returns: ControlStateImageSet?
   */
   public func iconSetForMode(mode: Mode) -> ControlStateImageSet? { return iconSets[mode] }
 
@@ -262,8 +262,8 @@ public final class Button: RemoteElement {
   /**
   setBackgroundSet:forMode:
 
-  :param: backgroundSet ControlStateImageSet?
-  :param: mode String
+  - parameter backgroundSet: ControlStateImageSet?
+  - parameter mode: String
   */
   public func setBackgroundSet(backgroundSet: ControlStateImageSet?, forMode mode: Mode) {
     setValue(backgroundSet, forMode: mode, inStorage: backgroundSets)
@@ -279,9 +279,9 @@ public final class Button: RemoteElement {
   /**
   backgroundSetForMode:
 
-  :param: mode String
+  - parameter mode: String
 
-  :returns: ControlStateImageSet?
+  - returns: ControlStateImageSet?
   */
   public func backgroundSetForMode(mode: Mode) -> ControlStateImageSet? { return backgroundSets[mode] }
 
@@ -311,17 +311,17 @@ public final class Button: RemoteElement {
   /**
   commandForMode:
 
-  :param: mode Mode
+  - parameter mode: Mode
 
-  :returns: Command?
+  - returns: Command?
   */
   public func commandForMode(mode: Mode) -> Command? { return commands[mode] }
 
   /**
   setCommand:forMode:
 
-  :param: command Command?
-  :param: mode Mode
+  - parameter command: Command?
+  - parameter mode: Mode
   */
   public func setCommand(command: Command?, forMode mode: Mode) {
     setValue(command, forMode: mode, inStorage: commands)
@@ -354,17 +354,17 @@ public final class Button: RemoteElement {
   /**
   longPressCommandForMode:
 
-  :param: mode Mode
+  - parameter mode: Mode
 
-  :returns: Command?
+  - returns: Command?
   */
   public func longPressCommandForMode(mode: Mode) -> Command? { return longPressCommands[mode] }
 
   /**
   setLongPressCommand:forMode:
 
-  :param: command Command?
-  :param: mode Mode
+  - parameter command: Command?
+  - parameter mode: Mode
   */
   public func setLongPressCommand(command: Command?, forMode mode: Mode) {
     setValue(command, forMode: mode, inStorage: longPressCommands)
@@ -374,8 +374,8 @@ public final class Button: RemoteElement {
   /**
    executeCommandWithOption:
 
-   :param: options CommandOptions
-   :param: completion ((Bool, NSError?) -> Void)?
+   - parameter options: CommandOptions
+   - parameter completion: ((Bool, NSError?) -> Void)?
    */
    public func executeCommandWithOption(option: Command.Option, completion: ((Bool, NSError?) -> Void)?) {
      var c: Command?
@@ -385,7 +385,7 @@ public final class Button: RemoteElement {
        case .LongPress: c = longPressCommand
      }
 
-     if c != nil { c!.execute(completion: completion) } else { completion?(true, nil) }
+     if c != nil { c!.execute(completion) } else { completion?(true, nil) }
    }
 
 
@@ -417,8 +417,8 @@ public final class Button: RemoteElement {
   /**
   setBackgroundColorSet:forMode:
 
-  :param: colorSet ControlStateColorSet?
-  :param: mode String
+  - parameter colorSet: ControlStateColorSet?
+  - parameter mode: String
   */
   public func setBackgroundColorSet(colorSet: ControlStateColorSet?, forMode mode: Mode) {
     setValue(colorSet, forMode: mode, inStorage: backgroundColorSets)
@@ -428,9 +428,9 @@ public final class Button: RemoteElement {
   /**
   backgroundColorsForMode:
 
-  :param: mode String
+  - parameter mode: String
 
-  :returns: ControlStateColorSet?
+  - returns: ControlStateColorSet?
   */
   public func backgroundColorSetForMode(mode: Mode) -> ControlStateColorSet? { return backgroundColorSets[mode] }
 
@@ -462,8 +462,8 @@ public final class Button: RemoteElement {
   /**
   setForegroundColorSet:forMode:
 
-  :param: colorSet ControlStateColorSet?
-  :param: mode String
+  - parameter colorSet: ControlStateColorSet?
+  - parameter mode: String
   */
   public func setForegroundColorSet(colorSet: ControlStateColorSet?, forMode mode: Mode) {
     setValue(colorSet, forMode: mode, inStorage: foregroundColorSets)
@@ -473,9 +473,9 @@ public final class Button: RemoteElement {
   /**
   foregroundColorsForMode:
 
-  :param: mode String
+  - parameter mode: String
 
-  :returns: ControlStateColorSet?
+  - returns: ControlStateColorSet?
   */
   public func foregroundColorSetForMode(mode: Mode) -> ControlStateColorSet? { return foregroundColorSets[mode] }
 
@@ -632,16 +632,16 @@ public final class Button: RemoteElement {
   override public var description: String {
     var result = super.description
     result += "\n\ttitleSets = {\n\(titleSets.description.indentedBy(8))\n\t}"
-    result += "\n\ttitle = \(toString(title))"
+    result += "\n\ttitle = \(String(title))"
     result += "\n\ticonSets = {\n\(iconSets.description.indentedBy(8))\n\t}"
-    result += "\n\ticon = \(toString(icon))"
+    result += "\n\ticon = \(String(icon))"
     result += "\n\tbackgroundColorSets = {\n\(backgroundColorSets.description.indentedBy(8))\n\t}"
-    result += "\n\tbackgroundColor = \(toString((backgroundSet?[state.rawValue] as? UIColor)?.string))"
+    result += "\n\tbackgroundColor = \(String((backgroundSet?[state.rawValue] as? UIColor)?.string))"
     result += "\n\tbackgroundSets = {\n\(backgroundSets.description.indentedBy(8))\n\t}"
     result += "\n\tcommands = {\n\(commands.description.indentedBy(8))\n\t}"
-    result += "\n\tcommand = \(toString(command))"
+    result += "\n\tcommand = \(String(command))"
     result += "\n\tlongPressCommands = {\n\(longPressCommands.description.indentedBy(8))\n\t}"
-    result += "\n\tlongPressCommand = \(toString(longPressCommand))"
+    result += "\n\tlongPressCommand = \(String(longPressCommand))"
     result += "\n\ttitleEdgeInsets = \(titleEdgeInsets)"
     result += "\n\timageEdgeInsets = \(imageEdgeInsets)"
     result += "\n\tcontentEdgeInsets = \(contentEdgeInsets)"

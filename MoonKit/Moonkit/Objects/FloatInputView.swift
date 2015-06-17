@@ -14,8 +14,8 @@ public class FloatInputView: TextInputView {
   /**
   initWithFrame:target:
 
-  :param: frame CGRect
-  :param: target UIResponder
+  - parameter frame: CGRect
+  - parameter target: UIResponder
   */
   public required init(frame: CGRect, target: UITextInput) {
     super.init(frame: frame, target: target)
@@ -42,7 +42,7 @@ public class FloatInputView: TextInputView {
             let didDelete = self.deleteBackward()
             if views["period"]!.enabled == false && didDelete {
               let range = target.textRangeFromPosition(target.beginningOfDocument, toPosition: target.endOfDocument)
-              if Array(target.textInRange(range)) ∌ "." { views["period"]!.enabled = true }
+              if Array(target.textInRange(range).characters) ∌ "." { views["period"]!.enabled = true }
             }
           }, forControlEvents: UIControlEvents.TouchUpInside)
 
@@ -83,7 +83,7 @@ public class FloatInputView: TextInputView {
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required public init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 

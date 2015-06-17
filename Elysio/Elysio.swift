@@ -27,7 +27,7 @@ public final class Elysio: NSObject {
     if !fontsRegistered {
       fontsRegistered = true
       let styles = ["Hairline", "Thin", "Light", "Regular", "Medium", "Bold", "Black"]
-      let fontNames = flatMap(styles) { ["Elysio-\($0)", "Elysio-\($0)Italic"] }
+      let fontNames = styles.flatMap { ["Elysio-\($0)", "Elysio-\($0)Italic"] }
       let bundle = NSBundle(forClass: self)
       let fontURLs = compressedMap(fontNames) { bundle.URLForResource($0, withExtension: "otf") }
       var errors: Unmanaged<CFArray>?
@@ -47,9 +47,9 @@ public final class Elysio: NSObject {
   /**
   hairlineFontWithSize:
 
-  :param: size CGFloat
+  - parameter size: CGFloat
 
-  :returns: UIFont
+  - returns: UIFont
   */
   public class func hairlineFontWithSize(size: CGFloat) -> UIFont {
     if !fontsRegistered { registerFonts() }
@@ -62,9 +62,9 @@ public final class Elysio: NSObject {
   /**
   thinFontWithSize:
 
-  :param: size CGFloat
+  - parameter size: CGFloat
 
-  :returns: UIFont
+  - returns: UIFont
   */
   public class func thinFontWithSize(size: CGFloat) -> UIFont {
     if !fontsRegistered { registerFonts() }
@@ -77,9 +77,9 @@ public final class Elysio: NSObject {
   /**
   lightFontWithSize:
 
-  :param: size CGFloat
+  - parameter size: CGFloat
 
-  :returns: UIFont
+  - returns: UIFont
   */
   public class func lightFontWithSize(size: CGFloat) -> UIFont {
     if !fontsRegistered { registerFonts() }
@@ -92,9 +92,9 @@ public final class Elysio: NSObject {
   /**
   regularFontWithSize:
 
-  :param: size CGFloat
+  - parameter size: CGFloat
 
-  :returns: UIFont
+  - returns: UIFont
   */
   public class func regularFontWithSize(size: CGFloat) -> UIFont {
     if !fontsRegistered { registerFonts() }
@@ -107,9 +107,9 @@ public final class Elysio: NSObject {
   /**
   mediumFontWithSize:
 
-  :param: size CGFloat
+  - parameter size: CGFloat
 
-  :returns: UIFont
+  - returns: UIFont
   */
   public class func mediumFontWithSize(size: CGFloat) -> UIFont {
     if !fontsRegistered { registerFonts() }
@@ -122,9 +122,9 @@ public final class Elysio: NSObject {
   /**
   boldFontWithSize:
 
-  :param: size CGFloat
+  - parameter size: CGFloat
 
-  :returns: UIFont
+  - returns: UIFont
   */
   public class func boldFontWithSize(size: CGFloat) -> UIFont {
     if !fontsRegistered { registerFonts() }
@@ -137,9 +137,9 @@ public final class Elysio: NSObject {
   /**
   blackFontWithSize:
 
-  :param: size CGFloat
+  - parameter size: CGFloat
 
-  :returns: UIFont
+  - returns: UIFont
   */
   public class func blackFontWithSize(size: CGFloat) -> UIFont {
     if !fontsRegistered { registerFonts() }
@@ -152,9 +152,9 @@ public final class Elysio: NSObject {
   /**
   hairlineItalicFontWithSize:
 
-  :param: size CGFloat
+  - parameter size: CGFloat
 
-  :returns: UIFont
+  - returns: UIFont
   */
   public class func hairlineItalicFontWithSize(size: CGFloat) -> UIFont {
     if !fontsRegistered { registerFonts() }
@@ -167,9 +167,9 @@ public final class Elysio: NSObject {
   /**
   thinItalicFontWithSize:
 
-  :param: size CGFloat
+  - parameter size: CGFloat
 
-  :returns: UIFont
+  - returns: UIFont
   */
   public class func thinItalicFontWithSize(size: CGFloat) -> UIFont {
     if !fontsRegistered { registerFonts() }
@@ -182,9 +182,9 @@ public final class Elysio: NSObject {
   /**
   lightItalicFontWithSize:
 
-  :param: size CGFloat
+  - parameter size: CGFloat
 
-  :returns: UIFont
+  - returns: UIFont
   */
   public class func lightItalicFontWithSize(size: CGFloat) -> UIFont {
     if !fontsRegistered { registerFonts() }
@@ -197,9 +197,9 @@ public final class Elysio: NSObject {
   /**
   regularItalicFontWithSize:
 
-  :param: size CGFloat
+  - parameter size: CGFloat
 
-  :returns: UIFont
+  - returns: UIFont
   */
   public class func regularItalicFontWithSize(size: CGFloat) -> UIFont {
     if !fontsRegistered { registerFonts() }
@@ -212,9 +212,9 @@ public final class Elysio: NSObject {
   /**
   mediumItalicFontWithSize:
 
-  :param: size CGFloat
+  - parameter size: CGFloat
 
-  :returns: UIFont
+  - returns: UIFont
   */
   public class func mediumItalicFontWithSize(size: CGFloat) -> UIFont {
     if !fontsRegistered { registerFonts() }
@@ -227,9 +227,9 @@ public final class Elysio: NSObject {
   /**
   boldItalicFontWithSize:
 
-  :param: size CGFloat
+  - parameter size: CGFloat
 
-  :returns: UIFont
+  - returns: UIFont
   */
   public class func boldItalicFontWithSize(size: CGFloat) -> UIFont {
     if !fontsRegistered { registerFonts() }
@@ -242,9 +242,9 @@ public final class Elysio: NSObject {
   /**
   blackItalicFontWithSize:
 
-  :param: size CGFloat
+  - parameter size: CGFloat
 
-  :returns: UIFont
+  - returns: UIFont
   */
   public class func blackItalicFontWithSize(size: CGFloat) -> UIFont {
     if !fontsRegistered { registerFonts() }

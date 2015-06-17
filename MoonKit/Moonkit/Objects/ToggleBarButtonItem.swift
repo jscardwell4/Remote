@@ -25,7 +25,7 @@ public class ToggleBarButtonItem: UIBarButtonItem {
   /**
   encodeWithCoder:
 
-  :param: aCoder NSCoder
+  - parameter aCoder: NSCoder
   */
   public override func encodeWithCoder(aCoder: NSCoder) { super.encodeWithCoder(aCoder) }
 
@@ -35,14 +35,14 @@ public class ToggleBarButtonItem: UIBarButtonItem {
   /**
   initWithCustomView:
 
-  :param: customView UIView
+  - parameter customView: UIView
   */
   public override init(customView: UIView) { super.init(customView: customView) }
 
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   public required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 

@@ -71,8 +71,8 @@ public class LabeledCheckbox: Checkbox {
   /**
   initWithTitle:autolayout:
 
-  :param: title String
-  :param: autolayout Bool = false
+  - parameter title: String
+  - parameter autolayout: Bool = false
   */
   public convenience init(title: String, font: UIFont? = nil, autolayout: Bool = false) {
     self.init(autolayout: autolayout)
@@ -83,7 +83,7 @@ public class LabeledCheckbox: Checkbox {
   /**
   intrinsicContentSize
 
-  :returns: CGSize
+  - returns: CGSize
   */
   public override func intrinsicContentSize() -> CGSize {
     let titleSize = self.titleSize
@@ -94,7 +94,7 @@ public class LabeledCheckbox: Checkbox {
   /**
   drawRect:
 
-  :param: rect CGRect
+  - parameter rect: CGRect
   */
   public override func drawRect(rect: CGRect) {
 

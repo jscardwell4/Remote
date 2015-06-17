@@ -94,7 +94,7 @@ final public class Preset: EditableModelObject, CollectedModel {
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
@@ -253,15 +253,15 @@ final public class Preset: EditableModelObject, CollectedModel {
   override public var description: String {
     var description = "\(super.description)\n\t" + "\n\t".join(
       "category = \(presetCategory.index)",
-      "parent = \(toString(parentPreset?.index))",
+      "parent = \(String(parentPreset?.index))",
       "baseType = \(baseType)",
       "role = \(role)",
       "shape = \(shape)",
       "style = \(style)",
-      "background image = \(toString(backgroundImage?.index))",
-      "background image alpha = \(toString(backgroundImageAlpha))",
-      "background color = \(toString(backgroundColor))",
-      "constraints = " + "\n".join(map(enumerate("\n".split(toString(constraints))), {$0 > 0 ? $1.indentedBy(17) : $1})),
+      "background image = \(String(backgroundImage?.index))",
+      "background image alpha = \(String(backgroundImageAlpha))",
+      "background color = \(String(backgroundColor))",
+      "constraints = " + "\n".join(map("\n".split(String(constraints)).enumerate(), {$0 > 0 ? $1.indentedBy(17) : $1})),
       {
         switch self.baseType {
         case .Remote:
@@ -333,10 +333,10 @@ final public class Preset: EditableModelObject, CollectedModel {
   /**
   modelWithIndex:context:
 
-  :param: index PathIndex
-  :param: context NSManagedObjectContext
+  - parameter index: PathIndex
+  - parameter context: NSManagedObjectContext
 
-  :returns: Preset?
+  - returns: Preset?
   */
   public override static func modelWithIndex(var index: PathIndex, context: NSManagedObjectContext) -> Preset? {
     if index.count < 1 { return nil }

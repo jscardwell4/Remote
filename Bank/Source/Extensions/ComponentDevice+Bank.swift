@@ -324,7 +324,7 @@ extension ComponentDevice: DelegateDetailable {
           return row
         }, forKey: RowKey.InputPowersOn)
 
-        for (idx, input) in enumerate(sortedByName(componentDevice.inputs)) {
+        for (idx, input) in sortedByName(componentDevice.inputs).enumerate() {
           inputsSection.addRow({
             let row = BankCollectionDetailListRow()
             row.info = input
@@ -350,11 +350,11 @@ extension ComponentDevice: FormCreatable {
   /**
   creationForm:
 
-  :param: #context NSManagedObjectContext
+  - parameter #context: NSManagedObjectContext
 
-  :returns: Form
+  - returns: Form
   */
-  static func creationForm(#context: NSManagedObjectContext) -> Form {
+  static func creationForm(context context: NSManagedObjectContext) -> Form {
 
     var fields: OrderedDictionary<String, FieldTemplate> = [:]
 
@@ -375,10 +375,10 @@ extension ComponentDevice: FormCreatable {
   /**
   createWithForm:context:
 
-  :param: form Form
-  :param: context NSManagedObjectContext
+  - parameter form: Form
+  - parameter context: NSManagedObjectContext
 
-  :returns: ComponentDevice?
+  - returns: ComponentDevice?
   */
   static func createWithForm(form: Form, context: NSManagedObjectContext) -> ComponentDevice? {
     MSLogDebug("\(form)")

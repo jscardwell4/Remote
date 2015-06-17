@@ -66,21 +66,21 @@ class DetailCell: UITableViewCell {
     /**
     enumerate:
 
-    :param: block (Identifier) -> Void
+    - parameter block: (Identifier) -> Void
     */
     static func enumerate(block: (Identifier) -> Void) { apply(all, block) }
 
     /**
     registerWithTableView:
 
-    :param: tableView UITableView
+    - parameter tableView: UITableView
     */
     func registerWithTableView(tableView: UITableView) { tableView.registerClass(cellType, forCellReuseIdentifier: rawValue) }
 
     /**
     registerAllWithTableView:
 
-    :param: tableView UITableView
+    - parameter tableView: UITableView
     */
     static func registerAllWithTableView(tableView: UITableView) { enumerate { $0.registerWithTableView(tableView) } }
   }
@@ -88,7 +88,7 @@ class DetailCell: UITableViewCell {
   /**
   registerIdentifiersWithTableView:
 
-  :param: tableView UITableView
+  - parameter tableView: UITableView
   */
   class func registerIdentifiersWithTableView(tableView: UITableView) { Identifier.registerAllWithTableView(tableView) }
 
@@ -123,9 +123,9 @@ class DetailCell: UITableViewCell {
     /**
     textualRepresentationForObject:
 
-    :param: object AnyObject?
+    - parameter object: AnyObject?
 
-    :returns: AnyObject?
+    - returns: AnyObject?
     */
     func textualRepresentationForObject(object: AnyObject?) -> AnyObject? {
       var text: AnyObject?
@@ -154,10 +154,10 @@ class DetailCell: UITableViewCell {
     /**
     objectFromText:attributedText:
 
-    :param: text String?
-    :param: attributedText NSAttributedString?
+    - parameter text: String?
+    - parameter attributedText: NSAttributedString?
 
-    :returns: AnyObject?
+    - returns: AnyObject?
     */
     func objectFromText(text: String?, attributedText: NSAttributedString?) -> AnyObject? {
       switch self {
@@ -169,9 +169,9 @@ class DetailCell: UITableViewCell {
     /**
     objectFromText:
 
-    :param: text String?
+    - parameter text: String?
 
-    :returns: AnyObject?
+    - returns: AnyObject?
     */
     func objectFromText(text: String?) -> AnyObject? {
       if let t = text {
@@ -204,9 +204,9 @@ class DetailCell: UITableViewCell {
     /**
     objectFromText:
 
-    :param: text NSAttributedString?
+    - parameter text: NSAttributedString?
 
-    :returns: AnyObject?
+    - returns: AnyObject?
     */
     func objectFromAttributedText(text: NSAttributedString?) -> AnyObject? {
       if let t = text {
@@ -244,10 +244,10 @@ class DetailCell: UITableViewCell {
   /**
   textFromObject:dataType:
 
-  :param: obj AnyObject
-  :param: dataType DataType = .StringData
+  - parameter obj: AnyObject
+  - parameter dataType: DataType = .StringData
 
-  :returns: String
+  - returns: String
   */
   func textFromObject(object: AnyObject?) -> String? {
     var text: String?
@@ -288,8 +288,8 @@ class DetailCell: UITableViewCell {
   /**
   initWithStyle:reuseIdentifier:
 
-  :param: style UITableViewStyle
-  :param: reuseIdentifier String
+  - parameter style: UITableViewStyle
+  - parameter reuseIdentifier: String
   */
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     identifier = Identifier(rawValue: reuseIdentifier ?? "") ?? .Label
@@ -303,7 +303,7 @@ class DetailCell: UITableViewCell {
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required init(coder aDecoder: NSCoder) { identifier = .Label; super.init(coder: aDecoder) }
 
@@ -314,15 +314,15 @@ class DetailCell: UITableViewCell {
   /**
   requiresConstraintBasedLayout
 
-  :returns: Bool
+  - returns: Bool
   */
   override class func requiresConstraintBasedLayout() -> Bool { return true }
 
   /**
   Overridden to prevent indented content view
 
-  :param: editing Bool
-  :param: animated Bool
+  - parameter editing: Bool
+  - parameter animated: Bool
   */
   override func setEditing(editing: Bool, animated: Bool) { isEditingState = editing }
 
@@ -347,10 +347,10 @@ class DetailCell: UITableViewCell {
 /**
 subscript:rhs:
 
-:param: lhs DetailCell.DataType
-:param: rhs DetailCell.DataType
+- parameter lhs: DetailCell.DataType
+- parameter rhs: DetailCell.DataType
 
-:returns: Bool
+- returns: Bool
 */
 func ==(lhs: DetailCell.DataType, rhs: DetailCell.DataType) -> Bool {
   switch (lhs, rhs) {

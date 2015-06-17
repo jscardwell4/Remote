@@ -38,7 +38,7 @@ extension NSMutableAttributedString {
   /**
   setFont:
 
-  :param: font UIFont
+  - parameter font: UIFont
   */
   public func setFont(font: UIFont, range: Range<Int>? = nil) {
     if length > 0 { addAttribute(NSFontAttributeName, value: font, range: NSRange(range ?? 0..<length)) }
@@ -51,22 +51,22 @@ extension NSParagraphStyle {
   /**
   Method of convenience for creating a paragraph style with attributes already set.
 
-  :param: lineSpacing CGFloat = 0
-  :param: paragraphSpacing CGFloat = 0
-  :param: alignment NSTextAlignment = .Natural
-  :param: headIndent CGFloat = 0
-  :param: tailIndent CGFloat = 0
-  :param: firstLineHeadIndent CGFloat = 0
-  :param: minimumLineHeight CGFloat = 0
-  :param: maximumLineHeight CGFloat = 0
-  :param: lineBreakMode NSLineBreakMode = .ByWordWrapping
-  :param: lineHeightMultiple CGFloat = 0
-  :param: paragraphSpacingBefore CGFloat = 0
-  :param: hyphenationFactor Float = 0
-  :param: tabStops [AnyObject]? = nil
-  :param: defaultTabInterval CGFloat = 0
+  - parameter lineSpacing: CGFloat = 0
+  - parameter paragraphSpacing: CGFloat = 0
+  - parameter alignment: NSTextAlignment = .Natural
+  - parameter headIndent: CGFloat = 0
+  - parameter tailIndent: CGFloat = 0
+  - parameter firstLineHeadIndent: CGFloat = 0
+  - parameter minimumLineHeight: CGFloat = 0
+  - parameter maximumLineHeight: CGFloat = 0
+  - parameter lineBreakMode: NSLineBreakMode = .ByWordWrapping
+  - parameter lineHeightMultiple: CGFloat = 0
+  - parameter paragraphSpacingBefore: CGFloat = 0
+  - parameter hyphenationFactor: Float = 0
+  - parameter tabStops: [AnyObject]? = nil
+  - parameter defaultTabInterval: CGFloat = 0
 
-  :returns: NSParagraphStyle
+  - returns: NSParagraphStyle
   */
   public class func paragraphStyleWithAttributes(
       lineSpacing: CGFloat = 0,

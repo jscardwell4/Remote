@@ -45,7 +45,7 @@ extension Manufacturer: DelegateDetailable {
       ////////////////////////////////////////////////////////////////////////////////////////////////////
 
       let devicesSection = BankCollectionDetailSection(section: 0, title: "Devices")
-      for (idx, device) in enumerate(sortedByName(manufacturer.devices)) {
+      for (idx, device) in sortedByName(manufacturer.devices).enumerate() {
         devicesSection.addRow({
           let row = BankCollectionDetailListRow()
           row.info = device
@@ -67,7 +67,7 @@ extension Manufacturer: DelegateDetailable {
       ////////////////////////////////////////////////////////////////////////////////////////////////////
 
       let codeSetsSection = BankCollectionDetailSection(section: 1, title: "Code Sets")
-      for (idx, codeSet) in enumerate(sortedByName(manufacturer.codeSets)) {
+      for (idx, codeSet) in sortedByName(manufacturer.codeSets).enumerate() {
         codeSetsSection.addRow({
           let row = BankCollectionDetailListRow()
           row.info = codeSet
@@ -95,21 +95,21 @@ extension Manufacturer: FormCreatable {
   /**
   creationForm:
 
-  :param: #context NSManagedObjectContext
+  - parameter #context: NSManagedObjectContext
 
-  :returns: Form
+  - returns: Form
   */
-  static func creationForm(#context: NSManagedObjectContext) -> Form {
+  static func creationForm(context context: NSManagedObjectContext) -> Form {
     return Form(templates: OrderedDictionary<String, FieldTemplate>(["Name": nameFormFieldTemplate(context: context)]))
   }
 
   /**
   createWithForm:context:
 
-  :param: form Form
-  :param: context NSManagedObjectContext
+  - parameter form: Form
+  - parameter context: NSManagedObjectContext
 
-  :returns: Manufacturer?
+  - returns: Manufacturer?
   */
   static func createWithForm(form: Form, context: NSManagedObjectContext) -> Manufacturer? {
     if let name = form.values?["Name"] as? String { return Manufacturer(name: name, context: context) }

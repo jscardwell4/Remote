@@ -13,7 +13,7 @@ extension NSManagedObjectModel {
 
   public override var description: String {
     var description = ""
-    apply(entities as! [NSEntityDescription]) {
+    apply(entities as [NSEntityDescription]) {
       entity in
 
       if let entityName = entity.name {
@@ -26,7 +26,7 @@ extension NSManagedObjectModel {
           description += "\tuserInfo: {\n\(formattedDescription(userInfo, indent: 2))\n\t}"
         }
 
-        var properties = entity.properties as! [NSPropertyDescription]
+        var properties = entity.properties as [NSPropertyDescription]
         if let superEntityProperties = (entity.superentity?.properties as? [NSPropertyDescription])?.map({$0.name}) {
           properties = properties.filter({superEntityProperties ∌ $0.name})
         }

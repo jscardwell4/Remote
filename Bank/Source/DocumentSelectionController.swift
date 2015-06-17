@@ -27,14 +27,14 @@ final class DocumentSelectionController: UIViewController {
     imageView = {
       let iv = UIImageView()
       iv.image = self.image
-      iv.setTranslatesAutoresizingMaskIntoConstraints(false)
+      iv.translatesAutoresizingMaskIntoConstraints = false
       self.view.addSubview(iv)
       self.view.stretchSubview(iv)
       return iv
     }()
 
     let wrapper = UIView()
-    wrapper.setTranslatesAutoresizingMaskIntoConstraints(false)
+    wrapper.translatesAutoresizingMaskIntoConstraints = false
     wrapper.backgroundColor = UIColor.clearColor()
     view.addSubview(wrapper)
     view.constrain("|-20-[wrapper]-20-| :: V:|-100-[wrapper]-100-|", views: ["wrapper": wrapper])
@@ -47,7 +47,7 @@ final class DocumentSelectionController: UIViewController {
   /**
   willMoveToParentViewController:
 
-  :param: parent UIViewController?
+  - parameter parent: UIViewController?
   */
   override func willMoveToParentViewController(parent: UIViewController?) {
     super.willMoveToParentViewController(parent)
@@ -57,7 +57,7 @@ final class DocumentSelectionController: UIViewController {
   /**
   viewWillAppear:
 
-  :param: animated Bool
+  - parameter animated: Bool
   */
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
@@ -86,8 +86,8 @@ final class DocumentSelectionController: UIViewController {
       /**
       setHighlighted:animated:
 
-      :param: highlighted Bool
-      :param: animated Bool
+      - parameter highlighted: Bool
+      - parameter animated: Bool
       */
       override func setHighlighted(highlighted: Bool, animated: Bool) {
         label.font = highlighted || selected ? Bank.boldLabelFont : Bank.labelFont
@@ -97,8 +97,8 @@ final class DocumentSelectionController: UIViewController {
       /**
       setSelected:animated:
 
-      :param: selected Bool
-      :param: animated Bool
+      - parameter selected: Bool
+      - parameter animated: Bool
       */
       override func setSelected(selected: Bool, animated: Bool) {
         label.font = highlighted || selected ? Bank.boldLabelFont : Bank.labelFont
@@ -108,8 +108,8 @@ final class DocumentSelectionController: UIViewController {
       /**
       initWithStyle:reuseIdentifier:
 
-      :param: style UITableViewStyle
-      :param: reuseIdentifier String
+      - parameter style: UITableViewStyle
+      - parameter reuseIdentifier: String
       */
       override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style:style, reuseIdentifier: reuseIdentifier)
@@ -125,14 +125,14 @@ final class DocumentSelectionController: UIViewController {
       /**
       init:
 
-      :param: aDecoder NSCoder
+      - parameter aDecoder: NSCoder
       */
       required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
       /**
       requiresConstraintBasedLayout
 
-      :returns: Bool
+      - returns: Bool
       */
       override class func requiresConstraintBasedLayout() -> Bool { return true }
 
@@ -159,23 +159,23 @@ final class DocumentSelectionController: UIViewController {
     /**
     numberOfSectionsInTableView:
 
-    :param: tableView UITableView
+    - parameter tableView: UITableView
 
-    :returns: Int
+    - returns: Int
     */
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int { return 1 }
 
     /**
     tableView:viewForHeaderInSection:
 
-    :param: tableView UITableView
-    :param: section Int
+    - parameter tableView: UITableView
+    - parameter section: Int
 
-    :returns: UIView?
+    - returns: UIView?
     */
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
       let view = UILabel()
-      view.setTranslatesAutoresizingMaskIntoConstraints(false)
+      view.translatesAutoresizingMaskIntoConstraints = false
       view.font = Bank.boldLabelFont
       view.textColor = Bank.labelColor
       view.backgroundColor = UIColor.clearColor()
@@ -187,20 +187,20 @@ final class DocumentSelectionController: UIViewController {
     /**
     tableView:numberOfRowsInSection:
 
-    :param: tableView UITableView
-    :param: section Int
+    - parameter tableView: UITableView
+    - parameter section: Int
 
-    :returns: Int
+    - returns: Int
     */
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return files.count }
 
     /**
     tableView:cellForRowAtIndexPath:
 
-    :param: tableView UITableView
-    :param: indexPath NSIndexPath
+    - parameter tableView: UITableView
+    - parameter indexPath: NSIndexPath
 
-    :returns: UITableViewCell
+    - returns: UITableViewCell
     */
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
       let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! DocumentCell
@@ -217,8 +217,8 @@ final class DocumentSelectionController: UIViewController {
     /**
     tableView:didSelectRowAtIndexPath:
 
-    :param: tableView UITableView
-    :param: indexPath NSIndexPath
+    - parameter tableView: UITableView
+    - parameter indexPath: NSIndexPath
     */
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
       documentSelectionController?.selectedFile = ImportExportFileManager.urlForFile(files[indexPath.row])

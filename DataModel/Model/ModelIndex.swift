@@ -9,7 +9,7 @@
 import Foundation
 import MoonKit
 
-@objc public class ModelIndex: RawRepresentable, JSONValueConvertible, JSONValueInitializable, StringValueConvertible, Printable {
+@objc public class ModelIndex: RawRepresentable, JSONValueConvertible, JSONValueInitializable, StringValueConvertible, CustomStringConvertible {
   public let pathIndex: PathIndex?
   public let uuidIndex: UUIDIndex?
   public init(_ index: PathIndex) { pathIndex = index; uuidIndex = nil }
@@ -58,25 +58,25 @@ public struct PathIndex: RawRepresentable {
   /**
   transformComponents:
 
-  :param: transform (inout [String]) -> Void
+  - parameter transform: (inout [String]) -> Void
   */
   private mutating func transformComponents(transform: (inout [String]) -> Void) {
     var components = pathComponents
     transform(&components)
-    rawValue = join("/", components)
+    rawValue = "/".join(components)
   }
 
   /**
   modifyComponents:
 
-  :param: modify (inout [String]) -> String
+  - parameter modify: (inout [String]) -> String
 
-  :returns: String
+  - returns: String
   */
   private mutating func modifyComponents(modify: (inout [String]) -> String) -> String {
     var components = pathComponents
     let result = modify(&components)
-    rawValue = join("/", components)
+    rawValue = "/".join(components)
     return result
   }
 
@@ -89,7 +89,7 @@ public struct PathIndex: RawRepresentable {
   /**
   initWithArray:
 
-  :param: array [String]
+  - parameter array: [String]
   */
   public init?(array: [String]) {
     self.init("/".join(array.filter({!$0.isEmpty})))
@@ -98,14 +98,14 @@ public struct PathIndex: RawRepresentable {
   /**
   append:
 
-  :param: component String
+  - parameter component: String
   */
   public mutating func append(component: String) { rawValue += "/" + component }
 
   /**
   removeLast
 
-  :returns: String
+  - returns: String
   */
   public mutating func removeLast() -> String {
     return modifyComponents({(inout components: [String]) -> String in components.removeLast()})
@@ -114,8 +114,8 @@ public struct PathIndex: RawRepresentable {
   /**
   insert:atIndex:
 
-  :param: component String
-  :param: i Int
+  - parameter component: String
+  - parameter i: Int
   */
   public mutating func insert(component: String, atIndex i: Int) {
     transformComponents({(inout components:[String]) -> Void in components.insert(component, atIndex: i)})
@@ -124,9 +124,9 @@ public struct PathIndex: RawRepresentable {
   /**
   removeAtIndex:
 
-  :param: index Int
+  - parameter index: Int
 
-  :returns: String
+  - returns: String
   */
   public mutating func removeAtIndex(index: Int) -> String {
     return modifyComponents({ (inout components: [String]) -> String in components.removeAtIndex(index) })
@@ -135,8 +135,8 @@ public struct PathIndex: RawRepresentable {
   /**
   replaceRange:with:
 
-  :param: subRange Range<Int>
-  :param: newElements [String]
+  - parameter subRange: Range<Int>
+  - parameter newElements: [String]
   */
   public mutating func replaceRange(subRange: Range<Int>, with newElements: [String]) {
     transformComponents({
@@ -148,8 +148,8 @@ public struct PathIndex: RawRepresentable {
   /**
   splice:atIndex:
 
-  :param: newElements [String]
-  :param: i Int
+  - parameter newElements: [String]
+  - parameter i: Int
   */
   public mutating func splice(newElements: [String], atIndex i: Int) {
     transformComponents({
@@ -161,7 +161,7 @@ public struct PathIndex: RawRepresentable {
   /**
   removeRange:
 
-  :param: subRange Range<Int>
+  - parameter subRange: Range<Int>
   */
   public mutating func removeRange(subRange: Range<Int>) {
     transformComponents({(inout components:[String]) -> Void in components.removeRange(subRange)})
@@ -170,7 +170,7 @@ public struct PathIndex: RawRepresentable {
 }
 
 // MARK: Printable, DebugPrintable
-extension PathIndex: Printable, DebugPrintable {
+extension PathIndex: CustomStringConvertible, CustomDebugStringConvertible {
   public var description: String { return rawValue }
   public var debugDescription: String { return pathComponents.debugDescription }
 }
@@ -180,9 +180,9 @@ extension PathIndex: Sliceable {
   /**
   subscript:
 
-  :param: bounds Range<Int>
+  - parameter bounds: Range<Int>
 
-  :returns: PathIndex
+  - returns: PathIndex
   */
   public subscript(bounds: Range<Int>) -> PathIndex { return PathIndex("/".join(pathComponents[bounds])) }
 }
@@ -196,9 +196,9 @@ extension PathIndex: MutableCollectionType {
   /**
   subscript:
 
-  :param: i Int
+  - parameter i: Int
 
-  :returns: String
+  - returns: String
   */
   public subscript(i: Int) -> String {
     get { return pathComponents[i] }
@@ -212,7 +212,7 @@ extension PathIndex: SequenceType {
   /**
   generate
 
-  :returns: IndexingGenerator<Array<String>>
+  - returns: IndexingGenerator<Array<String>>
   */
   public func generate() -> IndexingGenerator<Array<String>> { return pathComponents.generate() }
 }
@@ -221,10 +221,10 @@ extension PathIndex: SequenceType {
 /**
 Addition binary operator for two `PathIndex` objects
 
-:param: lhs PathIndex
-:param: rhs PathIndex
+- parameter lhs: PathIndex
+- parameter rhs: PathIndex
 
-:returns: PathIndex
+- returns: PathIndex
 */
 public func +(lhs: PathIndex, rhs: PathIndex) -> PathIndex {
   return PathIndex("/".join(lhs.pathComponents + rhs.pathComponents))
@@ -233,10 +233,10 @@ public func +(lhs: PathIndex, rhs: PathIndex) -> PathIndex {
 /**
 Addtion binary operator for a `PathIndex` and a `String`
 
-:param: lhs PathIndex
-:param: rhs String
+- parameter lhs: PathIndex
+- parameter rhs: String
 
-:returns: PathIndex
+- returns: PathIndex
 */
 public func +(lhs: PathIndex, rhs: String) -> PathIndex {
   return lhs + PathIndex(rhs)
@@ -245,10 +245,10 @@ public func +(lhs: PathIndex, rhs: String) -> PathIndex {
 /**
 Addition binary operator for an optional `PathIndex` with a non-optional `PathIndex`
 
-:param: lhs PathIndex?
-:param: rhs PathIndex
+- parameter lhs: PathIndex?
+- parameter rhs: PathIndex
 
-:returns: PathIndex
+- returns: PathIndex
 */
 public func +(lhs: PathIndex?, rhs: PathIndex) -> PathIndex {
   return lhs == nil ? rhs : lhs! + rhs
@@ -257,10 +257,10 @@ public func +(lhs: PathIndex?, rhs: PathIndex) -> PathIndex {
 /**
 Addition binary operator for an optional `PathIndex` with and a `String`
 
-:param: lhs PathIndex
-:param: rhs String
+- parameter lhs: PathIndex
+- parameter rhs: String
 
-:returns: PathIndex
+- returns: PathIndex
 */
 public func +(lhs: PathIndex?, rhs: String) -> PathIndex {
   return lhs + PathIndex(rhs)
@@ -269,18 +269,18 @@ public func +(lhs: PathIndex?, rhs: String) -> PathIndex {
 /**
 Addition unary operator for two `PathIndex` objects
 
-:param: lhs PathIndex
-:param: rhs PathIndex
+- parameter lhs: PathIndex
+- parameter rhs: PathIndex
 */
 public func +=(inout lhs: PathIndex, rhs: PathIndex) {
-  lhs.rawValue = join("/", lhs.pathComponents + rhs.pathComponents)
+  lhs.rawValue = "/".join(lhs.pathComponents + rhs.pathComponents)
 }
 
 /**
 Addition unary operator for a `PathIndex` and a `String`
 
-:param: lhs PathIndex
-:param: rhs String
+- parameter lhs: PathIndex
+- parameter rhs: String
 */
 public func +=(inout lhs: PathIndex, rhs: String) { lhs += PathIndex(rhs) }
 
@@ -297,10 +297,10 @@ extension PathIndex: Equatable {}
 /**
 Equatable support function
 
-:param: lhs ModelIndex
-:param: rhs ModelIndex
+- parameter lhs: ModelIndex
+- parameter rhs: ModelIndex
 
-:returns: Bool
+- returns: Bool
 */
 public func ==(lhs: PathIndex, rhs: PathIndex) -> Bool { return lhs.rawValue == rhs.rawValue }
 
@@ -321,9 +321,9 @@ public struct UUIDIndex: RawRepresentable {
   /**
   isValidRawValue:
 
-  :param: rawValue String
+  - parameter rawValue: String
 
-  :returns: Bool
+  - returns: Bool
   */
   static func isValidRawValue(rawValue: String) -> Bool {
     return rawValue ~= "[A-F0-9]{8}-(?:[A-F0-9]{4}-){3}[A-Z0-9]{12}"
@@ -332,7 +332,7 @@ public struct UUIDIndex: RawRepresentable {
 }
 
 // MARK: Printable
-extension UUIDIndex: Printable {
+extension UUIDIndex: CustomStringConvertible {
   public var description: String { return rawValue }
 }
 
@@ -349,9 +349,9 @@ extension UUIDIndex: Equatable {}
 /**
 Equatable support function
 
-:param: lhs ModelIndex
-:param: rhs ModelIndex
+- parameter lhs: ModelIndex
+- parameter rhs: ModelIndex
 
-:returns: Bool
+- returns: Bool
 */
 public func ==(lhs: UUIDIndex, rhs: UUIDIndex) -> Bool { return lhs.rawValue == rhs.rawValue }

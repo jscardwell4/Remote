@@ -21,8 +21,8 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   initWithEntity:insertIntoManagedObjectContext:
 
-  :param: entity NSEntityDescription
-  :param: context NSManagedObjectContext?
+  - parameter entity: NSEntityDescription
+  - parameter context: NSManagedObjectContext?
   */
   override public init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
     super.init(entity: entity, insertIntoManagedObjectContext: context)
@@ -32,7 +32,7 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   initWithContext:
 
-  :param: context NSManagedObjectContext
+  - parameter context: NSManagedObjectContext
   */
   public init(context: NSManagedObjectContext?) {
     super.init(entity: self.dynamicType.entityDescription, insertIntoManagedObjectContext: context)
@@ -42,8 +42,8 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   initWithUuid:context:
 
-  :param: uuid String
-  :param: context NSManagedObjectContext
+  - parameter uuid: String
+  - parameter context: NSManagedObjectContext
   */
   public init?(uuid: String, context: NSManagedObjectContext) {
     super.init(entity: self.dynamicType.entityDescription, insertIntoManagedObjectContext: nil)
@@ -56,8 +56,8 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   initWithData:context:
 
-  :param: data ObjectJSONValue
-  :param: context NSManagedObjectContext
+  - parameter data: ObjectJSONValue
+  - parameter context: NSManagedObjectContext
   */
   required public init?(data: ObjectJSONValue, context: NSManagedObjectContext) {
     if let uuid = String(data["uuid"]) {
@@ -93,7 +93,7 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
 
   /** Entity description retrieved from the managed object model */
   public class var entityDescription: NSEntityDescription {
-    let entities = DataManager.managedObjectModel.entities as! [NSEntityDescription]
+    let entities = DataManager.managedObjectModel.entities as [NSEntityDescription]
     let name = className().substringForCapture(1, inFirstMatchFor: ~/"^([^_0-9]+)")
     if let entity = findFirst(entities, {$0.managedObjectClassName == name}) { return entity }
     else { fatalError("unable to locate entity for class '\(className())'") }
@@ -102,9 +102,9 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   entityName:
 
-  :param: context NSManagedObjectContext = DataManager.rootContext
+  - parameter context: NSManagedObjectContext = DataManager.rootContext
 
-  :returns: String
+  - returns: String
   */
   public class var entityName: String { return entityDescription.name! }
   public var entityName: String { return self.dynamicType.entityName }
@@ -116,9 +116,9 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   isValidUUID:
 
-  :param: uuid String
+  - parameter uuid: String
 
-  :returns: Bool
+  - returns: Bool
   */
   public class func isValidUUID(uuid: String) -> Bool { return uuid ~= "[A-F0-9]{8}-(?:[A-F0-9]{4}-){3}[A-Z0-9]{12}" }
 
@@ -130,10 +130,10 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   objectWithUUID:context:
 
-  :param: uuid String
-  :param: context NSManagedObjectContext
+  - parameter uuid: String
+  - parameter context: NSManagedObjectContext
 
-  :returns: Self?
+  - returns: Self?
   */
   public class func objectWithUUID(uuid: String, context: NSManagedObjectContext) -> Self? {
     if isValidUUID(uuid) { return objectWithValue(uuid, forAttribute: "uuid", context: context) } else { return nil }
@@ -142,10 +142,10 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   objectWithUUIDIndex:context:
 
-  :param: uuidIndex UUIDIndex
-  :param: context NSManagedObjectContext
+  - parameter uuidIndex: UUIDIndex
+  - parameter context: NSManagedObjectContext
 
-  :returns: Self?
+  - returns: Self?
   */
   public class func objectWithUUID(uuidIndex: UUIDIndex, context: NSManagedObjectContext) -> Self? {
     return objectWithUUID(uuidIndex.rawValue, context: context)
@@ -154,10 +154,10 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   objectWithIndex:context:
 
-  :param: index ModelIndex
-  :param: context NSManagedObjectContext
+  - parameter index: ModelIndex
+  - parameter context: NSManagedObjectContext
 
-  :returns: Self?
+  - returns: Self?
   */
   public class func objectWithIndex(index: ModelIndex, context: NSManagedObjectContext) -> Self? {
     if let uuidIndex = index.uuidIndex { return objectWithUUID(uuidIndex.rawValue, context: context) }
@@ -167,10 +167,10 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   Returns the existing object matched by `data` or nil if no match exists
 
-  :param: data ObjectJSONValue
-  :param: context NSManagedObjectContext
+  - parameter data: ObjectJSONValue
+  - parameter context: NSManagedObjectContext
 
-  :returns: Self?
+  - returns: Self?
   */
   public class func objectWithData(data: ObjectJSONValue, context: NSManagedObjectContext) -> Self? {
     if let uuid = String(data["uuid"]), object = objectWithUUID(uuid, context: context) { return object }
@@ -183,11 +183,11 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   Returns the first object found with a matching `value` for `attribute` or nil if none exists
 
-  :param: value AnyObject
-  :param: attribute String
-  :param: context NSManagedObjectContext
+  - parameter value: AnyObject
+  - parameter attribute: String
+  - parameter context: NSManagedObjectContext
 
-  :returns: Self?
+  - returns: Self?
   */
   public class func objectWithValue(value: AnyObject,
                        forAttribute attribute: String,
@@ -199,11 +199,11 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   objectsWithValue:forAttribute:context:
 
-  :param: value AnyObject
-  :param: attribute String
-  :param: context NSManagedObjectContext
+  - parameter value: AnyObject
+  - parameter attribute: String
+  - parameter context: NSManagedObjectContext
 
-  :returns: [ModelObject]
+  - returns: [ModelObject]
   */
   public class func objectsWithValue(value: AnyObject,
                         forAttribute attribute: String,
@@ -215,10 +215,10 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   objectMatchingPredicate:context:
 
-  :param: predicate NSPredicate
-  :param: context NSManagedObjectContext
+  - parameter predicate: NSPredicate
+  - parameter context: NSManagedObjectContext
 
-  :returns: Self?
+  - returns: Self?
   */
   public class func objectMatchingPredicate(predicate: NSPredicate, context: NSManagedObjectContext) -> Self? {
     return typeCast(objectsMatchingPredicate(predicate, fetchLimit: 1, context: context).first, self)
@@ -227,14 +227,14 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   objectsMatchingPredicate:fetchLimit:sortBy:ascending:context:error:
 
-  :param: predicate NSPredicate
-  :param: fetchLimit Int = 0
-  :param: sortBy String? = nil
-  :param: ascending Bool = true
-  :param: context NSManagedObjectContext
-  :param: error NSErrorPointer = nil
+  - parameter predicate: NSPredicate
+  - parameter fetchLimit: Int = 0
+  - parameter sortBy: String? = nil
+  - parameter ascending: Bool = true
+  - parameter context: NSManagedObjectContext
+  - parameter error: NSErrorPointer = nil
 
-  :returns: [ModelObject]
+  - returns: [ModelObject]
   */
   public class func objectsMatchingPredicate(predicate: NSPredicate,
                                   fetchLimit: Int = 0,
@@ -248,17 +248,17 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
     if sortBy != nil {
       request.sortDescriptors = ",".split(sortBy!).map{NSSortDescriptor(key: $0, ascending: ascending)}
     }
-    return context.executeFetchRequest(request, error: error) as? [ModelObject] ?? []
+    return context.executeFetchRequest(request) as? [ModelObject] ?? []
   }
 
   /**
   objectsInContext:sortBy:ascending:
 
-  :param: context NSManagedObjectContext
-  :param: sortBy String? = nil
-  :param: ascending Bool = true
+  - parameter context: NSManagedObjectContext
+  - parameter sortBy: String? = nil
+  - parameter ascending: Bool = true
 
-  :returns: [ModelObject]
+  - returns: [ModelObject]
   */
   public class func objectsInContext(context: NSManagedObjectContext,
                        sortBy: String? = nil,
@@ -270,13 +270,13 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   objectsInContext:groupedBy:withPredicate:sortedBy:ascending:
 
-  :param: context NSManagedObjectContext
-  :param: groupBy String? = nil
-  :param: predicate NSPredicate = (default)
-  :param: sortBy String
-  :param: ascending Bool = true
+  - parameter context: NSManagedObjectContext
+  - parameter groupBy: String? = nil
+  - parameter predicate: NSPredicate = (default)
+  - parameter sortBy: String
+  - parameter ascending: Bool = true
 
-  :returns: NSFetchedResultsController
+  - returns: NSFetchedResultsController
   */
   public class func objectsInContext(context: NSManagedObjectContext,
                     groupedBy groupBy: String? = nil,
@@ -300,10 +300,10 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   allValuesForAttribute:context:
 
-  :param: attribute String
-  :param: context NSManagedObjectContext
+  - parameter attribute: String
+  - parameter context: NSManagedObjectContext
 
-  :returns: [AnyObject]
+  - returns: [AnyObject]
   */
   public class func allValuesForAttribute(attribute: String, context: NSManagedObjectContext) -> [AnyObject] {
     let request = NSFetchRequest(entityName: entityName)
@@ -312,7 +312,7 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
     request.propertiesToFetch = [attribute]
 
     var error: NSError?
-    let results = compressedMap(context.executeFetchRequest(request, error: &error), {($0 as? [String:AnyObject])?[attribute]})
+    let results = compressedMap(context.executeFetchRequest(request), {($0 as? [String:AnyObject])?[attribute]})
     MSHandleError(error)
     return results ?? []
   }
@@ -325,10 +325,10 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   Attempts to fetch an existing object using `data` and if that fails a new object is created
 
-  :param: data ObjectJSONValue
-  :param: context NSManagedObjectContext
+  - parameter data: ObjectJSONValue
+  - parameter context: NSManagedObjectContext
 
-  :returns: Self?
+  - returns: Self?
   */
   public class func importObjectWithData(data: ObjectJSONValue, context: NSManagedObjectContext) -> Self? {
     if let object = objectWithData(data, context: context) { return object }
@@ -342,10 +342,10 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   importObjectsWithData:context:
 
-  :param: data ArrayJSONValue
-  :param: context NSManagedObjectContext
+  - parameter data: ArrayJSONValue
+  - parameter context: NSManagedObjectContext
 
-  :returns: [ModelObject]
+  - returns: [ModelObject]
   */
   public class func importObjectsWithData(data: ArrayJSONValue, context: NSManagedObjectContext) -> [ModelObject] {
     return compressedMap(compressedMap(data, {ObjectJSONValue($0)}), {self.importObjectWithData($0, context: context)})
@@ -359,17 +359,17 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   public func updateWithData(data:ObjectJSONValue) {}
 
   /**
   updateRelationship:withData:
 
-  :param: relationship NSRelationshipDescription
-  :param: data ObjectJSONValue
+  - parameter relationship: NSRelationshipDescription
+  - parameter data: ObjectJSONValue
 
-  :returns: Bool
+  - returns: Bool
   */
   private func updateRelationship(relationship: NSRelationshipDescription, withData data: ObjectJSONValue) -> Bool {
     if !relationship.toMany, let moc = managedObjectContext,
@@ -403,10 +403,10 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   updateRelationship:withData:
 
-  :param: relationship NSRelationshipDescription
-  :param: data ArrayJSONValue
+  - parameter relationship: NSRelationshipDescription
+  - parameter data: ArrayJSONValue
 
-  :returns: Bool
+  - returns: Bool
   */
   private func updateRelationship(relationship: NSRelationshipDescription, withData data: ArrayJSONValue) -> Bool {
     if let moc = managedObjectContext,
@@ -435,11 +435,11 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   relatedObjectWithData:forKey:lookupKey:
 
-  :param: data ObjectJSONValue
-  :param: key String
-  :param: lookupKey String? = nil
+  - parameter data: ObjectJSONValue
+  - parameter key: String
+  - parameter lookupKey: String? = nil
 
-  :returns: T?
+  - returns: T?
   */
   public func relatedObjectWithData<T:ModelObject>(data: ObjectJSONValue, forAttribute attribute: String, lookupKey: String? = nil) -> T? {
     if let relationshipDescription = entity.relationshipsByName[attribute] as? NSRelationshipDescription,
@@ -455,10 +455,10 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   updateRelationshipFromData:forKey:
 
-  :param: data ObjectJSONValue
-  :param: key String
+  - parameter data: ObjectJSONValue
+  - parameter key: String
 
-  :returns: Bool
+  - returns: Bool
   */
   public func updateRelationshipFromData(data: ObjectJSONValue, forAttribute attribute: String, lookupKey: String? = nil) -> Bool {
 
@@ -483,11 +483,11 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   countInContext:withValue:forAttribute:
 
-  :param: context NSManagedObjectContext
-  :param: value AnyObject
-  :param: attribute String
+  - parameter context: NSManagedObjectContext
+  - parameter value: AnyObject
+  - parameter attribute: String
 
-  :returns: Int
+  - returns: Int
   */
   public class func countInContext(context: NSManagedObjectContext,
                          withValue value: AnyObject,
@@ -500,10 +500,10 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   countInContext:predicate:
 
-  :param: context NSManagedObjectContext
-  :param: predicate NSPredicate
+  - parameter context: NSManagedObjectContext
+  - parameter predicate: NSPredicate
 
-  :returns: Int
+  - returns: Int
   */
   public class func countInContext(context: NSManagedObjectContext, predicate: NSPredicate = ∀"TRUEPREDICATE") -> Int {
     let request = NSFetchRequest(entityName: entityName, predicate: predicate)
@@ -516,11 +516,11 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   objectExistsInContext:withValue:forAttribute:
 
-  :param: context NSManagedObjectContext
-  :param: value AnyObject
-  :param: attribute String
+  - parameter context: NSManagedObjectContext
+  - parameter value: AnyObject
+  - parameter attribute: String
 
-  :returns: Bool
+  - returns: Bool
   */
   public class func objectExistsInContext(context: NSManagedObjectContext,
                                 withValue value: AnyObject,
@@ -537,7 +537,7 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   deleteObjectsInContext:
 
-  :param: context NSManagedObjectContext
+  - parameter context: NSManagedObjectContext
   */
   public class func deleteObjectsInContext(context: NSManagedObjectContext) {
     deleteObjectsMatchingPredicate(∀"TRUEPREDICATE", context: context)
@@ -546,8 +546,8 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   deleteObjectsMatchingPredicate:context:
 
-  :param: predicate NSPredicate
-  :param: context NSManagedObjectContext
+  - parameter predicate: NSPredicate
+  - parameter context: NSManagedObjectContext
   */
   public class func deleteObjectsMatchingPredicate(predicate: NSPredicate, context: NSManagedObjectContext) {
     context.deleteObjects(Set(objectsMatchingPredicate(predicate, context: context)))
@@ -561,9 +561,9 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   hasDefaultValue:
 
-  :param: attribute String
+  - parameter attribute: String
 
-  :returns: Bool
+  - returns: Bool
   */
   public func hasDefaultValue(attribute: String) -> Bool {
     if let value: AnyObject = valueForKey(attribute),
@@ -574,9 +574,9 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   hasNonDefaultValue:
 
-  :param: attribute String
+  - parameter attribute: String
 
-  :returns: Bool
+  - returns: Bool
   */
   public func hasNonDefaultValue(attribute: String) -> Bool {
     return !hasDefaultValue(attribute)
@@ -586,10 +586,10 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   appendValueForKey:forKey:ifNotDefault:toObject:
 
-  :param: key String
-  :param: forKey String? = nil
-  :param: nonDefault Bool = true
-  :param: object ObjectJSONValue
+  - parameter key: String
+  - parameter forKey: String? = nil
+  - parameter nonDefault: Bool = true
+  - parameter object: ObjectJSONValue
   */
   public func appendValueForKey(key: String,
                   forKey: String? = nil,
@@ -611,9 +611,9 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   appendValueForKeyPath:forKey:ifNotDefault:toObject:
 
-  :param: keypath String
-  :param: key String
-  :param: object ObjectJSONValue
+  - parameter keypath: String
+  - parameter key: String
+  - parameter object: ObjectJSONValue
   */
   public func appendValueForKeyPath(keypath: String,
                              forKey key: String? = nil,
@@ -629,9 +629,9 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   /**
   appendValue:forKey:ifNotDefault:toObject:
 
-  :param: keypath String
-  :param: key String
-  :param: object ObjectJSONValue
+  - parameter keypath: String
+  - parameter key: String
+  - parameter object: ObjectJSONValue
   */
   public func appendValue(value: Any?,
                    forKey key: String,
@@ -665,9 +665,9 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
 /**
 `Equatable` support for `ModelObject`
 
-:param: lhs ModelObject
-:param: rhs ModelObject
+- parameter lhs: ModelObject
+- parameter rhs: ModelObject
 
-:returns: Bool
+- returns: Bool
 */
 public func ==(lhs: ModelObject, rhs: ModelObject) -> Bool { return lhs.isEqual(rhs) }

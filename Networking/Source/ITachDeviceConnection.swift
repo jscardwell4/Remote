@@ -87,7 +87,7 @@ import MoonKit
   /**
   initWithDevice:
 
-  :param: device ITachDevice
+  - parameter device: ITachDevice
   */
   init(device d: ITachDevice) {
     device = d
@@ -115,7 +115,7 @@ import MoonKit
       entry.messageData = message
 
       // Send the message
-      receiveNextMessage(tag: tag)
+      receiveNextMessage(tag)
       socket.writeData(entry.data, withTimeout: -1, tag: tag)
       messagesSending[tag] = entry
     }
@@ -127,7 +127,7 @@ import MoonKit
   /**
   receiveNextMessage:
 
-  :param: tag Int = -1
+  - parameter tag: Int = -1
   */
   func receiveNextMessage(tag: Int = -1) {
     if connected {
@@ -144,8 +144,8 @@ import MoonKit
   /**
   enqueueCommand:completion:
 
-  :param: command ITachIRCommand
-  :param: completion Callback? = nil
+  - parameter command: ITachIRCommand
+  - parameter completion: Callback? = nil
   */
   func enqueueCommand(command: ITachIRCommand, completion: Callback? = nil) {
     enqueueEntry(MessageQueueEntry(messageData: .SendIR(-1, command),
@@ -156,8 +156,8 @@ import MoonKit
   /**
   enqueueCommand:completion:
 
-  :param: command Command
-  :param: completion Callback? = nil
+  - parameter command: Command
+  - parameter completion: Callback? = nil
   */
   func enqueueCommand(command: Command, completion: Callback? = nil) {
     enqueueEntry(MessageQueueEntry(messageData: command,
@@ -168,7 +168,7 @@ import MoonKit
   /**
   enqueueEntry:completion:
 
-  :param: entry MessageQueueEntry
+  - parameter entry: MessageQueueEntry
   */
   private func enqueueEntry(entry: MessageQueueEntry<Command>) {
     if entry.message.isEmpty {
@@ -185,7 +185,7 @@ import MoonKit
   /**
   connect:
 
-  :param: completion Callback? = nil
+  - parameter completion: Callback? = nil
   */
   func connect(completion: Callback? = nil) {
     if connecting { completion?(false, Error.ConnectionInProgress.error()) }
@@ -199,7 +199,11 @@ import MoonKit
       connectCallback = completion
 
       var error: NSError?
-      socket.connectToHost(device.configURL, onPort:ITachDeviceConnection.TCPPort, error: &error)
+      do {
+        try socket.connectToHost(device.configURL, onPort:ITachDeviceConnection.TCPPort)
+      } catch var error1 as NSError {
+        error = error1
+      }
       if error != nil {
         completion?(false, error)
         connectCallback = nil
@@ -210,7 +214,7 @@ import MoonKit
   /**
   disconnect:
 
-  :param: completion Callback? = nil
+  - parameter completion: Callback? = nil
   */
   func disconnect(completion: Callback? = nil) {
     if connected {
@@ -226,9 +230,9 @@ import MoonKit
   /**
   socket:didConnectToHost:port:
 
-  :param: sock GCDAsyncSocket
-  :param: host String
-  :param: port UInt16
+  - parameter sock: GCDAsyncSocket
+  - parameter host: String
+  - parameter port: UInt16
   */
   func socket(sock: GCDAsyncSocket, didConnectToHost host: String, port: UInt16) {
     MSLogDebug("connected to host '\(host)' over port '\(port)'")
@@ -243,9 +247,9 @@ import MoonKit
   /**
   socket:didReadData:withTag:
 
-  :param: sock GCDAsyncSocket
-  :param: data NSData
-  :param: tag Int
+  - parameter sock: GCDAsyncSocket
+  - parameter data: NSData
+  - parameter tag: Int
   */
   func socket(sock: GCDAsyncSocket, didReadData data: NSData, withTag tag: Int) {
     // TODO: Tag numbers are still getting all out of whack
@@ -265,7 +269,7 @@ import MoonKit
       completion = messagesSent.removeValueForKey(tag)?.completion
     } else {
       completion = nil
-      receiveNextMessage(tag: tag)
+      receiveNextMessage(tag)
     }
     
     MSLogDebug("response received '\(message)' with tag '\(tag)'")
@@ -301,8 +305,8 @@ import MoonKit
   /**
   socket:didWriteDataWithTag:
 
-  :param: sock GCDAsyncSocket
-  :param: tag Int
+  - parameter sock: GCDAsyncSocket
+  - parameter tag: Int
   */
   func socket(sock: GCDAsyncSocket, didWriteDataWithTag tag: Int) {
 
@@ -323,8 +327,8 @@ import MoonKit
   /**
   socketDidDisconnect:withError:
 
-  :param: sock GCDAsyncSocket
-  :param: error NSError?
+  - parameter sock: GCDAsyncSocket
+  - parameter error: NSError?
   */
   func socketDidDisconnect(sock: GCDAsyncSocket, withError error: NSError?) {
     MSLogDebug("socket disconnected with error: \(toString(descriptionForError(error)))")

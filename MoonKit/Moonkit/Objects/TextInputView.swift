@@ -31,8 +31,8 @@ public class TextInputView: UIInputView {
   /**
   initWithFrame:target:
 
-  :param: frame CGRect
-  :param: target UIResponder
+  - parameter frame: CGRect
+  - parameter target: UIResponder
   */
   public required init(frame: CGRect, target: UITextInput) {
     self.target = target
@@ -123,7 +123,7 @@ public class TextInputView: UIInputView {
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required public init(coder aDecoder: NSCoder) { target = nil; super.init(coder: aDecoder) }
 

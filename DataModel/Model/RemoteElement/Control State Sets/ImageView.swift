@@ -40,9 +40,9 @@ public final class ImageView: ModelObject, NSCopying {
   /**
   imageWithColor:
 
-  :param: color UIColor?
+  - parameter color: UIColor?
 
-  :returns: UIImage?
+  - returns: UIImage?
   */
   public func imageWithColor(color: UIColor?) -> UIImage? {
     if let img = rawImage { return color == nil ? img : UIImage(fromAlphaOfImage: img, color: color) } else { return nil }
@@ -53,7 +53,7 @@ public final class ImageView: ModelObject, NSCopying {
   /**
   initWithImage:
 
-  :param: image Image
+  - parameter image: Image
   */
   public convenience init(image: Image) {
     self.init(context: image.managedObjectContext)
@@ -63,7 +63,7 @@ public final class ImageView: ModelObject, NSCopying {
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
@@ -76,9 +76,9 @@ public final class ImageView: ModelObject, NSCopying {
 
   override public var description: String {
     var result = super.description
-    result += "\n\timage = \(toString(image?.index))"
-    result += "\n\tcolor = \(toString(color?.string))"
-    result += "\n\talpha = \(toString(alpha))"
+    result += "\n\timage = \(String(image?.index))"
+    result += "\n\tcolor = \(String(color?.string))"
+    result += "\n\talpha = \(String(alpha))"
     return result
   }
 
@@ -95,10 +95,10 @@ public final class ImageView: ModelObject, NSCopying {
 /**
 `Equatable` support for `ImageView`
 
-:param: lhs ImageView
-:param: rhs ImageView
+- parameter lhs: ImageView
+- parameter rhs: ImageView
 
-:returns: Bool
+- returns: Bool
 */
 public func ==(lhs: ImageView, rhs: ImageView) -> Bool { return lhs.isEqual(rhs) }
 

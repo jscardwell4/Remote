@@ -36,7 +36,7 @@ public final class DrawingKit {
 
   // MARK: - Drawing Methods
 
-  public class func drawNoImage(#frame: CGRect) {
+  public class func drawNoImage(frame frame: CGRect) {
 
 
     // Subframes
@@ -48,7 +48,7 @@ public final class DrawingKit {
 
     // Group
     // Photo Drawing
-    var photoPath = UIBezierPath()
+    let photoPath = UIBezierPath()
     photoPath.moveToPoint(CGPoint(x: group.minX + 0.72081 * group.width, y: group.minY + 0.30870 * group.height))
     photoPath.addCurveToPoint(CGPoint(x: group.minX + 0.67174 * group.width, y: group.minY + 0.35652 * group.height),
                  controlPoint1: CGPoint(x: group.minX + 0.69371 * group.width, y: group.minY + 0.30870 * group.height),
@@ -134,7 +134,7 @@ public final class DrawingKit {
 
 
     // circle Drawing
-    var circlePath = UIBezierPath()
+    let circlePath = UIBezierPath()
     circlePath.moveToPoint(CGPoint(x: group.minX + 0.50000 * group.width, y: group.minY + 0.04348 * group.height))
     circlePath.addCurveToPoint(CGPoint(x: group.minX + 0.24697 * group.width, y: group.minY + 0.11996 * group.height),
                  controlPoint1: CGPoint(x: group.minX + 0.40641 * group.width, y: group.minY + 0.04348 * group.height),
@@ -187,7 +187,7 @@ public final class DrawingKit {
     circlePath.fill()
   }
 
-  public class func drawTwoToneCircle(#upperColor: UIColor, lowerColor: UIColor) {
+  public class func drawTwoToneCircle(upperColor upperColor: UIColor, lowerColor: UIColor) {
     // General Declarations
     let context = UIGraphicsGetCurrentContext()
 
@@ -205,8 +205,8 @@ public final class DrawingKit {
 
 
     // upperHalfCircle Drawing
-    var upperHalfCircleRect = CGRect(x: 2, y: 2, width: 27, height: 27)
-    var upperHalfCirclePath = UIBezierPath()
+    let upperHalfCircleRect = CGRect(x: 2, y: 2, width: 27, height: 27)
+    let upperHalfCirclePath = UIBezierPath()
     upperHalfCirclePath.addArcWithCenter(CGPoint(x: upperHalfCircleRect.midX, y: upperHalfCircleRect.midY),
                                   radius: upperHalfCircleRect.width / 2,
                               startAngle: -180 * CGFloat(M_PI)/180,
@@ -242,8 +242,8 @@ public final class DrawingKit {
 
 
     // lowerHalfCircle Drawing
-    var lowerHalfCircleRect = CGRect(x: 2, y: 2, width: 27, height: 27)
-    var lowerHalfCirclePath = UIBezierPath()
+    let lowerHalfCircleRect = CGRect(x: 2, y: 2, width: 27, height: 27)
+    let lowerHalfCirclePath = UIBezierPath()
     lowerHalfCirclePath.addArcWithCenter(CGPoint(x: lowerHalfCircleRect.midX, y: lowerHalfCircleRect.midY),
                                   radius: lowerHalfCircleRect.width / 2,
                               startAngle: 0 * CGFloat(M_PI)/180,
@@ -282,7 +282,7 @@ public final class DrawingKit {
     CGContextRestoreGState(context)
   }
 
-  public class func drawAlphaValueCircle(#value: CGFloat) {
+  public class func drawAlphaValueCircle(value value: CGFloat) {
     // General Declarations
     let context = UIGraphicsGetCurrentContext()
 
@@ -303,7 +303,7 @@ public final class DrawingKit {
     CGContextRestoreGState(context)
   }
 
-  public class func drawRedValueCircle(#value: CGFloat) {
+  public class func drawRedValueCircle(value value: CGFloat) {
     // General Declarations
     let context = UIGraphicsGetCurrentContext()
 
@@ -324,7 +324,7 @@ public final class DrawingKit {
     CGContextRestoreGState(context)
   }
 
-  public class func drawGreenValueCircle(#value: CGFloat) {
+  public class func drawGreenValueCircle(value value: CGFloat) {
     // General Declarations
     let context = UIGraphicsGetCurrentContext()
 
@@ -345,7 +345,7 @@ public final class DrawingKit {
     CGContextRestoreGState(context)
   }
 
-  public class func drawBlueValueCircle(#value: CGFloat) {
+  public class func drawBlueValueCircle(value value: CGFloat) {
     // General Declarations
     let context = UIGraphicsGetCurrentContext()
 
@@ -366,7 +366,7 @@ public final class DrawingKit {
     CGContextRestoreGState(context)
   }
 
-  public class func drawOneToneCircle(#color: UIColor, opacity: CGFloat) {
+  public class func drawOneToneCircle(color color: UIColor, opacity: CGFloat) {
     // General Declarations
     let context = UIGraphicsGetCurrentContext()
 
@@ -383,7 +383,7 @@ public final class DrawingKit {
     let fillOpacity: CGFloat = min(1, max(0, opacity)) * 0.95
 
     // Base Circle Drawing
-    var baseCirclePath = UIBezierPath(ovalInRect: CGRect(x: 1, y: 1, width: 29, height: 29))
+    let baseCirclePath = UIBezierPath(ovalInRect: CGRect(x: 1, y: 1, width: 29, height: 29))
     CGContextSaveGState(context)
     CGContextSetShadowWithColor(context,
                                 thumbShadow.shadowOffset,
@@ -396,7 +396,7 @@ public final class DrawingKit {
 
 
     // Base Inner Circle Drawing
-    var baseInnerCirclePath = UIBezierPath(ovalInRect: CGRect(x: 2, y: 2, width: 27, height: 27))
+    let baseInnerCirclePath = UIBezierPath(ovalInRect: CGRect(x: 2, y: 2, width: 27, height: 27))
     circleBaseColor.setFill()
     baseInnerCirclePath.fill()
 
@@ -408,13 +408,13 @@ public final class DrawingKit {
 
 
     // Color Filled Circle 2 Drawing
-    var colorFilledCircle2Path = UIBezierPath(ovalInRect: CGRect(x: 2, y: 2, width: 27, height: 27))
+    let colorFilledCircle2Path = UIBezierPath(ovalInRect: CGRect(x: 2, y: 2, width: 27, height: 27))
     UIColor.whiteColor().setFill()
     colorFilledCircle2Path.fill()
 
 
     // Color Filled Circle Drawing
-    var colorFilledCirclePath = UIBezierPath(ovalInRect: CGRect(x: 2, y: 2, width: 27, height: 27))
+    let colorFilledCirclePath = UIBezierPath(ovalInRect: CGRect(x: 2, y: 2, width: 27, height: 27))
     UIColor.whiteColor().setFill()
     colorFilledCirclePath.fill()
 
@@ -446,7 +446,7 @@ public final class DrawingKit {
 
 
     // Color Stroked Circle Drawing
-    var colorStrokedCirclePath = UIBezierPath(ovalInRect: CGRect(x: 2, y: 2, width: 27, height: 27))
+    let colorStrokedCirclePath = UIBezierPath(ovalInRect: CGRect(x: 2, y: 2, width: 27, height: 27))
     CGContextSaveGState(context)
     CGContextSetShadowWithColor(context,
                                 colorShadow.shadowOffset,
@@ -458,7 +458,7 @@ public final class DrawingKit {
     CGContextRestoreGState(context)
   }
 
-  public class func drawRedCircle(#opacity: CGFloat) {
+  public class func drawRedCircle(opacity opacity: CGFloat) {
     // General Declarations
     let context = UIGraphicsGetCurrentContext()
 
@@ -475,7 +475,7 @@ public final class DrawingKit {
     CGContextRestoreGState(context)
   }
 
-  public class func drawGreenCircle(#opacity: CGFloat) {
+  public class func drawGreenCircle(opacity opacity: CGFloat) {
     // General Declarations
     let context = UIGraphicsGetCurrentContext()
 
@@ -492,7 +492,7 @@ public final class DrawingKit {
     CGContextRestoreGState(context)
   }
 
-  public class func drawBlueCircle(#opacity: CGFloat) {
+  public class func drawBlueCircle(opacity opacity: CGFloat) {
     // General Declarations
     let context = UIGraphicsGetCurrentContext()
 
@@ -509,7 +509,7 @@ public final class DrawingKit {
     CGContextRestoreGState(context)
   }
 
-  public class func drawAlphaCircle(#opacity: CGFloat) {
+  public class func drawAlphaCircle(opacity opacity: CGFloat) {
     // General Declarations
     let context = UIGraphicsGetCurrentContext()
 
@@ -526,7 +526,7 @@ public final class DrawingKit {
     CGContextRestoreGState(context)
   }
 
-  public class func drawGradientCircle(#color1: UIColor, color2: UIColor, opacity: CGFloat) {
+  public class func drawGradientCircle(color1 color1: UIColor, color2: UIColor, opacity: CGFloat) {
     // General Declarations
     let context = UIGraphicsGetCurrentContext()
 
@@ -540,7 +540,7 @@ public final class DrawingKit {
     let baseInnerShadow = NSShadow(color: UIColor.blackColor(), offset: CGSize(width: 0.1, height: -0.1), blurRadius: 1)
 
     // Base Circle Drawing
-    var baseCirclePath = UIBezierPath(ovalInRect: CGRect(x: 2, y: 2, width: 27, height: 27))
+    let baseCirclePath = UIBezierPath(ovalInRect: CGRect(x: 2, y: 2, width: 27, height: 27))
     CGContextSaveGState(context)
     CGContextSetShadowWithColor(context,
                                 dropShadow.shadowOffset,
@@ -590,7 +590,7 @@ public final class DrawingKit {
 
 
     // Gradient Filled Circle Drawing
-    var gradientFilledCirclePath = UIBezierPath(ovalInRect: CGRect(x: 2, y: 2, width: 27, height: 27))
+    let gradientFilledCirclePath = UIBezierPath(ovalInRect: CGRect(x: 2, y: 2, width: 27, height: 27))
     CGContextSaveGState(context)
     gradientFilledCirclePath.addClip()
     CGContextDrawRadialGradient(context, gradient,
@@ -604,7 +604,7 @@ public final class DrawingKit {
     CGContextRestoreGState(context)
   }
 
-  public class func drawRedGradientCircle(#opacity: CGFloat) {
+  public class func drawRedGradientCircle(opacity opacity: CGFloat) {
     // General Declarations
     let context = UIGraphicsGetCurrentContext()
 
@@ -622,7 +622,7 @@ public final class DrawingKit {
     CGContextRestoreGState(context)
   }
 
-  public class func drawGreenGradientCircle(#opacity: CGFloat) {
+  public class func drawGreenGradientCircle(opacity opacity: CGFloat) {
     // General Declarations
     let context = UIGraphicsGetCurrentContext()
 
@@ -639,7 +639,7 @@ public final class DrawingKit {
     CGContextRestoreGState(context)
   }
 
-  public class func drawBlueGradientCircle(#opacity: CGFloat) {
+  public class func drawBlueGradientCircle(opacity opacity: CGFloat) {
     // General Declarations
     let context = UIGraphicsGetCurrentContext()
 
@@ -657,7 +657,7 @@ public final class DrawingKit {
     CGContextRestoreGState(context)
   }
 
-  public class func drawAlphaGradientCircle(#opacity: CGFloat) {
+  public class func drawAlphaGradientCircle(opacity opacity: CGFloat) {
     // General Declarations
     let context = UIGraphicsGetCurrentContext()
 
@@ -685,8 +685,8 @@ public final class DrawingKit {
 
 
     // Half Circle Drawing
-    var halfCircleRect = CGRect(x: 3, y: 3, width: 25, height: 25)
-    var halfCirclePath = UIBezierPath()
+    let halfCircleRect = CGRect(x: 3, y: 3, width: 25, height: 25)
+    let halfCirclePath = UIBezierPath()
     halfCirclePath.addArcWithCenter(CGPoint(x: halfCircleRect.midX, y: halfCircleRect.midY),
                              radius: halfCircleRect.width / 2,
                          startAngle: -225 * CGFloat(M_PI)/180,
@@ -705,161 +705,161 @@ public final class DrawingKit {
 
   // Generated Images
 
-  public class func imageOfNoImage(#frame: CGRect) -> UIImage {
+  public class func imageOfNoImage(frame frame: CGRect) -> UIImage {
     UIGraphicsBeginImageContextWithOptions(frame.size, false, 0)
     DrawingKit.drawNoImage(frame: frame)
 
-    let imageOfNoImage = UIGraphicsGetImageFromCurrentImageContext()!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+    let imageOfNoImage = UIGraphicsGetImageFromCurrentImageContext().imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
     UIGraphicsEndImageContext()
 
     return imageOfNoImage
   }
 
-  public class func imageOfTwoToneCircle(#upperColor: UIColor, lowerColor: UIColor) -> UIImage {
+  public class func imageOfTwoToneCircle(upperColor upperColor: UIColor, lowerColor: UIColor) -> UIImage {
     UIGraphicsBeginImageContextWithOptions(CGSize(width: 31, height: 34), false, 0)
     DrawingKit.drawTwoToneCircle(upperColor: upperColor, lowerColor: lowerColor)
 
-    let imageOfTwoToneCircle = UIGraphicsGetImageFromCurrentImageContext()!
+    let imageOfTwoToneCircle = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
 
     return imageOfTwoToneCircle
   }
 
-  public class func imageOfAlphaValueCircle(#value: CGFloat) -> UIImage {
+  public class func imageOfAlphaValueCircle(value value: CGFloat) -> UIImage {
     UIGraphicsBeginImageContextWithOptions(CGSize(width: 31, height: 34), false, 0)
     DrawingKit.drawAlphaValueCircle(value: value)
 
-    let imageOfAlphaValueCircle = UIGraphicsGetImageFromCurrentImageContext()!
+    let imageOfAlphaValueCircle = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
 
     return imageOfAlphaValueCircle
   }
 
-  public class func imageOfRedValueCircle(#value: CGFloat) -> UIImage {
+  public class func imageOfRedValueCircle(value value: CGFloat) -> UIImage {
     UIGraphicsBeginImageContextWithOptions(CGSize(width: 31, height: 34), false, 0)
     DrawingKit.drawRedValueCircle(value: value)
 
-    let imageOfRedValueCircle = UIGraphicsGetImageFromCurrentImageContext()!
+    let imageOfRedValueCircle = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
 
     return imageOfRedValueCircle
   }
 
-  public class func imageOfGreenValueCircle(#value: CGFloat) -> UIImage {
+  public class func imageOfGreenValueCircle(value value: CGFloat) -> UIImage {
     UIGraphicsBeginImageContextWithOptions(CGSize(width: 31, height: 34), false, 0)
     DrawingKit.drawGreenValueCircle(value: value)
 
-    let imageOfGreenValueCircle = UIGraphicsGetImageFromCurrentImageContext()!
+    let imageOfGreenValueCircle = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
 
     return imageOfGreenValueCircle
   }
 
-  public class func imageOfBlueValueCircle(#value: CGFloat) -> UIImage {
+  public class func imageOfBlueValueCircle(value value: CGFloat) -> UIImage {
     UIGraphicsBeginImageContextWithOptions(CGSize(width: 31, height: 34), false, 0)
     DrawingKit.drawBlueValueCircle(value: value)
 
-    let imageOfBlueValueCircle = UIGraphicsGetImageFromCurrentImageContext()!
+    let imageOfBlueValueCircle = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
 
     return imageOfBlueValueCircle
   }
 
-  public class func imageOfOneToneCircle(#color: UIColor, opacity: CGFloat) -> UIImage {
+  public class func imageOfOneToneCircle(color color: UIColor, opacity: CGFloat) -> UIImage {
     UIGraphicsBeginImageContextWithOptions(CGSize(width: 31, height: 34), false, 0)
     DrawingKit.drawOneToneCircle(color: color, opacity: opacity)
 
-    let imageOfOneToneCircle = UIGraphicsGetImageFromCurrentImageContext()!
+    let imageOfOneToneCircle = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
 
     return imageOfOneToneCircle
   }
 
-  public class func imageOfRedCircle(#opacity: CGFloat) -> UIImage {
+  public class func imageOfRedCircle(opacity opacity: CGFloat) -> UIImage {
     UIGraphicsBeginImageContextWithOptions(CGSize(width: 31, height: 34), false, 0)
     DrawingKit.drawRedCircle(opacity: opacity)
 
-    let imageOfRedCircle = UIGraphicsGetImageFromCurrentImageContext()!
+    let imageOfRedCircle = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
 
     return imageOfRedCircle
   }
 
-  public class func imageOfGreenCircle(#opacity: CGFloat) -> UIImage {
+  public class func imageOfGreenCircle(opacity opacity: CGFloat) -> UIImage {
     UIGraphicsBeginImageContextWithOptions(CGSize(width: 31, height: 34), false, 0)
     DrawingKit.drawGreenCircle(opacity: opacity)
 
-    let imageOfGreenCircle = UIGraphicsGetImageFromCurrentImageContext()!
+    let imageOfGreenCircle = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
 
     return imageOfGreenCircle
   }
 
-  public class func imageOfBlueCircle(#opacity: CGFloat) -> UIImage {
+  public class func imageOfBlueCircle(opacity opacity: CGFloat) -> UIImage {
     UIGraphicsBeginImageContextWithOptions(CGSize(width: 31, height: 34), false, 0)
     DrawingKit.drawBlueCircle(opacity: opacity)
 
-    let imageOfBlueCircle = UIGraphicsGetImageFromCurrentImageContext()!
+    let imageOfBlueCircle = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
 
     return imageOfBlueCircle
   }
 
-  public class func imageOfAlphaCircle(#opacity: CGFloat) -> UIImage {
+  public class func imageOfAlphaCircle(opacity opacity: CGFloat) -> UIImage {
     UIGraphicsBeginImageContextWithOptions(CGSize(width: 31, height: 34), false, 0)
     DrawingKit.drawAlphaCircle(opacity: opacity)
 
-    let imageOfAlphaCircle = UIGraphicsGetImageFromCurrentImageContext()!
+    let imageOfAlphaCircle = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
 
     return imageOfAlphaCircle
   }
 
-  public class func imageOfGradientCircle(#color1: UIColor, color2: UIColor, opacity: CGFloat) -> UIImage {
+  public class func imageOfGradientCircle(color1 color1: UIColor, color2: UIColor, opacity: CGFloat) -> UIImage {
     UIGraphicsBeginImageContextWithOptions(CGSize(width: 31, height: 34), false, 0)
     DrawingKit.drawGradientCircle(color1: color1, color2: color2, opacity: opacity)
 
-    let imageOfGradientCircle = UIGraphicsGetImageFromCurrentImageContext()!
+    let imageOfGradientCircle = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
 
     return imageOfGradientCircle
   }
 
-  public class func imageOfRedGradientCircle(#opacity: CGFloat) -> UIImage {
+  public class func imageOfRedGradientCircle(opacity opacity: CGFloat) -> UIImage {
     UIGraphicsBeginImageContextWithOptions(CGSize(width: 31, height: 34), false, 0)
     DrawingKit.drawRedGradientCircle(opacity: opacity)
 
-    let imageOfRedGradientCircle = UIGraphicsGetImageFromCurrentImageContext()!
+    let imageOfRedGradientCircle = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
 
     return imageOfRedGradientCircle
   }
 
-  public class func imageOfGreenGradientCircle(#opacity: CGFloat) -> UIImage {
+  public class func imageOfGreenGradientCircle(opacity opacity: CGFloat) -> UIImage {
     UIGraphicsBeginImageContextWithOptions(CGSize(width: 31, height: 34), false, 0)
     DrawingKit.drawGreenGradientCircle(opacity: opacity)
 
-    let imageOfGreenGradientCircle = UIGraphicsGetImageFromCurrentImageContext()!
+    let imageOfGreenGradientCircle = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
 
     return imageOfGreenGradientCircle
   }
 
-  public class func imageOfBlueGradientCircle(#opacity: CGFloat) -> UIImage {
+  public class func imageOfBlueGradientCircle(opacity opacity: CGFloat) -> UIImage {
     UIGraphicsBeginImageContextWithOptions(CGSize(width: 31, height: 34), false, 0)
     DrawingKit.drawBlueGradientCircle(opacity: opacity)
 
-    let imageOfBlueGradientCircle = UIGraphicsGetImageFromCurrentImageContext()!
+    let imageOfBlueGradientCircle = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
 
     return imageOfBlueGradientCircle
   }
 
-  public class func imageOfAlphaGradientCircle(#opacity: CGFloat) -> UIImage {
+  public class func imageOfAlphaGradientCircle(opacity opacity: CGFloat) -> UIImage {
     UIGraphicsBeginImageContextWithOptions(CGSize(width: 31, height: 34), false, 0)
     DrawingKit.drawAlphaGradientCircle(opacity: opacity)
 
-    let imageOfAlphaGradientCircle = UIGraphicsGetImageFromCurrentImageContext()!
+    let imageOfAlphaGradientCircle = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
 
     return imageOfAlphaGradientCircle

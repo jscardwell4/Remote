@@ -13,7 +13,7 @@ import MoonKit
 @objc(Asset)
 public final class Asset: ModelObject {
 
-  public enum StorageType: Int, Printable {
+  public enum StorageType: Int, CustomStringConvertible {
     case Undefined, File, Bundle, Data
     public var description: String {
       switch self {

@@ -20,9 +20,9 @@ public final class Glyphish {
   /**
   imageNamed:
 
-  :param: named String
+  - parameter named: String
 
-  :returns: UIImage?
+  - returns: UIImage?
   */
   public class func imageNamed(named: String) -> UIImage? {
     return UIImage(named: named, inBundle: bundle, compatibleWithTraitCollection: nil)
@@ -31,9 +31,9 @@ public final class Glyphish {
   /**
   fontWithSize:
 
-  :param: size CGFloat
+  - parameter size: CGFloat
 
-  :returns: UIFont
+  - returns: UIFont
   */
   public class func fontWithSize(size: CGFloat) -> UIFont {
     if !fontRegistered && CTFontManagerRegisterFontsForURL(bundle.URLForResource("glyphish", withExtension: "ttf"), .None, nil) {

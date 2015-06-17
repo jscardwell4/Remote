@@ -26,7 +26,7 @@ final class BankCollectionDetailPickerRow: BankCollectionDetailRow {
   /**
   configure:
 
-  :param: cell BankCollectionDetailCell
+  - parameter cell: BankCollectionDetailCell
   */
   override func configureCell(cell: BankCollectionDetailCell) {
     // Set picker cell properties first so data is there when `info` gets set by `super`

@@ -15,8 +15,8 @@ class DetailSliderCell: DetailCell {
   /**
   initWithStyle:reuseIdentifier:
 
-  :param: style UITableViewCellStyle
-  :param: reuseIdentifier String?
+  - parameter style: UITableViewCellStyle
+  - parameter reuseIdentifier: String?
   */
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -31,7 +31,7 @@ class DetailSliderCell: DetailCell {
   /**
   sliderValueDidChange:
 
-  :param: sender UISlider
+  - parameter sender: UISlider
   */
   func sliderValueDidChange(sender: UISlider) { valueDidChange?(sender.value) }
 
@@ -40,7 +40,7 @@ class DetailSliderCell: DetailCell {
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 

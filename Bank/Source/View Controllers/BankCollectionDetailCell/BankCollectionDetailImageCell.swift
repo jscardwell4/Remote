@@ -48,7 +48,7 @@ class BankCollectionDetailImageCell: BankCollectionDetailCell {
 
   private let preview: UIImageView = {
     let view = UIImageView()
-    view.setTranslatesAutoresizingMaskIntoConstraints(false)
+    view.translatesAutoresizingMaskIntoConstraints = false
     view.userInteractionEnabled = false
     view.contentMode = .ScaleAspectFit
     view.tintColor = UIColor.blackColor()

@@ -25,7 +25,7 @@ public final class ControlStateImageSet: ControlStateSet {
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
@@ -45,9 +45,9 @@ public final class ControlStateImageSet: ControlStateSet {
   /**
   imageViewForState:
 
-  :param: state UIControlState
+  - parameter state: UIControlState
 
-  :returns: ImageView?
+  - returns: ImageView?
   */
   public func imageViewForState(state: UIControlState) -> ImageView? { return self[state.rawValue] as? ImageView }
 

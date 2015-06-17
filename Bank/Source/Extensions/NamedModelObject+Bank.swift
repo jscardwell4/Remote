@@ -16,11 +16,11 @@ extension NamedModelObject {
   /**
   nameFormFieldTemplate:
 
-  :param: #context NSManagedObjectContext
+  - parameter #context: NSManagedObjectContext
 
-  :returns: FieldTemplate
+  - returns: FieldTemplate
   */
-  static func nameFormFieldTemplate(#context: NSManagedObjectContext) -> FieldTemplate {
+  static func nameFormFieldTemplate(context context: NSManagedObjectContext) -> FieldTemplate {
     let placeholder = "The " + entityDescription.name!.dashcaseString.subbed("-", " ") + "'s name"
     let validation: (String?) -> Bool = {
       !($0 == nil   ||
@@ -33,16 +33,16 @@ extension NamedModelObject {
   /**
   pickerFormFieldTemplate:
 
-  :param: #context NSManagedObjectContext
+  - parameter #context: NSManagedObjectContext
 
-  :returns: FieldTemplate
+  - returns: FieldTemplate
   */
-  static func pickerFormFieldTemplate(#context: NSManagedObjectContext,
+  static func pickerFormFieldTemplate(context context: NSManagedObjectContext,
                              optional: Bool = true,
                              editable: Bool = true) -> FieldTemplate
   {
     var allValues = allValuesForAttribute("name", context: context) as! [String]
-    allValues.sort(<)
+    allValues.sortInPlace(<)
     let choices = optional ? ["None"] + allValues : allValues
     let initial = choices[0]
     return .Picker(value: initial, choices: choices, editable: editable)

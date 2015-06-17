@@ -16,8 +16,8 @@ final public class Image: EditableModelObject, CollectedModel {
   /**
   Create a new `Image` object with a data-backed asset
 
-  :param: image UIImage
-  :param: context NSManagedObjectContext?
+  - parameter image: UIImage
+  - parameter context: NSManagedObjectContext?
   */
   public convenience init(image: UIImage, context: NSManagedObjectContext?) {
     self.init(context: context)
@@ -32,8 +32,8 @@ final public class Image: EditableModelObject, CollectedModel {
   Public api for registering a bundle for a corresponding `Asset.location` value so that `Image` objects may use
   bundle-based resources not representable by a file url, i.e. 'Assets.car'
 
-  :param: bundle NSBundle?
-  :param: locationValue String
+  - parameter bundle: NSBundle?
+  - parameter locationValue: String
   */
   public class func registerBundle(bundle: NSBundle?, forLocationValue locationValue: String) {
     resourceRegistration[locationValue] = bundle
@@ -119,9 +119,9 @@ final public class Image: EditableModelObject, CollectedModel {
   /**
   imageFromFileAsset:
 
-  :param: asset Asset
+  - parameter asset: Asset
 
-  :returns: UIImage?
+  - returns: UIImage?
   */
   private func imageFromFileAsset(asset: Asset) -> UIImage? {
     if let path = asset.path { return UIImage(contentsOfFile: path) } else { return nil }
@@ -130,9 +130,9 @@ final public class Image: EditableModelObject, CollectedModel {
   /**
   imageFromBundleAsset:
 
-  :param: asset Asset
+  - parameter asset: Asset
 
-  :returns: UIImage?
+  - returns: UIImage?
   */
   private func imageFromBundleAsset(asset: Asset) -> UIImage? {
     if let name = asset.name, path = asset.path, bundle = Image.resourceRegistration[path] {
@@ -143,9 +143,9 @@ final public class Image: EditableModelObject, CollectedModel {
   /**
   imageFromDataAsset:
 
-  :param: asset Asset
+  - parameter asset: Asset
 
-  :returns: UIImage?
+  - returns: UIImage?
   */
   private func imageFromDataAsset(asset: Asset) -> UIImage? {
     if let data = asset.data { return UIImage(data: data) } else { return nil }
@@ -154,9 +154,9 @@ final public class Image: EditableModelObject, CollectedModel {
   /**
   imageFromAsset:
 
-  :param: asset Asset
+  - parameter asset: Asset
 
-  :returns: UIImage?
+  - returns: UIImage?
   */
   private func imageFromAsset(asset: Asset) -> UIImage? {
     switch asset.storageType {
@@ -186,7 +186,7 @@ final public class Image: EditableModelObject, CollectedModel {
 
   override public var description: String {
     return "\(super.description)\n\t" + "\n\t".join(
-      "asset = \(toString(asset))",
+      "asset = \(String(asset))",
       "cap insets = \(capInsets)",
       "category = \(imageCategory.index)"
     )
@@ -197,10 +197,10 @@ final public class Image: EditableModelObject, CollectedModel {
   /**
   modelWithIndex:context:
 
-  :param: index PathIndex
-  :param: context NSManagedObjectContext
+  - parameter index: PathIndex
+  - parameter context: NSManagedObjectContext
 
-  :returns: Image?
+  - returns: Image?
   */
   public override static func modelWithIndex(var index: PathIndex, context: NSManagedObjectContext) -> Image? {
     if index.count < 2 { return nil }

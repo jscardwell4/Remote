@@ -25,7 +25,7 @@ public final class ControlStateColorSet: ControlStateSet {
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
@@ -40,9 +40,9 @@ public final class ControlStateColorSet: ControlStateSet {
   /**
   colorForState:
 
-  :param: state UIControlState
+  - parameter state: UIControlState
 
-  :returns: UIColor?
+  - returns: UIColor?
   */
   public func colorForState(state: UIControlState) -> UIColor? { return self[state.rawValue] as? UIColor }
 

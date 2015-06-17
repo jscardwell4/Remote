@@ -36,7 +36,7 @@ public class ISYDeviceGroup: IndexedModelObject {
     obj["address"] = address.jsonValue
     obj["family"] = family.jsonValue
     obj["device.index"] = device?.index.jsonValue
-    obj["members.index"] = JSONValue(map(members, {$0.index}))
+    obj["members.index"] = JSONValue(members.map({$0.index}))
     return obj.jsonValue
   }
 

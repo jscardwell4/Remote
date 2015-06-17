@@ -29,9 +29,9 @@ public class TouchTrackingGesture: BlockActionGesture {
   /**
   addLocations:
 
-  :param: locations [CGPoint]
+  - parameter locations: [CGPoint]
 
-  :returns: Bool Whether new locations (TrackingMode.Locations) or views (TrackingMode.Views) were actually added
+  - returns: Bool Whether new locations (TrackingMode.Locations) or views (TrackingMode.Views) were actually added
   */
   private func addLocations(locations: [CGPoint]) -> Bool {
     let locationCount = touchLocations.count
@@ -47,9 +47,9 @@ public class TouchTrackingGesture: BlockActionGesture {
   /**
   touchedViewsForLocations:
 
-  :param: locations OrderedSet<CGPoint>
+  - parameter locations: OrderedSet<CGPoint>
 
-  :returns: OrderedSet<UIView>
+  - returns: OrderedSet<UIView>
   */
   private func touchedViewsForLocations(locations: [CGPoint]) -> OrderedSet<UIView> {
     return OrderedSet(compressed(locations.map{self.view!.window!.hitTest($0, withEvent: nil)}))
@@ -58,7 +58,7 @@ public class TouchTrackingGesture: BlockActionGesture {
   /**
   touchedViews
 
-  :returns: OrderedSet<UIView>
+  - returns: OrderedSet<UIView>
   */
   public func touchedViews() -> OrderedSet<UIView> {
     return view == nil ? [] : OrderedSet(compressed(touchLocations.array.map{self.view!.window!.hitTest($0, withEvent: nil)}))
@@ -67,10 +67,10 @@ public class TouchTrackingGesture: BlockActionGesture {
   /**
   touchedSubviewsInView:includeView:
 
-  :param: view UIView
-  :param: includeView (UIView) -> Bool
+  - parameter view: UIView
+  - parameter includeView: (UIView) -> Bool
 
-  :returns: OrderedSet<UIView>
+  - returns: OrderedSet<UIView>
   */
   public func touchedSubviewsInView(view: UIView, includeView: (UIView) -> Bool) -> OrderedSet<UIView> {
     return touchedSubviewsInView(view).filter(includeView)
@@ -79,9 +79,9 @@ public class TouchTrackingGesture: BlockActionGesture {
   /**
   touchedSubviewsInView:
 
-  :param: view UIView
+  - parameter view: UIView
 
-  :returns: OrderedSet<UIView>
+  - returns: OrderedSet<UIView>
   */
   public func touchedSubviewsInView(view: UIView) -> OrderedSet<UIView> {
     return touchedViews().filter({$0.isDescendantOfView(view)})
@@ -90,9 +90,9 @@ public class TouchTrackingGesture: BlockActionGesture {
   /**
   touchLocationsInView:
 
-  :param: view UIView
+  - parameter view: UIView
 
-  :returns: [CGPoint]
+  - returns: [CGPoint]
   */
   public func touchLocationsInView(view: UIView) -> OrderedSet<CGPoint> {
     return touchLocations.map{view.convertPoint($0, fromView: nil)}
@@ -110,10 +110,10 @@ public class TouchTrackingGesture: BlockActionGesture {
   /**
   touchesBegan:withEvent:
 
-  :param: touches NSSet
-  :param: event UIEvent
+  - parameter touches: NSSet
+  - parameter event: UIEvent
   */
-  override public func touchesBegan(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+  override public func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent) {
     let beginningTouches = (touches as NSSet).allObjects as! [UITouch]
     if !anchored {
       if beginningTouches.count == numberOfAnchoringTouches { anchoringTouches ∪= beginningTouches }
@@ -130,10 +130,10 @@ public class TouchTrackingGesture: BlockActionGesture {
   /**
   touchesMoved:withEvent:
 
-  :param: touches NSSet
-  :param: event UIEvent
+  - parameter touches: NSSet
+  - parameter event: UIEvent
   */
-  public override func touchesMoved(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+  public override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent) {
     let movedTouches = (touches as NSSet).allObjects as! [UITouch]
     if (anchoringTouches ∩ movedTouches).count != 0 {
       state = tracking ? .Ended : .Failed
@@ -145,20 +145,20 @@ public class TouchTrackingGesture: BlockActionGesture {
   /**
   touchesCancelled:withEvent:
 
-  :param: touches NSSet
-  :param: event UIEvent
+  - parameter touches: NSSet
+  - parameter event: UIEvent
   */
-  public override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+  public override func touchesCancelled(touches: Set<UITouch>, withEvent event: UIEvent) {
     if (anchoringTouches ∪ trackingTouches) ⊃ (touches as NSSet).allObjects as! [UITouch] { state = .Cancelled }
   }
 
   /**
   touchesEnded:withEvent:
 
-  :param: touches NSSet
-  :param: event UIEvent
+  - parameter touches: NSSet
+  - parameter event: UIEvent
   */
-  public override func touchesEnded(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+  public override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent) {
     if (anchoringTouches ∪ trackingTouches) ⊃ (touches as NSSet).allObjects as! [UITouch] { state = anchored && tracking ? .Ended : .Failed }
   }
 

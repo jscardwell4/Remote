@@ -21,8 +21,8 @@ public class MSButton: UIButton {
   /**
   setBackgroundColor:forState:
 
-  :param: color UIColor?
-  :param: state UIControlState
+  - parameter color: UIColor?
+  - parameter state: UIControlState
   */
   public func setBackgroundColor(color: UIColor?, forState state: UIControlState) {
     if (0...7).contains(state.rawValue) {
@@ -34,9 +34,9 @@ public class MSButton: UIButton {
   /**
   backgroundColorForState:
 
-  :param: state UIControlState
+  - parameter state: UIControlState
 
-  :returns: UIColor?
+  - returns: UIColor?
   */
   public func backgroundColorForState(state: UIControlState) -> UIColor? {
     var color = backgroundColors[state.rawValue]!

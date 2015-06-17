@@ -25,14 +25,14 @@ class BankItemDetailController: NamedItemDetailController {
   /**
   initWithCoder:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required init(coder aDecoder: NSCoder) { fatalError("must use init(model:") }
 
   /**
   initWithModel:
 
-  :param: model EditableModel
+  - parameter model: EditableModel
   */
   init(model: protocol<EditableModel, Detailable, DynamicallyNamed>) {
     assert(model.managedObjectContext?.concurrencyType == .MainQueueConcurrencyType)

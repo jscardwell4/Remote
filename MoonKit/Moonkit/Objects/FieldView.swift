@@ -72,7 +72,7 @@ public class Field: NSObject {
       return SliderField(value: value, min: min, max: max, editable: editable)
     case let .Stepper(value, min, max, step, editable):
       return StepperField(value: value, min: min, max: max, step: step, editable: editable)
-    case let .Picker(value, choices, editable) where choices.count > 0 && contains(choices, value):
+    case let .Picker(value, choices, editable) where choices.count > 0 && choices.contains(value.characters):
       return PickerField(value: value, choices: choices, editable: editable)
     case .Picker:
       return PickerField()
@@ -229,7 +229,7 @@ public class Field: NSObject {
     override var value: Any? {
       get { return _value }
       set {
-        if let v = newValue as? String, idx = find(choices, v) {
+        if let v = newValue as? String, idx = choices.indexOf(v.characters) {
           _value = v
           _control?.selectItem(idx, animated: _control?.superview != nil)
         }
@@ -256,7 +256,7 @@ public class Field: NSObject {
       if let color = selectedColor { control.highlightedTextColor = color }
       control.delegate = self
       control.dataSource = self
-      if let idx = find(choices, _value) { control.selectItem(idx) }
+      if let idx = choices.indexOf(_value.characters) { control.selectItem(idx) }
       control.interitemSpacing = 20.0
       _control = control
       return control
@@ -317,7 +317,7 @@ final class FieldView: UIView {
 
   /** initializeIVARs */
   private func initializeIVARs() {
-    setTranslatesAutoresizingMaskIntoConstraints(false)
+    translatesAutoresizingMaskIntoConstraints = false
     let label = UILabel(autolayout: true)
     label.text = name
     addSubview(label)
@@ -328,8 +328,8 @@ final class FieldView: UIView {
   /**
   Initialize the view with a name and field
 
-  :param: n String
-  :param: f Field
+  - parameter n: String
+  - parameter f: Field
   */
   init(tag t: Int, name n: String, field f: Field) {
     name = n; field = f
@@ -354,7 +354,7 @@ final class FieldView: UIView {
   /**
   intrinsicContentSize
 
-  :returns: CGSize
+  - returns: CGSize
   */
   override func intrinsicContentSize() -> CGSize {
     if let label = label, control = control {

@@ -58,14 +58,14 @@ final class BankCollectionCategoryCell: BankCollectionCell {
   /**
   initWithFrame:
 
-  :param: frame CGRect
+  - parameter frame: CGRect
   */
   override init(frame: CGRect) { super.init(frame: frame); initializeIVARs() }
 
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
 

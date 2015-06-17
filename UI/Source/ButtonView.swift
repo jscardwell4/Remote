@@ -31,7 +31,7 @@ public class ButtonView: RemoteElementView {
 	/**
 	executeActionWithOption:
 
-	:param: option CommandOption
+	- parameter option: CommandOption
 	*/
 	func executeActionWithOption(option: Command.Option) {
 		if !isEditing {
@@ -73,7 +73,7 @@ public class ButtonView: RemoteElementView {
 	/**
 	Single tap action executes the primary button command
 
-	:param: gestureRecognizer UITapGestureRecognizer
+	- parameter gestureRecognizer: UITapGestureRecognizer
 	*/
 	func handleTap(gestureRecognizer: UITapGestureRecognizer) {
     MSLogDebug("tapped button '\(button.name)'")
@@ -87,7 +87,7 @@ public class ButtonView: RemoteElementView {
 	/**
 	Long press action executes the secondary button command
 
-	:param: gestureRecognizer UILongPressGestureRecognizer
+	- parameter gestureRecognizer: UILongPressGestureRecognizer
 	*/
 	func handleLongPress(gestureRecognizer: UILongPressGestureRecognizer) {
     MSLogDebug("pressed button '\(button.name)'")
@@ -133,7 +133,7 @@ public class ButtonView: RemoteElementView {
  /**
 	intrinsicContentSize
 
-	:returns: CGSize
+	- returns: CGSize
 	*/
 	override public func intrinsicContentSize() -> CGSize { return minimumSize }
 
@@ -166,7 +166,7 @@ public class ButtonView: RemoteElementView {
 	/**
 	kvoRegistration
 
-	:returns: [Property:KVOReceptionist.Observation]
+	- returns: [Property:KVOReceptionist.Observation]
 	*/
 	override func kvoRegistration() -> [Property:KVOReceptionist.Observation] {
 		var registry = super.kvoRegistration()
@@ -230,7 +230,7 @@ public class ButtonView: RemoteElementView {
 	/**
 	drawRect:
 
-	:param: rect CGRect
+	- parameter rect: CGRect
 	*/
 	override public func drawRect(rect: CGRect) {
     if hasOption(.DrawBackground, button.style) { drawWithBackgroundInRect(rect) } else  { drawWithoutBackgroundInRect(rect) }
@@ -239,7 +239,7 @@ public class ButtonView: RemoteElementView {
   /**
   drawWithoutBackgroundInRect:
 
-  :param: rect CGRect
+  - parameter rect: CGRect
   */
   private func drawWithoutBackgroundInRect(rect: CGRect) {
     let context = UIGraphicsGetCurrentContext()
@@ -290,7 +290,7 @@ public class ButtonView: RemoteElementView {
   /**
   drawWithBackgroundInRect:
 
-  :param: rect CGRect
+  - parameter rect: CGRect
   */
   private func drawWithBackgroundInRect(rect: CGRect) {
 

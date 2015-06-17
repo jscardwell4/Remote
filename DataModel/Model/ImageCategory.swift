@@ -25,7 +25,7 @@ final public class ImageCategory: EditableModelObject, CollectedModel {
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
@@ -45,8 +45,8 @@ final public class ImageCategory: EditableModelObject, CollectedModel {
   override public var description: String {
     let description = "\(super.description)\n\t" + "\n\t".join(
       "image count = \(images.count)",
-      "subcategories = [" + ", ".join(map(childCategories, {$0.name})) + "]",
-      "parent = " + (toString(parentCategory?.name))
+      "subcategories = [" + ", ".join(childCategories.map({$0.name})) + "]",
+      "parent = " + (String(parentCategory?.name))
     )
     return description
   }
@@ -55,10 +55,10 @@ final public class ImageCategory: EditableModelObject, CollectedModel {
   /**
   modelWithIndex:context:
 
-  :param: index PathIndex
-  :param: context NSManagedObjectContext
+  - parameter index: PathIndex
+  - parameter context: NSManagedObjectContext
 
-  :returns: ImageCategory?
+  - returns: ImageCategory?
   */
   public override static func modelWithIndex(var index: PathIndex, context: NSManagedObjectContext) -> ImageCategory? {
     if index.isEmpty { return nil }

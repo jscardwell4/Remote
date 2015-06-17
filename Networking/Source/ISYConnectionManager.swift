@@ -40,11 +40,14 @@ import class DataModel.DataManager
   /**
   Join multicast group and listen for beacons broadcast by iTach devices.
 
-  :param: context NSManagedObjectContext = DataManager.rootContext
+  - parameter context: NSManagedObjectContext = DataManager.rootContext
   */
   class func startDetectingNetworkDevices(context: NSManagedObjectContext = DataManager.rootContext) {
     detectingNetworkDevices = true
-    multicastConnection.listen()
+    do {
+      try multicastConnection.listen()
+    } catch _ {
+    }
   }
 
   /** Cease listening for beacon broadcasts and release resources. */
@@ -53,8 +56,8 @@ import class DataModel.DataManager
   /**
   Sends an IR command to the device identified by the specified `uuid`.
 
-  :param: command HTTPCommand The command to execute
-  :param: completion Callback? = nil The block to execute upon task completion
+  - parameter command: HTTPCommand The command to execute
+  - parameter completion: Callback? = nil The block to execute upon task completion
   */
   class func sendCommand(command: HTTPCommand, completion: Callback? = nil) {
     // ???: Not used because `ConnectionManager` sends the `HTTPCommand`?
@@ -64,12 +67,15 @@ import class DataModel.DataManager
   class func suspend() { if detectingNetworkDevices { multicastConnection.stopListening() } }
 
   /** Resume previously active connections */
-  class func resume() { if detectingNetworkDevices { multicastConnection.listen() } }
+  class func resume() { if detectingNetworkDevices { do {
+        try multicastConnection.listen()
+      } catch _ {
+      } } }
 
   /**
   Processes messages received through `NetworkDeviceConnection` objects.
 
-  :param: message String Contents of the message received by the device connection
+  - parameter message: String Contents of the message received by the device connection
   */
   class func messageReceived(message: String) {
 

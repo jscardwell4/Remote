@@ -11,11 +11,11 @@ import Foundation
 /**
 spliced:newElements:atIndex:
 
-:param: x C
-:param: newElements S
-:param: i C.Index
+- parameter x: C
+- parameter newElements: S
+- parameter i: C.Index
 
-:returns: C
+- returns: C
 */
 public func spliced<C : RangeReplaceableCollectionType, S : CollectionType
   where C.Generator.Element == S.Generator.Element>(x: C, newElements: S, atIndex i: C.Index) -> C
@@ -28,10 +28,10 @@ public func spliced<C : RangeReplaceableCollectionType, S : CollectionType
 /**
 removedAtIndex:index:
 
-:param: x C
-:param: index C.Index
+- parameter x: C
+- parameter index: C.Index
 
-:returns: C
+- returns: C
 */
 public func removedAtIndex<C : RangeReplaceableCollectionType>(x: C, index: C.Index) -> C {
   var xPrime = x
@@ -40,7 +40,7 @@ public func removedAtIndex<C : RangeReplaceableCollectionType>(x: C, index: C.In
 }
 
 public func valuesForKey<C: KeyValueCollectionType, K:Hashable, V where C.Key == K>(key: K, container: C) -> [V] {
-  var containers: [C] = flattened(container)
+  let containers: [C] = flattened(container)
   return compressedMap(containers) { $0[key] as? V }
 }
 

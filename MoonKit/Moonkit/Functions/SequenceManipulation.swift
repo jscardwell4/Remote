@@ -11,7 +11,7 @@ import Foundation
 public struct InfiniteSequenceOf<T>: SequenceType {
   private let value: T
   public init(_ v: T) { value = v }
-  public func generate() -> GeneratorOf<T> { return GeneratorOf<T>({self.value}) }
+  public func generate() -> AnyGenerator<T> { return anyGenerator({self.value}) }
 }
 
 public func zip<S:SequenceType, T>(seq: S, value: T) -> [(S.Generator.Element, T)] {
@@ -21,42 +21,42 @@ public func zip<S:SequenceType, T>(seq: S, value: T) -> [(S.Generator.Element, T
 /**
 sequence:T):
 
-:param: v (T
-:param: T)
+- parameter v: (T
+- parameter T):
 
-:returns: SequenceOf<T>
+- returns: SequenceOf<T>
 */
-public func sequence<T>(v: (T,T)) -> SequenceOf<T> { return SequenceOf([v.0, v.1]) }
+public func sequence<T>(v: (T,T)) -> AnySequence<T> { return AnySequence([v.0, v.1]) }
 
 /**
 sequence:T:T):
 
-:param: v (T
-:param: T
-:param: T)
+- parameter v: (T
+- parameter T:
+- parameter T):
 
-:returns: SequenceOf<T>
+- returns: SequenceOf<T>
 */
-public func sequence<T>(v: (T,T,T)) -> SequenceOf<T> { return SequenceOf([v.0, v.1, v.2]) }
+public func sequence<T>(v: (T,T,T)) -> AnySequence<T> { return AnySequence([v.0, v.1, v.2]) }
 
 /**
 sequence:T:T:T):
 
-:param: v (T
-:param: T
-:param: T
-:param: T)
+- parameter v: (T
+- parameter T:
+- parameter T:
+- parameter T):
 
-:returns: SequenceOf<T>
+- returns: SequenceOf<T>
 */
-public func sequence<T>(v: (T,T,T,T)) -> SequenceOf<T> { return SequenceOf([v.0, v.1, v.2, v.3]) }
+public func sequence<T>(v: (T,T,T,T)) -> AnySequence<T> { return AnySequence([v.0, v.1, v.2, v.3]) }
 
 /**
 disperse2:
 
-:param: s S
+- parameter s: S
 
-:returns: (T, T)
+- returns: (T, T)
 */
 public func disperse2<S:SequenceType,T where S.Generator.Element == T>(s: S) -> (T, T) {
   let array = Array(s)
@@ -66,9 +66,9 @@ public func disperse2<S:SequenceType,T where S.Generator.Element == T>(s: S) -> 
 /**
 disperse3:
 
-:param: s S
+- parameter s: S
 
-:returns: (T, T, T)
+- returns: (T, T, T)
 */
 public func disperse3<S:SequenceType,T where S.Generator.Element == T>(s: S) -> (T, T, T) {
   let array = Array(s)
@@ -78,9 +78,9 @@ public func disperse3<S:SequenceType,T where S.Generator.Element == T>(s: S) -> 
 /**
 disperse4:
 
-:param: s S
+- parameter s: S
 
-:returns: (T, T, T, T)
+- returns: (T, T, T, T)
 */
 public func disperse4<S:SequenceType,T where S.Generator.Element == T>(s: S) -> (T, T, T, T) {
   let array = Array(s)
@@ -90,10 +90,10 @@ public func disperse4<S:SequenceType,T where S.Generator.Element == T>(s: S) -> 
 /**
 Zip together two sequences as an array of tuples formed via cross product
 
-:param: s1 S1
-:param: s2 S2
+- parameter s1: S1
+- parameter s2: S2
 
-:returns: [(S1.Generator.Element, S2.Generator.Element)]
+- returns: [(S1.Generator.Element, S2.Generator.Element)]
 */
 public func crossZip<S1:SequenceType, S2:SequenceType>(s1: S1, s2: S2) -> [(S1.Generator.Element, S2.Generator.Element)] {
   var result: [(S1.Generator.Element, S2.Generator.Element)] = []
@@ -108,13 +108,13 @@ public func crossZip<S1:SequenceType, S2:SequenceType>(s1: S1, s2: S2) -> [(S1.G
 /**
 unzip:S1>:
 
-:param: z Zip2<S0
-:param: S1>
+- parameter z: Zip2<S0
+- parameter S1>:
 
-:returns: ([E0], [E1])
+- returns: ([E0], [E1])
 */
 public func unzip<S0:SequenceType, S1:SequenceType, E0, E1 where E0 == S0.Generator.Element, E1 == S1.Generator.Element>(z: Zip2<S0, S1>) -> ([E0], [E1]) {
-  return reduce(z, ([], []), { (var result: ([E0], [E1]), p: (E0, E1)) -> ([E0], [E1]) in
+  return z.reduce(([], []), combine: { (var result: ([E0], [E1]), p: (E0, E1)) -> ([E0], [E1]) in
     result.0.append(p.0)
     result.1.append(p.1)
     return result
@@ -124,12 +124,12 @@ public func unzip<S0:SequenceType, S1:SequenceType, E0, E1 where E0 == S0.Genera
 /**
 unzip:
 
-:param: s S
+- parameter s: S
 
-:returns: ([E0], [E1])
+- returns: ([E0], [E1])
 */
 public func unzip<E0, E1, S:SequenceType where S.Generator.Element == (E0, E1)>(s: S) -> ([E0], [E1]) {
-  return reduce(s, ([], []), { (var result: ([E0], [E1]), p: (E0, E1)) -> ([E0], [E1]) in
+  return s.reduce(([], []), combine: { (var result: ([E0], [E1]), p: (E0, E1)) -> ([E0], [E1]) in
     result.0.append(p.0)
     result.1.append(p.1)
     return result

@@ -18,7 +18,7 @@ class DetailLabelCell: DetailCell {
     /**
     initWithIdentifier:
 
-    :param: identifier Identifier
+    - parameter identifier: Identifier
     */
     init(identifier: Identifier) {
       switch identifier {
@@ -34,8 +34,8 @@ class DetailLabelCell: DetailCell {
   /**
   initWithStyle:reuseIdentifier:
 
-  :param: style UITableViewCellStyle
-  :param: reuseIdentifier String?
+  - parameter style: UITableViewCellStyle
+  - parameter reuseIdentifier: String?
   */
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -56,7 +56,7 @@ class DetailLabelCell: DetailCell {
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 

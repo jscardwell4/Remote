@@ -18,7 +18,7 @@ public final class ModeSelectionView: ButtonGroupView {
   /**
   addSubelementView:
 
-  :param: view RemoteElementView
+  - parameter view: RemoteElementView
   */
   override public func addSubelementView(view: RemoteElementView) {
     if let buttonView = view as? ButtonView {
@@ -32,7 +32,7 @@ public final class ModeSelectionView: ButtonGroupView {
   /**
   selectButton:
 
-  :param: newSelection ButtonView
+  - parameter newSelection: ButtonView
   */
   func selectButton(newSelection: ButtonView) {
     if selectedButton != newSelection && newSelection.model.key != nil && !newSelection.model.key!.isEmpty {
@@ -46,7 +46,7 @@ public final class ModeSelectionView: ButtonGroupView {
   /**
   handleSelection:
 
-  :param: sender ButtonView
+  - parameter sender: ButtonView
   */
   func handleSelection(sender: ButtonView) {
     if selectedButton != sender { selectButton(sender) }
@@ -56,7 +56,7 @@ public final class ModeSelectionView: ButtonGroupView {
   /**
   drawRect:
 
-  :param: rect CGRect
+  - parameter rect: CGRect
   */
   override public func drawRect(rect: CGRect) {
     // TODO: Convert to use PaintCode
@@ -66,12 +66,12 @@ public final class ModeSelectionView: ButtonGroupView {
     let dx: CGFloat
     if let remoteView = parentElementView as? RemoteView, assignment = remoteView.panelViews[model.uuidIndex] {
       switch assignment.location {
-        case .Right: roundedCorners = UIRectCorner.TopLeft | UIRectCorner.BottomLeft; dx = 3.0
-        case .Left:  roundedCorners = UIRectCorner.TopRight | UIRectCorner.BottomRight; dx = -3.0
-        default:     roundedCorners = UIRectCorner(0); dx = 0.0
+        case .Right: roundedCorners = [UIRectCorner.TopLeft, UIRectCorner.BottomLeft]; dx = 3.0
+        case .Left:  roundedCorners = [UIRectCorner.TopRight, UIRectCorner.BottomRight]; dx = -3.0
+        default:     roundedCorners = UIRectCorner(rawValue: 0); dx = 0.0
       }
     } else {
-      roundedCorners = UIRectCorner(0)
+      roundedCorners = UIRectCorner(rawValue: 0)
       dx = 0.0
     }
 

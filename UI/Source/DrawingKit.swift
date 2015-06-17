@@ -48,7 +48,7 @@ public class DrawingKit : NSObject {
 
     //// Drawing Methods
 
-    public class func drawRoundedButtonBase(#color: UIColor, contentColor: UIColor, radius: CGFloat, rect: CGRect) {
+    public class func drawRoundedButtonBase(color color: UIColor, contentColor: UIColor, radius: CGFloat, rect: CGRect) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
 
@@ -120,7 +120,7 @@ public class DrawingKit : NSObject {
         CGContextRestoreGState(context)
     }
 
-    public class func drawRectangularButtonBase(#color: UIColor, contentColor: UIColor, rect: CGRect) {
+    public class func drawRectangularButtonBase(color color: UIColor, contentColor: UIColor, rect: CGRect) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
 
@@ -192,7 +192,7 @@ public class DrawingKit : NSObject {
         CGContextRestoreGState(context)
     }
 
-    public class func drawOvalButtonBase(#color: UIColor, contentColor: UIColor, rect: CGRect) {
+    public class func drawOvalButtonBase(color color: UIColor, contentColor: UIColor, rect: CGRect) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
 
@@ -205,7 +205,7 @@ public class DrawingKit : NSObject {
 
 
         //// darkOverlayOval Drawing
-        var darkOverlayOvalPath = UIBezierPath(ovalInRect: CGRectMake(frame.minX + 2, frame.minY + 2, frame.width - 4, frame.height - 4))
+        let darkOverlayOvalPath = UIBezierPath(ovalInRect: CGRectMake(frame.minX + 2, frame.minY + 2, frame.width - 4, frame.height - 4))
         CGContextSaveGState(context)
         CGContextSetShadowWithColor(context, DrawingKit.outerShadow.shadowOffset, DrawingKit.outerShadow.shadowBlurRadius, (DrawingKit.outerShadow.shadowColor as! UIColor).CGColor)
         color.setFill()
@@ -245,7 +245,7 @@ public class DrawingKit : NSObject {
         CGContextBeginTransparencyLayer(context, nil)
 
         //// Clip lightBaseClipRect
-        var lightBaseClipRectPath = UIBezierPath(ovalInRect: contentAndBaseRect)
+        let lightBaseClipRectPath = UIBezierPath(ovalInRect: contentAndBaseRect)
         lightBaseClipRectPath.addClip()
 
 
@@ -264,7 +264,7 @@ public class DrawingKit : NSObject {
         CGContextRestoreGState(context)
     }
 
-    public class func drawDiamondButtonBase(#color: UIColor, contentColor: UIColor, rect: CGRect) {
+    public class func drawDiamondButtonBase(color color: UIColor, contentColor: UIColor, rect: CGRect) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
 
@@ -276,7 +276,7 @@ public class DrawingKit : NSObject {
 
 
         //// darkOverlayDiamond Drawing
-        var darkOverlayDiamondPath = UIBezierPath()
+        let darkOverlayDiamondPath = UIBezierPath()
         darkOverlayDiamondPath.moveToPoint(CGPointMake(frame.minX + 2, frame.minY + 0.50000 * frame.height))
         darkOverlayDiamondPath.addLineToPoint(CGPointMake(frame.minX + 0.50000 * frame.width, frame.minY + 2))
         darkOverlayDiamondPath.addLineToPoint(CGPointMake(frame.maxX - 2, frame.minY + 0.50000 * frame.height))
@@ -322,7 +322,7 @@ public class DrawingKit : NSObject {
         CGContextBeginTransparencyLayer(context, nil)
 
         //// Clip lightBaseClipRect
-        var lightBaseClipRectPath = UIBezierPath()
+        let lightBaseClipRectPath = UIBezierPath()
         lightBaseClipRectPath.moveToPoint(CGPointMake(lightBase.minX + 0.00000 * lightBase.width, lightBase.minY + 0.50000 * lightBase.height))
         lightBaseClipRectPath.addLineToPoint(CGPointMake(lightBase.minX + 0.50000 * lightBase.width, lightBase.minY + 0.00000 * lightBase.height))
         lightBaseClipRectPath.addLineToPoint(CGPointMake(lightBase.minX + 1.00000 * lightBase.width, lightBase.minY + 0.50000 * lightBase.height))
@@ -348,7 +348,7 @@ public class DrawingKit : NSObject {
         CGContextRestoreGState(context)
     }
 
-    public class func drawTriangleButtonBase(#color: UIColor, contentColor: UIColor, rect: CGRect) {
+    public class func drawTriangleButtonBase(color color: UIColor, contentColor: UIColor, rect: CGRect) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
 
@@ -362,7 +362,7 @@ public class DrawingKit : NSObject {
 
         //// Overlay Group
         //// darkOverlayTriangle Drawing
-        var darkOverlayTrianglePath = UIBezierPath()
+        let darkOverlayTrianglePath = UIBezierPath()
         darkOverlayTrianglePath.moveToPoint(CGPointMake(overlayGroup.minX + 0.50000 * overlayGroup.width, overlayGroup.minY + 0.00000 * overlayGroup.height))
         darkOverlayTrianglePath.addLineToPoint(CGPointMake(overlayGroup.minX + 0.75000 * overlayGroup.width, overlayGroup.minY + 0.50000 * overlayGroup.height))
         darkOverlayTrianglePath.addLineToPoint(CGPointMake(overlayGroup.minX + 1.00000 * overlayGroup.width, overlayGroup.minY + 1.00000 * overlayGroup.height))
@@ -412,7 +412,7 @@ public class DrawingKit : NSObject {
         CGContextBeginTransparencyLayer(context, nil)
 
         //// Clip lightBaseClipRect
-        var lightBaseClipRectPath = UIBezierPath()
+        let lightBaseClipRectPath = UIBezierPath()
         lightBaseClipRectPath.moveToPoint(CGPointMake(lightBase.minX + 0.50000 * lightBase.width, lightBase.minY + 0.00000 * lightBase.height))
         lightBaseClipRectPath.addLineToPoint(CGPointMake(lightBase.minX + 0.75000 * lightBase.width, lightBase.minY + 0.50000 * lightBase.height))
         lightBaseClipRectPath.addLineToPoint(CGPointMake(lightBase.minX + 1.00000 * lightBase.width, lightBase.minY + 1.00000 * lightBase.height))
@@ -440,7 +440,7 @@ public class DrawingKit : NSObject {
         CGContextRestoreGState(context)
     }
 
-    public class func drawBatteryStatus(#batteryBaseColor: UIColor, hasPower: Bool, chargeLevel: CGFloat, containingFrame: CGRect) {
+    public class func drawBatteryStatus(batteryBaseColor batteryBaseColor: UIColor, hasPower: Bool, chargeLevel: CGFloat, containingFrame: CGRect) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
 
@@ -465,7 +465,7 @@ public class DrawingKit : NSObject {
         CGContextRestoreGState(context)
     }
 
-    public class func drawBatteryIcon(#batteryBaseColor: UIColor, hasPower: Bool, chargeLevel: CGFloat) {
+    public class func drawBatteryIcon(batteryBaseColor batteryBaseColor: UIColor, hasPower: Bool, chargeLevel: CGFloat) {
         //// Color Declarations
         let batteryIconColor = batteryBaseColor.colorWithHighlight(0.3)
 
@@ -475,7 +475,7 @@ public class DrawingKit : NSObject {
         let chargeMaxX: CGFloat = 16 + 175 * chargeLevel
 
         //// Outline Drawing
-        var outlinePath = UIBezierPath()
+        let outlinePath = UIBezierPath()
         outlinePath.moveToPoint(CGPointMake(208, 44))
         outlinePath.addLineToPoint(CGPointMake(208, 84))
         outlinePath.addCurveToPoint(CGPointMake(216, 76), controlPoint1: CGPointMake(212.42, 84), controlPoint2: CGPointMake(216, 80.42))
@@ -520,7 +520,7 @@ public class DrawingKit : NSObject {
 
 
         //// Charge Drawing
-        var chargePath = UIBezierPath()
+        let chargePath = UIBezierPath()
         chargePath.moveToPoint(CGPointMake(16, 112))
         chargePath.addLineToPoint(CGPointMake(chargeMaxX, 112))
         chargePath.addLineToPoint(CGPointMake(chargeMaxX, 16))
@@ -533,7 +533,7 @@ public class DrawingKit : NSObject {
 
         if (showCharging) {
             //// Lightning Bolt Drawing
-            var lightningBoltPath = UIBezierPath()
+            let lightningBoltPath = UIBezierPath()
             lightningBoltPath.moveToPoint(CGPointMake(130.91, 51.57))
             lightningBoltPath.addLineToPoint(CGPointMake(109.6, 51.57))
             lightningBoltPath.addLineToPoint(CGPointMake(120.26, 14.27))
@@ -552,7 +552,7 @@ public class DrawingKit : NSObject {
 
         if (showPower) {
             //// Plug Drawing
-            var plugPath = UIBezierPath()
+            let plugPath = UIBezierPath()
             plugPath.moveToPoint(CGPointMake(161.55, 56))
             plugPath.addLineToPoint(CGPointMake(161.55, 48))
             plugPath.addLineToPoint(CGPointMake(141.55, 48))
@@ -580,14 +580,14 @@ public class DrawingKit : NSObject {
         }
     }
 
-    public class func drawWifiIcon(#iconColor: UIColor, connected: Bool) {
+    public class func drawWifiIcon(iconColor iconColor: UIColor, connected: Bool) {
 
         //// Variable Declarations
         let notConnected = !connected
 
         if (connected) {
             //// Connected Icon Drawing
-            var connectedIconPath = UIBezierPath()
+            let connectedIconPath = UIBezierPath()
             connectedIconPath.moveToPoint(CGPointMake(181.46, 43.82))
             connectedIconPath.addLineToPoint(CGPointMake(181.52, 43.79))
             connectedIconPath.addCurveToPoint(CGPointMake(91, 0), controlPoint1: CGPointMake(180.42, 42), controlPoint2: CGPointMake(153.85, 0))
@@ -669,7 +669,7 @@ public class DrawingKit : NSObject {
 
         if (notConnected) {
             //// Not Connected Icon Drawing
-            var notConnectedIconPath = UIBezierPath()
+            let notConnectedIconPath = UIBezierPath()
             notConnectedIconPath.moveToPoint(CGPointMake(103.66, 122.02))
             notConnectedIconPath.addCurveToPoint(CGPointMake(91, 113.73), controlPoint1: CGPointMake(103.49, 121.69), controlPoint2: CGPointMake(99.41, 113.73))
             notConnectedIconPath.addCurveToPoint(CGPointMake(78.34, 122.02), controlPoint1: CGPointMake(82.59, 113.73), controlPoint2: CGPointMake(78.51, 121.69))
@@ -781,7 +781,7 @@ public class DrawingKit : NSObject {
         }
     }
 
-    public class func drawWifiStatus(#iconColor: UIColor, connected: Bool, containingFrame: CGRect) {
+    public class func drawWifiStatus(iconColor iconColor: UIColor, connected: Bool, containingFrame: CGRect) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
 
@@ -806,10 +806,10 @@ public class DrawingKit : NSObject {
         CGContextRestoreGState(context)
     }
 
-    public class func drawDiamondPath(#frame: CGRect, contentColor: UIColor) {
+    public class func drawDiamondPath(frame frame: CGRect, contentColor: UIColor) {
 
         //// Shape Drawing
-        var shapePath = UIBezierPath()
+        let shapePath = UIBezierPath()
         shapePath.moveToPoint(CGPointMake(frame.minX + 0.00000 * frame.width, frame.minY + 0.50000 * frame.height))
         shapePath.addLineToPoint(CGPointMake(frame.minX + 0.50000 * frame.width, frame.minY + 0.00000 * frame.height))
         shapePath.addLineToPoint(CGPointMake(frame.minX + 1.00000 * frame.width, frame.minY + 0.50000 * frame.height))
@@ -820,18 +820,18 @@ public class DrawingKit : NSObject {
         shapePath.fill()
     }
 
-    public class func drawOvalPath(#frame: CGRect, contentColor: UIColor) {
+    public class func drawOvalPath(frame frame: CGRect, contentColor: UIColor) {
 
         //// Shape Drawing
-        var shapePath = UIBezierPath(ovalInRect: CGRectMake(frame.minX, frame.minY, frame.width, frame.height))
+        let shapePath = UIBezierPath(ovalInRect: CGRectMake(frame.minX, frame.minY, frame.width, frame.height))
         contentColor.setFill()
         shapePath.fill()
     }
 
-    public class func drawTrianglePath(#frame: CGRect, contentColor: UIColor) {
+    public class func drawTrianglePath(frame frame: CGRect, contentColor: UIColor) {
 
         //// Shape Drawing
-        var shapePath = UIBezierPath()
+        let shapePath = UIBezierPath()
         shapePath.moveToPoint(CGPointMake(frame.minX + 0.50000 * frame.width, frame.minY + 0.00000 * frame.height))
         shapePath.addLineToPoint(CGPointMake(frame.minX + 0.75000 * frame.width, frame.minY + 0.50000 * frame.height))
         shapePath.addLineToPoint(CGPointMake(frame.minX + 1.00000 * frame.width, frame.minY + 1.00000 * frame.height))
@@ -844,7 +844,7 @@ public class DrawingKit : NSObject {
         shapePath.fill()
     }
 
-    public class func drawRectangularPath(#frame: CGRect, contentColor: UIColor) {
+    public class func drawRectangularPath(frame frame: CGRect, contentColor: UIColor) {
 
         //// Shape Drawing
         let shapePath = UIBezierPath(rect: CGRectMake(frame.minX, frame.minY, frame.width, frame.height))
@@ -852,7 +852,7 @@ public class DrawingKit : NSObject {
         shapePath.fill()
     }
 
-    public class func drawRoundedRectanglePath(#frame: CGRect, contentColor: UIColor, radius: CGFloat) {
+    public class func drawRoundedRectanglePath(frame frame: CGRect, contentColor: UIColor, radius: CGFloat) {
 
         //// Shape Drawing
         let shapePath = UIBezierPath(roundedRect: CGRectMake(frame.minX, frame.minY, frame.width, frame.height), cornerRadius: radius)
@@ -860,7 +860,7 @@ public class DrawingKit : NSObject {
         shapePath.fill()
     }
 
-    public class func drawRectangleGloss(#frame: CGRect) {
+    public class func drawRectangleGloss(frame frame: CGRect) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
 
@@ -876,7 +876,7 @@ public class DrawingKit : NSObject {
         CGContextRestoreGState(context)
     }
 
-    public class func drawRoundedGloss(#frame: CGRect, radius: CGFloat) {
+    public class func drawRoundedGloss(frame frame: CGRect, radius: CGFloat) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
 
@@ -892,13 +892,13 @@ public class DrawingKit : NSObject {
         CGContextRestoreGState(context)
     }
 
-    public class func drawOvalGloss(#frame: CGRect) {
+    public class func drawOvalGloss(frame frame: CGRect) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
 
         //// Oval Drawing
         let ovalRect = CGRectMake(frame.minX, frame.minY, frame.width, frame.height)
-        var ovalPath = UIBezierPath(ovalInRect: ovalRect)
+        let ovalPath = UIBezierPath(ovalInRect: ovalRect)
         CGContextSaveGState(context)
         ovalPath.addClip()
         CGContextDrawLinearGradient(context, DrawingKit.verticalGloss,
@@ -908,12 +908,12 @@ public class DrawingKit : NSObject {
         CGContextRestoreGState(context)
     }
 
-    public class func drawDiamondGloss(#frame: CGRect) {
+    public class func drawDiamondGloss(frame frame: CGRect) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
 
         //// Diamond Drawing
-        var diamondPath = UIBezierPath()
+        let diamondPath = UIBezierPath()
         diamondPath.moveToPoint(CGPointMake(frame.minX + 0.00000 * frame.width, frame.minY + 0.50000 * frame.height))
         diamondPath.addLineToPoint(CGPointMake(frame.minX + 0.50000 * frame.width, frame.minY + 0.00000 * frame.height))
         diamondPath.addLineToPoint(CGPointMake(frame.minX + 1.00000 * frame.width, frame.minY + 0.50000 * frame.height))
@@ -930,12 +930,12 @@ public class DrawingKit : NSObject {
         CGContextRestoreGState(context)
     }
 
-    public class func drawTriangleGloss(#frame: CGRect) {
+    public class func drawTriangleGloss(frame frame: CGRect) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
 
         //// Triangle Drawing
-        var trianglePath = UIBezierPath()
+        let trianglePath = UIBezierPath()
         trianglePath.moveToPoint(CGPointMake(frame.minX + 0.50000 * frame.width, frame.minY + 0.00000 * frame.height))
         trianglePath.addLineToPoint(CGPointMake(frame.minX + 0.75000 * frame.width, frame.minY + 0.50000 * frame.height))
         trianglePath.addLineToPoint(CGPointMake(frame.minX + 1.00000 * frame.width, frame.minY + 1.00000 * frame.height))
@@ -954,14 +954,14 @@ public class DrawingKit : NSObject {
         CGContextRestoreGState(context)
     }
 
-    public class func drawButton(#color: UIColor, contentColor: UIColor, iconImage: UIImage, radius: CGFloat, text: String, applyGloss: Bool, baseShape: String, rect: CGRect, highlighted: Bool, shouldDrawIcon: Bool, shouldDrawText: Bool) {
+    public class func drawButton(color color: UIColor, contentColor: UIColor, iconImage: UIImage, radius: CGFloat, text: String, applyGloss: Bool, baseShape: String, rect: CGRect, highlighted: Bool, shouldDrawIcon: Bool, shouldDrawText: Bool) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
 
 
         //// Variable Declarations
         let iconSize = iconImage.size
-        let widthBasedFontSize: CGFloat = rect.size.width / CGFloat(count(text.utf16))
+        let widthBasedFontSize: CGFloat = rect.size.width / CGFloat(text.utf16.count)
         let heightBasedFontSize: CGFloat = rect.size.height
         let appliedFontSize: CGFloat = min(widthBasedFontSize, heightBasedFontSize)
         let offsetIcon = CGPointMake((rect.size.width - iconSize.width) / 2.0, (rect.size.height - iconSize.height) / 2.0)
@@ -1104,7 +1104,7 @@ public class DrawingKit : NSObject {
         }
     }
 
-    public class func drawSelectedButtonShape(#frame: CGRect, contentColor: UIColor, radius: CGFloat, baseShape: String) {
+    public class func drawSelectedButtonShape(frame frame: CGRect, contentColor: UIColor, radius: CGFloat, baseShape: String) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
 
@@ -1176,7 +1176,7 @@ public class DrawingKit : NSObject {
         }
     }
 
-    public class func drawSelectedButtonBase(#frame: CGRect, color: UIColor, contentColor: UIColor, radius: CGFloat, baseShape: String) {
+    public class func drawSelectedButtonBase(frame frame: CGRect, color: UIColor, contentColor: UIColor, radius: CGFloat, baseShape: String) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
 
@@ -1253,7 +1253,7 @@ public class DrawingKit : NSObject {
         }
     }
 
-    public class func drawSelectedGloss(#frame: CGRect, radius: CGFloat, baseShape: String) {
+    public class func drawSelectedGloss(frame frame: CGRect, radius: CGFloat, baseShape: String) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
 

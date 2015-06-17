@@ -41,7 +41,7 @@ final class ModalStorage: ModelObject {
     }
   }
 
-  enum StorageType: String, Printable {
+  enum StorageType: String, CustomStringConvertible {
     case None                    = ""
     case ImageViewSet            = "imageViewSet"
     case JSONStorageSet          = "jSONStorageSet"
@@ -83,7 +83,7 @@ final class ModalStorage: ModelObject {
     /**
     Initialize with a compatible storage type class
 
-    :param: type ModelObject.Type
+    - parameter type: ModelObject.Type
     */
     init?(type: ModelObject.Type) {
       switch type {
@@ -117,9 +117,9 @@ final class ModalStorage: ModelObject {
   /**
   Returns the value for the specified `mode` if it exists and is of type `T`
 
-  :param: mode Mode
+  - parameter mode: Mode
 
-  :returns: T?
+  - returns: T?
   */
   func valueForMode<T: ModelObject>(mode: Mode) -> T? {
     if let uuidIndex = dictionary[mode],
@@ -136,10 +136,10 @@ final class ModalStorage: ModelObject {
   Sets the specified value for `mode` if its type and `storageType` match, if `storageType` is `.None` and value is 
   of a compatible type than both the value and `storageType` are set
 
-  :param: value T?
-  :param: mode Mode
+  - parameter value: T?
+  - parameter mode: Mode
 
-  :returns: SetValueResult
+  - returns: SetValueResult
   */
   func setValue<T: ModelObject>(value: T?, forMode mode: Mode) -> SetValueResult {
     if value == nil, let existingValue: T = valueForMode(mode), property = storageType.property {
@@ -166,7 +166,7 @@ final class ModalStorage: ModelObject {
   /**
   awakeFromSnapshotEvents:
 
-  :param: flags NSSnapshotEventType
+  - parameter flags: NSSnapshotEventType
   */
   override func awakeFromSnapshotEvents(flags: NSSnapshotEventType) {
     super.awakeFromSnapshotEvents(flags)
@@ -270,7 +270,7 @@ final class ModalStorage: ModelObject {
     else if values!.count == 0 { result += "\n\tsetInUse = {}" }
     else {
       result += "\n\tsetInUse = {\n"
-      result += ",\n".join(map(values!) {"{\n\($0.description.indentedBy(8))\n}".indentedBy(4)})
+      result += ",\n".join((values!).map {"{\n\($0.description.indentedBy(8))\n}".indentedBy(4)})
       result += "\n\t}"
     }
     return result

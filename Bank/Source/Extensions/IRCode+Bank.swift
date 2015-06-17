@@ -176,21 +176,21 @@ extension IRCode: FormCreatable {
   /**
   creationForm:
 
-  :param: #text NSManagedObjectContext
+  - parameter #text: NSManagedObjectContext
 
-  :returns: Form
+  - returns: Form
   */
-  static func creationForm(#context: NSManagedObjectContext) -> Form {
+  static func creationForm(context context: NSManagedObjectContext) -> Form {
     return Form(templates: [:])
   }
 
   /**
   createWithForm:context:
 
-  :param: form Form
-  :param: context NSManagedObjectContext
+  - parameter form: Form
+  - parameter context: NSManagedObjectContext
 
-  :returns: Self?
+  - returns: Self?
   */
   static func createWithForm(form: Form, context: NSManagedObjectContext) -> Self? {
     return nil

@@ -15,8 +15,8 @@ class DetailColorCell: DetailCell {
   /**
   initWithStyle:reuseIdentifier:
 
-  :param: style UITableViewCellStyle
-  :param: reuseIdentifier String?
+  - parameter style: UITableViewCellStyle
+  - parameter reuseIdentifier: String?
   */
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -33,7 +33,7 @@ class DetailColorCell: DetailCell {
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
@@ -67,7 +67,7 @@ extension DetailColorCell: ColorSwatchDelegate {
   /**
   colorSwatchDidEndEditing:
 
-  :param: colorSwatch ColorSwatch
+  - parameter colorSwatch: ColorSwatch
   */
   func colorSwatchDidEndEditing(colorSwatch: ColorSwatch) {
     valueDidChange?(colorSwatch.color)

@@ -24,7 +24,7 @@ final class DetailLabeledImageCell: DetailCell {
   /**
   setPreviewImage:
 
-  :param: image UIImage?
+  - parameter image: UIImage?
   */
   private func setPreviewImage(image: UIImage?) {
     preview.image = image
@@ -36,8 +36,8 @@ final class DetailLabeledImageCell: DetailCell {
   /**
   initWithStyle:reuseIdentifier:
 
-  :param: style UITableViewCellStyle
-  :param: reuseIdentifier String?
+  - parameter style: UITableViewCellStyle
+  - parameter reuseIdentifier: String?
   */
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -49,7 +49,7 @@ final class DetailLabeledImageCell: DetailCell {
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
@@ -68,7 +68,7 @@ final class DetailLabeledImageCell: DetailCell {
 
   private let preview: UIImageView = {
     let view = UIImageView()
-    view.setTranslatesAutoresizingMaskIntoConstraints(false)
+    view.translatesAutoresizingMaskIntoConstraints = false
     view.userInteractionEnabled = false
     view.contentMode = .ScaleAspectFit
     view.tintColor = UIColor.blackColor()

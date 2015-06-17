@@ -30,7 +30,7 @@ public class EditableModelObject: IndexedModelObject, EditableModel {
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)

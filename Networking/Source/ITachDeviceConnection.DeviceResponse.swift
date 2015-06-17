@@ -54,22 +54,22 @@ extension ITachDeviceConnection {
         case ~/"^IR Learner Unavailabler":
           self = .LearnerUnavailable
         case ~/"^completeir,1:[1-3],[0-9]+\\r$":
-          if let port = response[13...13].toInt(), tag = ",".split(response).last?.toInt() {
+          if let port = Int(response[13...13]), tag = Int(",".split(response).last?) {
             self = .CompleteIR(port, tag)
           } else { return nil }
         case ~/"^busyIR,1:[1-3],[0-9]+\\r$":
-          if let port = response[13...13].toInt(), tag = ",".split(response).last?.toInt() {
+          if let port = Int(response[13...13]), tag = Int(",".split(response).last?) {
             self = .BusyIR(port, tag)
           } else { return nil }
         case ~/"^IR,1:[1-3],[A-Z_]+\\r$":
-          if let port = response[5...5].toInt(), raw = ",".split(response).last, mode = IRMode(rawValue: raw) {
+          if let port = Int(response[5...5]), raw = ",".split(response).last, mode = IRMode(rawValue: raw) {
             self = .IRConfig(port, mode)
           } else { return nil }
         case ~/"^stopir,1:[1-3]\r":
-          if let port = response[9...9].toInt() { self = StopIR(port) } else { return nil }
+          if let port = Int(response[9...9]) { self = StopIR(port) } else { return nil }
         case ~/"^version,(?:[0-1],)?[0-9.]+\\r$":
           let components = ",".split(response)
-          if components.count == 3, let module = components[1].toInt() {
+          if components.count == 3, let module = Int(components[1]) {
             self = .Version(module, components[2][0 ..< components[2].length - 2])
           }
           else if components.count == 2 { self = .Version(nil, response[8 ..< response.length - 2]) }
@@ -78,8 +78,8 @@ extension ITachDeviceConnection {
           self = .EndListDevices
         case ~/"^device,[0-1],[0-3],[A-Z 13]+\\r$":
           let components = ",".split(response)
-          if let module = components[1].toInt(),
-            port = components[2].toInt(),
+          if let module = Int(components[1]),
+            port = Int(components[2]),
             type = ModuleType(rawValue: components[3][0 ..< components[3].length - 2])
           {
             self = .Device(module, port, type)

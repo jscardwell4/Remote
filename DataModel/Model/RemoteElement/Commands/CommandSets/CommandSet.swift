@@ -35,7 +35,7 @@ public final class CommandSet: CommandContainer {
       setPrimitiveValue(NSNumber(short: newValue.rawValue), forKey: "type")
       didChangeValueForKey("type")
       if let sharedKeys = CommandSet.sharedKeysByType[newValue] {
-        containerIndex = MSDictionary(sharedKeys: map(sharedKeys){Int($0.rawValue)}) as! OrderedDictionary<String, NSURL>
+        containerIndex = MSDictionary(sharedKeys: sharedKeys.map{Int($0.rawValue)}) as! OrderedDictionary<String, NSURL>
       } else {
         containerIndex = [:]
       }
@@ -45,9 +45,9 @@ public final class CommandSet: CommandContainer {
   /**
   subscript:
 
-  :param: key RemoteElement.Role
+  - parameter key: RemoteElement.Role
 
-  :returns: Command?
+  - returns: Command?
   */
   public subscript(role: RemoteElement.Role) -> Command? {
     get { return self[String(role.jsonValue)!]}
@@ -57,9 +57,9 @@ public final class CommandSet: CommandContainer {
   /**
   subscript:
 
-  :param: key String
+  - parameter key: String
 
-  :returns: Command?
+  - returns: Command?
   */
   public subscript(key: String) -> Command? {
     get { return (containerIndex[key] ?>> managedObjectContext!.objectForURI) as? Command }
@@ -69,7 +69,7 @@ public final class CommandSet: CommandContainer {
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)

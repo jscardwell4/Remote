@@ -14,7 +14,7 @@ v2.nametag = "v2"
 let parent = UIView(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
 parent.nametag = "parent"
 parent.backgroundColor = UIColor.blackColor()
-parent.setTranslatesAutoresizingMaskIntoConstraints(false)
+parent.translatesAutoresizingMaskIntoConstraints = false
 parent.addSubview(v1)
 parent.addSubview(v2)
 // Need to fix the following case that crashes with bad access
@@ -46,8 +46,8 @@ parent.constrain(
     v2.bottom => parent.bottom --> identifier(suffixes: "V2", "Bottom")
   ]
 )
-println("\n".join((parent.constraints() as! [NSLayoutConstraint]).map({$0.description})))
-println()
+print("\n".join((parent.constraints as [NSLayoutConstraint]).map({$0.description})))
+print("")
 println("\n".join((parent.constraints() as! [NSLayoutConstraint]).map({$0.prettyDescription})))
 parent.setNeedsUpdateConstraints()
 parent.setNeedsLayout()

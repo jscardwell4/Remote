@@ -21,9 +21,9 @@ public class ITachLearnerDelegate {
   Attempt to connect to the specified device. Only succeeds if connection can be established, and did not already exist
   with another learner delegate assigned to it
 
-  :param: device ITachDevice
+  - parameter device: ITachDevice
 
-  :returns: Bool
+  - returns: Bool
   */
   public func connectToDevice(device: ITachDevice) -> Bool {
     let connection = ITachConnectionManager.connectionForDevice(device)
@@ -46,7 +46,7 @@ public class ITachLearnerDelegate {
   /**
   Enables IR learning over connection
 
-  :param: callback Callback? = nil
+  - parameter callback: Callback? = nil
   */
   public func enableLearner(callback: Callback? = nil) {
     MSLogDebug("")
@@ -59,7 +59,7 @@ public class ITachLearnerDelegate {
   /**
   Disables IR learning over connection
 
-  :param: callback Callback? = nil
+  - parameter callback: Callback? = nil
   */
   public func disableLearner(callback: Callback? = nil) {
     MSLogDebug("")
@@ -103,7 +103,7 @@ public class ITachLearnerDelegate {
   /**
   Invoked by `ITachDeviceConnection` when a sendir response has been received
 
-  :param: command String
+  - parameter command: String
   */
   func commandCaptured(command: String) {
     let chunks = ",".split(command)
@@ -120,12 +120,12 @@ public class ITachLearnerDelegate {
     var assignedChars: [String:Character] = [:]
 
     while var p = zippedPairs.pop() {
-      if let x = last(p) where x == "\r" { p = String(dropLast(p)) }
+      if let x = p.characters.last where x == "\r" { p = String(String(dropLast(p.characters))) }
       if let c = assignedChars[p] {
         compressed.append(c)
       } else {
         assignedChars[p] = availableChars.pop()
-        if let lastC = last(compressed) where String(lastC) ~= "[0-9]" { compressed += "," }
+        if let lastC = compressed.characters.last where String(lastC) ~= "[0-9]" { compressed += "," }
         compressed += p
       }
     }

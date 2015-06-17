@@ -85,9 +85,9 @@ final class BankCollectionItemCell: BankCollectionCell {
   /**
   applyLayoutAttributes:
 
-  :param: layoutAttributes UICollectionViewLayoutAttributes!
+  - parameter layoutAttributes: UICollectionViewLayoutAttributes!
   */
-  override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes!) {
+  override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {
     if let attributes = layoutAttributes as? BankCollectionAttributes {
       viewingMode = attributes.viewingMode
       updateEnabledGestures()

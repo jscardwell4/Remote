@@ -14,8 +14,8 @@ public class HexIntegerInputView: TextInputView {
   /**
   initWithFrame:target:
 
-  :param: frame CGRect
-  :param: target UIResponder
+  - parameter frame: CGRect
+  - parameter target: UIResponder
   */
   public required init(frame: CGRect, target: UITextInput) {
     super.init(frame: frame, target: target)
@@ -33,7 +33,7 @@ public class HexIntegerInputView: TextInputView {
 
     for (name, value) in index {
 
-      var b = KeyInputButton(autolayout: true)
+      let b = KeyInputButton(autolayout: true)
       b.title = value
 
       switch name {
@@ -74,7 +74,7 @@ public class HexIntegerInputView: TextInputView {
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required public init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 

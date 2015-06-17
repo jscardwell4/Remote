@@ -21,7 +21,7 @@ final class DetailButtonRow: DetailRow {
   /**
   configure:
 
-  :param: cell DetailCell
+  - parameter cell: DetailCell
   */
   override func configureCell(cell: DetailCell) {
     if let buttonCell = cell as? DetailButtonCell {

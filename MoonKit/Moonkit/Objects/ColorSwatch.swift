@@ -25,7 +25,7 @@ import UIKit
   /**
   drawRect:
 
-  :param: rect CGRect
+  - parameter rect: CGRect
   */
   public override func drawRect(rect: CGRect) {
 
@@ -112,7 +112,7 @@ import UIKit
 
     if color == nil {
       //// Diagonal Drawing
-      var diagonalPath = UIBezierPath()
+      let diagonalPath = UIBezierPath()
       diagonalPath.moveToPoint(CGPoint(x: rect.minX + 4.5, y: rect.maxY - 5.5))
       diagonalPath.addLineToPoint(CGPoint(x: rect.minX + 2.5, y: rect.maxY - 5.5))
       diagonalPath.addLineToPoint(CGPoint(x: rect.minX + 2.5, y: rect.maxY - 6.5))
@@ -130,14 +130,14 @@ import UIKit
   /**
   canBecomeFirstResponder
 
-  :returns: Bool
+  - returns: Bool
   */
   public override func canBecomeFirstResponder() -> Bool { return true }
 
   /**
   becomeFirstResponder
 
-  :returns: Bool
+  - returns: Bool
   */
   public override func becomeFirstResponder() -> Bool {
     var didBecomeFirstResponder = false
@@ -149,7 +149,7 @@ import UIKit
   /**
   resignFirstResponder
 
-  :returns: Bool
+  - returns: Bool
   */
   public override func resignFirstResponder() -> Bool {
     var didResignFirstResponder = false
@@ -165,7 +165,7 @@ import UIKit
   /**
   initWithFrame:
 
-  :param: frame CGRect
+  - parameter frame: CGRect
   */
   public override init(frame: CGRect) {
     super.init(frame: frame)
@@ -180,21 +180,21 @@ import UIKit
   /**
   initWithAutolayout:
 
-  :param: autolayout Bool
+  - parameter autolayout: Bool
   */
-  public convenience init(autolayout: Bool) { self.init(); setTranslatesAutoresizingMaskIntoConstraints(!autolayout) }
+  public convenience init(autolayout: Bool) { self.init(); translatesAutoresizingMaskIntoConstraints = !autolayout }
 
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   public required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
   /**
   intrinsicContentSize
 
-  :returns: CGSize
+  - returns: CGSize
   */
   public override func intrinsicContentSize() -> CGSize { return CGSize(width: 50, height: 24) }
 

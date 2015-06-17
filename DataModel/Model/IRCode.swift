@@ -47,18 +47,18 @@ final public class IRCode: EditableModelObject, CollectedModel {
   /**
   isValidOnOffPattern:
 
-  :param: pattern String
+  - parameter pattern: String
 
-  :returns: Bool
+  - returns: Bool
   */
   public class func isValidOnOffPattern(pattern: String) -> Bool { return compressedOnOffPatternFromPattern(pattern) != nil }
 
   /**
   compressedOnOffPatternFromPattern:
 
-  :param: pattern String
+  - parameter pattern: String
 
-  :returns: String?
+  - returns: String?
   */
   public class func compressedOnOffPatternFromPattern(pattern: String) -> String? {
 
@@ -99,7 +99,7 @@ final public class IRCode: EditableModelObject, CollectedModel {
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
@@ -113,7 +113,7 @@ final public class IRCode: EditableModelObject, CollectedModel {
   override public var description: String {
     return "\(super.description)\n\t" + "\n\t".join(
       "code set = \(codeSet.index)",
-      "device = \(toString(device?.name))",
+      "device = \(String(device?.name))",
       "sets device input = \(setsDeviceInput)",
       "frequency = \(frequency)",
       "offset = \(offset)",
@@ -140,10 +140,10 @@ final public class IRCode: EditableModelObject, CollectedModel {
   /**
   modelWithIndex:context:
 
-  :param: index PathIndex
-  :param: context NSManagedObjectContext
+  - parameter index: PathIndex
+  - parameter context: NSManagedObjectContext
 
-  :returns: IRCode?
+  - returns: IRCode?
   */
   public override static func modelWithIndex(index: PathIndex, context: NSManagedObjectContext) -> IRCode? {
     if index.count != 3 { return nil }

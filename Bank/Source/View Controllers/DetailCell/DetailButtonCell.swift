@@ -20,8 +20,8 @@ class DetailButtonCell: DetailCell {
   /**
   initWithStyle:reuseIdentifier:
 
-  :param: style UITableViewCellStyle
-  :param: reuseIdentifier String?
+  - parameter style: UITableViewCellStyle
+  - parameter reuseIdentifier: String?
   */
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -34,7 +34,7 @@ class DetailButtonCell: DetailCell {
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
@@ -51,7 +51,7 @@ class DetailButtonCell: DetailCell {
   /**
   buttonUpAction:
 
-  :param: sender UIButton
+  - parameter sender: UIButton
   */
   func buttonUpAction() {
     // If we have a picker view already, remove it

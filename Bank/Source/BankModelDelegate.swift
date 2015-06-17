@@ -42,11 +42,11 @@ import MoonKit
   /**
   Generates a `CreateTransaction` given a label, a `FormCreatable` type, and a managed object context
 
-  :param: label String
-  :param: creatableType T.Type
-  :param: context NSManagedObjectContext
+  - parameter label: String
+  - parameter creatableType: T.Type
+  - parameter context: NSManagedObjectContext
 
-  :returns: CreateTransaction
+  - returns: CreateTransaction
   */
   class func createTransactionWithLabel<T:FormCreatable>(label: String,
                                               creatableType: T.Type,
@@ -63,11 +63,11 @@ import MoonKit
   /**
   Generates a `DiscoverTransaction` given a label, a `DiscoverCreatable` type, and a managed object context
 
-  :param: label String
-  :param: discoverableType T.Type
-  :param: context NSManagedObjectContext
+  - parameter label: String
+  - parameter discoverableType: T.Type
+  - parameter context: NSManagedObjectContext
 
-  :returns: DiscoverTransaction
+  - returns: DiscoverTransaction
   */
   class func discoverTransactionWithLabel<T:DiscoverCreatable>(label: String,
                                               discoverableType: T.Type,
@@ -83,11 +83,11 @@ import MoonKit
   /**
   Generates a `CustomTransaction` given a `CustomCreatable` type, a label, and a managed object context
 
-  :param: label String
-  :param: customType T.Type
-  :param: context NSManagedObjectContext
+  - parameter label: String
+  - parameter customType: T.Type
+  - parameter context: NSManagedObjectContext
 
-  :returns: CustomTransaction
+  - returns: CustomTransaction
   */
   class func customTransactionWithLabel<T:CustomCreatable>(label: String,
                                                 customType: T.Type,
@@ -111,9 +111,9 @@ import MoonKit
   /**
   Initalize with name, icon and context expecting to have `fetchedItems` and/or `fetchedCollections` set at some point
 
-  :param: n String
-  :param: i UIImage?
-  :param: context NSManagedObjectContext
+  - parameter n: String
+  - parameter i: UIImage?
+  - parameter context: NSManagedObjectContext
   */
   init(name n: String, context: NSManagedObjectContext) { name = n; managedObjectContext = context }
 
@@ -147,9 +147,9 @@ import MoonKit
   /**
   Return model corresponding to the specified index path
 
-  :param: indexPath NSIndexPath
+  - parameter indexPath: NSIndexPath
 
-  :returns: NamedModel?
+  - returns: NamedModel?
   */
   func modelAtIndexPath(indexPath: NSIndexPath) -> NamedModel? {
     switch indexPath.section {
@@ -166,9 +166,9 @@ import MoonKit
   /**
   itemAtIndex:
 
-  :param: index Int
+  - parameter index: Int
 
-  :returns: NamedModel?
+  - returns: NamedModel?
   */
   func itemAtIndex(index: Int) -> NamedModel? {
     return fetchedItems?.objectAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? NamedModel
@@ -177,7 +177,7 @@ import MoonKit
   /**
   Sets the `fetchedItems` results controller
 
-  :param: fetchedItems NSFetchedResultsController
+  - parameter fetchedItems: NSFetchedResultsController
   */
   func setFetchedItems(fetchedItems: NSFetchedResultsController) {
     if let managedObjectClassName = fetchedItems.fetchRequest.entity?.managedObjectClassName,
@@ -194,7 +194,11 @@ import MoonKit
     didSet {
       fetchedItems?.delegate = self
       var error: NSError?
-      fetchedItems?.performFetch(&error)
+      do {
+        try fetchedItems?.performFetch()
+      } catch var error1 as NSError {
+        error = error1
+      }
       MSHandleError(error)
     }
   }
@@ -208,9 +212,9 @@ import MoonKit
   /**
   collectionAtIndex:
 
-  :param: index Int
+  - parameter index: Int
 
-  :returns: ModelCollection
+  - returns: ModelCollection
   */
   func collectionAtIndex(index: Int) -> ModelCollection? {
     return fetchedCollections?.objectAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? ModelCollection
@@ -219,7 +223,7 @@ import MoonKit
   /**
   Sets the `fetchedCollections` results controller
 
-  :param: fetchedCollections NSFetchedResultsController
+  - parameter fetchedCollections: NSFetchedResultsController
   */
   func setFetchedCollections(fetchedCollections: NSFetchedResultsController) {
     if let managedObjectClassName = fetchedCollections.fetchRequest.entity?.managedObjectClassName,
@@ -236,7 +240,11 @@ import MoonKit
     didSet {
       fetchedCollections?.delegate = self
       var error: NSError?
-      fetchedCollections?.performFetch(&error)
+      do {
+        try fetchedCollections?.performFetch()
+      } catch var error1 as NSError {
+        error = error1
+      }
       MSHandleError(error)
     }
   }
@@ -245,11 +253,11 @@ import MoonKit
 
 // MARK: - Descriptions
 
-extension BankModelDelegate: Printable {
+extension BankModelDelegate: CustomStringConvertible {
 
   var description: String {
     var result = "BankModelCollectionDelegate:\n"
-    result += "\tlabel = \(toString(name))\n"
+    result += "\tlabel = \(String(name))\n"
     result += "\tcollections = "
     let collections = (fetchedCollections?.fetchedObjects as? [ModelCollection]) ?? []
     if collections.count == 0 { result += "[]\n" }
@@ -280,7 +288,7 @@ extension BankModelDelegate: NSFetchedResultsControllerDelegate {
   }
 
   func controller(controller: NSFetchedResultsController,
-  didChangeObject anObject: AnyObject,
+  didChangeObject anObject: NSManagedObject,
       atIndexPath indexPath: NSIndexPath?,
     forChangeType type: NSFetchedResultsChangeType,
     newIndexPath: NSIndexPath?)
@@ -327,10 +335,10 @@ final class BankModelCollectionDelegate<C:BankModelCollection>: BankModelDelegat
   Determines if the provided entities repesent an acceptable collection to item relationship and returns the item's
   property name for the collection relationship if it is.
 
-  :param: collection NSEntityDescription
-  :param: item NSEntityDescription
+  - parameter collection: NSEntityDescription
+  - parameter item: NSEntityDescription
 
-  :returns: Bool
+  - returns: Bool
   */
   private static func propertyForRelationshipPair(collection: NSEntityDescription, _ item: NSEntityDescription) -> String? {
     if var collectionToItem = collection.relationshipsWithDestinationEntity(item) as? [NSRelationshipDescription]
@@ -345,8 +353,8 @@ final class BankModelCollectionDelegate<C:BankModelCollection>: BankModelDelegat
       if collectionToItemInverted.count == collectionToItem.count
          && itemToCollectionInverted.count == itemToCollection.count
       {
-        collectionToItem = collectionToItem.filter {contains(itemToCollectionInverted, $0)}
-        itemToCollection = itemToCollection.filter {contains(collectionToItemInverted, $0)}
+        collectionToItem = collectionToItem.filter {itemToCollectionInverted.contains($0)}
+        itemToCollection = itemToCollection.filter {collectionToItemInverted.contains($0)}
         if let collectionRelationship = collectionToItem.first where collectionToItem.count == 1,
           let itemRelationship = itemToCollection.first where itemToCollection.count == 1,
           let collectionInverseRelationship = collectionRelationship.inverseRelationship
@@ -372,10 +380,10 @@ final class BankModelCollectionDelegate<C:BankModelCollection>: BankModelDelegat
   /**
   Creates a fetched results controller, assuming collection has been set and has a valid managed object context
 
-  :param: entity NSEntityDescription
-  :param: name String
+  - parameter entity: NSEntityDescription
+  - parameter name: String
 
-  :returns: NSFetchedResultsController
+  - returns: NSFetchedResultsController
   */
   private func fetchedResultsForEntity(entity: NSEntityDescription,
                      withAttributeName name: String) -> NSFetchedResultsController
@@ -396,7 +404,7 @@ final class BankModelCollectionDelegate<C:BankModelCollection>: BankModelDelegat
   /**
   Initialize with an actual collection, collection must have a valid managed object context
 
-  :param: c BankModelCollection
+  - parameter c: BankModelCollection
   */
   init?(collection c: C) {
     collection = c
@@ -463,9 +471,9 @@ final class BankModelCollectionDelegate<C:BankModelCollection>: BankModelDelegat
   /**
   itemTransactionForCollection:
 
-  :param: collection C
+  - parameter collection: C
 
-  :returns: BankItemCreationControllerTransaction?
+  - returns: BankItemCreationControllerTransaction?
   */
   private static func itemTransactionForCollection(collection: C) -> BankItemCreationControllerTransaction? {
 
@@ -511,9 +519,9 @@ final class BankModelCollectionDelegate<C:BankModelCollection>: BankModelDelegat
   /**
   collectionTransactionForCollection:
 
-  :param: collection C
+  - parameter collection: C
 
-  :returns: BankItemCreationControllerTransaction?
+  - returns: BankItemCreationControllerTransaction?
   */
   private static func collectionTransactionForCollection(collection: C) -> BankItemCreationControllerTransaction? {
 

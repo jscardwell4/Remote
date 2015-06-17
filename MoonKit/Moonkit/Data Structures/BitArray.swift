@@ -39,19 +39,19 @@ public struct BitArray: CollectionType {
 
   /** Toggle an individual bit */
   public mutating func toggleBit(i:Int) {
-    if i >= count { MSRaiseException(NSRangeException, "i out of bounds", userinfo: nil) }
+    if i >= count { MSRaiseException(NSRangeException, reason: "i out of bounds", userinfo: nil) }
     (isBitSet(i) ? unsetBit : setBit)(i)
   }
 
   /** Set an individual bit */
   public mutating func setBit(i:Int) {
-    if i >= count { MSRaiseException(NSRangeException, "i out of bounds", userinfo: nil) }
+    if i >= count { MSRaiseException(NSRangeException, reason: "i out of bounds", userinfo: nil) }
     rawValue |= UInt64(1) << UInt64(i)
   }
 
   /** Unset an individual bit */
   public mutating func unsetBit(i:Int) {
-    if i >= count { MSRaiseException(NSRangeException, "i out of bounds", userinfo: nil) }
+    if i >= count { MSRaiseException(NSRangeException, reason: "i out of bounds", userinfo: nil) }
     rawValue &= ~(UInt64(1) << UInt64(i))
   }
 
@@ -60,12 +60,12 @@ public struct BitArray: CollectionType {
 
   /** Query whether an individual bit is set */
   public func isBitSet(i:Int) -> Bool {
-    if i >= count { MSRaiseException(NSRangeException, "i out of bounds", userinfo: nil) }
+    if i >= count { MSRaiseException(NSRangeException, reason: "i out of bounds", userinfo: nil) }
     return Bit(rawValue: Int(rawValue >> UInt64(i) & UInt64(1)))!.boolValue
   }
 
   /** The index of the most significant bit for currently stored value */
-  public var mostSignificantBit: Int { var i = 0; for (idx, bit) in enumerate(self) { if bit { i = idx } }; return i }
+  public var mostSignificantBit: Int { var i = 0; for (idx, bit) in self.enumerate() { if bit { i = idx } }; return i }
 
 }
 
@@ -91,16 +91,16 @@ extension BitArray: Hashable { public var hashValue: Int { return Int(rawValue) 
 /////////////////////////////////////////////////////////////////////////////////
 // MARK: - Printable
 /////////////////////////////////////////////////////////////////////////////////
-extension BitArray: Printable {
+extension BitArray: CustomStringConvertible {
   public var description:String {
     var chars = [Character]()
-      for (i, bit) in enumerate(self) {
+      for (i, bit) in self.enumerate() {
         chars.append(Character("\(bit.rawValue)"))
         if i % 4 == 3 { chars.append(Character(" ")) }
       }
       if chars.last == " " { chars.removeLast() }
       var description = ""
-      for char in chars.reverse() { char.writeTo(&description) }
+      for char in Array(chars.reverse()) { char.writeTo(&description) }
     return description
   }
   public func toStringWithLabels(labels: [String], emptyLabel: String = "None") -> String {

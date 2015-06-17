@@ -33,8 +33,8 @@ class DetailTextInputRow: DetailRow {
   /**
   configureCell:forTableView:
 
-  :param: cell DetailCell
-  :param: tableView UITableView
+  - parameter cell: DetailCell
+  - parameter tableView: UITableView
   */
   override func configureCell(cell: DetailCell) {
   	super.configureCell(cell)

@@ -47,9 +47,9 @@ import class DataModel.HTTPCommand
     /**
     error:
 
-    :param: userInfo [NSObject AnyObject]? = nil
+    - parameter userInfo: [NSObject AnyObject]? = nil
 
-    :returns: NSError
+    - returns: NSError
     */
     func error(userInfo: [NSObject:AnyObject]? = nil) -> NSError {
       return NSError(domain: Error.domain, code: rawValue, userInfo: userInfo)
@@ -91,13 +91,13 @@ import class DataModel.HTTPCommand
   /**
   flagsIndicateWifiAvailable:
 
-  :param: flags SCNetworkReachabilityFlags
+  - parameter flags: SCNetworkReachabilityFlags
 
-  :returns: Bool
+  - returns: Bool
   */
   private static func flagsIndicateWifiAvailable(flags: SCNetworkReachabilityFlags) -> Bool {
-    return (((flags & UInt32(kSCNetworkReachabilityFlagsIsDirect)) != 0)
-         && ((flags & UInt32(kSCNetworkReachabilityFlagsReachable)) != 0))
+    return (((flags & UInt32(SCNetworkReachabilityFlags.IsDirect)) != 0)
+         && ((flags & UInt32(SCNetworkReachabilityFlags.Reachable)) != 0))
   }
 
   /** Indicates wifi availability */
@@ -130,8 +130,8 @@ import class DataModel.HTTPCommand
   /**
   Executes the send operation, and, optionally, calls the completion handler with the result.
 
-  :param: commandID NSManagedObjectID ID of the command to send
-  :param: completion Callback? = nil Block to be executed upon completion of the send operation
+  - parameter commandID: NSManagedObjectID ID of the command to send
+  - parameter completion: Callback? = nil Block to be executed upon completion of the send operation
   */
   public static func sendCommandWithID(commandID: NSManagedObjectID, completion: Callback? = nil) {
     MSLogInfo("sending command…")
@@ -148,8 +148,14 @@ import class DataModel.HTTPCommand
     // Otherwise continue sending command
     else {
       var error: NSError?
-      let command = DataManager.rootContext.existingObjectWithID(commandID, error: &error)
-      if error != nil { completion?(false, Error.InvalidID.error(userInfo: [NSUnderlyingErrorKey: error!])) }
+      let command: NSManagedObject?
+      do {
+        command = try DataManager.rootContext.existingObjectWithID(commandID)
+      } catch var error1 as NSError {
+        error = error1
+        command = nil
+      }
+      if error != nil { completion?(false, Error.InvalidID.error([NSUnderlyingErrorKey: error!])) }
       else if let irCommand = command as? ITachIRCommand {
         if simulateCommandSuccess { simulateSuccess() }
         else { ITachConnectionManager.sendCommand(irCommand, completion: completion) }
@@ -182,8 +188,8 @@ import class DataModel.HTTPCommand
   Join multicast group and listen for beacons broadcast by supported network devices, optionally providing a callback in the
   event a new device is detected.
 
-  :param: context NSManagedObjectContext = DataManager.rootContext
-  :param: discovery ((NetworkDevice) -> Void)? = nil
+  - parameter context: NSManagedObjectContext = DataManager.rootContext
+  - parameter discovery: ((NetworkDevice) -> Void)? = nil
   */
   public static func startDetectingNetworkDevices(context: NSManagedObjectContext = DataManager.rootContext,
                                         discovery: DiscoveryCallback? = nil) -> DiscoveryCallbackToken
@@ -193,7 +199,7 @@ import class DataModel.HTTPCommand
       token = discoveryCallbacks.count; discoveryCallbacks.append(discovery)
       MSLogDebug("discovery appended to discoveryCallbacks, token = \(token)")
     }
-    ITachConnectionManager.startDetectingNetworkDevices(context: context)
+    ITachConnectionManager.startDetectingNetworkDevices(context)
     ISYConnectionManager.startDetectingNetworkDevices(context: context)
     MSLogInfo("listening for network devices…")
     return token
@@ -221,7 +227,7 @@ import class DataModel.HTTPCommand
   /**
   Invoked by specializing connection manager classes when an existing device has been updated
 
-  :param: device NetworkDevice
+  - parameter device: NetworkDevice
   */
   static func updatedDevice(device: NetworkDevice) {
     NSNotificationCenter.defaultCenter().postNotificationName(NetworkDeviceUpdatedNotification,
@@ -232,7 +238,7 @@ import class DataModel.HTTPCommand
   /**
   Invoked by specializing connection manager classes when a new device is has been detected
 
-  :param: device NetworkDevice
+  - parameter device: NetworkDevice
   */
   static func discoveredDevice(device: NetworkDevice) {
     var i = 0

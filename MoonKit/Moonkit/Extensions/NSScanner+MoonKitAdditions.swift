@@ -13,9 +13,9 @@ extension NSScanner {
   /**
   scanCharacter:
 
-  :param: character Character
+  - parameter character: Character
 
-  :returns: Bool
+  - returns: Bool
   */
   func scanCharacter(character:Character) -> Bool {
 
@@ -25,10 +25,10 @@ extension NSScanner {
   /**
   scanUpToCharacter:intoString:
 
-  :param: character Character
-  :param: stringValue AutoreleasingUnsafeMutablePointer<NSString?>
+  - parameter character: Character
+  - parameter stringValue: AutoreleasingUnsafeMutablePointer<NSString?>
 
-  :returns: Bool
+  - returns: Bool
   */
   func scanUpToCharacter(character:Character,
               intoString stringValue: AutoreleasingUnsafeMutablePointer<NSString?>) -> Bool

@@ -37,10 +37,16 @@ import MoonKit
 
     // Check for remove operation
     if dataFlag.remove {
-      if databaseStoreURL.checkResourceIsReachableAndReturnError(nil) {
+      do {
+        try databaseStoreURL.checkResourceIsReachableAndReturnError()
         var error: NSError?
-        NSFileManager.defaultManager().removeItemAtURL(databaseStoreURL, error: &error)
+        do {
+          try NSFileManager.defaultManager().removeItemAtURL(databaseStoreURL)
+        } catch var error1 as NSError {
+          error = error1
+        }
         if !MSHandleError(error) { MSLogDebug("previous database store has been removed") }
+      } catch _ {
       }
       dataFlag.remove = false
     }
@@ -117,8 +123,7 @@ import MoonKit
     if let supportDirectoryURL = fileManager.URLForDirectory(.ApplicationSupportDirectory,
                                                     inDomain: .UserDomainMask,
                                            appropriateForURL: nil,
-                                                      create: true,
-                                                       error: &error)
+                                                      create: true)
       where !MSHandleError(error, message: "failed to retrieve application support directory"),
       let identifier = dataModelBundle.bundleIdentifier
     {
@@ -126,8 +131,7 @@ import MoonKit
 
       if fileManager.createDirectoryAtURL(bundleSupportDirectoryURL,
               withIntermediateDirectories: true,
-                               attributes: nil,
-                                    error: &error)
+                               attributes: nil)
         && !MSHandleError(error, message: "failed to create app directory under application support")
       {
         return bundleSupportDirectoryURL.URLByAppendingPathComponent("\(DataManager.resourceBaseName).sqlite")
@@ -148,8 +152,8 @@ import MoonKit
   i.e. default values, class names, etc. The model passed to this method must be as-of-yet unused or
   an internal inconsistency will be introduced and the application will crash.
 
-  :param: model NSManagedObjectModel The model to modify
-  :returns: NSManagedObjectModel The augmented model
+  - parameter model: NSManagedObjectModel The model to modify
+  - returns: NSManagedObjectModel The augmented model
   */
   class func augmentModel(model: NSManagedObjectModel) -> NSManagedObjectModel {
 
@@ -167,7 +171,7 @@ import MoonKit
     }
 
     // Process each entity for common operations
-    for entity in augmentedModel.entities as! [NSEntityDescription] {
+    for entity in augmentedModel.entities as [NSEntityDescription] {
       if entity.superentity == nil { entity.properties.append(uuid()) }
       (entity.attributesByName.values.array as! [NSAttributeDescription]).filter({$0.userInfo != nil}) ➤ {
         (attribute: NSAttributeDescription) -> Void in
@@ -244,13 +248,13 @@ import MoonKit
     if let sqliteURL = mainBundle.URLForResource(resourceBaseName, withExtension: "sqlite"),
       sqliteShmURL = mainBundle.URLForResource(resourceBaseName, withExtension: "sqlite-shm"),
       sqliteWalURL = mainBundle.URLForResource(resourceBaseName, withExtension: "sqlite-wal")
-      where (fileManager.copyItemAtURL(sqliteURL, toURL: databaseStoreURL, error: &error)
+      where (fileManager.copyItemAtURL(sqliteURL, toURL: databaseStoreURL)
         || !MSHandleError(error, message: "copy from \(sqliteURL) to \(databaseStoreURL) failed")) == true,
       let databaseStoreShmURL = databaseStoreURL.URLByDeletingPathExtension?.URLByAppendingPathExtension("sqlite-shm")
-      where (fileManager.copyItemAtURL(sqliteShmURL, toURL: databaseStoreShmURL, error: &error)
+      where (fileManager.copyItemAtURL(sqliteShmURL, toURL: databaseStoreShmURL)
         || !MSHandleError(error, message: "copy from \(sqliteShmURL) to \(databaseStoreShmURL) failed")) == true,
       let databaseStoreWalURL = databaseStoreURL.URLByDeletingPathExtension?.URLByAppendingPathExtension("sqlite-wal")
-      where (fileManager.copyItemAtURL(sqliteWalURL, toURL: databaseStoreWalURL, error: &error)
+      where (fileManager.copyItemAtURL(sqliteWalURL, toURL: databaseStoreWalURL)
         || !MSHandleError(error, message: "copy from \(sqliteWalURL) to \(databaseStoreWalURL) failed")) == true
     {
       MSLogDebug("sqlite(-shm/-wal) files copied successfully")
@@ -266,11 +270,11 @@ import MoonKit
   /**
   loadJSONFileAtPath:forModel:context:logFlags:completion:
 
-  :param: path String
-  :param: type T.Type
-  :param: context NSManagedObjectContext
-  :param: logFlags LogFlags = .Default
-  :param: completion ((Bool, NSError?) -> Void)? = nil
+  - parameter path: String
+  - parameter type: T.Type
+  - parameter context: NSManagedObjectContext
+  - parameter logFlags: LogFlags = .Default
+  - parameter completion: ((Bool, NSError?) -> Void)? = nil
   */
   public class func loadJSONFileAtPath<T:ModelObject>(path: String,
                                              forModel type: T.Type,
@@ -284,22 +288,44 @@ import MoonKit
     context.performBlockAndWait {
 
       if hasOption(LogFlags.File, logFlags),
-        let contents = String(contentsOfFile: path, encoding: NSUTF8StringEncoding, error: nil)
+        let contents = String(contentsOfFile: path, encoding: NSUTF8StringEncoding)
       {
         MSLogDebug("content of file to parse:\n\(contents)")
       }
 
       let json: JSONValue?
       if hasOption(LogFlags.Preparsed, logFlags) {
-        let preparsedString = JSONSerialization.stringByParsingDirectivesForFile(path, options: .InflateKeypaths, error: &error)
+        let preparsedString: String?
+        do {
+          preparsedString = try JSONSerialization.stringByParsingDirectivesForFile(path, options: .InflateKeypaths)
+        } catch var error1 as NSError {
+          error = error1
+          preparsedString = nil
+        } catch {
+          fatalError()
+        }
         if preparsedString != nil && MSHandleError(error) == false {
           MSLogDebug("preparsed content of file to parse:\n\(preparsedString!)")
-          json = JSONSerialization.objectByParsingString(preparsedString, options: .InflateKeypaths, error: &error)
+          do {
+            json = try JSONSerialization.objectByParsingString(preparsedString, options: .InflateKeypaths)
+          } catch var error1 as NSError {
+            error = error1
+            json = nil
+          } catch {
+            fatalError()
+          }
         } else {
           json = nil
         }
       } else {
-        json = JSONSerialization.objectByParsingFile(path, options: .InflateKeypaths, error: &error)
+        do {
+          json = try JSONSerialization.objectByParsingFile(path, options: .InflateKeypaths)
+        } catch var error1 as NSError {
+          error = error1
+          json = nil
+        } catch {
+          fatalError()
+        }
       }
 
       if MSHandleError(error) == false && json != nil
@@ -335,11 +361,11 @@ import MoonKit
   /**
   loadJSONFileNamed:forModel:context:logFlags:completion:
 
-  :param: name String
-  :param: type T.Type
-  :param: context NSManagedObjectContext
-  :param: logFlags LogFlags = .Default
-  :param: completion ((Bool, NSError?) -> Void)? = nil
+  - parameter name: String
+  - parameter type: T.Type
+  - parameter context: NSManagedObjectContext
+  - parameter logFlags: LogFlags = .Default
+  - parameter completion: ((Bool, NSError?) -> Void)? = nil
   */
   public class func loadJSONFileNamed<T:ModelObject>(var name: String,
                                              forModel type: T.Type,
@@ -371,7 +397,7 @@ import MoonKit
   /**
   Load data from files parsed from command line arguments and save the root context
 
-  :param: completion ((Bool, NSError?) -> Void)? = nil
+  - parameter completion: ((Bool, NSError?) -> Void)? = nil
   */
   private class func loadData(completion: ((Bool, NSError?) -> Void)? = nil) {
 
@@ -402,7 +428,7 @@ import MoonKit
       }
     }
 
-    saveRootContext(completion: completion)
+    saveRootContext(completion)
 
   }
 
@@ -427,7 +453,7 @@ import MoonKit
   /**
   dumpJSONForModelType:
 
-  :param: modelType ModelObject.Type
+  - parameter modelType: ModelObject.Type
   */
   public class func dumpJSONForModelType(modelType: ModelObject.Type, context: NSManagedObjectContext = rootContext) {
     let className = (modelType.self as AnyObject).className
@@ -450,14 +476,14 @@ import MoonKit
   /**
   Creates a new main queue context as a child of the `rootContext` (via `stack`)
 
-  :returns: NSManagedObjectContext
+  - returns: NSManagedObjectContext
   */
   public class func mainContext() -> NSManagedObjectContext { return stack.mainContext() }
 
   /**
   isolatedContext
 
-  :returns: NSManagedObjectContext
+  - returns: NSManagedObjectContext
   */
   public class func isolatedContext() -> NSManagedObjectContext { return stack.isolatedContext() }
 
@@ -517,22 +543,22 @@ import MoonKit
   /**
   Wraps save action with error handling, only to be called from within an appropriate 'perform' block
 
-  :param: context NSManagedObjectContext
+  - parameter context: NSManagedObjectContext
   
-  :returns: (Bool, NSError?)
+  - returns: (Bool, NSError?)
   */
   private class func saveContext(context: NSManagedObjectContext) -> (Bool, NSError?) {
-    var error: NSError?
-    return (context.save(&error), error)
+    let error: NSError?
+    return (context.save(), error)
   }
 
   /**
   Invokes `performBlockAndWait:` on the specified context, within which the optional block is invoked followed by a save
 
-  :param: context NSManagedObjectContext
-  :param: block PerformBlock? = nil
+  - parameter context: NSManagedObjectContext
+  - parameter block: PerformBlock? = nil
   
-  :returns: (Bool, NSError?)
+  - returns: (Bool, NSError?)
   */
   public class func saveContext(context: NSManagedObjectContext,
                withBlockAndWait block: PerformBlock? = nil) -> (Bool, NSError?)
@@ -546,8 +572,8 @@ import MoonKit
   /**
   Invokes `performBlock:` on the specified context, within which the optional block is invoked followed by a save
 
-  :param: context NSManagedObjectContext
-  :param: block PerformBlock? = nil
+  - parameter context: NSManagedObjectContext
+  - parameter block: PerformBlock? = nil
   */
   public class func saveContext(context: NSManagedObjectContext,
                       withBlock block: PerformBlock? = nil,
@@ -564,11 +590,11 @@ import MoonKit
   /**
   saveContext:withBlock::propagate:nonBlocking:completion:
 
-  :param: moc NSManagedObjectContext
-  :param: block ((NSManagedObjectContext) -> Void)? = nil
-  :param: propagate Bool = false
-  :param: nonBlocking Bool = false
-  :param: completion ((Bool, NSError?) -> Void)? = nil
+  - parameter moc: NSManagedObjectContext
+  - parameter block: ((NSManagedObjectContext) -> Void)? = nil
+  - parameter propagate: Bool = false
+  - parameter nonBlocking: Bool = false
+  - parameter completion: ((Bool, NSError?) -> Void)? = nil
   */
   public class func saveContext(context: NSManagedObjectContext,
                withBlock block: PerformBlock? = nil,
@@ -600,13 +626,13 @@ import MoonKit
   /**
   Save the root context
 
-  :param: completion ((Bool, NSError?) -> Void)? = nil
+  - parameter completion: ((Bool, NSError?) -> Void)? = nil
   */
   public class func saveRootContext(completion: ((Bool, NSError?) -> Void)? = nil) {
     rootContext.performBlock {
       var error: NSError?
-      MSLogDebug("saving context '\(toString(self.rootContext.nametag))'")
-      if self.rootContext.save(&error) && !MSHandleError(error, message: "error occurred while saving context") {
+      MSLogDebug("saving context '\(String(self.rootContext.nametag))'")
+      if self.rootContext.save() && !MSHandleError(error, message: "error occurred while saving context") {
         MSLogDebug("context saved successfully")
         completion?(true, nil)
       } else {
@@ -619,7 +645,7 @@ import MoonKit
   // MARK: - Marker type
 
   /** The type of action marked by a flag */
-  public enum Marker: Printable, Equatable, Hashable {
+  public enum Marker: CustomStringConvertible, Equatable, Hashable {
     case Copy
     case Load
     case Remove
@@ -666,7 +692,7 @@ import MoonKit
     /**
     initWithArgValue:
 
-    :param: argValue String
+    - parameter argValue: String
     */
     init?(argValue: String) {
       switch argValue {
@@ -701,7 +727,7 @@ import MoonKit
       switch self {
         case .Copy, .Remove, .InMemory, .Dump, .Load: return key.hashValue
         case .LoadFile(let s): return s.hashValue
-        case .Log(let logValues): return reduce(logValues, 0, {$0 + $1.rawValue.hashValue})
+        case .Log(let logValues): return logValues.reduce(0, combine: {$0 + $1.rawValue.hashValue})
       }
     }
   }
@@ -711,7 +737,7 @@ import MoonKit
   /**
   Type for parsing database operations command line arguments
   */
-  public struct DataFlag: Printable {
+  public struct DataFlag: CustomStringConvertible {
     public var load: Bool
     public var dump: Bool
     public var remove: Bool
@@ -773,7 +799,7 @@ import MoonKit
   // MARK: - ModelFlag type
 
   /** Flags used as the base of a supported command line argument whose value should resolve into a valid `Marker` */
-  public enum ModelFlag: String, EnumerableType, Printable {
+  public enum ModelFlag: String, EnumerableType, CustomStringConvertible {
     case Manufacturers    = "manufacturers"
     case ComponentDevices = "componentDevices"
     case Images           = "images"
@@ -819,7 +845,7 @@ import MoonKit
     /**
     `EnumerableType` support, applies `block` to `all`
 
-    :param: block (ModelFlag) -> Void
+    - parameter block: (ModelFlag) -> Void
     */
     static public func enumerate(block: (ModelFlag) -> Void) { all ➤ block }
 
@@ -856,10 +882,10 @@ import MoonKit
 /**
 Equatable operator for `DataManager.Marker`
 
-:param: lhs DataManager.Marker
-:param: rhs DataManager.Marker
+- parameter lhs: DataManager.Marker
+- parameter rhs: DataManager.Marker
 
-:returns: Bool
+- returns: Bool
 */
 public func ==(lhs: DataManager.Marker, rhs: DataManager.Marker) -> Bool {
   switch (lhs, rhs) {

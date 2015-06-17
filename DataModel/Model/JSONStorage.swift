@@ -52,7 +52,7 @@ public final class JSONStorage: ModelObject, ModelStorage {
     if dictionary.count == 0 { result += "\n\tdictionary = {}" }
     else {
       result += "\n\tdictionary: {\n\t\t"
-      result += "\n\t\t".join(dictionary.keyValuePairs.map({"\($0) = \(toString($1))"}))
+      result += "\n\t\t".join(dictionary.keyValuePairs.map({"\($0) = \(String($1))"}))
       result += "\n\t}"
     }
     return result
@@ -62,9 +62,9 @@ public final class JSONStorage: ModelObject, ModelStorage {
 /**
 `Equatable` support for `JSONStorage`
 
-:param: lhs JSONStorage
-:param: rhs JSONStorage
+- parameter lhs: JSONStorage
+- parameter rhs: JSONStorage
 
-:returns: Bool
+- returns: Bool
 */
 public func ==(lhs: JSONStorage, rhs: JSONStorage) -> Bool { return lhs.isEqual(rhs) }

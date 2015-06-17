@@ -19,20 +19,20 @@ private let fileManager = NSFileManager.defaultManager()
   /**
   libraryPath
 
-  :returns: String?
+  - returns: String?
   */
   @objc public class func libraryPath() -> String? {
     let urls = fileManager.URLsForDirectory(NSSearchPathDirectory.LibraryDirectory,
                                   inDomains: NSSearchPathDomainMask.UserDomainMask)
-    return ((urls.count > 0 && urls[0] is NSURL) ? (urls[0] as! NSURL).path : nil)
+    return ((urls.count > 0 && urls[0] is NSURL) ? (urls[0] as NSURL).path : nil)
   }
 
   /**
   libraryPathToFile:
 
-  :param: file String
+  - parameter file: String
 
-  :returns: String?
+  - returns: String?
   */
   @objc public class func libraryPathToFile(file: String) -> String? {
     return libraryPath()?.stringByAppendingPathComponent(file)
@@ -41,7 +41,7 @@ private let fileManager = NSFileManager.defaultManager()
   /**
   cachePath
 
-  :returns: String?
+  - returns: String?
   */
   @objc public class func cachePath() -> String? {
     return libraryPathToFile("Caches/\(NSBundle.mainBundle().bundleIdentifier)")
@@ -50,9 +50,9 @@ private let fileManager = NSFileManager.defaultManager()
   /**
   cachePathToFile:
 
-  :param: file String
+  - parameter file: String
 
-  :returns: String?
+  - returns: String?
   */
   @objc public class func cachePathToFile(file: String) -> String? {
     return cachePath()?.stringByAppendingPathComponent(file)
@@ -61,22 +61,22 @@ private let fileManager = NSFileManager.defaultManager()
   /**
   documentsPath
 
-  :returns: String?
+  - returns: String?
   */
   @objc public class func documentsPath() -> String! {
     let urls = fileManager.URLsForDirectory(NSSearchPathDirectory.DocumentDirectory,
                                                      inDomains: NSSearchPathDomainMask.UserDomainMask)
-    return ((urls.count > 0 && urls[0] is NSURL) ? (urls[0] as! NSURL).path : nil)
+    return ((urls.count > 0 && urls[0] is NSURL) ? (urls[0] as NSURL).path : nil)
   }
 
   /**
   documentsDirectoryContents
 
-  :returns: [String]
+  - returns: [String]
   */
   @objc public class func documentsDirectoryContents() -> [String] {
-    var error: NSError? = nil
-    let directoryContents = fileManager.contentsOfDirectoryAtPath(documentsPath(), error: &error) as? [String]
+    let error: NSError? = nil
+    let directoryContents = fileManager.contentsOfDirectoryAtPath(documentsPath()) as? [String]
     MSHandleError(error, message: "failed to get directory contents")
     return directoryContents ?? []
   }
@@ -84,9 +84,9 @@ private let fileManager = NSFileManager.defaultManager()
   /**
   documentsPathToFile:
 
-  :param: file String
+  - parameter file: String
 
-  :returns: String?
+  - returns: String?
   */
   @objc public class func documentsPathToFile(file: String) -> String? {
     return documentsPath()?.stringByAppendingPathComponent(file)
@@ -102,18 +102,18 @@ public func MSRaiseException(name:String, reason:String, userinfo:[NSObject:AnyO
 }
 
 public func MSRaiseInvalidArgumentException(name:String, reason:String, userinfo:[NSObject:AnyObject]? = nil) {
-  MSRaiseException(NSInvalidArgumentException, reason, userinfo: userinfo)
+  MSRaiseException(NSInvalidArgumentException, reason: reason, userinfo: userinfo)
 }
 
 public func MSRaiseInvalidNilArgumentException(name:String, arg:String, userinfo:[NSObject:AnyObject]? = nil) {
-  MSRaiseException(NSInvalidArgumentException, "\(arg) must not be nil", userinfo: userinfo)
+  MSRaiseException(NSInvalidArgumentException, reason: "\(arg) must not be nil", userinfo: userinfo)
 }
 
 public func MSRaiseInvalidIndexException(name:String, arg:String, userinfo:[NSObject:AnyObject]? = nil) {
-  MSRaiseException(NSRangeException, "\(arg) out of range", userinfo: userinfo)
+  MSRaiseException(NSRangeException, reason: "\(arg) out of range", userinfo: userinfo)
 }
 
 public func MSRaiseInternalInconsistencyException(name:String, reason:String, userinfo:[NSObject:AnyObject]? = nil) {
-  MSRaiseException(NSInternalInconsistencyException, reason, userinfo: userinfo)
+  MSRaiseException(NSInternalInconsistencyException, reason: reason, userinfo: userinfo)
 }
 

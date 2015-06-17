@@ -19,9 +19,9 @@ public class NetworkDevice: EditableModelObject {
   /**
   deviceExistsWithIdentifier:
 
-  :param: identifier String
+  - parameter identifier: String
 
-  :returns: Bool
+  - returns: Bool
   */
   public class func deviceExistsWithIdentifier(identifier: String,
                                         context: NSManagedObjectContext = DataManager.rootContext) -> Bool
@@ -37,17 +37,17 @@ public class NetworkDevice: EditableModelObject {
   override public var description: String {
     return "\(super.description)\n\t" + "\n\t".join(
       "unique identifier = \(uniqueIdentifier)",
-      "component devices = [" + ", ".join(map(componentDevices, {$0.name})) + "]"
+      "component devices = [" + ", ".join(componentDevices.map({$0.name})) + "]"
     )
   }
 
   /**
   importObjectWithData:context:
 
-  :param: data ObjectJSONValue
-  :param: context NSManagedObjectContext
+  - parameter data: ObjectJSONValue
+  - parameter context: NSManagedObjectContext
 
-  :returns: NetworkDevice?
+  - returns: NetworkDevice?
   */
   override public class func importObjectWithData(data: ObjectJSONValue, context: NSManagedObjectContext) -> NetworkDevice? {
 

@@ -22,7 +22,7 @@ public class KeyInputButton: UIControl {
   /**
   initWithFrame:
 
-  :param: frame CGRect
+  - parameter frame: CGRect
   */
   public override init(frame: CGRect) { super.init(frame: frame) }
 
@@ -32,21 +32,21 @@ public class KeyInputButton: UIControl {
   /**
   initWithAutolayout:
 
-  :param: autolayout Bool
+  - parameter autolayout: Bool
   */
-  public convenience init(autolayout: Bool) { self.init(); setTranslatesAutoresizingMaskIntoConstraints(!autolayout) }
+  public convenience init(autolayout: Bool) { self.init(); translatesAutoresizingMaskIntoConstraints = !autolayout }
 
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   public required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
   /**
   drawRect:
 
-  :param: rect CGRect
+  - parameter rect: CGRect
   */
   public override func drawRect(rect: CGRect) {
     //// General Declarations
@@ -93,7 +93,7 @@ public class KeyInputButton: UIControl {
         UIRectClip(rect)
         CGContextTranslateCTM(context, rect.origin.x, rect.origin.y)
 
-        var deleteSymbolPath = UIBezierPath()
+        let deleteSymbolPath = UIBezierPath()
         deleteSymbolPath.moveToPoint(     CGPoint(x: rect.minX + 0.74055 * rect.width, y: rect.minY + 0.20608 * rect.height))
         deleteSymbolPath.addLineToPoint(  CGPoint(x: rect.minX + 0.58459 * rect.width, y: rect.minY + 0.42905 * rect.height))
         deleteSymbolPath.addLineToPoint(  CGPoint(x: rect.minX + 0.42817 * rect.width, y: rect.minY + 0.20608 * rect.height))

@@ -17,7 +17,7 @@ private var discoveryCallbackToken: ConnectionManager.DiscoveryCallbackToken?
 extension NetworkDevice: DiscoverCreatable {
 
   /** beginDiscovery */
-  static func beginDiscovery(#context: NSManagedObjectContext, presentForm: (Form, ProcessedForm) -> Void) -> Bool {
+  static func beginDiscovery(context context: NSManagedObjectContext, presentForm: (Form, ProcessedForm) -> Void) -> Bool {
     if !ConnectionManager.wifiAvailable || discoveryCallbackToken != nil { return false }
     else {
       let discoveryCallback: ConnectionManager.DiscoveryCallback = {
@@ -55,7 +55,7 @@ extension NetworkDevice {
   /**
   discoveryConfirmationFormFields
 
-  :returns: Form
+  - returns: Form
   */
   func discoveryConfirmationForm() -> Form {
     var fields: OrderedDictionary<String, FieldTemplate> = [:]

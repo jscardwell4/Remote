@@ -39,13 +39,13 @@ extension MSKeyPath: SequenceType {
 //  }
 //}
 
-extension MSDictionary: Printable {
+extension MSDictionary: CustomStringConvertible {
 
   /**
   initWithOrderedDictionary:AnyObject>:
 
-  :param: orderedDictionary OrderedDictionary<NSObject
-  :param: AnyObject>
+  - parameter orderedDictionary: OrderedDictionary<NSObject
+  - parameter AnyObject>:
   */
   public convenience init<K:Hashable, V:AnyObject where K:AnyObject>(_ orderedDictionary: OrderedDictionary<K,V>) {
     self.init(values: Array(orderedDictionary.values), forKeys: Array(orderedDictionary.keys))

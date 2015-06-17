@@ -22,7 +22,7 @@ final public class PresetCategory: EditableModelObject, CollectedModel {
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
@@ -42,8 +42,8 @@ final public class PresetCategory: EditableModelObject, CollectedModel {
   override public var description: String {
     var description = "\(super.description)\n\t" + "\n\t".join(
       "presets count = \(presets.count)",
-      "subcategories = [" + ", ".join(map(childCategories, {$0.name})) + "]",
-      "parent = \(toString(parentCategory?.index))"
+      "subcategories = [" + ", ".join(childCategories.map({$0.name})) + "]",
+      "parent = \(String(parentCategory?.index))"
     )
     return description
   }
@@ -53,10 +53,10 @@ final public class PresetCategory: EditableModelObject, CollectedModel {
   /**
   modelWithIndex:context:
 
-  :param: index PathIndex
-  :param: context NSManagedObjectContext
+  - parameter index: PathIndex
+  - parameter context: NSManagedObjectContext
 
-  :returns: PresetCategory?
+  - returns: PresetCategory?
   */
   public override static func modelWithIndex(var index: PathIndex, context: NSManagedObjectContext) -> PresetCategory? {
     if index.isEmpty { return nil }

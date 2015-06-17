@@ -59,7 +59,7 @@ class DetailRow {
   /**
   super.configureCell:
 
-  :param: cell DetailCell
+  - parameter cell: DetailCell
   */
   func configureCell(cell: DetailCell) {
     self.cell = cell

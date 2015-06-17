@@ -55,7 +55,7 @@ extension BankCollectionDetailColorCell: ColorSwatchDelegate {
   /**
   colorSwatchDidEndEditing:
 
-  :param: colorSwatch ColorSwatch
+  - parameter colorSwatch: ColorSwatch
   */
   func colorSwatchDidEndEditing(colorSwatch: ColorSwatch) {
     valueDidChange?(colorSwatch.color)

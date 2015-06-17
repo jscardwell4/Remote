@@ -173,9 +173,9 @@ extension BankCollectionDetailTextInputCell {
   /**
   shouldBeginEditing:
 
-  :param: textInput UITextInput
+  - parameter textInput: UITextInput
 
-  :returns: Bool
+  - returns: Bool
   */
   internal func _shouldBeginEditing(textInput: UITextInput) -> Bool {
     return textInput !== self.textInput ? false : shouldBeginEditing?(self) ?? true
@@ -184,7 +184,7 @@ extension BankCollectionDetailTextInputCell {
   /**
   didBeginEditing:
 
-  :param: textInput UITextInput
+  - parameter textInput: UITextInput
   */
   internal func _didBeginEditing(textInput: UITextInput) {
     if textInput !== self.textInput { return }
@@ -201,11 +201,11 @@ extension BankCollectionDetailTextInputCell {
   /**
   shouldChangeText:range:replacement:
 
-  :param: textInput UITextInput
-  :param: range NSRange
-  :param: string String
+  - parameter textInput: UITextInput
+  - parameter range: NSRange
+  - parameter string: String
 
-  :returns: Bool
+  - returns: Bool
   */
   internal func _shouldChangeText(textInput: UITextInput, range: NSRange, replacement: String) -> Bool {
     return textInput === self.textInput
@@ -216,9 +216,9 @@ extension BankCollectionDetailTextInputCell {
   /**
   shouldEndEditing:
 
-  :param: textInput UITextInput
+  - parameter textInput: UITextInput
 
-  :returns: Bool
+  - returns: Bool
   */
   internal func _shouldEndEditing(textInput: UITextInput) -> Bool {
     if textInput !== self.textInput { return false }
@@ -264,14 +264,14 @@ extension BankCollectionDetailTextInputCell {
   /**
   _didEndEditing:
 
-  :param: textInput UITextInput
+  - parameter textInput: UITextInput
   */
   internal func _didEndEditing(textInput: UITextInput) { if textInput === self.textInput { didEndEditing?(self) } }
 
   /**
   _textDidChange:
 
-  :param: textInput UITextInput
+  - parameter textInput: UITextInput
   */
   internal func _textDidChange(textInput: UITextInput) {
     if textInput === self.textInput {
@@ -286,27 +286,27 @@ extension BankCollectionDetailTextInputCell: UITextFieldDelegate {
   /**
   textFieldShouldBeginEditing:
 
-  :param: textField UITextField
+  - parameter textField: UITextField
 
-  :returns: Bool
+  - returns: Bool
   */
   func textFieldShouldBeginEditing(textField: UITextField) -> Bool { return _shouldBeginEditing(textField) }
 
   /**
   textFieldDidBeginEditing:
 
-  :param: textField UITextField
+  - parameter textField: UITextField
   */
   func textFieldDidBeginEditing(textField: UITextField) { _didBeginEditing(textField) }
 
   /**
   textField:shouldChangeCharactersInRange:replacementString:
 
-  :param: textField UITextField
-  :param: range NSRange
-  :param: string String
+  - parameter textField: UITextField
+  - parameter range: NSRange
+  - parameter string: String
 
-  :returns: Bool
+  - returns: Bool
   */
   func                  textField(textField: UITextField,
     shouldChangeCharactersInRange range: NSRange,
@@ -320,34 +320,34 @@ extension BankCollectionDetailTextInputCell: UITextFieldDelegate {
   /**
   textFieldShouldEndEditing:
 
-  :param: textField UITextField
+  - parameter textField: UITextField
 
-  :returns: Bool
+  - returns: Bool
   */
   func textFieldShouldEndEditing(textField: UITextField) -> Bool { return _shouldEndEditing(textField) }
 
   /**
   textFieldDidEndEditing:
 
-  :param: textField UITextField
+  - parameter textField: UITextField
   */
   func textFieldDidEndEditing(textField: UITextField) { _didEndEditing(textField) }
 
   /**
   textFieldShouldClear:
 
-  :param: textField UITextField
+  - parameter textField: UITextField
 
-  :returns: Bool
+  - returns: Bool
   */
   func textFieldShouldClear(textField: UITextField) -> Bool { return shouldClear?(self) ?? true }
 
   /**
   textFieldShouldReturn:
 
-  :param: textField UITextField
+  - parameter textField: UITextField
 
-  :returns: Bool
+  - returns: Bool
   */
   func textFieldShouldReturn(textField: UITextField) -> Bool { textField.resignFirstResponder(); return false }
 
@@ -359,43 +359,43 @@ extension BankCollectionDetailTextInputCell: UITextViewDelegate {
   /**
   textViewShouldBeginEditing:
 
-  :param: textView UITextView
+  - parameter textView: UITextView
 
-  :returns: Bool
+  - returns: Bool
   */
   func textViewShouldBeginEditing(textView: UITextView) -> Bool { return _shouldBeginEditing(textView) }
 
   /**
   textViewDidBeginEditing:
 
-  :param: textView UITextView
+  - parameter textView: UITextView
   */
   func textViewDidBeginEditing(textView: UITextView) { _didBeginEditing(textView) }
 
   /**
   textViewDidEndEditing:
 
-  :param: textView UITextView
+  - parameter textView: UITextView
   */
   func textViewDidEndEditing(textView: UITextView) { _didEndEditing(textView) }
 
   /**
   textViewShouldEndEditing:
 
-  :param: textView UITextView
+  - parameter textView: UITextView
 
-  :returns: Bool
+  - returns: Bool
   */
   func textViewShouldEndEditing(textView: UITextView) -> Bool { return _shouldEndEditing(textView) }
 
   /**
   textView:shouldChangeTextInRange:replacementText:
 
-  :param: textView UITextView
-  :param: range NSRange
-  :param: text String?
+  - parameter textView: UITextView
+  - parameter range: NSRange
+  - parameter text: String?
 
-  :returns: Bool
+  - returns: Bool
   */
   func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
     return _shouldChangeText(textView, range: range, replacement: text)
@@ -404,7 +404,7 @@ extension BankCollectionDetailTextInputCell: UITextViewDelegate {
   /**
   textViewDidChange:
 
-  :param: textView UITextView
+  - parameter textView: UITextView
   */
   func textViewDidChange(textView: UITextView) { _textDidChange(textView) }
 

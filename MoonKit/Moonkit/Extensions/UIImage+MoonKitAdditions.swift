@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-extension UIImageOrientation: Printable {
+extension UIImageOrientation: CustomStringConvertible {
   public var description: String {
     switch self {
     case .Up:            return "Up"

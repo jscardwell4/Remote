@@ -36,12 +36,12 @@ typealias FormSubmission = (Form) -> Void
 typealias ProcessedForm = (Form) -> Bool
 
 protocol FormCreatable: Model {
-  static func creationForm(#context: NSManagedObjectContext) -> Form
+  static func creationForm(context context: NSManagedObjectContext) -> Form
   static func createWithForm(form: Form, context: NSManagedObjectContext) -> Self?
 }
 
 protocol DiscoverCreatable: Model {
-  static func beginDiscovery(#context: NSManagedObjectContext, presentForm: (Form, ProcessedForm) -> Void) -> Bool
+  static func beginDiscovery(context context: NSManagedObjectContext, presentForm: (Form, ProcessedForm) -> Void) -> Bool
   static func endDiscovery()
 }
 
@@ -67,19 +67,19 @@ protocol CustomCreatable: Model {
 /** Protocol for models that implement `BankItemCollection` */
 @objc protocol BankModelCollection: BankItemCollection, NamedModel {}
 protocol FormCreatableItemBankModelCollection: BankModelCollection {
-  func itemCreationForm(#context: NSManagedObjectContext) -> Form
+  func itemCreationForm(context context: NSManagedObjectContext) -> Form
   func createItemWithForm(form: Form, context: NSManagedObjectContext) -> Bool
 }
 protocol FormCreatableCollectionBankModelCollection: BankModelCollection {
-  func collectionCreationForm(#context: NSManagedObjectContext) -> Form
+  func collectionCreationForm(context context: NSManagedObjectContext) -> Form
   func createCollectionWithForm(form: Form, context: NSManagedObjectContext) -> Bool
 }
 protocol DiscoverCreatableItemBankModelCollection: BankModelCollection {
-  func beginItemDiscovery(#context: NSManagedObjectContext, presentForm: (Form, ProcessedForm) -> Void) -> Bool
+  func beginItemDiscovery(context context: NSManagedObjectContext, presentForm: (Form, ProcessedForm) -> Void) -> Bool
   func endItemDiscovery()
 }
 protocol DiscoverCreatableCollectionBankModelCollection: BankModelCollection {
-  func beginCollectionDiscovery(#context: NSManagedObjectContext, presentForm: (Form, ProcessedForm) -> Void) -> Bool
+  func beginCollectionDiscovery(context context: NSManagedObjectContext, presentForm: (Form, ProcessedForm) -> Void) -> Bool
   func endCollectionDiscovery()
 }
 protocol CustomCreatableItemBankModelCollection: BankModelCollection {

@@ -38,16 +38,16 @@ final class ImportExportFileManager {
     /**
     init:
 
-    :param: exportAlertAction UIAlertAction
+    - parameter exportAlertAction: UIAlertAction
     */
     init(_ exportAlertAction: UIAlertAction) { super.init(); self.exportAlertAction = exportAlertAction }
 
     /**
     textFieldShouldEndEditing:
 
-    :param: textField UITextField
+    - parameter textField: UITextField
 
-    :returns: Bool
+    - returns: Bool
     */
     func textFieldShouldEndEditing(textField: UITextField) -> Bool {
       if ImportExportFileManager.existingFiles ∋ textField.text {
@@ -60,11 +60,11 @@ final class ImportExportFileManager {
     /**
     textField:shouldChangeCharactersInRange:replacementString:
 
-    :param: textField UITextField
-    :param: range NSRange
-    :param: string String
+    - parameter textField: UITextField
+    - parameter range: NSRange
+    - parameter string: String
 
-    :returns: Bool
+    - returns: Bool
     */
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String)
       -> Bool
@@ -81,18 +81,18 @@ final class ImportExportFileManager {
     /**
     textFieldShouldReturn:
 
-    :param: textField UITextField
+    - parameter textField: UITextField
 
-    :returns: Bool
+    - returns: Bool
     */
     func textFieldShouldReturn(textField: UITextField) -> Bool { return false }
 
     /**
     textFieldShouldClear:
 
-    :param: textField UITextField
+    - parameter textField: UITextField
 
-    :returns: Bool
+    - returns: Bool
     */
     func textFieldShouldClear(textField: UITextField) -> Bool { return true }
   }
@@ -100,7 +100,7 @@ final class ImportExportFileManager {
   /**
   confirmExportOfItems:
 
-  :param: items [MSJSONExport]
+  - parameter items: [MSJSONExport]
   */
   class func confirmExportOfItems(items: [JSONValueConvertible], completion: ((Bool) -> Void)? = nil) {
 
@@ -151,8 +151,8 @@ final class ImportExportFileManager {
   /**
   exportItems:toFile:
 
-  :param: items [MSJSONExport]
-  :param: file String
+  - parameter items: [MSJSONExport]
+  - parameter file: String
   */
   class func exportItems(items: [JSONValueConvertible], toFile file: String) {
     let jsonString: String?
@@ -167,9 +167,9 @@ final class ImportExportFileManager {
   /**
   urlForFile:
 
-  :param: named String
+  - parameter named: String
 
-  :returns: NSURL
+  - returns: NSURL
   */
   class func urlForFile(named: String) -> NSURL? {
     if let filePath = MoonFunctions.documentsPathToFile("\(named).json") {

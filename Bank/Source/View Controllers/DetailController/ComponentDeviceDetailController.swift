@@ -346,7 +346,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
       return row
     }, forKey: RowKey.InputPowersOn)
 
-    for (idx, input) in enumerate(sortedByName(componentDevice.inputs)) {
+    for (idx, input) in sortedByName(componentDevice.inputs).enumerate() {
       inputsSection.addRow({
         let row = DetailListRow()
         row.info = input

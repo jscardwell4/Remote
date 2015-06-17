@@ -44,7 +44,7 @@ public final class ActivityViewController: UIViewController {
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required public init(coder aDecoder: NSCoder) {
     activityController = ActivityController.sharedController(context)
@@ -95,7 +95,7 @@ public final class ActivityViewController: UIViewController {
   /**
   viewWillAppear:
 
-  :param: animated Bool
+  - parameter animated: Bool
   */
   override public func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
@@ -107,7 +107,7 @@ public final class ActivityViewController: UIViewController {
   /**
   viewWillDisappear:
 
-  :param: animated Bool
+  - parameter animated: Bool
   */
   override public func viewWillDisappear(animated: Bool) {
     super.viewWillDisappear(animated)
@@ -124,7 +124,7 @@ public final class ActivityViewController: UIViewController {
   /**
   viewDidAppear:
 
-  :param: animated Bool
+  - parameter animated: Bool
   */
   override public func viewDidAppear(animated: Bool) {
     super.viewDidAppear(animated)
@@ -134,14 +134,14 @@ public final class ActivityViewController: UIViewController {
   /**
   handlePinch:
 
-  :param: pinch UIPinchGestureRecognizer
+  - parameter pinch: UIPinchGestureRecognizer
   */
   func handlePinch(pinch: UIPinchGestureRecognizer) { if pinch.state == .Ended { toggleTopToolbar(true)} }
 
   /**
   toggleTopToolbar:
 
-  :param: animated Bool
+  - parameter animated: Bool
   */
   func toggleTopToolbar(animated: Bool) {
     let constant = topToolbarConstraint.constant > 0.0 ? 0.0 : -topToolbarView.bounds.height
@@ -151,7 +151,7 @@ public final class ActivityViewController: UIViewController {
   /**
   animateToolbar:
 
-  :param: constraintConstant CGFloat
+  - parameter constraintConstant: CGFloat
   */
   func animateToolbar(constraintConstant: CGFloat) {
     UIView.animateWithDuration(0.25,
@@ -164,14 +164,14 @@ public final class ActivityViewController: UIViewController {
   /**
   showTopToolbar:
 
-  :param: animated Bool
+  - parameter animated: Bool
   */
   func showTopToolbar(animated: Bool) { if animated { animateToolbar(0.0) } else { topToolbarConstraint.constant = 0.0 } }
 
   /**
   hideTopToolbar:
 
-  :param: animated Bool
+  - parameter animated: Bool
   */
   func hideTopToolbar(animated: Bool) {
     if animated { animateToolbar(-topToolbarView.bounds.height) }
@@ -181,7 +181,7 @@ public final class ActivityViewController: UIViewController {
   /**
   insertRemoteView:
 
-  :param: remoteView RemoteView
+  - parameter remoteView: RemoteView
   */
   func insertRemoteView(remoteView: RemoteView) {
     if self.remoteView != nil {

@@ -41,7 +41,7 @@ public final class ConnectionStatusButtonView: ButtonView {
   /**
   drawRect:
 
-  :param: rect CGRect
+  - parameter rect: CGRect
   */
   override public func drawRect(rect: CGRect) {
     let baseRect = rect.rectByInsetting(dx: 4, dy: 4).integerRect

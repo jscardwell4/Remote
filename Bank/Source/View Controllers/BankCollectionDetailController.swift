@@ -31,7 +31,7 @@ class BankCollectionDetailController: UICollectionViewController {
   /**
   Initialize with an item's delegate
 
-  :param: itemDelegate BankModelDetailDelegate
+  - parameter itemDelegate: BankModelDetailDelegate
   */
   init(itemDelegate delegate: BankModelDetailDelegate) {
     itemDelegate = delegate
@@ -84,7 +84,7 @@ class BankCollectionDetailController: UICollectionViewController {
  /**
  reloadItemAtIndexPath:
 
- :param: indexPath NSIndexPath
+ - parameter indexPath: NSIndexPath
  */
  func reloadItemAtIndexPath(indexPath: NSIndexPath) { collectionView?.reloadItemsAtIndexPaths([indexPath]) }
 
@@ -93,7 +93,7 @@ class BankCollectionDetailController: UICollectionViewController {
   /**
   Updates display
 
-  :param: animated Bool
+  - parameter animated: Bool
   */
   override func viewWillAppear(animated: Bool) { super.viewWillAppear(animated); updateDisplay() }
 
@@ -111,8 +111,8 @@ class BankCollectionDetailController: UICollectionViewController {
   /**
   Updates `navigationItem` and the calls `super`'s implementation, if current value for `editing` differs from parameter
 
-  :param: editing Bool
-  :param: animated Bool
+  - parameter editing: Bool
+  - parameter animated: Bool
   */
   override func setEditing(editing: Bool, animated: Bool) {
     if self.editing != editing {
@@ -150,18 +150,18 @@ class BankCollectionDetailController: UICollectionViewController {
   /**
   Accessor for `Row` objects by `NSIndexPath`
 
-  :param: indexPath NSIndexPath
+  - parameter indexPath: NSIndexPath
 
-  :returns: Row?
+  - returns: Row?
   */
   subscript(indexPath: NSIndexPath) -> Row? { return self[indexPath.row, indexPath.section] }
 
   /**
   Accessor for `Section` objects by index
 
-  :param: section Int
+  - parameter section: Int
 
-  :returns: Section?
+  - returns: Section?
   */
   subscript(section: Int) -> Section? {
     return section < itemDelegate.sections.count ? itemDelegate.sections.values[section] : nil
@@ -170,10 +170,10 @@ class BankCollectionDetailController: UICollectionViewController {
   /**
   Accessor for the `Row` identified by row and section
 
-  :param: row Int
-  :param: section Int
+  - parameter row: Int
+  - parameter section: Int
 
-  :returns: Row?
+  - returns: Row?
   */
   subscript(row: Int, section: Int) -> Row? { return self[section]?[row] }
 
@@ -186,9 +186,9 @@ extension BankCollectionDetailController: UICollectionViewDataSource {
   /**
   numberOfSectionsInCollectionView:
 
-  :param: collectionView UICollectionView
+  - parameter collectionView: UICollectionView
 
-  :returns: Int
+  - returns: Int
   */
   override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
     return itemDelegate.sections.count
@@ -197,10 +197,10 @@ extension BankCollectionDetailController: UICollectionViewDataSource {
   /**
   collectionView:numberOfItemsInSection:
 
-  :param: collectionView UICollectionView
-  :param: section Int
+  - parameter collectionView: UICollectionView
+  - parameter section: Int
 
-  :returns: Int
+  - returns: Int
   */
   override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return self[section]?.count ?? 0
@@ -209,10 +209,10 @@ extension BankCollectionDetailController: UICollectionViewDataSource {
   /**
   collectionView:cellForItemAtIndexPath:
 
-  :param: collectionView UICollectionView
-  :param: indexPath NSIndexPath
+  - parameter collectionView: UICollectionView
+  - parameter indexPath: NSIndexPath
 
-  :returns: UICollectionViewCell
+  - returns: UICollectionViewCell
   */
   override func collectionView(collectionView: UICollectionView,
         cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
@@ -228,11 +228,11 @@ extension BankCollectionDetailController: UICollectionViewDataSource {
   /**
   collectionView:viewForSupplementaryElementOfKind:atIndexPath:
 
-  :param: collectionView UICollectionView
-  :param: kind String
-  :param: indexPath NSIndexPath
+  - parameter collectionView: UICollectionView
+  - parameter kind: String
+  - parameter indexPath: NSIndexPath
 
-  :returns: UICollectionReusableView
+  - returns: UICollectionReusableView
   */
   override func collectionView(collectionView: UICollectionView,
     viewForSupplementaryElementOfKind kind: String,
@@ -255,26 +255,26 @@ extension BankCollectionDetailController: BankCollectionDetailLayoutDataSource {
   /**
   collectionView:itemTypesInSection:
 
-  :param: collectionView UICollectionView
-  :param: section Int
+  - parameter collectionView: UICollectionView
+  - parameter section: Int
 
-  :returns: [BankCollectionDetailLayout.ItemType]
+  - returns: [BankCollectionDetailLayout.ItemType]
   */
   func collectionView(collectionView: UICollectionView,
    itemTypesInSection section: Int) -> [BankCollectionDetailLayout.ItemType]
   {
-    return map(itemDelegate.sections.values[section].rows, {$0.identifier})
+    return itemDelegate.sections.values[section].rows.map({$0.identifier})
   }
 
   /**
   headerTypesInCollectionView:
 
-  :param: collectionView UICollectionView
+  - parameter collectionView: UICollectionView
 
-  :returns: [BankCollectionDetailLayout.HeaderType?]
+  - returns: [BankCollectionDetailLayout.HeaderType?]
   */
   func headerTypesInCollectionView(collectionView: UICollectionView) -> [BankCollectionDetailLayout.HeaderType?] {
-    return map(itemDelegate.sections.values, {$0.title != nil ? $0.identifier : nil})
+    return itemDelegate.sections.values.map({$0.title != nil ? $0.identifier : nil})
   }
 
 }
@@ -284,9 +284,9 @@ extension BankCollectionDetailController: UICollectionViewDelegate {
   /**
   collectionView:willDisplayCell:forItemAtIndexPath:
 
-  :param: collectionView UICollectionView
-  :param: cell UICollectionViewCell
-  :param: indexPath NSIndexPath
+  - parameter collectionView: UICollectionView
+  - parameter cell: UICollectionViewCell
+  - parameter indexPath: NSIndexPath
   */
   override func collectionView(collectionView: UICollectionView,
                willDisplayCell cell: UICollectionViewCell,
@@ -298,8 +298,8 @@ extension BankCollectionDetailController: UICollectionViewDelegate {
   /**
   collectionView:didSelectItemAtIndexPath:
 
-  :param: collectionView UICollectionView
-  :param: indexPath NSIndexPath
+  - parameter collectionView: UICollectionView
+  - parameter indexPath: NSIndexPath
   */
   override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
     (collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionDetailCell)?.select?()
@@ -315,16 +315,16 @@ extension BankCollectionDetailController: UITextFieldDelegate {
   /**
   textFieldShouldReturn:
 
-  :param: textField UITextField
+  - parameter textField: UITextField
 
-  :returns: Bool
+  - returns: Bool
   */
   func textFieldShouldReturn(textField: UITextField) -> Bool { textField.resignFirstResponder(); return false }
 
   /**
   textFieldDidEndEditing:
 
-  :param: textField UITextField
+  - parameter textField: UITextField
   */
   func textFieldDidEndEditing(textField: UITextField) {
     if textField.text?.length > 0 { itemDelegate.item.name = textField.text }
@@ -341,7 +341,7 @@ extension BankCollectionDetailController {
   /**
   Attempts to have navigation controller push the specified view controller
 
-  :param: controller UIViewController
+  - parameter controller: UIViewController
   */
   func pushController(controller: UIViewController) {
     (UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController)?

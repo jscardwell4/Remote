@@ -45,9 +45,9 @@ public struct PseudoConstraint {
   /**
   itemNameFromString:
 
-  :param: string String
+  - parameter string: String
 
-  :returns: ItemName?
+  - returns: ItemName?
   */
   private func itemNameFromString(string: String?) -> ItemName? {
     if string == nil { return nil }
@@ -67,10 +67,10 @@ public struct PseudoConstraint {
   /**
   testValidityWithFirstItem:secondItem:
 
-  :param: f Any?
-  :param: s Any?
+  - parameter f: Any?
+  - parameter s: Any?
 
-  :returns: Bool
+  - returns: Bool
   */
   private func testValidityWithFirstItem(f: Any?, secondItem s: Any?) -> Bool {
     return f != nil && firstAttribute != .NotAnAttribute && !expandable && (s == nil || secondAttribute != .NotAnAttribute)
@@ -113,15 +113,15 @@ public struct PseudoConstraint {
   /**
   init:attribute:relatedBy:toItem:attribute:multiplier:constant:priority:identifier:
 
-  :param: item1 Item
-  :param: attr1 Attribute
-  :param: relation Relation = Relation.Equal
-  :param: item2 Item? = nil
-  :param: attr2 Attribute = Attribute.NotAnAttribute
-  :param: multiplier Float = 1.0
-  :param: c Float = 0.0
-  :param: priority UILayoutPriority = UILayoutPriorityRequired
-  :param: identifier String? = nil
+  - parameter item1: Item
+  - parameter attr1: Attribute
+  - parameter relation: Relation = Relation.Equal
+  - parameter item2: Item? = nil
+  - parameter attr2: Attribute = Attribute.NotAnAttribute
+  - parameter multiplier: Float = 1.0
+  - parameter c: Float = 0.0
+  - parameter priority: UILayoutPriority = UILayoutPriorityRequired
+  - parameter identifier: String? = nil
   */
   public init(item item1: ItemName,
               attribute attr1: Attribute,
@@ -147,7 +147,7 @@ public struct PseudoConstraint {
   /**
   initWithFormat:
 
-  :param: format String
+  - parameter format: String
   */
   public init?(_ format: String) {
 
@@ -168,7 +168,7 @@ public struct PseudoConstraint {
     let id = "(?:'([\\w ]+)' *)"
     let pattern = "^ *\(id)?\(item)\(relatedBy)(?:\(item)\(m)?)? *\(number)? *\(p)? *$"
 
-    for capture in filter(enumerate(format.matchFirst(pattern)), {$1 != nil}).map({($0, $1!)}) {
+    for capture in format.matchFirst(pattern).enumerate().filter({$1 != nil}).map({($0, $1!)}) {
       switch capture {
         case (0, let s): identifier = s
         case (1, let s): firstItem = s
@@ -177,7 +177,7 @@ public struct PseudoConstraint {
         case (4, let s): secondItem = s
         case (5, let s): if let a = Attribute(rawValue: s) { secondAttribute = a } else { return nil }
         case (6, let s): let sc = NSScanner(string: s); if !sc.scanFloat(&multiplier) { return nil }
-        case (7, let s): let sc = NSScanner(string: String(filter(s, {$0 != " "}))); if !sc.scanFloat(&constant) { return nil }
+        case (7, let s): let sc = NSScanner(string: String(s.characters.filter({$0 != " "}))); if !sc.scanFloat(&constant) { return nil }
         case (8, let s): let sc = NSScanner(string: s); if !sc.scanFloat(&priority) { return nil }
         default: assert(false, "should be unreachable")
       }
@@ -188,8 +188,8 @@ public struct PseudoConstraint {
   /**
   initWithConstraint:replacements:
 
-  :param: constraint NSLayoutConstraint
-  :param: replacements [String String]
+  - parameter constraint: NSLayoutConstraint
+  - parameter replacements: [String String]
   */
   public init(_ constraint: NSLayoutConstraint) {
     identifier      = constraint.identifier
@@ -208,21 +208,21 @@ public struct PseudoConstraint {
   /**
   pseudoConstraintsByParsingFormat:
 
-  :param: format String
+  - parameter format: String
 
-  :returns: [PseudoConstraint]
+  - returns: [PseudoConstraint]
   */
   public static func pseudoConstraintsByParsingFormat(format: String) -> [PseudoConstraint] {
-    return flattenedCompressedMap(NSLayoutConstraint.splitFormat(format), {PseudoConstraint($0)?.expanded})
+    return flattenedCompressedMap(NSLayoutConstraint.splitFormat(format), transform: {PseudoConstraint($0)?.expanded})
   }
 
   /**
   constraintWithObjects:object2:
 
-  :param: object1 AnyObject
-  :param: object2 AnyObject?
+  - parameter object1: AnyObject
+  - parameter object2: AnyObject?
 
-  :returns: NSLayoutConstraint?
+  - returns: NSLayoutConstraint?
   */
   public func constraintWithObjects(object1: AnyObject, _ object2: AnyObject?) -> NSLayoutConstraint? {
     if !validPseudo || ((object2 == nil) != (secondItem == nil)) { return nil }
@@ -243,9 +243,9 @@ public struct PseudoConstraint {
   /**
   constraintWithObjects:
 
-  :param: objects [Item AnyObject]
+  - parameter objects: [Item AnyObject]
 
-  :returns: NSLayoutConstraint?
+  - returns: NSLayoutConstraint?
   */
   public func constraintWithObjects(objects: [ItemName:AnyObject]) -> NSLayoutConstraint? {
     if let firstItem = self.firstItem, item1: AnyObject = objects[firstItem] {
@@ -256,7 +256,7 @@ public struct PseudoConstraint {
   /**
   constraint
 
-  :returns: NSLayoutConstraint?
+  - returns: NSLayoutConstraint?
   */
   public var constraint: NSLayoutConstraint? {
     if !validConstraint { return nil }
@@ -277,10 +277,10 @@ public struct PseudoConstraint {
   /**
   initWithFirst:PseudoConstraint.Attribute):second:PseudoConstraint.Attribute):
 
-  :param: first (V1
-  :param: PseudoConstraint.Attribute)
-  :param: second (V2
-  :param: PseudoConstraint.Attribute)
+  - parameter first: (V1
+  - parameter PseudoConstraint.Attribute):
+  - parameter second: (V2
+  - parameter PseudoConstraint.Attribute):
   */
   public init(first: ViewAttribute, second: ViewAttribute, relation r: Relation = .Equal) {
     firstObject = first.0
@@ -295,8 +295,8 @@ public struct PseudoConstraint {
   /**
   initWithPair:constant:
 
-  :param: pair ViewAttributePair
-  :param: c Float
+  - parameter pair: ViewAttributePair
+  - parameter c: Float
   */
   public init(pair: ViewAttribute, constant c: Float, relation r: Relation = .Equal) {
     firstObject = pair.0
@@ -317,7 +317,7 @@ public func ==(lhs: PseudoConstraint, rhs: PseudoConstraint) -> Bool { return lh
 
 // MARK: Printable
 
-extension PseudoConstraint: Printable {
+extension PseudoConstraint: CustomStringConvertible {
   public var description: String {
     if !validPseudo { return "pseudo invalid" }
 
@@ -351,7 +351,7 @@ extension PseudoConstraint: Printable {
 
 // MARK: DebugPrintable
 
-extension PseudoConstraint: DebugPrintable {
+extension PseudoConstraint: CustomDebugStringConvertible {
   public var debugDescription: String {
     return "\n".join(description,
       "firstItem: \(toString(firstItem))",
@@ -523,14 +523,14 @@ infix operator --> {associativity left}
 
 public func -->(var lhs:     Pseudo, rhs: String?) ->  Pseudo  { lhs.identifier = rhs; return lhs }
 public func -->(    lhs:   [Pseudo], rhs: String?) -> [Pseudo] { return lhs.map {$0 --> rhs}      }
-public func -->(    lhs: [[Pseudo]], rhs: String?) -> [Pseudo] { return flatMap(lhs) {$0 --> rhs} }
+public func -->(    lhs: [[Pseudo]], rhs: String?) -> [Pseudo] { return lhs.flatMap {$0 --> rhs} }
 
 // MARK: - Priority operator
 infix operator -!> {associativity left}
 
 public func -!>(var lhs:     Pseudo, rhs: Float) -> Pseudo   { lhs.priority = rhs; return lhs   }
 public func -!>(    lhs:   [Pseudo], rhs: Float) -> [Pseudo] { return lhs.map {$0 -!> rhs}      }
-public func -!>(    lhs: [[Pseudo]], rhs: Float) -> [Pseudo] { return flatMap(lhs) {$0 -!> rhs} }
+public func -!>(    lhs: [[Pseudo]], rhs: Float) -> [Pseudo] { return lhs.flatMap {$0 -!> rhs} }
 
 // MARK: - Equal operator
 infix operator => {precedence 160}
@@ -576,7 +576,7 @@ public func |(lhs: UIView, rhs: Axis) -> Pseudo {
   }
 }
 
-public func |(var lhs:   Pseudo, rhs: Axis) -> [Pseudo] { return [lhs]|rhs }
+public func |(lhs:   Pseudo, rhs: Axis) -> [Pseudo] { return [lhs]|rhs }
 public func |(var lhs: [Pseudo], rhs: Axis) -> [Pseudo] {
   precondition(lhs.last?.firstObject as? UIView != nil, "operator requires a view for the last constraint's firstObject")
   let view = lhs.last!.firstObject as! UIView
@@ -610,7 +610,7 @@ public func -|(lhs: UIView, rhs: Axis) -> Pseudo {
   }
 }
 
-public func -|(var lhs:   Pseudo, rhs: Axis) -> [Pseudo] { return [lhs]|rhs }
+public func -|(lhs:   Pseudo, rhs: Axis) -> [Pseudo] { return [lhs]|rhs }
 public func -|(var lhs: [Pseudo], rhs: Axis) -> [Pseudo] {
   precondition(lhs.last?.firstObject as? UIView != nil, "operator requires a view for the last constraint's firstObject")
   let view = lhs.last!.firstObject as! UIView
@@ -632,7 +632,7 @@ public func |--(lhs: Axis, rhs: (Float, Relation)) -> (Axis, Float, Relation) { 
 infix operator --| {associativity left precedence 140}
 
 public func --|(lhs: (Pseudo, Float, Relation), rhs: Axis) -> [Pseudo] {
-  if let (view, superview) = discernViewSuperview(lhs.0.firstObject, lhs.0.secondObject) {
+  if let (view, superview) = discernViewSuperview(lhs.0.firstObject, obj2: lhs.0.secondObject) {
     switch lhs.0.firstAttribute.axis {
       case .Horizontal:
         switch lhs.2 {
@@ -654,7 +654,7 @@ public func --|(lhs: (Pseudo, Float, Relation), rhs: Axis) -> [Pseudo] {
 public func --|(lhs: ([Pseudo], Float, Relation), rhs: Axis) -> [Pseudo] {
   var superview: UIView?
   for constraint in lhs.0 {
-    superview = discernNearestAncestor(discernNearestAncestor(constraint.firstObject, constraint.secondObject), superview)
+    superview = discernNearestAncestor(discernNearestAncestor(constraint.firstObject, obj2: constraint.secondObject), obj2: superview)
   }
   precondition(superview != nil, "operator requires a proper view hierarchy has been established")
   if let lastConstraint = lhs.0.last, lastView = lastConstraint.firstObject as? UIView {

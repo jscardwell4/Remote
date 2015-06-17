@@ -23,7 +23,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
 
   // MARK: - Descriptions
   override var description: String {
-    return "\(super.description), collectionDelegate = {\n\(toString(collectionDelegate).indentedBy(4))\n}"
+    return "\(super.description), collectionDelegate = {\n\(String(collectionDelegate).indentedBy(4))\n}"
   }
 
   // MARK: - Properties
@@ -162,7 +162,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   /**
   showingDeleteDidChange:
 
-  :param: cell BankCollectionCell
+  - parameter cell: BankCollectionCell
   */
   func showingDeleteDidChange(cell: BankCollectionCell) {
     cellShowingDelete?.hideDelete()
@@ -174,8 +174,8 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   /**
   Default initializer establishes the collection and mode for the controller
 
-  :param: collectionDelegate ModelCollection
-  :param: mode Mode = .Default
+  - parameter collectionDelegate: ModelCollection
+  - parameter mode: Mode = .Default
   */
   init(collectionDelegate d: BankModelDelegate, mode m: Mode = .Default) {
   	collectionDelegate = d; mode = m
@@ -233,7 +233,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   /**
   viewWillAppear:
 
-  :param: animated Bool
+  - parameter animated: Bool
   */
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
@@ -301,7 +301,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   /**
   confirmExport:
 
-  :param: sender AnyObject
+  - parameter sender: AnyObject
   */
   func confirmExport(sender: AnyObject?) {
     ImportExportFileManager.confirmExportOfItems(exportSelection) { _ in self.exportSelectionMode = false }
@@ -312,9 +312,9 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   /**
   itemForIndexPath:
 
-  :param: indexPath NSIndexPath
+  - parameter indexPath: NSIndexPath
 
-  :returns: NamedModel?
+  - returns: NamedModel?
   */
   private func itemForIndexPath(indexPath: NSIndexPath) -> NamedModel? {
     return indexPath.section == 1 ? collectionDelegate.itemAtIndex(indexPath.row) : nil
@@ -323,9 +323,9 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   /**
   Returns the model corresponding the specified index path as returned by the collection delegate.
 
-  :param: indexPath NSIndexPath
+  - parameter indexPath: NSIndexPath
 
-  :returns: NamedModel?
+  - returns: NamedModel?
   */
   private func modelForIndexPath(indexPath: NSIndexPath) -> NamedModel? {
     return collectionDelegate.modelAtIndexPath(indexPath)
@@ -334,7 +334,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   /**
   deleteItemAtIndexPath:
 
-  :param: indexPath NSIndexPath
+  - parameter indexPath: NSIndexPath
   */
   func deleteModelForCel(cell: BankCollectionCell) {
   	if mode == .Default,
@@ -349,7 +349,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   /**
   editItem:
 
-  :param: item Editable
+  - parameter item: Editable
   */
   func editItem(item: protocol<Detailable, Editable>) {
   	if mode == .Default {
@@ -362,7 +362,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   /**
   detailItemAtIndexPath:
 
-  :param: indexPath NSIndexPath
+  - parameter indexPath: NSIndexPath
   */
   func detailItemAtIndexPath(indexPath: NSIndexPath) {
     switch indexPath.section {
@@ -392,7 +392,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   /**
   zoomItemForCell:
 
-  :param: indexPath NSIndexPath
+  - parameter indexPath: NSIndexPath
   */
   func zoomItemForCell(cell: BankCollectionCell) {
     if layout.zoomedItem != nil { layout.zoomedItem = nil }
@@ -406,9 +406,9 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   /**
   Creates a fresh `PopOverView` with the specified actions
 
-  :param: actions [String:(PopOverView) -> Void]
+  - parameter actions: [String:(PopOverView) -> Void]
 
-  :returns: PopOverView
+  - returns: PopOverView
   */
   private func popOverWithActions(actions: [String:(PopOverView) -> Void], location: PopOverView.Location) -> PopOverView {
     let popOverView = PopOverView(autolayout: true)
@@ -421,8 +421,8 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   /**
   presentPopOverWithActions:
 
-  :param: actions [String:(PopOverView) -> Void]
-  :param: button UIBarButtonItem
+  - parameter actions: [String:(PopOverView) -> Void]
+  - parameter button: UIBarButtonItem
   */
   private func presentPopOverWithActions(actions: [String:(PopOverView) -> Void], above button: UIBarButtonItem) {
     // TODO: Add animation and more appearance customization
@@ -437,8 +437,8 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   /**
   presentPopOverWithActions:below:
 
-  :param: actions [String:(PopOverView) -> Void]
-  :param: button UIBarButtonItem
+  - parameter actions: [String:(PopOverView) -> Void]
+  - parameter button: UIBarButtonItem
   */
   private func presentPopOverWithActions(actions: [String:(PopOverView) -> Void], below button: UIBarButtonItem) {
     // TODO: Add animation and more appearance customization
@@ -460,7 +460,7 @@ extension BankCollectionController: BankCollectionZoomViewDelegate {
   /**
   didDismissZoomView:
 
-  :param: zoom BankCollectionZoomView
+  - parameter zoom: BankCollectionZoomView
   */
   func didDismissZoomView(zoomView: BankCollectionZoomView) {
     zoomView.removeFromSuperview()
@@ -470,7 +470,7 @@ extension BankCollectionController: BankCollectionZoomViewDelegate {
   /**
   didDismissForDetailZoomView:
 
-  :param: zoom BankCollectionZoomView
+  - parameter zoom: BankCollectionZoomView
   */
   func didDismissForDetailZoomView(zoomView: BankCollectionZoomView) {
     zoomView.removeFromSuperview()
@@ -481,7 +481,7 @@ extension BankCollectionController: BankCollectionZoomViewDelegate {
   /**
   didDismissForEditingZoomView:
 
-  :param: zoom BankCollectionZoomView
+  - parameter zoom: BankCollectionZoomView
   */
   func didDismissForEditingZoomView(zoomView: BankCollectionZoomView) {
     zoomView.removeFromSuperview()
@@ -513,7 +513,7 @@ extension BankCollectionController: BankItemCreationController {
   /**
   presentCustom:
 
-  :param: transaction BankModelDelegate.CustomTransaction
+  - parameter transaction: BankModelDelegate.CustomTransaction
   */
   private func presentCustom(transaction: BankModelDelegate.CustomTransaction) {
     let dismissController = {self.dismissViewControllerAnimated(true) {self.createItemBarButton?.isToggled = false}}
@@ -528,7 +528,7 @@ extension BankCollectionController: BankItemCreationController {
   /**
   Presents a `FormViewController` using the specifed creation transaction
 
-  :param: transaction BankModelDelegate.CreationTransaction
+  - parameter transaction: BankModelDelegate.CreationTransaction
   */
   private func presentForm(transaction: BankModelDelegate.CreationTransaction) {
     let dismissController = {self.dismissViewControllerAnimated(true) {self.createItemBarButton?.isToggled = false}}
@@ -545,7 +545,7 @@ extension BankCollectionController: BankItemCreationController {
   /**
   beginDiscoveryTransaction:
 
-  :param: transaction BankModelDelegate.DiscoveryTransaction
+  - parameter transaction: BankModelDelegate.DiscoveryTransaction
   */
   private func beginDiscoveryTransaction(transaction: BankModelDelegate.DiscoveryTransaction) {
     endDiscovery = transaction.endDiscovery
@@ -634,17 +634,17 @@ extension BankCollectionController: BankItemImportExportController {
 
       exportSelection.removeAll(keepCapacity: true)
       exportSelectionIndices.removeAll(keepCapacity: true)
-      let collections = reduce(0..<collectionDelegate.numberOfCollections, Array<ModelCollection>(), {
+      let collections = (0..<collectionDelegate.numberOfCollections).reduce(Array<ModelCollection>(), {
         if let collection = self.collectionDelegate.collectionAtIndex($1) { return $0 + [collection] } else { return $0 }
       })
-      let items = reduce(0..<collectionDelegate.numberOfItems, Array<NamedModel>(), {
+      let items = (0..<collectionDelegate.numberOfItems).reduce(Array<NamedModel>(), {
         if let item = self.collectionDelegate.itemAtIndex($1) { return $0 + [item] } else { return $0 }
       })
       let capacity = collections.count + items.count
       exportSelection.reserveCapacity(capacity)
       exportSelectionIndices.reserveCapacity(capacity)
 
-      for (i, collection) in enumerate(collections) {
+      for (i, collection) in collections.enumerate() {
         if let exportCollection = collection as? JSONValueConvertible {
           exportSelection.append(exportCollection)
           let indexPath = NSIndexPath(forRow: i, inSection: 0)
@@ -655,7 +655,7 @@ extension BankCollectionController: BankItemImportExportController {
         }
       }
 
-      for (i, item) in enumerate(items) {
+      for (i, item) in items.enumerate() {
         if let exportItem = item as? JSONValueConvertible {
           exportSelection.append(exportItem)
           let indexPath = NSIndexPath(forRow: i, inSection: 1)
@@ -673,9 +673,9 @@ extension BankCollectionController: BankItemImportExportController {
   /**
   importFromFile:
 
-  :param: fileURL NSURL
+  - parameter fileURL: NSURL
   */
-  func importFromFile(fileURL: NSURL) { println("importFromFile(fileURL: \(fileURL.absoluteString))") }
+  func importFromFile(fileURL: NSURL) { print("importFromFile(fileURL: \(fileURL.absoluteString))") }
 
 
 }
@@ -687,10 +687,10 @@ extension BankCollectionController: UICollectionViewDataSource {
   /**
   collectionView:numberOfItemsInSection:
 
-  :param: collectionView UICollectionView
-  :param: section Int
+  - parameter collectionView: UICollectionView
+  - parameter section: Int
 
-  :returns: Int
+  - returns: Int
   */
   override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return section == 0 ? collectionDelegate.numberOfCollections  : collectionDelegate.numberOfItems
@@ -699,10 +699,10 @@ extension BankCollectionController: UICollectionViewDataSource {
   /**
   collectionView:cellForItemAtIndexPath:
 
-  :param: collectionView UICollectionView
-  :param: indexPath NSIndexPath
+  - parameter collectionView: UICollectionView
+  - parameter indexPath: NSIndexPath
 
-  :returns: UICollectionViewCell
+  - returns: UICollectionViewCell
   */
   override func collectionView(collectionView: UICollectionView,
         cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
@@ -745,11 +745,11 @@ extension BankCollectionController: UICollectionViewDataSource {
   /**
   collectionView:viewForSupplementaryElementOfKind:atIndexPath:
 
-  :param: collectionView UICollectionView
-  :param: kind String
-  :param: indexPath NSIndexPath
+  - parameter collectionView: UICollectionView
+  - parameter kind: String
+  - parameter indexPath: NSIndexPath
 
-  :returns: UICollectionReusableView
+  - returns: UICollectionReusableView
   */
   override func collectionView(collectionView: UICollectionView,
     viewForSupplementaryElementOfKind kind: String,
@@ -766,9 +766,9 @@ extension BankCollectionController: UICollectionViewDataSource {
   /**
   numberOfSectionsInCollectionView:
 
-  :param: collectionView UICollectionView
+  - parameter collectionView: UICollectionView
 
-  :returns: Int
+  - returns: Int
   */
   override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int { return 2 }
 
@@ -781,9 +781,9 @@ extension BankCollectionController: UICollectionViewDelegate {
   /**
   collectionView:willDisplayCell:forItemAtIndexPath:
 
-  :param: collectionView UICollectionView
-  :param: cell UICollectionViewCell
-  :param: indexPath NSIndexPath
+  - parameter collectionView: UICollectionView
+  - parameter cell: UICollectionViewCell
+  - parameter indexPath: NSIndexPath
   */
 
   override func collectionView(collectionView: UICollectionView,
@@ -799,13 +799,13 @@ extension BankCollectionController: UICollectionViewDelegate {
   /**
   collectionView:didDeselectItemAtIndexPath:
 
-  :param: collectionView UICollectionView
-  :param: indexPath NSIndexPath
+  - parameter collectionView: UICollectionView
+  - parameter indexPath: NSIndexPath
   */
   override func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
     if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
       // Check if we are selecting items to export
-      if exportSelectionMode, let idx = find(exportSelectionIndices, indexPath) {
+      if exportSelectionMode, let idx = exportSelectionIndices.indexOf(indexPath) {
         // Remove the item and update the cell's indicator image
         exportSelection.removeAtIndex(idx)
         exportSelectionIndices.removeAtIndex(idx)
@@ -820,8 +820,8 @@ extension BankCollectionController: UICollectionViewDelegate {
   /**
   collectionView:didSelectItemAtIndexPath:
 
-  :param: collectionView UICollectionView
-  :param: indexPath NSIndexPath
+  - parameter collectionView: UICollectionView
+  - parameter indexPath: NSIndexPath
   */
   override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
 

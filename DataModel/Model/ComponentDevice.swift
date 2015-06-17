@@ -47,7 +47,7 @@ public final class ComponentDevice: EditableModelObject {
   /**
   requiresUniqueNaming
 
-  :returns: Bool
+  - returns: Bool
   */
   public override class func requiresUniqueNaming() -> Bool { return true }
 
@@ -80,7 +80,7 @@ public final class ComponentDevice: EditableModelObject {
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
@@ -102,11 +102,11 @@ public final class ComponentDevice: EditableModelObject {
     var description = "\(super.description)\n\t" + "\n\t".join(
       "always on = \(alwaysOn)",
       "input powers on = \(inputPowersOn)",
-      "inputs = [" + ", ".join(map(inputs, {$0.name})) + "]",
+      "inputs = [" + ", ".join(inputs.map({$0.name})) + "]",
       "port = \(port)",
       "power = \(power)",
       "manufacturer = \(manufacturer.index)",
-      "code set = \(toString(codeSet?.index))"
+      "code set = \(String(codeSet?.index))"
     )
     return description
   }

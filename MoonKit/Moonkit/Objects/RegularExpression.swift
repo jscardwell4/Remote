@@ -18,25 +18,30 @@ public struct RegularExpression {
   /**
   initWithPattern:options:
 
-  :param: pattern String
-  :param: options NSRegularExpressionOptions = nil
+  - parameter pattern: String
+  - parameter options: NSRegularExpressionOptions = nil
   */
   public init(pattern: String, options: NSRegularExpressionOptions = nil, error: NSErrorPointer = nil) {
-    regex = NSRegularExpression(pattern: pattern, options: options, error: error)
+    do {
+      regex = try NSRegularExpression(pattern: pattern, options: options)
+    } catch var error1 as NSError {
+      error.memory = error1
+      regex = nil
+    }
   }
 
   /**
   match:options:
 
-  :param: string String
-  :param: options NSMatchingOptions = nil
+  - parameter string: String
+  - parameter options: NSMatchingOptions = nil
 
-  :returns: Bool
+  - returns: Bool
   */
   public func match(string: String, options: NSMatchingOptions = nil) -> Bool {
     return (regex?.numberOfMatchesInString(string,
                                    options: options,
-                                     range: NSRange(0 ..< count(string.utf16))) ?? 0) != 0
+                                     range: NSRange(0 ..< string.utf16.count)) ?? 0) != 0
   }
 }
 

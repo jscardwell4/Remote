@@ -17,7 +17,7 @@ final class FilteringDetailSectionHeader: DetailSectionHeader {
   /**
   init:
 
-  :param: reuseIdentifier String?
+  - parameter reuseIdentifier: String?
   */
   override init(reuseIdentifier: String?) {
     super.init(reuseIdentifier: reuseIdentifier)
@@ -60,14 +60,14 @@ final class FilteringDetailSectionHeader: DetailSectionHeader {
   /**
   initWithFrame:
 
-  :param: frame CGRect
+  - parameter frame: CGRect
   */
   override init(frame: CGRect) { super.init(frame: frame) }
 
   /**
   initWithCoder:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 

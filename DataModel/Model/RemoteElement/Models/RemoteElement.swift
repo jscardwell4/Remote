@@ -18,9 +18,9 @@ public class RemoteElement: IndexedModelObject {
   /**
   remoteElementFromPreset:
 
-  :param: preset Preset
+  - parameter preset: Preset
 
-  :returns: RemoteElement?
+  - returns: RemoteElement?
   */
   public class func remoteElementFromPreset(preset: Preset) -> RemoteElement? {
     var element: RemoteElement?
@@ -38,15 +38,15 @@ public class RemoteElement: IndexedModelObject {
   /**
   initWithPreset:
 
-  :param: preset Preset
+  - parameter preset: Preset
   */
   public init(preset: Preset) { super.init(context: preset.managedObjectContext); updateWithPreset(preset) }
 
   /**
   initWithEntity:insertIntoManagedObjectContext:
 
-  :param: entity NSEntityDescription
-  :param: context NSManagedObjectContext?
+  - parameter entity: NSEntityDescription
+  - parameter context: NSManagedObjectContext?
   */
   public override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
     super.init(entity: entity, insertIntoManagedObjectContext: context)
@@ -55,8 +55,8 @@ public class RemoteElement: IndexedModelObject {
   /**
   initWithData:context:
 
-  :param: data ObjectJSONValue
-  :param: context NSManagedObjectContext
+  - parameter data: ObjectJSONValue
+  - parameter context: NSManagedObjectContext
   */
   required public init?(data: ObjectJSONValue, context: NSManagedObjectContext) { super.init(data: data, context: context) }
 
@@ -64,7 +64,7 @@ public class RemoteElement: IndexedModelObject {
 
   @NSManaged public var tag: Int16
   @NSManaged public var key: String?
-  public var identifier: String { return "_" + filter(uuid){$0 != "-"} }
+  public var identifier: String { return "_" + uuid.characters.filter{$0 != "-"} }
 
   public enum BaseType: Int  {
     case Undefined, Remote, ButtonGroup, Button
@@ -81,13 +81,13 @@ public class RemoteElement: IndexedModelObject {
   /**
   elementType
 
-  :returns: BaseType
+  - returns: BaseType
   */
   public var elementType: BaseType { return .Undefined }
 
   /** autoGenerateName */
   override func autoGenerateName() -> String {
-    let roleName = (role != .Undefined ? String(map(role.stringValue){$0 == "-" ? " " : $0}).capitalizedString + " " : "")
+    let roleName = (role != .Undefined ? String(role.stringValue.characters.map{$0 == "-" ? " " : $0}).capitalizedString + " " : "")
     let baseName = entity.managedObjectClassName
     let generatedName = roleName + baseName
     return generatedName
@@ -96,9 +96,9 @@ public class RemoteElement: IndexedModelObject {
   /**
   isIdentifiedByString:
 
-  :param: string String
+  - parameter string: String
 
-  :returns: Bool
+  - returns: Bool
   */
   public func isIdentifiedByString(string: String) -> Bool {
     return uuid == string  || identifier == string || (key != nil && key! == string) || index.rawValue == string
@@ -210,9 +210,9 @@ public class RemoteElement: IndexedModelObject {
   /**
   Method for determining whether any of the element's modal containers have a value for the specified `Mode`
 
-  :param: mode Mode
+  - parameter mode: Mode
 
-  :returns: Bool
+  - returns: Bool
   */
   func isEmptyMode(mode: Mode) -> Bool { return findFirst(modalStorageContainers, {$0.dictionary[mode] != nil}) == nil }
 
@@ -222,9 +222,9 @@ public class RemoteElement: IndexedModelObject {
   /**
   setValue:forMode:inStorage:
 
-  :param: value T?
-  :param: mode Mode
-  :param: storage ModalStorage
+  - parameter value: T?
+  - parameter mode: Mode
+  - parameter storage: ModalStorage
   */
   func setValue<T:ModelObject>(value: T?, forMode mode: Mode, inStorage storage: ModalStorage) {
     // TODO: Possibly add some form of KVO compliance?
@@ -240,17 +240,17 @@ public class RemoteElement: IndexedModelObject {
   /**
   setBackground:forMode:
 
-  :param: bg Background?
-  :param: mode Mode
+  - parameter bg: Background?
+  - parameter mode: Mode
   */
   public func setBackground(bg: Background?, forMode mode: Mode) { setValue(bg, forMode: mode, inStorage: backgrounds) }
 
   /**
   backgroundForMode:
 
-  :param: mode Mode
+  - parameter mode: Mode
 
-  :returns: Background?
+  - returns: Background?
   */
   public func backgroundForMode(mode: Mode) -> Background? { return backgrounds[mode] }
 
@@ -258,9 +258,9 @@ public class RemoteElement: IndexedModelObject {
   Accessor for the `Background` associated with the specified `Mode`. If one does not exist a copy is made of the
   `Background` for `RemoteElement.Default`. If that does not exist a new `Background` is created and returned.
 
-  :param: mode Mode
+  - parameter mode: Mode
 
-  :returns: Background
+  - returns: Background
   */
   private func imageViewForMode(mode: Mode) -> Background {
     let imageView: Background
@@ -478,7 +478,7 @@ public class RemoteElement: IndexedModelObject {
   /**
   updateForMode:
 
-  :param: mode String
+  - parameter mode: String
   */
   func updateForMode(mode: Mode) {
     background = backgrounds[mode] ?? backgrounds[defaultMode]
@@ -487,7 +487,7 @@ public class RemoteElement: IndexedModelObject {
   /**
   updateWithPreset:
 
-  :param: preset Preset
+  - parameter preset: Preset
   */
   func updateWithPreset(preset: Preset) {
     role = preset.role
@@ -522,7 +522,7 @@ public class RemoteElement: IndexedModelObject {
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
@@ -588,7 +588,7 @@ public class RemoteElement: IndexedModelObject {
       else {
         constraintsJSON["index"] = .Object(uuidIndex)
       }
-      let format: [JSONValue] = map(constraints, toString).sorted(<).map({$0.jsonValue})
+      let format: [JSONValue] = constraints.map(toString).sort(<).map({$0.jsonValue})
       constraintsJSON["format"] = format.count == 1 ? format[0] : .Array(format)
       obj["constraints"] = .Object(constraintsJSON)
     }
@@ -600,14 +600,14 @@ public class RemoteElement: IndexedModelObject {
   /**
   subscript:
 
-  :param: idx Int
+  - parameter idx: Int
 
-  :returns: RemoteElement?
+  - returns: RemoteElement?
   */
   public subscript(idx: Int) -> RemoteElement? {
     get {
       let elements = subelements
-      return contains(0 ..< elements.count, idx) ? elements[idx] : nil
+      return (0 ..< elements.count).contains(idx) ? elements[idx] : nil
     }
     set {
       var elements = subelements
@@ -615,7 +615,7 @@ public class RemoteElement: IndexedModelObject {
         elements.append(newValue!)
         subelements = elements
       }
-      else if contains(0 ..< elements.count, idx) {
+      else if (0 ..< elements.count).contains(idx) {
         if newValue == nil {
           elements.removeAtIndex(idx)
           subelements = elements
@@ -632,25 +632,22 @@ public class RemoteElement: IndexedModelObject {
   override public var description: String {
     var result = super.description + "\n\t"
 
-    result += "\n\t".join( "key = \(toString(key))", "tag = \(tag)", "role = \(role)", "shape = \(shape)", "style = \(style)" )
+    result += "\n\t".join( "key = \(String(key))", "tag = \(tag)", "role = \(role)", "shape = \(shape)", "style = \(style)" )
     result += "\n\tbackgrounds = {\n\(backgrounds.description.indentedBy(8))\n\t}"
     result += "\n\t"
-    result += "\n\t".join(reduce(modes,
-                                 [String](),
-                                 {$0 + ["\($1).backgroundColor = \(toString(self.backgroundForMode($1)?.color?.string))"]}))
+    result += "\n\t".join(modes.reduce([String](),
+                                 {$0 + ["\($1).backgroundColor = \(String(self.backgroundForMode($1)?.color?.string))"]}))
     result += "\n\t"
-    result += "\n\t".join(reduce(modes,
-                                 [String](),
-                                 {$0 + ["\($1).backgroundImage = \(toString(self.backgroundForMode($1)?.image?.index))"]}))
+    result += "\n\t".join(modes.reduce([String](),
+                                 combine: {$0 + ["\($1).backgroundImage = \(String(self.backgroundForMode($1)?.image?.index))"]}))
     result += "\n\t"
-    result += "\n\t".join(reduce(modes,
-                                 [String](),
-                                 {$0 + ["\($1).backgroundImageAlpha = \(toString(self.backgroundForMode($1)?.alpha))"]}))
+    result += "\n\t".join(modes.reduce([String](),
+                                 combine: {$0 + ["\($1).backgroundImageAlpha = \(String(self.backgroundForMode($1)?.alpha))"]}))
     result += "\n\tsubelement count = \(subelements.count)"
     result += "\n\tconstraints = "
     if constraints.count == 0 { result += "nil" }
     else {
-      result += "{\n\t\t" + "\n\t\t".join(map(constraints){$0.description}) + "\n\t}"
+      result += "{\n\t\t" + "\n\t\t".join(constraints.map{$0.description}) + "\n\t}"
     }
 
     return result
@@ -660,7 +657,7 @@ public class RemoteElement: IndexedModelObject {
 
 // MARK: - RemoteElement.BaseType extensions
 
-extension RemoteElement.BaseType: Printable {
+extension RemoteElement.BaseType: CustomStringConvertible {
   public var description: String { return stringValue }
 }
 
@@ -694,7 +691,7 @@ extension RemoteElement.BaseType: JSONValueInitializable {
 
 // MARK: - RemoteElement.Shape extensions
 
-extension RemoteElement.Shape: Printable {
+extension RemoteElement.Shape: CustomStringConvertible {
   public var description: String { return stringValue }
 }
 
@@ -732,7 +729,7 @@ extension RemoteElement.Shape: JSONValueInitializable {
 
 // MARK: - RemoteElement.Style extensions
 
-extension RemoteElement.Style: Printable {
+extension RemoteElement.Style: CustomStringConvertible {
   public var description: String { return stringValue }
 }
 
@@ -756,7 +753,7 @@ extension RemoteElement.Style: JSONValueConvertible {
 extension RemoteElement.Style: JSONValueInitializable {
   public init?(_ jsonValue: JSONValue?) {
     if let string = String(jsonValue) {
-      let components = split(string){$0 == " "}
+      let components = split(string.characters){$0 == " "}.map { String($0) }
       var style = RemoteElement.Style.None
       for component in components {
         switch component {
@@ -779,7 +776,7 @@ extension RemoteElement.Role: Hashable {
   public var hashValue: Int { return Int(rawValue) }
 }
 
-extension RemoteElement.Role: Printable {
+extension RemoteElement.Role: CustomStringConvertible {
   public var description: String { return String(jsonValue)! }
 }
 

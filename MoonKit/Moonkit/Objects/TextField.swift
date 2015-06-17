@@ -14,7 +14,7 @@ public class TextField: UITextField {
   /**
   drawRect:
 
-  :param: rect CGRect
+  - parameter rect: CGRect
   */
   public override func drawTextInRect(rect: CGRect) {
     var newRect = rect
@@ -28,7 +28,7 @@ public class TextField: UITextField {
   /**
   alignmentRectInsets
 
-  :returns: UIEdgeInsets
+  - returns: UIEdgeInsets
   */
 //  public override func alignmentRectInsets() -> UIEdgeInsets {
 //    return UIEdgeInsets(top: gutter, left: gutter, bottom: gutter, right: gutter);
@@ -37,7 +37,7 @@ public class TextField: UITextField {
   /**
   intrinsicContentSize
 
-  :returns: CGSize
+  - returns: CGSize
   */
 //  public override func intrinsicContentSize() -> CGSize {
 //    var size = super.intrinsicContentSize()

@@ -3,7 +3,7 @@ import UIKit
 import MoonKit
 import XCPlayground
 let presetFilePath = NSBundle.mainBundle().pathForResource("Preset", ofType: "json")!
-var presetUnprocessedJSON = String(contentsOfFile: presetFilePath, encoding: NSUTF8StringEncoding, error: nil)!
+var presetUnprocessedJSON = try! String(contentsOfFile: presetFilePath, encoding: NSUTF8StringEncoding)
 //println(presetUnprocessedJSON)
 
 
@@ -59,7 +59,7 @@ class IncludeDirective {
   var description: String {
     var result = "\n".join(
       "location: \(location)",
-      "parameters: \(toString(parameters))",
+      "parameters: \(String(parameters))",
       "file: \(file.path.lastPathComponent)"
       )
     if subdirectives.count == 0 { result += "\nsubdirectives: []" }
@@ -76,7 +76,7 @@ class IncludeDirective {
     if subdirectives.count == 0 { result = fileContent }
     else {
       var i = 0
-      for subdirective in subdirectives.sorted({$0.location.startIndex < $1.location.startIndex}) {
+      for subdirective in subdirectives.sort({$0.location.startIndex < $1.location.startIndex}) {
         result += fileContent[i..<subdirective.location.startIndex]
         result += subdirective.content
         i = subdirective.location.endIndex
@@ -84,14 +84,14 @@ class IncludeDirective {
       if i < fileContent.length { result += fileContent[i..<fileContent.length] }
     }
     if let p = parameters {
-      result = reduce(p, result, {$0.stringByReplacingOccurrencesOfString("<#\($1.0)#>", withString: $1.1)})
+      result = p.reduce(result, combine: {$0.stringByReplacingOccurrencesOfString("<#\($1.0)#>", withString: $1.1)})
     }
     self._content = result
     return result
   }
 
   var allLocations: [(Range<Int>, IncludeDirective)] {
-    return [(location,self)] + flatMap(subdirectives, {$0.allLocations})
+    return [(location,self)] + subdirectives.flatMap({$0.allLocations})
   }
 }
 
@@ -106,7 +106,7 @@ struct IncludeFile {
   init?(_ p: String) {
     if let cached = IncludeFile.cache[p] { self = cached }
     else if NSFileManager.defaultManager().isReadableFileAtPath(p),
-      let c = String(contentsOfFile: p, encoding: NSUTF8StringEncoding, error: nil)
+      let c = String(contentsOfFile: p, encoding: NSUTF8StringEncoding)
     {
       path = p; content = c; IncludeFile.cache[p] = self
     } else { path = ""; content = ""; return nil }
@@ -116,4 +116,4 @@ struct IncludeFile {
 }
 
 let directory = presetFilePath.stringByDeletingLastPathComponent
-println(IncludeDirective.stringByParsingDirectivesInString(presetUnprocessedJSON, directory: directory))
+print(IncludeDirective.stringByParsingDirectivesInString(presetUnprocessedJSON, directory: directory))

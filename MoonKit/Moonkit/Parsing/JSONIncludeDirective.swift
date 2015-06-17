@@ -50,7 +50,7 @@ internal class JSONIncludeDirective {
 
   private static func parseDirectives(string: String, directory: String) -> [JSONIncludeDirective] {
     let ranges = compressed(string.rangesForCapture(1, byMatching: ~/"(<@include[^>]+>)"))
-    let directives = compressedMap(ranges, {JSONIncludeDirective(string[$0], location: $0, directory: directory)})
+    let directives = compressedMap(ranges, transform: {JSONIncludeDirective(string[$0], location: $0, directory: directory)})
     return directives
   }
 
@@ -74,7 +74,7 @@ internal class JSONIncludeDirective {
     if subdirectives.count == 0 { result = fileContent }
     else {
       var i = 0
-      for subdirective in subdirectives.sorted({$0.location.startIndex < $1.location.startIndex}) {
+      for subdirective in subdirectives.sort({$0.location.startIndex < $1.location.startIndex}) {
         result += fileContent[i..<subdirective.location.startIndex]
         result += subdirective.content
         i = subdirective.location.endIndex
@@ -82,7 +82,7 @@ internal class JSONIncludeDirective {
       if i < fileContent.length { result += fileContent[i..<fileContent.length] }
     }
     if let p = parameters {
-      result = reduce(p, result, {$0.stringByReplacingOccurrencesOfString("<#\($1.0)#>", withString: $1.1)})
+      result = p.reduce(result, combine: {$0.stringByReplacingOccurrencesOfString("<#\($1.0)#>", withString: $1.1)})
     }
     JSONIncludeDirective.cache["\(file.path),\(toString(_parameters))"] = result
     return result
@@ -99,7 +99,7 @@ internal class JSONIncludeDirective {
     init?(_ p: String) {
       if let cached = IncludeFile.cache[p] { self = cached }
       else if NSFileManager.defaultManager().isReadableFileAtPath(p),
-        let c = String(contentsOfFile: p, encoding: NSUTF8StringEncoding, error: nil)
+        let c = String(contentsOfFile: p, encoding: NSUTF8StringEncoding)
       {
         path = p; content = c; IncludeFile.cache[p] = self
       } else { path = ""; content = ""; return nil }

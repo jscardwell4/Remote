@@ -15,7 +15,7 @@ public class BoxedJSONValue: NSCoding {
   @objc public func encodeWithCoder(aCoder: NSCoder) {
     aCoder.encodeObject(jsonValue.rawValue)
   }
-  @objc public required init(coder aDecoder: NSCoder) {
+  @objc public required init?(coder aDecoder: NSCoder) {
     if let rawValue = aDecoder.decodeObject() as? String,
       jsonValue = JSONValue(rawValue: rawValue)
     {

@@ -23,9 +23,9 @@ final class BankCollectionAttributes: UICollectionViewLayoutAttributes {
   /**
   copyWithZone:
 
-  :param: zone NSZone
+  - parameter zone: NSZone
 
-  :returns: AnyObject
+  - returns: AnyObject
   */
   override func copyWithZone(zone: NSZone) -> AnyObject {
     let attributes: AnyObject = super.copyWithZone(zone)
@@ -38,9 +38,9 @@ final class BankCollectionAttributes: UICollectionViewLayoutAttributes {
   /**
   isEqual:
 
-  :param: object AnyObject?
+  - parameter object: AnyObject?
 
-  :returns: Bool
+  - returns: Bool
   */
   override func isEqual(object: AnyObject?) -> Bool {
     if let other = object as? BankCollectionAttributes {

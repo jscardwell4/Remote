@@ -19,9 +19,9 @@ public class FormViewController: UIViewController {
   /**
   Default initializer takes the form and cancel/submit callbacks
 
-  :param: form Form
-  :param: submit Submission? = nil
-  :param: cancel Cancellation? = nil
+  - parameter form: Form
+  - parameter submit: Submission? = nil
+  - parameter cancel: Cancellation? = nil
   */
   public init(form f: Form, didSubmit submit: Submission? = nil, didCancel cancel: Cancellation? = nil)
   {
@@ -81,7 +81,7 @@ public class FormViewController: UIViewController {
     self.view = UIView(frame: UIScreen.mainScreen().bounds)
 
     let effectView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
-    effectView.setTranslatesAutoresizingMaskIntoConstraints(false)
+    effectView.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(effectView)
     self.effectView = effectView
 

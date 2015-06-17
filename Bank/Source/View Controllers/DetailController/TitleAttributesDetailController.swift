@@ -92,7 +92,7 @@ class TitleAttributesDetailController: DetailController {
       var pickerRow = DetailPickerRow()
 
       pickerRow.nilItemTitle = "No Icon"
-      pickerRow.data = ((UIFont.fontAwesomeIconNames() as NSSet).allObjects as! [String]).sorted(<)
+      pickerRow.data = ((UIFont.fontAwesomeIconNames() as NSSet).allObjects as! [String]).sort(<)
       pickerRow.info = attributesDelegate.iconName
       pickerRow.didSelectItem = { [unowned pickerRow] in
         if !self.didCancel {

@@ -34,10 +34,10 @@ import UIKit.UIGestureRecognizerSubclass
     /**
     secondsBetween:and:
 
-    :param: stamp1 dispatch_time_t
-    :param: stamp2 dispatch_time_t
+    - parameter stamp1: dispatch_time_t
+    - parameter stamp2: dispatch_time_t
 
-    :returns: Double
+    - returns: Double
     */
     private func secondsBetween(stamp1: dispatch_time_t, and stamp2: dispatch_time_t) -> Double {
       return (Double(stamp1) - Double(stamp2)) * Double(NSEC_PER_SEC)
@@ -46,9 +46,9 @@ import UIKit.UIGestureRecognizerSubclass
     /**
     secondsSince:
 
-    :param: stamp dispatch_time_t
+    - parameter stamp: dispatch_time_t
 
-    :returns: Double
+    - returns: Double
     */
     private func secondsSince(stamp: dispatch_time_t) -> Double {
       return secondsBetween(dispatch_time(DISPATCH_TIME_NOW, 0), and: stamp)
@@ -59,9 +59,9 @@ import UIKit.UIGestureRecognizerSubclass
   /**
   centroidForTouches:
 
-  :param: touches [UITouch]
+  - parameter touches: [UITouch]
 
-  :returns: CGPoint
+  - returns: CGPoint
   */
   internal func centroidForTouches(touches: [UITouch]) -> CGPoint {
     let count = CGFloat(touches.count)
@@ -82,7 +82,7 @@ import UIKit.UIGestureRecognizerSubclass
   /**
   initWithHandler:
 
-  :param: handler (LongPressGesture) -> Void
+  - parameter handler: (LongPressGesture) -> Void
   */
   public convenience init(handler: (BlockActionGesture) -> Void) {
     self.init()
@@ -93,7 +93,7 @@ import UIKit.UIGestureRecognizerSubclass
   /**
   dispatchHandler:
 
-  :param: sender BlockActionGesture
+  - parameter sender: BlockActionGesture
   */
   public func dispatchHandler(sender: BlockActionGesture) {
     handlerTarget.dispatchHandler(sender)
@@ -104,10 +104,10 @@ import UIKit.UIGestureRecognizerSubclass
   /**
   initWithTarget:action:
 
-  :param: target AnyObject
-  :param: action Selector
+  - parameter target: AnyObject
+  - parameter action: Selector
   */
-  public override init(target: AnyObject, action: Selector) {
+  public override init(target: AnyObject?, action: Selector) {
     super.init(target: target, action: action)
     addTarget(self, action: "dispatchHandler:")
   }

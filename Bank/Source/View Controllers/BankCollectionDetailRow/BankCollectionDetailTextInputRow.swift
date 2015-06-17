@@ -33,8 +33,8 @@ class BankCollectionDetailTextInputRow: BankCollectionDetailRow {
   /**
   configureCell:forTableView:
 
-  :param: cell BankCollectionDetailCell
-  :param: tableView UITableView
+  - parameter cell: BankCollectionDetailCell
+  - parameter tableView: UITableView
   */
   override func configureCell(cell: BankCollectionDetailCell) {
   	super.configureCell(cell)

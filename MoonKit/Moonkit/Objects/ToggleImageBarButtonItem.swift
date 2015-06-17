@@ -34,9 +34,9 @@ public class ToggleImageBarButtonItem: ToggleBarButtonItem {
   /**
   initWithImage:toggledImage:action:
 
-  :param: image UIImage
-  :param: toggledImage UIImage
-  :param: action (ToggleBarButtonItem) -> Void
+  - parameter image: UIImage
+  - parameter toggledImage: UIImage
+  - parameter action: (ToggleBarButtonItem) -> Void
   */
   public init(image: UIImage, toggledImage: UIImage, action: (ToggleBarButtonItem) -> Void) {
 
@@ -45,7 +45,7 @@ public class ToggleImageBarButtonItem: ToggleBarButtonItem {
 
     // create the image view
     let imageView = UIImageView(image: image, highlightedImage: toggledImage)
-    imageView.setTranslatesAutoresizingMaskIntoConstraints(false)
+    imageView.translatesAutoresizingMaskIntoConstraints = false
     imageView.userInteractionEnabled = true
     imageView.contentMode = .ScaleAspectFit
 
@@ -71,7 +71,7 @@ public class ToggleImageBarButtonItem: ToggleBarButtonItem {
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   public required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 

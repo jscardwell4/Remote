@@ -13,32 +13,32 @@ import Foundation
 /**
 compressed:
 
-:param: source S
+- parameter source: S
 
-:returns: [T]
+- returns: [T]
 */
 public func compressed<S:SequenceType, T where S.Generator.Element == Optional<T>>(source: S) -> [T] {
-  return filter(source, {$0 != nil}).map({$0!})
+  return source.filter({$0 != nil}).map({$0!})
 }
 
 /**
 compressed:
 
-:param: source S
+- parameter source: S
 
-:returns: [T]
+- returns: [T]
 */
 public func compressed<S:SequenceType, T where S.Generator.Element == T, T:NilLiteralConvertible>(source: S) -> [T] {
-  return filter(source, {$0 != nil})
+  return source.filter({$0 != nil})
 }
 
 /**
 compressedMap:transform:
 
-:param: source S
-:param: transform (T) -> U?
+- parameter source: S
+- parameter transform: (T) -> U?
 
-:returns: [U]
+- returns: [U]
 */
 public func compressedMap<S:SequenceType, T, U where S.Generator.Element == T>(source: S, transform: (T) -> U?) -> [U] {
   return map(source, transform) >>> compressed
@@ -47,10 +47,10 @@ public func compressedMap<S:SequenceType, T, U where S.Generator.Element == T>(s
 /**
 compressedMap:transform:
 
-:param: source S?
-:param: transform (T) -> U?
+- parameter source: S?
+- parameter transform: (T) -> U?
 
-:returns: [U]?
+- returns: [U]?
 */
 public func compressedMap<S:SequenceType, T, U where S.Generator.Element == T>(source: S?, transform: (T) -> U?) -> [U]? {
   return source >?> transform >?> compressedMap
@@ -61,9 +61,9 @@ public func compressedMap<S:SequenceType, T, U where S.Generator.Element == T>(s
 /**
 uniqued:
 
-:param: seq S
+- parameter seq: S
 
-:returns: [T]
+- returns: [T]
 */
 public func uniqued<T:Hashable, S:SequenceType where S.Generator.Element == T>(seq: S) -> [T] {
   return Array(Set(seq))
@@ -72,9 +72,9 @@ public func uniqued<T:Hashable, S:SequenceType where S.Generator.Element == T>(s
 /**
 uniqued:
 
-:param: seq S
+- parameter seq: S
 
-:returns: [T]
+- returns: [T]
 */
 public func uniqued<T:Equatable, S:SequenceType where S.Generator.Element == T>(seq: S) -> [T] {
   var result: [T] = []
@@ -85,7 +85,7 @@ public func uniqued<T:Equatable, S:SequenceType where S.Generator.Element == T>(
 /**
 unique<T:Equatable>:
 
-:param: array [T]
+- parameter array: [T]
 */
 //public func unique<T:Equatable>(inout array:[T]) { array = uniqued(array) }
 
@@ -95,9 +95,9 @@ unique<T:Equatable>:
 /**
 Flattens a sequence into an array of a single type, non-T types are dropped
 
-:param: sequence S
+- parameter sequence: S
 
-:returns: [T]
+- returns: [T]
 */
 public func flattened<S:SequenceType, T>(sequence: S) -> [T] {
   var flattenObjCTypes: ([NSObject] -> [T])!
@@ -146,10 +146,10 @@ public func flattened<S:SequenceType, T>(sequence: S) -> [T] {
 /**
 flattenedMap:transform:
 
-:param: source S
-:param: transform (T) -> U
+- parameter source: S
+- parameter transform: (T) -> U
 
-:returns: [V]
+- returns: [V]
 */
 public func flattenedMap<S:SequenceType, T, U, V where S.Generator.Element == T>(source: S, transform: (T) -> U) -> [V] {
   return source >>> transform >>> map >>> flattened
@@ -158,10 +158,10 @@ public func flattenedMap<S:SequenceType, T, U, V where S.Generator.Element == T>
 /**
 flattenedCompressedMap:transform:
 
-:param: source S
-:param: transform (T) -> U?
+- parameter source: S
+- parameter transform: (T) -> U?
 
-:returns: [V]
+- returns: [V]
 */
 public func flattenedCompressedMap<S:SequenceType, T, U, V
   where S.Generator.Element == T>(source: S, transform: (T) -> U?) -> [V]
@@ -172,22 +172,22 @@ public func flattenedCompressedMap<S:SequenceType, T, U, V
 /**
 function for recursively reducing a property of an element that contains child elements of its kind
 
-:param: initial U The initial value for the reduction
-:param: subitems (T) -> [T] Closure for producing child elements of the item
-:param: combine (U, T) -> Closure for producing the reduction for the item without recursing
-:param: item T The initial item
+- parameter initial: U The initial value for the reduction
+- parameter subitems: (T) -> [T] Closure for producing child elements of the item
+- parameter combine: (U, T) -> Closure for producing the reduction for the item without recursing
+- parameter item: T The initial item
 
-:returns: U The result of the reduction
+- returns: U The result of the reduction
 */
 public func recursiveReduce<T, U>(initial: U, subitems: (T) -> [T], combine: (U, T) -> U, item: T) -> U {
   var body: ((U, (T) -> [T], (U,T) -> U, T) -> U)!
-  body = { (i: U, s: (T) -> [T], c: (U,T) -> U, x: T) -> U in reduce(s(x), c(i, x)){body($0.0, s, c, $0.1)} }
+  body = { (i: U, s: (T) -> [T], c: (U,T) -> U, x: T) -> U in s(x).reduce(c(i, x)){body($0.0, s, c, $0.1)} }
   return body(initial, subitems, combine, item)
 }
 
 // MARK: - Enumerating
 
 public func enumeratingMap<S: SequenceType, T>(source: S, transform: (Int, S.Generator.Element) -> T) -> [T] {
-  return map(enumerate(source), transform)
+  return map(source.enumerate(), transform)
 }
 

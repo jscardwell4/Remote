@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-extension NSFetchedResultsChangeType: Printable {
+extension NSFetchedResultsChangeType: CustomStringConvertible {
   public var description: String {
     switch self {
       case .Insert: return "Insert"
@@ -20,4 +20,4 @@ extension NSFetchedResultsChangeType: Printable {
   }
 }
 
-extension UIBlurEffectStyle: Printable { public var description: String { return self == .Dark ? "Dark" : "Light" } }
+extension UIBlurEffectStyle: CustomStringConvertible { public var description: String { return self == .Dark ? "Dark" : "Light" } }

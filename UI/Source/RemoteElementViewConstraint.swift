@@ -67,7 +67,7 @@ public final class RemoteElementViewConstraint: NSLayoutConstraint {
   func removeFromOwner() { MSRunSyncOnMain({
       [unowned self] () -> Void in
         if self.owner != nil {
-          if let constraints = self.owner.constraints() as? [NSLayoutConstraint] {
+          if let constraints = self.owner.constraints as? [NSLayoutConstraint] {
             if constraints ∋ self {
               self.owner.removeConstraint(self)
             }
@@ -92,10 +92,10 @@ public final class RemoteElementViewConstraint: NSLayoutConstraint {
   /**
   constraintWithModel:owningView:
 
-  :param: model Constraint
-  :param: owningView RemoteElementView
+  - parameter model: Constraint
+  - parameter owningView: RemoteElementView
 
-  :returns: RemoteElementViewConstraint?
+  - returns: RemoteElementViewConstraint?
   */
   class func constraintWithModel(model: Constraint, owningView: RemoteElementView) -> RemoteElementViewConstraint? {
     if model.owner == nil || owningView.model != model.owner! { return nil }

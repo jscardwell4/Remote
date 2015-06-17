@@ -40,7 +40,7 @@ final public class IRCodeSet: EditableModelObject, CollectedModel {
   /**
   updateWithData:
 
-  :param: data ObjectJSONValue
+  - parameter data: ObjectJSONValue
   */
   override public func updateWithData(data: ObjectJSONValue) {
     super.updateWithData(data)
@@ -53,7 +53,7 @@ final public class IRCodeSet: EditableModelObject, CollectedModel {
     var obj = ObjectJSONValue(super.jsonValue)!
     obj["manufacturer.index"] = manufacturer.index.jsonValue
     obj["codes"] = JSONValue(codes)
-    obj["devices.uuid"] = .Array(map(devices, {$0.uuid.jsonValue}))
+    obj["devices.uuid"] = .Array(devices.map({$0.uuid.jsonValue}))
     return obj.jsonValue
   }
 
@@ -61,7 +61,7 @@ final public class IRCodeSet: EditableModelObject, CollectedModel {
     return "\(super.description)\n\t" + "\n\t".join(
       "manufacturer = \(manufacturer.index)",
       "code count = \(codes.count)",
-      "devices = [" + ", ".join(map(devices, {$0.name})) + "]"
+      "devices = [" + ", ".join(devices.map({$0.name})) + "]"
     )
   }
 
@@ -70,10 +70,10 @@ final public class IRCodeSet: EditableModelObject, CollectedModel {
   /**
   modelWithIndex:context:
 
-  :param: index PathIndex
-  :param: context NSManagedObjectContext
+  - parameter index: PathIndex
+  - parameter context: NSManagedObjectContext
 
-  :returns: IRCodeSet?
+  - returns: IRCodeSet?
   */
   public override static func modelWithIndex(var index: PathIndex, context: NSManagedObjectContext) -> IRCodeSet? {
     if index.count != 2 { return nil }
@@ -95,7 +95,7 @@ extension IRCodeSet: DefaultingModelCollection {
     if let codeSet = modelWithIndex(PathIndex("\(name)/\(name)"), context: context) {
       return codeSet
     } else {
-      var codeSet = self(context: context)
+      let codeSet = self(context: context)
       codeSet.name = name
       return codeSet
     }

@@ -234,9 +234,9 @@ public struct TitleAttributes {
   /**
   stringWithAttributes:
 
-  :param: attrs MSDictionary
+  - parameter attrs: MSDictionary
 
-  :returns: NSAttributedString
+  - returns: NSAttributedString
   */
   private func stringWithAttributes(attrs: MSDictionary) -> NSAttributedString {
     return NSAttributedString(string: attrs[PropertyKey.Text.rawValue] as? String ?? "", attributes: attrs)
@@ -245,9 +245,9 @@ public struct TitleAttributes {
   /**
   stringWithFillers:
 
-  :param: fillers MSDictionary?
+  - parameter fillers: MSDictionary?
 
-  :returns: NSAttributedString
+  - returns: NSAttributedString
   */
   public func stringWithFillers(fillers: MSDictionary?) -> NSAttributedString {
     if fillers != nil {
@@ -290,8 +290,8 @@ public struct TitleAttributes {
   /**
   mergeWithTitleAttributes:mergeKind:
 
-  :param: titleAttributes TitleAttributes
-  :param: mergeKind MergeKind = .CopyIfNilExisting
+  - parameter titleAttributes: TitleAttributes
+  - parameter mergeKind: MergeKind = .CopyIfNilExisting
   */
   public mutating func mergeWithTitleAttributes(titleAttributes: TitleAttributes?, mergeKind: MergeKind = .CopyIfNilExisting) {
     if titleAttributes != nil {
@@ -310,10 +310,10 @@ public struct TitleAttributes {
   /**
   mergedWithTitleAttributes:mergeKind:
 
-  :param: titleAttributes TitleAttributes?
-  :param: mergeKind MergeKind = .CopyIfNilExisting
+  - parameter titleAttributes: TitleAttributes?
+  - parameter mergeKind: MergeKind = .CopyIfNilExisting
 
-  :returns: TitleAttributes
+  - returns: TitleAttributes
   */
   public func mergedWithTitleAttributes(titleAttributes: TitleAttributes?,
                               mergeKind: MergeKind = .CopyIfNilExisting) -> TitleAttributes {
@@ -325,9 +325,9 @@ public struct TitleAttributes {
   /**
   Gets or sets a value for the specified property after first converting to/from a `JSONValue`
 
-  :param: propertyKey PropertyKey
+  - parameter propertyKey: PropertyKey
 
-  :returns: Any?
+  - returns: Any?
   */
   public subscript(propertyKey: PropertyKey) -> Any? {
     get {
@@ -399,21 +399,21 @@ public struct TitleAttributes {
   /**
   initWithStorage:
 
-  :param: storage [String AnyObject]
+  - parameter storage: [String AnyObject]
   */
   public init(storage: JSONValue.ObjectValue) { self.storage = storage.filter({(_, k, _) in PropertyKey(rawValue: k) != nil}) }
 
   /**
   initWithStorage:
 
-  :param: storage JSONValue.ObjectValue?
+  - parameter storage: JSONValue.ObjectValue?
   */
   public init?(storage: JSONValue.ObjectValue?) { if let s = storage { self.init(storage: s) } else { return nil } }
 
   /**
   initWithAttributedString:
 
-  :param: attributedString NSAttributedString
+  - parameter attributedString: NSAttributedString
   */
   public init(attributedString: NSAttributedString) {
     self.init()
@@ -474,7 +474,7 @@ extension TitleAttributes: JSONValueConvertible {
   public var jsonValue: JSONValue { return .Object(storage) }
 }
 
-extension TitleAttributes: Printable {
+extension TitleAttributes: CustomStringConvertible {
   public var description: String { return jsonValue.prettyRawValue }
 }
 

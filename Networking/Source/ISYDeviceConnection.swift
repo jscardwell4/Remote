@@ -29,16 +29,16 @@ final class ISYDeviceConnection: Equatable, Hashable {
     /**
     connection:didFailWithError:
 
-    :param: connection NSURLConnection
-    :param: error NSError
+    - parameter connection: NSURLConnection
+    - parameter error: NSError
     */
     func connection(connection: NSURLConnection, didFailWithError error: NSError) { didFail?(error) }
 
     /**
     connection:willSendRequestForAuthenticationChallenge:
 
-    :param: connection NSURLConnection
-    :param: challenge NSURLAuthenticationChallenge
+    - parameter connection: NSURLConnection
+    - parameter challenge: NSURLAuthenticationChallenge
     */
     func connection(connection: NSURLConnection,
       willSendRequestForAuthenticationChallenge challenge: NSURLAuthenticationChallenge)
@@ -52,15 +52,15 @@ final class ISYDeviceConnection: Equatable, Hashable {
     /**
     connection:didReceiveData:
 
-    :param: connection NSURLConnection
-    :param: data NSData
+    - parameter connection: NSURLConnection
+    - parameter data: NSData
     */
     func connection(connection: NSURLConnection, didReceiveData data: NSData) { dataReceived.appendData(data) }
 
     /**
     connectionDidFinishLoading:
 
-    :param: connection NSURLConnection
+    - parameter connection: NSURLConnection
     */
     func connectionDidFinishLoading(connection: NSURLConnection) { didReceiveData?(dataReceived) }
 
@@ -78,17 +78,17 @@ final class ISYDeviceConnection: Equatable, Hashable {
   /**
   init:
 
-  :param: d ISYDevice
+  - parameter d: ISYDevice
   */
   init(device d: ISYDevice) { device = d; updateNodes() }
 
   /**
   connectionWithBaseURL:
 
-  :param: baseURL NSURL
-  :param: completion (ISYDeviceConnection?, NSError?) -> Void
+  - parameter baseURL: NSURL
+  - parameter completion: (ISYDeviceConnection?, NSError?) -> Void
 
-  :returns: ISYDeviceConnection
+  - returns: ISYDeviceConnection
   */
   class func connectionWithBaseURL(baseURL: NSURL, completion: (ISYDeviceConnection?, NSError?) -> Void) {
 
@@ -129,7 +129,7 @@ final class ISYDeviceConnection: Equatable, Hashable {
             attributes.replaceKey("URLBase", withKey: "baseURL")
             attributes.replaceKey("UDN", withKey: "uniqueIdentifier")
             let services = findValuesForKeyInContainer("serviceType", parsedData) as! [String]
-            if contains(services, "urn:udi-com:service:X_Insteon_Lighting_Service:1"),
+            if services.contains("urn:udi-com:service:X_Insteon_Lighting_Service:1".characters),
               let uniqueIdentifier = attributes["uniqueIdentifier"] as? String
             {
               let moc = DataManager.rootContext
@@ -139,7 +139,16 @@ final class ISYDeviceConnection: Equatable, Hashable {
                                                context: moc) ?? ISYDevice(context: moc)
                 device.setValuesForKeysWithDictionary(attributes as [NSObject : AnyObject])
                 var error: NSError?
-                let saved = moc.save(&error)
+                let saved: Bool
+                do {
+                  try moc.save()
+                  saved = true
+                } catch var error1 as NSError {
+                  error = error1
+                  saved = false
+                } catch {
+                  fatalError()
+                }
                 if saved { completionWrapper(ISYDeviceConnection(device: device), error) }
                 else { completionWrapper(nil, error) }
               }
@@ -179,15 +188,15 @@ final class ISYDeviceConnection: Equatable, Hashable {
             let propertyUOM       = node["property"]!["uom"] as! String
             let propertyFormatted = node["property"]!["formatted"] as! String
 
-            node.filter {key, _ in contains(nodeKeys, key as! String)}
+            node.filter {key, _ in nodeKeys.contains((key as! String).characters)}
 
             node["propertyID"]        = propertyID
-            node["propertyValue"]     = propertyValue.toInt()
+            node["propertyValue"]     = Int(propertyValue)
             node["propertyUOM"]       = propertyUOM
             node["propertyFormatted"] = propertyFormatted
             node["device"]            = self.device
             node["enabled"]           = (node["enabled"] as! String) == "true"
-            node["flag"]              = (node["flag"] as! String).toInt()
+            node["flag"]              = Int((node["flag"] as! String))
 
             let nodeModel = ISYDeviceNode(context: moc)
             nodeModel.setValuesForKeysWithDictionary(node as [NSObject:AnyObject])
@@ -197,7 +206,16 @@ final class ISYDeviceConnection: Equatable, Hashable {
           }
 
           var error: NSError?
-          var saved = moc.save(&error)
+          var saved: Bool
+          do {
+            try moc.save()
+            saved = true
+          } catch var error1 as NSError {
+            error = error1
+            saved = false
+          } catch {
+            fatalError()
+          }
           assert(!MSHandleError(error))
 
           let groups = findFirstValueForKeyInContainer("group", parsedData) as! [MSDictionary]
@@ -205,21 +223,29 @@ final class ISYDeviceConnection: Equatable, Hashable {
 
           for group in groups {
 
-            group.filter {key, _ in  contains(groupKeys, key as! String) }
+            group.filter {key, _ in  groupKeys.contains((key as! String).characters) }
             if let members = group["members"]?["link"] as? [MSDictionary] {
               group["members"] = Set((members as NSArray).mapped {member, _ in nodeModels[member["link"]] } as! [String])
             }
 
             group["device"] = self.device
-            group["flag"] = (group["flag"] as? String)?.toInt()
-            group["family"] = (group["family"] as? String)?.toInt()
+            group["flag"] = Int((group["flag"] as? String)?)
+            group["family"] = Int((group["family"] as? String)?)
 
             let groupModel = ISYDeviceGroup(context: moc)
             groupModel.setValuesForKeysWithDictionary(group as [NSObject:AnyObject])
 
           }
 
-          saved = moc.save(&error)
+          do {
+            try moc.save()
+            saved = true
+          } catch var error1 as NSError {
+            error = error1
+            saved = false
+          } catch {
+            fatalError()
+          }
           assert(!MSHandleError(error))
 
         }
@@ -233,10 +259,10 @@ final class ISYDeviceConnection: Equatable, Hashable {
   /**
   sendRestCommand:toNode:parameters:completion:
 
-  :param: command String
-  :param: nodeID String
-  :param: parameters [String]
-  :param: completion ((Bool, NSError?) -> Void)? = nil
+  - parameter command: String
+  - parameter nodeID: String
+  - parameter parameters: [String]
+  - parameter completion: ((Bool, NSError?) -> Void)? = nil
   */
   func sendRestCommand(command: String,
                 toNode nodeID: String,
@@ -259,8 +285,8 @@ final class ISYDeviceConnection: Equatable, Hashable {
   /**
   Send a Soap command over the connection with optional completion callback
 
-  :param: body String The command's content, this must not be empty
-  :param: completion ((Bool, NSError?) -> Void)? = nil
+  - parameter body: String The command's content, this must not be empty
+  - parameter completion: ((Bool, NSError?) -> Void)? = nil
   */
   func sendSoapCommandWithBody(body: String, completion: ((Bool, NSError?) -> Void)? = nil) {
     assert(!body.isEmpty)
@@ -291,10 +317,10 @@ final class ISYDeviceConnection: Equatable, Hashable {
 /**
 Equatable support
 
-:param: lhs ISYDeviceConnection
-:param: rhs ISYDeviceConnection
+- parameter lhs: ISYDeviceConnection
+- parameter rhs: ISYDeviceConnection
 
-:returns: Bool
+- returns: Bool
 */
 func ==(lhs: ISYDeviceConnection, rhs: ISYDeviceConnection) -> Bool {
   return lhs === rhs || lhs.baseURL == rhs.baseURL

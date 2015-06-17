@@ -61,7 +61,7 @@ extension ArrayJSONValue: CollectionType {
   public subscript(idx: Index) -> Generator.Element { get { return value[idx] } set { value[idx] = newValue } }
 }
 
-extension ArrayJSONValue: Printable, DebugPrintable {
+extension ArrayJSONValue: CustomStringConvertible, CustomDebugStringConvertible {
   public var description: String { return value.description }
   public var debugDescription: String { return "MoonKit.ArrayJSONValue - value: \(description)" }
 }

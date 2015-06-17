@@ -36,8 +36,8 @@ struct MessageQueueEntry<T:MessageData> {
   /**
   initWithMessage:completion:
 
-  :param: message String
-  :param: completion ((Bool, String, NSError?) -> Void)? = nil
+  - parameter message: String
+  - parameter completion: ((Bool, String, NSError?) -> Void)? = nil
   */
   init(messageData: T, userInfo: [NSObject:AnyObject] = [:], completion: Callback? = nil) {
     self.messageData = messageData

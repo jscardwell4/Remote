@@ -62,14 +62,14 @@ class BankCollectionDetailCell: UICollectionViewCell {
     /**
     enumerate:
 
-    :param: block (Identifier) -> Void
+    - parameter block: (Identifier) -> Void
     */
     static func enumerate(block: (Identifier) -> Void) { apply(all, block) }
 
     /**
     registerWithCollectionView:
 
-    :param: collectionView UICollectionView
+    - parameter collectionView: UICollectionView
     */
     func registerWithCollectionView(collectionView: UICollectionView) {
       collectionView.registerClass(cellType, forCellWithReuseIdentifier: rawValue)
@@ -78,7 +78,7 @@ class BankCollectionDetailCell: UICollectionViewCell {
     /**
     registerAllWithCollectionView:
 
-    :param: collectionView UICollectionView
+    - parameter collectionView: UICollectionView
     */
     static func registerAllWithCollectionView(collectionView: UICollectionView) {
       enumerate { $0.registerWithCollectionView(collectionView) }
@@ -88,7 +88,7 @@ class BankCollectionDetailCell: UICollectionViewCell {
   /**
   registerIdentifiersWithCollectionView:
 
-  :param: collectionView UICollectionView
+  - parameter collectionView: UICollectionView
   */
   class func registerIdentifiersWithCollectionView(collectionView: UICollectionView) {
     Identifier.registerAllWithCollectionView(collectionView)
@@ -122,9 +122,9 @@ class BankCollectionDetailCell: UICollectionViewCell {
     /**
     textualRepresentationForObject:
 
-    :param: object AnyObject?
+    - parameter object: AnyObject?
 
-    :returns: AnyObject?
+    - returns: AnyObject?
     */
     func textualRepresentationForObject(object: AnyObject?) -> AnyObject? {
       var text: AnyObject?
@@ -153,10 +153,10 @@ class BankCollectionDetailCell: UICollectionViewCell {
     /**
     objectFromText:attributedText:
 
-    :param: text String?
-    :param: attributedText NSAttributedString?
+    - parameter text: String?
+    - parameter attributedText: NSAttributedString?
 
-    :returns: AnyObject?
+    - returns: AnyObject?
     */
     func objectFromText(text: String?, attributedText: NSAttributedString?) -> AnyObject? {
       switch self {
@@ -168,9 +168,9 @@ class BankCollectionDetailCell: UICollectionViewCell {
     /**
     objectFromText:
 
-    :param: text String?
+    - parameter text: String?
 
-    :returns: AnyObject?
+    - returns: AnyObject?
     */
     func objectFromText(text: String?) -> AnyObject? {
       if let t = text {
@@ -203,9 +203,9 @@ class BankCollectionDetailCell: UICollectionViewCell {
     /**
     objectFromText:
 
-    :param: text NSAttributedString?
+    - parameter text: NSAttributedString?
 
-    :returns: AnyObject?
+    - returns: AnyObject?
     */
     func objectFromAttributedText(text: NSAttributedString?) -> AnyObject? {
       if let t = text {
@@ -243,10 +243,10 @@ class BankCollectionDetailCell: UICollectionViewCell {
   /**
   textFromObject:dataType:
 
-  :param: obj AnyObject
-  :param: dataType DataType = .StringData
+  - parameter obj: AnyObject
+  - parameter dataType: DataType = .StringData
 
-  :returns: String
+  - returns: String
   */
   func textFromObject(object: AnyObject?) -> String? {
     var text: String?
@@ -286,7 +286,7 @@ class BankCollectionDetailCell: UICollectionViewCell {
   /**
   init:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
 
@@ -296,7 +296,7 @@ class BankCollectionDetailCell: UICollectionViewCell {
   /**
   requiresConstraintBasedLayout
 
-  :returns: Bool
+  - returns: Bool
   */
   override class func requiresConstraintBasedLayout() -> Bool { return true }
 
@@ -325,10 +325,10 @@ extension BankCollectionDetailCell.DataType: Equatable {}
 /**
 subscript:rhs:
 
-:param: lhs DetailCell.DataType
-:param: rhs DetailCell.DataType
+- parameter lhs: DetailCell.DataType
+- parameter rhs: DetailCell.DataType
 
-:returns: Bool
+- returns: Bool
 */
 func ==(lhs: BankCollectionDetailCell.DataType, rhs: BankCollectionDetailCell.DataType) -> Bool {
   switch (lhs, rhs) {

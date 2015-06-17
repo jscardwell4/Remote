@@ -24,7 +24,7 @@ final class BankCollectionDetailLabeledImageCell: BankCollectionDetailCell {
   /**
   setPreviewImage:
 
-  :param: image UIImage?
+  - parameter image: UIImage?
   */
   private func setPreviewImage(image: UIImage?) {
     preview.image = image
@@ -57,7 +57,7 @@ final class BankCollectionDetailLabeledImageCell: BankCollectionDetailCell {
 
   private let preview: UIImageView = {
     let view = UIImageView()
-    view.setTranslatesAutoresizingMaskIntoConstraints(false)
+    view.translatesAutoresizingMaskIntoConstraints = false
     view.userInteractionEnabled = false
     view.contentMode = .ScaleAspectFit
     view.tintColor = UIColor.blackColor()

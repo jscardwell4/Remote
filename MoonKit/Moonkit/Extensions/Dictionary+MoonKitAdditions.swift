@@ -29,9 +29,9 @@ extension DictionaryGenerator: KeyValueCollectionTypeGenerator {}
 /**
 keys:
 
-:param: x C
+- parameter x: C
 
-:returns: [C.Key]
+- returns: [C.Key]
 */
 public func keys<C: KeyValueCollectionType where C.Generator: KeyValueCollectionTypeGenerator>(x: C) -> [C.Key] {
   var keys: [C.Key] = []
@@ -42,9 +42,9 @@ public func keys<C: KeyValueCollectionType where C.Generator: KeyValueCollection
 /**
 values:
 
-:param: x C
+- parameter x: C
 
-:returns: [C.Value]
+- returns: [C.Value]
 */
 public func values<C: KeyValueCollectionType where C.Generator: KeyValueCollectionTypeGenerator>(x: C) -> [C.Value] {
   var values: [C.Value] = []
@@ -56,17 +56,17 @@ public func values<C: KeyValueCollectionType where C.Generator: KeyValueCollecti
 /**
 formattedDescription:indent:
 
-:param: dictionary C
-:param: indent Int = 0
+- parameter dictionary: C
+- parameter indent: Int = 0
 
-:returns: String
+- returns: String
 */
 public func formattedDescription<C: KeyValueCollectionType where C.Generator: KeyValueCollectionTypeGenerator>(dictionary: C, indent: Int = 0) -> String {
 
   var components: [String] = []
 
   let keyDescriptions = keys(dictionary).map { "\($0)" }
-  let maxKeyLength = keyDescriptions.reduce(0) { max($0, count($1)) }
+  let maxKeyLength = keyDescriptions.reduce(0) { max($0, $1.characters.count) }
   let indentation = " " * (indent * 4)
   for (key, value) in zip(keyDescriptions, values(dictionary)) {
     let keyLength = key.characterCount
@@ -78,7 +78,7 @@ public func formattedDescription<C: KeyValueCollectionType where C.Generator: Ke
 //    }
     let keyString = "\(indentation)\(key): "//\(spacer)"
     var valueString: String
-    var valueComponents = split("\(value)") { $0 == "\n" }
+    var valueComponents = split("\(value)".characters) { $0 == "\n" }.map { String($0) }
     if valueComponents.count > 0 {
       valueString = valueComponents.removeAtIndex(0)
       if valueComponents.count > 0 {
@@ -89,21 +89,21 @@ public func formattedDescription<C: KeyValueCollectionType where C.Generator: Ke
     } else { valueString = "nil" }
     components += ["\(keyString)\(valueString)"]
   }
-  return join("\n", components)
+  return "\n".join(components)
 }
 
 extension Dictionary {
   /**
   init:Value)]:
 
-  :param: elements [(Key, Value)]
+  - parameter elements: [(Key, Value)]
   */
   init(_ elements: [(Key,Value)]) {
     self = [Key:Value]()
     for (k, v) in elements { self[k] = v }
   }
 
-  var keyValuePairs: [(Key, Value)] { return Array(SequenceOf({self.generate()})) }
+  var keyValuePairs: [(Key, Value)] { return Array(AnySequence({self.generate()})) }
 
   func map<U>(transform: (Key, Value) -> U) -> [Key:U] {
     var result: [Key:U] = [:]
@@ -115,39 +115,39 @@ extension Dictionary {
 /**
 keyValuePairs:
 
-:param: dict [K V]
+- parameter dict: [K V]
 
-:returns: [(K, V)]
+- returns: [(K, V)]
 */
 public func keyValuePairs<K:Hashable,V>(dict: [K:V]) -> [(K, V)] { return dict.keyValuePairs }
 
 /**
 extended:newElements:V)]:
 
-:param: dict [K V]
-:param: newElements [(K
-:param: V)]
+- parameter dict: [K V]
+- parameter newElements: [(K
+- parameter V)]:
 
-:returns: [K:V]
+- returns: [K:V]
 */
 public func extended<K:Hashable,V>(dict: [K:V], newElements: [(K,V)]) -> [K:V] {
-  return Dictionary(Array(SequenceOf({dict.generate()})) + newElements)
+  return Dictionary(Array(AnySequence({dict.generate()})) + newElements)
 }
 
 /**
 extend:newEntries:
 
-:param: x [K:V]
-:param: newEntries [K:V]
+- parameter x: [K:V]
+- parameter newEntries: [K:V]
 */
 public func extend<K,V>(inout x: [K:V], newEntries: [K:V]) { for (key, value) in newEntries { x[key] = value } }
 
 /**
 map:transform:
 
-:param: dict [K:V]
-:param: block (K, V) -> U
-:returns: [K:U]
+- parameter dict: [K:V]
+- parameter block: (K, V) -> U
+- returns: [K:U]
 */
 public func map<K,V,U>(dict: [K:V], transform: (K, V) -> U) -> [K:U] {
   var result: [K:U] = [:]
@@ -158,10 +158,10 @@ public func map<K,V,U>(dict: [K:V], transform: (K, V) -> U) -> [K:U] {
 /**
 subscript:rhs:
 
-:param: lhs [K:V]
-:param: rhs K
+- parameter lhs: [K:V]
+- parameter rhs: K
 
-:returns: [K:V]
+- returns: [K:V]
 */
 public func -<K,V>(var lhs: [K:V], rhs: K) -> [K:V] {
   lhs.removeValueForKey(rhs)
@@ -171,9 +171,9 @@ public func -<K,V>(var lhs: [K:V], rhs: K) -> [K:V] {
 /**
 filter:
 
-:param: dict [K:V]
+- parameter dict: [K:V]
 
-:returns: [K:V]
+- returns: [K:V]
 */
 public func filter<K:Hashable,V>(dict: [K:V], include: (K, V) -> Bool) -> [K:V] {
   var filteredDict: [K:V] = [:]
@@ -184,9 +184,9 @@ public func filter<K:Hashable,V>(dict: [K:V], include: (K, V) -> Bool) -> [K:V] 
 /**
 compressed:
 
-:param: dict [K:Optional<V>]
+- parameter dict: [K:Optional<V>]
 
-:returns: [K:V]
+- returns: [K:V]
 */
 public func compressed<K:Hashable,V>(dict: [K:Optional<V>]) -> [K:V] {
   return Dictionary(dict.keyValuePairs.filter({$1 != nil}).map({($0,$1!)}))
@@ -195,12 +195,12 @@ public func compressed<K:Hashable,V>(dict: [K:Optional<V>]) -> [K:V] {
 /**
 compressedMap:transform:
 
-:param: dict [K:V]
-:param: block (K, V) -> U?
-:returns: [K:U]
+- parameter dict: [K:V]
+- parameter block: (K, V) -> U?
+- returns: [K:U]
 */
 public func compressedMap<K:Hashable,V,U>(dict: [K:V], transform: (K, V) -> U?) -> [K:U] {
-  return compressed(map(dict, transform))
+  return compressed(map(dict, transform: transform))
 }
 
 public func inflated(var dict: [String:AnyObject]) -> [String:AnyObject] { inflate(&dict); return dict }
@@ -249,10 +249,10 @@ public func zipDict<S0:SequenceType, S1:SequenceType
 /**
 from stackoverflow answer posted by http://stackoverflow.com/users/59541/nate-cook
 
-:param: lhs [K1 [K2 T]]
-:param: rhs [K1 [K2 T]]
+- parameter lhs: [K1 [K2 T]]
+- parameter rhs: [K1 [K2 T]]
 
-:returns: Bool
+- returns: Bool
 */
 public func ==<T: Equatable, K1: Hashable, K2: Hashable>(lhs: [K1: [K2: T]], rhs: [K1: [K2: T]]) -> Bool {
   if lhs.count != rhs.count { return false }

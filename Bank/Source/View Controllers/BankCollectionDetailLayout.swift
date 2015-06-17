@@ -29,15 +29,15 @@ class BankCollectionDetailLayout: UICollectionViewLayout {
 
       let sectionCount = headerTypes.count
 
-      itemTypes = map(0 ..< sectionCount) {dataSource.collectionView(self.collectionView!, itemTypesInSection: $0)}
-      let itemCounts = map(0 ..< sectionCount) {self.itemTypes[$0].count}
+      itemTypes = (0 ..< sectionCount).map {dataSource.collectionView(self.collectionView!, itemTypesInSection: $0)}
+      let itemCounts = (0 ..< sectionCount).map {self.itemTypes[$0].count}
       itemHeights = itemTypes.map { $0.map { self.heightForItemType($0) } }
 
-      let indexPaths = flatMap(0 ..< sectionCount, {s in map(0 ..< itemCounts[s]) {r in NSIndexPath(r, s) } })
+      let indexPaths = (0 ..< sectionCount).flatMap({s in (0 ..< itemCounts[s]).map {r in NSIndexPath(r, s) } })
       let tuples = indexPaths.map {($0, self.layoutAttributesForItemAtIndexPath($0))}
       storedAttributes = AttributesIndex(tuples)
 
-      apply(enumerate(headerTypes)){
+      apply(headerTypes.enumerate()){
         if let type = $1 {
           var indexes = [$0, 0, 0]
           let indexPath = NSIndexPath(indexes: &indexes, length: 3) //NSIndexPath(0, $0)
@@ -51,9 +51,9 @@ class BankCollectionDetailLayout: UICollectionViewLayout {
   /**
   heightForItemType:
 
-  :param: type ItemType
+  - parameter type: ItemType
 
-  :returns: CGFloat
+  - returns: CGFloat
   */
   func heightForItemType(type: ItemType) -> CGFloat {
     switch type {
@@ -79,9 +79,9 @@ class BankCollectionDetailLayout: UICollectionViewLayout {
   /**
   heightForHeaderInSection:
 
-  :param: section Int
+  - parameter section: Int
 
-  :returns: CGFloat
+  - returns: CGFloat
   */
   func heightForHeaderInSection(section: Int) -> CGFloat {
     if let headerType = headerTypes[section] { return 44 } else { return 0 }
@@ -90,36 +90,36 @@ class BankCollectionDetailLayout: UICollectionViewLayout {
   /**
   heightForSection:
 
-  :param: section Int
+  - parameter section: Int
 
-  :returns: CGFloat
+  - returns: CGFloat
   */
   func heightForSection(section: Int) -> CGFloat {
     let sectionItemHeights = itemHeights[section]
     let sectionHeaderHeight = heightForHeaderInSection(section)
     let spacing = CGFloat(sectionItemHeights.count) + 1 * verticalSpacing
-    return reduce(sectionItemHeights, spacing + sectionHeaderHeight) {$0 + $1}
+    return sectionItemHeights.reduce(spacing + sectionHeaderHeight) {$0 + $1}
   }
 
   /**
   verticalOffsetForSection:
 
-  :param: section Int
+  - parameter section: Int
 
-  :returns: CGFloat
+  - returns: CGFloat
   */
   func verticalOffsetForSection(section: Int) -> CGFloat {
-    return reduce(0 ..< section, CGFloat(section) * verticalSpacing) {$0 + self.heightForSection($1)}
+    return (0 ..< section).reduce(CGFloat(section) * verticalSpacing) {$0 + self.heightForSection($1)}
   }
 
   /**
   collectionViewContentSize
 
-  :returns: CGSize
+  - returns: CGSize
   */
   override func collectionViewContentSize() -> CGSize {
     let w = UIScreen.mainScreen().bounds.width
-    let h = reduce(0 ..< headerTypes.count, verticalSpacing, {$0 + self.heightForSection($1)})
+    let h = (0 ..< headerTypes.count).reduce(verticalSpacing, combine: {$0 + self.heightForSection($1)})
     return CGSize(width: w, height: h)
   }
 
@@ -135,12 +135,12 @@ class BankCollectionDetailLayout: UICollectionViewLayout {
   /**
   layoutAttributesForElementsInRect:
 
-  :param: rect CGRect
+  - parameter rect: CGRect
 
-  :returns: [AnyObject]?
+  - returns: [AnyObject]?
   */
-  override func layoutAttributesForElementsInRect(rect: CGRect) -> [AnyObject]? {
-    return filter(storedAttributes.values) { $0.frame.intersects(rect) }
+  override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+    return storedAttributes.values.filter { $0.frame.intersects(rect) }
   }
 
   // MARK: Headers
@@ -148,10 +148,10 @@ class BankCollectionDetailLayout: UICollectionViewLayout {
   /**
   layoutAttributesForSupplementaryViewOfKind:atIndexPath:
 
-  :param: elementKind String
-  :param: indexPath NSIndexPath
+  - parameter elementKind: String
+  - parameter indexPath: NSIndexPath
 
-  :returns: UICollectionViewLayoutAttributes!
+  - returns: UICollectionViewLayoutAttributes!
   */
   override func layoutAttributesForSupplementaryViewOfKind(elementKind: String,
                                                atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes!
@@ -170,9 +170,9 @@ class BankCollectionDetailLayout: UICollectionViewLayout {
   /**
   layoutAttributesForItemAtIndexPath:
 
-  :param: indexPath NSIndexPath
+  - parameter indexPath: NSIndexPath
 
-  :returns: UICollectionViewLayoutAttributes!
+  - returns: UICollectionViewLayoutAttributes!
   */
   override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
     let attributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
@@ -181,7 +181,7 @@ class BankCollectionDetailLayout: UICollectionViewLayout {
     let sectionOffset = verticalOffsetForSection(section)
     let sectionItemHeights = itemHeights[section]
     let row = indexPath.row
-    let rowOffset = reduce(0 ..< row, heightForHeaderInSection(section)) {$0 + sectionItemHeights[$1]}
+    let rowOffset = (0 ..< row).reduce(heightForHeaderInSection(section)) {$0 + sectionItemHeights[$1]}
 
     let width = UIScreen.mainScreen().bounds.width
     let height = sectionItemHeights[row]

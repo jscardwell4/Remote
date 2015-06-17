@@ -15,8 +15,8 @@ class BankCollectionDetailSwitchCell: BankCollectionDetailCell {
   /**
   initWithStyle:reuseIdentifier:
 
-  :param: style UITableViewCellStyle
-  :param: reuseIdentifier String?
+  - parameter style: UITableViewCellStyle
+  - parameter reuseIdentifier: String?
   */
   override func initializeIVARs() {
     switchView.addTarget(self, action: "switchValueDidChange:", forControlEvents: .ValueChanged)
@@ -33,7 +33,7 @@ class BankCollectionDetailSwitchCell: BankCollectionDetailCell {
   /**
   switchValueDidChange:
 
-  :param: sender UISwitch
+  - parameter sender: UISwitch
   */
   func switchValueDidChange(sender: UISwitch) { valueDidChange?(NSNumber(bool: sender.on)) }
 
@@ -53,7 +53,7 @@ class BankCollectionDetailSwitchCell: BankCollectionDetailCell {
 
   private let switchView: UISwitch = {
     let view = UISwitch()
-    view.setTranslatesAutoresizingMaskIntoConstraints(false)
+    view.translatesAutoresizingMaskIntoConstraints = false
     view.userInteractionEnabled = false
     view.setContentHuggingPriority(1000, forAxis: .Horizontal)
     return view

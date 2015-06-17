@@ -26,8 +26,8 @@ import MoonKit
   /**
   init:port:
 
-  :param: a String
-  :param: p UInt16
+  - parameter a: String
+  - parameter p: UInt16
   */
   init(address: String, port: UInt16, callback: ((String) -> Void)? = nil) {
     self.address = address; self.port = port; self.callback = callback
@@ -40,49 +40,84 @@ import MoonKit
   /**
   joinGroup:
 
-  :param: error NSErrorPointer
+  - parameter error: NSErrorPointer
 
-  :returns: Bool
+  - returns: Bool
   */
-  func joinGroup(error: NSErrorPointer) -> Bool {
+  func joinGroup() throws {
+    var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
     if !joinedGroup {
       var localError: NSError?
-      let boundPort = socket.bindToPort(port, error: &localError)
+      let boundPort: Bool
+      do {
+        try socket.bindToPort(port)
+        boundPort = true
+      } catch var error as NSError {
+        localError = error
+        boundPort = false
+      }
       if boundPort && !MSHandleError(localError, message: "failed to bind port \(port)") {
-        joinedGroup = socket.joinMulticastGroup(address, error: &localError)
+        do {
+          try socket.joinMulticastGroup(address)
+          joinedGroup = true
+        } catch var error as NSError {
+          localError = error
+          joinedGroup = false
+        }
         MSHandleError(localError, message: "failed to join group \(address)")
       }
 
-      if let e = localError { error.memory = e }
+      if let e = localError { error = e }
     }
-    return joinedGroup
+    if joinedGroup {
+      return
+    }
+    throw error
   }
 
   /**
   leaveGroup:
 
-  :param: error NSErrorPointer
+  - parameter error: NSErrorPointer
 
-  :returns: Bool
+  - returns: Bool
   */
-  func leaveGroup(error: NSErrorPointer) -> Bool {
-    if joinedGroup && socket.leaveMulticastGroup(address, error: error) { joinedGroup = false }
-    return !joinedGroup
+  func leaveGroup() throws {
+    var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
+    if joinedGroup && socket.leaveMulticastGroup(address) { joinedGroup = false }
+    if !joinedGroup {
+      return
+    }
+    throw error
   }
 
   /**
   listen:
 
-  :param: error NSErrorPointer = nil
+  - parameter error: NSErrorPointer = nil
 
-  :returns: Bool
+  - returns: Bool
   */
-  func listen(error: NSErrorPointer = nil) -> Bool {
-    if !joinedGroup { joinGroup(error) }
+  func listen() throws {
+    var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
+    if !joinedGroup { do {
+        try joinGroup()
+      } catch var error1 as NSError {
+        error = error1
+      } }
     if joinedGroup && !listening {
-      listening = socket.beginReceiving(error)
+      do {
+        try socket.beginReceiving()
+        listening = true
+      } catch var error1 as NSError {
+        error = error1
+        listening = false
+      }
     }
-    return listening
+    if listening {
+      return
+    }
+    throw error
   }
 
   /** Pauses the receiving of packets if socket is listening */
@@ -93,10 +128,10 @@ import MoonKit
   /**
   udpSocket:didReceiveData:fromAddress:withFilterContext:
 
-  :param: sock GCDAsyncUdpSocket!
-  :param: data NSData!
-  :param: address NSData!
-  :param: filterContext AnyObject!
+  - parameter sock: GCDAsyncUdpSocket!
+  - parameter data: NSData!
+  - parameter address: NSData!
+  - parameter filterContext: AnyObject!
   */
   func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!,
     withFilterContext filterContext: AnyObject!)

@@ -43,7 +43,7 @@ class ManufacturerDetailController: BankItemDetailController {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let devicesSection = DetailSection(section: 0, title: "Devices")
-    for (idx, device) in enumerate(sortedByName(manufacturer.devices)) {
+    for (idx, device) in sortedByName(manufacturer.devices).enumerate() {
       devicesSection.addRow({
         let row = DetailListRow()
         row.info = device
@@ -65,7 +65,7 @@ class ManufacturerDetailController: BankItemDetailController {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let codeSetsSection = DetailSection(section: 1, title: "Code Sets")
-    for (idx, codeSet) in enumerate(sortedByName(manufacturer.codeSets)) {
+    for (idx, codeSet) in sortedByName(manufacturer.codeSets).enumerate() {
       codeSetsSection.addRow({
         let row = DetailListRow()
         row.info = codeSet

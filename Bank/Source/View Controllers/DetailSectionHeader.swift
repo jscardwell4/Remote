@@ -33,14 +33,14 @@ class DetailSectionHeader: UITableViewHeaderFooterView {
     /**
     enumerate:
 
-    :param: block (Identifier) -> Void
+    - parameter block: (Identifier) -> Void
     */
     static func enumerate(block: (Identifier) -> Void) { apply(all, block) }
 
     /**
     registerWithTableView:
 
-    :param: tableView UITableView
+    - parameter tableView: UITableView
     */
     func registerWithTableView(tableView: UITableView) {
       tableView.registerClass(headerType, forHeaderFooterViewReuseIdentifier: rawValue)
@@ -49,7 +49,7 @@ class DetailSectionHeader: UITableViewHeaderFooterView {
     /**
     registerAllWithTableView:
 
-    :param: tableView UITableView
+    - parameter tableView: UITableView
     */
     static func registerAllWithTableView(tableView: UITableView) { enumerate { $0.registerWithTableView(tableView) } }
   }
@@ -57,7 +57,7 @@ class DetailSectionHeader: UITableViewHeaderFooterView {
   /**
   registerIdentifiersWithTableView:
 
-  :param: tableView UITableView
+  - parameter tableView: UITableView
   */
   class func registerIdentifiersWithTableView(tableView: UITableView) { Identifier.registerAllWithTableView(tableView) }
 
@@ -66,7 +66,7 @@ class DetailSectionHeader: UITableViewHeaderFooterView {
   /**
   init:
 
-  :param: reuseIdentifier String?
+  - parameter reuseIdentifier: String?
   */
   override init(reuseIdentifier: String?) {
     identifier = Identifier(rawValue: reuseIdentifier ?? "") ?? .Header
@@ -89,14 +89,14 @@ class DetailSectionHeader: UITableViewHeaderFooterView {
   /**
   initWithFrame:
 
-  :param: frame CGRect
+  - parameter frame: CGRect
   */
   override init(frame: CGRect) { identifier = .Header; super.init(frame: frame) }
 
   /**
   initWithCoder:
 
-  :param: aDecoder NSCoder
+  - parameter aDecoder: NSCoder
   */
   required init(coder aDecoder: NSCoder) { identifier = .Header; super.init(coder: aDecoder) }
 
@@ -106,14 +106,14 @@ class DetailSectionHeader: UITableViewHeaderFooterView {
   /**
   requiresConstraintBasedLayout
 
-  :returns: Bool
+  - returns: Bool
   */
   override class func requiresConstraintBasedLayout() -> Bool { return true }
 
   /**
   drawRect:
 
-  :param: rect CGRect
+  - parameter rect: CGRect
   */
   override func drawRect(rect: CGRect) {
 

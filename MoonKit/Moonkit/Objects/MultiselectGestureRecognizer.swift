@@ -25,10 +25,10 @@ public class MultiselectGestureRecognizer: UIGestureRecognizer {
   /**
   touchedSubviewsInView:includeView:
 
-  :param: view UIView
-  :param: includeView (UIView) -> Bool
+  - parameter view: UIView
+  - parameter includeView: (UIView) -> Bool
 
-  :returns: OrderedSet<UIView>
+  - returns: OrderedSet<UIView>
   */
   public func touchedSubviewsInView(view: UIView, includeView: (UIView) -> Bool) -> OrderedSet<UIView> {
     var views: OrderedSet<UIView> = []
@@ -43,18 +43,18 @@ public class MultiselectGestureRecognizer: UIGestureRecognizer {
   /**
   touchedSubviewsInView:
 
-  :param: view UIView
+  - parameter view: UIView
 
-  :returns: OrderedSet<UIView>
+  - returns: OrderedSet<UIView>
   */
   public func touchedSubviewsInView(view: UIView) -> OrderedSet<UIView> { return touchedSubviewsInView(view){_ in true} }
 
   /**
   touchLocationsInView:
 
-  :param: view UIView
+  - parameter view: UIView
 
-  :returns: [CGPoint]
+  - returns: [CGPoint]
   */
   public func touchLocationsInView(view: UIView) -> [CGPoint] { return touchLocations.array.map{view.convertPoint($0, fromView: nil)} }
 
@@ -71,10 +71,10 @@ public class MultiselectGestureRecognizer: UIGestureRecognizer {
   /**
   touchesBegan:withEvent:
 
-  :param: touches NSSet
-  :param: event UIEvent
+  - parameter touches: NSSet
+  - parameter event: UIEvent
   */
-  override public func touchesBegan(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+  override public func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent) {
 
     // ???: Why aren't we setting state to .Began?
 
@@ -97,10 +97,10 @@ public class MultiselectGestureRecognizer: UIGestureRecognizer {
   /**
   touchesMoved:withEvent:
 
-  :param: touches NSSet
-  :param: event UIEvent
+  - parameter touches: NSSet
+  - parameter event: UIEvent
   */
-  public override func touchesMoved(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+  public override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent) {
     let movedTouches = OrderedSet((touches as NSSet).allObjects as! [UITouch])
     registeredTouches ∪= movedTouches
     let movedAnchors = anchoringTouches ∩ movedTouches
@@ -119,18 +119,18 @@ public class MultiselectGestureRecognizer: UIGestureRecognizer {
   /**
   touchesCancelled:withEvent:
 
-  :param: touches NSSet
-  :param: event UIEvent
+  - parameter touches: NSSet
+  - parameter event: UIEvent
   */
-  public override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) { state = .Cancelled }
+  public override func touchesCancelled(touches: Set<UITouch>, withEvent event: UIEvent) { state = .Cancelled }
 
   /**
   touchesEnded:withEvent:
 
-  :param: touches NSSet
-  :param: event UIEvent
+  - parameter touches: NSSet
+  - parameter event: UIEvent
   */
-  public override func touchesEnded(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+  public override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent) {
     anchoringTouches ∖= (touches as NSSet).allObjects as! [UITouch]
     registeredTouches ∖= (touches as NSSet).allObjects as! [UITouch]
 

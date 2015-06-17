@@ -55,7 +55,7 @@ class BankCollectionDetailRow {
   /**
   super.configureCell:
 
-  :param: cell BankCollectionDetailCell
+  - parameter cell: BankCollectionDetailCell
   */
   func configureCell(cell: BankCollectionDetailCell) {
     self.cell = cell
