@@ -31,12 +31,11 @@ public class CoreDataStack {
   - parameter persistentStoreURL: NSURL
   - parameter options: [NSObject:AnyObject]? = nil
   */
-  public init?(managedObjectModel: NSManagedObjectModel, persistentStoreURL: NSURL?, options: [NSObject:AnyObject]? = nil) {
+  public init(managedObjectModel: NSManagedObjectModel, persistentStoreURL: NSURL?, options: [NSObject:AnyObject]? = nil) throws {
     self.managedObjectModel = managedObjectModel
     persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
 
     let storeType = persistentStoreURL == nil ? NSInMemoryStoreType : NSSQLiteStoreType
-    var error: NSError?
     do {
       let store = try persistentStoreCoordinator.addPersistentStoreWithType(storeType,
                                                              configuration: nil,
@@ -48,7 +47,12 @@ public class CoreDataStack {
       rootContext.persistentStoreCoordinator = persistentStoreCoordinator
       rootContext.nametag = "\(nametag)<root>"
       MSLogDebug("\(nametag) initialized")
-    } catch var error1 as NSError { error = error1; MSHandleError(error); rootContext = NSManagedObjectContext(); persistentStore = NSPersistentStore(); return nil }
+    } catch {
+      MSHandleError(error as NSError)
+      persistentStore = NSPersistentStore()
+      rootContext = NSManagedObjectContext()
+      throw error
+    }
   }
 
   /**
@@ -108,7 +112,7 @@ public class CoreDataStack {
   {
 
     // Initialize variables for passing to completion block
-    var error: NSError?
+    var saveError: NSError?
     var success = true
 
     // Create a closure that calls the appropriate `perform` variation
@@ -123,7 +127,13 @@ public class CoreDataStack {
         moc.processPendingChanges()
         if moc.hasChanges == true {
           MSLogDebug("saving context '\(toString(moc.nametag))'")
-          success = moc.save() == true
+          do {
+            try moc.save()
+            success = true
+          } catch {
+            success = false
+            saveError = error as NSError
+          }
         }
       }
     }
@@ -150,7 +160,7 @@ public class CoreDataStack {
         let parentContext = context.parentContext!
         save(parentContext)
         if propagate { propagateSave(parentContext) }
-        completion?(success, error)
+        completion?(success, saveError)
       }
     } else {
       perform(context) {
@@ -158,7 +168,7 @@ public class CoreDataStack {
         block?(context)
         save(context)
         if let parentContext = context.parentContext where propagate { propagateSave(parentContext) }
-        completion?(success, error)
+        completion?(success, saveError)
       }
     }
 

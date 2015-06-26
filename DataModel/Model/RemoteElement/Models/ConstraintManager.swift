@@ -28,15 +28,15 @@ public final class ConstraintManager: NSObject {
   public var dependentSiblingConstraints: Set<Constraint> { return dependentConstraints ∖ dependentChildConstraints }
   public var intrinsicConstraints: Set<Constraint> {
     return filter(remoteElement.constraints,
-               {Set(compressed([$0.firstItem, $0.secondItem])).isSubsetOf([self.remoteElement])})
+               includeElement: {Set(compressed([$0.firstItem, $0.secondItem])).isSubsetOf([self.remoteElement])})
   }
 
   public var horizontalConstraints: Set<Constraint> {
-    return filter(remoteElement.firstItemConstraints, {.Horizontal == $0.firstAttribute.axis })
+    return filter(remoteElement.firstItemConstraints, includeElement: {.Horizontal == $0.firstAttribute.axis })
   }
 
   public var verticalConstraints: Set<Constraint> {
-    return filter(remoteElement.firstItemConstraints, {.Vertical == $0.firstAttribute.axis })
+    return filter(remoteElement.firstItemConstraints, includeElement: {.Vertical == $0.firstAttribute.axis })
   }
 
   public var shrinkwrap: Bool = false
@@ -129,7 +129,7 @@ public final class ConstraintManager: NSObject {
   public func freezeSize(size: CGSize, forSubelement subelement: RemoteElement, attribute: NSLayoutAttribute) {
 
     let constant = Float(attribute.axis == .Horizontal ? size.width : size.height)
-    var firstAttribute: NSLayoutAttribute = attribute.axis == .Horizontal ? .Width : .Height
+    let firstAttribute: NSLayoutAttribute = attribute.axis == .Horizontal ? .Width : .Height
     remoteElement.managedObjectContext?.performBlockAndWait {
       [unowned self] () -> Void in
 
@@ -194,7 +194,7 @@ public final class ConstraintManager: NSObject {
 
       for constraint in constraints {
         if attributes ∌ constraint.firstAttribute || constraint.firstItem == nil { continue }
-        var constraintValues = constraint.dictionaryWithValuesForKeys(Constraint.propertyList()) as! [String:AnyObject]
+        var constraintValues = constraint.dictionaryWithValuesForKeys(Constraint.propertyList() as! [String])
         constraint.managedObjectContext?.deleteObject(constraint)
         let bounds = CGRect(origin: CGPoint.zeroPoint, size: metrics[self.remoteElement.uuidIndex]!.size)
         let frame = metrics[constraint.firstItem!.uuidIndex]!
@@ -465,7 +465,7 @@ public final class ConstraintManager: NSObject {
 
         for constraint in self.dependentChildConstraints {
           if constraint.multiplier != 1.0 {
-            var constraintValues = constraint.dictionaryWithValuesForKeys(Constraint.propertyList()) as! [String:AnyObject]
+            var constraintValues = constraint.dictionaryWithValuesForKeys(Constraint.propertyList() as! [String])
             constraintValues["multiplier"] = 1.0
             self.remoteElement.managedObjectContext?.deleteObject(constraint)
             precondition(constraintValues["firstItem"] != nil)
@@ -498,10 +498,10 @@ public final class ConstraintManager: NSObject {
   */
   public func removeProportionLockForElement(element: RemoteElement, currentSize: CGSize) {
     self.remoteElement.managedObjectContext?.performBlockAndWait {
-      [unowned self] () -> Void in
+      () -> Void in
 
       if element.constraintManager.proportionLock {
-        if let constraint = filter(element.constraintManager.intrinsicConstraints, {$0.secondItem == element}).first {
+        if let constraint = element.constraintManager.intrinsicConstraints.filter({$0.secondItem == element}).first {
           let firstAttribute = constraint.firstAttribute
           constraint.managedObjectContext?.deleteObject(constraint)
 
@@ -533,8 +533,8 @@ public final class ConstraintManager: NSObject {
       [unowned self] () -> Void in
 
       let (replacements, additions) = constraint.manager!.replacementCandidatesForAddingAttribute(constraint.firstAttribute)
-      let constraintsToRemove = filter(constraint.firstItem!.firstItemConstraints, {replacements ∋ $0.firstAttribute})
-      self.remoteElement.managedObjectContext?.deleteObjects(constraintsToRemove)
+      let constraintsToRemove = constraint.firstItem!.firstItemConstraints.filter {replacements ∋ $0.firstAttribute}
+      self.remoteElement.managedObjectContext?.deleteObjects(Set(constraintsToRemove))
 
       let frame = metrics[constraint.firstItem!.uuidIndex]!
       let bounds = frame.rectWithOrigin(CGPoint.zeroPoint)
@@ -788,8 +788,8 @@ public final class ConstraintManager: NSObject {
   */
   public func constraintsForAttribute(attribute: NSLayoutAttribute, ofOrder order: Order = .None) -> Set<Constraint> {
     switch order {
-      case .None, .First:  return filter(remoteElement.firstItemConstraints, { $0.firstAttribute == attribute })
-      case .Second:        return filter(remoteElement.secondItemConstraints, { $0.secondAttribute == attribute })
+      case .None, .First:  return filter(remoteElement.firstItemConstraints, includeElement: { $0.firstAttribute == attribute })
+      case .Second:        return filter(remoteElement.secondItemConstraints, includeElement: { $0.secondAttribute == attribute })
     }
   }
 

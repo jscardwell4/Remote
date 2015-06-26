@@ -12,7 +12,7 @@ import MoonKit
 import ObjectiveC
 
 @objc(ModelObject)
-public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable, Equatable {
+public class ModelObject: NSManagedObject, Model, JSONValueConvertible {
 
 
   /// MARK: - Initializers
@@ -220,8 +220,12 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
 
   - returns: Self?
   */
-  public class func objectMatchingPredicate(predicate: NSPredicate, context: NSManagedObjectContext) -> Self? {
-    return typeCast(objectsMatchingPredicate(predicate, fetchLimit: 1, context: context).first, self)
+//  public class func objectMatchingPredicate(predicate: NSPredicate, context: NSManagedObjectContext) -> Self? {
+//    return objectMatchingPredicate(predicate, context: context, type: self)
+//  }
+
+  public class func objectMatchingPredicate<T>(predicate: NSPredicate, context: NSManagedObjectContext) -> T? {
+    return objectsMatchingPredicate(predicate, fetchLimit: 1, context: context).first as? T
   }
 
   /**
@@ -245,10 +249,17 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   {
     let request = NSFetchRequest(entityName: entityName, predicate: predicate)
     request.fetchLimit = fetchLimit
-    if sortBy != nil {
-      request.sortDescriptors = ",".split(sortBy!).map{NSSortDescriptor(key: $0, ascending: ascending)}
+    if let sortBy = sortBy {
+      request.sortDescriptors = ",".split(sortBy).map {
+        (s:String) -> NSSortDescriptor in return NSSortDescriptor(key: s, ascending: ascending)
+      }
     }
-    return context.executeFetchRequest(request) as? [ModelObject] ?? []
+    do {
+      let results = try context.executeFetchRequest(request)
+      return results as! [ModelObject]
+    } catch {
+      return []
+    }
   }
 
   /**
@@ -286,7 +297,10 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   {
     let request = NSFetchRequest(entityName: entityName, predicate: predicate)
     if let g = groupBy {request.propertiesToGroupBy = ",".split(g) }
-    request.sortDescriptors = ",".split(sortBy).map {NSSortDescriptor(key: $0, ascending: ascending)}
+    request.sortDescriptors = ",".split(sortBy).map {
+      (s:String) -> NSSortDescriptor in
+        return NSSortDescriptor(key: s, ascending: ascending)
+      }
     return NSFetchedResultsController(fetchRequest: request,
                                       managedObjectContext: context,
                                       sectionNameKeyPath: nil,
@@ -311,10 +325,13 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
     request.returnsDistinctResults = true
     request.propertiesToFetch = [attribute]
 
-    var error: NSError?
-    let results = compressedMap(context.executeFetchRequest(request), {($0 as? [String:AnyObject])?[attribute]})
-    MSHandleError(error)
-    return results ?? []
+    do {
+      let results = try context.executeFetchRequest(request)
+      return compressedMap(results) {($0 as? [String:AnyObject])?[attribute]}
+    } catch {
+      MSHandleError(error as NSError)
+      return []
+    }
   }
 
 
@@ -332,7 +349,7 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   */
   public class func importObjectWithData(data: ObjectJSONValue, context: NSManagedObjectContext) -> Self? {
     if let object = objectWithData(data, context: context) { return object }
-    else { return self(data: data, context: context) }
+    else { return self.init(data: data, context: context) }
   }
 
   public class func importObjectWithData(data: ObjectJSONValue?, context: NSManagedObjectContext) -> Self? {
@@ -442,7 +459,7 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   - returns: T?
   */
   public func relatedObjectWithData<T:ModelObject>(data: ObjectJSONValue, forAttribute attribute: String, lookupKey: String? = nil) -> T? {
-    if let relationshipDescription = entity.relationshipsByName[attribute] as? NSRelationshipDescription,
+    if let relationshipDescription = entity.relationshipsByName[attribute],
       relatedTypeName = relationshipDescription.destinationEntity?.managedObjectClassName,
       relatedType = NSClassFromString(relatedTypeName) as? ModelObject.Type,
       relatedObjectData = ObjectJSONValue(data[lookupKey ?? attribute]),
@@ -463,7 +480,7 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
   public func updateRelationshipFromData(data: ObjectJSONValue, forAttribute attribute: String, lookupKey: String? = nil) -> Bool {
 
     // Retrieve the relationship description
-    if let relationshipDescription = entity.relationshipsByName[attribute] as? NSRelationshipDescription {
+    if let relationshipDescription = entity.relationshipsByName[attribute] {
       // Obtain relationship data
       let key = lookupKey ?? attribute
       if let relationshipData = ObjectJSONValue(data[key] ?? .Null) where !relationshipDescription.toMany {
@@ -597,7 +614,7 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible, Hashable
             inout toObject object: ObjectJSONValue)
   {
     let value: Any?
-    if let attributeDescription = entity.attributesByName[key] as? NSAttributeDescription
+    if let attributeDescription = entity.attributesByName[key]
       where attributeDescription.attributeType == .BooleanAttributeType
     {
       value = (valueForKey(key) as? NSNumber)?.boolValue

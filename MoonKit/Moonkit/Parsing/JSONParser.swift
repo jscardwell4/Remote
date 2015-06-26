@@ -106,29 +106,18 @@ public class JSONParser {
   public enum JSONParserErrorCode: Int { case Internal, InvalidSyntax }
 
   /**
-  setError:code:reason:
-
-  - parameter pointer: NSErrorPointer
   - parameter code: JSONParserErrorCode
   - parameter reason: String?
+  
+  - returns: NSError
   */
-  private func setError(pointer: NSErrorPointer,
-                 _ code: JSONParserErrorCode,
-               _ reason: String?,
-        underlyingError: NSError? = nil)
+  private func errorWithCode(code: JSONParserErrorCode,
+                    _ reason: String?,
+             underlyingError: NSError? = nil) -> NSError
   {
-    // Make sure we have memory in which to put the error object
-    if pointer != nil {
 
       // Create the info dictionary for our new error object
       var info = [NSObject:AnyObject]()
-
-      // Check if we already have an error in the pointer's memory
-      if let existingError = pointer.memory {
-
-        info[NSUnderlyingErrorKey] = existingError
-
-      }
 
       // Check if we have been provided with an underlying error
       if let providedUnderlyingError = underlyingError {
@@ -159,32 +148,27 @@ public class JSONParser {
       }
 
       // Finally, set the pointer's memory to a new error object
-      pointer.memory = NSError(domain: JSONParserErrorDomain, code: code.rawValue, userInfo: info)
-
-    }
-
+      return NSError(domain: JSONParserErrorDomain, code: code.rawValue, userInfo: info)
   }
 
   /**
-  setInternalError:reason:underlyingError:
-
-  - parameter pointer: NSErrorPointer
   - parameter reason: String?
   - parameter underlyingError: NSError? = nil
+
+  - returns: NSError
   */
-  private func setInternalError(pointer: NSErrorPointer, _ reason: String?, underlyingError: NSError? = nil) {
-    setError(pointer, .Internal, reason, underlyingError: underlyingError)
+  private func internalError(reason: String?, underlyingError: NSError? = nil) -> NSError {
+    return errorWithCode(.Internal, reason, underlyingError: underlyingError)
   }
 
   /**
-  setSyntaxError:reason:underlyingError:
-
-  - parameter pointer: NSErrorPointer
   - parameter reason: String?
   - parameter underlyingError: NSError? = nil
+
+  - returns: NSError
   */
-  private func setSyntaxError(pointer: NSErrorPointer, _ reason: String?, underlyingError: NSError? = nil) {
-    setError(pointer, .InvalidSyntax, reason, underlyingError: underlyingError)
+  private func syntaxError(reason: String?, underlyingError: NSError? = nil) -> NSError {
+    return errorWithCode(.InvalidSyntax, reason, underlyingError: underlyingError)
   }
 
   /**
@@ -229,23 +213,21 @@ public class JSONParser {
   - parameter object: AnyObject?
   - parameter discardingComments: Bool = true
   - parameter skipCharacters: NSCharacterSet = NSCharacterSet.whitespaceAndNewlineCharacterSet()
-  - parameter error: NSErrorPointer = nil
 
   - returns: Bool
   */
   private func scanFor(type: ScanType,
             inout into object: AnyObject?,
     discardingComments: Bool = true,
-              skipping skipCharacters: NSCharacterSet = NSCharacterSet.whitespaceAndNewlineCharacterSet()) throws
+              skipping skipCharacters: NSCharacterSet = NSCharacterSet.whitespaceAndNewlineCharacterSet()) -> Bool
   {
-    var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
-
     var success = false
 
-    if discardingComments { scanComment(error) }
+    if discardingComments { do { try scanComment() } catch {} }
 
     let currentSkipCharacters = scanner.charactersToBeSkipped
     scanner.charactersToBeSkipped = skipCharacters
+    defer { scanner.charactersToBeSkipped = currentSkipCharacters }
 
     switch type {
 
@@ -276,61 +258,51 @@ public class JSONParser {
 
     }
 
-    scanner.charactersToBeSkipped = currentSkipCharacters
-    if discardingComments { scanComment(error) }
+//    scanner.charactersToBeSkipped = currentSkipCharacters
+    if discardingComments { do { try scanComment() } catch {} }
 
-    if success {
-      return
-    }
-    throw error
-
+    return success
   }
 
-  /**
-  scanComment:
-
-  - parameter error: NSErrorPointer
-  */
-  private func scanComment(error: NSErrorPointer) {
+  /** scanComment */
+  private func scanComment() throws {
 
     var scannedObject: AnyObject?
 
     // Try scanning the for solidus characters
-    do {
-      try scanFor(.CharactersFromSet(NSCharacterSet(charactersInString: "/" )),
-            into: &scannedObject, discardingComments: false)
+    if scanFor(.CharactersFromSet(NSCharacterSet(charactersInString: "/" )),
+      into: &scannedObject, discardingComments: false) {
 
         if let scannedString = scannedObject as? String {
 
           if scannedString.hasPrefix("//") {
 
-            do {
-              try scanFor(.UpToCharactersFromSet(NSCharacterSet.newlineCharacterSet()),
-                into: &scannedObject, discardingComments: false, skipping: NSCharacterSet(charactersInString: ""))
-            } catch _ {
+            scanFor(.UpToCharactersFromSet(NSCharacterSet.newlineCharacterSet()),
+              into: &scannedObject, discardingComments: false, skipping: NSCharacterSet(charactersInString: ""))
+
+          }
+
+          else if scanFor(.CharactersFromSet(NSCharacterSet(charactersInString: "*" )),
+            into: &scannedObject, discardingComments: false, skipping: NSCharacterSet(charactersInString: ""))
+          {
+            if !scanFor(.UpToText("*/"), into: &scannedObject, discardingComments: false) {
+              throw syntaxError("open-ended multi-line comment")
             }
+
+            else { scanFor(.Text("*/"), into: &scannedObject, discardingComments: false) }
 
           }
 
           else {
-            do {
-              try scanFor(.CharactersFromSet(NSCharacterSet(charactersInString: "*" )),
-                          into: &scannedObject, discardingComments: false, skipping: NSCharacterSet(charactersInString: ""))
-              do { try scanFor(.UpToText("*/"), into: &scannedObject, discardingComments: false); do {
-                  try scanFor(.Text("*/"), into: &scannedObject, discardingComments: false)
-                } catch _ {
-                } } catch _ {
-                setSyntaxError(error, "open-ended multi-line comment")
-              }
-
-            } catch _ { setSyntaxError(error, "malformed comment detected") }
+            throw syntaxError("malformed comment detected")
           }
 
         }
 
-        else { setInternalError(error, "scan succeeded but scanned object is empty") }
+        else {
+          throw internalError("scan succeeded but scanned object is empty")
+        }
 
-    } catch _ {
     }
 
   }
@@ -342,12 +314,7 @@ public class JSONParser {
 
   - returns: Bool
   */
-  private func scanNumber(inout number:AnyObject?) -> Bool { do {
-      try scanFor(.Number, into: &number)
-      return true
-    } catch _ {
-      return false
-    } }
+  private func scanNumber(inout number:AnyObject?) -> Bool { return scanFor(.Number, into: &number) }
 
   /**
   scanQuotedString:error:
@@ -357,19 +324,18 @@ public class JSONParser {
 
   - returns: Bool
   */
-  private func scanQuotedString(inout string:AnyObject?) throws {
-    var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
-
+  private func scanQuotedString(inout string:AnyObject?) throws -> Bool {
     var scannedObject: AnyObject?
     var success = false
 
-    do {
-      try scanFor(.Text("\""), into: &scannedObject)
+    if scanFor(.Text("\""), into: &scannedObject) {
 
       var scannedString = ""
 
       // Check if we have an empty string
-      do { try scanFor(.Text("\""), into: &scannedObject); success = true } catch _ {
+      if scanFor(.Text("\""), into: &scannedObject) { success = true }
+
+      else {
 
         while !success && scanFor(.UpToCharactersFromSet(NSCharacterSet(charactersInString: "\"")),
           into: &scannedObject, skipping: NSCharacterSet(charactersInString: ""))
@@ -391,7 +357,7 @@ public class JSONParser {
         if !(success && scanFor(.Text("\""), into: &scannedObject, skipping: NSCharacterSet(charactersInString: ""))) {
 
           success = false
-          setSyntaxError(error, "unmatched double quote")
+          throw syntaxError("unmatched double quote")
 
         }
 
@@ -400,13 +366,9 @@ public class JSONParser {
       // If we have succeeded, be sure to set the inout parameter to our accumulated string
       if success { string = scannedString }
 
-    } catch _ {
     }
 
-    if success {
-      return
-    }
-    throw error
+    return success
 
   }
 
@@ -422,16 +384,13 @@ public class JSONParser {
 
   - returns: Bool
   */
-  private func parseObject() throws {
-    var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
+  private func parseObject() throws -> Bool {
 
     var success = false
-    var localError: NSError?
     var scannedObject: AnyObject?
 
     // Try to scan the opening punctuation for an object
-    do {
-      try scanFor(.Text("{"), into: &scannedObject, error: &localError)
+    if scanFor(.Text("{"), into: &scannedObject) {
 
       success = true
       objectStack.push(.Object([:])) // Push a new dictionary onto the object stack
@@ -439,14 +398,16 @@ public class JSONParser {
       contextStack.push(.Key)        // Push key context
 
 
-    } catch _ {
-      do {
-        try scanFor(.Text(","), into: &scannedObject, error: &localError)
+    }
+
+    // Then try to scan a comma separating another object key value pair
+    else if scanFor(.Text(","), into: &scannedObject) {
         success = true
         contextStack.push(.Key)
-      } catch _ {
-        do {
-          try scanFor(.Text("}"), into: &scannedObject, error: &localError)
+    }
+
+      // Lastly, try to scan the closing punctuation for an object
+    else if scanFor(.Text("}"), into: &scannedObject) {
 
           // Pop context and object stacks
           if let context = contextStack.pop(), object = objectStack.pop() {
@@ -461,19 +422,14 @@ public class JSONParser {
                 success = true
 
               case (.Object, .Object(_)):
-                do {
-                  try addValueToTopObject(object)
-                  success = true
-                } catch var error1 as NSError {
-                  error = error1
-                  success = false
-                }
+                do { try addValueToTopObject(object); success = true } catch { throw error }
 
               case (_, .Object(_)):
-                setInternalError(error, "incorrect context popped off of stack", underlyingError: localError)
+
+                throw internalError("incorrect context popped off of stack")
 
               case (.Object, _):
-                setInternalError(error, "dictionary absent from object stack", underlyingError: localError)
+                throw internalError("dictionary absent from object stack")
 
               default:
                 assert(false, "shouldn't this be unreachable?")
@@ -481,18 +437,13 @@ public class JSONParser {
 
           }
 
-          else { setInternalError(error, "one or both of context and object stacks is empty", underlyingError: localError) }
-
-        } catch _ {
-        }
+          else {
+            throw internalError("one or both of context and object stacks is empty")
       }
+
     }
 
-    if success {
-      return
-    }
-    throw error
-
+    return success
   }
 
   /**
@@ -502,30 +453,29 @@ public class JSONParser {
 
   - returns: Bool
   */
-  private func parseArray() throws {
-    var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
+  private func parseArray() throws -> Bool {
 
     var success = false
-    var localError: NSError?
     var scannedObject: AnyObject?
 
     // Try to scan the opening punctuation for an object
-    do {
-      try scanFor(.Text("["), into: &scannedObject, error: &localError)
+    if scanFor(.Text("["), into: &scannedObject) {
 
       success = true
       objectStack.push(.Array([])) // Push a new array onto the object stack
       contextStack.push(.Array)    // Push the array context
       contextStack.push(.Value)    // Push the value context
 
-    } catch _ {
-      do {
-        try scanFor(.Text(","), into: &scannedObject, error: &localError)
+    }
+
+      // Then try to scan a comma separating another object key value pair
+    else if scanFor(.Text(","), into: &scannedObject) {
         success = true
         contextStack.push(.Value)
-      } catch _ {
-        do {
-          try scanFor(.Text("]"), into: &scannedObject, error: &localError)
+    }
+
+      // Lastly, try to scan the closing punctuation for an object
+    else if scanFor(.Text("]"), into: &scannedObject) {
 
           // Pop context and object stacks
           if let context = contextStack.pop(), object = objectStack.pop() {
@@ -542,34 +492,27 @@ public class JSONParser {
               do {
                 try addValueToTopObject(object)
                 success = true
-              } catch var error1 as NSError {
-                error = error1
-                success = false
+              } catch {
+                throw error
               }
 
             case (_, .Array(_)):
-              setInternalError(error, "incorrect context popped off of stack", underlyingError: localError)
+              throw internalError("incorrect context popped off of stack")
 
             case (.Array, _):
-              setInternalError(error, "array absent from object stack", underlyingError: localError)
+              throw internalError("array absent from object stack")
 
             default:
               assert(false, "shouldn't this be unreachable?")
             }
           }
 
-          else { setInternalError(error, "one or both of context and object stacks is empty", underlyingError: localError) }
-
-        } catch _ {
-        }
+          else {
+            throw internalError("one or both of context and object stacks is empty")
       }
-    }
 
-    if success {
-      return
     }
-    throw error
-
+    return success
   }
 
   /**
@@ -579,79 +522,68 @@ public class JSONParser {
 
   - returns: Bool
   */
-  private func parseValue() throws {
-    var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
+  private func parseValue() throws -> Bool {
 
     var success = false
     var value: JSONValue?
-    var scanError: NSError?
     var scannedObject: AnyObject?
 
     if !(contextStack.pop() == Context.Value) {
-      setInternalError(error, "incorrect context popped off of stack")
-      throw error
+      throw internalError("incorrect context popped off of stack")
     }
 
     // Try scanning a true literal
-    do {
-      try scanFor(.Text("true"), into: &scannedObject, error: &scanError)
+    if scanFor(.Text("true"), into: &scannedObject) {
       value = true
       success = true
-    } catch _ {
-      do {
-        try scanFor(.Text("false"), into: &scannedObject, error: &scanError)
+    }
+
+      // Try scanning a false literal
+    else if scanFor(.Text("false"), into: &scannedObject) {
         value = false
         success = true
-      } catch _ {
-        do {
-          try scanFor(.Text("null"), into: &scannedObject, error: &scanError)
+    }
+
+      // Try scanning a null literal
+    else if scanFor(.Text("null"), into: &scannedObject) {
           value = .Null
           success = true
-        } catch _ {
-          do {
-            try scanFor(.Number, into: &scannedObject, error: &scanError)
+    }
+
+      // Try scanning a number
+    else if scanFor(.Number, into: &scannedObject) {
             value = .Number(scannedObject as! NSNumber)
             success = true
-          } catch _ {
-            do {
-              try scanQuotedString(&scannedObject)
-              value = .String(scannedObject as! Swift.String)
-              success = true
-            } catch var error3 as NSError {
-              scanError = error3
-              do { try parseObject(); success = true } catch var error2 as NSError {
-                scanError = error2
-                do { try parseArray(); success = true } catch var error1 as NSError { scanError = error1; setSyntaxError(error, "failed to parse value", underlyingError: scanError) }
-              }
-            }
-          }
+    }
+
+    else {
+      do {
+        // Try scanning a string
+        if (try scanQuotedString(&scannedObject)) {
+          value = .String(scannedObject as! Swift.String)
+          success = true
+        } else if (try parseObject()) {
+          success = true
+        } else if (try parseArray()) {
+          success = true
+        } else {
+          throw syntaxError("failed to parse value")
         }
+      } catch {
+        throw error
       }
     }
 
     // If we have a value, add it to the top object in our stack
     if let v = value where success {
-
-      var addValueError: NSError?
       do {
         try addValueToTopObject(v)
-        success = true
-      } catch var error as NSError {
-        addValueError = error
-        success = false
+      } catch {
+        throw error
       }
-
-      // Handle error adding value if not successful
-      if addValueError != nil {
-        setInternalError(error, "error encountered while adding parsed value", underlyingError: addValueError)
-      }
-
     }
 
-    if success {
-      return
-    }
-    throw error
+    return success
 
   }
 
@@ -662,44 +594,36 @@ public class JSONParser {
 
   - returns: Bool
   */
-  private func parseKey() throws {
-    var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
+  private func parseKey() throws -> Bool {
 
-    var success = false
-    var localError: NSError?
+    var localError = false
     var scannedObject: AnyObject?
 
-    // Set error if we can't scan a string
     do {
-      try scanQuotedString(&scannedObject)
+      if (try scanQuotedString(&scannedObject)) {
+        if contextStack.pop() != .Key {
+          localError = true
+          throw internalError("incorrect context popped off of stack")
+        } else if let key = scannedObject as? String {
+          keyStack.push(key)
 
-      // Pop off context, making sure it is of the correct value
-      if contextStack.pop() != .Key {
-        setInternalError(error, "incorrect context popped off of stack", underlyingError: localError)
-      }
+          // Parse the delimiting colon
+          if !scanFor(.Text(":"), into: &scannedObject) {
+            localError = true
+            throw syntaxError("missing colon after key")
+          }
 
-        // Otherwise push the key we scanned into the key stack and look for a colon
-      else if let key = scannedObject as? String {
-
-        keyStack.push(key)
-
-        // Parse the delimiting colon
-        do { try scanFor(.Text(":"), into: &scannedObject, error: &localError); contextStack.push(.Value); success = true } catch _ {
-          setSyntaxError(error, "missing colon after key", underlyingError: localError)
+            // Push value context and set success if we found the colon
+          else { contextStack.push(.Value); return true }
         }
-
+      } else {
+        return false
       }
-
-    } catch var error1 as NSError {
-      localError = error1
-      setSyntaxError(error, "missing key for object element", underlyingError: localError)
+    } catch {
+      throw localError ? error : syntaxError("missing key for object element", underlyingError: error as NSError)
     }
 
-    if success {
-      return
-    }
-    throw error
-
+    return false
   }
 
 
@@ -712,9 +636,6 @@ public class JSONParser {
   - returns: Bool
   */
   private func addValueToTopObject(value: JSONValue) throws {
-    var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
-
-    var success = false
 
     if let context = contextStack.peek, object = objectStack.pop() {
 
@@ -723,21 +644,21 @@ public class JSONParser {
           if let k = keyStack.pop() {
             d[k] = value
             objectStack.push(.Object(d))
-            success = true
-          } else { setInternalError(error, "empty key stack") }
+          } else {
+            throw internalError("empty key stack")
+        }
 
         case (.Array, .Array(var a)):
           a.append(value)
           objectStack.push(.Array(a))
-          success = true
 
         case (_, .Object(_)),
              (_, .Array(_)):
-          setInternalError(error, "invalid context-object pairing: \(context)-\(object)")
+          throw internalError("invalid context-object pairing: \(context)-\(object)")
 
         case (.Object, _),
              (.Array, _):
-          setInternalError(error, "missing object in stack to receive new value")
+          throw internalError("missing object in stack to receive new value")
 
         default:
           assert(false, "should be unreachable?")
@@ -745,23 +666,16 @@ public class JSONParser {
 
     } else if allowFragment && objectStack.isEmpty {
       objectStack.push(value)
-      success = true
       if contextStack.peek == .Start { contextStack.pop(); contextStack.push(.End) }
     } else if contextStack.isEmpty && objectStack.isEmpty {
-      setInternalError(error, "empty stacks")
+      throw internalError("empty stacks")
     } else if contextStack.isEmpty {
-      setInternalError(error, "empty context stack")
+      throw internalError("empty context stack")
     } else if objectStack.isEmpty {
-      setInternalError(error, "empty object stack")
+      throw internalError("empty object stack")
     } else {
-      setInternalError(error, "an unknown internal error has occurred")
+      throw internalError("an unknown internal error has occurred")
     }
-
-    if success {
-      return
-    }
-    throw error
-
   }
 
   /**
@@ -772,7 +686,6 @@ public class JSONParser {
   - returns: JSONValue?
   */
   public func parse() throws -> JSONValue {
-    var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
 
     // Start in a known context
     contextStack.push(.Start)
@@ -792,72 +705,54 @@ public class JSONParser {
             // Check if we are allowing the string to be a json fragment
             if allowFragment {
               contextStack.push(.Value)
-              do {
-                try parseValue()
-              } catch var error1 as NSError {
-                setSyntaxError(error1, "root is not a valid json fragment")
-                throw error1
-              }
+              do { try parseValue() }
+              catch { throw syntaxError("root is not a valid json fragment", underlyingError: error as NSError) }
+
             }
 
             // Set error if we fail to match the start of an array or an object and exit loop
-            else if !(parseObject() || parseArray()) {
-              setSyntaxError(error, "root must be an object/array")
-              throw error
+            else {
+              var didParse = false
+              do {
+                didParse = try parseObject()
+                if !didParse { didParse = try parseArray() }
+              } catch { throw error }
+              if !didParse { throw syntaxError("root must be an object/array") }
             }
 
           // Try to scan a number, a boolean, null, the start of an object, or the start of an array
-          case .Value: do {
-              try parseValue()
-            } catch var error1 as NSError { error = error1; break scanLoop }
+          case .Value: do { if !(try parseValue()) { break scanLoop } } catch { throw error }
 
           // Try to scan a comma or curly bracket
-          case .Object: do {
-              try parseObject()
-            } catch var error1 as NSError { error = error1; break scanLoop }
+          case .Object: do { if !(try parseObject()) { break scanLoop } } catch { throw error }
 
           // Try to scan a comma or square bracket
-          case .Array: do {
-              try parseArray()
-            } catch var error1 as NSError { error = error1; break scanLoop }
+          case .Array: do { if !(try parseArray()) { break scanLoop } } catch { throw error }
 
           // Try to scan a quoted string for use as a dictionary key
-          case .Key: do {
-              try parseKey()
-            } catch var error1 as NSError { error = error1; break scanLoop }
+          case .Key: do { if !(try parseKey()) { break scanLoop } } catch { throw error }
 
           // Just break out of scan loop
           case .End:
-            if !(scanner.atEnd || ignoreExcess) {
-              setSyntaxError(error, "parse completed but scanner is not at end")
-              throw error
-            }
+            if !(scanner.atEnd || ignoreExcess) { throw syntaxError("parse completed but scanner is not at end") }
             break scanLoop
-
         }
 
-      } // else { contextStack.push(.End) }
+      }
 
 
     }
-
-    var object: JSONValue?  // Variable to hold result to be returned
 
     // If the root object ends the text we won't hit the `.End` case in our switch statement
     if !objectStack.isEmpty {
 
       // Make sure we don't have more than one object left in the stack
-      if objectStack.count > 1 { setInternalError(error, "objects left in stack") }
+      if objectStack.count > 1 { throw internalError("objects left in stack") }
 
       // Otherwise pop the root object from the stack
-      else { object = objectStack.pop() }
+      else { return objectStack.pop()! }
 
-    }
-
-    if var value = object {
-      return value
-    }
-    throw error
+    } else { throw syntaxError("failed to parse anything") }
 
   }
 

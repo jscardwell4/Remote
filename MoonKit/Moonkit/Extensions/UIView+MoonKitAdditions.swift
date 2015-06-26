@@ -94,7 +94,7 @@ public extension UIView {
 
   - returns: T?
   */
-  public func firstSubviewOfKind<T:UIView>(kind: T.Type) -> T? { return findFirst(subviews, predicate: {$0 as? T != nil}) as? T }
+  public func firstSubviewOfKind<T:UIView>(kind: T.Type) -> T? { return findFirst(subviews, {$0 as? T != nil}) as? T }
 
   /**
   subviewsOfType:
@@ -116,7 +116,7 @@ public extension UIView {
   - returns: T?
   */
   public func firstSubviewOfType<T:UIView>(type: T.Type) -> T? {
-    return findFirst(subviews, predicate: {(s:AnyObject) -> Bool in return s.dynamicType.self === T.self}) as? T
+    return findFirst(subviews, {(s:AnyObject) -> Bool in return s.dynamicType.self === T.self}) as? T
   }
 
   /**
@@ -140,7 +140,7 @@ public extension UIView {
   */
   @objc(firstSubviewMatchingPredicate:)
   public func firstSubviewMatching(predicate: NSPredicate) -> UIView? {
-    return findFirst(subviews, predicate: {(s:AnyObject) -> Bool in return predicate.evaluateWithObject(s)}) as? UIView
+    return findFirst(subviews, {(s:AnyObject) -> Bool in return predicate.evaluateWithObject(s)})
   }
 
   /**
@@ -162,7 +162,7 @@ public extension UIView {
   - returns: UIView?
   */
   public func firstSubviewMatching(predicate: (AnyObject) -> Bool) -> UIView? {
-    return findFirst(subviews, predicate: predicate) as? UIView
+    return findFirst(subviews, predicate)
   }
 
   /**
@@ -249,6 +249,11 @@ public extension UIView {
     addConstraints(constraints)
     return constraints
   }
+
+  public func constrain(arrays: [Pseudo]...) -> [NSLayoutConstraint] {
+    return []
+  }
+
   /**
   constrain:pseudo:
 
@@ -259,7 +264,7 @@ public extension UIView {
   */
   public func constrain(selfAsSuperview: Bool = true,
              identifier id: String? = nil,
-                      _ pseudo: [PseudoConstraint] ...) -> [NSLayoutConstraint]
+                      _ pseudo: Array<PseudoConstraint> ...) -> [NSLayoutConstraint]
   {
     var constraints: [PseudoConstraint] = pseudo.flatMap {$0}
 
@@ -268,7 +273,7 @@ public extension UIView {
       // Find the deepest ancestor shared by all constraint objects
       var deepestAncestor: UIView?
       for constraint in constraints {
-        let ancestor = discernNearestAncestor(constraint.firstObject, obj2: constraint.secondObject)
+        let ancestor = discernNearestAncestor(constraint.firstObject, constraint.secondObject)
         switch (ancestor, deepestAncestor) {
           case let (a, d) where d == nil && a != nil:
             deepestAncestor = a

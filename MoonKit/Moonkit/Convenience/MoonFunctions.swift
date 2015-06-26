@@ -24,7 +24,7 @@ private let fileManager = NSFileManager.defaultManager()
   @objc public class func libraryPath() -> String? {
     let urls = fileManager.URLsForDirectory(NSSearchPathDirectory.LibraryDirectory,
                                   inDomains: NSSearchPathDomainMask.UserDomainMask)
-    return ((urls.count > 0 && urls[0] is NSURL) ? (urls[0] as NSURL).path : nil)
+    return urls.first?.path
   }
 
   /**
@@ -66,7 +66,7 @@ private let fileManager = NSFileManager.defaultManager()
   @objc public class func documentsPath() -> String! {
     let urls = fileManager.URLsForDirectory(NSSearchPathDirectory.DocumentDirectory,
                                                      inDomains: NSSearchPathDomainMask.UserDomainMask)
-    return ((urls.count > 0 && urls[0] is NSURL) ? (urls[0] as NSURL).path : nil)
+    return urls.first?.path
   }
 
   /**
@@ -75,10 +75,13 @@ private let fileManager = NSFileManager.defaultManager()
   - returns: [String]
   */
   @objc public class func documentsDirectoryContents() -> [String] {
-    let error: NSError? = nil
-    let directoryContents = fileManager.contentsOfDirectoryAtPath(documentsPath()) as? [String]
-    MSHandleError(error, message: "failed to get directory contents")
-    return directoryContents ?? []
+    do {
+      let directoryContents = try fileManager.contentsOfDirectoryAtPath(documentsPath())
+      return directoryContents
+    } catch {
+      MSHandleError(error as NSError, message: "failed to get directory contents")
+    }
+    return []
   }
 
   /**

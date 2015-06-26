@@ -103,7 +103,7 @@ public class LabeledStepper: UIControl {
     stepper.setBackgroundImage(image, forState: state)
   }
 
-  public func backgroundImageForState(state: UIControlState) -> UIImage { return stepper.backgroundImageForState(state) }
+  public func backgroundImageForState(state: UIControlState) -> UIImage? { return stepper.backgroundImageForState(state) }
 
   public func setDividerImage(image: UIImage?,
           forLeftSegmentState leftState: UIControlState,
@@ -120,13 +120,13 @@ public class LabeledStepper: UIControl {
     stepper.setIncrementImage(image, forState: state)
   }
 
-  public func incrementImageForState(state: UIControlState) -> UIImage { return stepper.incrementImageForState(state) }
+  public func incrementImageForState(state: UIControlState) -> UIImage? { return stepper.incrementImageForState(state) }
 
   public func setDecrementImage(image: UIImage?, forState state: UIControlState) {
     stepper.setDecrementImage(image, forState: state)
   }
 
-  public func decrementImageForState(state: UIControlState) -> UIImage { return stepper.decrementImageForState(state) }
+  public func decrementImageForState(state: UIControlState) -> UIImage? { return stepper.decrementImageForState(state) }
 
   public override var tracking: Bool { return stepper.tracking }
   public override var touchInside: Bool { return stepper.touchInside }

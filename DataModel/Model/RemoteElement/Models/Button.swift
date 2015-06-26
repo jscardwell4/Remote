@@ -498,14 +498,14 @@ public final class Button: RemoteElement {
   public var selected: Bool {
     get {
       willAccessValueForKey("selected")
-      let selected = hasOption(.Selected, state)
+      let selected = state.contains(.Selected)
       didAccessValueForKey("selected")
       return selected
     }
     set {
       willChangeValueForKey("selected")
       var state = self.state
-      if newValue { setOption(.Selected, &state) } else { unsetOption(.Selected, &state) }
+      if newValue { state.unionInPlace(.Selected) } else { state.remove(.Selected) }
       self.state = state
       didChangeValueForKey("selected")
     }
@@ -514,14 +514,14 @@ public final class Button: RemoteElement {
   public var highlighted: Bool {
     get {
       willAccessValueForKey("highlighted")
-      let highlighted = hasOption(.Highlighted, state)
+      let highlighted = state.contains(.Highlighted)
       didAccessValueForKey("highlighted")
       return highlighted
     }
     set {
       willChangeValueForKey("highlighted")
       var state = self.state
-      if newValue { setOption(.Highlighted, &state) } else { unsetOption(.Highlighted, &state) }
+      if newValue { state.unionInPlace(.Highlighted) } else { state.remove(.Highlighted) }
       self.state = state
       didChangeValueForKey("highlighted")
     }
@@ -530,14 +530,14 @@ public final class Button: RemoteElement {
   public var enabled: Bool {
     get {
       willAccessValueForKey("enabled")
-      let enabled = !hasOption(.Disabled, state)
+      let enabled = !state.contains(.Disabled)
       didAccessValueForKey("enabled")
       return enabled
     }
     set {
       willChangeValueForKey("enabled")
       var state = self.state
-      if !newValue { setOption(.Disabled, &state) } else { unsetOption(.Disabled, &state) }
+      if !newValue { state.unionInPlace(.Disabled) } else { state.remove(.Disabled) }
       self.state = state
       didChangeValueForKey("enabled")
     }

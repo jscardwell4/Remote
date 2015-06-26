@@ -229,7 +229,7 @@ public final class DrawingKit {
                                 DrawingKit.thinLightShadow.shadowOffset,
                                 DrawingKit.thinLightShadow.shadowBlurRadius,
                                 (upperHalfCircleOpaqueShadow as UIColor).CGColor)
-   CGContextSetBlendMode(context, kCGBlendModeSourceOut)
+   CGContextSetBlendMode(context, .SourceOut)
    CGContextBeginTransparencyLayer(context, nil)
 
     upperHalfCircleOpaqueShadow.setFill()
@@ -266,7 +266,7 @@ public final class DrawingKit {
                                 DrawingKit.thinLightShadow.shadowOffset,
                                 DrawingKit.thinLightShadow.shadowBlurRadius,
                                 (lowerHalfCircleOpaqueShadow as UIColor).CGColor)
-   CGContextSetBlendMode(context, kCGBlendModeSourceOut)
+   CGContextSetBlendMode(context, .SourceOut)
     CGContextBeginTransparencyLayer(context, nil)
 
     lowerHalfCircleOpaqueShadow.setFill()
@@ -429,7 +429,7 @@ public final class DrawingKit {
                                 colorInnerShadow.shadowOffset,
                                 colorInnerShadow.shadowBlurRadius,
                                 (colorFilledCircleOpaqueShadow as UIColor).CGColor)
-    CGContextSetBlendMode(context, kCGBlendModeSourceOut)
+    CGContextSetBlendMode(context, .SourceOut)
     CGContextBeginTransparencyLayer(context, nil)
 
     colorFilledCircleOpaqueShadow.setFill()
@@ -560,7 +560,7 @@ public final class DrawingKit {
                                 baseInnerShadow.shadowOffset,
                                 baseInnerShadow.shadowBlurRadius,
                                 (baseCircleOpaqueShadow as UIColor).CGColor)
-    CGContextSetBlendMode(context, kCGBlendModeSourceOut)
+    CGContextSetBlendMode(context, .SourceOut)
     CGContextBeginTransparencyLayer(context, nil)
 
     baseCircleOpaqueShadow.setFill()
@@ -596,7 +596,7 @@ public final class DrawingKit {
     CGContextDrawRadialGradient(context, gradient,
       CGPoint(x: 15.5, y: 15.5), 11.91,
       CGPoint(x: 15.5, y: 15.5), 15.94,
-      UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation))
+      [.DrawsBeforeStartLocation, .DrawsAfterEndLocation])
     CGContextRestoreGState(context)
 
 
@@ -680,7 +680,7 @@ public final class DrawingKit {
     // Group
     CGContextSaveGState(context)
     CGContextSetAlpha(context, invertedOpacity)
-    CGContextSetBlendMode(context, kCGBlendModeLuminosity)
+    CGContextSetBlendMode(context, .Luminosity)
     CGContextBeginTransparencyLayer(context, nil)
 
 

@@ -8,17 +8,17 @@
 
 import Foundation
 
-/////////////////////////////////////////////////////////////////////////////////
+
 /// Add boolean type support to the builtin bit enum
-/////////////////////////////////////////////////////////////////////////////////
-extension Bit: BooleanType {
+
+extension Bit: BooleanType, BooleanLiteralConvertible {
   public var boolValue: Bool { return self.rawValue == 1 }
-  static func fromBool(b:Bool) -> Bit { return b ? .One : .Zero }
+  public init(booleanLiteral value: Bool) { self = value ? .One : .Zero }
 }
 
-/////////////////////////////////////////////////////////////////////////////////
+
 /// The core bit array implementation
-/////////////////////////////////////////////////////////////////////////////////
+
 public struct BitArray: CollectionType {
 
   static var BitLimit = Int(round(log2(Double(UInt64.max))))
@@ -33,14 +33,16 @@ public struct BitArray: CollectionType {
 
   /** Subscripting */
   public subscript(i:Int) -> Bit {
-    get { return Bit.fromBool(isBitSet(i)) }
-    set { (Bool(newValue) ? setBit : unsetBit)(i) }
+    get { return Bit(booleanLiteral: isBitSet(i)) }
+    set { if newValue.boolValue { setBit(i) } else { unsetBit(i) } }
   }
+
+  public var isEmpty: Bool { return rawValue == 0 }
 
   /** Toggle an individual bit */
   public mutating func toggleBit(i:Int) {
     if i >= count { MSRaiseException(NSRangeException, reason: "i out of bounds", userinfo: nil) }
-    (isBitSet(i) ? unsetBit : setBit)(i)
+    if isBitSet(i) { unsetBit(i) } else { setBit(i) }
   }
 
   /** Set an individual bit */
@@ -73,24 +75,24 @@ public struct BitArray: CollectionType {
 
 public func ==(lhs:BitArray, rhs:BitArray) -> Bool { return lhs.rawValue == rhs.rawValue && lhs.count == rhs.count }
 
-/////////////////////////////////////////////////////////////////////////////////
+
 // MARK: - NSNumber conversions
-/////////////////////////////////////////////////////////////////////////////////
+
 extension BitArray {
   public func toNumber() -> NSNumber { return NSNumber(unsignedLongLong: rawValue) }
   public static func fromNumber(number:NSNumber, count:Int = 0) -> BitArray {
-    return self(storage:number.unsignedLongLongValue, count:count)
+    return self.init(storage:number.unsignedLongLongValue, count:count)
   }
 }
 
-/////////////////////////////////////////////////////////////////////////////////
+
 // MARK: - Hashable
-/////////////////////////////////////////////////////////////////////////////////
+
 extension BitArray: Hashable { public var hashValue: Int { return Int(rawValue) } }
 
-/////////////////////////////////////////////////////////////////////////////////
+
 // MARK: - Printable
-/////////////////////////////////////////////////////////////////////////////////
+
 extension BitArray: CustomStringConvertible {
   public var description:String {
     var chars = [Character]()
@@ -113,21 +115,21 @@ extension BitArray: CustomStringConvertible {
   }
 }
 
-/////////////////////////////////////////////////////////////////////////////////
+
 // MARK: - RawOptionSetType
-/////////////////////////////////////////////////////////////////////////////////
-extension BitArray: RawOptionSetType {
-  public static func fromMask(raw: UInt64) -> BitArray  { return self(rawValue: raw) }
+
+extension BitArray: Equatable, OptionSetType {
+  public static func fromMask(raw: UInt64) -> BitArray  { return self.init(rawValue: raw) }
 }
 
-/////////////////////////////////////////////////////////////////////////////////
+
 // MARK: - BooleanType
-/////////////////////////////////////////////////////////////////////////////////
+
 extension BitArray: BooleanType { public var boolValue: Bool { return rawValue != 0 } }
 
-/////////////////////////////////////////////////////////////////////////////////
+
 // MARK: - RawRepresentable
-/////////////////////////////////////////////////////////////////////////////////
+
 extension BitArray: RawRepresentable {
   public init(rawValue: UInt64) {
     self.init(storage: rawValue)
@@ -135,25 +137,25 @@ extension BitArray: RawRepresentable {
   public func toRaw() -> UInt64 { return rawValue }
 }
 
-/////////////////////////////////////////////////////////////////////////////////
+
 // MARK: - NilLiteralConvertible
-/////////////////////////////////////////////////////////////////////////////////
+
 extension BitArray: NilLiteralConvertible {
   public init(nilLiteral: Void) {
     self.init(rawValue: UInt64(0))
   }
-  public static func convertFromNilLiteral() -> BitArray { return self(storage:0) }
+  public static func convertFromNilLiteral() -> BitArray { return self.init(storage:0) }
 }
 
-/////////////////////////////////////////////////////////////////////////////////
+
 // MARK: - SequenceType
-/////////////////////////////////////////////////////////////////////////////////
+
 extension BitArray: SequenceType { public func generate() -> BitArrayGenerator { return BitArrayGenerator(self) } }
 
-/////////////////////////////////////////////////////////////////////////////////
+
 // MARK: - BitwiseOperationsType
-/////////////////////////////////////////////////////////////////////////////////
-extension  BitArray: BitwiseOperationsType { public static var allZeros: BitArray { return self(storage:0) } }
+
+extension  BitArray: BitwiseOperationsType { public static var allZeros: BitArray { return self.init(storage:0) } }
 
 public func &(lhs: BitArray, rhs: BitArray) -> BitArray {
   return BitArray(storage:lhs.rawValue & rhs.rawValue, count:max(lhs.count, rhs.count))
@@ -166,9 +168,9 @@ public func ^(lhs: BitArray, rhs: BitArray) -> BitArray {
 }
 public prefix func ~(bits: BitArray) -> BitArray { return BitArray(storage:~bits.rawValue, count:bits.count) }
 
-/////////////////////////////////////////////////////////////////////////////////
+
 // MARK: - Generator for enumerating over bits in BitArray
-/////////////////////////////////////////////////////////////////////////////////
+
 public struct BitArrayGenerator: GeneratorType {
   private let bits: BitArray
   private var bitIndex: Int = 0

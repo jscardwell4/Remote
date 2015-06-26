@@ -22,7 +22,7 @@ class BlurDecoration: UICollectionReusableView {
     blur.contentView.backgroundColor = UIColor.clearColor()
     blur.contentView.opaque = false
     addSubview(blur)
-    constrain(𝗩|blur|𝗩, 𝗛|blur|𝗛)
+    constrain(flattened([𝗩|blur|𝗩, 𝗛|blur|𝗛]))
   }
   override init(frame: CGRect) { super.init(frame: frame); setup() }
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); setup() }
@@ -90,7 +90,7 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
       }
 
       public init(rawValue: Float) {
-        if let layout = findFirst(Width.all, predicate: {$0.interval.contains(rawValue)}) { self = layout }
+        if let layout = findFirst(Width.all, {$0.interval.contains(rawValue)}) { self = layout }
         else if Width.minScale.rawValue > rawValue { self = Width.minScale }
         else { self = Width.maxScale }
       }
@@ -184,7 +184,7 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
             r in NSIndexPath(forRow: r, inSection: s)
           }
         } .map {
-          ($0, self.layoutAttributesForItemAtIndexPath($0))
+          ($0, self.layoutAttributesForItemAtIndexPath($0)!)
         }
       )
     }
@@ -216,7 +216,7 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
     return CGSize(width: w, height: h)
   }
 
-  private typealias AttributesIndex = OrderedDictionary<NSIndexPath, UICollectionViewLayoutAttributes!>
+  private typealias AttributesIndex = OrderedDictionary<NSIndexPath, UICollectionViewLayoutAttributes>
 
   private var storedAttributes: AttributesIndex = [:]
 
@@ -253,11 +253,10 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
   - returns: [AnyObject]?
   */
   override public func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-    var result = storedAttributes.values.filter { $0.frame.intersects(rect) }
+    var result = storedAttributes.values.filter { $0.frame.intersects(rect) }.array
     if zoomedItem != nil {
-      result.append(layoutAttributesForDecorationViewOfKind(BlurDecoration.kind,
-                                                atIndexPath: zoomedItem!))
-      result.append(layoutAttributesForSupplementaryViewOfKind(self.dynamicType.SupplementaryZoomKind, atIndexPath: zoomedItem!))
+      result.append(layoutAttributesForDecorationViewOfKind(BlurDecoration.kind, atIndexPath: zoomedItem!)!)
+      result.append(layoutAttributesForSupplementaryViewOfKind(self.dynamicType.SupplementaryZoomKind, atIndexPath: zoomedItem!)!)
     }
     return result
   }
@@ -273,10 +272,10 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
   - returns: UICollectionViewLayoutAttributes!
   */
   override public func layoutAttributesForDecorationViewOfKind(elementKind: String,
-    atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes!
+    atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
   {
     let attributesClass = self.dynamicType.layoutAttributesClass() as! UICollectionViewLayoutAttributes.Type
-    let attributes = attributesClass(forDecorationViewOfKind: BlurDecoration.kind, withIndexPath: indexPath)
+    let attributes = attributesClass.init(forDecorationViewOfKind: BlurDecoration.kind, withIndexPath: indexPath)
     attributes.frame = collectionView?.bounds ?? CGRect.zeroRect
     attributes.zIndex = 50
     return attributes
@@ -291,10 +290,10 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
   - returns: UICollectionViewLayoutAttributes!
   */
   public override func layoutAttributesForSupplementaryViewOfKind(elementKind: String,
-    atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes!
+    atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
   {
     let attributesClass = self.dynamicType.layoutAttributesClass() as! UICollectionViewLayoutAttributes.Type
-    let attributes = attributesClass(forSupplementaryViewOfKind: elementKind, withIndexPath: indexPath)
+    let attributes = attributesClass.init(forSupplementaryViewOfKind: elementKind, withIndexPath: indexPath)
     attributes.frame = collectionView?.bounds ?? CGRect.zeroRect
     attributes.zIndex = 100
     return attributes
@@ -309,9 +308,9 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
 
   - returns: UICollectionViewLayoutAttributes!
   */
-  override public func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
+  override public func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
     let attributesClass = self.dynamicType.layoutAttributesClass() as! UICollectionViewLayoutAttributes.Type
-    let attributes = attributesClass(forCellWithIndexPath: indexPath)
+    let attributes = attributesClass.init(forCellWithIndexPath: indexPath)
 
     let yOffset = (0 ..< indexPath.section).reduce(CGFloat(0)) {$0 + self.heightForSection($1)}
 

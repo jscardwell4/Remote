@@ -40,7 +40,7 @@ final public class PresetCategory: EditableModelObject, CollectedModel {
   }
 
   override public var description: String {
-    var description = "\(super.description)\n\t" + "\n\t".join(
+    let description = "\(super.description)\n\t" + "\n\t".join(
       "presets count = \(presets.count)",
       "subcategories = [" + ", ".join(childCategories.map({$0.name})) + "]",
       "parent = \(String(parentCategory?.index))"
@@ -82,7 +82,7 @@ extension PresetCategory: DefaultingModelCollection {
     let categoryName = "Uncategorized"
     if let category = modelWithIndex(PathIndex(categoryName), context: context) { return category }
     else {
-      let category = self(context: context)
+      let category = self.init(context: context)
       category.name = categoryName
       return category
     }

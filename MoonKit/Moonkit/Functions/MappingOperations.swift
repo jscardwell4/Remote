@@ -40,8 +40,8 @@ compressedMap:transform:
 
 - returns: [U]
 */
-public func compressedMap<S:SequenceType, T, U where S.Generator.Element == T>(source: S, transform: (T) -> U?) -> [U] {
-  return map(source, transform) >>> compressed
+public func compressedMap<S:SequenceType, T, U where S.Generator.Element == T>(source: S, _ transform: (T) -> U?) -> [U] {
+  return source.map(transform) >>> compressed
 }
 
 /**
@@ -52,7 +52,7 @@ compressedMap:transform:
 
 - returns: [U]?
 */
-public func compressedMap<S:SequenceType, T, U where S.Generator.Element == T>(source: S?, transform: (T) -> U?) -> [U]? {
+public func compressedMap<S:SequenceType, T, U where S.Generator.Element == T>(source: S?, _ transform: (T) -> U?) -> [U]? {
   return source >?> transform >?> compressedMap
 }
 
@@ -116,7 +116,7 @@ public func flattened<S:SequenceType, T>(sequence: S) -> [T] {
   var flattenSwiftTypes: (MirrorType -> [T])!
   flattenSwiftTypes = {
     mirror in
-    let valueMirror = reflect(mirror.value)
+//    let valueMirror = reflect(mirror.value)
     var result: [T] = []
     if mirror.count > 0 {
       for i in 0..<mirror.count {
@@ -151,8 +151,8 @@ flattenedMap:transform:
 
 - returns: [V]
 */
-public func flattenedMap<S:SequenceType, T, U, V where S.Generator.Element == T>(source: S, transform: (T) -> U) -> [V] {
-  return source >>> transform >>> map >>> flattened
+public func flattenedMap<S:SequenceType, T, U, V where S.Generator.Element == T>(source: S, _ transform: (T) -> U) -> [V] {
+  return source.map(transform) >>> flattened
 }
 
 /**
@@ -164,7 +164,7 @@ flattenedCompressedMap:transform:
 - returns: [V]
 */
 public func flattenedCompressedMap<S:SequenceType, T, U, V
-  where S.Generator.Element == T>(source: S, transform: (T) -> U?) -> [V]
+  where S.Generator.Element == T>(source: S, _ transform: (T) -> U?) -> [V]
 {
   return source >>> transform >>> compressedMap >>> flattened
 }
@@ -179,7 +179,7 @@ function for recursively reducing a property of an element that contains child e
 
 - returns: U The result of the reduction
 */
-public func recursiveReduce<T, U>(initial: U, subitems: (T) -> [T], combine: (U, T) -> U, item: T) -> U {
+public func recursiveReduce<T, U>(initial: U, subitems: (T) -> [T], _ combine: (U, T) -> U, item: T) -> U {
   var body: ((U, (T) -> [T], (U,T) -> U, T) -> U)!
   body = { (i: U, s: (T) -> [T], c: (U,T) -> U, x: T) -> U in s(x).reduce(c(i, x)){body($0.0, s, c, $0.1)} }
   return body(initial, subitems, combine, item)
@@ -187,7 +187,7 @@ public func recursiveReduce<T, U>(initial: U, subitems: (T) -> [T], combine: (U,
 
 // MARK: - Enumerating
 
-public func enumeratingMap<S: SequenceType, T>(source: S, transform: (Int, S.Generator.Element) -> T) -> [T] {
-  return map(source.enumerate(), transform)
+public func enumeratingMap<S: SequenceType, T>(source: S, _ transform: (Int, S.Generator.Element) -> T) -> [T] {
+  return source.enumerate().map(transform)
 }
 

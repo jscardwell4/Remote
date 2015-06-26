@@ -26,7 +26,7 @@ extension NSLayoutConstraint {
   public class func splitFormat(format: String) -> [String] {
     return "\n".split(format.subbed("::", "\n").subbed("[⏎;]", "\n").subbed("  +", " "))
       .map({$0.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())})
-      .filter(invert(isEmpty))
+      .filter(invert({$0.isEmpty}))
   }
 
   public convenience init(_ pseudoConstraint: PseudoConstraint) {
@@ -53,7 +53,7 @@ extension NSLayoutConstraint {
   - returns: [NSLayoutConstraint]
   */
   public class func constraintsByParsingFormat(format: String,
-                                       options: NSLayoutFormatOptions = nil,
+                                       options: NSLayoutFormatOptions = NSLayoutFormatOptions(rawValue: 0),
                                        metrics: [String:AnyObject] = [:],
                                          views: [String:AnyObject] = [:]) -> [NSLayoutConstraint]
   {

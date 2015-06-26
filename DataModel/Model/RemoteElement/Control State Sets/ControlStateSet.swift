@@ -15,9 +15,9 @@ import MoonKit
 extension UIControlState: JSONValueConvertible {
   public var jsonValue: JSONValue {
     var flags: [String] = []
-    if self & UIControlState.Highlighted != nil { flags.append("highlighted") }
-    if self & UIControlState.Selected    != nil { flags.append("selected")    }
-    if self & UIControlState.Disabled    != nil { flags.append("disabled")    }
+    if contains(.Highlighted) { flags.append("highlighted") }
+    if contains(.Selected) { flags.append("selected")    }
+    if contains(.Disabled) { flags.append("disabled")    }
     if flags.count == 0 { flags.append("normal") }
     var s = flags.removeAtIndex(0)
     s += "".join(flags.map({$0.capitalizedString}))
@@ -32,9 +32,9 @@ extension UIControlState: JSONValueInitializable {
     var state = UIControlState.Normal
     for flag in flags {
       switch flag {
-      case "highlighted": state |= UIControlState.Highlighted
-      case "selected":    state |= UIControlState.Selected
-      case "disabled":    state |= UIControlState.Disabled
+      case "highlighted": state.unionInPlace(.Highlighted)
+      case "selected":    state.unionInPlace(.Selected)
+      case "disabled":    state.unionInPlace(.Disabled)
       case "normal":      if state != UIControlState.Normal { return nil }
       default:            return nil
       }
@@ -122,8 +122,8 @@ public class ControlStateSet: ModelObject {
     get {
       let state = UIControlState(rawValue: idx)
       if let property = state.controlStateSetProperty, let value: AnyObject = self[property] { return value }
-      if let property = (state & .Selected).controlStateSetProperty, let value: AnyObject = self[property] { return value }
-      if let property = (state & .Highlighted).controlStateSetProperty, let value: AnyObject = self[property] { return value }
+      if let property = state.union(.Selected).controlStateSetProperty, let value: AnyObject = self[property] { return value }
+      if let property = state.union(.Highlighted).controlStateSetProperty, let value: AnyObject = self[property] { return value }
       return self["normal"]
     }
     set { if let property = UIControlState(rawValue: UInt(idx)).controlStateSetProperty { self[property] = newValue } }

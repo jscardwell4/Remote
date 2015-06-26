@@ -15,8 +15,8 @@ public func ~=<T:Equatable>(lhs: T?, rhs: T?) -> Bool {
   else { return false }
 }
 
-public func typeCast<T,U>(t: T, u: U.Type) -> U? { return t as? U }
-public func typeCast<T,U>(t: T?, u: U.Type) -> U? { return t != nil ? typeCast(t!, u: u) : nil }
+public func typeCast<T,U>(t: T, _ u: U.Type) -> U? { return t as? U }
+public func typeCast<T,U>(t: T?, _ u: U.Type) -> U? { return t != nil ? typeCast(t!, u) : nil }
 
 public func **<T:IntegerArithmeticType>(lhs: T, rhs: T) -> T {
   return (1..<rhs.toIntMax()).reduce(lhs, combine: {n, _ in n * lhs})
@@ -71,7 +71,7 @@ join:elements:
 
 - returns: [T]
 */
-public func join<T>(seperator: T, elements: [T]) -> [T] {
+public func join<T>(seperator: T, _ elements: [T]) -> [T] {
   if elements.count > 1 {
     var joinedElements: [T] = []
     for element in elements[0..<(elements.count - 1)] {
@@ -105,7 +105,7 @@ find:value:
 
 - returns: C.Index?
 */
-public func find<C: CollectionType where C.Generator.Element: Equatable>(domain: C, value: C.Generator.Element?) -> C.Index? {
+public func find<C: CollectionType where C.Generator.Element: Equatable>(domain: C, _ value: C.Generator.Element?) -> C.Index? {
   if let v = value { return domain.indexOf(v) } else { return nil }
 }
 
@@ -117,7 +117,7 @@ findFirst:predicate:
 
 - returns: (C.Generator.Element)?
 */
-public func findFirst<S: SequenceType>(domain: S?, predicate: (S.Generator.Element) -> Bool) -> (S.Generator.Element)? {
+public func findFirst<S: SequenceType>(domain: S?, _ predicate: (S.Generator.Element) -> Bool) -> (S.Generator.Element)? {
   if let sequence = domain { for element in sequence { if predicate(element) { return element } } }
   return nil
 }

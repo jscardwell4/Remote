@@ -47,7 +47,7 @@ public enum JSONValue {
   - parameter s: S
   */
   public init<S:SequenceType where S.Generator.Element:JSONValueConvertible>(_ s: S) {
-    self = Array(Swift.Array(map(s, {$0.jsonValue})))
+    self = Array(Swift.Array(s).map({$0.jsonValue}))
   }
 
   /**
@@ -77,14 +77,14 @@ public enum JSONValue {
     else if let x = v as? NSNumber { self = Number(x) }
     else if let x = v as? Swift.String { self = String(x) }
     else if let x = v as? BooleanType { self = Boolean(x.boolValue) }
-    else if let x = v as? NSNull { self = Null }
+    else if v is NSNull { self = Null }
     else if let x = v as? NSArray {
-      let converted = compressedMap(x, transform: {JSONValue($0)})
+      let converted = compressedMap(x, {JSONValue($0)})
       if converted.count == x.count { self = Array(converted) }
       else { return nil }
     }
     else if let x = v as? [Any] {
-      let converted = compressedMap(x, transform: {JSONValue($0)})
+      let converted = compressedMap(x, {JSONValue($0)})
       if converted.count == x.count { self = Array(converted) }
       else { return nil }
     }
@@ -95,7 +95,7 @@ public enum JSONValue {
     }
     else if let x = v as? NSDictionary {
       let keys = x.allKeys.map({toString($0)})
-      let values = compressedMap(x.allValues, transform: {JSONValue($0)})
+      let values = compressedMap(x.allValues, {JSONValue($0)})
       if keys.count == values.count { self = Object(OrderedDictionary(Swift.Array(zip(keys, values)))) }
       else { return nil }
     }
@@ -270,9 +270,12 @@ extension JSONValue: RawRepresentable {
   }
   public init?(rawValue: Swift.String) {
     let parser = JSONParser(string: rawValue, allowFragment: true)
-    let error: NSError?
-    if let value = parser.parse() where !MSHandleError(error) { self = value }
-    else { return nil }
+    do {
+      self = try parser.parse()
+    } catch {
+      MSHandleError(error as NSError)
+      return nil
+    }
   }
 }
 

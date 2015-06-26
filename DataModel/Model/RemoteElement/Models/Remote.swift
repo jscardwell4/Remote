@@ -107,7 +107,7 @@ public final class Remote: RemoteElement {
     }
   }
 
-  public struct PanelAssignment: RawOptionSetType, Hashable, StringValueConvertible,
+  public struct PanelAssignment: OptionSetType, Hashable, StringValueConvertible,
                                  JSONValueConvertible, JSONValueInitializable, CustomStringConvertible
   {
 
@@ -269,7 +269,7 @@ extension Remote.PanelAssignment: Equatable {}
 public func ==(lhs: Remote.PanelAssignment, rhs: Remote.PanelAssignment) -> Bool { return lhs.rawValue == rhs.rawValue }
 
 extension Remote.PanelAssignment: BitwiseOperationsType {
-  static public var allZeros: Remote.PanelAssignment { return self(rawValue: 0) }
+  static public var allZeros: Remote.PanelAssignment { return self.init(rawValue: 0) }
 }
 public func &(lhs: Remote.PanelAssignment, rhs: Remote.PanelAssignment) -> Remote.PanelAssignment {
   return Remote.PanelAssignment(rawValue: (lhs.rawValue & rhs.rawValue))

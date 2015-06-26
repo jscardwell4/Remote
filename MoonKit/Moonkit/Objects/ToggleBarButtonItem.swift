@@ -37,7 +37,7 @@ public class ToggleBarButtonItem: UIBarButtonItem {
 
   - parameter customView: UIView
   */
-  public override init(customView: UIView) { super.init(customView: customView) }
+//  public override init(customView: UIView) { super.init(customView: customView) }
 
   /**
   init:

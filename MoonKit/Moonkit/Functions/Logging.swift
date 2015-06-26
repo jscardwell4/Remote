@@ -43,7 +43,7 @@ public struct ColorLog {
 
 public class LogManager {
 
-  public struct LogFlag: RawOptionSetType {
+  public struct LogFlag: OptionSetType {
     public private(set) var rawValue: Int32
     public init(rawValue: Int32) { self.rawValue = rawValue }
     public init(nilLiteral: ()) { rawValue = 0 }
@@ -56,7 +56,7 @@ public class LogManager {
     public static var Verbose:  LogFlag = LogFlag(rawValue: 0b10000)
   }
 
-  public struct LogLevel: RawOptionSetType {
+  public struct LogLevel: OptionSetType {
     public private(set) var rawValue: Int32
     public init(rawValue: Int32) { self.rawValue = rawValue }
     public init(flags: LogFlag) { rawValue = flags.rawValue }
@@ -64,11 +64,11 @@ public class LogManager {
     public static var allZeros: LogLevel { return LogLevel.Off }
     public static var Off:      LogLevel = LogLevel(flags: LogFlag.None)
     public static var Error:    LogLevel = LogLevel(flags: LogFlag.Error)
-    public static var Warn:     LogLevel = LogLevel.Error | LogLevel(flags: LogFlag.Warn)
-    public static var Info:     LogLevel = LogLevel.Warn  | LogLevel(flags: LogFlag.Info)
-    public static var Debug:    LogLevel = LogLevel.Info | LogLevel(flags: LogFlag.Debug)
-    public static var Verbose:  LogLevel = LogLevel.Debug | LogLevel(flags: LogFlag.Verbose)
-    public static var All:      LogLevel = ~LogLevel.Off
+    public static var Warn:     LogLevel = LogLevel.Error.union(LogLevel(flags: LogFlag.Warn))
+    public static var Info:     LogLevel = LogLevel.Warn.union(LogLevel(flags: LogFlag.Info))
+    public static var Debug:    LogLevel = LogLevel.Info.union(LogLevel(flags: LogFlag.Debug))
+    public static var Verbose:  LogLevel = LogLevel.Debug.union(LogLevel(flags: LogFlag.Verbose))
+    public static var All:      LogLevel = [.Error, .Warn, .Info, .Debug, .Verbose]
   }
 
 
@@ -264,7 +264,7 @@ public func detailedDescriptionForError(error: NSError, depth: Int = 0) -> Strin
 
   if let reason = error.localizedFailureReason { message += "\(depthIndent)reason: \(reason)\n" }
 
-  if let recoveryOptions = error.localizedRecoveryOptions as? [String] {
+  if let recoveryOptions = error.localizedRecoveryOptions {
     let joinString = ",\n" + (" " * 18) + depthIndent
     message += "\(depthIndent)recovery options: \(joinString.join(recoveryOptions))\n"
   }

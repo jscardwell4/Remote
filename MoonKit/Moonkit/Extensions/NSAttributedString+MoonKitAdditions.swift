@@ -69,7 +69,7 @@ extension NSParagraphStyle {
   - returns: NSParagraphStyle
   */
   public class func paragraphStyleWithAttributes(
-      lineSpacing: CGFloat = 0,
+      lineSpacing lineSpacing: CGFloat = 0,
       paragraphSpacing: CGFloat = 0,
       alignment: NSTextAlignment = .Natural,
       headIndent: CGFloat = 0,
@@ -81,7 +81,7 @@ extension NSParagraphStyle {
       lineHeightMultiple: CGFloat = 0,
       paragraphSpacingBefore: CGFloat = 0,
       hyphenationFactor: Float = 0,
-      tabStops: [AnyObject]? = nil,
+      tabStops: [NSTextTab]? = nil,
       defaultTabInterval: CGFloat = 0
     ) -> NSParagraphStyle
   {

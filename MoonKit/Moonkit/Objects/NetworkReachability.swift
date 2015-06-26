@@ -13,7 +13,7 @@ private let IN_LINKLOCALNETNUM = UInt32(0xA9FE000)
 
 private(set) var contextInfo = UnsafeMutablePointer<Void>.alloc(1)
 
-private let block: @objc_block (SCNetworkReachability!, SCNetworkReachabilityFlags, UnsafeMutablePointer<Void>) -> Void = {
+private let block: @convention(block) (SCNetworkReachability!, SCNetworkReachabilityFlags, UnsafeMutablePointer<Void>) -> Void = {
   _, flags, context in
 
   UnsafeMutablePointer<NetworkReachability>(context).memory.callback(flags)
@@ -49,7 +49,7 @@ public class NetworkReachability: NSObject {
 
     var addr = unsafeBitCast(addrIn, sockaddr.self)
 
-    reachability = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, &addr).takeRetainedValue()
+    reachability = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, &addr)!
 
     super.init()
     var info = self

@@ -55,9 +55,17 @@ public final class ImageView: ModelObject, NSCopying {
 
   - parameter image: Image
   */
-  public convenience init(image: Image) {
-    self.init(context: image.managedObjectContext)
+  public init(image: Image) {
+    super.init(context: image.managedObjectContext)
     self.image = image
+  }
+
+  public override init(context: NSManagedObjectContext?) {
+    super.init(context: context)
+  }
+
+  required public init?(data: ObjectJSONValue, context: NSManagedObjectContext) {
+    super.init(data: data, context: context)
   }
 
   /**

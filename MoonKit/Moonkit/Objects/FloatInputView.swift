@@ -31,7 +31,7 @@ public class FloatInputView: TextInputView {
 
     for (name, value) in index {
 
-      var b = KeyInputButton(autolayout: true)
+      let b = KeyInputButton(autolayout: true)
       b.title = value
 
       switch name {
@@ -42,7 +42,7 @@ public class FloatInputView: TextInputView {
             let didDelete = self.deleteBackward()
             if views["period"]!.enabled == false && didDelete {
               let range = target.textRangeFromPosition(target.beginningOfDocument, toPosition: target.endOfDocument)
-              if Array(target.textInRange(range).characters) ∌ "." { views["period"]!.enabled = true }
+              if Array(target.textInRange(range!)!.characters) ∌ "." { views["period"]!.enabled = true }
             }
           }, forControlEvents: UIControlEvents.TouchUpInside)
 

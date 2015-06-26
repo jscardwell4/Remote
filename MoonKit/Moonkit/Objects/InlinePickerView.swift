@@ -67,7 +67,7 @@ public class InlinePickerView: UIView {
 extension InlinePickerView: UIPickerViewDataSource {
   public func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int { return 1 }
   public func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int { return labels.count }
-  public func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
+  public func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
     return labels[row]
   }
 }

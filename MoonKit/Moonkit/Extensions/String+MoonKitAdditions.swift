@@ -77,8 +77,13 @@ public extension String {
 
   public var camelcaseString: String {
     if isCamelcase { return self }
-    else if isTitlecase { return String(self[startIndex]).lowercaseString + String(String(dropFirst(self.characters)).filter{$0 != " "}) }
-    else if isDashcase {
+    else if isTitlecase {
+      var s = String(self[startIndex]).lowercaseString
+      let characters: CharacterView = dropFirst(self.characters)
+      let filteredCharacters = characters.filter({(c: Character) -> Bool in return c != " "})
+      s += String(filteredCharacters)
+      return s
+    } else if isDashcase {
       var s = String(self[startIndex]).lowercaseString
       var previousCharacterWasDash = false
       for c in String(String(dropFirst(self.characters))).unicodeScalars {
@@ -179,7 +184,7 @@ public extension String {
       self = toString(Int(d))
     default:
       let string = toString(d)
-      if let decimal = string.characters.indexOf(".".characters) {
+      if let decimal = string.characters.indexOf(".") {
         self = ".".join(string[..<decimal], String(prefix(string[advance(decimal, 1)..<].characters, precision)))
       } else { self = string }
     }
@@ -236,7 +241,7 @@ public extension String {
   */
   public mutating func sub(target: String, _ replacement: String) {
     if let range = rangeForCapture(0, inFirstMatchFor: ~/target) {
-      replaceRange(range, with: replacement)
+      replaceRange(range, with: replacement.characters)
     }
   }
 
@@ -281,7 +286,7 @@ public extension String {
   */
   public subscript (r: Range<Int>) -> String {
     get { return self[indexRangeFromIntRange(r)] }
-    mutating set { replaceRange(r, with: newValue) }
+    mutating set { replaceRange(r, with: newValue.characters) }
   }
 
   /**
@@ -358,7 +363,7 @@ public extension String {
     return matchString
   }
 
-  public var indices: Range<String.Index> { return Swift.indices(self) }
+  public var indices: Range<String.Index> { return startIndex..<endIndex }
 
   /**
   stringByReplacingMatchesForRegEx:withTemplate:
@@ -412,7 +417,7 @@ public extension String {
   public func matchingSubstringsForRegEx(regex: RegularExpression) -> [String] {
     var substrings: [String] = []
     let range = NSRange(location: 0, length: self.characters.count)
-    if let matches = regex.regex?.matchesInString(self, options: [], range: range) as? [NSTextCheckingResult] {
+    if let matches = regex.regex?.matchesInString(self, options: [], range: range) {
       for match in matches {
         let matchRange = match.rangeAtIndex(0)
         precondition(matchRange.location != NSNotFound, "didn't expect a match object with no overall match range")
@@ -467,7 +472,7 @@ public extension String {
   public func rangesForCapture(capture: Int, byMatching regex: RegularExpression) -> [Range<Int>?] {
     var ranges: [Range<Int>?] = []
     let r = NSRange(location: 0, length: self.characters.count)
-    if let matches = regex.regex?.matchesInString(self, options: [], range: r) as? [NSTextCheckingResult] {
+    if let matches = regex.regex?.matchesInString(self, options: [], range: r) {
       for match in matches {
         var range: Range<Int>?
         if capture >= 0 && capture <= regex.regex!.numberOfCaptureGroups {
@@ -488,12 +493,7 @@ public extension String {
   - returns: NSRegularExpression?
   */
   public func toRegEx() -> RegularExpression {
-    var error: NSError? = nil
-    let regex = RegularExpression(pattern: self.characters.count > 0 ? self : "(?:)", options: [], error: &error)
-    #if os(iOS)
-      MSHandleError(error, message: "failed to create regular expression object")
-    #endif
-    return regex
+    return RegularExpression(pattern: self.characters.count > 0 ? self : "(?:)", options: [])
   }
 
   /**
@@ -523,7 +523,7 @@ public extension String {
   */
   public func matchAll(regex: RegularExpression) -> [[String?]] {
     var result: [[String?]] = []
-    if let matches = regex.regex?.matchesInString(self, options: [], range: NSRange(0..<length)) as? [NSTextCheckingResult],
+    if let matches = regex.regex?.matchesInString(self, options: [], range: NSRange(0..<length)),
       captureCount = regex.regex?.numberOfCaptureGroups
     {
       for match in matches {
@@ -564,7 +564,7 @@ public extension String {
 
 public func enumerateMatches(pattern: String,
                              string: String,
-                             block: (NSTextCheckingResult!, NSMatchingFlags, UnsafeMutablePointer<ObjCBool>) -> Void)
+                             block: (NSTextCheckingResult?, NSMatchingFlags, UnsafeMutablePointer<ObjCBool>) -> Void)
 {
   (~/pattern).regex?.enumerateMatchesInString(string, options: [], range: NSRange(0..<string.length), usingBlock: block)
 }

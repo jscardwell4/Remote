@@ -36,11 +36,11 @@ public class LabelButton: UILabel {
   public var actions: [Action] = []
 
   public override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    if let touches = touches as? Set<UITouch> where trackingTouch == nil { trackingTouch = touches.first }
+    if trackingTouch == nil { trackingTouch = touches.first }
   }
 
   public override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    if let touches = touches as? Set<UITouch>, trackingTouch = trackingTouch
+    if let trackingTouch = trackingTouch
       where touches.contains(trackingTouch) && !pointInside(trackingTouch.locationInView(self), withEvent: event)
     {
       self.trackingTouch = nil
@@ -48,14 +48,14 @@ public class LabelButton: UILabel {
   }
 
   public override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    if let touches = touches as? Set<UITouch>, trackingTouch = trackingTouch where touches.contains(trackingTouch) {
+    if let trackingTouch = trackingTouch where touches.contains(trackingTouch) {
       if pointInside(trackingTouch.locationInView(self), withEvent: event) { apply(actions) {[unowned self] in $0(self)} }
       self.trackingTouch = nil
     }
   }
 
   public override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
-    if let touches = touches as? Set<UITouch>, trackingTouch = trackingTouch where touches.contains(trackingTouch) {
+    if let touches = touches, trackingTouch = trackingTouch where touches.contains(trackingTouch) {
       self.trackingTouch = nil
     }
   }

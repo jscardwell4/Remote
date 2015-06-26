@@ -90,7 +90,7 @@ public class Checkbox: UIControl {
 
 
       //// Variable Declarations
-      let radius: CGFloat = rect.size.width * 0.11363636
+//      let radius: CGFloat = rect.size.width * 0.11363636
 
       //// box Drawing
       let boxRect = CGRect(x: rect.minX + floor(rect.width * 0.09091 + 0.5),
@@ -98,7 +98,7 @@ public class Checkbox: UIControl {
                            width: floor(rect.width * 0.90909 + 0.5) - floor(rect.width * 0.09091 + 0.5),
                            height: floor(rect.height * 0.84091 + 0.5) - floor(rect.height * 0.09091 + 0.5))
 
-      let boxPath = UIBezierPath(roundedRect: boxRect, cornerRadius: radius)
+//      let boxPath = UIBezierPath(roundedRect: boxRect, cornerRadius: radius)
       CGContextSaveGState(context)
       CGContextSetShadowWithColor(
         context,
@@ -123,7 +123,7 @@ public class Checkbox: UIControl {
         DrawingKit.semiDarkShadow.shadowBlurRadius,
         (boxOpaqueShadow as UIColor).CGColor
       )
-      CGContextSetBlendMode(context, kCGBlendModeSourceOut)
+      CGContextSetBlendMode(context, .SourceOut)
       CGContextBeginTransparencyLayer(context, nil)
 
       boxOpaqueShadow.setFill()
@@ -202,7 +202,7 @@ public class Checkbox: UIControl {
             DrawingKit.lightShadow.shadowBlurRadius,
             (checkmarkOpaqueShadow as UIColor).CGColor
           )
-          CGContextSetBlendMode(context, kCGBlendModeSourceOut)
+          CGContextSetBlendMode(context, .SourceOut)
           CGContextBeginTransparencyLayer(context, nil)
 
           checkmarkOpaqueShadow.setFill()

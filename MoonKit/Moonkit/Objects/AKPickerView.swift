@@ -118,20 +118,22 @@ private class AKCollectionViewLayout: UICollectionViewFlowLayout {
 
   private override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool { return true }
 
-  private override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
+  private override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
     let attributes = super.layoutAttributesForItemAtIndexPath(indexPath)
     switch delegate.pickerViewStyleForCollectionViewLayout(self) {
     case .Flat:
       return attributes
     case .Wheel:
-      let distance = CGRectGetMidX(attributes.frame) - midX
-      let currentAngle = maxAngle * distance / width / CGFloat(M_PI_2)
-      var transform = CATransform3DIdentity
-      transform = CATransform3DTranslate(transform, -distance, 0, -width)
-      transform = CATransform3DRotate(transform, currentAngle, 0, 1, 0)
-      transform = CATransform3DTranslate(transform, 0, 0, width)
-      attributes.transform3D = transform
-      attributes.alpha = fabs(currentAngle) < maxAngle ? 1.0 : 0.0
+      if attributes != nil {
+        let distance = CGRectGetMidX(attributes!.frame) - midX
+        let currentAngle = maxAngle * distance / width / CGFloat(M_PI_2)
+        var transform = CATransform3DIdentity
+        transform = CATransform3DTranslate(transform, -distance, 0, -width)
+        transform = CATransform3DRotate(transform, currentAngle, 0, 1, 0)
+        transform = CATransform3DTranslate(transform, 0, 0, width)
+        attributes!.transform3D = transform
+        attributes!.alpha = fabs(currentAngle) < maxAngle ? 1.0 : 0.0
+      }
       return attributes
     }
   }
@@ -141,10 +143,10 @@ private class AKCollectionViewLayout: UICollectionViewFlowLayout {
     case .Flat:
       return super.layoutAttributesForElementsInRect(rect)
     case .Wheel:
-      var attributes = [AnyObject]()
+      var attributes: [UICollectionViewLayoutAttributes] = []
       for i in 0 ..< collectionView!.numberOfItemsInSection(0) {
         let indexPath = NSIndexPath(forItem: i, inSection: 0)
-        attributes.append(layoutAttributesForItemAtIndexPath(indexPath))
+        attributes.append(layoutAttributesForItemAtIndexPath(indexPath)!)
       }
       return attributes
     }

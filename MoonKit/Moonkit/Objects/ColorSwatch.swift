@@ -71,7 +71,7 @@ import UIKit
                                 swatchBaseInnerShadow.shadowOffset,
                                 swatchBaseInnerShadow.shadowBlurRadius,
                                 (rectangleOpaqueShadow as UIColor).CGColor)
-    CGContextSetBlendMode(context, kCGBlendModeSourceOut)
+    CGContextSetBlendMode(context, .SourceOut)
     CGContextBeginTransparencyLayer(context, nil)
 
     rectangleOpaqueShadow.setFill()

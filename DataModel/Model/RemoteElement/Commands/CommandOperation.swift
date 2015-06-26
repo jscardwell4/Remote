@@ -120,7 +120,7 @@ final class SendCommandOperation: CommandOperation {
 
   /** main */
   override func main() {
-    let commandID = command.objectID
+//    let commandID = command.objectID
 //    ConnectionManager.sendCommandWithID(commandID) {
 //      MSLogDebug("command ID:\(commandID)\ncompletion: success? \($0) error - \($1)")
 //      self.success = $0
@@ -168,7 +168,7 @@ final class MacroCommandOperation: CommandOperation {
           else if errors.count > 1 { self.error = NSError(domain: "MacroCommandExecution", code: -1, underlyingErrors: errors) }
           super.main()
         }
-        macroCommand.queue.addOperations((operations as NSOrderedSet).array, waitUntilFinished: false)
+        macroCommand.queue.addOperations((operations as NSOrderedSet).array as! [CommandOperation], waitUntilFinished: false)
       } else {
         success = true
         super.main()

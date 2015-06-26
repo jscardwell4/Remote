@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Swift
 
 /**
 setOption:s:
@@ -14,7 +15,7 @@ setOption:s:
 - parameter option: T The option
 - parameter optionSet: T The option set
 */
-public func setOption<T:RawOptionSetType>(option: T, inout optionSet: T) { optionSet |= option }
+//public func setOption<T:OptionSetType>(option: T, inout optionSet: T) { optionSet.insert(option) }
 
 /**
 unsetOption:optionSet:
@@ -22,7 +23,7 @@ unsetOption:optionSet:
 - parameter option: T The option
 - parameter optionSet: T The option set
 */
-public func unsetOption<T:RawOptionSetType>(option: T, inout optionSet: T) { optionSet &= ~option }
+//public func unsetOption<T:OptionSetType>(option: T, inout optionSet: T) { optionSet.remove(option) }
 
 /**
 isOption:optionSet:
@@ -32,7 +33,7 @@ isOption:optionSet:
 
 - returns: Bool
 */
-public func hasOption<T:RawOptionSetType>(option: T, optionSet: T) -> Bool { return optionSet & option == option }
+//public func hasOption<T:OptionSetType>(option: T, optionSet: T) -> Bool { return optionSet.contains(option) }
 
 /**
 toggleOption:optionSet:
@@ -40,14 +41,14 @@ toggleOption:optionSet:
 - parameter option: T The option
 - parameter optionSet: T The option set
 */
-public func toggleOption<T:RawOptionSetType>(option: T, inout optionSet: T) {
-  if hasOption(option, optionSet: optionSet) { unsetOption(option, optionSet: &optionSet) } else { setOption(option, optionSet: &optionSet) }
-}
+//public func toggleOption<T:OptionSetType>(option: T, inout optionSet: T) {
+//  if hasOption(option, optionSet: optionSet) { unsetOption(option, optionSet: &optionSet) } else { setOption(option, optionSet: &optionSet) }
+//}
 
 
-public func ∪<T:RawOptionSetType>(lhs: T, rhs: T) -> T { return lhs | rhs }
-public func ∪=<T:RawOptionSetType>(inout lhs: T, rhs: T) { lhs = lhs ∪ rhs }
+//public func ∪<T:OptionSetType>(lhs: T, rhs: T) -> T { return lhs.union(rhs) }
+//public func ∪=<T:OptionSetType>(inout lhs: T, rhs: T) { lhs = lhs ∪ rhs }
 
 
-public func ∖<T:RawOptionSetType>(lhs: T, rhs: T) -> T { return lhs & ~rhs }
-public func ∖=<T:RawOptionSetType>(inout lhs: T, rhs: T) { lhs = lhs ∖ rhs }
+//public func ∖<T:OptionSetType>(lhs: T, rhs: T) -> T { var result = lhs; unsetOption(lhs, rhs); return result }
+//public func ∖=<T:OptionSetType>(inout lhs: T, rhs: T) { lhs = lhs ∖ rhs }

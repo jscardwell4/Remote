@@ -95,7 +95,7 @@ extension IRCodeSet: DefaultingModelCollection {
     if let codeSet = modelWithIndex(PathIndex("\(name)/\(name)"), context: context) {
       return codeSet
     } else {
-      let codeSet = self(context: context)
+      let codeSet = self.init(context: context)
       codeSet.name = name
       return codeSet
     }

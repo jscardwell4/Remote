@@ -26,7 +26,7 @@ public final class ViewProxy: UIView {
 
   - parameter view: UIView
   */
-  override public func addSubview(view: UIView) { if let v = typeCast(view, u: subviewType) { super.addSubview(v) } }
+  override public func addSubview(view: UIView) { if let v = typeCast(view, subviewType) { super.addSubview(v) } }
 
   public var draw: (CGContext, CGRect) -> Void = { _, _ in }
 

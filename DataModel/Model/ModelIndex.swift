@@ -188,7 +188,7 @@ extension PathIndex: Sliceable {
 }
 
 // MARK: MutableCollectionType
-extension PathIndex: MutableCollectionType {
+extension PathIndex: CollectionType, MutableCollectionType {
 
   public var startIndex: Int { return pathComponents.startIndex }
   public var endIndex: Int { return pathComponents.endIndex }

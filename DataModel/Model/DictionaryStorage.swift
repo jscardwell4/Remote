@@ -18,7 +18,7 @@ public class DictionaryStorage: ModelObject, ModelStorage {
       willAccessValueForKey("dictionary")
       let dictionary = primitiveValueForKey("dictionary") as! MSDictionary
       didAccessValueForKey("dictionary")
-      return dictionary as! OrderedDictionary<String, AnyObject>
+      return OrderedDictionary<String, AnyObject>(dictionary)
     }
     set {
       willChangeValueForKey("dictionary")

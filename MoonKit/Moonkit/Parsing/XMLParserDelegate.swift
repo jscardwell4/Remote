@@ -111,7 +111,7 @@ import Foundation
     endMapping?(parser, prefix)
   }
 
-  public func parser(parser: NSXMLParser, foundCharacters string: String?) {
+  public func parser(parser: NSXMLParser, foundCharacters string: String) {
     foundCharacters?(parser, string)
   }
 

@@ -40,13 +40,13 @@ public class MSButton: UIButton {
   */
   public func backgroundColorForState(state: UIControlState) -> UIColor? {
     var color = backgroundColors[state.rawValue]!
-    if color == nil && state & UIControlState.Highlighted == UIControlState.Highlighted  {
+    if color == nil && state.rawValue & UIControlState.Highlighted.rawValue == UIControlState.Highlighted.rawValue  {
       color = backgroundColors[UIControlState.Highlighted.rawValue]!
     }
-    if color == nil && state & UIControlState.Selected == UIControlState.Selected {
+    if color == nil && state.rawValue & UIControlState.Selected.rawValue == UIControlState.Selected.rawValue {
       color = backgroundColors[UIControlState.Selected.rawValue]!
     }
-    if color == nil && state & UIControlState.Disabled == UIControlState.Disabled {
+    if color == nil && state.rawValue & UIControlState.Disabled.rawValue == UIControlState.Disabled.rawValue {
       color = backgroundColors[UIControlState.Disabled.rawValue]!
     }
     if color == nil {

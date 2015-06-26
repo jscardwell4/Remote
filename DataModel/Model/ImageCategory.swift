@@ -84,7 +84,7 @@ extension ImageCategory: DefaultingModelCollection {
     let categoryName = "Uncategorized"
     if let category = modelWithIndex(PathIndex(categoryName), context: context) { return category }
     else {
-      let category = self(context: context)
+      let category = self.init(context: context)
       category.name = categoryName
       return category
     }

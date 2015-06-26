@@ -36,7 +36,7 @@ public final class Glyphish {
   - returns: UIFont
   */
   public class func fontWithSize(size: CGFloat) -> UIFont {
-    if !fontRegistered && CTFontManagerRegisterFontsForURL(bundle.URLForResource("glyphish", withExtension: "ttf"), .None, nil) {
+    if !fontRegistered && CTFontManagerRegisterFontsForURL(bundle.URLForResource("glyphish", withExtension: "ttf")!, .None, nil) {
       fontRegistered = true
     }
     assert(fontRegistered)

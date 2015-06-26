@@ -35,7 +35,7 @@ public final class CommandSet: CommandContainer {
       setPrimitiveValue(NSNumber(short: newValue.rawValue), forKey: "type")
       didChangeValueForKey("type")
       if let sharedKeys = CommandSet.sharedKeysByType[newValue] {
-        containerIndex = MSDictionary(sharedKeys: sharedKeys.map{Int($0.rawValue)}) as! OrderedDictionary<String, NSURL>
+        containerIndex = OrderedDictionary<String, NSURL>(MSDictionary(sharedKeys: sharedKeys.map{Int($0.rawValue)}))
       } else {
         containerIndex = [:]
       }

@@ -86,6 +86,7 @@ final public class IRCode: EditableModelObject, CollectedModel {
 
         if compressionIndex < compressionCharacters.length {
           availableCompressionCharacters.addCharactersInString(compressionCharacters[compressionIndex..<compressionIndex + 1])
+          compressionIndex++
         }
         if compressed.numberOfMatchesForRegEx("^.*[0-9]$") > 0 { compressed += "," }
         compressed += "\(on),\(off)"

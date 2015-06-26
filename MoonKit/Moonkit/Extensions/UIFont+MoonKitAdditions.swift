@@ -12,15 +12,14 @@ import UIKit
 extension UIFont {
 
   public class func loadFontAwesome() {
-    if let moonkit = NSBundle.allFrameworks().filter({$0.bundleIdentifier == "com.moondeerstudios.MoonKit"}).first as? NSBundle {
-      if let fontPath = moonkit.pathForResource("FontAwesome", ofType: "otf") {
-        if let fontData = NSData(contentsOfFile: fontPath) {
-          let provider = CGDataProviderCreateWithCFData(fontData)
-          let font = CGFontCreateWithDataProvider(provider)
-          if !CTFontManagerRegisterGraphicsFont(font, nil) {
-            MSLogError("failed to register 'FontAwesome' font with font manager")
-          }
-        }
+    if let moonkit = NSBundle.allFrameworks().filter({$0.bundleIdentifier == "com.moondeerstudios.MoonKit"}).first,
+      fontPath = moonkit.pathForResource("FontAwesome", ofType: "otf"),
+      fontData = NSData(contentsOfFile: fontPath),
+      provider = CGDataProviderCreateWithCFData(fontData),
+      font = CGFontCreateWithDataProvider(provider)
+    {
+      if !CTFontManagerRegisterGraphicsFont(font, nil) {
+        MSLogError("failed to register 'FontAwesome' font with font manager")
       }
     }
   }
@@ -42,9 +41,7 @@ extension UIFont {
   - returns: Bool
   */
   public class func fontFamilyAvailable(family: String) -> Bool {
-    let families = UIFont.familyNames() as? [String]
-    if families == nil { fatalError("could not downcast family names") }
-    return (families!).contains(family.characters)
+    return UIFont.familyNames().contains(family)
   }
 
 }

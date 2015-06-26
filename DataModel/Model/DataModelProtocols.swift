@@ -46,7 +46,7 @@ public protocol PathIndexedModel: Model {
   optional var collections: [ModelCollection] { get }
 }
 
-@objc public protocol DefaultingModelCollection: ModelCollection {
+public protocol DefaultingModelCollection: ModelCollection {
   static func defaultCollectionInContext(context: NSManagedObjectContext) -> Self
 }
 

@@ -90,6 +90,8 @@ public struct OrderedSet<T:Equatable> : MutableCollectionType, Sliceable {
 
   public var NSSetValue: NSSet? { if let array = NSArrayValue { return NSSet(array: array as [AnyObject]) } else { return nil } }
 
+  public var NSOrderedSetValue: NSOrderedSet? { if let array = NSArrayValue { return NSOrderedSet(array: array as [AnyObject]) } else { return nil } }
+
   /**
   reserveCapacity:
 
@@ -284,7 +286,7 @@ extension OrderedSet: _ObjectiveCBridgeable {
   static public func _forceBridgeFromObjectiveC(source: NSOrderedSet, inout result: OrderedSet?) {
     var s = OrderedSet()
     for o in source {
-      if let object = typeCast(o, u: T.self) { s.append(object) }
+      if let object = typeCast(o, T.self) { s.append(object) }
     }
     if s.count == source.count {
       result = s
@@ -293,7 +295,7 @@ extension OrderedSet: _ObjectiveCBridgeable {
   static public func _conditionallyBridgeFromObjectiveC(source: NSOrderedSet, inout result: OrderedSet?) -> Bool {
     var s = OrderedSet()
     for o in source {
-      if let object = typeCast(o, u: T.self) { s.append(object) }
+      if let object = typeCast(o, T.self) { s.append(object) }
     }
     if s.count == source.count {
       result = s

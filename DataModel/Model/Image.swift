@@ -19,11 +19,19 @@ final public class Image: EditableModelObject, CollectedModel {
   - parameter image: UIImage
   - parameter context: NSManagedObjectContext?
   */
-  public convenience init(image: UIImage, context: NSManagedObjectContext?) {
-    self.init(context: context)
+  public init(image: UIImage, context: NSManagedObjectContext?) {
+    super.init(context: context)
     size = image.size
     asset = Asset(context: context)
     asset?.data = UIImagePNGRepresentation(image)
+  }
+
+  public override init(context: NSManagedObjectContext?) {
+    super.init(context: context)
+  }
+
+  public required init?(data: ObjectJSONValue, context: NSManagedObjectContext) {
+      super.init(data: data, context: context)
   }
 
   static var resourceRegistration: [String:NSBundle] = [:]

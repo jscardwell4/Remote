@@ -12,7 +12,7 @@ import CoreData
 import MoonKit
 
 @objc(Constraint)
-public final class Constraint: ModelObject, CustomStringConvertible, CustomDebugStringConvertible {
+public final class Constraint: ModelObject, CustomDebugStringConvertible {
 
   @NSManaged public var identifier: String?
   @NSManaged public var tag: Int
@@ -93,7 +93,7 @@ public final class Constraint: ModelObject, CustomStringConvertible, CustomDebug
   - parameter multiplier: CGFloat
   - parameter constant: CGFloat
   */
-  public convenience init(item firstItem: RemoteElement,
+  public init(item firstItem: RemoteElement,
                          attribute firstAttribute: NSLayoutAttribute,
                          relatedBy relation: NSLayoutRelation = NSLayoutRelation.Equal,
                          toItem seconditem: RemoteElement? = nil,
@@ -101,7 +101,7 @@ public final class Constraint: ModelObject, CustomStringConvertible, CustomDebug
                          multiplier: Float = 1.0,
                          constant: Float = 0.0)
   {
-    self.init(context: firstItem.managedObjectContext)
+    super.init(context: firstItem.managedObjectContext)
     self.firstItem = firstItem
     self.firstAttribute = firstAttribute
     self.relation = relation
@@ -109,6 +109,14 @@ public final class Constraint: ModelObject, CustomStringConvertible, CustomDebug
     self.secondAttribute = secondAttribute
     self.multiplier = multiplier
     self.constant = constant
+  }
+
+  public override init(context: NSManagedObjectContext?) {
+    super.init(context: context)
+  }
+
+  required public init?(data: ObjectJSONValue, context: NSManagedObjectContext) {
+      super.init(data: data, context: context)
   }
 
   /**

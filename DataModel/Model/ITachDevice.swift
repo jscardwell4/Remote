@@ -101,13 +101,17 @@ public class ITachDevice: NetworkDevice {
     }
   }
 
+  override public init(context: NSManagedObjectContext?) {
+    super.init(context: context)
+  }
+
   /**
   initWithBeacon:context:
 
   - parameter beacon: String
   - parameter context: NSManagedObjectContext
   */
-  public convenience init?(beacon: String, context: NSManagedObjectContext) {
+  public init?(beacon: String, context: NSManagedObjectContext) {
     let entries = beacon.matchingSubstringsForRegEx(~/"(?<=<-)(.*?)(?=>)")
     var attributes: [String:String] = [:]
     apply(entries) {
@@ -119,12 +123,16 @@ public class ITachDevice: NetworkDevice {
     if let uniqueIdentifier = attributes[BeaconProperty.UniqueIdentifier.deviceProperty]
       where !NetworkDevice.objectExistsInContext(context, withValue: uniqueIdentifier, forAttribute: "uniqueIdentifier")
     {
-      self.init(context: context)
+      super.init(context: context)
       setValuesForKeysWithDictionary(attributes)
     } else {
-      self.init(context: nil)
+      super.init(context: nil)
       return nil
     }
+  }
+
+  required public init?(data: ObjectJSONValue, context: NSManagedObjectContext) {
+    super.init(data: data, context: context)
   }
 
   /**
@@ -145,13 +153,11 @@ public class ITachDevice: NetworkDevice {
       where self.uniqueIdentifier == nil || self.uniqueIdentifier == uniqueIdentifier
     {
       setValuesForKeysWithDictionary(attributes)
-      var error: NSError?
       do {
         try managedObjectContext?.save()
-      } catch var error1 as NSError {
-        error = error1
+      } catch {
+        MSHandleError(error as NSError, message: "failed to update from beacon '\(beacon)'")
       }
-      MSHandleError(error, message: "failed to update from beacon '\(beacon)'")
     }
   }
 

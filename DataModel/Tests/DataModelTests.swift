@@ -227,7 +227,7 @@ class DataModelTests: QuickSpec {
           describe("the asset") {
             it("has a name but no location") {
               expect(asset?.name) == "Pro Dots"
-              expect(asset?.location) == "$bank"
+              expect(asset?.path) == "$bank"
             }
           }
         }
@@ -241,8 +241,8 @@ class DataModelTests: QuickSpec {
           expect(imageCategory?.images.count) == 0
         }
         it("has child categories") {
-          let names = map(imageCategory!.childCategories, {$0.name})
-          expect(names) ⊇ ["Glyphish 3", "Glyphish 4", "Glyphish 6", "Glyphish 7"]
+          let names = imageCategory!.childCategories.map({$0.name})
+          expect(names).to(contain(["Glyphish 3", "Glyphish 4", "Glyphish 6", "Glyphish 7"]))
         }
 
         it("has nested images retrievable by index") {
@@ -434,8 +434,8 @@ class DataModelTests: QuickSpec {
               expect(isyGroup?.flag) == 12
               expect(isyGroup?.address) == "00:21:b9:01:f2:b6"
               expect(isyGroup?.family) == 6
-              expect(map(isyGroup?.members ?? [], {$0.name})) ⊇ ["20.12.40.1", "Front Door Table Lamp",
-                                                                 "18.F0.08.1", "Sofa Table Lamp"]
+              expect((isyGroup?.members ?? []).map({$0.name})).to(contain(["20.12.40.1", "Front Door Table Lamp",
+                                                                 "18.F0.08.1", "Sofa Table Lamp"]))
             }
           }
           describe("the auto dr group") {

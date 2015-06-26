@@ -22,21 +22,20 @@ public class JSONSerialization {
   public class func stringByParsingDirectivesForFile(filePath: String,
                                              options: ReadOptions = .None) throws -> String
   {
-    var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
-    var localError: NSError?      // So we can intercept errors before passing them along to caller
 
     // Get the contents of the file to parse
-    if var string = String(contentsOfFile: filePath, encoding: NSUTF8StringEncoding)
-      where !handledError(localError, errorCode: NSFileReadUnknownError)
-    {
-      // Look for include entries in the file-loaded string
+    do {
+      let string = try String(contentsOfFile: filePath, encoding: NSUTF8StringEncoding)
       let directory = filePath.stringByDeletingLastPathComponent
       let result = JSONIncludeDirective.stringByParsingDirectivesInString(string, directory: directory)
       if JSONIncludeDirective.cacheSize > 100 { JSONIncludeDirective.emptyCache() }
       return result
+    } catch {
+      let localError = error as NSError // So we can intercept errors before passing them along to caller
+      var error: NSError?
+      handledError(localError, errorCode: NSFileReadUnknownError, error: &error)
+      throw error!
     }
-
-    throw error
   }
 
 
@@ -52,27 +51,18 @@ public class JSONSerialization {
   public class func objectByParsingString(string: String?,
                                   options: ReadOptions = .None) throws -> JSONValue
   {
-    var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
-    if string == nil { throw error }
-    var object: JSONValue? // Our return object
+    if string == nil { return nil }
 
     // Create the parser with the provided string
-    let ignoreExcess = hasOption(ReadOptions.IgnoreExcess, optionSet: options)
+    let ignoreExcess = options.contains(.IgnoreExcess)
     let parser = JSONParser(string: string!, ignoreExcess: ignoreExcess)
     do {
-      object = try parser.parse()
-    } catch var error1 as NSError {
-      error = error1
-      object = nil
+      var object = try parser.parse()
+      if options.contains(.InflateKeypaths) { object = object.inflatedValue }
+      return object
+    } catch {
+      throw error
     }
-
-    // Inflate key paths
-    if hasOption(ReadOptions.InflateKeypaths, optionSet: options) { object = object?.inflatedValue }
-
-    if var value = object {
-      return value
-    }
-    throw error
   }
 
   /**
@@ -84,12 +74,10 @@ public class JSONSerialization {
 
   - returns: Bool
   */
-  private class func handledError(localError: NSError?, errorCode: Int) throws {
-    var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
-    if localError == nil { throw error }
-    error = NSError(domain: "MSJSONSerializationErrorDomain",
-      code: errorCode,
-      underlyingErrors: [localError!])
+  private class func handledError(localError: NSError?, errorCode: Int, error: NSErrorPointer) -> Bool {
+    if localError == nil { return false }
+    error.memory = NSError(domain: "MSJSONSerializationErrorDomain", code: errorCode, underlyingErrors: [localError!])
+    return true
   }
 
   /**
@@ -103,14 +91,15 @@ public class JSONSerialization {
   - returns: JSONValue?
   */
   public class func objectByParsingFile(filePath: String, options: ReadOptions = .None) throws -> JSONValue {
-    var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
-    var localError: NSError?      // So we can intercept errors before passing them along to caller
-
-    if let string = stringByParsingDirectivesForFile(filePath, options: options)
-      where !handledError(localError, errorCode: NSFileReadUnknownError)
-    {
-      return try objectByParsingString(string, options: options)
-    } else { throw error }
+    do {
+      let string = try stringByParsingDirectivesForFile(filePath, options: options)
+      do { return try objectByParsingString(string, options: options) } catch { throw error }
+    } catch {
+      let localError = error as NSError
+      var error: NSError?
+      handledError(localError, errorCode: NSFileReadUnknownError, error: &error)
+      throw error!
+    }
   }
 
 }
@@ -119,7 +108,7 @@ public class JSONSerialization {
 extension JSONSerialization {
 
   /** Enumeration for read format options */
-  public struct ReadOptions: RawOptionSetType {
+  public struct ReadOptions: OptionSetType {
 
     public var rawValue: UInt = 0
 
@@ -135,7 +124,7 @@ extension JSONSerialization {
   }
 
   /** Option set for write format options */
-  public struct WriteOptions: RawOptionSetType {
+  public struct WriteOptions: OptionSetType {
 
     public var rawValue: UInt = 0
 

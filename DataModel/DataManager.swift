@@ -38,15 +38,13 @@ import MoonKit
     // Check for remove operation
     if dataFlag.remove {
       do {
-        try databaseStoreURL.checkResourceIsReachableAndReturnError()
-        var error: NSError?
+        try databaseStoreURL.checkResourceIsReachable()
         do {
           try NSFileManager.defaultManager().removeItemAtURL(databaseStoreURL)
-        } catch var error1 as NSError {
-          error = error1
+          MSLogDebug("previous database store has been removed")
         }
-        if !MSHandleError(error) { MSLogDebug("previous database store has been removed") }
-      } catch _ {
+      } catch {
+        MSHandleError(error as NSError)
       }
       dataFlag.remove = false
     }
@@ -119,23 +117,26 @@ import MoonKit
    /** URL for the user's persistent store */
   public static let databaseStoreURL: NSURL = {
     let fileManager = NSFileManager.defaultManager()
-    var error: NSError?
-    if let supportDirectoryURL = fileManager.URLForDirectory(.ApplicationSupportDirectory,
-                                                    inDomain: .UserDomainMask,
-                                           appropriateForURL: nil,
-                                                      create: true)
-      where !MSHandleError(error, message: "failed to retrieve application support directory"),
-      let identifier = dataModelBundle.bundleIdentifier
-    {
-      let bundleSupportDirectoryURL = supportDirectoryURL.URLByAppendingPathComponent(identifier)
-
-      if fileManager.createDirectoryAtURL(bundleSupportDirectoryURL,
-              withIntermediateDirectories: true,
-                               attributes: nil)
-        && !MSHandleError(error, message: "failed to create app directory under application support")
-      {
-        return bundleSupportDirectoryURL.URLByAppendingPathComponent("\(DataManager.resourceBaseName).sqlite")
+    do {
+      let supportDirectoryURL = try fileManager.URLForDirectory(.ApplicationSupportDirectory,
+                                                       inDomain: .UserDomainMask,
+                                              appropriateForURL: nil,
+                                                         create: true)
+      if let identifier = dataModelBundle.bundleIdentifier {
+        let bundleSupportDirectoryURL = supportDirectoryURL.URLByAppendingPathComponent(identifier)
+        do {
+          try fileManager.createDirectoryAtURL(bundleSupportDirectoryURL,
+                   withIntermediateDirectories: true,
+                                    attributes: nil)
+          return bundleSupportDirectoryURL.URLByAppendingPathComponent("\(DataManager.resourceBaseName).sqlite")
+        } catch {
+          MSHandleError(error as NSError, message: "failed to create app directory under application support")
+          fatalError("aborting")
+        }
       }
+    } catch {
+      MSHandleError(error as NSError, message: "failed to retrieve application support directory")
+      fatalError("aborting")
     }
     fatalError("aborting")
   }()
@@ -166,14 +167,14 @@ import MoonKit
       uuid.attributeType = .StringAttributeType
       uuid.optional = false
       uuid.setValidationPredicates([∀"SELF MATCHES '(?:[A-F0-9]{8}(?:-[A-F0-9]{4}){3}-[A-Z0-9]{12})?'"],
-            withValidationWarnings: [NSValidationStringPatternMatchingError])
+            withValidationWarnings: ["String pattern matching error"])
       return uuid
     }
 
     // Process each entity for common operations
     for entity in augmentedModel.entities as [NSEntityDescription] {
       if entity.superentity == nil { entity.properties.append(uuid()) }
-      (entity.attributesByName.values.array as! [NSAttributeDescription]).filter({$0.userInfo != nil}) ➤ {
+      entity.attributesByName.values.array.filter({$0.userInfo != nil}) ➤ {
         (attribute: NSAttributeDescription) -> Void in
         if let n = attribute.userInfo?["attributeValueClassName"] as? String {
           attribute.attributeValueClassName = n
@@ -214,16 +215,21 @@ import MoonKit
   /** The core data stack, if this is nil we may as well shutdown */
   private static let stack: CoreDataStack! = {
     if let modelURL = dataModelBundle.URLForResource(DataManager.resourceBaseName, withExtension: "momd"),
-      mom = NSManagedObjectModel(contentsOfURL: modelURL),
-      stack = CoreDataStack(managedObjectModel: DataManager.augmentModel(mom),
-                            persistentStoreURL: dataFlag.inMemory ? nil : databaseStoreURL,
-                            options: [NSMigratePersistentStoresAutomaticallyOption: true,
-                                      NSInferMappingModelAutomaticallyOption: true])
+      mom = NSManagedObjectModel(contentsOfURL: modelURL)
     {
-      MSLogDebug("persistent store url: '\(databaseStoreURL)'")
-      stack.rootContext.nametag = "root"
-      return stack
-    } else { return nil }
+      do {
+        let stack = try CoreDataStack(managedObjectModel: DataManager.augmentModel(mom),
+                                      persistentStoreURL: dataFlag.inMemory ? nil : databaseStoreURL,
+                                      options: [NSMigratePersistentStoresAutomaticallyOption: true,
+                                                NSInferMappingModelAutomaticallyOption: true])
+        MSLogDebug("persistent store url: '\(databaseStoreURL)'")
+        stack.rootContext.nametag = "root"
+        return stack
+      } catch {
+        MSHandleError(error as NSError, message: "Failed to create core data stack")
+      }
+    }
+    return nil
 
   }()
 
@@ -243,21 +249,21 @@ import MoonKit
     let storeWalURL: NSURL! = storeBaseNameURL.URLByAppendingPathExtension("sqlite-wal")
     assert(storeWalURL != nil)
 
-    var error: NSError?
     // Try getting and copying the resources to copy from the main bundle
     if let sqliteURL = mainBundle.URLForResource(resourceBaseName, withExtension: "sqlite"),
       sqliteShmURL = mainBundle.URLForResource(resourceBaseName, withExtension: "sqlite-shm"),
-      sqliteWalURL = mainBundle.URLForResource(resourceBaseName, withExtension: "sqlite-wal")
-      where (fileManager.copyItemAtURL(sqliteURL, toURL: databaseStoreURL)
-        || !MSHandleError(error, message: "copy from \(sqliteURL) to \(databaseStoreURL) failed")) == true,
-      let databaseStoreShmURL = databaseStoreURL.URLByDeletingPathExtension?.URLByAppendingPathExtension("sqlite-shm")
-      where (fileManager.copyItemAtURL(sqliteShmURL, toURL: databaseStoreShmURL)
-        || !MSHandleError(error, message: "copy from \(sqliteShmURL) to \(databaseStoreShmURL) failed")) == true,
-      let databaseStoreWalURL = databaseStoreURL.URLByDeletingPathExtension?.URLByAppendingPathExtension("sqlite-wal")
-      where (fileManager.copyItemAtURL(sqliteWalURL, toURL: databaseStoreWalURL)
-        || !MSHandleError(error, message: "copy from \(sqliteWalURL) to \(databaseStoreWalURL) failed")) == true
+      sqliteWalURL = mainBundle.URLForResource(resourceBaseName, withExtension: "sqlite-wal"),
+      databaseStoreShmURL = storeURL.URLByDeletingPathExtension?.URLByAppendingPathExtension("sqlite-shm"),
+      databaseStoreWalURL = storeURL.URLByDeletingPathExtension?.URLByAppendingPathExtension("sqlite-wal")
     {
-      MSLogDebug("sqlite(-shm/-wal) files copied successfully")
+      do {
+        try fileManager.copyItemAtURL(sqliteURL, toURL: storeURL)
+        try fileManager.copyItemAtURL(sqliteShmURL, toURL: databaseStoreShmURL)
+        try fileManager.copyItemAtURL(sqliteWalURL, toURL: databaseStoreWalURL)
+        MSLogDebug("sqlite(-shm/-wal) files copied successfully")
+      } catch {
+        MSHandleError(error as NSError, message: "sqlite(-shm/-wal) files copied unsuccessfully")
+      }
     }
 
     // Failed to get resources
@@ -287,32 +293,31 @@ import MoonKit
     var error: NSError?
     context.performBlockAndWait {
 
-      if hasOption(LogFlags.File, logFlags),
-        let contents = String(contentsOfFile: path, encoding: NSUTF8StringEncoding)
-      {
-        MSLogDebug("content of file to parse:\n\(contents)")
+      if logFlags.contains(.File) {
+        do {
+          let contents = try String(contentsOfFile: path, encoding: NSUTF8StringEncoding)
+          MSLogDebug("content of file to parse:\n\(contents)")
+        } catch {
+          MSHandleError(error as NSError, message: "could not get file content for '\(path)'")
+        }
       }
 
       let json: JSONValue?
-      if hasOption(LogFlags.Preparsed, logFlags) {
+      if logFlags.contains(.Preparsed) {
         let preparsedString: String?
         do {
           preparsedString = try JSONSerialization.stringByParsingDirectivesForFile(path, options: .InflateKeypaths)
-        } catch var error1 as NSError {
-          error = error1
+        } catch let err {
+          error = err as NSError
           preparsedString = nil
-        } catch {
-          fatalError()
         }
         if preparsedString != nil && MSHandleError(error) == false {
           MSLogDebug("preparsed content of file to parse:\n\(preparsedString!)")
           do {
             json = try JSONSerialization.objectByParsingString(preparsedString, options: .InflateKeypaths)
-          } catch var error1 as NSError {
-            error = error1
+          } catch let err {
+            error = err as NSError
             json = nil
-          } catch {
-            fatalError()
           }
         } else {
           json = nil
@@ -320,23 +325,21 @@ import MoonKit
       } else {
         do {
           json = try JSONSerialization.objectByParsingFile(path, options: .InflateKeypaths)
-        } catch var error1 as NSError {
-          error = error1
+        } catch let err {
+          error = err as NSError
           json = nil
-        } catch {
-          fatalError()
         }
       }
 
       if MSHandleError(error) == false && json != nil
       {
-        if hasOption(LogFlags.Parsed, logFlags) { MSLogDebug("json objects from parsed file:\n\(json)") }
+        if logFlags.contains(.Parsed) { MSLogDebug("json objects from parsed file:\n\(json)") }
 
-        if let data = ObjectJSONValue(json), importedObject = type(data: data, context: context) {
+        if let data = ObjectJSONValue(json), importedObject = type.init(data: data, context: context) {
 
           MSLogDebug("imported \(type.className()) from file '\(path)'")
 
-          if hasOption(LogFlags.Imported, logFlags) {
+          if logFlags.contains(.Imported) {
             MSLogDebug("json output for imported object:\n\(importedObject.jsonValue)")
           }
 
@@ -346,7 +349,7 @@ import MoonKit
 
           MSLogDebug("\(importedObjects.count) \(type.className()) objects imported from file '\(path)'")
 
-          if hasOption(LogFlags.Imported, logFlags) {
+          if logFlags.contains(.Imported) {
             MSLogDebug("json output for imported object:\n\(JSONValue.Array(importedObjects.map({$0.jsonValue})).prettyRawValue)")
           }
 
@@ -406,18 +409,15 @@ import MoonKit
       self.modelFlags ➤ {
         var fileName: String?
         var logFlags = LogFlags.Default
-        var logFile = false
-        var logParsed = false
-        var logImported = false
         var removeExisting = false
         for marker in $0.markers {
           switch marker {
             case .Remove: removeExisting = true
             case .LoadFile(let f): fileName = f
             case .Log(let values):
-              if values ∋ .Parsed { logFlags |= LogFlags.Parsed }
-              if values ∋ .Imported { logFlags |= LogFlags.Imported }
-              if values ∋ .File { logFlags |= LogFlags.File }
+              if values ∋ .Parsed { logFlags.unionInPlace(.Parsed) }
+              if values ∋ .Imported { logFlags.unionInPlace(.Imported) }
+              if values ∋ .File { logFlags.unionInPlace(.File) }
           default: break
           }
         }
@@ -548,8 +548,12 @@ import MoonKit
   - returns: (Bool, NSError?)
   */
   private class func saveContext(context: NSManagedObjectContext) -> (Bool, NSError?) {
-    let error: NSError?
-    return (context.save(), error)
+    do {
+      try context.save()
+      return (true, nil)
+    } catch {
+      return (false, error as NSError)
+    }
   }
 
   /**
@@ -630,14 +634,14 @@ import MoonKit
   */
   public class func saveRootContext(completion: ((Bool, NSError?) -> Void)? = nil) {
     rootContext.performBlock {
-      var error: NSError?
       MSLogDebug("saving context '\(String(self.rootContext.nametag))'")
-      if self.rootContext.save() && !MSHandleError(error, message: "error occurred while saving context") {
+      do {
+        try self.rootContext.save()
         MSLogDebug("context saved successfully")
         completion?(true, nil)
-      } else {
-        MSHandleError(error, message: "failed to save context")
-        completion?(false, error)
+      } catch {
+        MSHandleError(error as NSError, message: "error occurred while saving context")
+        completion?(false, error as NSError)
       }
     }
   }
@@ -810,10 +814,10 @@ import MoonKit
     case Activities       = "activities"
 
     /** Dictionary of parsed command line arguments where ∀ k in [k:v], Flag(rawValue: k) != nil */
-    static let arguments = filter(NSUserDefaults.standardUserDefaults().volatileDomainForName(NSArgumentDomain), {
+    static let arguments = OrderedDictionary(NSUserDefaults.standardUserDefaults().volatileDomainForName(NSArgumentDomain).filter({
       (k, v) -> Bool in
-      return ModelFlag(rawValue: k as? String ?? "") != nil
-    })
+      return ModelFlag(rawValue: k) != nil
+    }))
 
     /** Array of markers created by parsing associated command line argument */
     var markers: [Marker] {
@@ -855,7 +859,7 @@ import MoonKit
 
   // MARK: - LogFlags type
 
-  public struct LogFlags: RawOptionSetType {
+  public struct LogFlags: OptionSetType {
     private(set) public var rawValue: Int
     public init(rawValue: Int) { self.rawValue = rawValue }
     public init(nilLiteral: ()) { rawValue = 0 }

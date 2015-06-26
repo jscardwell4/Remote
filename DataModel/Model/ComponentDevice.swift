@@ -99,7 +99,7 @@ public final class ComponentDevice: EditableModelObject {
   }
 
   override public var description: String {
-    var description = "\(super.description)\n\t" + "\n\t".join(
+    let description = "\(super.description)\n\t" + "\n\t".join(
       "always on = \(alwaysOn)",
       "input powers on = \(inputPowersOn)",
       "inputs = [" + ", ".join(inputs.map({$0.name})) + "]",

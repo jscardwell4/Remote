@@ -213,7 +213,7 @@ public struct PseudoConstraint {
   - returns: [PseudoConstraint]
   */
   public static func pseudoConstraintsByParsingFormat(format: String) -> [PseudoConstraint] {
-    return flattenedCompressedMap(NSLayoutConstraint.splitFormat(format), transform: {PseudoConstraint($0)?.expanded})
+    return flattenedCompressedMap(NSLayoutConstraint.splitFormat(format), {PseudoConstraint($0)?.expanded})
   }
 
   /**
@@ -509,7 +509,7 @@ func discernViewSuperview(obj1: AnyObject?, obj2: AnyObject?) -> (view: UIView, 
   }
 }
 
-func discernNearestAncestor(obj1: AnyObject?, obj2: AnyObject?) -> UIView? {
+func discernNearestAncestor(obj1: AnyObject?, _ obj2: AnyObject?) -> UIView? {
   switch (obj1, obj2) {
     case let (v1 as UIView, v2 as UIView): return v1.nearestCommonAncestorWithView(v2)
     case let (v as UIView, nil): return v.superview
@@ -654,7 +654,7 @@ public func --|(lhs: (Pseudo, Float, Relation), rhs: Axis) -> [Pseudo] {
 public func --|(lhs: ([Pseudo], Float, Relation), rhs: Axis) -> [Pseudo] {
   var superview: UIView?
   for constraint in lhs.0 {
-    superview = discernNearestAncestor(discernNearestAncestor(constraint.firstObject, obj2: constraint.secondObject), obj2: superview)
+    superview = discernNearestAncestor(discernNearestAncestor(constraint.firstObject, constraint.secondObject), superview)
   }
   precondition(superview != nil, "operator requires a proper view hierarchy has been established")
   if let lastConstraint = lhs.0.last, lastView = lastConstraint.firstObject as? UIView {

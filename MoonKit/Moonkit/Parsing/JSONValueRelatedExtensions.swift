@@ -12,7 +12,7 @@ extension Bool: JSONValueConvertible {
   public var jsonValue: JSONValue { return .Boolean(self) }
 }
 
-extension Bool: JSONValueInitializable {
+extension Bool/*: JSONValueInitializable*/ {
   public init?(_ jsonValue: JSONValue?) { if let b = jsonValue?.boolValue { self = b } else { return nil } }
 }
 

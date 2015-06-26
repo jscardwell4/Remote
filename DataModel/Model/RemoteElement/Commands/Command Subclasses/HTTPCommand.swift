@@ -23,7 +23,7 @@ public final class HTTPCommand: SendCommand {
 
   override public var jsonValue: JSONValue {
     var obj = ObjectJSONValue(super.jsonValue)!
-    obj["url"] = url.absoluteString?.jsonValue
+    obj["url"] = url.absoluteString.jsonValue
     return obj.jsonValue
   }
 

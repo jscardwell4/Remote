@@ -18,7 +18,7 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
   private(set) public var dictionary: [Key:Value]
   private(set) var _keys: [Key]
   public var keys: LazyForwardCollection<Array<Key>> { return LazyForwardCollection(_keys) }
-  public var printableKeys: Bool { return typeCast(_keys, Array<Printable>.self) != nil }
+  public var printableKeys: Bool { return typeCast(_keys, Array<CustomStringConvertible>.self) != nil }
 
   public var userInfo: [String:AnyObject]?
   public var count: Int { return _keys.count }
@@ -181,7 +181,7 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
       } else {
         _keys.insert(key, atIndex: index)
       }
-      dictionary[key] = value
+      dictionary[key] = v
     } else {
       if let currentIndex = indexForKey(key) { _keys.removeAtIndex(currentIndex) }
       dictionary[key] = nil
@@ -198,7 +198,7 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
   public mutating func setValue(value: Value?, forKey key: Key) {
     if let v = value {
       if !_keys.contains(key) { _keys.append(key) }
-      dictionary[key] = value
+      dictionary[key] = v
     } else {
       if let idx = indexForKey(key) { _keys.removeAtIndex(idx) }
       dictionary[key] = nil
@@ -233,7 +233,7 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
   }
 
   public mutating func extend<S: SequenceType where S.Generator.Element == (Int, Key, Value)>(s: S) {
-    for (i, k, v) in s { self[k] = v }
+    for (_, k, v) in s { self[k] = v }
   }
 
   /**
@@ -296,7 +296,7 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
 
   public func inflated(expand: (Stack<String>, SelfType) -> Value = defaultExpand)  -> SelfType {
     var result = self
-    result.inflate(expand: expand)
+    result.inflate(expand)
     return result
   }
 
@@ -310,10 +310,10 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
       // Enumerate the list inflating each key
       for key in inflatableKeys {
 
-        var keyComponents = split(key.characters, isSeparator: {$0 == "."}).map { String($0) }
+        let keyComponents = split(key.characters, isSeparator: {$0 == "."}).map { String($0) }
         let firstKey = keyComponents.first!
         let lastKey = keyComponents.last!
-        var keypath = Stack(dropLast(dropFirst(keyComponents)))
+        let keypath = Stack(dropLast(dropFirst(keyComponents)))
         let value: Value
 
         // If our value is an array, we embed each value in the array and keep our value as an array
@@ -389,13 +389,15 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
   }
 
   public static func dictionaryWithXMLData(data: NSData) -> OrderedDictionary<String, AnyObject> {
-    return MSDictionary(byParsingXML: data) as! OrderedDictionary<String, AnyObject>
+    let dictionary = MSDictionary(byParsingXML: data)
+    return OrderedDictionary<String,AnyObject>(dictionary)
+//    return MSDictionary(byParsingXML: data) as! OrderedDictionary<String, AnyObject>
   }
 
 }
 
 // MARK: - Printing
-extension  OrderedDictionary: Printable, DebugPrintable {
+extension  OrderedDictionary: CustomStringConvertible, CustomDebugStringConvertible {
 
   public var description: String {
     var description = "{\n\t"

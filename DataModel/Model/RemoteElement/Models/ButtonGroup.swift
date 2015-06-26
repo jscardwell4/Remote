@@ -232,8 +232,9 @@ public final class ButtonGroup: RemoteElement {
 
     var commandSets           : JSONValue.ObjectValue = [:]
     var commandSetCollections : JSONValue.ObjectValue = [:]
-    var labels                : JSONValue.ObjectValue = [:]
-
+    // FIXME: We aren't actually adding any labels
+    let labels                : JSONValue.ObjectValue = [:]
+    
     for mode in modes {
       if let container = commandContainerForMode(mode) {
         let d = container.jsonValue

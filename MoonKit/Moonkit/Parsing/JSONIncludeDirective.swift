@@ -50,7 +50,7 @@ internal class JSONIncludeDirective {
 
   private static func parseDirectives(string: String, directory: String) -> [JSONIncludeDirective] {
     let ranges = compressed(string.rangesForCapture(1, byMatching: ~/"(<@include[^>]+>)"))
-    let directives = compressedMap(ranges, transform: {JSONIncludeDirective(string[$0], location: $0, directory: directory)})
+    let directives = compressedMap(ranges, {JSONIncludeDirective(string[$0], location: $0, directory: directory)})
     return directives
   }
 
@@ -98,10 +98,13 @@ internal class JSONIncludeDirective {
 
     init?(_ p: String) {
       if let cached = IncludeFile.cache[p] { self = cached }
-      else if NSFileManager.defaultManager().isReadableFileAtPath(p),
-        let c = String(contentsOfFile: p, encoding: NSUTF8StringEncoding)
-      {
+      else if NSFileManager.defaultManager().isReadableFileAtPath(p) {
+        do {
+        let c = try String(contentsOfFile: p, encoding: NSUTF8StringEncoding)
         path = p; content = c; IncludeFile.cache[p] = self
+        } catch {
+          path = ""; content = ""; return nil
+        }
       } else { path = ""; content = ""; return nil }
     }
 

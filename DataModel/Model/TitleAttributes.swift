@@ -218,7 +218,7 @@ public struct TitleAttributes {
   }
 
   public var iconString: NSAttributedString {
-    var attrs = attributes
+    let attrs = attributes
     let pointSize: CGFloat = (attrs[PropertyKey.Font.attributeKey!] as? UIFont)?.pointSize ?? 18.0
     let font = UIFont(awesomeFontWithSize: pointSize)
     attrs[PropertyKey.Font.attributeKey!] = font
@@ -251,10 +251,10 @@ public struct TitleAttributes {
   */
   public func stringWithFillers(fillers: MSDictionary?) -> NSAttributedString {
     if fillers != nil {
-      var attrs = fillers!
-      var attributes = self.attributes
+      let attrs = fillers!
+      let attributes = self.attributes
       if let txt = attributes["text"] as? String where txt.isEmpty { attributes.removeObjectForKey("text") }
-      attrs.setValuesForKeysWithDictionary(attributes as [NSObject:AnyObject])
+      attrs.setValuesForKeysWithDictionary(attributes as NSDictionary as! [String : AnyObject])
 
       return stringWithAttributes(attrs)
     } else { return string }
@@ -352,7 +352,7 @@ public struct TitleAttributes {
         case .Ligature:
           return Int(jsonValue)
 
-        case .Expansion, .Obliqueness, .BaselineOffset, .Kern, .HyphenationFactor, .StrokeWidth:
+        case .Expansion, .Obliqueness, .BaselineOffset, .Kern, .HyphenationFactor:
           return Float(jsonValue)
 
          case .ParagraphSpacingBefore, .LineHeightMultiple, .MaximumLineHeight, .MinimumLineHeight, .ParagraphSpacing,

@@ -25,7 +25,7 @@ public class LabeledCheckbox: Checkbox {
     didSet { invalidateIntrinsicContentSize() }
   }
 
-  private var titleFontAttributes: [NSObject:AnyObject] {
+  private var titleFontAttributes: [String:AnyObject] {
     return [ NSFontAttributeName: titleFont, NSForegroundColorAttributeName: titleColor ]
   }
 
@@ -40,7 +40,7 @@ public class LabeledCheckbox: Checkbox {
 
   private var iconFont: UIFont { return UIFont(name: "FontAwesome", size: max(titleSize.height, bounds.height) * 0.92)! }
 
-  private var iconFontAttributes: [NSObject:AnyObject] {
+  private var iconFontAttributes: [String:AnyObject] {
     return [ NSFontAttributeName: iconFont, NSForegroundColorAttributeName: checkboxColor ]
   }
 
@@ -141,7 +141,7 @@ public class LabeledCheckbox: Checkbox {
                                 textInnerShadow.shadowBlurRadius,
                                 (textOpaqueTextShadow as UIColor).CGColor)
 
-    CGContextSetBlendMode(context, kCGBlendModeSourceOut)
+    CGContextSetBlendMode(context, .SourceOut)
 
     CGContextBeginTransparencyLayer(context, nil)
 

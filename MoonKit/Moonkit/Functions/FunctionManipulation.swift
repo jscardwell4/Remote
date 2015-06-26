@@ -72,14 +72,14 @@ The function is a simple wrapper around `reduce` that ignores the actual reducti
 - parameter sequence: S
 - parameter block: (S.Generator.Element) -> Void
 */
-public func apply<S:SequenceType>(sequence: S, f: (S.Generator.Element) -> Void) { sequence.reduce(Void(), combine: { f($0.1) }) }
-public func apply<T>(x: T, f: (T) -> Void) { f(x) }
+public func apply<S:SequenceType>(sequence: S, _ f: (S.Generator.Element) -> Void) { sequence.reduce(Void(), combine: { f($0.1) }) }
+public func apply<T>(x: T, _ f: (T) -> Void) { f(x) }
 //public func apply<T, U>(x: T, f: (T) -> U) -> U { return f(x) }
 
-public func applyMaybe<S:SequenceType>(sequence: S?, f: (S.Generator.Element) -> Void) { if let s = sequence { apply(s, f: f) } }
-public func applyMaybe<T>(x: T?, f: (T) -> Void) { if let x = x { apply(x, f: f) } }
+public func applyMaybe<S:SequenceType>(sequence: S?, _ f: (S.Generator.Element) -> Void) { if let s = sequence { apply(s, f) } }
+public func applyMaybe<T>(x: T?, _ f: (T) -> Void) { if let x = x { apply(x, f) } }
 
-public func pairwiseApply<S:SequenceType>(sequence: S, f: (S.Generator.Element, S.Generator.Element) -> Void) {
+public func pairwiseApply<S:SequenceType>(sequence: S, _ f: (S.Generator.Element, S.Generator.Element) -> Void) {
   apply(AnySequence({() -> AnyGenerator<(S.Generator.Element, S.Generator.Element)> in
     let sequenceArray = Array(sequence)
     var i = 1
@@ -89,7 +89,7 @@ public func pairwiseApply<S:SequenceType>(sequence: S, f: (S.Generator.Element, 
       i++
       return result
     })
-  }), f: f)
+  }), f)
 }
 
 /**
@@ -100,17 +100,17 @@ A function that simply calls `apply` and then returns the sequence
 
 - returns: S
 */
-public func pipedApply<S:SequenceType>(x: S, f: (S.Generator.Element) -> Void) -> S { apply(x, f: f); return x }
-public func pipedApply<T>(x: T, f: (T) -> Void) -> T { f(x); return x }
+public func pipedApply<S:SequenceType>(x: S, _ f: (S.Generator.Element) -> Void) -> S { apply(x, f); return x }
+public func pipedApply<T>(x: T, _ f: (T) -> Void) -> T { f(x); return x }
 
 /** Operator function for the `apply` function */
-public func ➤<S:SequenceType>(lhs: S, rhs: (S.Generator.Element) -> Void) { apply(lhs, f: rhs) }
-public func ➤<T>(lhs: T, rhs: (T) -> Void) { apply(lhs, f: rhs) }
+public func ➤<S:SequenceType>(lhs: S, rhs: (S.Generator.Element) -> Void) { apply(lhs, rhs) }
+public func ➤<T>(lhs: T, rhs: (T) -> Void) { apply(lhs, rhs) }
 public func ➤|<T, U>(lhs: T, rhs: (T) -> U) -> U { return rhs(lhs) }
 
 /** Operator function for the `chainApply` function */
-public func ➤|<S:SequenceType>(lhs: S, rhs: (S.Generator.Element) -> Void) -> S { return pipedApply(lhs, f: rhs) }
-public func ➤|<T>(lhs: T, rhs: (T) -> Void) -> T { return pipedApply(lhs, f: rhs) }
+public func ➤|<S:SequenceType>(lhs: S, rhs: (S.Generator.Element) -> Void) -> S { return pipedApply(lhs, rhs) }
+public func ➤|<T>(lhs: T, rhs: (T) -> Void) -> T { return pipedApply(lhs, rhs) }
 
 /** Piping operator */
 public func >>><T>(lhs: T, rhs: T -> Void) { rhs(lhs) }
@@ -119,8 +119,9 @@ public func >>><T, U>(lhs: T, rhs: U) -> (T, U) { return (lhs, rhs) }
 public func >>><T, U, V>(lhs: (T, U), rhs: (T, U) -> V) -> V { return rhs(lhs) }
 
 /** Operator for monadic bind */
-public func ?>><T, U>(lhs: T?, rhs: T -> U?) -> U? { return flatMap(lhs, rhs) }
+//public func ?>><T, U>(lhs: T?, rhs: T -> U?) -> U? { return flatMap(lhs, rhs) }
 public func ?>><T>(lhs: T?, rhs: T -> Void) { if let x = lhs { rhs(x) } }
+public func ?>><T,U>(lhs: T?, rhs: T -> U) -> U? { if let x = lhs { return rhs(x) } else { return nil } }
 
 /** Accumulating args */
 public func >?><T, U>(lhs: T?, rhs: U) -> (T, U)? { if let x = lhs { return (x, rhs) } else { return nil } }

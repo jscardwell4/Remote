@@ -63,11 +63,11 @@ extension Stack: CustomStringConvertible {
   public var description: String { return storage.description }
 }
 
-extension Stack: SequenceType, _Sequence_Type {
+extension Stack: SequenceType {
   public func generate() -> Array<T>.Generator { return storage.generate() }
 }
 
-extension Stack: CollectionType, _CollectionType {
+extension Stack: CollectionType {
   public var startIndex: Array<T>.Index { return storage.startIndex }
   public var endIndex: Array<T>.Index { return storage.endIndex }
   public subscript (i: Array<T>.Index) -> T { get { return storage[i] } set { storage[i] = newValue } }

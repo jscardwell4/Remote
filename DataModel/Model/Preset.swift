@@ -75,11 +75,11 @@ final public class Preset: EditableModelObject, CollectedModel {
       willAccessValueForKey("subelements")
       let subelements = primitiveValueForKey("subelements") as? NSOrderedSet
       didAccessValueForKey("subelements")
-      return subelements as? OrderedSet<Preset>
+      return subelements != nil ? OrderedSet<Preset>(subelements!.array as! [Preset]) : nil
     }
     set {
       willChangeValueForKey("subelements")
-      setPrimitiveValue(newValue?._bridgeToObjectiveC(), forKey: "subelements")
+      setPrimitiveValue(newValue?.NSOrderedSetValue, forKey: "subelements")
       didChangeValueForKey("subelements")
     }
   }
@@ -261,7 +261,7 @@ final public class Preset: EditableModelObject, CollectedModel {
       "background image = \(String(backgroundImage?.index))",
       "background image alpha = \(String(backgroundImageAlpha))",
       "background color = \(String(backgroundColor))",
-      "constraints = " + "\n".join(map("\n".split(String(constraints)).enumerate(), {$0 > 0 ? $1.indentedBy(17) : $1})),
+      "constraints = " + "\n".join("\n".split(String(constraints)).enumerate().map{$0 > 0 ? $1.indentedBy(17) : $1}),
       {
         switch self.baseType {
         case .Remote:

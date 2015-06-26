@@ -54,7 +54,7 @@ public final class Activity: IndexedModelObject {
   */
   public func haltActivity(completion: ((success: Bool, error: NSError?) -> Void)?) {
     if let controller = activityController where controller.currentActivity == self, let macro = haltMacro {
-      macro.execute {[unowned self] (success, error) -> Void in
+      macro.execute { (success, error) -> Void in
         if error == nil && success {
           controller.currentActivity = nil
           completion?(success: controller.currentRemote == controller.homeRemote, error: nil)

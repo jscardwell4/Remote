@@ -27,7 +27,7 @@ extension NSManagedObjectModel {
         }
 
         var properties = entity.properties as [NSPropertyDescription]
-        if let superEntityProperties = (entity.superentity?.properties as? [NSPropertyDescription])?.map({$0.name}) {
+        if let superEntityProperties = (entity.superentity?.properties)?.map({$0.name}) {
           properties = properties.filter({superEntityProperties ∌ $0.name})
         }
 

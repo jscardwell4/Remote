@@ -21,11 +21,10 @@ public struct RegularExpression {
   - parameter pattern: String
   - parameter options: NSRegularExpressionOptions = nil
   */
-  public init(pattern: String, options: NSRegularExpressionOptions = nil, error: NSErrorPointer = nil) {
+  public init(pattern: String, options: NSRegularExpressionOptions = NSRegularExpressionOptions(rawValue: 0)) {
     do {
       regex = try NSRegularExpression(pattern: pattern, options: options)
-    } catch var error1 as NSError {
-      error.memory = error1
+    } catch  {
       regex = nil
     }
   }
@@ -38,7 +37,7 @@ public struct RegularExpression {
 
   - returns: Bool
   */
-  public func match(string: String, options: NSMatchingOptions = nil) -> Bool {
+  public func match(string: String, options: NSMatchingOptions = NSMatchingOptions(rawValue: 0)) -> Bool {
     return (regex?.numberOfMatchesInString(string,
                                    options: options,
                                      range: NSRange(0 ..< string.utf16.count)) ?? 0) != 0

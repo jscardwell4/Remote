@@ -49,7 +49,7 @@ public final class CommandSetCollection: CommandContainer {
   - returns: String?
   */
   public func labelForCommandSet(commandSet: CommandSet) -> String? {
-    return findFirst(containerIndex.keyValuePairs, {$1 as! String == commandSet.uuid})?.0
+    return findFirst(containerIndex.keyValuePairs, {$0.0 == commandSet.uuid})?.0
   }
 
   /**

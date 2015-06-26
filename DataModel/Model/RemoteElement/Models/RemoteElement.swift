@@ -64,7 +64,7 @@ public class RemoteElement: IndexedModelObject {
 
   @NSManaged public var tag: Int16
   @NSManaged public var key: String?
-  public var identifier: String { return "_" + uuid.characters.filter{$0 != "-"} }
+  public var identifier: String { return "_" + String(uuid.characters.filter{$0 != "-"}) }
 
   public enum BaseType: Int  {
     case Undefined, Remote, ButtonGroup, Button
@@ -294,7 +294,7 @@ public class RemoteElement: IndexedModelObject {
     . └──────────────────────> Specialized `Button` role
 
   */
-  public struct Role: RawOptionSetType {
+  public struct Role: OptionSetType {
 
     private(set) public var rawValue: UInt16
     public init(rawValue: UInt16) { self.rawValue = rawValue & 0b1111_000_0001_111_11 }
@@ -432,7 +432,7 @@ public class RemoteElement: IndexedModelObject {
 
   // MARK: - Style
 
-  public struct Style: RawOptionSetType {
+  public struct Style: OptionSetType {
 
     private(set) public var rawValue: Int16
     public init(rawValue: Int16) { self.rawValue = rawValue & 0b1111 }
@@ -636,7 +636,7 @@ public class RemoteElement: IndexedModelObject {
     result += "\n\tbackgrounds = {\n\(backgrounds.description.indentedBy(8))\n\t}"
     result += "\n\t"
     result += "\n\t".join(modes.reduce([String](),
-                                 {$0 + ["\($1).backgroundColor = \(String(self.backgroundForMode($1)?.color?.string))"]}))
+                                 combine: {$0 + ["\($1).backgroundColor = \(String(self.backgroundForMode($1)?.color?.string))"]}))
     result += "\n\t"
     result += "\n\t".join(modes.reduce([String](),
                                  combine: {$0 + ["\($1).backgroundImage = \(String(self.backgroundForMode($1)?.image?.index))"]}))
@@ -741,10 +741,10 @@ extension RemoteElement.Style: JSONValueConvertible {
 
   public var jsonValue: JSONValue {
     var segments: [String] = []
-    if self & RemoteElement.Style.ApplyGloss  != nil    { segments.append("gloss")       }
-    if self & RemoteElement.Style.DrawBorder  != nil    { segments.append("border")      }
-    if self & RemoteElement.Style.Stretchable != nil    { segments.append("stretchable") }
-    if self & RemoteElement.Style.DrawBackground != nil { segments.append("background") }
+    if contains(.ApplyGloss)    { segments.append("gloss")       }
+    if contains(.DrawBorder)    { segments.append("border")      }
+    if contains(.Stretchable)    { segments.append("stretchable") }
+    if contains(.DrawBackground) { segments.append("background") }
     if segments.isEmpty { segments.append("none") }
     return " ".join(segments).jsonValue
   }
@@ -757,10 +757,10 @@ extension RemoteElement.Style: JSONValueInitializable {
       var style = RemoteElement.Style.None
       for component in components {
         switch component {
-          case "border":      style = style | RemoteElement.Style.DrawBorder
-          case "stretchable": style = style | RemoteElement.Style.Stretchable
-          case "gloss":       style = style | RemoteElement.Style.ApplyGloss
-          case "background":  style = style | RemoteElement.Style.DrawBackground
+          case "border":      style.unionInPlace(.DrawBorder)
+          case "stretchable": style.unionInPlace(.Stretchable)
+          case "gloss":       style.unionInPlace(.ApplyGloss)
+          case "background":  style.unionInPlace(.DrawBackground)
           default: break
         }
       }
@@ -772,7 +772,7 @@ extension RemoteElement.Style: JSONValueInitializable {
 
 // MARK: - RemoteElement.Role extensions
 
-extension RemoteElement.Role: Hashable {
+extension RemoteElement.Role: Equatable, Hashable {
   public var hashValue: Int { return Int(rawValue) }
 }
 

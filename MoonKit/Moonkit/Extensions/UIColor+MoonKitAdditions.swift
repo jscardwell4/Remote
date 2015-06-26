@@ -37,7 +37,7 @@ extension UIColor {
       self.init(red: r, green: g, blue: b, alpha: a)
     } else if string.matchesRegEx("@.*%") {
       let (base, alpha) = disperse2("@".split(string))
-      if let color = UIColor(name: base), let (r, g, b, a) = color.rgba {
+      if let color = UIColor(name: base), let (r, g, b, _) = color.rgba {
         self.init(red: r, green: g, blue: b, alpha: CGFloat((String(dropLast(alpha.characters)) as NSString).floatValue / 100.0))
       } else {
         self.init()
@@ -175,11 +175,11 @@ extension UIColor {
   }
 
   public var colorSpaceModel: CGColorSpaceModel { return CGColorSpaceGetModel(CGColorGetColorSpace(CGColor)) }
-  public var isPatternBased: Bool { return colorSpaceModel.rawValue == kCGColorSpaceModelPattern.rawValue }
+  public var isPatternBased: Bool { return colorSpaceModel.rawValue == CGColorSpaceModel.Pattern.rawValue }
 
   public var isRGBCompatible: Bool {
     switch colorSpaceModel.rawValue {
-      case kCGColorSpaceModelRGB.rawValue, kCGColorSpaceModelMonochrome.rawValue: return true
+      case CGColorSpaceModel.RGB.rawValue, CGColorSpaceModel.Monochrome.rawValue: return true
       default: return false
     }
   }
@@ -187,7 +187,7 @@ extension UIColor {
   public var rgbColor: UIColor? {
 
     switch colorSpaceModel.rawValue {
-      case kCGColorSpaceModelRGB.rawValue:
+      case CGColorSpaceModel.RGB.rawValue:
         return self
       default:
         if let rgba = self.rgba {

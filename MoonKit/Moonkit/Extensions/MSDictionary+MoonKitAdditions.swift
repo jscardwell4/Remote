@@ -39,7 +39,7 @@ extension MSKeyPath: SequenceType {
 //  }
 //}
 
-extension MSDictionary: CustomStringConvertible {
+extension MSDictionary {
 
   /**
   initWithOrderedDictionary:AnyObject>:
@@ -62,12 +62,12 @@ extension MSDictionary: CustomStringConvertible {
     let inflatableKeys = allKeys.filter {(key) in
       if let k = key as? String { if k.numberOfMatchesForRegEx("(?:\\w\\.)+\\w") > 0 { return true } }
       return false
-    } as! [String]
+    } as! [NSString] as! [String]
 
     // Enumerate the list inflating each key
     for key in inflatableKeys {
 
-      var keypath = MSKeyPath(fromString:key)  // Create a keypath from the inflatable key
+      let keypath = MSKeyPath(fromString:key)  // Create a keypath from the inflatable key
       let first = keypath.popFirst()!          // This will become our key
       let last = keypath.popLast()!            // This will become the deepest key in our value
 
@@ -80,14 +80,14 @@ extension MSDictionary: CustomStringConvertible {
 
         value = NSArray(array: valueArray.map{(obj) in
 
-          var dict = MSDictionary()  // Create a dictionary within which to embed our value
+          let dict = MSDictionary()  // Create a dictionary within which to embed our value
           var subdict = dict         // This will reference the dictionary to which our value entered
 
           // If there are stops along the way from first to last, recursively embed in dictionaries
           if !keypath.isEmpty {
             for subkey in keypath {
               subdict[subkey] = MSDictionary()
-              var subsubdict = subdict[subkey] as! MSDictionary
+              let subsubdict = subdict[subkey] as! MSDictionary
               subdict = subsubdict
             }
           }
@@ -102,14 +102,14 @@ extension MSDictionary: CustomStringConvertible {
       // Otherwise we embed the value
       else {
 
-        var dict = MSDictionary()  // Create a dictionary within which to embed our value
+        let dict = MSDictionary()  // Create a dictionary within which to embed our value
         var subdict = dict         // This will reference the dictionary to which our value entered
 
         // If there are stops along the way from first to last, recursively embed in dictionaries
         if !keypath.isEmpty {
           for subkey in keypath {
             subdict[subkey] = MSDictionary()
-            var subsubdict = subdict[subkey] as! MSDictionary
+            let subsubdict = subdict[subkey] as! MSDictionary
             subdict = subsubdict
           }
         }

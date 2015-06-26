@@ -20,11 +20,11 @@ public class TextInputView: UIInputView {
   var currentText: String {
     get {
       let range = target.textRangeFromPosition(target.beginningOfDocument, toPosition: target.endOfDocument)
-      return target.textInRange(range)
+      return target.textInRange(range!)!
     }
     set {
       let range = target.textRangeFromPosition(target.beginningOfDocument, toPosition: target.endOfDocument)
-      target.replaceRange(range, withText: newValue)
+      target.replaceRange(range!, withText: newValue)
     }
   }
 
@@ -41,7 +41,7 @@ public class TextInputView: UIInputView {
     if let field = target as? UITextField {
 
       insertText = {
-        [unowned self] (text: String) -> Bool in
+        (text: String) -> Bool in
         if let selectedTextRange = field.selectedTextRange {
           let location = field.offsetFromPosition(field.beginningOfDocument, toPosition: selectedTextRange.start)
           let length = field.offsetFromPosition(selectedTextRange.start, toPosition: selectedTextRange.end)
@@ -55,12 +55,12 @@ public class TextInputView: UIInputView {
       }
 
       done = {
-        [unowned self] () -> Bool in
+        () -> Bool in
         return field.resignFirstResponder()
       }
 
       deleteBackward = {
-        [unowned self] () -> Bool in
+        () -> Bool in
 
         if let selectedTextRange = field.selectedTextRange {
           let location = field.offsetFromPosition(field.beginningOfDocument, toPosition: selectedTextRange.start)
@@ -78,7 +78,7 @@ public class TextInputView: UIInputView {
     } else if let view = target as? UITextView {
 
       insertText = {
-        [unowned self] (text: String) -> Bool in
+        (text: String) -> Bool in
 
         if let selectedTextRange = view.selectedTextRange {
           let location = view.offsetFromPosition(view.beginningOfDocument, toPosition: selectedTextRange.start)
@@ -93,13 +93,13 @@ public class TextInputView: UIInputView {
       }
 
       done = {
-        [unowned self] () -> Bool in
+        () -> Bool in
 
         return view.resignFirstResponder()
       }
 
       deleteBackward = {
-        [unowned self] () -> Bool in
+        () -> Bool in
 
         if let selectedTextRange = view.selectedTextRange {
           let location = view.offsetFromPosition(view.beginningOfDocument, toPosition: selectedTextRange.start)
