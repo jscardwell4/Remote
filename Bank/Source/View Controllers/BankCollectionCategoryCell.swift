@@ -39,16 +39,16 @@ final class BankCollectionCategoryCell: BankCollectionCell {
 
     constrain(
       indicator--20--label--8--chevron
-        --> identifier(suffixes: "Spacing", "Horizontal"),
+        --> identifier("Spacing", "Horizontal"),
       [label.centerY => contentView.centerY
-        --> identifier(suffixes: "Label", "Vertical"),
+        --> identifier("Label", "Vertical"),
       indicator.centerY => contentView.centerY
-        --> identifier(suffixes: "Indicator", "Vertical"),
+        --> identifier("Indicator", "Vertical"),
       indicator.right => contentView.left + (indicatorImage == nil ? 0 : 40)
-        --> identifier(suffixes: "Indicator", "Horizontal")]
+        --> identifier("Indicator", "Horizontal")]
     )
 
-    indicatorConstraint = constraintWithIdentifier(identifier(suffixes: "Indicator", "Horizontal"))
+    indicatorConstraint = constraintWithIdentifier(identifier("Indicator", "Horizontal"))
 
   }
 

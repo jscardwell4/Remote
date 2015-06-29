@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-final class BankCollectionDetailTextViewCell: BankCollectionDetailTextInputCell, UITextViewDelegate {
+final class BankCollectionDetailTextViewCell: BankCollectionDetailTextInputCell {
 
   enum DisplayStyle: String { case Default = "default", Condensed = "condensed" }
 

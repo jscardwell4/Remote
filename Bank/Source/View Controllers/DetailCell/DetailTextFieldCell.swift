@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-final class DetailTextFieldCell: DetailTextInputCell, UITextFieldDelegate {
+final class DetailTextFieldCell: DetailTextInputCell {
 
   enum InputType { case Default, Integer, HexInteger, FloatingPoint }
 

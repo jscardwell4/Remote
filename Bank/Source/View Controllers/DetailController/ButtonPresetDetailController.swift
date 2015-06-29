@@ -146,7 +146,7 @@ class ButtonPresetDetailController: PresetDetailController {
   func loadBackgroundColorSection() {
 
     var backgroundColorSection = sections[SectionKey.BackgroundColor.rawValue] as? FilteringDetailSection
-    backgroundColorSection?.removeAllRows(keepCapacity: true)
+    backgroundColorSection?.removeAllRows(true)
 
     if backgroundColorSection == nil {
 
@@ -154,25 +154,25 @@ class ButtonPresetDetailController: PresetDetailController {
       backgroundColorSection!.singleRowDisplay = true
       backgroundColorSection!.predicates = [
         FilteringDetailSection.Predicate(name: "Highlighted", includeRow: {
-          ($0.tag as! UIControlState) & .Highlighted != nil
+          ($0.tag as! UIControlState).contains(.Highlighted)
         },
-        active: self.backgroundColorState & .Highlighted != nil),
+        active: self.backgroundColorState.contains(.Highlighted)),
         FilteringDetailSection.Predicate(name: "Selected", includeRow: {
-          ($0.tag as! UIControlState) & .Selected != nil
+          ($0.tag as! UIControlState).contains(.Selected)
         },
-        active: self.backgroundColorState & .Selected != nil),
+        active: self.backgroundColorState.contains(.Selected)),
         FilteringDetailSection.Predicate(name: "Disabled", includeRow: {
-          ($0.tag as! UIControlState) & .Disabled != nil
+          ($0.tag as! UIControlState).contains(.Disabled)
         },
-        active: self.backgroundColorState & .Disabled != nil)
+        active: self.backgroundColorState.contains(.Disabled))
       ]
       backgroundColorSection!.activePredicatesDidChange = {
         var state = UIControlState.Normal
         for predicate in $0.predicates {
           switch predicate.name {
-            case "Highlighted" where predicate.active: state |= .Highlighted
-            case "Selected" where predicate.active:    state |= .Selected
-            case "Disabled" where predicate.active:    state |= .Disabled
+            case "Highlighted" where predicate.active: state.unionInPlace(.Highlighted)
+            case "Selected" where predicate.active:    state.unionInPlace(.Selected)
+            case "Disabled" where predicate.active:    state.unionInPlace(.Disabled)
             default: break
           }
         }
@@ -181,7 +181,7 @@ class ButtonPresetDetailController: PresetDetailController {
       sections[SectionKey.BackgroundColor.rawValue] = backgroundColorSection!
     }
 
-    apply(((0..<8).map{UIControlState(UInt($0))})) {
+    apply(((0..<8).map{UIControlState(rawValue: UInt($0))})) {
       state in backgroundColorSection!.addRow({ self.generateBackgroundColorRowForState(state) },
                                        forKey: SectionKey.BackgroundColor.rowKeyForState(state))
     }
@@ -283,7 +283,7 @@ class ButtonPresetDetailController: PresetDetailController {
   func loadTitleSection() {
 
     var titleSection = sections[SectionKey.Title.rawValue] as? FilteringDetailSection
-    titleSection?.removeAllRows(keepCapacity: true)
+    titleSection?.removeAllRows(true)
 
     if titleSection == nil {
 
@@ -291,25 +291,25 @@ class ButtonPresetDetailController: PresetDetailController {
       titleSection!.singleRowDisplay = true
       titleSection!.predicates = [
         FilteringDetailSection.Predicate(name: "Highlighted", includeRow: {
-          ($0.tag as! UIControlState) & .Highlighted != nil
+          ($0.tag as! UIControlState).contains(.Highlighted)
         },
-        active: self.titleState & .Highlighted != nil),
+        active: self.titleState.contains(.Highlighted)),
         FilteringDetailSection.Predicate(name: "Selected", includeRow: {
-          ($0.tag as! UIControlState) & .Selected != nil
+          ($0.tag as! UIControlState).contains(.Selected)
         },
-        active: self.titleState & .Selected != nil),
+        active: self.titleState.contains(.Selected)),
         FilteringDetailSection.Predicate(name: "Disabled", includeRow: {
-          ($0.tag as! UIControlState) & .Disabled != nil
+          ($0.tag as! UIControlState).contains(.Disabled)
         },
-        active: self.titleState & .Disabled != nil)
+        active: self.titleState.contains(.Disabled))
       ]
       titleSection!.activePredicatesDidChange = {
         var state = UIControlState.Normal
         for predicate in $0.predicates {
           switch predicate.name {
-            case "Highlighted" where predicate.active: state |= .Highlighted
-            case "Selected" where predicate.active:    state |= .Selected
-            case "Disabled" where predicate.active:    state |= .Disabled
+            case "Highlighted" where predicate.active: state.unionInPlace(.Highlighted)
+            case "Selected" where predicate.active:    state.unionInPlace(.Selected)
+            case "Disabled" where predicate.active:    state.unionInPlace(.Disabled)
             default: break
           }
         }
@@ -318,7 +318,7 @@ class ButtonPresetDetailController: PresetDetailController {
       sections[SectionKey.Title.rawValue] = titleSection!
     }
 
-    apply(((0..<8).map{UIControlState(UInt($0))})) {
+    apply(((0..<8).map{UIControlState(rawValue: UInt($0))})) {
       state in titleSection!.addRow({ self.generateTitleRowForState(state) },
                              forKey: SectionKey.Title.rowKeyForState(state))
     }
@@ -421,7 +421,7 @@ class ButtonPresetDetailController: PresetDetailController {
   func loadIconSection() {
 
     var iconSection = sections[SectionKey.Icon.rawValue] as? FilteringDetailSection
-    iconSection?.removeAllRows(keepCapacity: true)
+    iconSection?.removeAllRows(true)
 
     if iconSection == nil {
 
@@ -429,25 +429,25 @@ class ButtonPresetDetailController: PresetDetailController {
       iconSection!.singleRowDisplay = true
       iconSection!.predicates = [
         FilteringDetailSection.Predicate(name: "Highlighted", includeRow: {
-          ($0.tag as! UIControlState) & .Highlighted != nil
+          ($0.tag as! UIControlState).contains(.Highlighted)
         },
-        active: self.iconState & .Highlighted != nil),
+        active: self.iconState.contains(.Highlighted)),
         FilteringDetailSection.Predicate(name: "Selected", includeRow: {
-          ($0.tag as! UIControlState) & .Selected != nil
+          ($0.tag as! UIControlState).contains(.Selected)
         },
-        active: self.iconState & .Selected != nil),
+        active: self.iconState.contains(.Selected)),
         FilteringDetailSection.Predicate(name: "Disabled", includeRow: {
-          ($0.tag as! UIControlState) & .Disabled != nil
+          ($0.tag as! UIControlState).contains(.Disabled)
         },
-        active: self.iconState & .Disabled != nil)
+        active: self.iconState.contains(.Disabled))
       ]
       iconSection!.activePredicatesDidChange = {
         var state = UIControlState.Normal
         for predicate in $0.predicates {
           switch predicate.name {
-            case "Highlighted" where predicate.active: state |= .Highlighted
-            case "Selected" where predicate.active:    state |= .Selected
-            case "Disabled" where predicate.active:    state |= .Disabled
+            case "Highlighted" where predicate.active: state.unionInPlace(.Highlighted)
+            case "Selected" where predicate.active:    state.unionInPlace(.Selected)
+            case "Disabled" where predicate.active:    state.unionInPlace(.Disabled)
             default: break
           }
         }
@@ -456,7 +456,7 @@ class ButtonPresetDetailController: PresetDetailController {
       sections[SectionKey.Icon.rawValue] = iconSection!
     }
 
-    apply(((0..<8).map{UIControlState(UInt($0))})) {
+    apply(((0..<8).map{UIControlState(rawValue: UInt($0))})) {
       state in iconSection!.addRow({ self.generateIconRowForState(state) },
                             forKey: SectionKey.Icon.rowKeyForState(state))
     }
@@ -557,7 +557,7 @@ class ButtonPresetDetailController: PresetDetailController {
   func loadImageSection() {
 
     var imageSection = sections[SectionKey.Image.rawValue] as? FilteringDetailSection
-    imageSection?.removeAllRows(keepCapacity: true)
+    imageSection?.removeAllRows(true)
 
     if imageSection == nil {
 
@@ -565,25 +565,25 @@ class ButtonPresetDetailController: PresetDetailController {
       imageSection!.singleRowDisplay = true
       imageSection!.predicates = [
         FilteringDetailSection.Predicate(name: "Highlighted", includeRow: {
-          ($0.tag as! UIControlState) & .Highlighted != nil
+          ($0.tag as! UIControlState).contains(.Highlighted)
         },
-        active: self.imageState & .Highlighted != nil),
+        active: self.imageState.contains(.Highlighted)),
         FilteringDetailSection.Predicate(name: "Selected", includeRow: {
-          ($0.tag as! UIControlState) & .Selected != nil
+          ($0.tag as! UIControlState).contains(.Selected)
         },
-        active: self.imageState & .Selected != nil),
+        active: self.imageState.contains(.Selected)),
         FilteringDetailSection.Predicate(name: "Disabled", includeRow: {
-          ($0.tag as! UIControlState) & .Disabled != nil
+          ($0.tag as! UIControlState).contains(.Disabled)
         },
-        active: self.imageState & .Disabled != nil)
+        active: self.imageState.contains(.Disabled))
       ]
       imageSection!.activePredicatesDidChange = {
         var state = UIControlState.Normal
         for predicate in $0.predicates {
           switch predicate.name {
-            case "Highlighted" where predicate.active: state |= .Highlighted
-            case "Selected" where predicate.active:    state |= .Selected
-            case "Disabled" where predicate.active:    state |= .Disabled
+            case "Highlighted" where predicate.active: state.unionInPlace(.Highlighted)
+            case "Selected" where predicate.active:    state.unionInPlace(.Selected)
+            case "Disabled" where predicate.active:    state.unionInPlace(.Disabled)
             default: break
           }
         }
@@ -592,7 +592,7 @@ class ButtonPresetDetailController: PresetDetailController {
       sections[SectionKey.Image.rawValue] = imageSection!
     }
 
-    apply(((0..<8).map{UIControlState(UInt($0))})) {
+    apply(((0..<8).map{UIControlState(rawValue: UInt($0))})) {
       state in imageSection!.addRow({ self.generateImageRowForState(state) },
                              forKey: SectionKey.Image.rowKeyForState(state))
     }
@@ -612,7 +612,6 @@ extension ButtonPresetDetailController: TitleAttributesDelegateObserver {
     assert(pushedTitleAttributesKey != nil)
     let preset = model as! Preset
     if var titles = preset.titles {
-      let updatedAttributes = titleAttributesDelegate.titleAttributes
       titles[pushedTitleAttributesKey!] = titleAttributesDelegate.titleAttributes.jsonValue
       preset.titles = titles
     }

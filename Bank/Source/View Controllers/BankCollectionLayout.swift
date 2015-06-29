@@ -40,7 +40,7 @@ final class BankCollectionLayout: ZoomingCollectionViewLayout {
 
   - returns: UICollectionViewLayoutAttributes!
   */
-  override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
+  override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
     let attributes = super.layoutAttributesForItemAtIndexPath(indexPath) as! BankCollectionAttributes
     attributes.viewingMode = viewingMode
     return attributes

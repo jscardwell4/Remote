@@ -118,7 +118,7 @@ final class BankCollectionDetailAttributedTextCell: BankCollectionDetailCell {
 
       CGContextBeginTransparencyLayer(context, nil)
       CGContextSetShadowWithColor(context, innerShadow.shadowOffset, innerShadow.shadowBlurRadius, innerShadowColor.CGColor)
-      CGContextSetBlendMode(context, kCGBlendModeSourceOut)
+      CGContextSetBlendMode(context, .SourceOut)
       CGContextBeginTransparencyLayer(context, nil)
 
       innerShadowColor.setFill()
@@ -148,7 +148,7 @@ final class BankCollectionDetailAttributedTextCell: BankCollectionDetailCell {
 
           let multiplier = frame.size.height / naturalSize.height
           text.enumerateAttribute(NSFontAttributeName, inRange: NSRange(0..<text.length), options: []) {
-            (value: AnyObject!, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
+            (value: AnyObject?, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
 
             if let font = value as? UIFont {
               text.addAttribute(NSFontAttributeName, value: font.fontWithSize(font.pointSize * multiplier), range: range)

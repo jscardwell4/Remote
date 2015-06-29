@@ -59,12 +59,12 @@ class ComponentDeviceDetailController: BankItemDetailController {
     let manufacturerSection = DetailSection(section: 0)
 
     manufacturerSection.addRow({
-      var row = DetailButtonRow()
+      let row = DetailButtonRow()
       row.name = "Manufacturer"
       row.info = componentDevice.manufacturer
       row.select = DetailRow.selectPushableItem(componentDevice.manufacturer)
 
-      var pickerRow = DetailPickerRow()
+      let pickerRow = DetailPickerRow()
       pickerRow.nilItemTitle = "No Manufacturer"
       pickerRow.createItemTitle = "⨁ New Manufacturer"
       pickerRow.didSelectItem = {
@@ -93,7 +93,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
         })
         alert.addAction(UIAlertAction(title: "Create", style: .Default) {
           action in
-            if let text = (alert.textFields?.first as? UITextField)?.text {
+            if let text = alert.textFields?.first?.text {
               moc.performBlockAndWait {
                 let manufacturer = Manufacturer.createInContext(moc)
                 manufacturer.name = text
@@ -119,12 +119,12 @@ class ComponentDeviceDetailController: BankItemDetailController {
 
     manufacturerSection.addRow({
 
-      var row = DetailButtonRow()
+      let row = DetailButtonRow()
       row.name = "Code Set"
       row.info = componentDevice.codeSet
       row.select = DetailRow.selectPushableCollection(componentDevice.codeSet)
 
-      var pickerRow = DetailPickerRow()
+      let pickerRow = DetailPickerRow()
       pickerRow.nilItemTitle = "No Code Set"
       pickerRow.createItemTitle = "⨁ New Code Set"
       pickerRow.didSelectItem = {
@@ -151,7 +151,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
         })
         alert.addAction(UIAlertAction(title: "Create", style: .Default) {
           action in
-          if let text = (alert.textFields?.first as? UITextField)?.text {
+          if let text = alert.textFields?.first?.text {
             moc.performBlockAndWait {
               let codeSet = IRCodeSet.createInContext(moc)
               codeSet.name = text
@@ -191,7 +191,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
     let networkDeviceSection = DetailSection(section: 1, title: "Network Device")
 
     networkDeviceSection.addRow({
-      var row = DetailButtonRow()
+      let row = DetailButtonRow()
       row.info = componentDevice.networkDevice ?? "No Network Device"
       row.name = "Network Device"
       row.select = {
@@ -200,7 +200,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
           }
         }
 
-      var pickerRow = DetailPickerRow()
+      let pickerRow = DetailPickerRow()
       pickerRow.nilItemTitle = "No Network Device"
       pickerRow.didSelectItem = {
         if !self.didCancel {
@@ -219,7 +219,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
     }, forKey: RowKey.NetworkDevice)
 
     networkDeviceSection.addRow({
-      var row = DetailStepperRow()
+      let row = DetailStepperRow()
       row.name = "Port"
       row.info = Int(componentDevice.port)
       row.stepperMinValue = 1
@@ -249,11 +249,11 @@ class ComponentDeviceDetailController: BankItemDetailController {
     let powerSection = DetailSection(section: 2, title: "Power")
 
     powerSection.addRow({
-      var row = DetailButtonRow()
+      let row = DetailButtonRow()
       row.name = "On"
       row.info = componentDevice.onCommand ?? "No On Command"
 
-      var pickerRow = DetailPickerRow()
+      let pickerRow = DetailPickerRow()
       pickerRow.nilItemTitle = "No On Command"
       pickerRow.didSelectItem = {
         (selection: AnyObject?) -> Void in
@@ -285,11 +285,11 @@ class ComponentDeviceDetailController: BankItemDetailController {
     }, forKey: RowKey.On)
 
     powerSection.addRow({
-      var row = DetailButtonRow()
+      let row = DetailButtonRow()
       row.name = "Off"
       row.info = componentDevice.offCommand ?? "No Off Command"
 
-      var pickerRow = DetailPickerRow()
+      let pickerRow = DetailPickerRow()
       pickerRow.nilItemTitle = "No Off Command"
       pickerRow.didSelectItem = {
         (selection: AnyObject?) -> Void in
@@ -329,8 +329,6 @@ class ComponentDeviceDetailController: BankItemDetailController {
 
     if componentDevice.managedObjectContext == nil { return }
 
-    let moc = componentDevice.managedObjectContext!
-
 
     // Inputs
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -338,7 +336,7 @@ class ComponentDeviceDetailController: BankItemDetailController {
     let inputsSection = DetailSection(section: 3, title: "Inputs")
 
     inputsSection.addRow({
-      var row = DetailSwitchRow()
+      let row = DetailSwitchRow()
       row.name = "Inputs Power On Device"
       row.info = NSNumber(bool: componentDevice.inputPowersOn)
       row.valueDidChange = { componentDevice.inputPowersOn = $0 as! Bool }

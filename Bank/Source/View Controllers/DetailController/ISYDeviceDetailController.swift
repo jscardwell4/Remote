@@ -60,7 +60,7 @@ private func loadIDSection() {
     /// Identification section: Identifier, Base URL
     ////////////////////////////////////////////////////////////////////////////////
 
-    var idSection = DetailSection(section: 0)
+    let idSection = DetailSection(section: 0)
     idSection.addRow({
       let row = DetailLabelRow()
       row.name = "Identifier"
@@ -85,7 +85,7 @@ private func loadModelSection() {
     /// Model section: Name, Number, Description, Friendly Name
     ////////////////////////////////////////////////////////////////////////////////
 
-    var modelSection = DetailSection(section: 1, title: "Model")
+    let modelSection = DetailSection(section: 1, title: "Model")
     modelSection.addRow({
       let row = DetailLabelRow()
       row.name = "Name"
@@ -122,7 +122,7 @@ private func loadManufacturerSection() {
     /// Manufacturer section: Name, URL
     ////////////////////////////////////////////////////////////////////////////////
 
-    var manufacturerSection = DetailSection(section: 2, title: "Manufacturer")
+    let manufacturerSection = DetailSection(section: 2, title: "Manufacturer")
     manufacturerSection.addRow({
       let row = DetailLabelRow()
       row.name = "Name"
@@ -147,7 +147,7 @@ private func loadNodesSection() {
     /// Nodes section
     ////////////////////////////////////////////////////////////////////////////////
 
-    var nodesSection = DetailSection(section: 3, title: "Nodes")
+    let nodesSection = DetailSection(section: 3, title: "Nodes")
     for (idx, node) in sortedByName(iSYDevice.nodes).enumerate() {
       nodesSection.addRow({
         let row = DetailListRow()
@@ -167,7 +167,7 @@ private func loadGroupsSection() {
     /// Groups section
     ////////////////////////////////////////////////////////////////////////////////
 
-    var groupsSection = DetailSection(section: 4, title: "Groups")
+    let groupsSection = DetailSection(section: 4, title: "Groups")
     for (idx, group) in sortedByName(iSYDevice.groups).enumerate() {
       groupsSection.addRow({
         let row = DetailListRow()
@@ -187,7 +187,7 @@ private func loadComponentDevicesSection() {
     /// Component Devices section
     ////////////////////////////////////////////////////////////////////////////////
 
-    var componentDevicesSection = DetailSection(section: 5, title: "Component Devices")
+    let componentDevicesSection = DetailSection(section: 5, title: "Component Devices")
     for (idx, device) in sortedByName(iSYDevice.componentDevices).enumerate() {
       componentDevicesSection.addRow({
         let row = DetailListRow()

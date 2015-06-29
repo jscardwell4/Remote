@@ -62,7 +62,7 @@ final class FilteringDetailSectionHeader: DetailSectionHeader {
 
   - parameter frame: CGRect
   */
-  override init(frame: CGRect) { super.init(frame: frame) }
+//  override init(frame: CGRect) { super.init(frame: frame) }
 
   /**
   initWithCoder:

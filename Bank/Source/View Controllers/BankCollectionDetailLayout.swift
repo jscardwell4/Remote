@@ -38,7 +38,7 @@ class BankCollectionDetailLayout: UICollectionViewLayout {
       storedAttributes = AttributesIndex(tuples)
 
       apply(headerTypes.enumerate()){
-        if let type = $1 {
+        if let _ = $1 {
           var indexes = [$0, 0, 0]
           let indexPath = NSIndexPath(indexes: &indexes, length: 3) //NSIndexPath(0, $0)
           let attributes = self.layoutAttributesForSupplementaryViewOfKind("Header", atIndexPath: indexPath)
@@ -84,7 +84,7 @@ class BankCollectionDetailLayout: UICollectionViewLayout {
   - returns: CGFloat
   */
   func heightForHeaderInSection(section: Int) -> CGFloat {
-    if let headerType = headerTypes[section] { return 44 } else { return 0 }
+    if headerTypes[section] != nil { return 44 } else { return 0 }
   }
 
   /**
@@ -123,7 +123,7 @@ class BankCollectionDetailLayout: UICollectionViewLayout {
     return CGSize(width: w, height: h)
   }
 
-  private typealias AttributesIndex = OrderedDictionary<NSIndexPath, UICollectionViewLayoutAttributes!>
+  private typealias AttributesIndex = OrderedDictionary<NSIndexPath, UICollectionViewLayoutAttributes?>
 
   private var itemTypes: [[ItemType]] = []
   private var itemHeights: [[CGFloat]] = []
@@ -140,7 +140,7 @@ class BankCollectionDetailLayout: UICollectionViewLayout {
   - returns: [AnyObject]?
   */
   override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-    return storedAttributes.values.filter { $0.frame.intersects(rect) }
+    return storedAttributes.values.filter { (attrs: UICollectionViewLayoutAttributes?) -> Bool in return attrs?.frame.intersects(rect) == true }.map{$0!}
   }
 
   // MARK: Headers
@@ -154,7 +154,7 @@ class BankCollectionDetailLayout: UICollectionViewLayout {
   - returns: UICollectionViewLayoutAttributes!
   */
   override func layoutAttributesForSupplementaryViewOfKind(elementKind: String,
-                                               atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes!
+                                               atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
   {
     let attributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: "Header", withIndexPath: indexPath)
     let section = indexPath.section
@@ -174,7 +174,7 @@ class BankCollectionDetailLayout: UICollectionViewLayout {
 
   - returns: UICollectionViewLayoutAttributes!
   */
-  override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
+  override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
     let attributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
 
     let section = indexPath.section

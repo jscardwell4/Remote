@@ -99,7 +99,7 @@ class BankCollectionDetailController: UICollectionViewController {
 
   /** Invokes `configureCell` for each `Row` associated with a visible cell */
   func configureVisibleCells() {
-    if let indexPaths = collectionView?.indexPathsForVisibleItems() as? [NSIndexPath],
+    if let indexPaths = collectionView?.indexPathsForVisibleItems(),
       cells = collectionView?.visibleCells() as? [Cell]
     {
       apply(zip(indexPaths, cells)) { indexPath, cell in self[indexPath]?.configureCell(cell) }
@@ -181,7 +181,7 @@ class BankCollectionDetailController: UICollectionViewController {
 
 // MARK: - UICollectionViewDataSource
 
-extension BankCollectionDetailController: UICollectionViewDataSource {
+extension BankCollectionDetailController {
 
   /**
   numberOfSectionsInCollectionView:
@@ -279,7 +279,7 @@ extension BankCollectionDetailController: BankCollectionDetailLayoutDataSource {
 
 }
 
-extension BankCollectionDetailController: UICollectionViewDelegate {
+extension BankCollectionDetailController {
 
   /**
   collectionView:willDisplayCell:forItemAtIndexPath:
@@ -327,7 +327,7 @@ extension BankCollectionDetailController: UITextFieldDelegate {
   - parameter textField: UITextField
   */
   func textFieldDidEndEditing(textField: UITextField) {
-    if textField.text?.length > 0 { itemDelegate.item.name = textField.text }
+    if textField.text?.length > 0 { itemDelegate.item.name = textField.text! }
     else { textField.text = itemDelegate.item.name }
   }
 

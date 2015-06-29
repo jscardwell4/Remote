@@ -46,14 +46,13 @@ class BankCollectionFilteringDetailSectionHeader: BankCollectionDetailSectionHea
     let h = Bank.sectionHeaderFont.pointSize
     constrain([checkBoxContainer-|𝗛], 𝗩|--(≥h)--checkBoxContainer--(≥8)--|𝗩 -!> 999)
 
-    if let checkboxes = checkBoxContainer.subviews as? [UIView] {
+    let checkboxes = checkBoxContainer.subviews
 
-      apply(checkboxes) { self.checkBoxContainer.constrain(𝗩|-$0|𝗩) }
-      if let firstCheckBox = checkboxes.first { checkBoxContainer.constrain(𝗛|-firstCheckBox) }
-      if let lastCheckBox = checkboxes.last { checkBoxContainer.constrain(lastCheckBox-|𝗛) }
-      if checkboxes.count > 1 { pairwiseApply(checkboxes) { self.checkBoxContainer.constrain($0--$1) } }
+    apply(checkboxes) { self.checkBoxContainer.constrain(𝗩|-$0|𝗩) }
+    if let firstCheckBox = checkboxes.first { checkBoxContainer.constrain(𝗛|-firstCheckBox) }
+    if let lastCheckBox = checkboxes.last { checkBoxContainer.constrain(lastCheckBox-|𝗛) }
+    if checkboxes.count > 1 { pairwiseApply(checkboxes) { self.checkBoxContainer.constrain($0--$1) } }
 
-    }
   }
 
   /** prepareForReuse */

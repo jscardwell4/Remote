@@ -52,7 +52,7 @@ extension ISYDevice: DelegateDetailable {
         /// Identification section: Identifier, Base URL
         ////////////////////////////////////////////////////////////////////////////////
 
-        var idSection = BankCollectionDetailSection(section: 0)
+        let idSection = BankCollectionDetailSection(section: 0)
         idSection.addRow({
           let row = BankCollectionDetailLabelRow()
           row.name = "Identifier"
@@ -77,7 +77,7 @@ extension ISYDevice: DelegateDetailable {
         /// Model section: Name, Number, Description, Friendly Name
         ////////////////////////////////////////////////////////////////////////////////
 
-        var modelSection = BankCollectionDetailSection(section: 1, title: "Model")
+        let modelSection = BankCollectionDetailSection(section: 1, title: "Model")
         modelSection.addRow({
           let row = BankCollectionDetailLabelRow()
           row.name = "Name"
@@ -114,7 +114,7 @@ extension ISYDevice: DelegateDetailable {
         /// Manufacturer section: Name, URL
         ////////////////////////////////////////////////////////////////////////////////
 
-        var manufacturerSection = BankCollectionDetailSection(section: 2, title: "Manufacturer")
+        let manufacturerSection = BankCollectionDetailSection(section: 2, title: "Manufacturer")
         manufacturerSection.addRow({
           let row = BankCollectionDetailLabelRow()
           row.name = "Name"
@@ -139,7 +139,7 @@ extension ISYDevice: DelegateDetailable {
         /// Nodes section
         ////////////////////////////////////////////////////////////////////////////////
 
-        var nodesSection = BankCollectionDetailSection(section: 3, title: "Nodes")
+        let nodesSection = BankCollectionDetailSection(section: 3, title: "Nodes")
         for (idx, node) in sortedByName(iSYDevice.nodes).enumerate() {
           nodesSection.addRow({
             let row = BankCollectionDetailListRow()
@@ -159,7 +159,7 @@ extension ISYDevice: DelegateDetailable {
         /// Groups section
         ////////////////////////////////////////////////////////////////////////////////
 
-        var groupsSection = BankCollectionDetailSection(section: 4, title: "Groups")
+        let groupsSection = BankCollectionDetailSection(section: 4, title: "Groups")
         for (idx, group) in sortedByName(iSYDevice.groups).enumerate() {
           groupsSection.addRow({
             let row = BankCollectionDetailListRow()
@@ -179,7 +179,7 @@ extension ISYDevice: DelegateDetailable {
         /// Component Devices section
         ////////////////////////////////////////////////////////////////////////////////
 
-        var componentDevicesSection = BankCollectionDetailSection(section: 5, title: "Component Devices")
+        let componentDevicesSection = BankCollectionDetailSection(section: 5, title: "Component Devices")
         for (idx, device) in sortedByName(iSYDevice.componentDevices).enumerate() {
           componentDevicesSection.addRow({
             let row = BankCollectionDetailListRow()

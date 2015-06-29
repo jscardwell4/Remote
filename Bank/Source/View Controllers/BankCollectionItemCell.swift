@@ -75,8 +75,6 @@ final class BankCollectionItemCell: BankCollectionCell {
         thumbnailImageView.contentMode = contentSize.contains(thumbnailImageView.image?.size ?? CGSize.zeroSize)
                                            ? .Center
                                            : .ScaleAspectFit
-      default:
-        break
     }
   }
 
@@ -114,53 +112,50 @@ final class BankCollectionItemCell: BankCollectionCell {
 
         constrain(
           nameLabel.centerY => contentView.centerY
-            --> listIdentifier(suffixes: "Label", "Vertical"),
+            --> listIdentifier("Label", "Vertical"),
           nameLabel.height => contentView.height
-            --> listIdentifier(suffixes: "Label", "Height"),
+            --> listIdentifier("Label", "Height"),
           chevron.left => nameLabel.right + 8
-            --> listIdentifier(suffixes: "Chevron", "Label", "Spacing", "Horizontal"),
+            --> listIdentifier("Chevron", "Label", "Spacing", "Horizontal"),
           indicator.centerY => contentView.centerY
-            --> listIdentifier(suffixes: "Indicator", "Vertical"),
+            --> listIdentifier("Indicator", "Vertical"),
           indicator.right => contentView.left + (indicatorImage == nil ? 0 : 40)
-            --> listIdentifier(suffixes: "Indicator", "Left")
+            --> listIdentifier("Indicator", "Left")
         )
 
         if previewable {
           constrain(
             thumbnailImageView.left => indicator.right + 20
-              --> listIdentifier(suffixes: "Thumbnail", "Indicator", "Spacing", "Horizontal"),
+              --> listIdentifier("Thumbnail", "Indicator", "Spacing", "Horizontal"),
             thumbnailImageView.height => contentView.height - 8
-              --> listIdentifier(suffixes: "Thumbnail", "Height"),
+              --> listIdentifier("Thumbnail", "Height"),
             thumbnailImageView.width => thumbnailImageView.height
-              --> listIdentifier(suffixes: "Thumbnail", "Width"),
+              --> listIdentifier("Thumbnail", "Width"),
             thumbnailImageView.centerY => contentView.centerY
-              --> listIdentifier(suffixes: "Thumbnail", "Vertical"),
+              --> listIdentifier("Thumbnail", "Vertical"),
             nameLabel.left => thumbnailImageView.right + 8
-              --> listIdentifier(suffixes: "Label", "Thumbnail", "Spacing", "Horizontal")
+              --> listIdentifier("Label", "Thumbnail", "Spacing", "Horizontal")
           )
         } else {
           constrain(
             nameLabel.left => indicator.right + 20
-              --> listIdentifier(suffixes: "Label", "Indicator", "Spacing", "Horizontal")
+              --> listIdentifier("Label", "Indicator", "Spacing", "Horizontal")
           )
         }
 
-        indicatorConstraint = constraintWithIdentifier(listIdentifier(suffixes: "Indicator", "Left"))
+        indicatorConstraint = constraintWithIdentifier(listIdentifier("Indicator", "Left"))
 
       case .Thumbnail:
         constrain(
           𝗛|thumbnailImageView|𝗛
-            --> thumbnailIdentifier(suffixes: "Thumbnail", "Spacing", "Horizontal"),
+            --> thumbnailIdentifier("Thumbnail", "Spacing", "Horizontal"),
           [thumbnailImageView.height => thumbnailImageView.width
-            --> thumbnailIdentifier(suffixes: "Thumbnail", "Proportion"),
+            --> thumbnailIdentifier("Thumbnail", "Proportion"),
            indicator.left => contentView.left + 8
-            --> thumbnailIdentifier(suffixes: "Indicator", "Left"),
+            --> thumbnailIdentifier("Indicator", "Left"),
            indicator.top => contentView.top + 8
-            --> thumbnailIdentifier(suffixes: "Indicator", "Top")]
+            --> thumbnailIdentifier("Indicator", "Top")]
         )
-
-      default:
-        break
 
     }
 

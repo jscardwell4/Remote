@@ -56,38 +56,38 @@ public class BankController: UIViewController, BankItemImportExportController {
         case .Presets:
           collectionDelegate = BankModelDelegate(name: "Presets", context: context)
           collectionDelegate.itemTransaction = BankModelDelegate.createTransactionWithLabel("Category",
-                                                                         creatableType: PresetCategory.self,
-                                                                               context: context)
-        collectionDelegate.setFetchedCollections(PresetCategory.objectsInContext(context,
-                                                                   withPredicate: ∀"parentCategory == NULL",
-                                                                        sortedBy: "name"))
+                                                                              creatableType: PresetCategory.self,
+                                                                                    context: context)
+        collectionDelegate.fetchedCollections = PresetCategory.objectsInContext(context,
+                                                                  withPredicate: ∀"parentCategory == NULL",
+                                                                       sortedBy: "name")
         case .NetworkDevices:
           collectionDelegate = BankModelDelegate(name: "Network Devices", context: context)
-          collectionDelegate.setFetchedItems(NetworkDevice.objectsInContext(context, sortedBy: "name"))
+          collectionDelegate.fetchedItems = NetworkDevice.objectsInContext(context, sortedBy: "name")
           collectionDelegate.itemTransaction = BankModelDelegate.discoverTransactionWithLabel("Network Device",
-                                                                          discoverableType: NetworkDevice.self,
-                                                                                   context: context)
+                                                                             discoverableType: NetworkDevice.self,
+                                                                                      context: context)
 
         case .ComponentDevices:
           collectionDelegate = BankModelDelegate(name: "Component Devices", context: context)
-          collectionDelegate.setFetchedItems(ComponentDevice.objectsInContext(context, sortedBy: "name"))
+          collectionDelegate.fetchedItems = ComponentDevice.objectsInContext(context, sortedBy: "name")
           collectionDelegate.itemTransaction = BankModelDelegate.createTransactionWithLabel("Component Device",
-                                                                         creatableType: ComponentDevice.self,
-                                                                               context: context)
+                                                                              creatableType: ComponentDevice.self,
+                                                                                    context: context)
         case .Manufacturers:
           collectionDelegate = BankModelDelegate(name: "Manufacturers", context: context)
           collectionDelegate.itemTransaction = BankModelDelegate.createTransactionWithLabel("Manufacturer",
-                                                                         creatableType: Manufacturer.self,
-                                                                               context: context)
-          collectionDelegate.setFetchedItems(Manufacturer.objectsInContext(context, sortedBy: "name"))
+                                                                              creatableType: Manufacturer.self,
+                                                                                    context: context)
+          collectionDelegate.fetchedItems = Manufacturer.objectsInContext(context, sortedBy: "name")
         case .Images:
           collectionDelegate = BankModelDelegate(name: "Images", context: context)
           collectionDelegate.itemTransaction = BankModelDelegate.createTransactionWithLabel("Category",
-                                                                         creatableType: ImageCategory.self,
-                                                                               context: context)
-          collectionDelegate.setFetchedCollections(ImageCategory.objectsInContext(context,
-                                                                    withPredicate: ∀"parentCategory == NULL",
-                                                                         sortedBy: "name"))
+                                                                              creatableType: ImageCategory.self,
+                                                                                    context: context)
+          collectionDelegate.fetchedCollections = ImageCategory.objectsInContext(context,
+                                                                   withPredicate: ∀"parentCategory == NULL",
+                                                                        sortedBy: "name")
 
       }
       let collectionController = BankCollectionController(collectionDelegate: collectionDelegate)

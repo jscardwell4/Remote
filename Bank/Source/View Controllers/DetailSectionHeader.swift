@@ -91,7 +91,7 @@ class DetailSectionHeader: UITableViewHeaderFooterView {
 
   - parameter frame: CGRect
   */
-  override init(frame: CGRect) { identifier = .Header; super.init(frame: frame) }
+//  override init(frame: CGRect) { identifier = .Header; super.init(frame: frame) }
 
   /**
   initWithCoder:
@@ -187,7 +187,7 @@ class DetailSectionHeader: UITableViewHeaderFooterView {
                                   textInnerShadow.shadowBlurRadius,
                                   (textOpaqueTextShadow as UIColor).CGColor)
 
-      CGContextSetBlendMode(context, kCGBlendModeSourceOut)
+      CGContextSetBlendMode(context, .SourceOut)
 
       CGContextBeginTransparencyLayer(context, nil)
 

@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-final class BankCollectionDetailTextFieldCell: BankCollectionDetailTextInputCell, UITextFieldDelegate {
+final class BankCollectionDetailTextFieldCell: BankCollectionDetailTextInputCell {
 
   enum InputType { case Default, Integer, HexInteger, FloatingPoint }
 

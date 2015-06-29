@@ -114,7 +114,7 @@ extension NamedItemDetailController: UITextFieldDelegate {
   */
   func textFieldDidEndEditing(textField: UITextField) {
     precondition(textField === nameTextField, "what other text fields are we delegating besides name label?")
-    if textField.text?.length > 0 { (item as? protocol<DynamicallyNamed,Editable>)?.name = textField.text }
+    if textField.text?.length > 0 { (item as? protocol<DynamicallyNamed,Editable>)?.name = textField.text! }
     else { textField.text = namedItem.name }
   }
 

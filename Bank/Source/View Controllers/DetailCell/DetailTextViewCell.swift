@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MoonKit
 
-final class DetailTextViewCell: DetailTextInputCell, UITextViewDelegate {
+final class DetailTextViewCell: DetailTextInputCell {
 
   enum DisplayStyle: String { case Default = "default", Condensed = "condensed" }
 

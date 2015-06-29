@@ -40,7 +40,7 @@ class ButtonGroupPresetDetailController: PresetDetailController {
     let buttonGroupAttributesSection = DetailSection(section: 1, title: "Button Group Attributes")
 
     buttonGroupAttributesSection.addRow({
-      var row = DetailSwitchRow()
+      let row = DetailSwitchRow()
       row.name = "Autohide"
       row.info = NSNumber(bool: preset.autohide ?? false)
       row.valueDidChange = { preset.autohide = ($0 as? NSNumber)?.boolValue }

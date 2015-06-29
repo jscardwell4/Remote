@@ -116,7 +116,7 @@ import Glyphish
 
   - returns: [UIBarButtonItem]
   */
-  static func toolbarItemsForController(controller: UIViewController) -> [UIBarItem] {
+  static func toolbarItemsForController(controller: UIViewController) -> [UIBarButtonItem] {
 
     let totalWidth = UIScreen.mainScreen().bounds.width
     let outterWidth = floor(totalWidth / 3)
@@ -125,7 +125,7 @@ import Glyphish
     let rightOutterItemWidth = outterWidth / 3
     let negativeSpacer = UIBarButtonItem.fixedSpace(-16)
 
-    var toolbarItems: [UIBarItem] = []
+    var toolbarItems: [UIBarButtonItem] = []
 
     if let importExportController = controller as? BankItemImportExportController {
 
@@ -168,7 +168,7 @@ import Glyphish
               ImportToggleActionProperties.fileController = nil
             }
             if let rootViewController =  UIApplication.sharedApplication().keyWindow?.rootViewController {
-              let rootView = rootViewController.view
+//              let rootView = rootViewController.view
               rootViewController.addChildViewController(fileController!)
               fileController!.view.translatesAutoresizingMaskIntoConstraints = false
               if rootViewController is UINavigationController {
@@ -314,8 +314,7 @@ import Glyphish
   /** A bar button item that asks the application to return to the main menu */
   static let dismissButton: UIBarButtonItem? = {
     var dismissButton: UIBarButtonItem? = nil
-    let isBankTest = Bool(NSProcessInfo.processInfo().environment["BANK_TEST"] as? String)
-    if !Bool(NSProcessInfo.processInfo().environment["BANK_TEST"] as? String) {
+    if !Bool(NSProcessInfo.processInfo().environment["BANK_TEST"]) {
       dismissButton = BlockBarButtonItem(barButtonSystemItem: .Done) {
         if let url = NSURL(string: "mainmenu") { UIApplication.sharedApplication().openURL(url) }
       }

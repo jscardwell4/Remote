@@ -99,7 +99,7 @@ extension Image: CustomCreatable {
     let userPhotoLibrary =
       PHAssetCollection.fetchAssetCollectionsWithType(.SmartAlbum,
                                               subtype: .SmartAlbumUserLibrary,
-                                              options: nil)?.firstObject as! PHAssetCollection
+                                              options: nil).firstObject as! PHAssetCollection
 
     return PhotoCollectionBrowser(collection: userPhotoLibrary) {
       controller, selection in

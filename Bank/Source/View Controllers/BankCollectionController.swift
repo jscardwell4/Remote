@@ -272,7 +272,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
         exportSelectionIndices.removeAll(keepCapacity: false)
 
         // And, make sure no cells are selected
-        if let indexPaths = collectionView?.indexPathsForSelectedItems() as? [NSIndexPath] {
+        if let indexPaths = collectionView?.indexPathsForSelectedItems() {
           for indexPath in indexPaths { collectionView?.deselectItemAtIndexPath(indexPath, animated: true) }
         }
 
@@ -396,7 +396,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   */
   func zoomItemForCell(cell: BankCollectionCell) {
     if layout.zoomedItem != nil { layout.zoomedItem = nil }
-    else if let indexPath = collectionView?.indexPathForCell(cell), item = itemForIndexPath(indexPath) as? Previewable {
+    else if let indexPath = collectionView?.indexPathForCell(cell) where itemForIndexPath(indexPath) as? Previewable != nil {
       layout.zoomedItem = indexPath
     }
   }
@@ -634,10 +634,10 @@ extension BankCollectionController: BankItemImportExportController {
 
       exportSelection.removeAll(keepCapacity: true)
       exportSelectionIndices.removeAll(keepCapacity: true)
-      let collections = (0..<collectionDelegate.numberOfCollections).reduce(Array<ModelCollection>(), {
+      let collections = (0..<collectionDelegate.numberOfCollections).reduce(Array<ModelCollection>(), combine: {
         if let collection = self.collectionDelegate.collectionAtIndex($1) { return $0 + [collection] } else { return $0 }
       })
-      let items = (0..<collectionDelegate.numberOfItems).reduce(Array<NamedModel>(), {
+      let items = (0..<collectionDelegate.numberOfItems).reduce(Array<NamedModel>(), combine: {
         if let item = self.collectionDelegate.itemAtIndex($1) { return $0 + [item] } else { return $0 }
       })
       let capacity = collections.count + items.count
@@ -682,7 +682,7 @@ extension BankCollectionController: BankItemImportExportController {
 
 // MARK: - UICollectionViewDataSource
 
-extension BankCollectionController: UICollectionViewDataSource {
+extension BankCollectionController {
 
   /**
   collectionView:numberOfItemsInSection:
@@ -776,7 +776,7 @@ extension BankCollectionController: UICollectionViewDataSource {
 
 // MARK: - UICollectionViewDelegate
 
-extension BankCollectionController: UICollectionViewDelegate {
+extension BankCollectionController {
 
   /**
   collectionView:willDisplayCell:forItemAtIndexPath:
@@ -790,9 +790,10 @@ extension BankCollectionController: UICollectionViewDelegate {
                willDisplayCell cell: UICollectionViewCell,
             forItemAtIndexPath indexPath: NSIndexPath)
   {
-    let isSelected = (collectionView.indexPathsForSelectedItems() as! [NSIndexPath]) ∋ indexPath
-    if let bankCell = cell as? BankCollectionCell {
-    	bankCell.showIndicator(exportSelectionMode, selected: isSelected)
+    if let selectedIndexPaths = collectionView.indexPathsForSelectedItems() where selectedIndexPaths ∋ indexPath {
+      (cell as! BankCollectionCell).showIndicator(exportSelectionMode, selected: true)
+    } else {
+      (cell as! BankCollectionCell).showIndicator(exportSelectionMode, selected: false)
     }
   }
 

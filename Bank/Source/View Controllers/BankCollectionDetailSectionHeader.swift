@@ -163,7 +163,7 @@ class BankCollectionDetailSectionHeader: UICollectionReusableView {
                                   textInnerShadow.shadowBlurRadius,
                                   (textOpaqueTextShadow as UIColor).CGColor)
 
-      CGContextSetBlendMode(context, kCGBlendModeSourceOut)
+      CGContextSetBlendMode(context, .SourceOut)
 
       CGContextBeginTransparencyLayer(context, nil)
 

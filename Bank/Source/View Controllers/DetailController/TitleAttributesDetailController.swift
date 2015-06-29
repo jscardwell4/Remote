@@ -74,7 +74,7 @@ class TitleAttributesDetailController: DetailController {
 
     // text
     contentSection.addRow({
-      var row = DetailTextViewRow()
+      let row = DetailTextViewRow()
       row.name = "Text"
       row.info = attributesDelegate.text
       row.displayStyle = .Condensed
@@ -85,11 +85,11 @@ class TitleAttributesDetailController: DetailController {
 
     // iconName
     contentSection.addRow({
-      var row = DetailButtonRow()
+      let row = DetailButtonRow()
       row.name = "Icon"
       row.infoDataType = .AttributedStringData
       row.info = UIFont.attributedFontAwesomeIconForName(attributesDelegate.iconName) ?? "No Icon"
-      var pickerRow = DetailPickerRow()
+      let pickerRow = DetailPickerRow()
 
       pickerRow.nilItemTitle = "No Icon"
       pickerRow.data = ((UIFont.fontAwesomeIconNames() as NSSet).allObjects as! [String]).sort(<)
@@ -114,11 +114,11 @@ class TitleAttributesDetailController: DetailController {
 
     // Icon-Text order
     contentSection.addRow({
-      var row = DetailButtonRow()
+      let row = DetailButtonRow()
       row.name = "Order"
       row.info = String(attributesDelegate.iconTextOrder.jsonValue)!.capitalizedString
 
-      var pickerRow = DetailPickerRow()
+      let pickerRow = DetailPickerRow()
       pickerRow.data = TitleAttributes.IconTextOrderSpecification.all.map{String($0.jsonValue)!}
       pickerRow.info = String(attributesDelegate.iconTextOrder.jsonValue)!
       pickerRow.titleForInfo = {($0 as! String).capitalizedString}
@@ -154,7 +154,7 @@ class TitleAttributesDetailController: DetailController {
     // Font
     // TODO: Make font an editable field
     fontSection.addRow({
-      var row = DetailLabelRow()
+      let row = DetailLabelRow()
       row.name = "Font"
       row.info = attributesDelegate.font.fontDescriptor().postscriptName
       return row
@@ -162,7 +162,7 @@ class TitleAttributesDetailController: DetailController {
 
     // Foreground color
     fontSection.addRow({
-      var row = DetailColorRow()
+      let row = DetailColorRow()
       row.name = "Foreground Color"
       row.info = attributesDelegate.foregroundColor
       row.valueDidChange = { if let color = $0 as? UIColor { attributesDelegate.foregroundColor = color } }
@@ -171,7 +171,7 @@ class TitleAttributesDetailController: DetailController {
 
     // Background color
     fontSection.addRow({
-      var row = DetailColorRow()
+      let row = DetailColorRow()
       row.name = "Background Color"
       row.info = attributesDelegate.backgroundColor
       row.valueDidChange = { attributesDelegate.backgroundColor = $0 as? UIColor }
@@ -195,7 +195,7 @@ class TitleAttributesDetailController: DetailController {
 
     // Stroke width - 0 = no change, positive float = stroke width, negative float = stroke and fill text
     strokeSection.addRow({
-      var row = DetailTextFieldRow()
+      let row = DetailTextFieldRow()
       row.name = "Width"
       row.info = abs(attributesDelegate.strokeWidth)
       row.infoDataType = .FloatData(0.0...Float.infinity)
@@ -210,7 +210,7 @@ class TitleAttributesDetailController: DetailController {
    }, forKey: RowKey.Width)
 
    strokeSection.addRow({
-     var row = DetailSwitchRow()
+     let row = DetailSwitchRow()
      row.name = "Fill"
      row.info = attributesDelegate.strokeFill
      row.valueDidChange = { attributesDelegate.strokeFill = ($0 as! NSNumber).boolValue }
@@ -219,7 +219,7 @@ class TitleAttributesDetailController: DetailController {
 
     // Stroke color
     strokeSection.addRow({
-      var row = DetailColorRow()
+      let row = DetailColorRow()
       row.name = "Color"
       row.info = attributesDelegate.strokeColor
       row.valueDidChange = { if let color = $0 as? UIColor { attributesDelegate.strokeColor = color } }
@@ -244,7 +244,7 @@ class TitleAttributesDetailController: DetailController {
 
      // Obliqueness
     styleSection.addRow({
-      var row = DetailTextFieldRow()
+      let row = DetailTextFieldRow()
       row.name = "Obliqueness"
       row.info = attributesDelegate.obliqueness
       row.infoDataType = .FloatData(-Float.infinity...Float.infinity)
@@ -258,7 +258,7 @@ class TitleAttributesDetailController: DetailController {
 
     // Text effect
     styleSection.addRow({
-      var row = DetailSwitchRow()
+      let row = DetailSwitchRow()
       row.name = "Letterpress"
       row.info = attributesDelegate.textEffect != nil
       row.valueDidChange = { attributesDelegate.textEffect = ($0 as! NSNumber).boolValue ? "letterpress" : nil }
@@ -283,11 +283,11 @@ class TitleAttributesDetailController: DetailController {
 
     // underlineStyle
     underlineSection.addRow({
-      var row = DetailButtonRow()
+      let row = DetailButtonRow()
       row.name = "Style"
       row.info = String(attributesDelegate.underlineStyle.jsonValue)!.titlecaseString
 
-      var pickerRow = DetailPickerRow()
+      let pickerRow = DetailPickerRow()
       pickerRow.data = NSUnderlineStyle.all.map{String($0.jsonValue)!}
       pickerRow.info = String(attributesDelegate.underlineStyle.jsonValue)!.titlecaseString
       pickerRow.didSelectItem = { [unowned pickerRow] in
@@ -305,7 +305,7 @@ class TitleAttributesDetailController: DetailController {
 
     // Underline color
     underlineSection.addRow({
-      var row = DetailColorRow()
+      let row = DetailColorRow()
       row.name = "Color"
       row.info = attributesDelegate.underlineColor
       row.valueDidChange = { if let color = $0 as? UIColor { attributesDelegate.underlineColor = color } }
@@ -330,11 +330,11 @@ class TitleAttributesDetailController: DetailController {
 
     // Strikethrough style
     strikethroughSection.addRow({
-      var row = DetailButtonRow()
+      let row = DetailButtonRow()
       row.name = "Style"
       row.info = String(attributesDelegate.strikethroughStyle.jsonValue)!.titlecaseString
 
-      var pickerRow = DetailPickerRow()
+      let pickerRow = DetailPickerRow()
       pickerRow.data = NSUnderlineStyle.all.map{String($0.jsonValue)!}
       pickerRow.info = String(attributesDelegate.strikethroughStyle.jsonValue)!.titlecaseString
       pickerRow.didSelectItem = { [unowned pickerRow] in
@@ -352,7 +352,7 @@ class TitleAttributesDetailController: DetailController {
 
     // Strikethrough color
     strikethroughSection.addRow({
-      var row = DetailColorRow()
+      let row = DetailColorRow()
       row.name = "Color"
       row.info = attributesDelegate.strikethroughColor
       row.valueDidChange = { if let color = $0 as? UIColor { attributesDelegate.strikethroughColor = color } }
@@ -376,11 +376,11 @@ class TitleAttributesDetailController: DetailController {
 
     // Alignment
     paragraphStyleSection.addRow({
-      var row = DetailButtonRow()
+      let row = DetailButtonRow()
       row.name = "Alignment"
       row.info = String(attributesDelegate.alignment.jsonValue)!.titlecaseString
 
-      var pickerRow = DetailPickerRow()
+      let pickerRow = DetailPickerRow()
       pickerRow.data = NSTextAlignment.all.map{String($0.jsonValue)!}
       pickerRow.info = String(attributesDelegate.alignment.jsonValue)!.titlecaseString
       pickerRow.didSelectItem = { [unowned pickerRow] in

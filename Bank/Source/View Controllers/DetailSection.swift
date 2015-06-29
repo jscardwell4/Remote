@@ -39,7 +39,7 @@ class DetailSection {
   var rows: LazyRandomAccessCollection<MapCollectionView<OrderedDictionary<String, RowConstructor>, DetailRow>> {
     return lazy(blocks).map {
       index, key, block -> DetailRow in
-      var row = block()
+      let row = block()
       row.indexPath = NSIndexPath(forRow: index, inSection: self.section)
       self.cache[key] = row
       return row
@@ -130,7 +130,7 @@ class DetailSection {
   */
   func removeAllRows(keepCapacity: Bool = false) {
     cache.removeAll(keepCapacity: keepCapacity)
-    blocks.removeAll(keepCapacity: keepCapacity)
+    blocks.removeAll(keepCapacity)
   }
 
   /**

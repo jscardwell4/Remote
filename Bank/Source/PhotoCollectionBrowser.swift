@@ -18,7 +18,7 @@ class PhotoCollectionBrowser: UIViewController, PhotoCollectionLayoutDelegate, U
   private let reuseIdentifier = "Cell"
   private let imageViewNametag = "image"
 
-  typealias ImageSelection = (data: NSData, uti: String, orientation: UIImageOrientation)
+  typealias ImageSelection = (data: NSData?, uti: String?, orientation: UIImageOrientation)
 
   let callback: (PhotoCollectionBrowser, ImageSelection?) -> Void
   private(set) var cancelled = false
@@ -148,7 +148,7 @@ class PhotoCollectionBrowser: UIViewController, PhotoCollectionLayoutDelegate, U
     if indexPath == layout.zoomedItem { size = sizeForZoomedItemAtIndexPath(indexPath); mode = .AspectFit }
     else { size = layout.itemScale.itemSize; mode = aspect.contentMode }
 
-    let handler: (UIImage!, [NSObject:AnyObject]!) -> Void = { [weak self] in
+    let handler: (UIImage?, [NSObject:AnyObject]?) -> Void = { [weak self] in
       self?.handleRequestResult((image: $0, info: $1), forIndexPath: indexPath, contentMode: mode)
     }
 
@@ -194,8 +194,8 @@ class PhotoCollectionBrowser: UIViewController, PhotoCollectionLayoutDelegate, U
   @IBAction func select() {
     if let asset = selectedAsset {
       manager.requestImageDataForAsset(asset, options: nil) {[unowned self]
-        (data:NSData!, uti:String!, orientation:UIImageOrientation, info:[NSObject : AnyObject]!) -> Void in
-        if let error = info[PHImageErrorKey] as? NSError { MSHandleError(error); self.cancel() }
+        (data:NSData?, uti:String?, orientation:UIImageOrientation, info:[NSObject : AnyObject]?) -> Void in
+        if let error = info?[PHImageErrorKey] as? NSError { MSHandleError(error); self.cancel() }
         else { self.callback(self, (data: data, uti: uti, orientation: orientation)) }
       }
     }

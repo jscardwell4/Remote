@@ -96,7 +96,7 @@ class PhotoCollectionLayout: UICollectionViewLayout {
   override func prepareLayout() {
     if let count = collectionView?.numberOfItemsInSection(0) {
       itemCount = count
-      storedAttributes.removeAll(keepCapacity: true)
+      storedAttributes.removeAll(true)
       apply((0..<count).map{NSIndexPath(forRow: $0, inSection: 0)}) {
         self.storedAttributes[$0] = self.layoutAttributesForItemAtIndexPath($0)
       }
@@ -172,10 +172,12 @@ class PhotoCollectionLayout: UICollectionViewLayout {
     let yToRow = {$0/self.itemScale.itemSize.height * CGFloat(self.itemsPerRow)}
     let minRow = Int(floor(yToRow(max(rect.minY, 0))))
     let maxRow = Int(ceil(yToRow(rect.maxY)))
-    var result: [AnyObject]? = itemCount > minRow ? Array(storedAttributes.values.array[minRow..<min(maxRow, itemCount)]) : nil
-    if zoomingItem != nil {
-      result?.append(layoutAttributesForDecorationViewOfKind(BlurDecoration.kind,
-                                                 atIndexPath: NSIndexPath(forRow: itemCount, inSection: 0)))
+    var result: [UICollectionViewLayoutAttributes]? = itemCount > minRow ? Array(storedAttributes.values.array[minRow..<min(maxRow, itemCount)]) : nil
+    if zoomingItem != nil,
+      let attributes = layoutAttributesForDecorationViewOfKind(BlurDecoration.kind,
+                                                   atIndexPath: NSIndexPath(forRow: itemCount, inSection: 0))
+    {
+      result?.append(attributes)
     }
     return result
   }
@@ -189,7 +191,7 @@ class PhotoCollectionLayout: UICollectionViewLayout {
   - returns: UICollectionViewLayoutAttributes!
   */
   override func layoutAttributesForDecorationViewOfKind(elementKind: String,
-                                            atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes!
+                                            atIndexPath indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
   {
     let attributes = UICollectionViewLayoutAttributes(forDecorationViewOfKind: BlurDecoration.kind, withIndexPath: indexPath)
     attributes.frame = collectionView?.bounds ?? CGRect.zeroRect
@@ -241,7 +243,7 @@ class PhotoCollectionLayout: UICollectionViewLayout {
 
   - returns: UICollectionViewLayoutAttributes!
   */
-  override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes! {
+  override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
     let attributes: UICollectionViewLayoutAttributes
     switch indexPath {
       case zoomingItem where zoomState == .ZoomingStage2, unzoomingItem where zoomState == .ZoomingStage1:

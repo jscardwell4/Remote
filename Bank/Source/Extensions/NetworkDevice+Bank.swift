@@ -44,7 +44,7 @@ extension NetworkDevice: DiscoverCreatable {
   static func endDiscovery() {
     MSLogDebug("discoveryCallbackToken = \(toString(discoveryCallbackToken))")
     if discoveryCallbackToken != nil {
-      ConnectionManager.stopDetectingNetworkDevices(discoveryCallbackToken: discoveryCallbackToken!)
+      ConnectionManager.stopDetectingNetworkDevices(discoveryCallbackToken!)
       discoveryCallbackToken = nil
     }
   }

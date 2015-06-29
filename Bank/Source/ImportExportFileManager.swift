@@ -49,8 +49,8 @@ final class ImportExportFileManager {
 
     - returns: Bool
     */
-    func textFieldShouldEndEditing(textField: UITextField) -> Bool {
-      if ImportExportFileManager.existingFiles ∋ textField.text {
+    @objc func textFieldShouldEndEditing(textField: UITextField) -> Bool {
+      if let text = textField.text where ImportExportFileManager.existingFiles ∋ text {
         textField.textColor = ImportExportFileManager.invalidTextColor
         return false
       }
@@ -66,12 +66,13 @@ final class ImportExportFileManager {
 
     - returns: Bool
     */
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String)
+    @objc func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String)
       -> Bool
     {
+      if textField.text == nil { return false }
       let text = (range.length == 0
-        ? textField.text + string
-        : (textField.text as NSString).stringByReplacingCharactersInRange(range, withString:string))
+        ? textField.text! + string
+        : (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString:string))
       let nameInvalid = ImportExportFileManager.existingFiles ∋ text
       textField.textColor = nameInvalid ? ImportExportFileManager.invalidTextColor : ImportExportFileManager.textColor
       exportAlertAction?.enabled = !nameInvalid
@@ -85,7 +86,7 @@ final class ImportExportFileManager {
 
     - returns: Bool
     */
-    func textFieldShouldReturn(textField: UITextField) -> Bool { return false }
+    @objc func textFieldShouldReturn(textField: UITextField) -> Bool { return false }
 
     /**
     textFieldShouldClear:
@@ -94,7 +95,7 @@ final class ImportExportFileManager {
 
     - returns: Bool
     */
-    func textFieldShouldClear(textField: UITextField) -> Bool { return true }
+    @objc func textFieldShouldClear(textField: UITextField) -> Bool { return true }
   }
 
   /**
@@ -115,11 +116,12 @@ final class ImportExportFileManager {
     // Create the export action
     let exportAlertAction = UIAlertAction(title: "Export", style: .Default){
       (action: UIAlertAction!) -> Void in
-      let text = (alert.textFields as! [UITextField])[0].text
-      precondition(text.length > 0 && text ∉ ImportExportFileManager.existingFiles, "text field should not be empty or match an existing file")
-      self.exportItems(items, toFile: MoonFunctions.documentsPathToFile(text + ".json")!)
-      completion?(true)
-      alert.dismissViewControllerAnimated(true, completion: nil)
+      if let text = alert.textFields?[0].text {
+        precondition(text.length > 0 && text ∉ ImportExportFileManager.existingFiles, "text field should not be empty or match an existing file")
+        self.exportItems(items, toFile: MoonFunctions.documentsPathToFile(text + ".json")!)
+        completion?(true)
+        alert.dismissViewControllerAnimated(true, completion: nil)
+      }
     }
 
 

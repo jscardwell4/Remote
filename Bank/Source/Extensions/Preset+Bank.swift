@@ -26,7 +26,7 @@ extension Preset: Detailable {
 
 extension Preset: DelegateDetailable {
     func sectionIndexForController(controller: BankCollectionDetailController) -> BankModelDetailDelegate.SectionIndex {
-      var sections: BankModelDetailDelegate.SectionIndex = [:]
+      let sections: BankModelDetailDelegate.SectionIndex = [:]
 
 
       return sections

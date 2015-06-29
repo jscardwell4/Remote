@@ -40,13 +40,13 @@ extension IRCode: DelegateDetailable {
                                                    sortBy: "name") as? [Manufacturer] ?? []
         let codeSets = sortedByName(irCode.manufacturer.codeSets)
 
-        var section = BankCollectionDetailSection(section: 0)
+        let section = BankCollectionDetailSection(section: 0)
 
         /// Manufacturer
         ////////////////////////////////////////////////////////////////////////////////
 
         section.addRow({
-          var row = BankCollectionDetailButtonRow()
+          let row = BankCollectionDetailButtonRow()
           row.name = "Manufacturer"
           row.info = irCode.manufacturer
     //      row.valueDidChange = {
@@ -76,7 +76,7 @@ extension IRCode: DelegateDetailable {
         ////////////////////////////////////////////////////////////////////////////////
 
         section.addRow({
-          var row = BankCollectionDetailButtonRow()
+          let row = BankCollectionDetailButtonRow()
           row.name = "Code Set"
           row.info = irCode.codeSet ?? "No Code Set"
           row.valueDidChange = {
@@ -98,7 +98,7 @@ extension IRCode: DelegateDetailable {
         ////////////////////////////////////////////////////////////////////////////////
 
         section.addRow({
-          var row = BankCollectionDetailTextFieldRow()
+          let row = BankCollectionDetailTextFieldRow()
           row.name = "Frequency"
           row.info = NSNumber(longLong: irCode.frequency)
           row.infoDataType = .LongLongData(15000...500000)
@@ -111,7 +111,7 @@ extension IRCode: DelegateDetailable {
         ////////////////////////////////////////////////////////////////////////////////
 
         section.addRow({
-          var row = BankCollectionDetailTextFieldRow()
+          let row = BankCollectionDetailTextFieldRow()
           row.name = "Repeat"
           row.info = NSNumber(longLong: irCode.frequency)
           row.infoDataType = .IntData(1...50)
@@ -124,7 +124,7 @@ extension IRCode: DelegateDetailable {
         ////////////////////////////////////////////////////////////////////////////////
 
         section.addRow({
-          var row = BankCollectionDetailStepperRow()
+          let row = BankCollectionDetailStepperRow()
           row.name = "Offset"
           row.stepperMinValue = 1
           row.stepperMaxValue = 383
@@ -141,7 +141,7 @@ extension IRCode: DelegateDetailable {
         ////////////////////////////////////////////////////////////////////////////////
 
         section.addRow({
-          var row = BankCollectionDetailTextViewRow()
+          let row = BankCollectionDetailTextViewRow()
           row.name = "On-Off Pattern"
           row.info = irCode.onOffPattern
           row.valueIsValid = {

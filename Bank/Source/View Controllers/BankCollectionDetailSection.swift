@@ -44,7 +44,7 @@ class BankCollectionDetailSection {
   var rows: LazyRandomAccessCollection<MapCollectionView<ConstructorIndex, Row>> {
     return lazy(blocks).map {
       index, key, block -> Row in
-      var row = block()
+      let row = block()
       row.indexPath = NSIndexPath(forRow: index, inSection: self.section)
       self.cache[key] = row
       return row
@@ -135,7 +135,7 @@ class BankCollectionDetailSection {
   */
   func removeAllRows(keepCapacity: Bool = false) {
     cache.removeAll(keepCapacity: keepCapacity)
-    blocks.removeAll(keepCapacity: keepCapacity)
+    blocks.removeAll(keepCapacity)
   }
 
   /**

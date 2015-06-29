@@ -39,7 +39,7 @@ class RemotePresetDetailController: PresetDetailController {
    let remoteAttributesSection = DetailSection(section: 2, title: "Remote Attributes")
 
    remoteAttributesSection.addRow({
-    var row = DetailSwitchRow()
+    let row = DetailSwitchRow()
     row.name = "Top Bar Hidden"
     row.info = NSNumber(bool: preset.topBarHidden ?? false)
     row.valueDidChange = { preset.topBarHidden = ($0 as? NSNumber)?.boolValue }

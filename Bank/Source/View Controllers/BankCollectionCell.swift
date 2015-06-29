@@ -104,36 +104,36 @@ class BankCollectionCell: UICollectionViewCell {
     removeAllConstraints()
 
     constrain(
-      𝗛|contentView|𝗛 --> identifier(suffixes: "ContainContent", "Horizontal"),
-      𝗩|contentView|𝗩 --> identifier(suffixes: "ContainContent", "Vertical")
+      𝗛|contentView|𝗛 --> identifier("ContainContent", "Horizontal"),
+      𝗩|contentView|𝗩 --> identifier("ContainContent", "Vertical")
     )
     constrain(
-      contentView.width => contentSize.width   --> identifier(suffixes: "Content", "Width"),
-      contentView.height => contentSize.height --> identifier(suffixes: "Content", "Height")
+      contentView.width => contentSize.width   --> identifier("Content", "Width"),
+      contentView.height => contentSize.height --> identifier("Content", "Height")
     )
 
     if !suppressDeleteConstraints {
       constrain(
-        deleteButton.right => right                                       --> identifier(suffixes: "DeleteButton", "Right"),
-        deleteButton.top => top                                           --> identifier(suffixes: "DeleteButton", "Top"),
-        deleteButton.width => Float(BankCollectionCell.deleteButtonWidth) --> identifier(suffixes: "DeleteButton", "Width"),
-        deleteButton.bottom => bottom                                     --> identifier(suffixes: "DeleteButton", "Bottom")
+        deleteButton.right => right                                       --> identifier("DeleteButton", "Right"),
+        deleteButton.top => top                                           --> identifier("DeleteButton", "Top"),
+        deleteButton.width => Float(BankCollectionCell.deleteButtonWidth) --> identifier("DeleteButton", "Width"),
+        deleteButton.bottom => bottom                                     --> identifier("DeleteButton", "Bottom")
       )
     }
 
     if !suppressChevronConstraints {
       constrain(
-        chevron.centerY => contentView.centerY --> identifier(suffixes: "Chevron", "Vertical"),
-        chevron.right => right - 20            --> identifier(suffixes: "Chevron", "Right"),
-        chevron.width ≤ chevron.height         --> identifier(suffixes: "Chevron", "Proportion"),
-        chevron.height => 22                   --> identifier(suffixes: "Chevron", "Size")
+        chevron.centerY => contentView.centerY --> identifier("Chevron", "Vertical"),
+        chevron.right => right - 20            --> identifier("Chevron", "Right"),
+        chevron.width ≤ chevron.height         --> identifier("Chevron", "Proportion"),
+        chevron.height => 22                   --> identifier("Chevron", "Size")
       )
     }
 
     if !suppressIndicatorConstraints {
       constrain(
-        indicator.width ≤ indicator.height --> identifier(suffixes: "Indicator", "Proportion"),
-        indicator.height => 22             --> identifier(suffixes: "Indicator", "Size")
+        indicator.width ≤ indicator.height --> identifier("Indicator", "Proportion"),
+        indicator.height => 22             --> identifier("Indicator", "Size")
       )
     }
 
@@ -211,7 +211,7 @@ class BankCollectionCell: UICollectionViewCell {
 
         let pan = gesture as! PanGesture
 
-        let x = pan.translationInView(view: self).x
+        let x = pan.translationInView(self).x
 
         switch pan.state {
 
@@ -225,11 +225,11 @@ class BankCollectionCell: UICollectionViewCell {
           case .Ended:
             if previousState == .Changed {
               let animate = x <= -BankCollectionCell.deleteButtonWidth ? self.revealDelete : self.hideDelete
-              animate(distance: abs(x))
+              animate(abs(x))
             }
 
           case .Cancelled, .Failed:
-            self.hideDelete(distance: abs(x))
+            self.hideDelete(abs(x))
 
           default: break
 

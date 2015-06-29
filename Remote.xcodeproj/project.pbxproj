@@ -459,6 +459,7 @@
 		C27BCCAD1801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC891801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png */; };
 		C27BCCAE1801C16A0002464C /* IntegerKeyboard_Erase.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC8A1801C16A0002464C /* IntegerKeyboard_Erase.png */; };
 		C27BCCAF1801C16A0002464C /* IntegerKeyboard_Erase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */; };
+		C27D9A801B41DB5700DF2BE5 /* BankModelCollectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27D9A7F1B41DB5700DF2BE5 /* BankModelCollectionDelegate.swift */; };
 		C2817C411AEC101B00C60C07 /* ModalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2817C401AEC101B00C60C07 /* ModalStorage.swift */; };
 		C285D82B1AC48A5400C527F6 /* TitleAttributesDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F5431ABCA395007581F2 /* TitleAttributesDelegate.swift */; };
 		C285D82F1AC48BA500C527F6 /* BankCollectionAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F4731ABCA395007581F2 /* BankCollectionAttributes.swift */; };
@@ -1609,6 +1610,7 @@
 		C27BCC891801C16A0002464C /* IntegerKeyboard_Erase-Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Erase-Highlighted@2x.png"; sourceTree = "<group>"; };
 		C27BCC8A1801C16A0002464C /* IntegerKeyboard_Erase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IntegerKeyboard_Erase.png; sourceTree = "<group>"; };
 		C27BCC8B1801C16A0002464C /* IntegerKeyboard_Erase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IntegerKeyboard_Erase@2x.png"; sourceTree = "<group>"; };
+		C27D9A7F1B41DB5700DF2BE5 /* BankModelCollectionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankModelCollectionDelegate.swift; sourceTree = "<group>"; };
 		C2817C401AEC101B00C60C07 /* ModalStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalStorage.swift; sourceTree = "<group>"; };
 		C285D8691AC4C0E800C527F6 /* DataModelProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataModelProtocols.swift; path = Model/DataModelProtocols.swift; sourceTree = "<group>"; };
 		C2874FB91AE68CD100BD7634 /* Painter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Painter.swift; sourceTree = "<group>"; };
@@ -3183,6 +3185,7 @@
 			children = (
 				C2EEBA0A1B0806610041B1B1 /* Extensions */,
 				C249DB7A1B064FA3005EA44C /* BankModelDelegate.swift */,
+				C27D9A7F1B41DB5700DF2BE5 /* BankModelCollectionDelegate.swift */,
 				C2FE79E31B1E2ED10087F72C /* BankModelDetailDelegate.swift */,
 				C2E9F44C1ABCA395007581F2 /* Bank.swift */,
 				C2E9F4651ABCA395007581F2 /* DocumentSelectionController.swift */,
@@ -4995,6 +4998,7 @@
 				C2FE79D71B1E19350087F72C /* BankCollectionDetailTextViewRow.swift in Sources */,
 				C2FE79AE1B1E18B00087F72C /* BankCollectionDetailPickerCell.swift in Sources */,
 				C26D84B91AC34DF0000230B9 /* Bank.swift in Sources */,
+				C27D9A801B41DB5700DF2BE5 /* BankModelCollectionDelegate.swift in Sources */,
 				C2EEBA201B08087D0041B1B1 /* Image+Bank.swift in Sources */,
 				C285D8501AC48C9800C527F6 /* DetailSliderRow.swift in Sources */,
 				C285D8531AC48C9800C527F6 /* DetailTextFieldRow.swift in Sources */,

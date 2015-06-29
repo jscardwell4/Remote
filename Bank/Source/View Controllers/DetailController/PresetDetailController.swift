@@ -123,7 +123,7 @@ class PresetDetailController: BankItemDetailController {
       row.name = RowKey.Role
       row.info = preset.role.stringValue.titlecaseString
 
-      var pickerRow = DetailPickerRow()
+      let pickerRow = DetailPickerRow()
       pickerRow.titleForInfo = {($0 as! String).titlecaseString}
       pickerRow.data = roles.map{$0.stringValue}
       pickerRow.info = preset.role.stringValue
@@ -147,7 +147,7 @@ class PresetDetailController: BankItemDetailController {
         row.name = RowKey.Shape
         row.info = preset.shape.stringValue.titlecaseString
 
-        var pickerRow = DetailPickerRow()
+        let pickerRow = DetailPickerRow()
         pickerRow.didSelectItem = {
           if !self.didCancel {
             preset.shape = RemoteElement.Shape(($0 as! String).jsonValue) ?? .Undefined

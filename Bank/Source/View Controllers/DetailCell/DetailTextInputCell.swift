@@ -240,7 +240,7 @@ extension DetailTextInputCell {
   internal func _shouldEndEditing(textInput: UITextInput) -> Bool {
     if textInput !== self.textInput { return false }
     let text = textInput.textInRange(textInput.textRangeFromPosition(textInput.beginningOfDocument,
-                                                          toPosition: textInput.endOfDocument))
+                                                          toPosition: textInput.endOfDocument)!)!
     if text.isEmpty { return allowEmptyString }
 
     let scanner = NSScanner(string: text)

@@ -52,7 +52,7 @@ class DetailController: UITableViewController {
   // MARK: - Loading
 
   /** loadSections */
-  func loadSections() { sections.removeAll(keepCapacity: true) }
+  func loadSections() { sections.removeAll(true) }
 
   /** loadView */
   override func loadView() {
@@ -163,7 +163,7 @@ class DetailController: UITableViewController {
 
   /** Invokes `configureCell` for each `DetailRow` associated with a visible cell */
   func configureVisibleCells() {
-    if let visibleIndexPaths = tableView.indexPathsForVisibleRows as? [NSIndexPath] {
+    if let visibleIndexPaths = tableView.indexPathsForVisibleRows {
       configureCellsAtIndexPaths(visibleIndexPaths)
     }
   }
@@ -188,7 +188,7 @@ class DetailController: UITableViewController {
   - parameter block: (DetailRow) -> Void
   */
   func applyToRowsAtIndexPaths(indexPaths: [NSIndexPath], block: (DetailRow) -> Void) {
-    if let visibleIndexPaths = tableView.indexPathsForVisibleRows as? [NSIndexPath] {
+    if let visibleIndexPaths = tableView.indexPathsForVisibleRows {
       apply(compressed((indexPaths ∩ visibleIndexPaths).map({self[$0]})), block)
     }
   }
@@ -260,7 +260,7 @@ class DetailController: UITableViewController {
 
 /// MARK: - UITableViewDelegate
 
-extension DetailController: UITableViewDelegate {
+extension DetailController {
 
   /**
   tableView:editingStyleForRowAtIndexPath:
@@ -316,7 +316,7 @@ extension DetailController: UITableViewDelegate {
 
 /// MARK: - UITableViewDataSource
 
-extension DetailController: UITableViewDataSource {
+extension DetailController {
 
   /**
   tableView:cellForRowAtIndexPath:

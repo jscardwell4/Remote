@@ -9,7 +9,7 @@
 import Foundation
 
 extension Bool {
-  public init(string: String?) {
+  public init(_ string: String?) {
     if string != nil {
       switch string!.lowercaseString {
         case "1", "yes", "true": self = true

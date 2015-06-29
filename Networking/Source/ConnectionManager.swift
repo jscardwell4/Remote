@@ -188,7 +188,7 @@ import class DataModel.HTTPCommand
   - parameter context: NSManagedObjectContext = DataManager.rootContext
   - parameter discovery: ((NetworkDevice) -> Void)? = nil
   */
-  public static func startDetectingNetworkDevices(context: NSManagedObjectContext = DataManager.rootContext,
+  public static func startDetectingNetworkDevices(context context: NSManagedObjectContext = DataManager.rootContext,
                                         discovery: DiscoveryCallback? = nil) -> DiscoveryCallbackToken
   {
     var token = -1

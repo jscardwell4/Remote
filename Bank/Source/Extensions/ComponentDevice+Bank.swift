@@ -53,7 +53,7 @@ extension ComponentDevice: DelegateDetailable {
         let manufacturerSection = BankCollectionDetailSection(section: 0)
 
         manufacturerSection.addRow({
-          var row = BankCollectionDetailButtonRow()
+          let row = BankCollectionDetailButtonRow()
           row.name = "Manufacturer"
           row.info = componentDevice.manufacturer
           row.select = BankCollectionDetailRow.selectPushableItem(componentDevice.manufacturer)
@@ -85,7 +85,7 @@ extension ComponentDevice: DelegateDetailable {
             })
             alert.addAction(UIAlertAction(title: "Create", style: .Default) {
               action in
-                if let text = (alert.textFields?.first as? UITextField)?.text {
+                if let text = alert.textFields?.first?.text {
                   moc.performBlockAndWait {
                     let manufacturer = Manufacturer.createInContext(moc)
                     manufacturer.name = text
@@ -109,7 +109,7 @@ extension ComponentDevice: DelegateDetailable {
 
         manufacturerSection.addRow({
 
-          var row = BankCollectionDetailButtonRow()
+          let row = BankCollectionDetailButtonRow()
           row.name = "Code Set"
           row.info = componentDevice.codeSet
           row.select = BankCollectionDetailRow.selectPushableCollection(componentDevice.codeSet)
@@ -139,7 +139,7 @@ extension ComponentDevice: DelegateDetailable {
             })
             alert.addAction(UIAlertAction(title: "Create", style: .Default) {
               action in
-              if let text = (alert.textFields?.first as? UITextField)?.text {
+              if let text = alert.textFields?.first?.text {
                 moc.performBlockAndWait {
                   let codeSet = IRCodeSet.createInContext(moc)
                   codeSet.name = text
@@ -177,7 +177,7 @@ extension ComponentDevice: DelegateDetailable {
         let networkDeviceSection = BankCollectionDetailSection(section: 1, title: "Network Device")
 
         networkDeviceSection.addRow({
-          var row = BankCollectionDetailButtonRow()
+          let row = BankCollectionDetailButtonRow()
           row.info = componentDevice.networkDevice ?? "No Network Device"
           row.name = "Network Device"
           row.select = {
@@ -202,7 +202,7 @@ extension ComponentDevice: DelegateDetailable {
         }, forKey: RowKey.NetworkDevice)
 
         networkDeviceSection.addRow({
-          var row = BankCollectionDetailStepperRow()
+          let row = BankCollectionDetailStepperRow()
           row.name = "Port"
           row.infoDataType = .IntData(1...3)
           row.info = NSNumber(short: componentDevice.port)
@@ -233,7 +233,7 @@ extension ComponentDevice: DelegateDetailable {
         let powerSection = BankCollectionDetailSection(section: 2, title: "Power")
 
         powerSection.addRow({
-          var row = BankCollectionDetailButtonRow()
+          let row = BankCollectionDetailButtonRow()
           row.name = "On"
           row.info = componentDevice.onCommand ?? "No On Command"
 
@@ -266,7 +266,7 @@ extension ComponentDevice: DelegateDetailable {
         }, forKey: RowKey.On)
 
         powerSection.addRow({
-          var row = BankCollectionDetailButtonRow()
+          let row = BankCollectionDetailButtonRow()
           row.name = "Off"
           row.info = componentDevice.offCommand ?? "No Off Command"
 
@@ -307,16 +307,13 @@ extension ComponentDevice: DelegateDetailable {
 
         if componentDevice.managedObjectContext == nil { return }
 
-        let moc = componentDevice.managedObjectContext!
-
-
         // Inputs
         ////////////////////////////////////////////////////////////////////////////////////////////////////
 
         let inputsSection = BankCollectionDetailSection(section: 3, title: "Inputs")
 
         inputsSection.addRow({
-          var row = BankCollectionDetailSwitchRow()
+          let row = BankCollectionDetailSwitchRow()
           row.name = "Inputs Power On Device"
           row.info = NSNumber(bool: componentDevice.inputPowersOn)
           row.valueDidChange = { componentDevice.inputPowersOn = $0 as! Bool }
