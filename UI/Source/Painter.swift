@@ -38,13 +38,13 @@ public final class Painter {
     public var radii = Painter.defaultRadii
     public var shadow: NSShadow?
     public var accentShadow: NSShadow?
-    public var blendMode: CGBlendMode = kCGBlendModeNormal
+    public var blendMode: CGBlendMode = .Normal
     public var stroke = false
     public var fill = true
     public var alpha: CGFloat = 1.0
     public var image: UIImage?
     public var text: String?
-    public var fontAttributes: [NSObject:AnyObject]?
+    public var fontAttributes: [String:AnyObject]?
     public var adjustFontSize = false
 
     public var description: String {
@@ -87,7 +87,7 @@ public final class Painter {
     - parameter alpha: CGFloat = 1.0
     - parameter image: UIImage? = nil
     - parameter text: String? = nil
-    - parameter fontAttributes: [NSObject AnyObject]? = nil
+    - parameter fontAttributes: [String AnyObject]? = nil
     - parameter adjustFontSize: Bool = false
     */
     public init(
@@ -100,13 +100,13 @@ public final class Painter {
       lineWidth: CGFloat = 0,
       corners: UIRectCorner = Painter.defaultCorners,
       radii: CGSize = Painter.defaultRadii,
-      blendMode: CGBlendMode = kCGBlendModeNormal,
+      blendMode: CGBlendMode = .Normal,
       stroke: Bool = false,
       fill: Bool = true,
       alpha: CGFloat = 1.0,
       image: UIImage? = nil,
       text: String? = nil,
-      fontAttributes: [NSObject:AnyObject]? = nil,
+      fontAttributes: [String:AnyObject]? = nil,
       adjustFontSize: Bool = false)
     {
       self.rect = rect
@@ -187,7 +187,7 @@ public final class Painter {
           case .AdjustFontSize: if let b = value as? Bool { attrs.adjustFontSize = b }
           case .Image: attrs.image = value as? UIImage
           case .Text: attrs.text = value as? String
-          case .FontAttributes: attrs.fontAttributes = value as? [NSObject:AnyObject]
+          case .FontAttributes: attrs.fontAttributes = value as? [String:AnyObject]
         }
       }
     }
@@ -214,7 +214,7 @@ public final class Painter {
     CGColorSpaceCreateDeviceRGB(),
     [white0_0.CGColor, white0_0.blendedColorWithFraction(0.5, ofColor: white).CGColor, white.CGColor],
     [0, 0.4, 1]
-  )
+  )!
 
   public static let innerShadow:     NSShadow = NSShadow(color: white,     offset: offset1_neg1, blurRadius: 2)
   public static let outerShadow:     NSShadow = NSShadow(color: black,     offset: offset1_neg1, blurRadius: 2)
@@ -313,7 +313,7 @@ public final class Painter {
     attrs.accentShadow?.setShadow()
     CGContextBeginTransparencyLayer(context, nil)                                         // transparency: ••
 
-    var textAttributes: [NSObject:AnyObject] = attrs.fontAttributes ?? [:]
+    var textAttributes: [String:AnyObject] = attrs.fontAttributes ?? [:]
     if let font = textAttributes[NSFontAttributeName] as? UIFont where attrs.adjustFontSize {
       textAttributes[NSFontAttributeName] = font.fontWithSize(appliedFontSize)
     } else if textAttributes[NSFontAttributeName] == nil {
@@ -444,7 +444,7 @@ public final class Painter {
 
     let opaqueInnerShadow = innerShadow.shadowWithAlpha(1.0)
     attrs.shadow = opaqueInnerShadow
-    attrs.blendMode = kCGBlendModeSourceOut
+    attrs.blendMode = .SourceOut
     attrs.color = opaqueInnerShadow.color
 
     drawShape(shape, withAttributes: attrs)
@@ -488,8 +488,7 @@ public final class Painter {
     let bounds = CGContextGetClipBoundingBox(context)
     let p1 = CGPoint(x: bounds.midX, y: bounds.midY + 0.5 * bounds.height)
     let p2 = CGPoint(x: bounds.midX, y: bounds.midY)
-    let options = UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation)
-    CGContextDrawLinearGradient(context, verticalGloss, p1, p2, options)
+    CGContextDrawLinearGradient(context, verticalGloss, p1, p2, [.DrawsBeforeStartLocation, .DrawsAfterEndLocation])
 
     CGContextRestoreGState(context)
   }
@@ -512,7 +511,7 @@ public final class Painter {
     var glossAttrs = attributes
     glossAttrs.rect = attributes.rect.rectByInsetting(dx: 6, dy: 6)
     glossAttrs.alpha = 0.1
-    glossAttrs.blendMode = kCGBlendModeSoftLight
+    glossAttrs.blendMode = .SoftLight
 
     drawGlossWithShape(shape, attributes: glossAttrs)
   }
@@ -554,7 +553,7 @@ public final class Painter {
     drawBaseWithShape(shape, attributes: attrs)
 
     CGContextSaveGState(context)                                                            // context: ••
-    CGContextSetBlendMode(context, kCGBlendModeDestinationOut)
+    CGContextSetBlendMode(context, .DestinationOut)
     CGContextBeginTransparencyLayer(context, nil)                                           // transparency: ••
 
 
@@ -593,7 +592,7 @@ public final class Painter {
       glossAttrs.corners = attributes.corners
       glossAttrs.alpha = 0.1
       glossAttrs.radii = attributes.radii
-      glossAttrs.blendMode = kCGBlendModeSoftLight
+      glossAttrs.blendMode = .SoftLight
 
       drawGlossWithShape(shape, attributes: glossAttrs)
     }

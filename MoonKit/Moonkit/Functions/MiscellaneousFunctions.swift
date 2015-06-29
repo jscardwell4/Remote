@@ -59,7 +59,7 @@ createIdentifierGenerator:suffixes:
 
 - returns: String
 */
-public func createIdentifierGenerator(base: String)(suffixes: String...) -> String {
+public func createIdentifierGenerator(base: String)(_ suffixes: String...) -> String {
   return "-".join([base] + suffixes)
 }
 
@@ -83,7 +83,7 @@ createIdentifier:suffix:
 
 - returns: String
 */
-public func createIdentifier(object: Any, suffix: String...) -> String {
+public func createIdentifier(object: Any, _ suffix: String...) -> String {
   return _stdlib_getDemangledTypeName(object) + "-" + "-".join(suffix)
 }
 

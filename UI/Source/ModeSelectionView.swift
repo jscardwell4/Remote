@@ -79,11 +79,11 @@ public final class ModeSelectionView: ButtonGroupView {
     var path = UIBezierPath(roundedRect: bounds, byRoundingCorners: roundedCorners, cornerRadii: CGSize(square: 15))
     borderPath = path
     UIColor.darkTextColor().setFill()
-    path.fillWithBlendMode(kCGBlendModeNormal, alpha: 0.9)
+    path.fillWithBlendMode(.Normal, alpha: 0.9)
     let insetRect = bounds.rectByInsetting(dx: 0, dy: 3).rectByApplyingTransform(CGAffineTransformMakeTranslation(dx, 0))
     path = UIBezierPath(roundedRect: insetRect, byRoundingCorners: roundedCorners, cornerRadii: CGSize(square: 12))
     path.lineWidth = 2.0
-    path.strokeWithBlendMode(kCGBlendModeClear, alpha: 1.0)
+    path.strokeWithBlendMode(.Clear, alpha: 1.0)
   }
 
 }

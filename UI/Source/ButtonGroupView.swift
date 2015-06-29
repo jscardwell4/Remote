@@ -54,7 +54,7 @@ public class ButtonGroupView: RemoteElementView {
     shrinkwrap = true
     resizable = true
     moveable = true
-    if buttonGroup.role & .Toolbar == RemoteElement.Role.Toolbar {
+    if buttonGroup.role.contains(.Toolbar) {
       setContentCompressionResistancePriority(1000.0, forAxis: .Horizontal)
       setContentCompressionResistancePriority(1000.0, forAxis: .Vertical)
     }
@@ -103,7 +103,7 @@ public class ButtonGroupView: RemoteElementView {
   - returns: CGSize
   */
   override public func intrinsicContentSize() -> CGSize {
-    if buttonGroup.role & .Toolbar == RemoteElement.Role.Toolbar {
+    if buttonGroup.role.contains(.Toolbar) {
       return CGSize(width: UIScreen.mainScreen().bounds.width, height: 44.0)
     } else {
       return CGSize(square: UIViewNoIntrinsicMetric)
@@ -124,7 +124,7 @@ public class ButtonGroupView: RemoteElementView {
   */
   override public func drawRect(rect: CGRect) {
     if model.shape == .Undefined { return }
-    if hasOption(.DrawBackground, model.style) {
+    if model.style.contains(.DrawBackground) {
       let backgroundAttrs = Painter.Attributes(rect: rect.integerRect, color: backgroundColor ?? Painter.defaultBackgroundColor)
       Painter.drawBackgroundWithShape(model.shape, attributes: backgroundAttrs)
     }
@@ -134,8 +134,8 @@ public class ButtonGroupView: RemoteElementView {
       Painter.drawImage(image, withAttributes: imageAttrs)
     }
 
-    if hasOption(.ApplyGloss, model.style) {
-      let glossAttrs = Painter.Attributes(rect: rect.integerRect, alpha: 0.15, blendMode: kCGBlendModeSoftLight)
+    if model.style.contains(.ApplyGloss) {
+      let glossAttrs = Painter.Attributes(rect: rect.integerRect, alpha: 0.15, blendMode: .SoftLight)
       Painter.drawGlossWithShape(model.shape, attributes: glossAttrs)
     }
 

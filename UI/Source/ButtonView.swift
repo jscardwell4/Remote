@@ -233,7 +233,7 @@ public class ButtonView: RemoteElementView {
 	- parameter rect: CGRect
 	*/
 	override public func drawRect(rect: CGRect) {
-    if hasOption(.DrawBackground, button.style) { drawWithBackgroundInRect(rect) } else  { drawWithoutBackgroundInRect(rect) }
+    if button.style.contains(.DrawBackground) { drawWithBackgroundInRect(rect) } else  { drawWithoutBackgroundInRect(rect) }
 	}
 
   /**
@@ -255,7 +255,7 @@ public class ButtonView: RemoteElementView {
     fgColor.setFill()
     UIRectFill(rect)
 
-    CGContextSetBlendMode(context, kCGBlendModeDestinationIn)
+    CGContextSetBlendMode(context, .DestinationIn)
     CGContextBeginTransparencyLayer(context, nil)
 
     if let image = icon {
@@ -322,7 +322,7 @@ public class ButtonView: RemoteElementView {
     Painter.drawBaseWithShape(button.shape, attributes: baseAttrs)
 
     CGContextSaveGState(context)                                                            // context: ••
-    CGContextSetBlendMode(context, kCGBlendModeDestinationOut)
+    CGContextSetBlendMode(context, .DestinationOut)
     accentShadow?.setShadow()
     CGContextBeginTransparencyLayer(context, nil)                                           // transparency: ••
 
@@ -354,8 +354,8 @@ public class ButtonView: RemoteElementView {
     CGContextEndTransparencyLayer(context)                                                  // transparency:
     CGContextRestoreGState(context)                                                         // context:
 
-    if hasOption(.ApplyGloss, button.style) {
-      let glossAttrs = Painter.Attributes(rect: baseRect, alpha: 0.15, blendMode: kCGBlendModeSoftLight)
+    if button.style.contains(.ApplyGloss) {
+      let glossAttrs = Painter.Attributes(rect: baseRect, alpha: 0.15, blendMode: .SoftLight)
       Painter.drawGlossWithShape(button.shape, attributes: glossAttrs)
     }
   }

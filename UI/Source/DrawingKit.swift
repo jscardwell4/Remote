@@ -18,7 +18,7 @@ public class DrawingKit : NSObject {
 
     private struct Cache {
         static var verticalGlossStop: UIColor = UIColor(red: 1.000, green: 1.000, blue: 1.000, alpha: 0.000)
-        static var verticalGloss: CGGradient = CGGradientCreateWithColors(CGColorSpaceCreateDeviceRGB(), [DrawingKit.verticalGlossStop.CGColor, DrawingKit.verticalGlossStop.blendedColorWithFraction(0.5, ofColor: UIColor.whiteColor()).CGColor, UIColor.whiteColor().CGColor], [0, 0.4, 1])
+        static var verticalGloss: CGGradient = CGGradientCreateWithColors(CGColorSpaceCreateDeviceRGB(), [DrawingKit.verticalGlossStop.CGColor, DrawingKit.verticalGlossStop.blendedColorWithFraction(0.5, ofColor: UIColor.whiteColor()).CGColor, UIColor.whiteColor().CGColor], [0, 0.4, 1])!
         static var innerShadow: NSShadow = NSShadow(color: UIColor.whiteColor(), offset: CGSizeMake(0.1, -0.1), blurRadius: 2)
         static var outerShadow: NSShadow = NSShadow(color: UIColor.blackColor(), offset: CGSizeMake(0.1, -0.1), blurRadius: 2)
         static var strokeShadow: NSShadow = NSShadow(color: UIColor.lightGrayColor(), offset: CGSizeMake(0.1, -0.1), blurRadius: 1)
@@ -75,7 +75,7 @@ public class DrawingKit : NSObject {
         CGContextBeginTransparencyLayer(context, nil)
         let darkOverlayRectangleOpaqueShadow = (DrawingKit.innerShadow.shadowColor as! UIColor).colorWithAlphaComponent(1)
         CGContextSetShadowWithColor(context, DrawingKit.innerShadow.shadowOffset, DrawingKit.innerShadow.shadowBlurRadius, darkOverlayRectangleOpaqueShadow.CGColor)
-        CGContextSetBlendMode(context, kCGBlendModeSourceOut)
+        CGContextSetBlendMode(context, .SourceOut)
         CGContextBeginTransparencyLayer(context, nil)
 
         darkOverlayRectangleOpaqueShadow.setFill()
@@ -97,7 +97,7 @@ public class DrawingKit : NSObject {
 
         //// lightBase
         CGContextSaveGState(context)
-        CGContextSetBlendMode(context, kCGBlendModeSoftLight)
+        CGContextSetBlendMode(context, .SoftLight)
         CGContextBeginTransparencyLayer(context, nil)
 
         //// Clip lightBaseClip
@@ -112,7 +112,7 @@ public class DrawingKit : NSObject {
         CGContextDrawLinearGradient(context, DrawingKit.verticalGloss,
             CGPointMake(100, 200),
             CGPointMake(100, 100),
-            UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation))
+            [.DrawsBeforeStartLocation, .DrawsAfterEndLocation])
         CGContextRestoreGState(context)
 
 
@@ -147,7 +147,7 @@ public class DrawingKit : NSObject {
         CGContextBeginTransparencyLayer(context, nil)
         let darkOverlayRectOpaqueShadow = (DrawingKit.innerShadow.shadowColor as! UIColor).colorWithAlphaComponent(1)
         CGContextSetShadowWithColor(context, DrawingKit.innerShadow.shadowOffset, DrawingKit.innerShadow.shadowBlurRadius, darkOverlayRectOpaqueShadow.CGColor)
-        CGContextSetBlendMode(context, kCGBlendModeSourceOut)
+        CGContextSetBlendMode(context, .SourceOut)
         CGContextBeginTransparencyLayer(context, nil)
 
         darkOverlayRectOpaqueShadow.setFill()
@@ -169,7 +169,7 @@ public class DrawingKit : NSObject {
 
         //// lightBase
         CGContextSaveGState(context)
-        CGContextSetBlendMode(context, kCGBlendModeSoftLight)
+        CGContextSetBlendMode(context, .SoftLight)
         CGContextBeginTransparencyLayer(context, nil)
 
         //// Clip lightBaseClipRect
@@ -184,7 +184,7 @@ public class DrawingKit : NSObject {
         CGContextDrawLinearGradient(context, DrawingKit.verticalGloss,
             CGPointMake(100, 192),
             CGPointMake(100, 92),
-            UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation))
+            [.DrawsBeforeStartLocation, .DrawsAfterEndLocation])
         CGContextRestoreGState(context)
 
 
@@ -219,7 +219,7 @@ public class DrawingKit : NSObject {
         CGContextBeginTransparencyLayer(context, nil)
         let darkOverlayOvalOpaqueShadow = (DrawingKit.innerShadow.shadowColor as! UIColor).colorWithAlphaComponent(1)
         CGContextSetShadowWithColor(context, DrawingKit.innerShadow.shadowOffset, DrawingKit.innerShadow.shadowBlurRadius, darkOverlayOvalOpaqueShadow.CGColor)
-        CGContextSetBlendMode(context, kCGBlendModeSourceOut)
+        CGContextSetBlendMode(context, .SourceOut)
         CGContextBeginTransparencyLayer(context, nil)
 
         darkOverlayOvalOpaqueShadow.setFill()
@@ -241,7 +241,7 @@ public class DrawingKit : NSObject {
 
         //// lightBase
         CGContextSaveGState(context)
-        CGContextSetBlendMode(context, kCGBlendModeSoftLight)
+        CGContextSetBlendMode(context, .SoftLight)
         CGContextBeginTransparencyLayer(context, nil)
 
         //// Clip lightBaseClipRect
@@ -256,7 +256,7 @@ public class DrawingKit : NSObject {
         CGContextDrawLinearGradient(context, DrawingKit.verticalGloss,
             CGPointMake(100, 200),
             CGPointMake(100, 100),
-            UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation))
+            [.DrawsBeforeStartLocation, .DrawsAfterEndLocation])
         CGContextRestoreGState(context)
 
 
@@ -296,7 +296,7 @@ public class DrawingKit : NSObject {
         CGContextBeginTransparencyLayer(context, nil)
         let darkOverlayDiamondOpaqueShadow = (DrawingKit.innerShadow.shadowColor as! UIColor).colorWithAlphaComponent(1)
         CGContextSetShadowWithColor(context, DrawingKit.innerShadow.shadowOffset, DrawingKit.innerShadow.shadowBlurRadius, darkOverlayDiamondOpaqueShadow.CGColor)
-        CGContextSetBlendMode(context, kCGBlendModeSourceOut)
+        CGContextSetBlendMode(context, .SourceOut)
         CGContextBeginTransparencyLayer(context, nil)
 
         darkOverlayDiamondOpaqueShadow.setFill()
@@ -318,7 +318,7 @@ public class DrawingKit : NSObject {
 
         //// lightBase
         CGContextSaveGState(context)
-        CGContextSetBlendMode(context, kCGBlendModeSoftLight)
+        CGContextSetBlendMode(context, .SoftLight)
         CGContextBeginTransparencyLayer(context, nil)
 
         //// Clip lightBaseClipRect
@@ -340,7 +340,7 @@ public class DrawingKit : NSObject {
         CGContextDrawLinearGradient(context, DrawingKit.verticalGloss,
             CGPointMake(lightBaseFillRectRect.midX + 0 * lightBaseFillRectRect.width / 200, lightBaseFillRectRect.midY + 100 * lightBaseFillRectRect.height / 200),
             CGPointMake(lightBaseFillRectRect.midX + 0 * lightBaseFillRectRect.width / 200, lightBaseFillRectRect.midY + 0 * lightBaseFillRectRect.height / 200),
-            UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation))
+            [.DrawsBeforeStartLocation, .DrawsAfterEndLocation])
         CGContextRestoreGState(context)
 
 
@@ -384,7 +384,7 @@ public class DrawingKit : NSObject {
         CGContextBeginTransparencyLayer(context, nil)
         let darkOverlayTriangleOpaqueShadow = (DrawingKit.innerShadow.shadowColor as! UIColor).colorWithAlphaComponent(1)
         CGContextSetShadowWithColor(context, DrawingKit.innerShadow.shadowOffset, DrawingKit.innerShadow.shadowBlurRadius, darkOverlayTriangleOpaqueShadow.CGColor)
-        CGContextSetBlendMode(context, kCGBlendModeSourceOut)
+        CGContextSetBlendMode(context, .SourceOut)
         CGContextBeginTransparencyLayer(context, nil)
 
         darkOverlayTriangleOpaqueShadow.setFill()
@@ -408,7 +408,7 @@ public class DrawingKit : NSObject {
 
         //// lightBase
         CGContextSaveGState(context)
-        CGContextSetBlendMode(context, kCGBlendModeSoftLight)
+        CGContextSetBlendMode(context, .SoftLight)
         CGContextBeginTransparencyLayer(context, nil)
 
         //// Clip lightBaseClipRect
@@ -432,7 +432,7 @@ public class DrawingKit : NSObject {
         CGContextDrawLinearGradient(context, DrawingKit.verticalGloss,
             CGPointMake(lightBaseFillRectRect.midX + 0 * lightBaseFillRectRect.width / 200, lightBaseFillRectRect.midY + 100 * lightBaseFillRectRect.height / 200),
             CGPointMake(lightBaseFillRectRect.midX + 0 * lightBaseFillRectRect.width / 200, lightBaseFillRectRect.midY + 0 * lightBaseFillRectRect.height / 200),
-            UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation))
+            [.DrawsBeforeStartLocation, .DrawsAfterEndLocation])
         CGContextRestoreGState(context)
 
 
@@ -872,7 +872,7 @@ public class DrawingKit : NSObject {
         CGContextDrawLinearGradient(context, DrawingKit.verticalGloss,
             CGPointMake(rectangleRect.midX + 0 * rectangleRect.width / 200, rectangleRect.midY + 100 * rectangleRect.height / 200),
             CGPointMake(rectangleRect.midX + 0 * rectangleRect.width / 200, rectangleRect.midY + 0 * rectangleRect.height / 200),
-            UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation))
+            [.DrawsBeforeStartLocation, .DrawsAfterEndLocation])
         CGContextRestoreGState(context)
     }
 
@@ -888,7 +888,7 @@ public class DrawingKit : NSObject {
         CGContextDrawLinearGradient(context, DrawingKit.verticalGloss,
             CGPointMake(roundedRect.midX + 0 * roundedRect.width / 200, roundedRect.midY + 100 * roundedRect.height / 200),
             CGPointMake(roundedRect.midX + 0 * roundedRect.width / 200, roundedRect.midY + 0 * roundedRect.height / 200),
-            UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation))
+            [.DrawsBeforeStartLocation, .DrawsAfterEndLocation])
         CGContextRestoreGState(context)
     }
 
@@ -904,7 +904,7 @@ public class DrawingKit : NSObject {
         CGContextDrawLinearGradient(context, DrawingKit.verticalGloss,
             CGPointMake(ovalRect.midX + 0 * ovalRect.width / 200, ovalRect.midY + 100 * ovalRect.height / 200),
             CGPointMake(ovalRect.midX + 0 * ovalRect.width / 200, ovalRect.midY + 0 * ovalRect.height / 200),
-            UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation))
+            [.DrawsBeforeStartLocation, .DrawsAfterEndLocation])
         CGContextRestoreGState(context)
     }
 
@@ -926,7 +926,7 @@ public class DrawingKit : NSObject {
         CGContextDrawLinearGradient(context, DrawingKit.verticalGloss,
             CGPointMake(diamondBounds.midX + 0 * diamondBounds.width / 200, diamondBounds.midY + 100 * diamondBounds.height / 200),
             CGPointMake(diamondBounds.midX + 0 * diamondBounds.width / 200, diamondBounds.midY + 0 * diamondBounds.height / 200),
-            UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation))
+            [.DrawsBeforeStartLocation, .DrawsAfterEndLocation])
         CGContextRestoreGState(context)
     }
 
@@ -950,7 +950,7 @@ public class DrawingKit : NSObject {
         CGContextDrawLinearGradient(context, DrawingKit.verticalGloss,
             CGPointMake(triangleBounds.midX + 0 * triangleBounds.width / 200, triangleBounds.midY + 100 * triangleBounds.height / 200),
             CGPointMake(triangleBounds.midX + -0.21 * triangleBounds.width / 200, triangleBounds.midY + 50.3 * triangleBounds.height / 200),
-            UInt32(kCGGradientDrawsBeforeStartLocation) | UInt32(kCGGradientDrawsAfterEndLocation))
+            [.DrawsBeforeStartLocation, .DrawsAfterEndLocation])
         CGContextRestoreGState(context)
     }
 
@@ -1016,7 +1016,7 @@ public class DrawingKit : NSObject {
 
         //// Cutout Group
         CGContextSaveGState(context)
-        CGContextSetBlendMode(context, kCGBlendModeDestinationOut)
+        CGContextSetBlendMode(context, .DestinationOut)
         CGContextBeginTransparencyLayer(context, nil)
 
 
@@ -1085,7 +1085,7 @@ public class DrawingKit : NSObject {
             //// Gloss Overlay Group
             CGContextSaveGState(context)
             CGContextSetAlpha(context, 0.1)
-            CGContextSetBlendMode(context, kCGBlendModeSourceAtop)
+            CGContextSetBlendMode(context, .SourceAtop)
             CGContextBeginTransparencyLayer(context, nil)
 
 
