@@ -54,11 +54,11 @@ extension ITachDeviceConnection {
         case ~/"^IR Learner Unavailabler":
           self = .LearnerUnavailable
         case ~/"^completeir,1:[1-3],[0-9]+\\r$":
-          if let port = Int(response[13...13]), tag = Int(",".split(response).last?) {
+          if let port = Int(response[13...13]), tagString = ",".split(response).last, tag = Int(tagString) {
             self = .CompleteIR(port, tag)
           } else { return nil }
         case ~/"^busyIR,1:[1-3],[0-9]+\\r$":
-          if let port = Int(response[13...13]), tag = Int(",".split(response).last?) {
+          if let port = Int(response[13...13]), tagString = ",".split(response).last, tag = Int(tagString) {
             self = .BusyIR(port, tag)
           } else { return nil }
         case ~/"^IR,1:[1-3],[A-Z_]+\\r$":

@@ -38,41 +38,26 @@ import MoonKit
 
 
   /**
-  joinGroup:
-
-  - parameter error: NSErrorPointer
-
-  - returns: Bool
+  joinGroup
   */
   func joinGroup() throws {
-    var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
     if !joinedGroup {
-      var localError: NSError?
-      let boundPort: Bool
+      var errorMessage: String?
       do {
         try socket.bindToPort(port)
-        boundPort = true
-      } catch var error as NSError {
-        localError = error
-        boundPort = false
-      }
-      if boundPort && !MSHandleError(localError, message: "failed to bind port \(port)") {
         do {
           try socket.joinMulticastGroup(address)
           joinedGroup = true
-        } catch var error as NSError {
-          localError = error
-          joinedGroup = false
+        } catch {
+          errorMessage = "failed to join group \(address)"
+          throw error
         }
-        MSHandleError(localError, message: "failed to join group \(address)")
+      } catch {
+        if errorMessage == nil { errorMessage = "failed to bind port \(port)" }
+        MSHandleError(error as NSError, message: errorMessage)
+        throw error
       }
-
-      if let e = localError { error = e }
     }
-    if joinedGroup {
-      return
-    }
-    throw error
   }
 
   /**
@@ -83,12 +68,10 @@ import MoonKit
   - returns: Bool
   */
   func leaveGroup() throws {
-    var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
-    if joinedGroup && socket.leaveMulticastGroup(address) { joinedGroup = false }
-    if !joinedGroup {
-      return
+    if joinedGroup {
+      try socket.leaveMulticastGroup(address)
+      joinedGroup = false
     }
-    throw error
   }
 
   /**
@@ -99,25 +82,12 @@ import MoonKit
   - returns: Bool
   */
   func listen() throws {
-    var error: NSError! = NSError(domain: "Migrator", code: 0, userInfo: nil)
-    if !joinedGroup { do {
-        try joinGroup()
-      } catch var error1 as NSError {
-        error = error1
-      } }
+    if !joinedGroup { try joinGroup() }
+
     if joinedGroup && !listening {
-      do {
-        try socket.beginReceiving()
-        listening = true
-      } catch var error1 as NSError {
-        error = error1
-        listening = false
-      }
+      try socket.beginReceiving()
+      listening = true
     }
-    if listening {
-      return
-    }
-    throw error
   }
 
   /** Pauses the receiving of packets if socket is listening */
@@ -136,7 +106,7 @@ import MoonKit
   func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!,
     withFilterContext filterContext: AnyObject!)
   {
-    if let string = NSString(data: data) as? String { callback?(string) }
+    callback?(NSString(data: data) as String)
   }
 
 }

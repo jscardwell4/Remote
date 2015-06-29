@@ -32,7 +32,7 @@ final class ISYDeviceConnection: Equatable, Hashable {
     - parameter connection: NSURLConnection
     - parameter error: NSError
     */
-    func connection(connection: NSURLConnection, didFailWithError error: NSError) { didFail?(error) }
+    @objc func connection(connection: NSURLConnection, didFailWithError error: NSError) { didFail?(error) }
 
     /**
     connection:willSendRequestForAuthenticationChallenge:
@@ -40,12 +40,12 @@ final class ISYDeviceConnection: Equatable, Hashable {
     - parameter connection: NSURLConnection
     - parameter challenge: NSURLAuthenticationChallenge
     */
-    func connection(connection: NSURLConnection,
+    @objc func connection(connection: NSURLConnection,
       willSendRequestForAuthenticationChallenge challenge: NSURLAuthenticationChallenge)
     {
       if let user = self.user, password = self.password {
         let credential = NSURLCredential(user: user, password: password, persistence: .ForSession)
-        challenge.sender.useCredential(credential, forAuthenticationChallenge: challenge)
+        challenge.sender?.useCredential(credential, forAuthenticationChallenge: challenge)
       }
     }
 
@@ -55,14 +55,14 @@ final class ISYDeviceConnection: Equatable, Hashable {
     - parameter connection: NSURLConnection
     - parameter data: NSData
     */
-    func connection(connection: NSURLConnection, didReceiveData data: NSData) { dataReceived.appendData(data) }
+    @objc func connection(connection: NSURLConnection, didReceiveData data: NSData) { dataReceived.appendData(data) }
 
     /**
     connectionDidFinishLoading:
 
     - parameter connection: NSURLConnection
     */
-    func connectionDidFinishLoading(connection: NSURLConnection) { didReceiveData?(dataReceived) }
+    @objc func connectionDidFinishLoading(connection: NSURLConnection) { didReceiveData?(dataReceived) }
 
   }
 
@@ -122,6 +122,7 @@ final class ISYDeviceConnection: Equatable, Hashable {
           "friendlyName",
           "UDN"
         ]
+        
         let parsedData = MSDictionary(byParsingXML: $0)
         let attributes = MSDictionary(valuesForKeys: keys, usingBlock: {NSNull.collectionSafeValue(findFirstValueForKeyInContainer($0, parsedData))})
         attributes.compact()
@@ -129,7 +130,7 @@ final class ISYDeviceConnection: Equatable, Hashable {
             attributes.replaceKey("URLBase", withKey: "baseURL")
             attributes.replaceKey("UDN", withKey: "uniqueIdentifier")
             let services = findValuesForKeyInContainer("serviceType", parsedData) as! [String]
-            if services.contains("urn:udi-com:service:X_Insteon_Lighting_Service:1".characters),
+            if services.contains("urn:udi-com:service:X_Insteon_Lighting_Service:1"),
               let uniqueIdentifier = attributes["uniqueIdentifier"] as? String
             {
               let moc = DataManager.rootContext
@@ -137,13 +138,13 @@ final class ISYDeviceConnection: Equatable, Hashable {
                 let device = ISYDevice.objectWithValue(uniqueIdentifier,
                                           forAttribute: "uniqueIdentifier",
                                                context: moc) ?? ISYDevice(context: moc)
-                device.setValuesForKeysWithDictionary(attributes as [NSObject : AnyObject])
+                device.setValuesForKeysWithDictionary((attributes as NSDictionary) as! [String:AnyObject])
                 var error: NSError?
                 let saved: Bool
                 do {
                   try moc.save()
                   saved = true
-                } catch var error1 as NSError {
+                } catch let error1 as NSError {
                   error = error1
                   saved = false
                 } catch {
@@ -178,17 +179,17 @@ final class ISYDeviceConnection: Equatable, Hashable {
 
           let nodes = findFirstValueForKeyInContainer("node", parsedData) as! [MSDictionary]
 
-          let nodeKeys = ["flag", "address", "type", "enabled", "pnode", "name"]
+          let nodeKeys = Set(["flag", "address", "type", "enabled", "pnode", "name"])
           let nodeModels = MSDictionary()
 
           for node in nodes {
+            let property = node["property"] as! [String:String]
+            let propertyID        = property["id"]!
+            let propertyValue     = property["value"]!
+            let propertyUOM       = property["uom"]!
+            let propertyFormatted = property["formatted"]
 
-            let propertyID        = node["property"]!["id"] as! String
-            let propertyValue     = node["property"]!["value"] as! String
-            let propertyUOM       = node["property"]!["uom"] as! String
-            let propertyFormatted = node["property"]!["formatted"] as! String
-
-            node.filter {key, _ in nodeKeys.contains((key as! String).characters)}
+            node.filter {key, _ in nodeKeys.contains(key as! String)}
 
             node["propertyID"]        = propertyID
             node["propertyValue"]     = Int(propertyValue)
@@ -199,54 +200,34 @@ final class ISYDeviceConnection: Equatable, Hashable {
             node["flag"]              = Int((node["flag"] as! String))
 
             let nodeModel = ISYDeviceNode(context: moc)
-            nodeModel.setValuesForKeysWithDictionary(node as [NSObject:AnyObject])
+            nodeModel.setValuesForKeysWithDictionary((node as NSDictionary) as! [String:AnyObject])
 
-            nodeModels[nodeModel.address] = nodeModel
+            nodeModels[nodeModel.index.stringValue] = nodeModel
 
           }
 
-          var error: NSError?
-          var saved: Bool
-          do {
-            try moc.save()
-            saved = true
-          } catch var error1 as NSError {
-            error = error1
-            saved = false
-          } catch {
-            fatalError()
-          }
-          assert(!MSHandleError(error))
+          do { try moc.save() } catch let error as NSError { MSHandleError(error) } catch {}
 
           let groups = findFirstValueForKeyInContainer("group", parsedData) as! [MSDictionary]
-          let groupKeys = ["flag", "address", "name", "family", "members"]
+          let groupKeys = Set(["flag", "address", "name", "family", "members"])
 
           for group in groups {
 
-            group.filter {key, _ in  groupKeys.contains((key as! String).characters) }
-            if let members = group["members"]?["link"] as? [MSDictionary] {
-              group["members"] = Set((members as NSArray).mapped {member, _ in nodeModels[member["link"]] } as! [String])
+            group.filter {key, _ in  groupKeys.contains(key as! String) }
+            if let members = group["members"] as? [MSDictionary] {
+              group["members"] = NSSet(array: compressedMap((members as NSArray).valueForKeyPath("index") as! [String], {nodeModels[$0]}))
             }
 
             group["device"] = self.device
-            group["flag"] = Int((group["flag"] as? String)?)
-            group["family"] = Int((group["family"] as? String)?)
+            group["flag"] = Int(group["flag"] as! String)
+            group["family"] = Int(group["family"] as! String)
 
             let groupModel = ISYDeviceGroup(context: moc)
-            groupModel.setValuesForKeysWithDictionary(group as [NSObject:AnyObject])
+            groupModel.setValuesForKeysWithDictionary((group as NSDictionary) as! [String:AnyObject])
 
           }
 
-          do {
-            try moc.save()
-            saved = true
-          } catch var error1 as NSError {
-            error = error1
-            saved = false
-          } catch {
-            fatalError()
-          }
-          assert(!MSHandleError(error))
+          do { try moc.save() } catch let error as NSError { MSHandleError(error) } catch {}
 
         }
 

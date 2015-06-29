@@ -30,6 +30,50 @@ public protocol KeyValueCollectionType: CollectionType {
   var values: LazyForwardCollection<ValuesLazyCollectionType> { get }
 }
 
+public protocol KeyedContainer {
+  typealias Key: Hashable
+  func hasKey(key: Key) -> Bool
+  func valueForKey(key: Key) -> Any?
+}
+
+public protocol KeySearchable {
+  var allValues: [Any] { get }
+}
+
+public protocol NestingContainer {
+  var topLevelObjects: [Any] { get }
+  func topLevelObjects<T>(type: T.Type) -> [T]
+  var allObjects: [Any] { get }
+  func allObjects<T>(type: T.Type) -> [T]
+}
+
+//public func findValuesForKey<K, C:KeySearchable>(key: K, inContainer container: C) -> [Any] {
+//  return _findValuesForKey(key, inContainer: container)
+//}
+//
+//public func findValuesForKey<K, C:KeySearchable where C:KeyedContainer, K == C.Key>(key: K, inContainer container: C) -> [Any]
+//{
+//  var result: [Any] = []
+//  if container.hasKey(key),
+//    let v = container.valueForKey(key)
+//  {
+//    result.append(v)
+//  }
+//  result.extend(_findValuesForKey(key, inContainer: container))
+//  return result
+//}
+//
+//private func _findValuesForKey<K, C:KeySearchable>(key: K, inContainer container: C) -> [Any] {
+//  var result: [Any] = []
+//  for value in container.allValues {
+//    if let searchableValue = value as? KeySearchable {
+//// wtf?
+//      result.extend(findValuesForKey(key, inContainer: searchableValue))
+//    }
+//  }
+//  return result
+//}
+
 extension Dictionary: KeyValueCollectionType {}
 
 public protocol Presentable {

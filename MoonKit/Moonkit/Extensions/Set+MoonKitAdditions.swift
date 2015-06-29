@@ -48,3 +48,48 @@ public func ∆=<S:SequenceType, T where S.Generator.Element == T>(inout lhs: Se
 public func filter<T>(source: Set<T>, includeElement: (T) -> Bool) -> Set<T> {
   return Set(Array(source).filter(includeElement))
 }
+
+extension Set: NestingContainer {
+  public var topLevelObjects: [Any] {
+    var result: [Any] = []
+    for value in self {
+      result.append(value as Any)
+    }
+    return result
+  }
+  public func topLevelObjects<T>(type: T.Type) -> [T] {
+    var result: [T] = []
+    for value in self {
+      if let v = value as? T {
+        result.append(v)
+      }
+    }
+    return result
+  }
+  public var allObjects: [Any] {
+    var result: [Any] = []
+    for value in self {
+      if let container = value as? NestingContainer {
+        result.extend(container.allObjects)
+      } else {
+        result.append(value as Any)
+      }
+    }
+    return result
+  }
+  public func allObjects<T>(type: T.Type) -> [T] {
+    var result: [T] = []
+    for value in self {
+      if let container = value as? NestingContainer {
+        result.extend(container.allObjects(type))
+      } else if let v = value as? T {
+        result.append(v)
+      }
+    }
+    return result
+  }
+}
+
+extension Set: KeySearchable {
+  public var allValues: [Any] { return topLevelObjects }
+}

@@ -111,12 +111,12 @@ public class ITachLearnerDelegate {
     var compressed = ",".join(chunks[0 ... 5])
     let pairs = Array(chunks[6 ..< chunks.count])
 
-    var availableChars = Stack("ONMLKJIHGFEDCBA")
+    var availableChars = Stack(Array("ONMLKJIHGFEDCBA".characters))
 
-    let p1 = map(stride(from: 0, to: pairs.count, by: 2)) { pairs[$0] }
-    let p2 = map(stride(from: 1, to: pairs.count, by: 2)) { pairs[$0] }
+    let p1 = stride(from: 0, to: pairs.count, by: 2).map { pairs[$0] }
+    let p2 = stride(from: 1, to: pairs.count, by: 2).map { pairs[$0] }
 
-    var zippedPairs = Stack(map(zip(p1, p2), {",".join([$0, $1])})).reversed()
+    var zippedPairs = Stack(zip(p1, p2).map {",".join([$0, $1])}).reversed()
     var assignedChars: [String:Character] = [:]
 
     while var p = zippedPairs.pop() {

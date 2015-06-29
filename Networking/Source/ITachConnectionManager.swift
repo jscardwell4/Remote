@@ -125,9 +125,6 @@ import class DataModel.NetworkDevice
       assert(connections[uniqueIdentifier] == nil)
       beaconsReceived.insert(uniqueIdentifier)
 
-      let shouldStop: Bool
-      let shouldConnect: Bool
-
       let device: Device?
       let notify: ((NetworkDevice) -> Void)?
       let shouldStopKey: String?

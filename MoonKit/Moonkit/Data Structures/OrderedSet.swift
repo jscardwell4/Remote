@@ -471,3 +471,48 @@ Returns true if lhs does not contain rhs
 - returns: Bool
 */
 public func ∌<T:Equatable>(lhs: OrderedSet<T>, rhs: T) -> Bool { return !(lhs ∋ rhs) }
+
+extension OrderedSet: NestingContainer {
+  public var topLevelObjects: [Any] {
+    var result: [Any] = []
+    for value in self {
+      result.append(value as Any)
+    }
+    return result
+  }
+  public func topLevelObjects<T>(type: T.Type) -> [T] {
+    var result: [T] = []
+    for value in self {
+      if let v = value as? T {
+        result.append(v)
+      }
+    }
+    return result
+  }
+  public var allObjects: [Any] {
+    var result: [Any] = []
+    for value in self {
+      if let container = value as? NestingContainer {
+        result.extend(container.allObjects)
+      } else {
+        result.append(value as Any)
+      }
+    }
+    return result
+  }
+  public func allObjects<T>(type: T.Type) -> [T] {
+    var result: [T] = []
+    for value in self {
+      if let container = value as? NestingContainer {
+        result.extend(container.allObjects(type))
+      } else if let v = value as? T {
+        result.append(v)
+      }
+    }
+    return result
+  }
+}
+
+extension OrderedSet: KeySearchable {
+  public var allValues: [Any] { return topLevelObjects }
+}

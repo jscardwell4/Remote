@@ -96,8 +96,7 @@ import class DataModel.HTTPCommand
   - returns: Bool
   */
   private static func flagsIndicateWifiAvailable(flags: SCNetworkReachabilityFlags) -> Bool {
-    return (((flags & UInt32(SCNetworkReachabilityFlags.IsDirect)) != 0)
-         && ((flags & UInt32(SCNetworkReachabilityFlags.Reachable)) != 0))
+    return flags.contains(.IsDirect) && flags.contains(.Reachable)
   }
 
   /** Indicates wifi availability */
@@ -147,20 +146,18 @@ import class DataModel.HTTPCommand
 
     // Otherwise continue sending command
     else {
-      var error: NSError?
       let command: NSManagedObject?
       do {
         command = try DataManager.rootContext.existingObjectWithID(commandID)
-      } catch var error1 as NSError {
-        error = error1
+      } catch {
+        completion?(false, Error.InvalidID.error([NSUnderlyingErrorKey: error as NSError]))
         command = nil
       }
-      if error != nil { completion?(false, Error.InvalidID.error([NSUnderlyingErrorKey: error!])) }
-      else if let irCommand = command as? ITachIRCommand {
+      if let irCommand = command as? ITachIRCommand {
         if simulateCommandSuccess { simulateSuccess() }
         else { ITachConnectionManager.sendCommand(irCommand, completion: completion) }
       } else if let httpCommand = command as? HTTPCommand {
-        if httpCommand.url.absoluteString!.isEmpty {
+        if httpCommand.url.absoluteString.isEmpty {
           MSLogError("cannot send command with an empty url")
           completion?(false, Error.CommandEmpty.error())
         }
@@ -168,7 +165,7 @@ import class DataModel.HTTPCommand
         else {
           let request = NSURLRequest(URL: httpCommand.url)
           NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) {
-            (response: NSURLResponse!, data: NSData!, connectionError: NSError!) in
+            (response: NSURLResponse?, data: NSData?, connectionError: NSError?) in
             MSLogDebug("response: \(response)\ndata: \(data)")
             completion?(true, connectionError)
           }
@@ -200,7 +197,7 @@ import class DataModel.HTTPCommand
       MSLogDebug("discovery appended to discoveryCallbacks, token = \(token)")
     }
     ITachConnectionManager.startDetectingNetworkDevices(context)
-    ISYConnectionManager.startDetectingNetworkDevices(context: context)
+    ISYConnectionManager.startDetectingNetworkDevices(context)
     MSLogInfo("listening for network devices…")
     return token
   }

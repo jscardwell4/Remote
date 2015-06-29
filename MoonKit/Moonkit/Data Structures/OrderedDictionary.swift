@@ -389,11 +389,59 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
   }
 
   public static func dictionaryWithXMLData(data: NSData) -> OrderedDictionary<String, AnyObject> {
-    let dictionary = MSDictionary(byParsingXML: data)
-    return OrderedDictionary<String,AnyObject>(dictionary)
-//    return MSDictionary(byParsingXML: data) as! OrderedDictionary<String, AnyObject>
+    return OrderedDictionary<String,AnyObject>(MSDictionary(byParsingXML: data))
   }
 
+}
+
+extension OrderedDictionary: NestingContainer {
+  public var topLevelObjects: [Any] {
+    var result: [Any] = []
+    for value in values {
+      result.append(value as Any)
+    }
+    return result
+  }
+  public func topLevelObjects<T>(type: T.Type) -> [T] {
+    var result: [T] = []
+    for value in values {
+      if let v = value as? T {
+        result.append(v)
+      }
+    }
+    return result
+  }
+  public var allObjects: [Any] {
+    var result: [Any] = []
+    for value in values {
+      if let container = value as? NestingContainer {
+        result.extend(container.allObjects)
+      } else {
+        result.append(value as Any)
+      }
+    }
+    return result
+  }
+  public func allObjects<T>(type: T.Type) -> [T] {
+    var result: [T] = []
+    for value in values {
+      if let container = value as? NestingContainer {
+        result.extend(container.allObjects(type))
+      } else if let v = value as? T {
+        result.append(v)
+      }
+    }
+    return result
+  }
+}
+
+extension OrderedDictionary: KeySearchable {
+  public var allValues: [Any] { return topLevelObjects }
+}
+
+extension OrderedDictionary: KeyedContainer {
+  public func hasKey(key: Key) -> Bool { return _keys.contains(key) }
+  public func valueForKey(key: Key) -> Any? { return self[key] }
 }
 
 // MARK: - Printing

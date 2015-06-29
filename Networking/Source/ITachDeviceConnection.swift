@@ -197,15 +197,10 @@ import MoonKit
     else {
       connecting = true
       connectCallback = completion
-
-      var error: NSError?
       do {
         try socket.connectToHost(device.configURL, onPort:ITachDeviceConnection.TCPPort)
-      } catch var error1 as NSError {
-        error = error1
-      }
-      if error != nil {
-        completion?(false, error)
+      } catch {
+        completion?(false, error as NSError)
         connectCallback = nil
       }
     }
@@ -277,7 +272,7 @@ import MoonKit
     if let response = Response(response: message) {
       switch response {
         case .UnknownCommand (let e):
-          completion?(false, Error.NetworkDeviceError.error(userInfo: [NSLocalizedFailureReasonErrorKey:e.reason]))
+          completion?(false, Error.NetworkDeviceError.error([NSLocalizedFailureReasonErrorKey:e.reason]))
         case .BusyIR(_, let t) where t == tag:
           messagesSending[t] = entry
           sendNextMessage()
