@@ -14,8 +14,8 @@ final class BankCollectionDetailTextViewCell: BankCollectionDetailTextInputCell 
 
   enum DisplayStyle: String { case Default = "default", Condensed = "condensed" }
 
-  private static let defaultIdentifier = createIdentifier(DetailTextViewCell.self, ["Internal", "Default"])
-  private static let condensedIdentifier = createIdentifier(DetailTextViewCell.self, ["Internal", "Condensed"])
+  private static let defaultIdentifier = createIdentifier(BankCollectionDetailTextViewCell.self, ["Internal", "Default"])
+  private static let condensedIdentifier = createIdentifier(BankCollectionDetailTextViewCell.self, ["Internal", "Condensed"])
 
   override func initializeIVARs() {
 

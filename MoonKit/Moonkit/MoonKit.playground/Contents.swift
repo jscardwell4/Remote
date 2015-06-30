@@ -21,34 +21,34 @@ parent.addSubview(v2)
 //parent.constrain(𝗛|--8--v1--8--v2--8--|𝗛)
 let identifier = createIdentifierGenerator("View")
 let pseudo = [
-  𝗛|--8--v1--8--|𝗛 --> identifier(suffixes: "V1", "Spacing", "Horiziontal"),
+  𝗛|--8--v1--8--|𝗛 --> identifier("V1", "Spacing", "Horiziontal"),
   [
-    v1.height => parent.height * 0.5 --> identifier(suffixes: "V1", "Height"),
-    v1.top => parent.top --> identifier(suffixes: "V1", "Top"),
-    v2.width => parent.width * 0.5 --> identifier(suffixes: "V2", "Width"),
-    v2.left => parent.left --> identifier(suffixes: "V2", "Left"),
-    v2.height => parent.height * 0.5 --> identifier(suffixes: "V2", "Height"),
-    v2.bottom => parent.bottom --> identifier(suffixes: "V2", "Bottom")
+    v1.height => parent.height * 0.5 --> identifier("V1", "Height"),
+    v1.top => parent.top --> identifier("V1", "Top"),
+    v2.width => parent.width * 0.5 --> identifier("V2", "Width"),
+    v2.left => parent.left --> identifier("V2", "Left"),
+    v2.height => parent.height * 0.5 --> identifier("V2", "Height"),
+    v2.bottom => parent.bottom --> identifier("V2", "Bottom")
   ]
-]
-let pseudoDescriptions = flatMap(pseudo) { $0.map{$0.description}}
-println("\n".join(pseudoDescriptions))
-let constraints = flatMap(pseudo) { $0.map{$0.constraint()}}
-println("\n".join(constraints.map{toString($0)}))
+  ].flatMap {$0}
+let pseudoDescriptions = pseudo.map{$0.description}
+print("\n".join(pseudoDescriptions))
+let constraints: [NSLayoutConstraint] = pseudo.map{(p: Pseudo) -> NSLayoutConstraint in return p.constraint!}
+print("\n".join(constraints.map{toString($0)}))
 parent.constrain(
-  𝗛|--8--v1--8--|𝗛 --> identifier(suffixes: "V1", "Spacing", "Horiziontal"),
+  𝗛|--8--v1--8--|𝗛 --> identifier("V1", "Spacing", "Horiziontal"),
   [
-    v1.height => parent.height * 0.5 --> identifier(suffixes: "V1", "Height"),
-    v1.top => parent.top --> identifier(suffixes: "V1", "Top"),
-    v2.width => parent.width * 0.5 --> identifier(suffixes: "V2", "Width"),
-    v2.left => parent.left --> identifier(suffixes: "V2", "Left"),
-    v2.height => parent.height * 0.5 --> identifier(suffixes: "V2", "Height"),
-    v2.bottom => parent.bottom --> identifier(suffixes: "V2", "Bottom")
+    v1.height => parent.height * 0.5 --> identifier("V1", "Height"),
+    v1.top => parent.top --> identifier("V1", "Top"),
+    v2.width => parent.width * 0.5 --> identifier("V2", "Width"),
+    v2.left => parent.left --> identifier("V2", "Left"),
+    v2.height => parent.height * 0.5 --> identifier("V2", "Height"),
+    v2.bottom => parent.bottom --> identifier("V2", "Bottom")
   ]
 )
-print("\n".join((parent.constraints as [NSLayoutConstraint]).map({$0.description})))
+print("\n".join((parent.constraints).map({$0.description})))
 print("")
-println("\n".join((parent.constraints() as! [NSLayoutConstraint]).map({$0.prettyDescription})))
+print("\n".join((parent.constraints).map({$0.prettyDescription})))
 parent.setNeedsUpdateConstraints()
 parent.setNeedsLayout()
 parent.layoutIfNeeded()

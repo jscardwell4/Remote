@@ -100,7 +100,7 @@ class BankCollectionDetailCell: UICollectionViewCell {
   var shouldAllowNonDataTypeValue: ((AnyObject?) -> Bool)?
   var valueDidChange: ((AnyObject?) -> Void)?
   var valueIsValid: ((AnyObject?) -> Bool)?
-  var sizeDidChange: ((DetailCell) -> Void)?
+  var sizeDidChange: ((BankCollectionDetailCell) -> Void)?
   var select: (() -> Void)?
   var delete: (() -> Void)?
 

@@ -11,10 +11,6 @@ import DataModel
 import CoreData
 import MoonKit
 
-extension ComponentDevice: Detailable {
-  func detailController() -> UIViewController { return ComponentDeviceDetailController(model: self) }
-}
-
 extension ComponentDevice: DelegateDetailable {
     func sectionIndexForController(controller: BankCollectionDetailController) -> BankModelDetailDelegate.SectionIndex {
 
@@ -181,8 +177,8 @@ extension ComponentDevice: DelegateDetailable {
           row.info = componentDevice.networkDevice ?? "No Network Device"
           row.name = "Network Device"
           row.select = {
-              if let networkDevice = componentDevice.networkDevice as? Detailable {
-                controller.navigationController?.pushViewController(networkDevice.detailController(), animated: true)
+              if let networkDevice = componentDevice.networkDevice as? DelegateDetailable {
+                controller.navigationController?.pushViewController(BankCollectionDetailController(itemDelegate: BankModelDetailDelegate(item: networkDevice)), animated: true)
               }
             }
 

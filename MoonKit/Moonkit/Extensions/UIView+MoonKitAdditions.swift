@@ -250,15 +250,30 @@ public extension UIView {
     return constraints
   }
 
-  public func constrain(arrays: [Pseudo]...) -> [NSLayoutConstraint] {
-    return []
-  }
+  /**
+  constrain:
+
+  - parameter pseudo: Pseudo...
+
+  - returns: [NSLayoutConstraint]
+  */
+  public func constrain(pseudo: Pseudo...) -> [NSLayoutConstraint] { return _constrain(true, id: nil, pseudo: [pseudo]) }
 
   /**
-  constrain:pseudo:
+  constrain:
 
+  - parameter pseudo: [Pseudo]...
+
+  - returns: [NSLayoutConstraint]
+  */
+  public func constrain(pseudo: [Pseudo]...) -> [NSLayoutConstraint] { return _constrain(true, id: nil, pseudo: pseudo) }
+
+  /**
+  constrain:identifier:pseudo:
+
+  - parameter selfAsSuperview: Bool = true
   - parameter id: String? = nil
-  - parameter pseudo: [PseudoConstraint] ...
+  - parameter pseudo: Array<PseudoConstraint> ...
 
   - returns: [NSLayoutConstraint]
   */
@@ -266,6 +281,33 @@ public extension UIView {
              identifier id: String? = nil,
                       _ pseudo: Array<PseudoConstraint> ...) -> [NSLayoutConstraint]
   {
+    return _constrain(selfAsSuperview, id: id, pseudo: pseudo)
+  }
+
+  /**
+  constrain:identifier:pseudo:
+
+  - parameter selfAsSuperview: Bool = true
+  - parameter id: String? = nil
+  - parameter pseudo: PseudoConstraint ...
+
+  - returns: [NSLayoutConstraint]
+  */
+  public func constrain(selfAsSuperview: Bool = true, identifier id: String? = nil, _ pseudo: PseudoConstraint ...) -> [NSLayoutConstraint] {
+    return _constrain(selfAsSuperview, id: id, pseudo: [pseudo])
+  }
+
+
+  /**
+  _constrain:id:pseudo:
+
+  - parameter selfAsSuperview: Bool
+  - parameter id: String?
+  - parameter pseudo: [[PseudoConstraint]]
+
+  - returns: [NSLayoutConstraint]
+  */
+  private func _constrain(selfAsSuperview: Bool, id: String?, pseudo: [[PseudoConstraint]]) -> [NSLayoutConstraint] {
     var constraints: [PseudoConstraint] = pseudo.flatMap {$0}
 
     // If `selfAsSuperview` is `true` then process the constraints to make sure the deepest ancestor is the view
@@ -275,21 +317,21 @@ public extension UIView {
       for constraint in constraints {
         let ancestor = discernNearestAncestor(constraint.firstObject, constraint.secondObject)
         switch (ancestor, deepestAncestor) {
-          case let (a, d) where d == nil && a != nil:
-            deepestAncestor = a
-          case let (a, d) where a != nil && d != nil && !a!.isDescendantOfView(d!):
-            if let v = discernNearestAncestor(a, d) { deepestAncestor = v }
-            else { MSLogWarn("unsupported constraint configuration, all objects must share a common ancestor"); return [] }
-          default:
-            break
+        case let (a, d) where d == nil && a != nil:
+          deepestAncestor = a
+        case let (a, d) where a != nil && d != nil && !a!.isDescendantOfView(d!):
+          if let v = discernNearestAncestor(a, d) { deepestAncestor = v }
+          else { MSLogWarn("unsupported constraint configuration, all objects must share a common ancestor"); return [] }
+        default:
+          break
         }
       }
 
       // If `deepestAncestor` is nil then most likely the array was empty, return an empty array just to be safe
       if deepestAncestor == nil { return [] }
 
-      // Check if we are not the ancestor but the ancestor descends from us, if so then replace ancestor with self
-      // unless both the first and second objects are the ancestor
+        // Check if we are not the ancestor but the ancestor descends from us, if so then replace ancestor with self
+        // unless both the first and second objects are the ancestor
       else if let ancestor = deepestAncestor where self != ancestor && ancestor.isDescendantOfView(self) {
         constraints = constraints.map {
           (var c: PseudoConstraint) -> PseudoConstraint in
@@ -304,18 +346,6 @@ public extension UIView {
     let result = constraints.flatMap({$0.expanded}).compressedMap({$0.constraint}) ➤| {if id != nil { $0.identifier = id }}
     addConstraints(result)
     return result
-  }
-
-  /**
-  constrain:pseudo:
-
-  - parameter id: String? = nil
-  - parameter pseudo: PseudoConstraint ...
-
-  - returns: [NSLayoutConstraint]
-  */
-  public func constrain(identifier id: String? = nil, _ pseudo: PseudoConstraint ...) -> [NSLayoutConstraint] {
-    return constrain(identifier: id, pseudo)
   }
 
   // MARK: Sizing

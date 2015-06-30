@@ -84,7 +84,7 @@ public class PopOverView: UIView {
     var bottomOffset: Float = location == .Bottom ? Float(offset) : 0
 
     if let effect = subviews.first as? UIVisualEffectView {
-      constrain(𝗛|effect|𝗛, [effect.top => self.top - topOffset, effect.bottom => self.bottom + bottomOffset])
+      constrain(identifier: nil, 𝗛|effect|𝗛, [effect.top => self.top - topOffset, effect.bottom => self.bottom + bottomOffset])
     }
 
 
@@ -96,7 +96,7 @@ public class PopOverView: UIView {
     var prevLabel: UILabel?
 
     for label in labels {
-      constrain(𝗛|--8--label--8--|𝗛)
+      constrain(identifier: nil, 𝗛|--8--label--8--|𝗛)
       if let prev = prevLabel { constrain(label.top => prev.bottom + 8) } else { constrain(𝗩|--topOffset--label) }
       prevLabel = label
     }

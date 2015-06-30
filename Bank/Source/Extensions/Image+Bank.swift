@@ -14,10 +14,6 @@ import Photos
 
 extension Image: Previewable {}
 
-extension Image: Detailable {
-  func detailController() -> UIViewController { return ImageDetailController(model: self) }
-}
-
 extension Image: DelegateDetailable {
     func sectionIndexForController(controller: BankCollectionDetailController) -> BankModelDetailDelegate.SectionIndex {
       var sections: BankModelDetailDelegate.SectionIndex = [:]

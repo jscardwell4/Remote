@@ -22,7 +22,7 @@ class BlurDecoration: UICollectionReusableView {
     blur.contentView.backgroundColor = UIColor.clearColor()
     blur.contentView.opaque = false
     addSubview(blur)
-    constrain(flattened([𝗩|blur|𝗩, 𝗛|blur|𝗛]))
+    constrain(𝗩|blur|𝗩, 𝗛|blur|𝗛)
   }
   override init(frame: CGRect) { super.init(frame: frame); setup() }
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); setup() }

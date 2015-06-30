@@ -351,9 +351,9 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
 
   - parameter item: Editable
   */
-  func editItem(item: protocol<Detailable, Editable>) {
+  func editItem(item: protocol<DelegateDetailable, Editable>) {
   	if mode == .Default {
-	    let detailController = item.detailController()
+	    let detailController = BankCollectionDetailController(itemDelegate: BankModelDetailDelegate(item: item))
 	    detailController.editing = true
 	    navigationController?.pushViewController(detailController, animated: true)
 	  }
@@ -450,46 +450,6 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
     }
   }
 
-
-}
-
-// MARK: - Zooming an item
-
-extension BankCollectionController: BankCollectionZoomViewDelegate {
-
-  /**
-  didDismissZoomView:
-
-  - parameter zoom: BankCollectionZoomView
-  */
-  func didDismissZoomView(zoomView: BankCollectionZoomView) {
-    zoomView.removeFromSuperview()
-    zoomedItemIndexPath = nil
-  }
-
-  /**
-  didDismissForDetailZoomView:
-
-  - parameter zoom: BankCollectionZoomView
-  */
-  func didDismissForDetailZoomView(zoomView: BankCollectionZoomView) {
-    zoomView.removeFromSuperview()
-    if mode == .Default { detailItemAtIndexPath(zoomedItemIndexPath!) }
-    zoomedItemIndexPath = nil
-  }
-
-  /**
-  didDismissForEditingZoomView:
-
-  - parameter zoom: BankCollectionZoomView
-  */
-  func didDismissForEditingZoomView(zoomView: BankCollectionZoomView) {
-    zoomView.removeFromSuperview()
-    if mode == .Default {
-      if let editableItem = zoomView.item as? protocol<Detailable, Editable> { editItem(editableItem) }
-    }
-    zoomedItemIndexPath = nil
-  }
 
 }
 

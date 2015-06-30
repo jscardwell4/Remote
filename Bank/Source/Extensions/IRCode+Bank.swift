@@ -11,10 +11,6 @@ import DataModel
 import MoonKit
 import CoreData
 
-extension IRCode: Detailable {
-  func detailController() -> UIViewController { return IRCodeDetailController(model: self) }
-}
-
 extension IRCode: DelegateDetailable {
     func sectionIndexForController(controller: BankCollectionDetailController) -> BankModelDetailDelegate.SectionIndex {
       var sections: BankModelDetailDelegate.SectionIndex = [:]

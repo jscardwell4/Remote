@@ -23,7 +23,7 @@ public class LabeledStepper: UIControl {
   public override func updateConstraints() {
     removeAllConstraints()
     super.updateConstraints()
-    constrain(𝗛|label -- 8 -- stepper|𝗛, 𝗩|label|𝗩, 𝗩|stepper|𝗩)
+    constrain(identifier: nil, 𝗛|label -- 8 -- stepper|𝗛, 𝗩|label|𝗩, 𝗩|stepper|𝗩)
   }
 
   public override func intrinsicContentSize() -> CGSize {

@@ -42,12 +42,13 @@ class BankCollectionDetailRow {
     }
   }
 
-  static func selectPushableItem(pushableItem: protocol<EditableModel, Detailable>?) -> Void -> Void {
+  static func selectPushableItem(pushableItem: protocol<EditableModel, DelegateDetailable>?) -> Void -> Void {
     return {
       if let item = pushableItem,
         nav = UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController
       {
-        nav.pushViewController(item.detailController(), animated: true)
+        let controller = BankCollectionDetailController(itemDelegate: BankModelDetailDelegate(item: item))
+        nav.pushViewController(controller, animated: true)
       }
     }
   }

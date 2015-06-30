@@ -17,7 +17,7 @@ import DataModel
   optional func rollbackInvokedForTitleAttributesDelegate(titleAttributesDelegate: TitleAttributesDelegate)
 }
 
-@objc final class TitleAttributesDelegate: Editable , Detailable {
+@objc final class TitleAttributesDelegate: Editable {
 
   var titleAttributes: TitleAttributes
 
@@ -42,13 +42,6 @@ import DataModel
     self.titleAttributes = titleAttributes
     self.observer = observer
   }
-
-  /**
-  detailController
-
-  - returns: UIViewController
-  */
-  func detailController() -> UIViewController { return TitleAttributesDetailController(item: self) }
 
   /**
   defaultSuppliedForProperty:

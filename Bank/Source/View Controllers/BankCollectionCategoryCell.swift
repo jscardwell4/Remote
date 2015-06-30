@@ -37,19 +37,17 @@ final class BankCollectionCategoryCell: BankCollectionCell {
     
     super.updateConstraints()
 
+    constrain(indicator--20--label--8--chevron --> identifier("Spacing", "Horizontal"))
     constrain(
-      indicator--20--label--8--chevron
-        --> identifier("Spacing", "Horizontal"),
-      [label.centerY => contentView.centerY
+      label.centerY => contentView.centerY
         --> identifier("Label", "Vertical"),
       indicator.centerY => contentView.centerY
         --> identifier("Indicator", "Vertical"),
       indicator.right => contentView.left + (indicatorImage == nil ? 0 : 40)
-        --> identifier("Indicator", "Horizontal")]
+        --> identifier("Indicator", "Horizontal")
     )
 
     indicatorConstraint = constraintWithIdentifier(identifier("Indicator", "Horizontal"))
-
   }
 
   /** initializeIVARs */

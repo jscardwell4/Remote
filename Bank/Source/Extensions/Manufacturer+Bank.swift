@@ -16,10 +16,6 @@ extension Manufacturer: BankModelCollection {
   var collectionLabel: String { return "Code Set" }
 }
 
-extension Manufacturer: Detailable {
-  func detailController() -> UIViewController { return ManufacturerDetailController(model: self) }
-}
-
 extension Manufacturer: DelegateDetailable {
   func sectionIndexForController(controller: BankCollectionDetailController) -> BankModelDetailDelegate.SectionIndex {
 

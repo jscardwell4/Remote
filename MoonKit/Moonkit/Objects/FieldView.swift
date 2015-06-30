@@ -369,8 +369,8 @@ final class FieldView: UIView {
     let id = createIdentifier(self, "Internal")
     removeConstraintsWithIdentifier(id)
     if let label = label, control = control {
-      constrain([𝗩|label|𝗩, 𝗩|control|𝗩] --> id)
-      constrain([𝗛|label, control.left => label.right + 10.0, control|𝗛] --> id)
+      constrain(identifier: id, 𝗩|label|𝗩, 𝗩|control|𝗩)
+      constrain(identifier: id, 𝗛|label, control.left => label.right + 10.0, control|𝗛)
     }
   }
 

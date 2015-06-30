@@ -13,17 +13,6 @@ import MoonKit
 
 extension Preset: Previewable {}
 
-extension Preset: Detailable {
-  func detailController() -> UIViewController {
-    switch baseType {
-      case .Remote:      return RemotePresetDetailController(model: self)
-      case .ButtonGroup: return ButtonGroupPresetDetailController(model: self)
-      case .Button:      return ButtonPresetDetailController(model: self)
-      default:           return PresetDetailController(model: self)
-    }
-  }
-}
-
 extension Preset: DelegateDetailable {
     func sectionIndexForController(controller: BankCollectionDetailController) -> BankModelDetailDelegate.SectionIndex {
       let sections: BankModelDetailDelegate.SectionIndex = [:]

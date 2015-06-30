@@ -13,11 +13,6 @@ import DataModel
 
 // MARK: - Detailable protocol
 
-/** Protocol for bank items that can be presented in a detail controller */
-protocol Detailable {
-  func detailController() -> UIViewController
-}
-
 protocol DelegateDetailable: NamedModel, EditableModel {
   func sectionIndexForController(controller: BankCollectionDetailController) -> BankModelDetailDelegate.SectionIndex
 }

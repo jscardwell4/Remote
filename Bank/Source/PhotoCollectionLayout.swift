@@ -9,6 +9,30 @@
 import UIKit
 import MoonKit
 
+private class BlurDecoration: UICollectionReusableView {
+
+  static let kind = "Blur"
+
+  private weak var blur: UIVisualEffectView!
+
+  private func createBlurWithStyle(style: UIBlurEffectStyle) {
+    self.blur?.removeFromSuperview()
+    let blur = UIVisualEffectView(effect: UIBlurEffect(style: style))
+    blur.translatesAutoresizingMaskIntoConstraints = false
+    addSubview(blur)
+    constrain(𝗩|blur|𝗩, 𝗛|blur|𝗛)
+    self.blur = blur
+  }
+
+  private func setup() {
+    backgroundColor = UIColor.clearColor()
+    createBlurWithStyle(.Dark)
+  }
+
+  override init(frame: CGRect) { super.init(frame: frame); setup() }
+  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); setup() }
+}
+
 @objc protocol PhotoCollectionLayoutDelegate: UICollectionViewDelegate {
   optional func sizeForZoomedItemAtIndexPath(indexPath: NSIndexPath) -> CGSize
 }

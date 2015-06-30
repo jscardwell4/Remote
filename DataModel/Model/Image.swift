@@ -34,6 +34,16 @@ final public class Image: EditableModelObject, CollectedModel {
       super.init(data: data, context: context)
   }
 
+  /**
+  initWithEntity:insertIntoManagedObjectContext:
+
+  - parameter entity: NSEntityDescription
+  - parameter context: NSManagedObjectContext?
+  */
+  public override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+    super.init(entity: entity, insertIntoManagedObjectContext: context)
+  }
+
   static var resourceRegistration: [String:NSBundle] = [:]
 
   /**
