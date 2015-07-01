@@ -12,39 +12,38 @@ import CoreData
 import MoonKit
 
 extension ComponentDevice: DelegateDetailable {
-    func sectionIndexForController(controller: BankCollectionDetailController) -> BankModelDetailDelegate.SectionIndex {
+  /**
+  sectionIndexForController:
 
-      var sections: BankModelDetailDelegate.SectionIndex = [:]
+  - parameter controller: BankCollectionDetailController
 
-      struct SectionKey {
-        static let Manufacturer  = "Manufacturer"
-        static let NetworkDevice = "Network Device"
-        static let Power         = "Power"
-        static let Inputs        = "Inputs"
-      }
+  - returns: BankModelDetailDelegate.SectionIndex
+  */
+  func sectionIndexForController(controller: BankCollectionDetailController) -> BankModelDetailDelegate.SectionIndex {
 
-      struct RowKey {
-        static let Manufacturer  = "Manufacturer"
-        static let CodeSet       = "Code Set"
-        static let NetworkDevice = "Network Device"
-        static let Port          = "Port"
-        static let On            = "On"
-        static let Off           = "Off"
-        static let InputPowersOn = "Input Powers On"
-      }
+    var sections: BankModelDetailDelegate.SectionIndex = [:]
+    let componentDevice = self
+    guard let moc = componentDevice.managedObjectContext else { return sections }
+
+    struct SectionKey {
+      static let Manufacturer  = "Manufacturer"
+      static let NetworkDevice = "Network Device"
+      static let Power         = "Power"
+      static let Inputs        = "Inputs"
+    }
+
+    struct RowKey {
+      static let Manufacturer  = "Manufacturer"
+      static let CodeSet       = "Code Set"
+      static let NetworkDevice = "Network Device"
+      static let Port          = "Port"
+      static let On            = "On"
+      static let Off           = "Off"
+      static let InputPowersOn = "Input Powers On"
+    }
 
      /** loadManufacturerSection */
       func loadManufacturerSection() {
-
-        let componentDevice = self
-
-        if componentDevice.managedObjectContext == nil { return }
-
-        let moc = componentDevice.managedObjectContext!
-
-        /// Manufacturer
-        ////////////////////////////////////////////////////////////////////////////////
-
 
         let manufacturerSection = BankCollectionDetailSection(section: 0)
 
@@ -56,46 +55,12 @@ extension ComponentDevice: DelegateDetailable {
 
           row.nilItem = .NilItem(title: "No Manufacturer")
           row.didSelectItem = {
-            if !controller.didCancel {
-              if let manufacturer = $0 as? Manufacturer {
-                componentDevice.manufacturer = manufacturer
-              }
-//              controller.reloadItemAtIndexPath(NSIndexPath(forRow: 1, inSection: 0))
-//              controller.cellDisplayingPicker?.info = $0
-//              row.info = $0
+            if !controller.didCancel,
+              let manufacturer = $0 as? Manufacturer where componentDevice.manufacturer != manufacturer
+            {
+              componentDevice.manufacturer = manufacturer
             }
           }
-          row.createItem = .CreateItem(title: "⨁ New Manufacturer", createItem: {
-            let alert = UIAlertController(title: "Create Manufacturer",
-              message: "Enter a name for the manufacturer",
-              preferredStyle: .Alert)
-            alert.addTextFieldWithConfigurationHandler {
-              $0.font = Bank.infoFont
-              $0.textColor = Bank.infoColor
-            }
-            alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel) {
-              action in
-              row.info = componentDevice.manufacturer
-              // re-select previous picker selection and dismiss picker
-              controller.dismissViewControllerAnimated(true, completion: nil)
-            })
-            alert.addAction(UIAlertAction(title: "Create", style: .Default) {
-              action in
-                if let text = alert.textFields?.first?.text {
-                  moc.performBlockAndWait {
-                    let manufacturer = Manufacturer.createInContext(moc)
-                    manufacturer.name = text
-                    componentDevice.manufacturer = manufacturer
-                    dispatch_async(dispatch_get_main_queue()) {
-                      controller.reloadItemAtIndexPath(NSIndexPath(forRow: 1, inSection: 0))
-                    }
-                  }
-                }
-                controller.dismissViewControllerAnimated(true, completion: nil)
-            })
-
-            controller.presentViewController(alert, animated: true, completion: nil)
-          })
           let data = sortedByName((Manufacturer.objectsInContext(moc) as? [Manufacturer] ?? []))
           row.data = data
           row.info = componentDevice.manufacturer
@@ -114,40 +79,11 @@ extension ComponentDevice: DelegateDetailable {
           row.didSelectItem = {
             if !controller.didCancel {
               componentDevice.codeSet = $0 as? IRCodeSet
-              controller.reloadItemAtIndexPath(NSIndexPath(forRow: 0, inSection: 0))
+//              controller.reloadItemAtIndexPath(NSIndexPath(forRow: 0, inSection: 0))
 //              controller.cellDisplayingPicker?.info = $0
 //              row.info = $0
             }
           }
-          row.createItem = .CreateItem(title: "⨁ New Code Set", createItem: {
-            let alert = UIAlertController(title: "Create Code Set",
-              message: "Enter a name for the code set",
-              preferredStyle: .Alert)
-            alert.addTextFieldWithConfigurationHandler {
-              $0.font = Bank.infoFont
-              $0.textColor = Bank.infoColor
-            }
-            alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel) {
-              action in
-              row.info = componentDevice.codeSet
-              // re-select previous picker selection and dismiss picker
-              controller.dismissViewControllerAnimated(true, completion: nil)
-            })
-            alert.addAction(UIAlertAction(title: "Create", style: .Default) {
-              action in
-              if let text = alert.textFields?.first?.text {
-                moc.performBlockAndWait {
-                  let codeSet = IRCodeSet.createInContext(moc)
-                  codeSet.name = text
-                  codeSet.manufacturer = componentDevice.manufacturer
-                  componentDevice.codeSet = codeSet
-                }
-              }
-              controller.dismissViewControllerAnimated(true, completion: nil)
-              })
-
-            controller.presentViewController(alert, animated: true, completion: nil)
-          })
           let data = sortedByName(componentDevice.manufacturer.codeSets)
           row.data = data
           row.info = componentDevice.codeSet
@@ -160,15 +96,6 @@ extension ComponentDevice: DelegateDetailable {
 
       /** loadNetworkDeviceSection */
       func loadNetworkDeviceSection() {
-
-        let componentDevice = self
-
-        if componentDevice.managedObjectContext == nil { return }
-
-        let moc = componentDevice.managedObjectContext!
-
-        /// Network Device
-        ////////////////////////////////////////////////////////////////////////////////
 
         let networkDeviceSection = BankCollectionDetailSection(section: 1, title: "Network Device")
 
@@ -215,16 +142,6 @@ extension ComponentDevice: DelegateDetailable {
 
       /** loadPowerSection */
       func loadPowerSection() {
-
-        let componentDevice = self
-
-        if componentDevice.managedObjectContext == nil { return }
-
-        let moc = componentDevice.managedObjectContext!
-
-
-        /// Power
-        ////////////////////////////////////////////////////////////////////////////////
 
         let powerSection = BankCollectionDetailSection(section: 2, title: "Power")
 
@@ -299,13 +216,6 @@ extension ComponentDevice: DelegateDetailable {
       /** loadInputsSection */
       func loadInputsSection() {
 
-        let componentDevice = self
-
-        if componentDevice.managedObjectContext == nil { return }
-
-        // Inputs
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-
         let inputsSection = BankCollectionDetailSection(section: 3, title: "Inputs")
 
         inputsSection.addRow({
@@ -338,6 +248,7 @@ extension ComponentDevice: DelegateDetailable {
       return sections
     }
 }
+
 extension ComponentDevice: FormCreatable {
 
   /**

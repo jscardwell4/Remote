@@ -14,9 +14,6 @@ import MoonKit
 import Quick
 import Nimble
 
-infix operator ⊇ {}
-
-
 class DataModelTests: QuickSpec {
 
   static let context = DataManager.isolatedContext()
@@ -211,23 +208,22 @@ class DataModelTests: QuickSpec {
         }
         var image: Image?
         it("has an image") {
-          expect(imageCategory?.images.count) == 1
-          image = imageCategory?.images.first
-        }
-        describe("the image") {
-          it("is named and indexed") {
-            expect(image?.name) == "Pro Dots"
-            expect(image?.index.rawValue) == "Backgrounds/Pro%20Dots"
-          }
-          var asset: Asset?
-          it("has an asset") {
-            expect(image?.asset) != nil
-            asset = image?.asset
-          }
-          describe("the asset") {
-            it("has a name but no location") {
-              expect(asset?.name) == "Pro Dots"
-              expect(asset?.path) == "$bank"
+          expect(imageCategory?.images.count) == 3
+          image = imageCategory?.images.filter({$0.name == "Real Carbon"}).first
+          describe("the image") {
+            it("is named and indexed") {
+              expect(image?.name) == "Real Carbon"
+              expect(image?.index.rawValue) == "Backgrounds/Real%20Carbon"
+            }
+            var asset: Asset?
+            it("has an asset") {
+              expect(image?.asset).toNot(beNil())
+              asset = image?.asset
+            }
+            describe("the asset") {
+              it("has a name but no location") {
+                expect(asset?.path) == "$glyphish"
+              }
             }
           }
         }
@@ -241,8 +237,8 @@ class DataModelTests: QuickSpec {
           expect(imageCategory?.images.count) == 0
         }
         it("has child categories") {
-          let names = imageCategory!.childCategories.map({$0.name})
-          expect(names).to(contain(["Glyphish 3", "Glyphish 4", "Glyphish 6", "Glyphish 7"]))
+          let names = Set(imageCategory!.childCategories.map({$0.name}))
+          expect(names).to(equal(Set(["Glyphish 4", "Glyphish 3", "Glyphish 7", "Glyphish 6"])))
         }
 
         it("has nested images retrievable by index") {
@@ -434,8 +430,8 @@ class DataModelTests: QuickSpec {
               expect(isyGroup?.flag) == 12
               expect(isyGroup?.address) == "00:21:b9:01:f2:b6"
               expect(isyGroup?.family) == 6
-              expect((isyGroup?.members ?? []).map({$0.name})).to(contain(["20.12.40.1", "Front Door Table Lamp",
-                                                                 "18.F0.08.1", "Sofa Table Lamp"]))
+              expect(Set((isyGroup?.members ?? []).map({$0.name}))).to(equal(Set(["18.F0.08.1", "Front Door Table Lamp",
+                                                                 "20.12.40.1", "Sofa Table Lamp"])))
             }
           }
           describe("the auto dr group") {
@@ -474,8 +470,8 @@ class DataModelTests: QuickSpec {
         it("has the expected values") {
           expect(topToolbar?.name) == "Top Toolbar"
           expect(topToolbar?.role) == RemoteElement.Role.TopToolbar
-          expect(topToolbar?.shape) == RemoteElement.Shape.Rectangle
-          expect(topToolbar?.constraints.count) == 14
+          expect(topToolbar?.shape) == RemoteElement.Shape.Undefined
+          expect(topToolbar?.constraints.count) == 16
           expect(topToolbar?.backgroundForMode(RemoteElement.DefaultMode)?.color?.jsonValue) == "gray@50%"
           expect(topToolbar?.subelements.count) == 5
         }
@@ -606,7 +602,7 @@ class DataModelTests: QuickSpec {
           expect(remote?.topBarHidden).to(beTrue())
           expect(remote?.constraints.count) == 22
           expect(remote?.backgroundForMode(RemoteElement.DefaultMode)?.color?.jsonValue.rawValue) == "\"black\""
-          expect(remote?.backgroundForMode(RemoteElement.DefaultMode)?.image?.index.rawValue) == "Backgrounds/Pro%20Dots"
+          expect(remote?.backgroundForMode(RemoteElement.DefaultMode)?.image?.index.rawValue) == "Backgrounds/Real%20Carbon"
           expect(remote?.subelements.count) == 8
           expect(remote?.panels.count) == 4
         }

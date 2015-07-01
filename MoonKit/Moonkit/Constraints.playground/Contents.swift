@@ -49,9 +49,8 @@ let contentView = UIView(autolayout: true)
 contentView.backgroundColor = UIColor.greenColor()
 contentView.nametag = "contentView"
 cellView.addSubview(contentView)
-
 cellView.constrain(
-  𝗛|contentView|𝗛 --> identifier("ContainContent", "Horizontal"),
+  𝗛|-contentView-|𝗛 --> identifier("ContainContent", "Horizontal"),
   𝗩|contentView|𝗩 --> identifier("ContainContent", "Vertical")
 )
 cellView.constrain(

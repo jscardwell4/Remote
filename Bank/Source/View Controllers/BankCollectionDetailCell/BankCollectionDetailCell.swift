@@ -263,6 +263,7 @@ class BankCollectionDetailCell: UICollectionViewCell {
 
   lazy var nameLabel: Label = {
     let label = Label(autolayout: true)
+    label.nametag = "nameLabel"
     label.font      = Bank.labelFont
     label.textColor = Bank.labelColor
     label.setContentCompressionResistancePriority(1000, forAxis: .Horizontal)
@@ -272,6 +273,7 @@ class BankCollectionDetailCell: UICollectionViewCell {
 
   lazy var infoLabel: Label = {
     let label = Label(autolayout: true)
+    label.nametag = "infoLabel"
     label.font = Bank.infoFont
     label.textColor = Bank.infoColor
     label.textAlignment = .Right
@@ -291,7 +293,12 @@ class BankCollectionDetailCell: UICollectionViewCell {
   required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
 
   /** Hook for subclass cell setup */
-  func initializeIVARs() {}
+  func initializeIVARs() {
+    translatesAutoresizingMaskIntoConstraints = false
+    nametag = "cell"
+    contentView.translatesAutoresizingMaskIntoConstraints = false
+    contentView.nametag = "contentView"
+  }
 
   /**
   requiresConstraintBasedLayout
@@ -311,12 +318,12 @@ class BankCollectionDetailCell: UICollectionViewCell {
   /** prepareForReuse */
   override func prepareForReuse() {
     super.prepareForReuse()
-    info = nil
-    infoDataType = .StringData
-    shouldAllowNonDataTypeValue = nil
-    valueDidChange = nil
-    valueIsValid = nil
-    sizeDidChange = nil
+//    info = nil
+//    infoDataType = .StringData
+//    shouldAllowNonDataTypeValue = nil
+//    valueDidChange = nil
+//    valueIsValid = nil
+//    sizeDidChange = nil
   }
 
 }

@@ -18,6 +18,7 @@ final class BankCollectionDetailTextViewCell: BankCollectionDetailTextInputCell 
   private static let condensedIdentifier = createIdentifier(BankCollectionDetailTextViewCell.self, ["Internal", "Condensed"])
 
   override func initializeIVARs() {
+    super.initializeIVARs()
 
     contentView.addSubview(nameLabel)
 
@@ -39,36 +40,13 @@ final class BankCollectionDetailTextViewCell: BankCollectionDetailTextInputCell 
   }
 
   override func updateConstraints() {
-    let defaultIdentifier = self.dynamicType.defaultIdentifier
-    let condensedIdentifier = self.dynamicType.condensedIdentifier
-
-    contentView.removeConstraintsWithIdentifier(defaultIdentifier)
-    contentView.removeConstraintsWithIdentifier(condensedIdentifier)
-
+    removeAllConstraints()
     super.updateConstraints()
 
     if let textView = textInput as? UITextView {
       switch displayStyle {
-      case .Condensed:
-        contentView.constrain(identifier: condensedIdentifier,
-          nameLabel.left => contentView.left + 20,
-          nameLabel.top => contentView.top + 8,
-          nameLabel.bottom => contentView.bottom - 8,
-          nameLabel.right => textView.left - 20,
-          textView.top => contentView.top + 8,
-          textView.bottom => contentView.bottom - 8,
-          textView.height => Float(Bank.defaultRowHeight * 2.0),
-          textView.right => contentView.right - 20
-        )
-      case .Default:
-        contentView.constrain(identifier: defaultIdentifier,
-          nameLabel.left => contentView.left + 20,
-          nameLabel.right => contentView.right - 20,
-          nameLabel.top => contentView.top + 8,
-          textView.left => contentView.left + 20,
-          textView.right => contentView.right - 20,
-          textView.bottom => contentView.bottom - 8,
-          nameLabel.bottom => textView.top - 8)
+        case .Condensed: constrain(𝗛|-nameLabel--textView-|𝗛, [𝗩|--8--nameLabel], 𝗩|--8--textView--8--|𝗩)
+        case .Default:   constrain(𝗛|-nameLabel-|𝗛, 𝗛|-textView-|𝗛, 𝗩|--8--nameLabel--8--textView--8--|𝗩)
       }
     }
   }

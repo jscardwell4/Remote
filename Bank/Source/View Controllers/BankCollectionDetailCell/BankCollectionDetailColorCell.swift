@@ -13,8 +13,8 @@ import MoonKit
 class BankCollectionDetailColorCell: BankCollectionDetailCell {
 
   override func initializeIVARs() {
+    super.initializeIVARs()
     contentView.addSubview(nameLabel)
-
     colorSwatch.delegate = self
     contentView.addSubview(colorSwatch)
   }
@@ -22,7 +22,7 @@ class BankCollectionDetailColorCell: BankCollectionDetailCell {
   override func updateConstraints() {
     removeAllConstraints()
     super.updateConstraints()
-    constrain(𝗛|-nameLabel--colorSwatch-|𝗛, 𝗩|-nameLabel-|𝗩, 𝗩|-colorSwatch-|𝗩)
+    constrain(𝗛|-nameLabel--colorSwatch-|𝗛, [nameLabel.centerY => centerY, colorSwatch.centerY => centerY])
   }
 
   /** prepareForReuse */

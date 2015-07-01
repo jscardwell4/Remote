@@ -15,6 +15,7 @@ class BankCollectionDetailStepperCell: BankCollectionDetailCell {
   private weak var stepperConstraint: NSLayoutConstraint!
 
   override func initializeIVARs() {
+    super.initializeIVARs()
     stepper.addTarget(self, action:"stepperValueDidChange:", forControlEvents:.ValueChanged)
     contentView.addSubview(nameLabel)
     contentView.addSubview(infoLabel)
@@ -26,9 +27,9 @@ class BankCollectionDetailStepperCell: BankCollectionDetailCell {
     super.updateConstraints()
     constrain(
       𝗛|-nameLabel--infoLabel,
-      𝗩|-nameLabel-|𝗩,
-      𝗩|-infoLabel-|𝗩, 𝗩|-stepper-|𝗩,
-      [infoLabel--20--stepper, stepper.left => right --> "stepper leading"]
+      [ nameLabel.centerY => centerY,
+        infoLabel.centerY => centerY,
+        stepper.centerY => centerY, infoLabel--20--stepper, stepper.left => right --> "stepper leading" ]
     )
     stepperConstraint = constraintWithIdentifier("stepper leading")
   }

@@ -21,6 +21,7 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
   - parameter reuseIdentifier: String?
   */
   override func initializeIVARs() {
+    super.initializeIVARs()
     picker.delegate = self
     picker.dataSource = self
     picker.alpha = 0
@@ -32,27 +33,22 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
   override func updateConstraints() {
     removeAllConstraints()
     super.updateConstraints()
-    constrain(
-      𝗛|-nameLabel--infoLabel-|𝗛,
-      𝗛|-nameLabel--picker-|𝗛,
-      𝗩|-infoLabel-|𝗩,
-      𝗩|-picker-|𝗩,
-      𝗩|-nameLabel-|𝗩
-    )
+    constrain( 𝗛|-nameLabel--infoLabel-|𝗛, 𝗛|-nameLabel--picker-|𝗛)
+    constrain(infoLabel.centerY => centerY, picker.centerY => centerY, nameLabel.centerY => centerY)
   }
 
   /** prepareForReuse */
   override func prepareForReuse() {
     MSLogDebug("")
     super.prepareForReuse()
-    infoLabel.transform = CGAffineTransform.identityTransform
-    infoLabel.alpha = 1
-    _data.removeAll()
-    picker.alpha = 0
-    selection = .None
-    createItem = nil
-    didSelectItem = nil
-    titleForInfo = nil
+//    infoLabel.transform = CGAffineTransform.identityTransform
+//    infoLabel.alpha = 1
+//    _data.removeAll()
+//    picker.alpha = 0
+//    selection = .None
+//    createItem = nil
+//    didSelectItem = nil
+//    titleForInfo = nil
 
   }
 
@@ -162,7 +158,7 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
       case (true,  true): swapSelectWithAction(hidePickerView)
       case (false, true): hidePickerView()
       case (true, false): swapSelectWithAction(showPickerView)
-      default:            select = _select
+      default:            select = _select ?? select
     }
   }
 

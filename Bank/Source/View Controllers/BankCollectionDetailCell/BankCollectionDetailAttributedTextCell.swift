@@ -174,8 +174,10 @@ final class BankCollectionDetailAttributedTextCell: BankCollectionDetailCell {
     if name != nil {
       contentView.constrain(
         𝗛|-nameLabel--attributedTextDisplay-|𝗛,
-        𝗩|-nameLabel-|𝗩, 𝗩|-attributedTextDisplay-|𝗩,
-        [attributedTextDisplay.width => nameLabel.width, attributedTextDisplay.height => nameLabel.height]
+        [ attributedTextDisplay.width => nameLabel.width,
+          attributedTextDisplay.height => nameLabel.height,
+          nameLabel.centerY => centerY,
+          attributedTextDisplay.centerY => centerY ]
       )
     } else {
       contentView.constrain(𝗛|attributedTextDisplay|𝗛, 𝗩|attributedTextDisplay|𝗩)
@@ -186,6 +188,7 @@ final class BankCollectionDetailAttributedTextCell: BankCollectionDetailCell {
   override var name: String? { didSet { setNeedsUpdateConstraints() } }
 
   override func initializeIVARs() {
+    super.initializeIVARs()
     contentView.addSubview(nameLabel)
     contentView.addSubview(attributedTextDisplay)
   }

@@ -13,6 +13,7 @@ import MoonKit
 class BankCollectionDetailPickerCell: BankCollectionDetailCell {
 
   override func initializeIVARs() {
+    super.initializeIVARs()
     picker.delegate = self
     picker.dataSource = self
     contentView.addSubview(picker)

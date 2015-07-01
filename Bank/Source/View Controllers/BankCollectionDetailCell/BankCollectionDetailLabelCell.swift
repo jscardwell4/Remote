@@ -13,6 +13,7 @@ import MoonKit
 class BankCollectionDetailLabelCell: BankCollectionDetailCell {
 
   override func initializeIVARs() {
+    super.initializeIVARs()
     contentView.addSubview(nameLabel)
     contentView.addSubview(infoLabel)
   }
@@ -20,7 +21,7 @@ class BankCollectionDetailLabelCell: BankCollectionDetailCell {
   override func updateConstraints() {
     removeAllConstraints()
     super.updateConstraints()
-    constrain(𝗛|-nameLabel--infoLabel-|𝗛, 𝗩|-nameLabel-|𝗩, 𝗩|-infoLabel-|𝗩)
+    constrain(𝗛|-nameLabel--infoLabel-|𝗛, [nameLabel.centerY => centerY, infoLabel.centerY => centerY])
   }
 
   /** prepareForReuse */

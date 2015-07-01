@@ -39,7 +39,7 @@ final class BankCollectionDetailLabeledImageCell: BankCollectionDetailCell {
   override func updateConstraints() {
     removeAllConstraints()
     super.updateConstraints()
-    constrain(𝗛|-nameLabel--preview-|𝗛, 𝗩|-nameLabel-|𝗩, 𝗩|-preview-|𝗩)
+    constrain(𝗛|-nameLabel--preview-|𝗛, [nameLabel.centerY => centerY, preview.centerY => centerY])
   }
 
   /** prepareForReuse */

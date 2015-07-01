@@ -15,6 +15,7 @@ final class BankCollectionDetailTextFieldCell: BankCollectionDetailTextInputCell
   enum InputType { case Default, Integer, HexInteger, FloatingPoint }
 
   override func initializeIVARs() {
+    super.initializeIVARs()
     contentView.addSubview(nameLabel)
 
     let field = UITextField(autolayout: true)
@@ -32,7 +33,7 @@ final class BankCollectionDetailTextFieldCell: BankCollectionDetailTextInputCell
     removeAllConstraints()
     super.updateConstraints()
     let field = textInput as! UITextField
-    constrain(𝗛|-nameLabel--field-|𝗛, 𝗩|-nameLabel-|𝗩, 𝗩|-field-|𝗩)
+    constrain(𝗛|-nameLabel--field-|𝗛, [nameLabel.centerY => centerY, field.centerY => centerY])
   }
 
   /** prepareForReuse */

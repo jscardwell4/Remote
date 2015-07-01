@@ -610,7 +610,7 @@ public func -|(lhs: UIView, rhs: Axis) -> Pseudo {
   }
 }
 
-public func -|(lhs:   Pseudo, rhs: Axis) -> [Pseudo] { return [lhs]|rhs }
+public func -|(lhs:   Pseudo, rhs: Axis) -> [Pseudo] { return [lhs]-|rhs }
 public func -|(var lhs: [Pseudo], rhs: Axis) -> [Pseudo] {
   precondition(lhs.last?.firstObject as? UIView != nil, "operator requires a view for the last constraint's firstObject")
   let view = lhs.last!.firstObject as! UIView

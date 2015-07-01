@@ -19,6 +19,7 @@ class BankCollectionDetailSwitchCell: BankCollectionDetailCell {
   - parameter reuseIdentifier: String?
   */
   override func initializeIVARs() {
+    super.initializeIVARs()
     switchView.addTarget(self, action: "switchValueDidChange:", forControlEvents: .ValueChanged)
     contentView.addSubview(nameLabel)
     contentView.addSubview(switchView)
@@ -27,7 +28,7 @@ class BankCollectionDetailSwitchCell: BankCollectionDetailCell {
   override func updateConstraints() {
     removeAllConstraints()
     super.updateConstraints()
-    constrain(𝗛|-nameLabel--switchView-|𝗛, 𝗩|-nameLabel-|𝗩, 𝗩|-switchView-|𝗩)
+    constrain(𝗛|-nameLabel--switchView-|𝗛, [nameLabel.centerY => centerY, switchView.centerY => centerY])
   }
 
   /**

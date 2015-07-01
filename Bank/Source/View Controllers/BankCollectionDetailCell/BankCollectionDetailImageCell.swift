@@ -15,6 +15,7 @@ class BankCollectionDetailImageCell: BankCollectionDetailCell {
   var imageTint: UIColor? { didSet { preview.tintColor = imageTint } }
 
   override func initializeIVARs() {
+    super.initializeIVARs()
     contentView.addSubview(preview)
     backgroundView = nil
     backgroundColor = UIColor.clearColor()

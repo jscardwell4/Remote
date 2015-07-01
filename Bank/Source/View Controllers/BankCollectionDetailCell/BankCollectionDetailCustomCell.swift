@@ -37,6 +37,7 @@ class BankCollectionDetailCustomCell: BankCollectionDetailCell {
   }
 
   override func initializeIVARs() {
+    super.initializeIVARs()
     contentView.opaque = false
     opaque = false
     backgroundColor = UIColor.clearColor()

@@ -13,6 +13,7 @@ import MoonKit
 class BankCollectionDetailTwoToneSliderCell: BankCollectionDetailCell {
 
   override func initializeIVARs() {
+    super.initializeIVARs()
     sliderView.addTarget(self, action: "sliderValueDidChange:", forControlEvents: .ValueChanged)
     sliderView.userInteractionEnabled = false
     contentView.addSubview(nameLabel)
@@ -22,7 +23,7 @@ class BankCollectionDetailTwoToneSliderCell: BankCollectionDetailCell {
   override func updateConstraints() {
     removeAllConstraints()
     super.updateConstraints()
-    constrain(𝗛|-nameLabel--sliderView-|𝗛, 𝗩|-sliderView-|𝗩, 𝗩|-nameLabel-|𝗩)
+    constrain(𝗛|-nameLabel--sliderView-|𝗛, [nameLabel.centerY => centerY, sliderView.centerY => centerY])
   }
 
   /**
