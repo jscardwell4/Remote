@@ -8,6 +8,21 @@
 
 import Foundation
 
+public extension SequenceType where Generator.Element:IntegerArithmeticType, Generator.Element:IntegerLiteralConvertible {
+  public var sum: Generator.Element {
+    let initial: Generator.Element = 0
+    return reduce(initial, combine: {$0 + $1})
+  }
+}
+
+public extension SequenceType where Generator.Element:CGFloatable {
+  public var sum: CGFloat {
+    let initial: CGFloat = 0
+    return reduce(initial, combine: {$0 + $1.CGFloatValue})
+  }
+}
+
+
 public struct InfiniteSequenceOf<T>: SequenceType {
   private let value: T
   public init(_ v: T) { value = v }

@@ -22,9 +22,19 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
   */
   override func initializeIVARs() {
     super.initializeIVARs()
-    picker.delegate = self
-    picker.dataSource = self
-    picker.alpha = 0
+//    picker.alpha = 0
+    infoLabel.alpha = 0
+    picker.didSelectItem = {
+      _, row in
+
+        self.selection = self._data[row]
+        switch self.selection {
+          case .None:                       break
+          case .NilItem:                    self.didSelectItem?(nil)
+          case .CreateItem (_, let action): action()
+          case .DataItem   (_, let obj):    self.didSelectItem?(obj)
+      }
+    }
     contentView.addSubview(nameLabel)
     contentView.addSubview(infoLabel)
     contentView.addSubview(picker)
@@ -33,8 +43,9 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
   override func updateConstraints() {
     removeAllConstraints()
     super.updateConstraints()
-    constrain( 𝗛|-nameLabel--infoLabel-|𝗛, 𝗛|-nameLabel--picker-|𝗛)
+    constrain(𝗛|-nameLabel--infoLabel-|𝗛, 𝗛|-nameLabel--picker-|𝗛)
     constrain(infoLabel.centerY => centerY, picker.centerY => centerY, nameLabel.centerY => centerY)
+    constrain(infoLabel.width => width * 0.5, picker.width => width * 0.5, picker.height => 44.0)
   }
 
   /** prepareForReuse */
@@ -67,7 +78,7 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
   - returns: String?
   */
   private func titleForObject(object: AnyObject) -> String? {
-    return titleForInfo?(object) ?? self.infoDataType.textualRepresentationForObject(object) as? String
+    return titleForInfo?(object) ?? infoDataType.textualRepresentationForObject(object) as? String
   }
 
   override var info: AnyObject? {
@@ -118,7 +129,7 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
         }
       )
       if let createItem = createItem { _data.append(createItem) }
-      picker.reloadData()
+      picker.labels = _data.map { $0.title }
     }
   }
 
@@ -145,11 +156,17 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
     var object: AnyObject? { switch self { case .DataItem(_, let object): return object; default: return nil } }
   }
 
-  private let picker: AKPickerView = {
-    let view = AKPickerView(autolayout: true)
+//  private let picker: AKPickerView = {
+//    let view = AKPickerView(autolayout: true)
+//    view.font = Bank.infoFont
+//    view.textColor = Bank.infoColor
+//    view.highlightedFont = Bank.actionFont
+//    return view
+//    }()
+  private let picker: InlinePickerView = {
+    let view = InlinePickerView(autolayout: true)
     view.font = Bank.infoFont
     view.textColor = Bank.infoColor
-    view.highlightedFont = Bank.actionFont
     return view
     }()
 
@@ -244,7 +261,7 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
   override var editing: Bool { didSet { updateForCurrentState() } }
 
 }
-
+/*
 extension BankCollectionDetailButtonCell: AKPickerViewDataSource, AKPickerViewDelegate {
 
   /**
@@ -282,7 +299,7 @@ extension BankCollectionDetailButtonCell: AKPickerViewDataSource, AKPickerViewDe
     }
   }
 }
-
+*/
 extension BankCollectionDetailButtonCell.Item: Equatable {}
 /**
 Whether lhs is equal to rhs

@@ -27,6 +27,8 @@
 		C20650061A13C90A00342FDE /* FontAwesomeIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592F019C8E04200920F8D /* FontAwesomeIcon.swift */; };
 		C20650071A13C99500342FDE /* GestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63DD19FEC06A00F54626 /* GestureManager.swift */; };
 		C210E9921AF27E3C0026A51D /* ViewProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C210E9911AF27E3C0026A51D /* ViewProxy.swift */; };
+		C211C2C21B4607E5004A24E4 /* InlinePickerViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C211C2C11B4607E5004A24E4 /* InlinePickerViewLayout.swift */; };
+		C211C2C41B4607FD004A24E4 /* InlinePickerViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C211C2C31B4607FD004A24E4 /* InlinePickerViewCell.swift */; };
 		C2143B771B0D5DAE007863F0 /* ImageButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2143B761B0D5DAE007863F0 /* ImageButtonView.swift */; };
 		C21493BD1A33CEA100D274A2 /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21493BC1A33CEA100D274A2 /* Checkbox.swift */; };
 		C21493BF1A35285A00D274A2 /* ColorSwatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21493BE1A35285A00D274A2 /* ColorSwatch.swift */; };
@@ -377,6 +379,9 @@
 		C20FF1F119AEB67100D11F33 /* MSNotificationReceptionist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSNotificationReceptionist.h; sourceTree = "<group>"; };
 		C20FF1F219AEB67100D11F33 /* MSNotificationReceptionist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSNotificationReceptionist.m; sourceTree = "<group>"; };
 		C210E9911AF27E3C0026A51D /* ViewProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewProxy.swift; sourceTree = "<group>"; };
+		C211C2C01B45FD81004A24E4 /* InlinePickerView.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = InlinePickerView.playground; path = Moonkit/InlinePickerView.playground; sourceTree = "<group>"; };
+		C211C2C11B4607E5004A24E4 /* InlinePickerViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlinePickerViewLayout.swift; sourceTree = "<group>"; };
+		C211C2C31B4607FD004A24E4 /* InlinePickerViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlinePickerViewCell.swift; sourceTree = "<group>"; };
 		C2143B761B0D5DAE007863F0 /* ImageButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageButtonView.swift; sourceTree = "<group>"; };
 		C21493BC1A33CEA100D274A2 /* Checkbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Checkbox.swift; sourceTree = "<group>"; };
 		C21493BE1A35285A00D274A2 /* ColorSwatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSwatch.swift; sourceTree = "<group>"; };
@@ -875,6 +880,8 @@
 			isa = PBXGroup;
 			children = (
 				C24D19E919EDAE1500CC3CD9 /* InlinePickerView.swift */,
+				C211C2C11B4607E5004A24E4 /* InlinePickerViewLayout.swift */,
+				C211C2C31B4607FD004A24E4 /* InlinePickerViewCell.swift */,
 				C28E35B91A451E3800438CCF /* CoreDataStack.swift */,
 				C28447101A3E051F005338AB /* LabeledCheckbox.swift */,
 				C2F8C30E1A36133E004229FE /* TwoToneSlider.swift */,
@@ -986,6 +993,7 @@
 		C2CE884518138C4900555D63 = {
 			isa = PBXGroup;
 			children = (
+				C211C2C01B45FD81004A24E4 /* InlinePickerView.playground */,
 				C2EEBA2B1B0961CE0041B1B1 /* Fields.playground */,
 				C24DD28A1AE4056D000306A0 /* Constraints.playground */,
 				C22734571AE1622E00641CC3 /* JSON.playground */,
@@ -1749,6 +1757,7 @@
 				C2358F6E19C78E0C00920F8D /* MSKVOReceptionist.m in Sources */,
 				C2B9B40A1AC1C499005BA67C /* RegularExpression.swift in Sources */,
 				C2358F6F19C78E0C00920F8D /* MSLog.m in Sources */,
+				C211C2C41B4607FD004A24E4 /* InlinePickerViewCell.swift in Sources */,
 				C20650031A13C73900342FDE /* UIFont+MoonKitAdditions.swift in Sources */,
 				C2358F7019C78E0C00920F8D /* MSNetworkReachability.m in Sources */,
 				C2064FFB1A13C6F000342FDE /* MoonFunctions.swift in Sources */,
@@ -1764,6 +1773,7 @@
 				C28E50951A13CA7300DF3206 /* ToggleImageSegmentedControl.swift in Sources */,
 				C2358F7519C78E0C00920F8D /* MSStack.m in Sources */,
 				C210E9921AF27E3C0026A51D /* ViewProxy.swift in Sources */,
+				C211C2C21B4607E5004A24E4 /* InlinePickerViewLayout.swift in Sources */,
 				C238A6561B04DDA100898DB8 /* Numbers.swift in Sources */,
 				C2358F7619C78E0C00920F8D /* MSValueTransformers.m in Sources */,
 				C2358F7A19C78E0C00920F8D /* MSNotificationReceptionist.m in Sources */,

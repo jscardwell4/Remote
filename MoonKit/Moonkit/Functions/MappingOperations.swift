@@ -32,6 +32,10 @@ public func compressed<S:SequenceType, T where S.Generator.Element == T, T:NilLi
   return source.filter({$0 != nil})
 }
 
+public extension SequenceType where Generator.Element: NilLiteralConvertible {
+  public var compressed: [Self.Generator.Element] { return filter({$0 != nil}) }
+}
+
 /**
 compressedMap:transform:
 

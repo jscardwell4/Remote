@@ -76,6 +76,23 @@ public func apply<S:SequenceType>(sequence: S, _ f: (S.Generator.Element) -> Voi
 public func apply<T>(x: T, _ f: (T) -> Void) { f(x) }
 //public func apply<T, U>(x: T, f: (T) -> U) -> U { return f(x) }
 
+public extension SequenceType {
+  public func apply(f: Generator.Element -> Void) { reduce(Void(), combine: { f($0.1) }) }
+  public func pairwiseApply(f: (Generator.Element, Generator.Element) -> Void) {
+    AnySequence({() -> AnyGenerator<(Generator.Element, Generator.Element)> in
+      let sequenceArray = Array(self)
+      var i = 1
+      return anyGenerator({
+        let result: (Generator.Element, Generator.Element)?
+        if i < sequenceArray.count { result = (sequenceArray[i - 1], sequenceArray[i]) } else { result = nil }
+        i++
+        return result
+      })
+    }).apply(f)
+
+  }
+}
+
 public func applyMaybe<S:SequenceType>(sequence: S?, _ f: (S.Generator.Element) -> Void) { if let s = sequence { apply(s, f) } }
 public func applyMaybe<T>(x: T?, _ f: (T) -> Void) { if let x = x { apply(x, f) } }
 
