@@ -35,6 +35,7 @@ public class InlinePickerView: UIView {
     collectionView.dataSource = self
     collectionView.delegate = self
     collectionView.showsHorizontalScrollIndicator = false
+    collectionView.bounces = false
     collectionView.backgroundColor = UIColor.clearColor()
     collectionView.decelerationRate = UIScrollViewDecelerationRateFast
     collectionView.registerClass(InlinePickerViewCell.self, forCellWithReuseIdentifier: "Cell")
@@ -56,7 +57,7 @@ public class InlinePickerView: UIView {
   /**
   selectItem:animated:
 
-  - parameter row: Int
+  - parameter item: Int
   - parameter animated: Bool
   */
   public func selectItem(item: Int, animated: Bool) {
@@ -69,6 +70,7 @@ public class InlinePickerView: UIView {
     didSet {
       collectionView.collectionViewLayout.invalidateLayout()
       collectionView.reloadData()
+      if labels.count > 0 { selectItem(0, animated: false) }
     }
   }
   public var didSelectItem: ((InlinePickerView, Int) -> Void)?
@@ -115,7 +117,7 @@ extension InlinePickerView: UICollectionViewDataSource {
       cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
   {
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! InlinePickerViewCell
-    cell.text = labels[indexPath.row]
+    cell.text = labels[indexPath.item]
     cell.font = font
     cell.textColor = textColor
     return cell
@@ -131,6 +133,33 @@ extension InlinePickerView: UICollectionViewDelegate {
     return false
   }
   public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-    didSelectItem?(self, indexPath.row)
+    MSLogDebug("")
+    didSelectItem?(self, indexPath.item)
+  }
+}
+
+extension InlinePickerView: UIScrollViewDelegate {
+  public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    MSLogDebug("")
+    guard let indexPath = collectionView.indexPathsForSelectedItems()?.first else {
+      MSLogWarn("failed to get index path for selected cell")
+      return
+    }
+    // invoke selection handler
+    didSelectItem?(self, indexPath.item)
+  }
+  public func scrollViewWillEndDragging(scrollView: UIScrollView,
+                          withVelocity velocity: CGPoint,
+                   targetContentOffset: UnsafeMutablePointer<CGPoint>)
+  {
+    MSLogDebug("")
+    let offset = targetContentOffset.memory
+    guard let item = (collectionView.collectionViewLayout as! InlinePickerViewLayout).indexOfItemAtOffset(offset) else {
+      MSLogWarn("failed to get index path for cell at point \(targetContentOffset.memory)")
+      return
+    }
+    // update selection
+    MSLogDebug("selecting item \(item)")
+    collectionView.selectItemAtIndexPath(NSIndexPath(forItem: item, inSection: 0), animated: false, scrollPosition:.None)
   }
 }

@@ -17,7 +17,12 @@ class InlinePickerViewCell: UICollectionViewCell {
   var text: String? { get { return label.text } set { label.text = newValue } }
   var textColor: UIColor { get { return label.textColor } set { label.textColor = newValue } }
 
-  override var selected: Bool { didSet { label.enabled = selected } }
+  override var selected: Bool {
+    didSet {
+      label.enabled = selected
+      backgroundColor = selected ? UIColor.redColor() : UIColor.clearColor()
+    }
+  }
 
   override init(frame: CGRect) { super.init(frame: frame); initializeIVARs() }
 
@@ -35,6 +40,9 @@ class InlinePickerViewCell: UICollectionViewCell {
     label.enabled = false
     label.numberOfLines = 1
     label.lineBreakMode = .ByTruncatingTail
+
+    translatesAutoresizingMaskIntoConstraints = false
+    contentView.translatesAutoresizingMaskIntoConstraints = false
     contentView.addSubview(label)
   }
 

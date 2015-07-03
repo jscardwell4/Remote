@@ -26,6 +26,7 @@ public struct Ratio: CustomStringConvertible {
 }
 
 extension CGPoint {
+  public init(_ values: (CGFloat, CGFloat)) { self.init(x: values.0, y: values.1) }
   public init?(_ string: String?) { if let s = string { self = CGPointFromString(s) } else { return nil } }
   public static var nullPoint: CGPoint = CGPoint(x: CGFloat.NaN, y: CGFloat.NaN)
   public var isNull: Bool { return self == CGPoint.nullPoint }
@@ -119,6 +120,7 @@ public func *(lhs: CGVector, rhs: CGFloat) -> CGVector { return CGVector(dx: lhs
 public func *=(inout lhs: CGVector, rhs: CGFloat) { lhs = lhs * rhs }
 
 extension CGSize {
+  public init(_ values: (CGFloat, CGFloat)) { self.init(width: values.0, height: values.1) }
   public init?(_ string: String?) { if let s = string { self = CGSizeFromString(s) } else { return nil } }
   public init(square: CGFloat) { self = CGSize(width: square, height: square) }
   public func contains(size: CGSize) -> Bool { return width >= size.width && height >= size.height }
