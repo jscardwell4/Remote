@@ -520,18 +520,10 @@
 	"buffers":
 	[
 		{
-			"file": "MoonKit/Moonkit/Objects/AKPickerView.swift",
+			"file": "Bank/Resources/JSON/ImageCategory.json",
 			"settings":
 			{
-				"buffer_size": 21401,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "Bank/Source/View Controllers/BankCollectionDetailLayout.swift",
-			"settings":
-			{
-				"buffer_size": 6093,
+				"buffer_size": 4895,
 				"line_ending": "Unix"
 			}
 		}
@@ -1021,6 +1013,8 @@
 	[
 		"/Users/Moondeer/Projects/MSRemote/Remote",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Resources",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Resources/JSON",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/Extensions",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers",
@@ -1030,10 +1024,12 @@
 	],
 	"file_history":
 	[
-		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/MoonYAMLSwift.sublime-syntax",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailLayout.swift",
-		"/Users/Moondeer/Desktop/Python/Python.sublime-syntax",
+		"/Users/Moondeer/Box Sync/Projects/Peaceful Pathways/Website/Vagrantfile",
+		"/Users/Moondeer/Downloads/error_log",
 		"/Users/Moondeer/Projects/MSRemote/Remote/MoonKit/Moonkit/Objects/AKPickerView.swift",
+		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailLayout.swift",
+		"/Users/Moondeer/Library/Application Support/Sublime Text 3/Packages/User/MoonYAMLSwift.sublime-syntax",
+		"/Users/Moondeer/Desktop/Python/Python.sublime-syntax",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailCell/BankCollectionDetailCell.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/BankModelDetailDelegate.swift",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/View Controllers/BankCollectionDetailController.swift",
@@ -1155,9 +1151,7 @@
 		"/Users/Moondeer/.lldbinit",
 		"/Users/Moondeer/Downloads/githubicons-master/setfileicon",
 		"/Users/Moondeer/Projects/MSRemote/Remote/Bank/Source/BankSurrogateCategory.swift",
-		"/Users/Moondeer/Projects/MSRemote/Remote/Elysio/Elysio.swift",
-		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/SchemeEditor.swift",
-		"/Users/Moondeer/GitHub/Chameleon/Chameleon/Chameleon/Chameleon.CSSColor.swift"
+		"/Users/Moondeer/Projects/MSRemote/Remote/Elysio/Elysio.swift"
 	],
 	"find":
 	{
@@ -1472,59 +1466,29 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "MoonKit/Moonkit/Objects/AKPickerView.swift",
-					"semi_transient": false,
+					"file": "Bank/Resources/JSON/ImageCategory.json",
+					"semi_transient": true,
 					"settings":
 					{
-						"buffer_size": 21401,
+						"buffer_size": 4895,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								856,
-								856
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/User/MoonYAMLSwift.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "Bank/Source/View Controllers/BankCollectionDetailLayout.swift",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 6093,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								780,
-								780
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/User/MoonYAMLSwift.sublime-syntax",
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
 							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
@@ -1535,11 +1499,6 @@
 					"stack_index": 0,
 					"type": "text"
 				}
-			]
-		},
-		{
-			"sheets":
-			[
 			]
 		}
 	],
@@ -1560,18 +1519,11 @@
 				0,
 				1,
 				1
-			],
-			[
-				1,
-				0,
-				2,
-				1
 			]
 		],
 		"cols":
 		[
 			0.0,
-			0.5,
 			1.0
 		],
 		"rows":
@@ -2131,7 +2083,7 @@
 		],
 		"width": 568.0
 	},
-	"selected_group": 1,
+	"selected_group": 0,
 	"settings":
 	{
 	},

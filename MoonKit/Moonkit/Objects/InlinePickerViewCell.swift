@@ -13,14 +13,16 @@ class InlinePickerViewCell: UICollectionViewCell {
 
   private let label = UILabel(autolayout: true)
 
-  var font: UIFont { get { return label.font } set { label.font = newValue } }
-  var text: String? { get { return label.text } set { label.text = newValue } }
-  var textColor: UIColor { get { return label.textColor } set { label.textColor = newValue } }
+  var text: NSAttributedString? { didSet { if !selected { label.attributedText = text } } }
+
+  var selectedText: NSAttributedString? { didSet { if selected { label.attributedText = selectedText } } }
 
   override var selected: Bool {
     didSet {
-      label.enabled = selected
-      backgroundColor = selected ? UIColor.redColor() : UIColor.clearColor()
+      switch selected {
+        case true where selectedText != nil: label.attributedText = selectedText
+        default: label.attributedText = text
+      }
     }
   }
 
@@ -28,7 +30,8 @@ class InlinePickerViewCell: UICollectionViewCell {
 
   required init(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
-    label.text = aDecoder.decodeObjectForKey("InlinePickerViewCellText") as? String
+    text = aDecoder.decodeObjectForKey("InlinePickerViewCellText") as? NSAttributedString
+    selectedText = aDecoder.decodeObjectForKey("InlinePickerViewCellSelectedText") as? NSAttributedString
     initializeIVARs()
   }
 
@@ -37,9 +40,10 @@ class InlinePickerViewCell: UICollectionViewCell {
     layer.shouldRasterize = true
     layer.rasterizationScale = UIScreen.mainScreen().scale
 
-    label.enabled = false
     label.numberOfLines = 1
     label.lineBreakMode = .ByTruncatingTail
+
+    label.attributedText = selected ? selectedText : text
 
     translatesAutoresizingMaskIntoConstraints = false
     contentView.translatesAutoresizingMaskIntoConstraints = false

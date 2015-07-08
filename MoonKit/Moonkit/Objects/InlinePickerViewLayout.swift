@@ -46,6 +46,10 @@ class InlinePickerViewLayout: UICollectionViewLayout {
     }
   }
 
+  func offsetForItemAtIndex(index: Int) -> CGPoint {
+    return CGPoint(x: rawLocations[index], y: 0)
+  }
+
   // MARK: - Internally used properties
   private var storedAttributes: AttributesIndex = [:]
   private var visibleRect = CGRect.zeroRect
@@ -56,6 +60,7 @@ class InlinePickerViewLayout: UICollectionViewLayout {
   private var cellPadding: CGFloat = 8.0
   private var contentPadding: CGFloat = 0.0
   private var stopLocations: [CGFloat] = []
+  private var rawLocations: [CGFloat] = []
 
   // MARK: - UICollectionViewLayout method overrides
 
@@ -74,13 +79,12 @@ class InlinePickerViewLayout: UICollectionViewLayout {
   override func prepareLayout() {
     guard let collectionView = collectionView, delegate = delegate else { return }
 
-    let sizes = delegate.cellSizes
-    cellWidths = sizes.map {$0.width}
-    cellPadding = ceil(delegate.cellPadding)
+    cellWidths = delegate.itemWidths
+    cellPadding = ceil(delegate.itemPadding)
     let cellBoundaryWidth = ceil(cellWidths.sum + cellPadding * CGFloat(cellWidths.count - 1))
     contentPadding = ceil(cellBoundaryWidth / 2)
     contentWidth = cellBoundaryWidth + contentPadding * 2
-    contentHeight = ceil((sizes.map{$0.height} + [delegate.cellHeight]).maxElement()!)
+    contentHeight = ceil(delegate.itemHeight)
 
     visibleRect = CGRect(origin: collectionView.contentOffset, size: collectionView.bounds.size)
 
@@ -91,6 +95,18 @@ class InlinePickerViewLayout: UICollectionViewLayout {
     )
 
     stopLocations = storedAttributes.values.map {[offset = collectionView.bounds.width / 2] in $0.frame.midX - offset }
+    rawLocations = {
+      var locations: [CGFloat] = []
+      var x = self.contentPadding
+      for width in self.cellWidths {
+        let halfWidth = width / 2
+        x += halfWidth
+        locations.append(x)
+        x += self.cellPadding + halfWidth
+      }
+      return locations
+      }()
+
   }
 
   /**
@@ -129,16 +145,16 @@ class InlinePickerViewLayout: UICollectionViewLayout {
     attributes.frame = CGRect(x: xOffset, y: 0, width: cellWidths[indexPath.item], height: contentHeight)
 
     let distance = attributes.frame.midX - visibleRect.midX
-    let w = visibleRect.width / 2
-    let currentAngle = maxAngle * distance / w / CGFloat(M_PI_2)
+      let w = visibleRect.width / 2
+      let currentAngle = maxAngle * distance / w / CGFloat(M_PI_2)
 
-    var transform = CATransform3DIdentity
-    transform = CATransform3DTranslate(transform, -distance, 0, -w)
-    transform = CATransform3DRotate(transform, currentAngle, 0, 1, 0)
-    transform = CATransform3DTranslate(transform, 0, 0, w)
+      var transform = CATransform3DIdentity
+      transform = CATransform3DTranslate(transform, -distance, 0, -w)
+      transform = CATransform3DRotate(transform, currentAngle, 0, 1, 0)
+      transform = CATransform3DTranslate(transform, 0, 0, w)
 
-    attributes.transform3D = transform
-    attributes.alpha = fabs(currentAngle) < maxAngle ? 1.0 : 0.0
+      attributes.transform3D = transform
+      attributes.alpha = fabs(currentAngle) < maxAngle ? 1.0 : 0.0
 
     return attributes
   }

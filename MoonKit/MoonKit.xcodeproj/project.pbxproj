@@ -321,6 +321,7 @@
 		C29649901B00EBD0000C2D4A /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C296498F1B00EBD0000C2D4A /* FieldView.swift */; };
 		C29EECF81AFD010B00660EE6 /* MiscellaneousFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29EECF71AFD010B00660EE6 /* MiscellaneousFunctions.swift */; };
 		C2A169D01B15386300E3A5A0 /* UIImage+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A169CF1B15386300E3A5A0 /* UIImage+MoonKitAdditions.swift */; };
+		C2A5B6F21B482F4700F34491 /* NSParagraphStyle+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A5B6F11B482F4700F34491 /* NSParagraphStyle+MoonKitAdditions.swift */; };
 		C2A6261F1A33598300152E97 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A6261E1A33598300152E97 /* Slider.swift */; };
 		C2A70E3B1ACC53D0009C2CF7 /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A70E3A1ACC53D0009C2CF7 /* JSONValue.swift */; };
 		C2A70E451ACD8EBA009C2CF7 /* MoonKit_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A70E441ACD8EBA009C2CF7 /* MoonKit_Tests.swift */; };
@@ -492,6 +493,7 @@
 		C29EECF71AFD010B00660EE6 /* MiscellaneousFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscellaneousFunctions.swift; sourceTree = "<group>"; };
 		C2A169CF1B15386300E3A5A0 /* UIImage+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C2A46E651AD703E70030E3CC /* MoonKit.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MoonKit.playground; path = Moonkit/MoonKit.playground; sourceTree = "<group>"; };
+		C2A5B6F11B482F4700F34491 /* NSParagraphStyle+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSParagraphStyle+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C2A6261E1A33598300152E97 /* Slider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
 		C2A70E3A1ACC53D0009C2CF7 /* JSONValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONValue.swift; sourceTree = "<group>"; };
 		C2A70E401ACD8EBA009C2CF7 /* MoonKit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MoonKit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -811,6 +813,7 @@
 				C2A169CF1B15386300E3A5A0 /* UIImage+MoonKitAdditions.swift */,
 				C236937F1B161ED600CBE460 /* PrintableExtensions.swift */,
 				C2FE79E51B1E62590087F72C /* NSIndexPath+MoonKitAdditions.swift */,
+				C2A5B6F11B482F4700F34491 /* NSParagraphStyle+MoonKitAdditions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1768,6 +1771,7 @@
 				C2358F7319C78E0C00920F8D /* MSSingleton.m in Sources */,
 				C2358F7419C78E0C00920F8D /* MSSingletonController.m in Sources */,
 				C28E35BE1A45DBF300438CCF /* Array+MoonKitAdditions.swift in Sources */,
+				C2A5B6F21B482F4700F34491 /* NSParagraphStyle+MoonKitAdditions.swift in Sources */,
 				C24E0EB91AC6141B0044248E /* Bool+MoonKitAdditions.swift in Sources */,
 				C21493BF1A35285A00D274A2 /* ColorSwatch.swift in Sources */,
 				C28E50951A13CA7300DF3206 /* ToggleImageSegmentedControl.swift in Sources */,

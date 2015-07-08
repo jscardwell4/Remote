@@ -46,62 +46,49 @@ extension NSMutableAttributedString {
 
 }
 
-extension NSParagraphStyle {
-
-  /**
-  Method of convenience for creating a paragraph style with attributes already set.
-
-  - parameter lineSpacing: CGFloat = 0
-  - parameter paragraphSpacing: CGFloat = 0
-  - parameter alignment: NSTextAlignment = .Natural
-  - parameter headIndent: CGFloat = 0
-  - parameter tailIndent: CGFloat = 0
-  - parameter firstLineHeadIndent: CGFloat = 0
-  - parameter minimumLineHeight: CGFloat = 0
-  - parameter maximumLineHeight: CGFloat = 0
-  - parameter lineBreakMode: NSLineBreakMode = .ByWordWrapping
-  - parameter lineHeightMultiple: CGFloat = 0
-  - parameter paragraphSpacingBefore: CGFloat = 0
-  - parameter hyphenationFactor: Float = 0
-  - parameter tabStops: [AnyObject]? = nil
-  - parameter defaultTabInterval: CGFloat = 0
-
-  - returns: NSParagraphStyle
-  */
-  public class func paragraphStyleWithAttributes(
-      lineSpacing lineSpacing: CGFloat = 0,
-      paragraphSpacing: CGFloat = 0,
-      alignment: NSTextAlignment = .Natural,
-      headIndent: CGFloat = 0,
-      tailIndent: CGFloat = 0,
-      firstLineHeadIndent: CGFloat = 0,
-      minimumLineHeight: CGFloat = 0,
-      maximumLineHeight: CGFloat = 0,
-      lineBreakMode: NSLineBreakMode = .ByWordWrapping,
-      lineHeightMultiple: CGFloat = 0,
-      paragraphSpacingBefore: CGFloat = 0,
-      hyphenationFactor: Float = 0,
-      tabStops: [NSTextTab]? = nil,
-      defaultTabInterval: CGFloat = 0
-    ) -> NSParagraphStyle
-  {
-    let paragraphStyle = NSMutableParagraphStyle()
-    paragraphStyle.lineSpacing = lineSpacing
-    paragraphStyle.paragraphSpacing = paragraphSpacing
-    paragraphStyle.alignment = alignment
-    paragraphStyle.headIndent = headIndent
-    paragraphStyle.tailIndent = tailIndent
-    paragraphStyle.firstLineHeadIndent = firstLineHeadIndent
-    paragraphStyle.minimumLineHeight = minimumLineHeight
-    paragraphStyle.maximumLineHeight = maximumLineHeight
-    paragraphStyle.lineBreakMode = lineBreakMode
-    paragraphStyle.lineHeightMultiple = lineHeightMultiple
-    paragraphStyle.paragraphSpacingBefore = paragraphSpacingBefore
-    paragraphStyle.hyphenationFactor = hyphenationFactor
-    paragraphStyle.tabStops = tabStops
-    paragraphStyle.defaultTabInterval = defaultTabInterval
-    return paragraphStyle
-  }
-
-
+public prefix func ¶(string: String) -> NSAttributedString {
+  return NSAttributedString(string: string)
 }
+
+public func |(lhs: NSAttributedString, rhs: UIColor) -> NSAttributedString {
+  guard lhs.length > 0 else { return lhs }
+  var attributes = lhs.attributesAtIndex(0, effectiveRange: nil)
+  attributes[NSForegroundColorAttributeName] = rhs
+  return NSAttributedString(string: lhs.string, attributes: attributes)
+}
+
+public func |(lhs: NSAttributedString, rhs: UIFont) -> NSAttributedString {
+  guard lhs.length > 0 else { return lhs }
+  var attributes = lhs.attributesAtIndex(0, effectiveRange: nil)
+  attributes[NSFontAttributeName] = rhs
+  return NSAttributedString(string: lhs.string, attributes: attributes)
+}
+
+public func |(lhs: NSAttributedString, rhs: NSParagraphStyle) -> NSAttributedString {
+  guard lhs.length > 0 else { return lhs }
+  var attributes = lhs.attributesAtIndex(0, effectiveRange: nil)
+  attributes[NSParagraphStyleAttributeName] = rhs
+  return NSAttributedString(string: lhs.string, attributes: attributes)
+}
+
+public func |(lhs: NSAttributedString, rhs: NSShadow) -> NSAttributedString {
+  guard lhs.length > 0 else { return lhs }
+  var attributes = lhs.attributesAtIndex(0, effectiveRange: nil)
+  attributes[NSShadowAttributeName] = rhs
+  return NSAttributedString(string: lhs.string, attributes: attributes)
+}
+
+public func ¶|(string: String, attributes: [AnyObject]) -> NSAttributedString {
+  var dict: [String:AnyObject] = [:]
+  for attribute in attributes {
+    switch attribute {
+      case let font as UIFont: dict[NSFontAttributeName] = font
+      case let color as UIColor: dict[NSForegroundColorAttributeName] = color
+      case let paragraphStyle as NSParagraphStyle: dict[NSParagraphStyleAttributeName] = paragraphStyle
+      case let shadow as NSShadow: dict[NSShadowAttributeName] = shadow
+      default: break
+    }
+  }
+  return dict.count > 0 ? NSAttributedString(string: string, attributes: dict) : NSAttributedString(string: string)
+}
+

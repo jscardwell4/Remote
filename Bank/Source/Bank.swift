@@ -59,6 +59,7 @@ import Glyphish
   public static let boldLabelFont           = Elysio.boldFontWithSize(17)
   public static let largeBoldLabelFont      = Elysio.boldFontWithSize(18)
   public static let infoFont                = Elysio.lightFontWithSize(15)
+  public static let infoSelectedFont        = Elysio.lightItalicFontWithSize(15)
   public static let actionFont              = Elysio.regularItalicFontWithSize(15)
   public static let formLabelFont           = Elysio.regularFontWithSize(16)
   public static let formControlFont         = Elysio.regularItalicFontWithSize(16)

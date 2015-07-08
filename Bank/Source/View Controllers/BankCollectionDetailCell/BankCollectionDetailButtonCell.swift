@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import MoonKit
+import Chameleon
 
 // TODO: This class should be renamed since it no longer users a button view
 
@@ -24,6 +25,7 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
     super.initializeIVARs()
 //    picker.alpha = 0
     infoLabel.alpha = 0
+    picker.nametag = "picker"
     picker.didSelectItem = {
       _, row in
 
@@ -45,7 +47,6 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
     super.updateConstraints()
     constrain(𝗛|-nameLabel--infoLabel-|𝗛, 𝗛|-nameLabel--picker-|𝗛)
     constrain(infoLabel.centerY => centerY, picker.centerY => centerY, nameLabel.centerY => centerY)
-    constrain(infoLabel.width => width * 0.5, picker.width => width * 0.5, picker.height => 44.0)
   }
 
   /** prepareForReuse */
@@ -156,17 +157,16 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
     var object: AnyObject? { switch self { case .DataItem(_, let object): return object; default: return nil } }
   }
 
-//  private let picker: AKPickerView = {
-//    let view = AKPickerView(autolayout: true)
-//    view.font = Bank.infoFont
-//    view.textColor = Bank.infoColor
-//    view.highlightedFont = Bank.actionFont
-//    return view
-//    }()
   private let picker: InlinePickerView = {
     let view = InlinePickerView(autolayout: true)
     view.font = Bank.infoFont
-    view.textColor = Bank.infoColor
+    view.selectedFont = Bank.infoFont
+    let color = Bank.infoColor
+    view.textColor = color
+    let laba = color.LABA
+    let darkerRGB = labToRGB(laba.l - 15, laba.a, laba.b)
+    let darkerColor = rgba(Int(darkerRGB.r * 255), Int(darkerRGB.g * 255), Int(darkerRGB.b * 255), Int(laba.alpha * 255))
+    view.selectedTextColor = darkerColor
     return view
     }()
 
@@ -183,9 +183,21 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
 
   /** Store select property value so we can temporarily override it */
   private var _select: (() -> Void)?
-  
+
+  private func dumpState(message: String) {
+    MSLogDebug("\n\t".join(
+      message,
+      description,
+      "constraints = \n\t" + "\n\t".join(constraints.map {$0.prettyDescription}),
+      "nameLabel = \(nameLabel.description)",
+      "infoLabel = \(infoLabel.description)",
+      "picker = \(picker.description)"
+      ))
+  }
+
   /** showPickerView */
   func showPickerView() {
+    dumpState("showPickerView() invoked")
     if !showingPicker && editing {
       let textRect = infoLabel.textRectForBounds(infoLabel.bounds, limitedToNumberOfLines: 1)
       let offset = textRect.minX / 2
@@ -198,6 +210,7 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
         },
         completion: {
           didComplete in
+          self.dumpState("showPickerView() first animation completion block")
           if didComplete {
             self.infoLabel.setNeedsLayout()
             self.picker.setNeedsLayout()
@@ -210,6 +223,7 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
               },
               completion: {
                 didComplete in
+                self.dumpState("showPickerView() second animation completion block")
                 self.showingPicker = didComplete
                 if !didComplete { MSLogDebug("didn't complete, wtf?") }
             })
@@ -222,6 +236,7 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
 
   /** hidePickerView */
   func hidePickerView() {
+    dumpState("hidePickerView() invoked")
     if showingPicker {
       // Updated info label's transform before animation in case the text has chnaged
       let textRect = infoLabel.textRectForBounds(infoLabel.bounds, limitedToNumberOfLines: 1)
@@ -239,6 +254,7 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
         },
         completion: {
           didComplete in
+          self.dumpState("hidePickerView() first animation completion block")
           if didComplete {
             self.infoLabel.setNeedsLayout()
             UIView.animateWithDuration(0.25,
@@ -248,6 +264,7 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
               },
               completion: {
                 didComplete in
+                self.dumpState("hidePickerView() second animation completion block")
                 self.showingPicker = !didComplete
                 if !didComplete { MSLogDebug("didn't complete, wtf?") }
             })
@@ -258,48 +275,15 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
     }
   }
 
-  override var editing: Bool { didSet { updateForCurrentState() } }
-
-}
-/*
-extension BankCollectionDetailButtonCell: AKPickerViewDataSource, AKPickerViewDelegate {
-
-  /**
-  numberOfItemsInPickerView:
-
-  - parameter pickerView: AKPickerView
-
-  - returns: Int
-  */
-  @objc func numberOfItemsInPickerView(pickerView: AKPickerView) -> Int { return _data.count }
-
-  /**
-  pickerView:titleForItem:
-
-  - parameter pickerView: AKPickerView
-  - parameter item: Int
-
-  - returns: String
-  */
-  @objc func pickerView(pickerView: AKPickerView, titleForItem item: Int) -> String { return _data[item].title }
-
-  /**
-  pickerView:didSelectItem:
-
-  - parameter pickerView: AKPickerView
-  - parameter item: Int
-  */
-  @objc func pickerView(pickerView: AKPickerView, didSelectItem item: Int) {
-    selection = _data[item]
-    switch selection {
-      case .None:                       break
-      case .NilItem:                    didSelectItem?(nil)
-      case .CreateItem (_, let action): action()
-      case .DataItem   (_, let obj):    didSelectItem?(obj)
+  override var editing: Bool {
+    didSet {
+      if editing { showPickerView() } else { hidePickerView() }
+      updateForCurrentState()
     }
   }
+
 }
-*/
+
 extension BankCollectionDetailButtonCell.Item: Equatable {}
 /**
 Whether lhs is equal to rhs
