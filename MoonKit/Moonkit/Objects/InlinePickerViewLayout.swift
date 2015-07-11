@@ -122,12 +122,14 @@ class InlinePickerViewLayout: UICollectionViewLayout {
       x += width + cellPadding
     }
 
-    contentOffsetAdjustment = rawFrames[delegate.selection].midX - visibleRect.midX
-    if contentOffsetAdjustment != 0 && !(collectionView.decelerating || collectionView.tracking) {
-      var offset = visibleRect.origin
-      offset.x += contentOffsetAdjustment
-      collectionView.setContentOffset(offset, animated: false)
-    }
+    if !(collectionView.decelerating || collectionView.tracking || collectionView.dragging) {
+      contentOffsetAdjustment = rawFrames[delegate.selection].midX - visibleRect.midX
+      if contentOffsetAdjustment != 0 {
+        var offset = visibleRect.origin
+        offset.x += contentOffsetAdjustment
+        collectionView.setContentOffset(offset, animated: false)
+      }
+    } else { contentOffsetAdjustment = 0 }
 
     storedAttributes = AttributesIndex(
       (0 ..< itemCount).map { NSIndexPath(forRow: $0, inSection: 0) } .map {
@@ -196,12 +198,6 @@ class InlinePickerViewLayout: UICollectionViewLayout {
     attributes.transform3D = transform
     attributes.alpha = fabs(currentAngle) < CGFloat(M_PI_2) ? 1.0 : 0.0
     attributes.hidden = !editing && selection != attributes.indexPath.item
-
-//    if selection == attributes.indexPath.item && !editing {
-//      attributes.transform3D = CATransform3DIdentity
-//      attributes.transform = CGAffineTransform(tx: visibleRect.maxX - attributes.frame.maxX, ty: 0)
-//
-//    }
   }
 
   /**
