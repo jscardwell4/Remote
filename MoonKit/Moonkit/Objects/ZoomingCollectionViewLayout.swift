@@ -25,7 +25,7 @@ class BlurDecoration: UICollectionReusableView {
     constrain(𝗩|blur|𝗩, 𝗛|blur|𝗛)
   }
   override init(frame: CGRect) { super.init(frame: frame); setup() }
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); setup() }
+  required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder); setup() }
 }
 
 @objc public protocol ZoomingCollectionViewLayoutDelegate: UICollectionViewDelegate {
@@ -45,7 +45,7 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
 
   - parameter aDecoder: NSCoder
   */
-  required public init(coder aDecoder: NSCoder) {
+  required public init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     registerClass(BlurDecoration.self, forDecorationViewOfKind: BlurDecoration.kind)
   }

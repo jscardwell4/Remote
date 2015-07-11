@@ -675,6 +675,7 @@
 		C2CEFF291A32807E00F3BE24 /* TextInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextInputView.swift; sourceTree = "<group>"; };
 		C2CEFF2B1A328B2000F3BE24 /* FloatInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatInputView.swift; sourceTree = "<group>"; };
 		C2CF98691B0FD12900E32E41 /* PopOverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopOverView.swift; sourceTree = "<group>"; };
+		C2E076A31B4EF7420063D057 /* WTF.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = WTF.playground; path = Moonkit/WTF.playground; sourceTree = "<group>"; };
 		C2E3777F181C2F900066ACDB /* MSLogMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSLogMacros.h; sourceTree = "<group>"; };
 		C2E37782181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAssertionHandler+MSKitAdditions.h"; sourceTree = "<group>"; };
 		C2E37783181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAssertionHandler+MSKitAdditions.m"; sourceTree = "<group>"; };
@@ -996,6 +997,7 @@
 		C2CE884518138C4900555D63 = {
 			isa = PBXGroup;
 			children = (
+				C2E076A31B4EF7420063D057 /* WTF.playground */,
 				C211C2C01B45FD81004A24E4 /* InlinePickerView.playground */,
 				C2EEBA2B1B0961CE0041B1B1 /* Fields.playground */,
 				C24DD28A1AE4056D000306A0 /* Constraints.playground */,

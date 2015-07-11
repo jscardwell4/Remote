@@ -43,7 +43,7 @@ class ButtonPreview: RemoteElementPreview {
 
   :param: aDecoder NSCoder
   */
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
+  required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
   /** initializeViewFromPreset */
   override func initializeViewFromPreset() {

@@ -87,7 +87,7 @@ final class BankRootCell: UITableViewCell {
 
   - parameter aDecoder: NSCoder
   */
-  required init(coder aDecoder: NSCoder) {
+  required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     translatesAutoresizingMaskIntoConstraints = false
     contentView.addSubview(icon)

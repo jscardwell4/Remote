@@ -30,7 +30,7 @@ private class BlurDecoration: UICollectionReusableView {
   }
 
   override init(frame: CGRect) { super.init(frame: frame); setup() }
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); setup() }
+  required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder); setup() }
 }
 
 @objc protocol PhotoCollectionLayoutDelegate: UICollectionViewDelegate {
@@ -50,7 +50,7 @@ class PhotoCollectionLayout: UICollectionViewLayout {
 
   - parameter aDecoder: NSCoder
   */
-  required init(coder aDecoder: NSCoder) {
+  required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     registerClass(BlurDecoration.self, forDecorationViewOfKind: BlurDecoration.kind)
   }
@@ -120,7 +120,7 @@ class PhotoCollectionLayout: UICollectionViewLayout {
   override func prepareLayout() {
     if let count = collectionView?.numberOfItemsInSection(0) {
       itemCount = count
-      storedAttributes.removeAll(true)
+      storedAttributes.removeAll(keepCapacity: true)
       apply((0..<count).map{NSIndexPath(forRow: $0, inSection: 0)}) {
         self.storedAttributes[$0] = self.layoutAttributesForItemAtIndexPath($0)
       }

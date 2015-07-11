@@ -246,13 +246,13 @@ import MoonKit
 extension BankModelDelegate: NSFetchedResultsControllerDelegate {
 
   func controllerWillChangeContent(controller: NSFetchedResultsController) {
-    MSLogDebug("")
+//    MSLogDebug("")
     if controller === fetchedItems { beginItemsChanges?(self) }
     else if controller === fetchedCollections { beginCollectionsChanges?(self) }
   }
 
   func controllerDidChangeContent(controller: NSFetchedResultsController) {
-    MSLogDebug("")
+//    MSLogDebug("")
     if controller === fetchedItems { endItemsChanges?(self) }
     else if controller === fetchedCollections { endCollectionsChanges?(self) }
   }
@@ -267,9 +267,9 @@ extension BankModelDelegate: NSFetchedResultsControllerDelegate {
     if controller === fetchedItems { itemsDidChange?(self, change) }
     else if controller === fetchedCollections { collectionsDidChange?(self, change) }
 
-    MSLogDebug(",".join("object = \((anObject as! NamedModel).name)",
-                        "indexPath = \(toString(indexPath)), type = \(type)",
-                        "newIndexPath = \(toString(newIndexPath))"))
+//    MSLogDebug(", ".join("object = \((anObject as! NamedModel).name)",
+//                        "indexPath = \(toString(indexPath)), type = \(type)",
+//                        "newIndexPath = \(toString(newIndexPath))"))
   }
 
   func controller(controller: NSFetchedResultsController,
@@ -277,7 +277,7 @@ extension BankModelDelegate: NSFetchedResultsControllerDelegate {
           atIndex sectionIndex: Int,
     forChangeType type: NSFetchedResultsChangeType)
   {
-    MSLogDebug("sectionInfo = \(toString(sectionInfo)), sectionIndex = \(sectionIndex), type = \(type)")
+//    MSLogDebug("sectionInfo = \(toString(sectionInfo)), sectionIndex = \(sectionIndex), type = \(type)")
   }
 
 }

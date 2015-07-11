@@ -220,7 +220,7 @@ class PhotoCollectionBrowser: UIViewController, PhotoCollectionLayoutDelegate, U
 
   - parameter aDecoder: NSCoder
   */
-  required init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+  required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
   // MARK: - View management
 

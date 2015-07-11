@@ -65,6 +65,6 @@ final class BankCollectionCategoryCell: BankCollectionCell {
 
   - parameter aDecoder: NSCoder
   */
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
+  required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
 
 }

@@ -28,7 +28,7 @@ class InlinePickerViewCell: UICollectionViewCell {
 
   override init(frame: CGRect) { super.init(frame: frame); initializeIVARs() }
 
-  required init(coder aDecoder: NSCoder) {
+  required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     text = aDecoder.decodeObjectForKey("InlinePickerViewCellText") as? NSAttributedString
     selectedText = aDecoder.decodeObjectForKey("InlinePickerViewCellSelectedText") as? NSAttributedString

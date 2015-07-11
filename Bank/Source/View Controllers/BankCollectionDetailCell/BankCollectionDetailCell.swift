@@ -209,27 +209,11 @@ class BankCollectionDetailCell: UICollectionViewCell {
     */
     func objectFromAttributedText(text: NSAttributedString?) -> AnyObject? {
       if let t = text {
-        let scanner = NSScanner.localizedScannerWithString(t.string) as! NSScanner
         switch self {
-          case .IntData(let r):
-            var n: Int32 = 0
-            if scanner.scanInt(&n) && r ∋ n { return NSNumber(int: n) }
-          case .IntegerData(let r):
-            var n: Int = 0
-            if scanner.scanInteger(&n) && r ∋ n { return NSNumber(long: n) }
-          case .LongLongData(let r):
-            var n: Int64 = 0
-            if scanner.scanLongLong(&n) && r ∋ n { return NSNumber(longLong: n) }
-          case .FloatData(let r):
-            var n: Float = 0
-            if scanner.scanFloat(&n) && r ∋ n { return NSNumber(float: n) }
-          case .DoubleData(let r):
-            var n: Double = 0
-            if scanner.scanDouble(&n) && r ∋ n { return NSNumber(double: n) }
           case .AttributedStringData:
             return t
-          case .StringData:
-            return t.string
+          default:
+            return objectFromText(t.string)
         }
       }
       return nil
@@ -290,7 +274,7 @@ class BankCollectionDetailCell: UICollectionViewCell {
 
   - parameter aDecoder: NSCoder
   */
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
+  required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
 
   /** Hook for subclass cell setup */
   func initializeIVARs() {
@@ -318,12 +302,12 @@ class BankCollectionDetailCell: UICollectionViewCell {
   /** prepareForReuse */
   override func prepareForReuse() {
     super.prepareForReuse()
-//    info = nil
-//    infoDataType = .StringData
-//    shouldAllowNonDataTypeValue = nil
-//    valueDidChange = nil
-//    valueIsValid = nil
-//    sizeDidChange = nil
+    info = nil
+    infoDataType = .StringData
+    shouldAllowNonDataTypeValue = nil
+    valueDidChange = nil
+    valueIsValid = nil
+    sizeDidChange = nil
   }
 
 }

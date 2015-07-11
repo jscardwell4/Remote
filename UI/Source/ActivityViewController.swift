@@ -46,7 +46,7 @@ public final class ActivityViewController: UIViewController {
 
   - parameter aDecoder: NSCoder
   */
-  required public init(coder aDecoder: NSCoder) {
+  required public init?(coder aDecoder: NSCoder) {
     activityController = ActivityController.sharedController(context)
     super.init(coder: aDecoder)
     initializeReceptionists()

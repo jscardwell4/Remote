@@ -11,7 +11,7 @@ import UIKit
 public class LabeledStepper: UIControl {
 
   public override init(frame: CGRect) { super.init(frame: frame); initializeIVARs() }
-  public required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
+  public required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
 
   func initializeIVARs() {
     addSubview(label); addSubview(stepper)

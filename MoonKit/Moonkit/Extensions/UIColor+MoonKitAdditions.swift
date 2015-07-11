@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Chameleon
 
 extension UIColor: JSONValueConvertible {
   public var jsonValue: JSONValue { return JSONValue.String(string!) }
@@ -266,6 +267,19 @@ extension UIColor {
   - returns: UIColor?
   */
   public func darkenedTo(value: CGFloat) -> UIColor? { return darkenedToRed(value, green: value, blue: value, alpha: value) }
+
+  /**
+  brightnessAdjustedBy:
+
+  - parameter value: CGFloat
+
+  - returns: UIColor
+  */
+  public func brightnessAdjustedBy(value: CGFloat) -> UIColor {
+    let laba = LABA
+    let rgb = labToRGB(laba.l + value, laba.a, laba.b)
+    return UIColor(red: rgb.r, green: rgb.g, blue: rgb.b, alpha: laba.alpha)
+  }
 
   /**
   darkenedToColor:

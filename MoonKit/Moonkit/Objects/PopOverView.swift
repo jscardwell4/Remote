@@ -143,7 +143,7 @@ public class PopOverView: UIView {
 
   - parameter aDecoder: NSCoder
   */
-  required public init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
+  required public init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
 
 
 

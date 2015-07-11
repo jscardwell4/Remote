@@ -41,7 +41,7 @@ class BankCollectionDetailSection {
   var count: Int { return blocks.count }
 
   /** Lazy collection that maps row creation blocks to their results */
-  var rows: LazyRandomAccessCollection<MapCollectionView<ConstructorIndex, Row>> {
+  var rows: LazyRandomAccessCollection<MapCollection<ConstructorIndex, Row>> {
     return lazy(blocks).map {
       index, key, block -> Row in
       let row = block()
@@ -135,7 +135,7 @@ class BankCollectionDetailSection {
   */
   func removeAllRows(keepCapacity: Bool = false) {
     cache.removeAll(keepCapacity: keepCapacity)
-    blocks.removeAll(keepCapacity)
+    blocks.removeAll(keepCapacity: keepCapacity)
   }
 
   /**

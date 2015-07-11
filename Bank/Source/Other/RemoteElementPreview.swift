@@ -76,7 +76,7 @@ class RemoteElementPreview: UIView {
 
   :param: aDecoder NSCoder
   */
-  required init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+  required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
   /** updateConstraints */
   override func updateConstraints() {
@@ -233,7 +233,7 @@ extension RemoteElementPreview {
 
     :param: aDecoder NSCoder
     */
-    required init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
   }
 }

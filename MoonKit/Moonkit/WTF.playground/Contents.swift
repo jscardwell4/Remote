@@ -1,4 +1,5 @@
 //: Playground - noun: a place where people can play
+
 import Foundation
 import UIKit
 import MoonKit
@@ -9,5 +10,5 @@ picker.backgroundColor = UIColor.yellowColor()
 picker.labels = ["No Manufacturer", "Dish", "Samsung", "Sony"]
 picker.setNeedsDisplay()
 
-XCPShowView("picker", view: picker)
-picker
+//XCPShowView("picker", view: picker)
+picker.backgroundColor = UIColor.yellowColor()

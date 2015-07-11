@@ -15,7 +15,7 @@ public class MSButton: UIButton {
 
 //  public override init() { super.init() }
   public override init(frame: CGRect) { super.init(frame: frame) }
-  public required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
+  public required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
 
   /**

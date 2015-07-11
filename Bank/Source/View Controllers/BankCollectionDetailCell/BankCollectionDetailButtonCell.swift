@@ -23,8 +23,7 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
   */
   override func initializeIVARs() {
     super.initializeIVARs()
-//    picker.alpha = 0
-    infoLabel.alpha = 0
+//    infoLabel.alpha = 0
     picker.nametag = "picker"
     picker.didSelectItem = {
       _, row in
@@ -38,15 +37,15 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
       }
     }
     contentView.addSubview(nameLabel)
-    contentView.addSubview(infoLabel)
+//    contentView.addSubview(infoLabel)
     contentView.addSubview(picker)
   }
 
   override func updateConstraints() {
     removeAllConstraints()
     super.updateConstraints()
-    constrain(𝗛|-nameLabel--infoLabel-|𝗛, 𝗛|-nameLabel--picker-|𝗛)
-    constrain(infoLabel.centerY => centerY, picker.centerY => centerY, nameLabel.centerY => centerY)
+    constrain(/*𝗛|-nameLabel--infoLabel-|𝗛, */𝗛|-nameLabel--picker-|𝗛)
+    constrain(/*infoLabel.centerY => centerY, */picker.centerY => centerY, nameLabel.centerY => centerY)
   }
 
   /** prepareForReuse */
@@ -55,13 +54,12 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
     super.prepareForReuse()
 //    infoLabel.transform = CGAffineTransform.identityTransform
 //    infoLabel.alpha = 1
-//    _data.removeAll()
+    _data.removeAll()
 //    picker.alpha = 0
-//    selection = .None
-//    createItem = nil
-//    didSelectItem = nil
-//    titleForInfo = nil
-
+    selection = .None
+    createItem = nil
+    didSelectItem = nil
+    titleForInfo = nil
   }
 
   /**
@@ -69,7 +67,7 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
 
   - parameter action: () -> Void
   */
-  private func swapSelectWithAction(action: () -> Void) { _select = select; select = action }
+//  private func swapSelectWithAction(action: () -> Void) { _select = select; select = action }
 
   /**
   titleForObject:
@@ -95,7 +93,7 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
       }
       if let item = searchItem, idx = _data.indexOf(item) {
         selection = _data[idx]
-        picker.selectItem(idx, animated: showingPicker)
+        picker.selectItem(idx, animated: false)
       }
     }
   }
@@ -137,7 +135,7 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
   // MARK: Picker view
 
   private var _data: [Item] = []
-  private var selection: Item = .None { didSet { infoLabel.text = selection.title } }
+  private var selection: Item = .None //{ didSet { infoLabel.text = selection.title } }
 
   enum Item {
     case None
@@ -161,28 +159,24 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
     let view = InlinePickerView(autolayout: true)
     view.font = Bank.infoFont
     view.selectedFont = Bank.infoFont
-    let color = Bank.infoColor
-    view.textColor = color
-    let laba = color.LABA
-    let darkerRGB = labToRGB(laba.l - 15, laba.a, laba.b)
-    let darkerColor = rgba(Int(darkerRGB.r * 255), Int(darkerRGB.g * 255), Int(darkerRGB.b * 255), Int(laba.alpha * 255))
-    view.selectedTextColor = darkerColor
+    view.textColor = Bank.infoColor
+    view.selectedTextColor = Bank.infoColor.brightnessAdjustedBy(-15)
     return view
     }()
 
-  private func updateForCurrentState() {
-    switch (editing, showingPicker) {
-      case (true,  true): swapSelectWithAction(hidePickerView)
-      case (false, true): hidePickerView()
-      case (true, false): swapSelectWithAction(showPickerView)
-      default:            select = _select ?? select
-    }
-  }
+//  private func updateForCurrentState() {
+//    switch (editing, showingPicker) {
+//      case (true,  true): swapSelectWithAction(hidePickerView)
+//      case (false, true): hidePickerView()
+//      case (true, false): swapSelectWithAction(showPickerView)
+//      default:            select = _select ?? select
+//    }
+//  }
 
-  private var showingPicker: Bool = false { didSet { updateForCurrentState() } }
+//  private var showingPicker: Bool = false { didSet { updateForCurrentState() } }
 
   /** Store select property value so we can temporarily override it */
-  private var _select: (() -> Void)?
+//  private var _select: (() -> Void)?
 
   private func dumpState(message: String) {
     MSLogDebug("\n\t".join(
@@ -190,95 +184,92 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
       description,
       "constraints = \n\t" + "\n\t".join(constraints.map {$0.prettyDescription}),
       "nameLabel = \(nameLabel.description)",
-      "infoLabel = \(infoLabel.description)",
+//      "infoLabel = \(infoLabel.description)",
       "picker = \(picker.description)"
       ))
   }
 
   /** showPickerView */
-  func showPickerView() {
-    dumpState("showPickerView() invoked")
-    if !showingPicker && editing {
-      let textRect = infoLabel.textRectForBounds(infoLabel.bounds, limitedToNumberOfLines: 1)
-      let offset = textRect.minX / 2
-      let transform = CGAffineTransform(tx: -offset, ty: 0)
-      infoLabel.setNeedsLayout()
-      UIView.animateWithDuration(0.25,
-        animations: {
-          self.infoLabel.transform = transform
-          self.infoLabel.layoutIfNeeded()
-        },
-        completion: {
-          didComplete in
-          self.dumpState("showPickerView() first animation completion block")
-          if didComplete {
-            self.infoLabel.setNeedsLayout()
-            self.picker.setNeedsLayout()
-            UIView.animateWithDuration(0.25,
-              animations: {
-                self.infoLabel.alpha = 0
-                self.picker.alpha = 1
-                self.infoLabel.layoutIfNeeded()
-                self.picker.layoutIfNeeded()
-              },
-              completion: {
-                didComplete in
-                self.dumpState("showPickerView() second animation completion block")
-                self.showingPicker = didComplete
-                if !didComplete { MSLogDebug("didn't complete, wtf?") }
-            })
-          } else {
-            MSLogDebug("didn't complete, wtf?")
-          }
-      })
-    }
-  }
+//  func showPickerView() {
+//    if !showingPicker && editing {
+//      let textRect = infoLabel.textRectForBounds(infoLabel.bounds, limitedToNumberOfLines: 1)
+//      MSLogDebug("infoLabel.frame = \(infoLabel.frame), textRect = \(textRect), picker.frame = \(picker.frame), picker.selectedItemFrame = \(picker.selectedItemFrame)")
+//      let offset = textRect.minX / 2
+//      let transform = CGAffineTransform(tx: -offset, ty: 0)
+//      infoLabel.setNeedsLayout()
+//      UIView.animateWithDuration(0.25,
+//        animations: {
+//          self.infoLabel.transform = transform
+//          self.infoLabel.layoutIfNeeded()
+//        },
+//        completion: {
+//          didComplete in
+//          if didComplete {
+//            self.infoLabel.setNeedsLayout()
+//            self.picker.setNeedsLayout()
+//            UIView.animateWithDuration(0.25,
+//              animations: {
+//                self.infoLabel.alpha = 0
+//                self.picker.alpha = 1
+//                self.infoLabel.layoutIfNeeded()
+//                self.picker.layoutIfNeeded()
+//              },
+//              completion: {
+//                didComplete in
+//                self.showingPicker = didComplete
+//                if !didComplete { MSLogDebug("didn't complete, wtf?") }
+//            })
+//          } else {
+//            MSLogDebug("didn't complete, wtf?")
+//          }
+//      })
+//    }
+//  }
 
   /** hidePickerView */
-  func hidePickerView() {
-    dumpState("hidePickerView() invoked")
-    if showingPicker {
-      // Updated info label's transform before animation in case the text has chnaged
-      let textRect = infoLabel.textRectForBounds(infoLabel.bounds, limitedToNumberOfLines: 1)
-      let offset = textRect.minX / 2
-      let transform = CGAffineTransform(tx: -offset, ty: 0)
-      infoLabel.transform = transform
-      infoLabel.setNeedsLayout()
-      picker.setNeedsLayout()
-      UIView.animateWithDuration(0.25,
-        animations: {
-          self.infoLabel.alpha = 1
-          self.picker.alpha = 0
-          self.infoLabel.layoutIfNeeded()
-          self.picker.layoutIfNeeded()
-        },
-        completion: {
-          didComplete in
-          self.dumpState("hidePickerView() first animation completion block")
-          if didComplete {
-            self.infoLabel.setNeedsLayout()
-            UIView.animateWithDuration(0.25,
-              animations: {
-                self.infoLabel.transform = CGAffineTransform.identityTransform
-                self.infoLabel.layoutIfNeeded()
-              },
-              completion: {
-                didComplete in
-                self.dumpState("hidePickerView() second animation completion block")
-                self.showingPicker = !didComplete
-                if !didComplete { MSLogDebug("didn't complete, wtf?") }
-            })
-          } else {
-            MSLogDebug("didn't complete, wtf?")
-          }
-      })
-    }
-  }
+//  func hidePickerView() {
+//    if showingPicker {
+//      // Updated info label's transform before animation in case the text has chnaged
+//      let textRect = infoLabel.textRectForBounds(infoLabel.bounds, limitedToNumberOfLines: 1)
+//      let offset = textRect.minX / 2
+//      let transform = CGAffineTransform(tx: -offset, ty: 0)
+//      infoLabel.transform = transform
+//      infoLabel.setNeedsLayout()
+//      picker.setNeedsLayout()
+//      UIView.animateWithDuration(0.25,
+//        animations: {
+//          self.infoLabel.alpha = 1
+//          self.picker.alpha = 0
+//          self.infoLabel.layoutIfNeeded()
+//          self.picker.layoutIfNeeded()
+//        },
+//        completion: {
+//          didComplete in
+//          if didComplete {
+//            self.infoLabel.setNeedsLayout()
+//            UIView.animateWithDuration(0.25,
+//              animations: {
+//                self.infoLabel.transform = CGAffineTransform.identityTransform
+//                self.infoLabel.layoutIfNeeded()
+//              },
+//              completion: {
+//                didComplete in
+//                self.showingPicker = !didComplete
+//                if !didComplete { MSLogDebug("didn't complete, wtf?") }
+//            })
+//          } else {
+//            MSLogDebug("didn't complete, wtf?")
+//          }
+//      })
+//    }
+//  }
 
   override var editing: Bool {
     didSet {
-      if editing { showPickerView() } else { hidePickerView() }
-      updateForCurrentState()
+      guard oldValue != editing else { return }
+      picker.editing = editing
+//      if editing { showPickerView() } else { hidePickerView() }
+//      updateForCurrentState()
     }
   }
 

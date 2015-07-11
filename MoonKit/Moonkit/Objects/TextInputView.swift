@@ -125,6 +125,6 @@ public class TextInputView: UIInputView {
 
   - parameter aDecoder: NSCoder
   */
-  required public init(coder aDecoder: NSCoder) { target = nil; super.init(coder: aDecoder) }
+  required public init?(coder aDecoder: NSCoder) { target = nil; super.init(coder: aDecoder) }
 
 }

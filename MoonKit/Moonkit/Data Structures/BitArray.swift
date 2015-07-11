@@ -107,7 +107,7 @@ extension BitArray: CustomStringConvertible {
   }
   public func toStringWithLabels(labels: [String], emptyLabel: String = "None") -> String {
     var components: [String] = []
-    for (label, bit) in Zip2(labels, self) {
+    for (label, bit) in Zip2Sequence(labels, self) {
       if bit.boolValue { components += [label] }
     }
     if components.isEmpty { components += [emptyLabel] }

@@ -84,7 +84,7 @@ class BankCollectionDetailSectionHeader: UICollectionReusableView {
 
   - parameter aDecoder: NSCoder
   */
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
+  required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
 
   /** prepareForReuse */
   override func prepareForReuse() { title = nil; super.prepareForReuse() }

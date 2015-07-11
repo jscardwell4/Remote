@@ -345,7 +345,7 @@ final class FieldView: UIView {
     return firstSubviewMatching({controlTypeIdentifiers.contains(ObjectIdentifier(($0 as AnyObject).dynamicType.self))})
   }
 
-  required init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+  required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
   // MARK: - Constraints
 

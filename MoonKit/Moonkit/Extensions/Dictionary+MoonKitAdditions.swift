@@ -242,7 +242,7 @@ public func inflate(inout dict: [String:AnyObject]) {
 public func zipDict<S0:SequenceType, S1:SequenceType
   where S0.Generator.Element:Hashable>(s0: S0, _ s1: S1) -> [S0.Generator.Element:S1.Generator.Element]
 {
-  let arrayGenerator: Zip2<S0, S1> = zip(s0, s1)
+  let arrayGenerator: Zip2Sequence<S0, S1> = zip(s0, s1)
   return Dictionary(Array(arrayGenerator))
 }
 

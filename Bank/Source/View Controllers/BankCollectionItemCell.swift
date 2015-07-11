@@ -170,7 +170,7 @@ final class BankCollectionItemCell: BankCollectionCell {
   }
 
   override init(frame: CGRect) { super.init(frame: frame); initializeIVARs() }
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
+  required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
 
   override func prepareForReuse() { super.prepareForReuse(); item = nil }
 

@@ -41,7 +41,7 @@ class ItemCellZoom: UICollectionReusableView {
   }
 
   override init(frame: CGRect) { super.init(frame: frame); setup() }
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); setup() }
+  required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder); setup() }
 
   /** prepareForReuse */
   override func prepareForReuse() { image = nil }

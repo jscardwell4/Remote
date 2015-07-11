@@ -73,6 +73,6 @@ public class IntegerInputView: TextInputView {
 
   - parameter aDecoder: NSCoder
   */
-  required public init(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
+  required public init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
 
 }

@@ -36,7 +36,7 @@ final class BankCollectionFilteringDetailSection: BankCollectionDetailSection {
 
   var activePredicatesDidChange: ((BankCollectionFilteringDetailSection) -> Void)?
 
-  var filteredRows: LazySequence<FilterSequenceView<MapCollectionView<ConstructorIndex, Row>>> {
+  var filteredRows: LazySequence<FilterSequence<MapCollection<ConstructorIndex, Row>>> {
     return rows.filter {
       (row: Row) -> Bool in
 

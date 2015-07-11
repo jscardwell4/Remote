@@ -52,14 +52,14 @@ public final class KVOReceptionist: NSObject {
   /**
   observeValueForKeyPath:ofObject:change:context:
 
-  - parameter keyPath: String
-  - parameter object: AnyObject
-  - parameter change: [NSObject AnyObject]
+  - parameter keyPath: String?
+  - parameter object: AnyObject?
+  - parameter change: [String:AnyObject]?
   - parameter context: UnsafeMutablePointer<Void>
   */
   public override func observeValueForKeyPath(keyPath: String?,
                                      ofObject object: AnyObject?,
-                                       change: [NSObject:AnyObject]?,
+                                       change: [String:AnyObject]?,
                                       context: UnsafeMutablePointer<Void>)
   {
     if self.keyPath == keyPath && self.object === object && context == observingContext {

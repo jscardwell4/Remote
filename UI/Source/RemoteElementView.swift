@@ -79,7 +79,7 @@ public class RemoteElementView: UIView, Named {
 
   - parameter aDecoder: NSCoder
   */
-  required public init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+  required public init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
   /** attachGestureRecognizers */
   func attachGestureRecognizers() {}

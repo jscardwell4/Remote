@@ -39,7 +39,7 @@ class BankCollectionDetailController: UICollectionViewController {
     hidesBottomBarWhenPushed = true
   }
 
-  required init(coder aDecoder: NSCoder) { fatalError("init(coder aDecoder: NSCoder) not supported") }
+  required init?(coder aDecoder: NSCoder) { fatalError("init?(coder aDecoder: NSCoder) not supported") }
 
   // MARK: - Loading
 

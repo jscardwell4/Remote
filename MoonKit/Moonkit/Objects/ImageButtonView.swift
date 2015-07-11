@@ -29,7 +29,7 @@ public class ImageButtonView: UIImageView {
 
   public override init(frame: CGRect) { super.init(frame: frame); initializeIVARs() }
 
-  public required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
+  public required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
 
   public convenience init(image: UIImage, highlightedImage: UIImage, action: Action? = nil) {
     self.init(image: image, highlightedImage: highlightedImage)

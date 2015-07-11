@@ -25,7 +25,7 @@ public class InlinePickerView: UIView {
 
   - parameter aDecoder: NSCoder
   */
-  required public init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
+  required public init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
 
   /** initializeIVARs */
   private func initializeIVARs() {
@@ -36,7 +36,8 @@ public class InlinePickerView: UIView {
 
     addSubview(collectionView)
     collectionView.nametag = "collectionView"
-    (collectionView.collectionViewLayout as! InlinePickerViewLayout).delegate = self
+    layout.delegate = self
+    collectionView.scrollEnabled = false
     collectionView.translatesAutoresizingMaskIntoConstraints = false
     collectionView.dataSource = self
     collectionView.delegate = self
@@ -56,21 +57,16 @@ public class InlinePickerView: UIView {
   }
 
   private let collectionView = UICollectionView(frame: CGRect.zeroRect, collectionViewLayout: InlinePickerViewLayout())
+  private var layout: InlinePickerViewLayout { return collectionView.collectionViewLayout as! InlinePickerViewLayout }
 
   override public class func requiresConstraintBasedLayout() -> Bool { return true }
-  override public func intrinsicContentSize() -> CGSize {
-    let size = CGSize(width: itemWidths.sum + itemPadding * max(CGFloat(labels.count - 1), 0), height: itemHeight)
-    MSLogDebug("intrinsicContentSize = \(size)")
-    return size
-  }
+  override public func intrinsicContentSize() -> CGSize { return CGSize(width: UIViewNoIntrinsicMetric, height: itemHeight) }
 
   override public var description: String {
     return super.description + "\n\t" + "\n\t".join(
       "labels = \(labels)",
-      "constraints: \n\t" + "\n\t".join(constraints.map({$0.prettyDescription})),
       "collectionView = \(collectionView.description)",
-      "collectionView.constraints: \n\t" + "\n\t".join(collectionView.constraints.map({$0.prettyDescription})),
-      "visible cells = \(collectionView.visibleCells())"
+      "collectionViewLayout = \(collectionView.collectionViewLayout.description)"
     )
   }
 
@@ -81,28 +77,30 @@ public class InlinePickerView: UIView {
   - parameter animated: Bool
   */
   public func selectItem(item: Int, animated: Bool) {
-    guard selection != item && (0..<labels.count).contains(item) else { return }
+    guard (0..<labels.count).contains(item) else { return }
     selection = item
-    collectionView.selectItemAtIndexPath(NSIndexPath(forItem: selection, inSection: 0),
-                                animated: false,
-                          scrollPosition: .None)
-    if let layout = collectionView.collectionViewLayout as? InlinePickerViewLayout {
-      let offset = layout.offsetForItemAtIndex(selection)
-      MSLogDebug("cell for item \(selection) with label '\(labels[item]) where offset = \(offset)")
+    if let offset = layout.offsetForItemAtIndex(selection) {
+      collectionView.selectItemAtIndexPath(NSIndexPath(forItem: selection, inSection: 0),
+                                  animated: false,
+                            scrollPosition: .None)
+      MSLogDebug("selecting cell for item \(selection) with label '\(labels[item]) where offset = \(offset)")
       collectionView.setContentOffset(offset, animated: animated)
     }
   }
 
+  public override func layoutSubviews() {
+    super.layoutSubviews()
+    if selection > -1 { selectItem(selection, animated: false) }
+  }
+
   public var labels: [String] = [] {
     didSet {
-      refresh()
-      if labels.count > 0 {
-        setNeedsLayout()
-        layoutIfNeeded()
-//        collectionView.setNeedsLayout()
-//        collectionView.layoutIfNeeded()
-        selectItem(0, animated: true)
-      }
+      collectionView.setNeedsLayout()
+      collectionView.layoutIfNeeded()
+      if labels.count > 0 && selection < 0 { selection = 0 }
+      setNeedsLayout()
+      layoutIfNeeded()
+      reloadData()
     }
   }
   public var didSelectItem: ((InlinePickerView, Int) -> Void)?
@@ -116,7 +114,7 @@ public class InlinePickerView: UIView {
       if   font.pointSize > selectedFont.pointSize
         || (oldValue.pointSize > selectedFont.pointSize && oldValue.pointSize > font.pointSize)
       {
-        refresh()
+        reloadData()
       }
     }
   }
@@ -138,7 +136,7 @@ public class InlinePickerView: UIView {
       if    selectedFont.pointSize > font.pointSize
         || (oldValue.pointSize > font.pointSize && oldValue.pointSize > selectedFont.pointSize)
       {
-        refresh()
+        reloadData()
       }
     }
   }
@@ -152,30 +150,38 @@ public class InlinePickerView: UIView {
     }
   }
 
-  private func refresh() {
-    invalidateIntrinsicContentSize()
-    collectionView.collectionViewLayout.invalidateLayout()
-    collectionView.setNeedsUpdateConstraints()
-    collectionView.setNeedsLayout()
-    setNeedsUpdateConstraints()
-    setNeedsLayout()
-  }
-
   public func reloadData() {
     collectionView.collectionViewLayout.invalidateLayout()
     collectionView.reloadData()
+    layoutIfNeeded()
+    if selection > -1 { selectItem(selection, animated: false) }
   }
 
   public var itemHeight: CGFloat { return ceil(max(font.lineHeight, selectedFont.lineHeight)) * 2 }
-  public var itemPadding: CGFloat = 8.0 {
-    didSet {
-      refresh()
-    }
-  }
+  public var itemPadding: CGFloat = 8.0 { didSet { reloadData() } }
 
   var itemWidths: [CGFloat] { return labels.map {[a = [NSFontAttributeName:font]] in ceil($0.sizeWithAttributes(a).width)} }
 
-  private var selection: Int = -1
+  var selection: Int = -1
+
+  public var selectedItemFrame: CGRect? {
+    if selection > -1,
+      let cell = collectionView.cellForItemAtIndexPath(NSIndexPath(forItem: selection, inSection: 0)) where cell.selected
+    {
+      var frame = cell.frame
+      frame.origin = frame.origin - collectionView.contentOffset
+      return frame
+    } else { return nil }
+  }
+
+  public var editing = false {
+    didSet {
+      layout.invalidateLayout()
+//      setNeedsLayout()
+//      layoutIfNeeded()
+      collectionView.scrollEnabled = editing
+    }
+  }
 }
 
 // MARK: - UICollectionViewDataSource
@@ -211,22 +217,10 @@ extension InlinePickerView: UICollectionViewDelegate {
     didSelectItem?(self, indexPath.item)
   }
 
-//  public func collectionView(collectionView: UICollectionView,
-//             willDisplayCell cell: UICollectionViewCell,
-//          forItemAtIndexPath indexPath: NSIndexPath)
-//  {
-//    if cell.selected, let layout = collectionView.collectionViewLayout as? InlinePickerViewLayout {
-//      let offset = layout.offsetForItemAtIndex(indexPath.item)
-//      MSLogDebug("cell for item \(indexPath.item) with label '\(labels[indexPath.item]) where offset = \(offset)")
-//      collectionView.setContentOffset(offset, animated: false)
-//    }
-//  }
-
 }
 
 extension InlinePickerView: UIScrollViewDelegate {
   public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-    MSLogDebug("")
     guard let item = collectionView.indexPathsForSelectedItems()?.first?.item else {
       MSLogWarn("failed to get index path for selected cell")
       return
@@ -238,14 +232,14 @@ extension InlinePickerView: UIScrollViewDelegate {
                           withVelocity velocity: CGPoint,
                    targetContentOffset: UnsafeMutablePointer<CGPoint>)
   {
-    MSLogDebug("")
     let offset = targetContentOffset.memory
     guard let item = (collectionView.collectionViewLayout as! InlinePickerViewLayout).indexOfItemAtOffset(offset) else {
       MSLogWarn("failed to get index path for cell at point \(offset)")
       return
     }
     // update selection
-    MSLogDebug("selecting item \(item)")
+    MSLogDebug("selecting cell for item \(selection) with label '\(labels[item]) where offset = \(offset)")
+    selection = item
     collectionView.selectItemAtIndexPath(NSIndexPath(forItem: item, inSection: 0), animated: false, scrollPosition:.None)
   }
 }

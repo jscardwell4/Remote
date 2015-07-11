@@ -90,7 +90,7 @@ private class AKCollectionViewCell: UICollectionViewCell {
 
   init() { super.init(frame: CGRectZero); initialize() }
   override init(frame: CGRect) { super.init(frame: frame); initialize() }
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initialize() }
+  required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initialize() }
 }
 
 // MARK: AKCollectionViewLayout
@@ -107,7 +107,7 @@ private class AKCollectionViewLayout: UICollectionViewFlowLayout {
 
   override init() { super.init(); initialize() }
 
-  required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initialize() }
+  required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initialize() }
 
   private override func prepareLayout() {
     let visibleRect = CGRect(origin: collectionView!.contentOffset, size: collectionView!.bounds.size)
@@ -278,7 +278,7 @@ public class AKPickerView: UIView, UICollectionViewDataSource, UICollectionViewD
 
   public override init(frame: CGRect) { super.init(frame: frame); initialize() }
 
-  public required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initialize() }
+  public required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initialize() }
 
   deinit { collectionView.delegate = nil }
 

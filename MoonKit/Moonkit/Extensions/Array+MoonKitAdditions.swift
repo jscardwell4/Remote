@@ -9,7 +9,7 @@
 import Foundation
 
 extension Array {
-  func compressedMap<U>(transform: (T) -> U?) -> [U] { return MoonKit.compressedMap(self, transform) }
+  func compressedMap<U>(transform: (Element) -> U?) -> [U] { return MoonKit.compressedMap(self, transform) }
 }
 
 extension Array: NestingContainer {

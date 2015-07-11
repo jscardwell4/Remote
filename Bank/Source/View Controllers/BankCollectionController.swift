@@ -194,7 +194,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
 	  }
   }
 
-  required init(coder aDecoder: NSCoder) { fatalError("init(coder aDecoder: NSCoder) not supported") }
+  required init?(coder aDecoder: NSCoder) { fatalError("init?(coder aDecoder: NSCoder) not supported") }
 
   // MARK: - View lifecycle
 

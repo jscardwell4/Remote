@@ -30,7 +30,7 @@ public class FormViewController: UIViewController {
     modalTransitionStyle = .CrossDissolve
   }
 
-  public required init(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+  public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
   // MARK: Customizing the form's appearance
 

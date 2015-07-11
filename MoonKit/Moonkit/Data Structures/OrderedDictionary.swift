@@ -23,7 +23,7 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
   public var userInfo: [String:AnyObject]?
   public var count: Int { return _keys.count }
   public var isEmpty: Bool { return _keys.isEmpty }
-  public var values: LazyForwardCollection<MapCollectionView<[Key], Value>> {
+  public var values: LazyForwardCollection<MapCollection<[Key], Value>> {
     return keys.map({self.dictionary[$0]!})
   }
 
@@ -270,7 +270,7 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
 
   - parameter keepCapacity: Bool = false
   */
-  public mutating func removeAll(keepCapacity: Bool = false) {
+  public mutating func removeAll(keepCapacity keepCapacity: Bool = false) {
     _keys.removeAll(keepCapacity: keepCapacity)
     dictionary.removeAll(keepCapacity: keepCapacity)
   }

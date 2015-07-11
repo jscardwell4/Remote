@@ -31,7 +31,7 @@ public class LabelButton: UILabel {
 
   public override init(frame: CGRect) { super.init(frame: frame); initializeIVARs() }
 
-  public required init(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
+  public required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
 
   public var actions: [Action] = []
 
