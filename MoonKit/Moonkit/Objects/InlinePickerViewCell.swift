@@ -35,6 +35,17 @@ class InlinePickerViewCell: UICollectionViewCell {
     initializeIVARs()
   }
 
+  override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {
+    super.applyLayoutAttributes(layoutAttributes)
+    layer.zPosition = (layoutAttributes as? InlinePickerViewLayout.Attributes)?.zPosition ?? 0.0
+  }
+
+  override var description: String {
+    var result = String(dropLast(super.description.characters))
+    result.extend("; text = " + (text != nil ? "'\(text!.string)'" : "nil") + ">")
+    return result
+  }
+
   private func initializeIVARs() {
     layer.doubleSided = false
     layer.shouldRasterize = true

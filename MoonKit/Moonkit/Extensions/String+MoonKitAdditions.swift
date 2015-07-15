@@ -136,9 +136,10 @@ public extension String {
   public var forwardSlashEncoded: String { return subbed("/", "%2F") }
   public var forwardSlashDecoded: String { return subbed("%2F", "/").subbed("%2f", "/") }
 
-  public func indentedBy(indent: Int) -> String {
+  public func indentedBy(indent: Int, preserveFirstLineIndent preserveFirst: Bool = false) -> String {
     let spacer = " " * indent
-    return spacer + "\n\(spacer)".join("\n".split(self))
+    let result = "\n\(spacer)".join("\n".split(self))
+    return preserveFirst ? result : spacer + result
   }
 
   /**
