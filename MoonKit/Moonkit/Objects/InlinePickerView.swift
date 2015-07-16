@@ -90,10 +90,10 @@ public class InlinePickerView: UIView {
       collectionView.selectItemAtIndexPath(NSIndexPath(forItem: selection, inSection: 0),
                                   animated: false,
                             scrollPosition: .None)
-      MSLogDebug("selecting cell for item \(selection) with label '\(labels[item]) where offset = \(offset)")
+      MSLogVerbose("selecting cell for item \(selection) with label '\(labels[item]) where offset = \(offset)")
       collectionView.setContentOffset(offset, animated: animated)
     } else {
-      MSLogDebug("could not get an offset for item \(item), invalidating layout …")
+      MSLogVerbose("could not get an offset for item \(item), invalidating layout …")
       layout.invalidateLayout()
     }
   }
@@ -245,7 +245,7 @@ extension InlinePickerView: UICollectionViewDelegate {
   - parameter indexPath: NSIndexPath
   */
   public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-    MSLogDebug("")
+//    MSLogDebug("")
     didSelectItem?(self, indexPath.item)
   }
 
@@ -274,7 +274,7 @@ extension InlinePickerView: UIScrollViewDelegate {
   public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
 //    MSLogDebug("")
     guard let item = collectionView.indexPathsForSelectedItems()?.first?.item else {
-      MSLogWarn("failed to get index path for selected cell")
+      MSLogVerbose("failed to get index path for selected cell")
       return
     }
     // invoke selection handler
@@ -293,11 +293,11 @@ extension InlinePickerView: UIScrollViewDelegate {
   {
     let offset = targetContentOffset.memory
     guard let item = (collectionView.collectionViewLayout as! InlinePickerViewLayout).indexOfItemAtOffset(offset) else {
-      MSLogWarn("failed to get index path for cell at point \(offset)")
+      MSLogVerbose("failed to get index path for cell at point \(offset)")
       return
     }
     // update selection
-    MSLogDebug("selecting cell for item \(selection) with label '\(labels[item]) where offset = \(offset)")
+    MSLogVerbose("selecting cell for item \(selection) with label '\(labels[item]) where offset = \(offset)")
     selection = item
     collectionView.selectItemAtIndexPath(NSIndexPath(forItem: item, inSection: 0), animated: false, scrollPosition:.None)
   }

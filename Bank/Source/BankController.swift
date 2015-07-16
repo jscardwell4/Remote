@@ -50,7 +50,7 @@ public class BankController: UIViewController, BankItemImportExportController {
   */
   private func buttonAction(button: ImageButtonView) {
     if let rootCategory = RootCategory(rawValue: button.tag) {
-      MSLogDebug("rootCategory = \(rootCategory)")
+//      MSLogDebug("rootCategory = \(rootCategory)")
       let collectionDelegate: BankModelDelegate
       switch rootCategory {
         case .Presets:

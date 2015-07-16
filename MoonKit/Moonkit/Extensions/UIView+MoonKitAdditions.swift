@@ -208,8 +208,100 @@ public extension UIView {
   - returns: [NSLayoutConstraint]
   */
   public func constraintsWithIdentifierTag(tag: String) -> [NSLayoutConstraint] {
-    return (constraints as [NSLayoutConstraint]).filter {
-      if let identifier = $0.identifier where tagsFromIdentifier(identifier) ∋ tag { return true } else { return false }
+    return constraints.filter { tagsFromIdentifier($0.identifier) ∋ tag }
+  }
+
+  /**
+  constraintsWithIdentifier:
+
+  - parameter identifier: Identifier
+
+  - returns: [NSLayoutConstraint]
+  */
+  public func constraintsWithIdentifier(identifier: Identifier) -> [NSLayoutConstraint] {
+    return constraints.filter { $0.identifier == identifier.string }
+  }
+
+  /**
+  constraintsWithTag:
+
+  - parameter tag: Identifier.Tag
+
+  - returns: [NSLayoutConstraint]
+  */
+  @nonobjc public func constraintsWithTag(tag: Identifier.Tag) -> [NSLayoutConstraint] {
+    return constraints.filter {
+      guard let id = $0.identifier else { return false }
+      return Identifier(id).tags ∋ tag
+    }
+  }
+
+  /**
+  constraintsWithTags:
+
+  - parameter tags: [Identifier.Tag]
+
+  - returns: [NSLayoutConstraint]
+  */
+  public func constraintsWithTags(tags: [Identifier.Tag]) -> [NSLayoutConstraint] {
+    return constraints.filter {
+      guard let id = $0.identifier else { return false }
+      return Set(Identifier(id).tags) ⊇ tags
+    }
+  }
+  /**
+  constraintsWithPrefixTag:
+
+  - parameter tag: Identifier.Tag
+
+  - returns: [NSLayoutConstraint]
+  */
+  public func constraintsWithPrefixTag(tag: Identifier.Tag) -> [NSLayoutConstraint] {
+    return constraints.filter {
+      guard let id = $0.identifier else { return false }
+      return Identifier(id).tags.first == tag
+    }
+  }
+
+  /**
+  constraintsWithPrefixTags:
+
+  - parameter tags: [Identifier.Tag]
+
+  - returns: [NSLayoutConstraint]
+  */
+  public func constraintsWithPrefixTags(tags: [Identifier.Tag]) -> [NSLayoutConstraint] {
+    return constraints.filter {
+      guard let id = $0.identifier else { return false }
+      return Identifier(id).tags.startsWith(tags)
+    }
+  }
+
+  /**
+  constraintsWithSuffixTag:
+
+  - parameter tag: Identifier.Tag
+
+  - returns: [NSLayoutConstraint]
+  */
+  public func constraintsWithSuffixTag(tag: Identifier.Tag) -> [NSLayoutConstraint] {
+    return constraints.filter {
+      guard let id = $0.identifier else { return false }
+      return Identifier(id).tags.last == tag
+    }
+  }
+
+  /**
+  constraintsWithSuffixTags:
+
+  - parameter tags: [Identifier.Tag]
+
+  - returns: [NSLayoutConstraint]
+  */
+  public func constraintsWithSuffixTags(tags: [Identifier.Tag]) -> [NSLayoutConstraint] {
+    return constraints.filter {
+      guard let id = $0.identifier else { return false }
+      return Identifier(id).tags.reverse().startsWith(tags.reverse())
     }
   }
 

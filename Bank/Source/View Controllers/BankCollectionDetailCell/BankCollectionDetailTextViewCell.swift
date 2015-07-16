@@ -40,14 +40,34 @@ final class BankCollectionDetailTextViewCell: BankCollectionDetailTextInputCell 
   }
 
   override func updateConstraints() {
-    removeAllConstraints()
     super.updateConstraints()
+    guard let textView = textInput as? UITextView else { return }
 
-    if let textView = textInput as? UITextView {
-      switch displayStyle {
-        case .Condensed: constrain(𝗛|-nameLabel--textView-|𝗛, [𝗩|--8--nameLabel], 𝗩|--8--textView--8--|𝗩)
-        case .Default:   constrain(𝗛|-nameLabel-|𝗛, 𝗛|-textView-|𝗛, 𝗩|--8--nameLabel--8--textView--8--|𝗩)
+    let condensedID = MoonKit.Identifier(self, "Condensed")
+    let defaultID = MoonKit.Identifier(self, "Default")
+
+    let condensedConstraints = constraintsWithIdentifier(condensedID)
+    let defaultConstraints = constraintsWithIdentifier(defaultID)
+
+    switch displayStyle {
+      case .Condensed:
+        if defaultConstraints.count > 0 { removeConstraints(defaultConstraints) }
+        if condensedConstraints.count == 0 {
+          constrain(
+            𝗛|-nameLabel--textView-|𝗛 --> condensedID,
+            [𝗩|--8--nameLabel] --> condensedID,
+            𝗩|--8--textView--8--|𝗩 --> condensedID
+          )
       }
+      case .Default:
+        if condensedConstraints.count > 0 { removeConstraints(condensedConstraints) }
+        if defaultConstraints.count == 0 {
+          constrain(
+            𝗛|-nameLabel-|𝗛 --> defaultID,
+            𝗛|-textView-|𝗛 --> defaultID,
+            𝗩|--8--nameLabel--8--textView--8--|𝗩 --> defaultID
+          )
+        }
     }
   }
 

@@ -168,20 +168,21 @@ final class BankCollectionDetailAttributedTextCell: BankCollectionDetailCell {
 
   /** updateConstraints */
   override func updateConstraints() {
-    removeAllConstraints()
     super.updateConstraints()
-
-    if name != nil {
-      contentView.constrain(
-        𝗛|-nameLabel--attributedTextDisplay-|𝗛,
-        [ attributedTextDisplay.width => nameLabel.width,
-          attributedTextDisplay.height => nameLabel.height,
-          nameLabel.centerY => centerY,
-          attributedTextDisplay.centerY => centerY ]
-      )
-    } else {
-      contentView.constrain(𝗛|attributedTextDisplay|𝗛, 𝗩|attributedTextDisplay|𝗩)
-
+    let id = MoonKit.Identifier(self, "Internal")
+    if constraintsWithIdentifier(id).count == 0 {
+      if name != nil {
+        contentView.constrain(
+          𝗛|-nameLabel--attributedTextDisplay-|𝗛 --> id,
+          [ attributedTextDisplay.width => nameLabel.width,
+            attributedTextDisplay.height => nameLabel.height,
+            nameLabel.centerY => centerY,
+            attributedTextDisplay.centerY => centerY ] --> id
+        )
+      } else {
+        contentView.constrain(𝗛|attributedTextDisplay|𝗛 --> id, 𝗩|attributedTextDisplay|𝗩 --> id)
+        
+      }
     }
   }
 

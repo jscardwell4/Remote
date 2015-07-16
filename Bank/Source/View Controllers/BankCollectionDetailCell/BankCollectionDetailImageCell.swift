@@ -23,9 +23,11 @@ class BankCollectionDetailImageCell: BankCollectionDetailCell {
   }
 
   override func updateConstraints() {
-    removeAllConstraints()
     super.updateConstraints()
-    constrain(𝗛|preview|𝗛, 𝗩|preview|𝗩)
+    let id = MoonKit.Identifier(self, "Internal")
+    if constraintsWithIdentifier(id).count == 0 {
+      constrain(𝗛|preview|𝗛 --> id, 𝗩|preview|𝗩 --> id)
+    }
   }
 
   /** prepareForReuse */

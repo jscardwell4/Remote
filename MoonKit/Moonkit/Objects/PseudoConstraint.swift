@@ -525,6 +525,10 @@ public func -->(var lhs:     Pseudo, rhs: String?) ->  Pseudo  { lhs.identifier 
 public func -->(    lhs:   [Pseudo], rhs: String?) -> [Pseudo] { return lhs.map {$0 --> rhs}      }
 public func -->(    lhs: [[Pseudo]], rhs: String?) -> [Pseudo] { return lhs.flatMap {$0 --> rhs} }
 
+public func -->(lhs:     Pseudo, rhs: Identifier?) ->  Pseudo  { return lhs --> rhs?.string }
+public func -->(lhs:   [Pseudo], rhs: Identifier?) -> [Pseudo] { return lhs --> rhs?.string }
+public func -->(lhs: [[Pseudo]], rhs: Identifier?) -> [Pseudo] { return lhs --> rhs?.string }
+
 // MARK: - Priority operator
 infix operator -!> {associativity left}
 

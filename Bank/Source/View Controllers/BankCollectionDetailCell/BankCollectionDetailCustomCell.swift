@@ -30,9 +30,10 @@ class BankCollectionDetailCustomCell: BankCollectionDetailCell {
   /** updateConstraints */
   override func updateConstraints() {
     super.updateConstraints()
-    if customView != nil {
-      contentView.constrain(𝗛|--(≥0)--customView!--(≥0)--|𝗛, 𝗩|--(≥0)--customView!--(≥0)--|𝗩)
-      contentView.centerSubview(customView!)
+    guard let customView = customView else { return }
+    let id = MoonKit.Identifier(self, "Internal")
+    if constraintsWithIdentifier(id).count == 0 {
+      constrain(𝗛|--(≥0)--customView--(≥0)--|𝗛 --> id, 𝗩|--(≥0)--customView--(≥0)--|𝗩 --> id)
     }
   }
 

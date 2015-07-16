@@ -20,9 +20,11 @@ class BankCollectionDetailPickerCell: BankCollectionDetailCell {
   }
 
   override func updateConstraints() {
-    removeAllConstraints()
     super.updateConstraints()
-    constrain(𝗩|picker|𝗩, 𝗛|picker|𝗛)
+    let id = MoonKit.Identifier(self, "Picker")
+    if constraintsWithIdentifier(id).count == 0 {
+      constrain(𝗩|picker|𝗩 --> id, 𝗛|picker|𝗛 --> id)
+    }
   }
 
   /** prepareForReuse */

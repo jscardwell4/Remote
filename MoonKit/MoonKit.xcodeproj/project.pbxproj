@@ -336,6 +336,7 @@
 		C2B6918A1AFBCADB0041CE11 /* NetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B691891AFBCADB0041CE11 /* NetworkReachability.swift */; };
 		C2B9B40A1AC1C499005BA67C /* RegularExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B9B4091AC1C499005BA67C /* RegularExpression.swift */; };
 		C2BE96E81A467E85007599B2 /* NSManagedObjectModel+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BE96E71A467E85007599B2 /* NSManagedObjectModel+MoonKitAdditions.swift */; };
+		C2C17D4A1B5813EB00D9E9A6 /* Identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C17D491B5813EB00D9E9A6 /* Identifier.swift */; };
 		C2C3B91F1AC5DA7D001DC6CC /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2C3B91E1AC5DA7D001DC6CC /* CocoaLumberjack.framework */; };
 		C2C482E519CA0225002E84A9 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C482E419CA0225002E84A9 /* Stack.swift */; };
 		C2C4B72C1AA951D700912951 /* NSManagedObject+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C4B72B1AA951D700912951 /* NSManagedObject+MoonKitAdditions.swift */; };
@@ -517,6 +518,7 @@
 		C2B691891AFBCADB0041CE11 /* NetworkReachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachability.swift; sourceTree = "<group>"; };
 		C2B9B4091AC1C499005BA67C /* RegularExpression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegularExpression.swift; sourceTree = "<group>"; };
 		C2BE96E71A467E85007599B2 /* NSManagedObjectModel+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectModel+MoonKitAdditions.swift"; sourceTree = "<group>"; };
+		C2C17D491B5813EB00D9E9A6 /* Identifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identifier.swift; sourceTree = "<group>"; };
 		C2C3B91E1AC5DA7D001DC6CC /* CocoaLumberjack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2C482E419CA0225002E84A9 /* Stack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		C2C482E619CA2985002E84A9 /* NSCharacterSet+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSCharacterSet+MoonKitAdditions.swift"; sourceTree = "<group>"; };
@@ -961,6 +963,7 @@
 				C2CF98691B0FD12900E32E41 /* PopOverView.swift */,
 				C26834091B10C24100A359A8 /* LabelButton.swift */,
 				C27978E31B17FF9E00B36BAD /* ZoomingCollectionViewLayout.swift */,
+				C2C17D491B5813EB00D9E9A6 /* Identifier.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -1843,6 +1846,7 @@
 				C24E0EB91AC6141B0044248E /* Bool+MoonKitAdditions.swift in Sources */,
 				C21493BF1A35285A00D274A2 /* ColorSwatch.swift in Sources */,
 				C28E50951A13CA7300DF3206 /* ToggleImageSegmentedControl.swift in Sources */,
+				C2C17D4A1B5813EB00D9E9A6 /* Identifier.swift in Sources */,
 				C2358F7519C78E0C00920F8D /* MSStack.m in Sources */,
 				C210E9921AF27E3C0026A51D /* ViewProxy.swift in Sources */,
 				C211C2C21B4607E5004A24E4 /* InlinePickerViewLayout.swift in Sources */,
@@ -2534,6 +2538,7 @@
 				C23F44461B55532700D09ECA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
 		};
 		C256F0951ABDFFE5005B7CB3 /* Build configuration list for PBXNativeTarget "MoonKitOSX" */ = {
 			isa = XCConfigurationList;

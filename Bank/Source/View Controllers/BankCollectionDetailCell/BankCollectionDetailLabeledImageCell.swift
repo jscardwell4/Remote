@@ -37,9 +37,11 @@ final class BankCollectionDetailLabeledImageCell: BankCollectionDetailCell {
   }
 
   override func updateConstraints() {
-    removeAllConstraints()
     super.updateConstraints()
-    constrain(𝗛|-nameLabel--preview-|𝗛, [nameLabel.centerY => centerY, preview.centerY => centerY])
+    let id = MoonKit.Identifier(self, "Internal")
+    if constraintsWithIdentifier(id).count == 0 {
+      constrain(𝗛|-nameLabel--preview-|𝗛 --> id, [nameLabel.centerY => centerY, preview.centerY => centerY] --> id)
+    }
   }
 
   /** prepareForReuse */

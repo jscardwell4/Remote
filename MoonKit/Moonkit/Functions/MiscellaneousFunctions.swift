@@ -96,16 +96,25 @@ createIdentifier:suffix:
 - returns: String
 */
 public func createIdentifier(object: Any, _ suffix: [String]? = nil) -> String {
-  let identifier = _stdlib_getDemangledTypeName(object)
+  let identifier = typeName(object)
   return suffix == nil ? identifier : "-".join([identifier] + suffix!)
 }
 
 /**
+typeName:
+
+- parameter object: Any
+
+- returns: String
+*/
+public func typeName(object: Any) -> String { return _stdlib_getDemangledTypeName(object) }
+
+/**
 tagsFromIdentifier:
 
-- parameter identifier: String
+- parameter identifier: String?
 
 - returns: [String]
 */
-public func tagsFromIdentifier(identifier: String) -> [String] { return "-".split(identifier) }
+public func tagsFromIdentifier(identifier: String?) -> [String] { return "-".split(identifier ?? "") }
 

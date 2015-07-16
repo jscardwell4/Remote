@@ -30,10 +30,12 @@ final class BankCollectionDetailTextFieldCell: BankCollectionDetailTextInputCell
   }
 
   override func updateConstraints() {
-    removeAllConstraints()
     super.updateConstraints()
-    let field = textInput as! UITextField
-    constrain(𝗛|-nameLabel--field-|𝗛, [nameLabel.centerY => centerY, field.centerY => centerY])
+    let id = MoonKit.Identifier(self, "Internal")
+    if constraintsWithIdentifier(id).count == 0 {
+      let field = textInput as! UITextField
+      constrain(𝗛|-nameLabel--field-|𝗛 --> id, [nameLabel.centerY => centerY, field.centerY => centerY] --> id)
+    }
   }
 
   /** prepareForReuse */

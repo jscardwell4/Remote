@@ -44,7 +44,7 @@ class BankCollectionDetailRow {
 
   static func selectPushableItem(pushableItem: protocol<EditableModel, DelegateDetailable>?) -> Void -> Void {
     return {
-      MSLogDebug("selectPushableItem: where pushable item = \(pushableItem)")
+//      MSLogDebug("selectPushableItem: where pushable item = \(pushableItem)")
       if let item = pushableItem,
         nav = UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController
       {

@@ -42,10 +42,11 @@ class BankCollectionDetailButtonCell: BankCollectionDetailCell {
   }
 
   override func updateConstraints() {
-    removeAllConstraints()
     super.updateConstraints()
-    constrain(/*𝗛|-nameLabel--infoLabel-|𝗛, */𝗛|-nameLabel--picker-|𝗛)
-    constrain(/*infoLabel.centerY => centerY, */picker.centerY => centerY, nameLabel.centerY => centerY)
+    let id = MoonKit.Identifier(self, "Internal")
+    if constraintsWithIdentifier(id).count == 0 {
+      constrain(𝗛|-nameLabel--picker-|𝗛 --> id, [picker.centerY => centerY, nameLabel.centerY => centerY] --> id)
+    }
   }
 
   /** prepareForReuse */

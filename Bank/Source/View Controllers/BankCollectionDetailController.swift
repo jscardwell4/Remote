@@ -35,7 +35,9 @@ class BankCollectionDetailController: UICollectionViewController {
   */
   init(itemDelegate delegate: BankModelDetailDelegate) {
     itemDelegate = delegate
-    super.init(collectionViewLayout: BankCollectionDetailLayout())
+    let layout = BankCollectionDetailLayout()
+    super.init(collectionViewLayout: layout)
+    layout.delegate = self
     hidesBottomBarWhenPushed = true
   }
 
@@ -121,10 +123,11 @@ class BankCollectionDetailController: UICollectionViewController {
                                            : nil
       navigationItem.rightBarButtonItem?.title  = editing ? "Save" : "Edit"
       navigationItem.rightBarButtonItem?.action = editing ? "save" : "edit"
-      if let textField = navigationItem.titleView as? UITextField {
-        textField.userInteractionEnabled = editing
-        if textField.isFirstResponder() { textField.resignFirstResponder() }
-      }
+      if !editing { view.endEditing(true) }
+//      if let textField = navigationItem.titleView as? UITextField {
+//        textField.userInteractionEnabled = editing
+//        if textField.isFirstResponder() { textField.resignFirstResponder() }
+//      }
       if let cells = collectionView?.visibleCells() as? [Cell] { apply(cells) {$0.editing = editing} }
       // TODO: Need to propagate changes here when editing has been completed
       super.setEditing(editing, animated: animated)
@@ -176,6 +179,21 @@ class BankCollectionDetailController: UICollectionViewController {
   - returns: Row?
   */
   subscript(row: Int, section: Int) -> Row? { return self[section]?[row] }
+
+  /**
+  itemTypesInSection:
+
+  - parameter section: Int
+
+  - returns: [BankCollectionDetailLayout.ItemType]
+  */
+  func itemTypesInSection(section: Int) -> [BankCollectionDetailLayout.ItemType] {
+    return itemDelegate.sections.values[section].rows.map({$0.identifier})
+  }
+
+  var headerTypes: [BankCollectionDetailLayout.HeaderType?] {
+    return itemDelegate.sections.values.map({$0.title != nil ? $0.identifier : nil})
+  }
 
 }
 
@@ -246,35 +264,6 @@ extension BankCollectionDetailController {
                                                           forIndexPath: indexPath) as! Header
     detailSection.configureHeader(header)
     return header
-  }
-
-}
-
-extension BankCollectionDetailController: BankCollectionDetailLayoutDataSource {
-
-  /**
-  collectionView:itemTypesInSection:
-
-  - parameter collectionView: UICollectionView
-  - parameter section: Int
-
-  - returns: [BankCollectionDetailLayout.ItemType]
-  */
-  func collectionView(collectionView: UICollectionView,
-   itemTypesInSection section: Int) -> [BankCollectionDetailLayout.ItemType]
-  {
-    return itemDelegate.sections.values[section].rows.map({$0.identifier})
-  }
-
-  /**
-  headerTypesInCollectionView:
-
-  - parameter collectionView: UICollectionView
-
-  - returns: [BankCollectionDetailLayout.HeaderType?]
-  */
-  func headerTypesInCollectionView(collectionView: UICollectionView) -> [BankCollectionDetailLayout.HeaderType?] {
-    return itemDelegate.sections.values.map({$0.title != nil ? $0.identifier : nil})
   }
 
 }

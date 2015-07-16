@@ -15,7 +15,7 @@ final class BankCollectionAttributes: UICollectionViewLayoutAttributes {
 
   override var description: String {
     var result = super.description
-    result.sub("\\(<NSIndexPath[^\\)]+\\)", "(row: \(indexPath.row), section: \(indexPath.section))")
+    result.sub("\\(<NSIndexPath[^\\)]+\\)", "(item: \(indexPath.item), section: \(indexPath.section))")
     result += "; viewingMode = \(viewingMode)"
     return result
   }

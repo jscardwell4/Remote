@@ -26,9 +26,11 @@ class BankCollectionDetailSwitchCell: BankCollectionDetailCell {
   }
 
   override func updateConstraints() {
-    removeAllConstraints()
     super.updateConstraints()
-    constrain(𝗛|-nameLabel--switchView-|𝗛, [nameLabel.centerY => centerY, switchView.centerY => centerY])
+    let id = MoonKit.Identifier(self, "Internal")
+    if constraintsWithIdentifier(id).count == 0 {
+      constrain(𝗛|-nameLabel--switchView-|𝗛 --> id, [nameLabel.centerY => centerY, switchView.centerY => centerY] --> id)
+    }
   }
 
   /**

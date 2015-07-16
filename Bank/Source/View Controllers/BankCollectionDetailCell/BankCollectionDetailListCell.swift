@@ -18,17 +18,19 @@ class BankCollectionDetailListCell: BankCollectionDetailCell {
   }
 
   override func updateConstraints() {
-    removeAllConstraints()
     super.updateConstraints()
-    constrain(𝗛|-infoLabel-|𝗛, [infoLabel.centerY => centerY])
+    let id = MoonKit.Identifier(self, "InfoLabel")
+    if constraintsWithIdentifier(id).count == 0 {
+      constrain(𝗛|-infoLabel-|𝗛 --> id, [infoLabel.centerY => centerY] --> id)
+    }
   }
 
-  /** prepareForReuse */
-  override func prepareForReuse() {
-    super.prepareForReuse()
-    infoLabel.text = nil
-    infoLabel.attributedText = nil
-  }
+//  /** prepareForReuse */
+//  override func prepareForReuse() {
+//    super.prepareForReuse()
+//    infoLabel.text = nil
+//    infoLabel.attributedText = nil
+//  }
 
   override var info: AnyObject? {
     get { return infoDataType.objectFromText(infoLabel.text, attributedText: infoLabel.attributedText) }

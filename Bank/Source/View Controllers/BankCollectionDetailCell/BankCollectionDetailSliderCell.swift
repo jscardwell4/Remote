@@ -20,9 +20,14 @@ class BankCollectionDetailSliderCell: BankCollectionDetailCell {
   }
 
   override func updateConstraints() {
-    removeAllConstraints()
     super.updateConstraints()
-    constrain(𝗛|-nameLabel--sliderView-|𝗛, [nameLabel.centerY => centerY, sliderView.centerY => centerY])
+    let id = MoonKit.Identifier(self, "Internal")
+    if constraintsWithIdentifier(id).count == 0 {
+      constrain(
+        𝗛|-nameLabel--sliderView-|𝗛 --> id,
+        [nameLabel.centerY => centerY, sliderView.centerY => centerY] --> id
+      )
+    }
   }
 
   /**

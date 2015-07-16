@@ -67,7 +67,6 @@ extension ComponentDevice: DelegateDetailable {
 
           return row
         }, forKey: RowKey.Manufacturer)
-/*
         manufacturerSection.addRow({
 
           let row = BankCollectionDetailButtonRow()
@@ -90,7 +89,7 @@ extension ComponentDevice: DelegateDetailable {
 
           return row
         }, forKey: RowKey.CodeSet)
-*/
+
         sections[SectionKey.Manufacturer] = manufacturerSection
       }
 
@@ -241,9 +240,9 @@ extension ComponentDevice: DelegateDetailable {
       }
 
       loadManufacturerSection()
-//      loadNetworkDeviceSection()
-//      loadPowerSection()
-//      loadInputsSection()
+      loadNetworkDeviceSection()
+      loadPowerSection()
+      loadInputsSection()
 
       return sections
     }

@@ -294,9 +294,11 @@ class BankCollectionDetailCell: UICollectionViewCell {
   var editing: Bool = false
 
   override func updateConstraints() {
-    removeAllConstraints()
     super.updateConstraints()
-    constrain(𝗩|contentView|𝗩, 𝗛|contentView|𝗛)
+    let id = MoonKit.Identifier(self, "ContentView")
+    if constraintsWithIdentifier(id).count == 0 {
+      constrain(𝗩|contentView|𝗩 --> id, 𝗛|contentView|𝗛 --> id)
+    }
   }
 
   /** prepareForReuse */

@@ -106,7 +106,7 @@ class InlinePickerViewLayout: UICollectionViewLayout {
   override func prepareLayout() {
     super.prepareLayout()
     guard let delegate = delegate, collectionView = collectionView else {
-      MSLogDebug("Missing delegate, collectionView or both … clearing cache and skipping prep")
+      MSLogVerbose("Missing delegate, collectionView or both … clearing cache and skipping prep")
       clearCache()
       return
     }
@@ -114,7 +114,7 @@ class InlinePickerViewLayout: UICollectionViewLayout {
     let itemCount = collectionView.numberOfItemsInSection(0)
 
     guard itemCount > 0 else {
-      MSLogDebug("collection is empty … clearing cache and skipping prep")
+      MSLogVerbose("collection is empty … clearing cache and skipping prep")
       clearCache()
       return
     }
@@ -123,7 +123,7 @@ class InlinePickerViewLayout: UICollectionViewLayout {
     let itemWidths = delegate.itemWidths
 
     guard itemWidths.count == itemCount else {
-      MSLogDebug("delegate.itemWidths.count != itemCount … clearing cache and skipping prep")
+      MSLogVerbose("delegate.itemWidths.count != itemCount … clearing cache and skipping prep")
       clearCache()
       return
     }
@@ -133,7 +133,7 @@ class InlinePickerViewLayout: UICollectionViewLayout {
     let selection = delegate.selection
 
     guard (0 ..< itemCount).contains(selection) else {
-      MSLogDebug("no valid selection, really no point in performing calculations now … clearing cache and skipping prep")
+      MSLogVerbose("no valid selection, really no point in performing calculations now … clearing cache and skipping prep")
       clearCache()
       return
     }
@@ -141,7 +141,7 @@ class InlinePickerViewLayout: UICollectionViewLayout {
 
     let rect = collectionView.bounds
     guard !rect.isEmpty else {
-      MSLogDebug("visible rect is empty … clearing cache and skipping prep")
+      MSLogVerbose("visible rect is empty … clearing cache and skipping prep")
       clearCache()
       return
     }
@@ -155,7 +155,7 @@ class InlinePickerViewLayout: UICollectionViewLayout {
     performInitialCalculations()
 
     guard rawFrames.count == itemCount else {
-      MSLogDebug("something went wrong performing initial calculations … clearning cache and skipping prep")
+      MSLogVerbose("something went wrong performing initial calculations … clearning cache and skipping prep")
       clearCache()
       return
     }
@@ -164,7 +164,7 @@ class InlinePickerViewLayout: UICollectionViewLayout {
     let offsetXAlignment = rawFrames[selection].midX - rect.midX
 
     if !interactiveSelectionInProgress && offsetXAlignment != 0 {
-      MSLogDebug("collection view is stationary and the collection view's x offset (\(rect.origin.x)) does not match selected " +
+      MSLogVerbose("collection view is stationary and the collection view's x offset (\(rect.origin.x)) does not match selected " +
                  "item's x offset (\(rawFrames[selection].midX)) … adjusting by \(offsetXAlignment)")
       values.rect.origin.x += offsetXAlignment
       collectionView.setContentOffset(values.rect.origin, animated: false)
@@ -181,7 +181,7 @@ class InlinePickerViewLayout: UICollectionViewLayout {
   /** performInitialCalculations */
   private func performInitialCalculations() {
     guard values.complete else {
-      MSLogDebug("performInitialCalculations() should only be called when `values` is `complete`…skipping calculations")
+      MSLogVerbose("performInitialCalculations() should only be called when `values` is `complete`…skipping calculations")
       return
     }
     let padding = values.padding
@@ -219,7 +219,7 @@ class InlinePickerViewLayout: UICollectionViewLayout {
 
   - returns: CGSize
   */
-  override func collectionViewContentSize() -> CGSize { MSLogDebug(""); return contentSize }
+  override func collectionViewContentSize() -> CGSize { return contentSize }
 
   /**
   layoutAttributesForElementsInRect:
@@ -243,7 +243,7 @@ class InlinePickerViewLayout: UICollectionViewLayout {
   */
   override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> Attributes? {
     guard indexPath.item < rawFrames.count else {
-      MSLogWarn("invalid index path: \(indexPath)")
+      MSLogVerbose("invalid index path: \(indexPath)")
       return nil
     }
 
@@ -313,11 +313,11 @@ class InlinePickerViewLayout: UICollectionViewLayout {
   */
   private func offsetForProposedOffset(offset: CGPoint) -> CGPoint {
     guard let idx = indexOfItemAtOffset(offset) else {
-      MSLogWarn("failed to get an index for offset, returning proposed value: \(offset)")
+      MSLogVerbose("failed to get an index for offset, returning proposed value: \(offset)")
       return offset
     }
     guard let calculatedOffset = offsetForItemAtIndex(idx) else {
-      MSLogWarn("failed to calculate an offset for item at index \(idx), returning proposed value: \(offset)")
+      MSLogVerbose("failed to calculate an offset for item at index \(idx), returning proposed value: \(offset)")
       return offset
     }
 //    MSLogDebug("calculatedOffset = \(calculatedOffset)")
@@ -333,7 +333,7 @@ class InlinePickerViewLayout: UICollectionViewLayout {
   */
   func offsetForItemAtIndex(index: Int) -> CGPoint? {
     guard let attributes = storedAttributes[NSIndexPath(forItem: index, inSection: 0)] where values.complete else {
-      MSLogWarn("cannot generate an offset for an item which has no attributes stored")
+      MSLogVerbose("cannot generate an offset for an item which has no attributes stored")
       return nil
     }
 //    MSLogDebug("calculating offset with item frame = \(attributes.frame) and visible rect = \(values.rect)")
@@ -349,13 +349,13 @@ class InlinePickerViewLayout: UICollectionViewLayout {
   */
   func indexOfItemAtOffset(offset: CGPoint) -> Int? {
     guard storedAttributes.count > 0 else {
-      MSLogDebug("storedAttributes.count = 0 … returning nil")
+      MSLogVerbose("storedAttributes.count = 0 … returning nil")
       return nil
     }
 
     let offsets = (0 ..< storedAttributes.count).flatMap {self.offsetForItemAtIndex($0)}
     guard offsets.count == storedAttributes.count else {
-      MSLogWarn("storedAttributes.count = \(storedAttributes.count) but offsets.count = \(offsets.count) … returning nil")
+      MSLogVerbose("storedAttributes.count = \(storedAttributes.count) but offsets.count = \(offsets.count) … returning nil")
       return nil
     }
 

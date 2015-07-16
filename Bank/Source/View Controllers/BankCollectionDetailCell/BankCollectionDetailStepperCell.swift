@@ -23,15 +23,19 @@ class BankCollectionDetailStepperCell: BankCollectionDetailCell {
   }
 
   override func updateConstraints() {
-    removeAllConstraints()
     super.updateConstraints()
-    constrain(
-      𝗛|-nameLabel--infoLabel,
-      [ nameLabel.centerY => centerY,
-        infoLabel.centerY => centerY,
-        stepper.centerY => centerY, infoLabel--20--stepper, stepper.left => right --> "stepper leading" ]
-    )
-    stepperConstraint = constraintWithIdentifier("stepper leading")
+    let id = MoonKit.Identifier(self, "Internal")
+    if constraintsWithIdentifier(id).count == 0 {
+      constrain(
+        𝗛|-nameLabel--infoLabel --> id,
+        [ nameLabel.centerY => centerY --> id,
+          infoLabel.centerY => centerY --> id,
+          stepper.centerY => centerY --> id,
+          infoLabel--20--stepper --> id,
+          stepper.left => right --> (id.string + "-Stepper Leading") ]
+      )
+      stepperConstraint = constraintsWithTag("Stepper Leading").first
+    }
   }
 
   /** prepareForReuse */
