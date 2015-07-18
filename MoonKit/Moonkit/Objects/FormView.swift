@@ -40,7 +40,7 @@ public final class Form: CustomStringConvertible {
   }
 
   public var description: String {
-    return "Form: {\n\t" + "\n\t".join(fields.map {"\($0): \($1) = \(toString($2.value))"}) + "\n}"
+    return "Form: {\n\t" + "\n\t".join(fields.map {"\($0): \($1) = \(String($2.value))"}) + "\n}"
   }
 
 }
@@ -73,7 +73,7 @@ final class FormView: UIView {
     layer.shadowOpacity = 0.75
     layer.shadowRadius = 8
     layer.shadowOffset = CGSize(width: 1.0, height: 3.0)
-    apply(f.fields) {
+    f.fields.apply {
       (idx: Int, name: String, field: Field) -> Void in
       let fieldView = FieldView(tag: idx, name: name, field: field)
       if let appearance = appearance {
@@ -103,10 +103,10 @@ final class FormView: UIView {
 
   override func updateConstraints() {
     super.updateConstraints()
-    let fieldViews = self.fieldViews
-    let id = createIdentifier(self, "Internal")
-    removeConstraintsWithIdentifier(id)
-    apply(fieldViews) {constrain($0.left => self.left + 10.0, $0.right => self.right - 10.0 --> id)}
+    let id = Identifier(self, "Internal")
+    guard constraintsWithIdentifier(id).count == 0 else { return }
+
+    fieldViews.apply { constrain($0.left => self.left + 10.0 --> id, $0.right => self.right - 10.0 --> id) }
     if let first = fieldViews.first, last = fieldViews.last {
 
       constrain(first.top => self.top + 10.0 --> id)
@@ -114,8 +114,9 @@ final class FormView: UIView {
       if fieldViews.count > 1 {
         var middle = fieldViews[1..<fieldViews.count].generate()
         var p = first
-        while let c = middle.next() { constrain(identifier: id, c.top => p.bottom + 10.0); p = c }
+        while let c = middle.next() { constrain(c.top => p.bottom + 10.0 --> id); p = c }
       }
+
       constrain(last.bottom => self.bottom - 10.0 --> id)
     }
   }

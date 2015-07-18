@@ -46,6 +46,26 @@ public extension UIView {
   	return self.viewTreeDescriptionWithProperties(properties)
   }
 
+  /**
+  recursiveConstraintsDescription
+
+  - returns: String
+  */
+  public func recursiveConstraintsDescription() -> String {
+    var result = ""
+    if let nametag = nametag {
+      result += "<\(className)(\(nametag)):\(unsafeAddressOf(self))>"
+    } else {
+      result += "<\(className):\(unsafeAddressOf(self))>"
+    }
+    result += " {\n\t"
+    result += "\n\t".join(constraints.map { $0.prettyDescription })
+    let subviewsConstraints = subviews.map { $0.recursiveConstraintsDescription().indentedBy(8) }
+    if subviewsConstraints.count > 0 { result += "\n" + "\n".join(subviewsConstraints) }
+    result += "\n}"
+    return result
+  }
+
   // MARK: - Subscripts
 
   /**

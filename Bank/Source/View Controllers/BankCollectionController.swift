@@ -112,19 +112,19 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
 
   func endDelegateItemsChanges(delegate: BankModelDelegate) {
     let insertions = itemsChanges.filter {$0.type == .Insert && $0.newIndexPath != nil}
-                                 .map {NSIndexPath(forRow: $0.newIndexPath!.row, inSection: 1)}
+                                 .map {NSIndexPath(forItem: $0.newIndexPath!.item, inSection: 1)}
     let deletions  = itemsChanges.filter {$0.type == .Delete && $0.indexPath != nil}
-                                 .map {NSIndexPath(forRow: $0.indexPath!.row, inSection: 1)}
+                                 .map {NSIndexPath(forItem: $0.indexPath!.item, inSection: 1)}
     let updates    = itemsChanges.filter {$0.type == .Update && $0.indexPath != nil}
-                                 .map {NSIndexPath(forRow: $0.indexPath!.row, inSection: 1)}
+                                 .map {NSIndexPath(forItem: $0.indexPath!.item, inSection: 1)}
     let moves = itemsChanges.filter {$0.type == .Move && $0.indexPath != nil && $0.newIndexPath != nil}
     let block: () -> Void = {
       if insertions.count > 0 { self.collectionView?.insertItemsAtIndexPaths(insertions) }
       if deletions.count > 0 { self.collectionView?.deleteItemsAtIndexPaths(deletions) }
       if updates.count > 0 { self.collectionView?.reloadItemsAtIndexPaths(updates) }
       for move in moves {
-        self.collectionView?.moveItemAtIndexPath(NSIndexPath(forRow: move.indexPath!.row, inSection: 1),
-                                     toIndexPath: NSIndexPath(forRow: move.newIndexPath!.row, inSection: 1))
+        self.collectionView?.moveItemAtIndexPath(NSIndexPath(forItem: move.indexPath!.item, inSection: 1),
+                                     toIndexPath: NSIndexPath(forItem: move.newIndexPath!.item, inSection: 1))
       }
     }
     collectionView?.performBatchUpdates(block, completion: nil)
@@ -136,19 +136,19 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
 
   func endDelegateCollectionsChanges(delegate: BankModelDelegate) {
     let insertions = collectionsChanges.filter {$0.type == .Insert && $0.newIndexPath != nil}
-                                       .map {NSIndexPath(forRow: $0.newIndexPath!.row, inSection: 0)}
+                                       .map {NSIndexPath(forItem: $0.newIndexPath!.item, inSection: 0)}
     let deletions  = collectionsChanges.filter {$0.type == .Delete && $0.indexPath != nil}
-                                       .map {NSIndexPath(forRow: $0.indexPath!.row, inSection: 0)}
+                                       .map {NSIndexPath(forItem: $0.indexPath!.item, inSection: 0)}
     let updates    = collectionsChanges.filter {$0.type == .Update && $0.indexPath != nil}
-                                       .map {NSIndexPath(forRow: $0.indexPath!.row, inSection: 0)}
+                                       .map {NSIndexPath(forItem: $0.indexPath!.item, inSection: 0)}
     let moves = collectionsChanges.filter {$0.type == .Move && $0.indexPath != nil && $0.newIndexPath != nil}
     let block: () -> Void = {
       if insertions.count > 0 { self.collectionView?.insertItemsAtIndexPaths(insertions) }
       if deletions.count > 0 { self.collectionView?.deleteItemsAtIndexPaths(deletions) }
       if updates.count > 0 { self.collectionView?.reloadItemsAtIndexPaths(updates) }
       for move in moves {
-        self.collectionView?.moveItemAtIndexPath(NSIndexPath(forRow: move.indexPath!.row, inSection: 0),
-                                     toIndexPath: NSIndexPath(forRow: move.newIndexPath!.row, inSection: 0))
+        self.collectionView?.moveItemAtIndexPath(NSIndexPath(forItem: move.indexPath!.item, inSection: 0),
+                                     toIndexPath: NSIndexPath(forItem: move.newIndexPath!.item, inSection: 0))
       }
     }
     collectionView?.performBatchUpdates(block, completion: nil)
@@ -317,7 +317,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   - returns: NamedModel?
   */
   private func itemForIndexPath(indexPath: NSIndexPath) -> NamedModel? {
-    return indexPath.section == 1 ? collectionDelegate.itemAtIndex(indexPath.row) : nil
+    return indexPath.section == 1 ? collectionDelegate.itemAtIndex(indexPath.item) : nil
   }
 
   /**
@@ -367,7 +367,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   func detailItemAtIndexPath(indexPath: NSIndexPath) {
     switch indexPath.section {
       case 0:
-        if let nestedCollection = collectionDelegate.collectionAtIndex(indexPath.row) as? BankModelCollection,
+        if let nestedCollection = collectionDelegate.collectionAtIndex(indexPath.item) as? BankModelCollection,
           collectionDelegate = BankModelCollectionDelegate(collection: nestedCollection)
         {
           let controller = BankCollectionController(collectionDelegate: collectionDelegate, mode: mode)
@@ -457,10 +457,11 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
 
 extension BankCollectionController: BankItemCreationController {
 
-  private func transact(transaction: BankModelDelegate.CreationTransaction) { presentForm(transaction) }
-  private func transact(transaction: BankModelDelegate.DiscoveryTransaction) { beginDiscoveryTransaction(transaction) }
-  private func transact(transaction: BankModelDelegate.CustomTransaction) { presentCustom(transaction) }
+  private func transact(transaction: BankModelDelegate.CreationTransaction) { MSLogDebug(""); presentForm(transaction) }
+  private func transact(transaction: BankModelDelegate.DiscoveryTransaction) { MSLogDebug(""); beginDiscoveryTransaction(transaction) }
+  private func transact(transaction: BankModelDelegate.CustomTransaction) { MSLogDebug(""); presentCustom(transaction) }
   private func transact(transaction: BankItemCreationControllerTransaction) {
+    MSLogDebug("")
     switch transaction {
       case let t as BankModelDelegate.CreationTransaction:  presentForm(t)
       case let t as BankModelDelegate.CustomTransaction:    presentCustom(t)
@@ -607,7 +608,7 @@ extension BankCollectionController: BankItemImportExportController {
       for (i, collection) in collections.enumerate() {
         if let exportCollection = collection as? JSONValueConvertible {
           exportSelection.append(exportCollection)
-          let indexPath = NSIndexPath(forRow: i, inSection: 0)
+          let indexPath = NSIndexPath(forItem: i, inSection: 0)
           exportSelectionIndices.append(indexPath)
           if let cell = collectionView?.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
             cell.showIndicator(true, selected: true)
@@ -618,7 +619,7 @@ extension BankCollectionController: BankItemImportExportController {
       for (i, item) in items.enumerate() {
         if let exportItem = item as? JSONValueConvertible {
           exportSelection.append(exportItem)
-          let indexPath = NSIndexPath(forRow: i, inSection: 1)
+          let indexPath = NSIndexPath(forItem: i, inSection: 1)
           exportSelectionIndices.append(indexPath)
           if let cell = collectionView?.cellForItemAtIndexPath(indexPath) as? BankCollectionCell {
             cell.showIndicator(true, selected: true)
@@ -671,7 +672,7 @@ extension BankCollectionController {
       case 0:
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(BankCollectionCategoryCell.cellIdentifier,
                                                             forIndexPath: indexPath) as! BankCollectionCategoryCell
-        if let collection = collectionDelegate.collectionAtIndex(indexPath.row) {
+        if let collection = collectionDelegate.collectionAtIndex(indexPath.item) {
           cell.collection = collection
           if mode == .Default {
             if (collection as? Editable)?.editable == true {

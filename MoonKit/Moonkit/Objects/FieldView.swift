@@ -106,6 +106,7 @@ public class Field: NSObject {
     override var control: UIView {
       if _control != nil { return _control! }
       let control = UITextField(autolayout: true)
+      control.nametag = "textField"
       control.userInteractionEnabled = editable
       control.textAlignment = .Right
       control.adjustsFontSizeToFitWidth = true
@@ -145,6 +146,7 @@ public class Field: NSObject {
     override var control: UIView {
       if _control != nil { return _control! }
       let control = UISwitch(autolayout: true)
+      control.nametag = "switch"
       control.userInteractionEnabled = editable
       control.addTarget(self, action: "valueDidChange:", forControlEvents: .ValueChanged)
       control.on = _value
@@ -175,6 +177,7 @@ public class Field: NSObject {
     override var control: UIView {
       if _control != nil { return _control! }
       let control = UISlider(autolayout: true)
+      control.nametag = "slider"
       control.userInteractionEnabled = editable
       control.value = _value
       control.addTarget(self, action: "valueDidChange:", forControlEvents: .ValueChanged)
@@ -208,6 +211,7 @@ public class Field: NSObject {
     override var control: UIView {
       if _control != nil { return _control! }
       let control = LabeledStepper(autolayout: true)
+      control.nametag = "stepper"
       control.userInteractionEnabled = editable
       control.value = _value
       control.minimumValue = min
@@ -249,6 +253,7 @@ public class Field: NSObject {
     override var control: UIView {
       if _control != nil { return _control! }
       let control = AKPickerView(autolayout: true)
+      control.nametag = "picker"
       control.userInteractionEnabled = editable
       if let font = font { control.font = font }
       if let color = color { control.textColor = color }
@@ -284,6 +289,7 @@ public class Field: NSObject {
     override var control: UIView {
       if _control != nil { return _control! }
       let control = Checkbox(autolayout: true)
+      control.nametag = "checkbox"
       control.userInteractionEnabled = editable
       control.checked = _value
       control.addTarget(self, action: "valueDidChange:", forControlEvents: .ValueChanged)
@@ -317,12 +323,16 @@ final class FieldView: UIView {
 
   /** initializeIVARs */
   private func initializeIVARs() {
+    nametag = name
     translatesAutoresizingMaskIntoConstraints = false
     let label = UILabel(autolayout: true)
     label.text = name
+    label.nametag = "name"
     addSubview(label)
+    self.label = label
     let control = field.control
     addSubview(control)
+    self.control = control
   }
 
   /**
@@ -338,12 +348,8 @@ final class FieldView: UIView {
     initializeIVARs()
   }
 
-  private var label: UILabel? { return firstSubviewOfKind(UILabel.self) }
-  private var control: UIView? {
-    let controlTypes = [UITextField.self, UISwitch.self, UISlider.self, Checkbox.self, LabeledStepper.self, AKPickerView.self]
-    let controlTypeIdentifiers = Set(arrayLiteral: controlTypes).map({ObjectIdentifier($0)})
-    return firstSubviewMatching({controlTypeIdentifiers.contains(ObjectIdentifier(($0 as AnyObject).dynamicType.self))})
-  }
+  private var label: UILabel?
+  private var control: UIView?
 
   required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
@@ -366,11 +372,10 @@ final class FieldView: UIView {
 
   override func updateConstraints() {
     super.updateConstraints()
-    let id = createIdentifier(self, "Internal")
-    removeConstraintsWithIdentifier(id)
-    if let label = label, control = control {
-      constrain(identifier: id, 𝗩|label|𝗩, 𝗩|control|𝗩)
-      constrain(identifier: id, 𝗛|label, control.left => label.right + 10.0, control|𝗛)
+    let id = Identifier(self, "Internal")
+    if constraintsWithIdentifier(id).count == 0, let label = label, control = control {
+      constrain(𝗩|label|𝗩 --> id, 𝗩|control|𝗩 --> id)
+      constrain(𝗛|label --> id, control.left => label.right + 10.0 --> id, control|𝗛 --> id)
     }
   }
 

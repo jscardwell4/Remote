@@ -45,11 +45,11 @@ public class FormViewController: UIViewController {
 
   public let form: Form
 
-  public dynamic var labelFont: UIFont = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
-  public dynamic var controlFont: UIFont = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
-  public dynamic var controlSelectedFont: UIFont = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
-  public dynamic var labelTextColor: UIColor = UIColor.blackColor()
-  public dynamic var controlTextColor: UIColor = UIColor.blackColor()
+  public dynamic var labelFont:                UIFont  = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
+  public dynamic var controlFont:              UIFont  = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
+  public dynamic var controlSelectedFont:      UIFont  = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
+  public dynamic var labelTextColor:           UIColor = UIColor.blackColor()
+  public dynamic var controlTextColor:         UIColor = UIColor.blackColor()
   public dynamic var controlSelectedTextColor: UIColor = UIColor.blackColor()
 
   var formAppearance: Appearance {
@@ -78,18 +78,22 @@ public class FormViewController: UIViewController {
 
   /** loadView */
   public override func loadView() {
-    self.view = UIView(frame: UIScreen.mainScreen().bounds)
+    view = UIView(frame: UIScreen.mainScreen().bounds)
+    view.nametag = "view"
 
     let effectView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
     effectView.translatesAutoresizingMaskIntoConstraints = false
+    effectView.nametag = "effectView"
     view.addSubview(effectView)
     self.effectView = effectView
 
     let formView = FormView(form: form, appearance: formAppearance)
     effectView.contentView.addSubview(formView)
+    formView.nametag = "formView"
     self.formView = formView
 
     let toolbar = UIToolbar.newForAutolayout()
+    toolbar.nametag = "toolbar"
     toolbar.setBackgroundImage(UIImage(), forToolbarPosition: .Any, barMetrics: .Default)
     toolbar.tintColor = UIColor(white: 0.5, alpha: 1)
     toolbar.items = [UIBarButtonItem(title: "Cancel", style: .Plain, target: self, action: "cancelAction"),
@@ -115,14 +119,19 @@ public class FormViewController: UIViewController {
   /** updateViewConstraints */
   public override func updateViewConstraints() {
     super.updateViewConstraints()
-    let id = createIdentifier(self, "Internal")
-    if let effect = effectView, form = formView, tool = toolbar {
-      view.removeConstraintsWithIdentifier(id)
+    let id = Identifier(self, "Internal")
+    if view.constraintsWithIdentifier(id).count == 0, let effect = effectView, form = formView, tool = toolbar {
       view.constrain([𝗛|effect|𝗛, 𝗩|effect|𝗩] --> id)
       view.constrain([form.centerX => effect.centerX, form.centerY => effect.centerY] --> id)
       view.constrain([tool.left => form.left, tool.right => form.right, tool.top => form.bottom] --> id)
-      view.constrain(form.left ≥ view.left + 4, form.right ≤ view.right - 4, form.top ≥ view.top + 4, form.bottom ≤ view.bottom - 4)
+      view.constrain([
+        form.left ≥ view.left + 4,
+        form.right ≤ view.right - 4,
+        form.top ≥ view.top + 4,
+        form.bottom ≤ view.bottom - 4
+        ] --> id)
     }
+//    MSLogDebug(view.recursiveConstraintsDescription())
   }
 
   // MARK: - Actions
