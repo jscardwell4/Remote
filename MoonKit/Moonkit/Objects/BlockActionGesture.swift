@@ -63,20 +63,11 @@ import UIKit.UIGestureRecognizerSubclass
 
   - returns: CGPoint
   */
-  internal func centroidForTouches(touches: [UITouch]) -> CGPoint {
-    let count = CGFloat(touches.count)
-    var point = CGPoint.nullPoint
-    if count > 0 {
-      var x: CGFloat = 0.0, y: CGFloat = 0.0
-      for touch in touches {
-        let location = touch.locationInView(view)
-        x += location.x
-        y += location.y
-      }
-      point.x = x / count
-      point.y = y / count
-    }
-    return point
+  func centroidForTouches<C:CollectionType where C.Generator.Element == UITouch, C.Index.Distance == Int>
+    (touches: C) -> CGPoint
+  {
+    guard touches.count > 0, let view = view else { return CGPoint.nullPoint }
+    return touches.map {$0.locationInView(view)}.reduce(CGPoint.zeroPoint, combine: +) / CGFloat(touches.count)
   }
 
   /**
@@ -95,9 +86,7 @@ import UIKit.UIGestureRecognizerSubclass
 
   - parameter sender: BlockActionGesture
   */
-  public func dispatchHandler(sender: BlockActionGesture) {
-    handlerTarget.dispatchHandler(sender)
-  }
+  public func dispatchHandler(sender: BlockActionGesture) { handlerTarget.dispatchHandler(sender) }
 
   public override var state: UIGestureRecognizerState { didSet { handlerTarget.dispatchHandler(self) } }
 

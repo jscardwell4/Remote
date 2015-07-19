@@ -10,6 +10,10 @@ import Foundation
 import UIKit
 import MoonKit
 
+
+// TODO: Sliding delete into view follows touch but sliding it back out of view does not?
+// TODO: Touching cell while delete is showing should dismiss delete not push controller
+
 class BankCollectionCell: UICollectionViewCell {
 
   class func registerWithCollectionView(collectionView: UICollectionView) {

@@ -29,7 +29,7 @@ extension CGPoint {
   public init(_ values: (CGFloat, CGFloat)) { self.init(x: values.0, y: values.1) }
   public init?(_ string: String?) { if let s = string { self = CGPointFromString(s) } else { return nil } }
   public static var nullPoint: CGPoint = CGPoint(x: CGFloat.NaN, y: CGFloat.NaN)
-  public var isNull: Bool { return self == CGPoint.nullPoint }
+  public var isNull: Bool { return x.isNaN || y.isNaN }
   public func xDelta(point: CGPoint) -> CGFloat { return point.isNull ? x : x - point.x }
   public func yDelta(point: CGPoint) -> CGFloat { return point.isNull ? y : y - point.y }
   public func delta(point: CGPoint) -> CGPoint { return self - point }
@@ -84,7 +84,7 @@ public func *=(inout lhs: CGPoint, rhs: CGFloat) { lhs = lhs * rhs }
 extension CGVector {
   public init?(_ string: String?) { if let s = string { self = CGVectorFromString(s) } else { return nil } }
   public static var nullVector: CGVector = CGVector(dx: CGFloat.NaN, dy: CGFloat.NaN)
-  public var isNull: Bool { return self == CGVector.nullVector }
+  public var isNull: Bool { return dx.isNaN || dy.isNaN }
   public func dxDelta(vector: CGVector) -> CGFloat { return vector.isNull ? dx : dx - vector.dx }
   public func dyDelta(vector: CGVector) -> CGFloat { return vector.isNull ? dy : dy - vector.dy }
   public func delta(vector: CGVector) -> CGVector { return self - vector }
@@ -93,6 +93,8 @@ extension CGVector {
   public func absDelta(vector: CGVector) -> CGVector { return (self - vector).absolute }
   public var absolute: CGVector { return isNull ? self : CGVector(dx: abs(dx), dy: abs(dy)) }
   public init(_ point: CGPoint) { dx = point.x; dy = point.y }
+  public var max: CGFloat { return dy > dx ? dy : dx }
+  public var min: CGFloat { return dy < dx ? dy : dx }
 }
 extension CGVector: NilLiteralConvertible {
   public init(nilLiteral: ()) { self = CGVector.nullVector }

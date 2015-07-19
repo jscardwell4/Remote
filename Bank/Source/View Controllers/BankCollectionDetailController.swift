@@ -97,7 +97,11 @@ class BankCollectionDetailController: UICollectionViewController {
 
   - parameter animated: Bool
   */
-  override func viewWillAppear(animated: Bool) { super.viewWillAppear(animated); updateDisplay() }
+  override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    toolbarItems = Bank.toolbarItemsForController(self)
+    updateDisplay()
+  }
 
   /** Invokes `configureCell` for each `Row` associated with a visible cell */
   func configureVisibleCells() {

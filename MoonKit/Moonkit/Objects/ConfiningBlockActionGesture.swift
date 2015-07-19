@@ -17,19 +17,16 @@ public class ConfiningBlockActionGesture: BlockActionGesture {
   /**
   validateTouchLocations:withEvent:
 
-  - parameter touches: [UITouch]
+  - parameter touches: C
   - parameter event: UIEvent
 
   - returns: Bool
   */
-  internal func validateTouchLocations(touches: [UITouch], withEvent event: UIEvent) -> Bool {
-    if !confineToView { return true }
-    else {
-      let pointsInside = touches.filter {
-        touch in self.view!.pointInside(touch.locationInView(self.view!), withEvent: event)
-      }
-      return touches.count == pointsInside.count
-    }
+  func validateTouchLocations<C:CollectionType where C.Generator.Element == UITouch, C.Index.Distance == Int>(touches: C,
+                    withEvent event: UIEvent) -> Bool
+  {
+    guard confineToView, let view = view else { return true }
+    return touches.count == touches.filter({ view.pointInside($0.locationInView(view), withEvent: event) }).count
   }
 
 
