@@ -50,6 +50,10 @@ public func sum<S:SequenceType where S.Generator.Element:IntegerArithmeticType>(
   return s.reduce(0, combine: {$0 + $1.toIntMax()})
 }
 
+public func sum<S:SequenceType where S.Generator.Element:ArithmeticType>(s: S) -> S.Generator.Element {
+  return s.reduce(S.Generator.Element(), combine: +)
+}
+
 /**
 advance:amount:
 

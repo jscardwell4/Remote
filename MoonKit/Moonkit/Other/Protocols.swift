@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 public protocol JSONValueConvertible {
   var jsonValue: JSONValue { get }
 }

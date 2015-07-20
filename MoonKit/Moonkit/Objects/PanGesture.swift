@@ -8,13 +8,39 @@
 
 import Foundation
 import UIKit
-import UIKit.UIGestureRecognizerSubclass
+//import UIKit.UIGestureRecognizerSubclass
 
 public class PanGesture: ConfiningBlockActionGesture {
 
-  public enum Axis { case Default, Vertical, Horizontal }
+  // MARK: - Struct to specify upon which axis or axes panning touches are to be tracked
+  public struct Axis : OptionSetType {
+    public let rawValue: Int
+    public init(rawValue: Int) {
+      switch rawValue {
+        case 1 ... 3:   self.rawValue = rawValue
+        default:        self.rawValue = 3
+      }
+    }
+
+    public static let Vertical = Axis(rawValue: 1)
+    public static let Horizontal = Axis(rawValue: 2)
+
+    public static let Default: Axis = [Vertical, Horizontal]
+
+    public init(slope: CGFloat) {
+      switch slope {
+        case 0:                      self = .Horizontal
+        case CGFloat.NaN:            self = .Vertical
+        case let m where abs(m) < 1: self = .Horizontal
+        case let m where abs(m) > 1: self = .Vertical
+        default:                     self = .Default
+      }
+    }
+  }
 
   public var axis = Axis.Default
+
+  // MARK: - A simple structure for holding timestamp, centroid, and velocity data
 
   private struct TrackingData: CustomStringConvertible {
     var timestamp: NSTimeInterval = 0
@@ -30,6 +56,27 @@ public class PanGesture: ConfiningBlockActionGesture {
     var description: String { return "{timestamp: \(timestamp); centroid: \(centroid); velocity: \(velocity)}" }
   }
 
+  // MARK: - A simple structure for holding centroids capable of calculating the slope of a regression line
+
+  private struct RegressionData: CustomStringConvertible {
+    var points: [CGPoint] = []
+    var slope: CGFloat {
+      guard points.count > 0 else { return 0 }
+      let n = CGFloat(points.count)
+      let sumX = points.reduce(0) {$0 + $1.x}
+      let sumY = points.reduce(0) {$0 + $1.y}
+      let sumXX = points.reduce(0) {$0 + pow($1.x, 2)}
+      let sumXY = points.reduce(0) {$0 + $1.x * $1.y}
+      let numerator = n * sumXY - sumX * sumY
+      let denominator = n * sumXX - pow(sumX, 2)
+      return numerator / denominator
+    }
+    mutating func reset() { points.removeAll() }
+    var description: String {
+      return "{points: \(points); slope: \(slope)}"
+    }
+  }
+
   /**
   Returns `p`, {p.x, 0}, or {0, p.y} depending on the value of `axis`
 
@@ -39,9 +86,9 @@ public class PanGesture: ConfiningBlockActionGesture {
   */
   private func filteredPoint(p: CGPoint) -> CGPoint {
     switch axis {
-      case .Vertical:   return CGPoint(x: 0, y: p.y)
-      case .Horizontal: return CGPoint(x: p.x, y: 0)
-      case .Default:    return p
+      case Axis.Vertical:   return CGPoint(x: 0, y: p.y)
+      case Axis.Horizontal: return CGPoint(x: p.x, y: 0)
+      default:              return p
     }
   }
 
@@ -54,9 +101,9 @@ public class PanGesture: ConfiningBlockActionGesture {
   */
   private func filteredVector(v: CGVector) -> CGVector {
     switch axis {
-    case .Vertical:   return CGVector(dx: 0, dy: v.dy)
-    case .Horizontal: return CGVector(dx: v.dx, dy: 0)
-    case .Default:    return v
+    case Axis.Vertical:   return CGVector(dx: 0, dy: v.dy)
+    case Axis.Horizontal: return CGVector(dx: v.dx, dy: 0)
+    default:              return v
     }
   }
 
@@ -84,9 +131,9 @@ public class PanGesture: ConfiningBlockActionGesture {
   was reported. Apply the translation value to the state of the view when the gesture is first recognized—do not concatenate the
   value each time the handler is called.
 
-  - parameter v: UIView? = nil The view in whose coordinate system the translation of the pan gesture should be computed. If you want to
-  adjust a view's location to keep it under the user's finger, request the translation in that view's superview's coordinate
-  system.
+  - parameter v: UIView? = nil The view in whose coordinate system the translation of the pan gesture should be computed. If you
+  want to adjust a view's location to keep it under the user's finger, request the translation in that view's superview's 
+  coordinate system.
 
   - returns: CGPoint A point identifying the new location of a view in the coordinate system of its designated superview.
   */
@@ -98,21 +145,8 @@ public class PanGesture: ConfiningBlockActionGesture {
     let centroid = v == view
                      ? currentData.centroid
                      : v!.convertPoint(currentData.centroid, fromView: view)
-    MSLogDebug("translation = \(centroid - initial); filtered = \(filteredPoint(centroid - initial))")
     return filteredPoint(centroid - initial)
   }
-
-  /**
-  Sets the translation value in the coordinate system of the specified view.
-
-  Changing the translation value resets the velocity of the pan.
-
-  - parameter translation: CGPoint A point that identifies the new translation value.
-  - parameter v: UIView A view in whose coordinate system the translation is to occur.
-  */
-//  public func setTranslation(translation: CGPoint, inView v: UIView) {
-//    initialData.centroid = v == view ? translation : v.convertPoint(translation, toView: view)
-//  }
 
   /**
   The velocity of the pan gesture in the coordinate system of the specified view.
@@ -122,29 +156,10 @@ public class PanGesture: ConfiningBlockActionGesture {
   - returns: CGVector The velocity of the pan gesture, which is expressed in points per second. The velocity is broken into
   horizontal and vertical components.
   */
-  public func velocityInView(view: UIView) -> CGVector {
-    MSLogDebug("velocity = \(currentData.velocity); filtered = \(filteredVector(currentData.velocity))")
-    return filteredVector(currentData.velocity)
-  }
+  public func velocityInView(view: UIView) -> CGVector { return filteredVector(currentData.velocity) }
 
-
-  /**
-  timestampForTouches:
-
-  - parameter touches: C
-
-  - returns: NSTimeInterval
-  */
-  private func timestampForTouches<C:CollectionType where C.Generator.Element == UITouch, C.Index.Distance == Int>
-    (touches: C) -> NSTimeInterval
-  {
-    assert(touches.count > 0)
-    return touches.map {$0.timestamp}.maxElement()!
-  }
 
   /// MARK: -
-
-  private(set) var panRecognized: Bool = false
 
   public var requiredMovement: CGFloat = 10.0
 
@@ -154,40 +169,57 @@ public class PanGesture: ConfiningBlockActionGesture {
   private var currentData  = TrackingData()
   private var previousData = TrackingData()
 
+  private var regressionData = RegressionData()
+
   /** updateData */
   private func updateData() {
-    assert(panningTouches.count > 0)
+    // Make sure when can grab a timestamp from the panning touches
+    guard let timestamp = panningTouches.map({$0.timestamp}).maxElement() else { return }
 
-    let data = TrackingData(timestamp: timestampForTouches(panningTouches), centroid: centroidForTouches(panningTouches))
-    MSLogDebug("data = \(data)")
+    // Create a data structure with an updated timestamp and centroid
+    let data = TrackingData(timestamp: timestamp, centroid: centroidForTouches(panningTouches))
 
+    // Append the new centroid to our regression data
+    regressionData.points.append(data.centroid)
+
+    // Check if pan is moving along a compatible axis
+    guard regressionData.points.count < 2 || axis.isSupersetOf(Axis(slope: regressionData.slope)) else {
+      state = .Failed
+      return
+    }
+
+    // Encapsulate velocity calculation to stay DRY in the switch statement to follow
+    let velocity: () -> CGVector = {
+      let deltaCentroid = self.currentData.centroid - self.previousData.centroid
+      let deltaTimestamp = CGFloat(self.currentData.timestamp - self.previousData.timestamp)
+      return CGVector(deltaCentroid / deltaTimestamp)
+    }
+
+    // Switch on the current state to update data structures appropriately
     switch state {
+
       case .Possible where initialData.isValid:
         if filteredPoint(initialData.centroid - data.centroid).absolute.max >= requiredMovement {
           previousData = initialData
           currentData = data
-          let delta = CGFloat(currentData.timestamp - previousData.timestamp)
-          currentData.velocity = CGVector((currentData.centroid - previousData.centroid) / delta)
-          panRecognized = true
-          MSLogDebug(".Possible where initialData.isValid: previousData = \(previousData), currentData = \(currentData)")
+          currentData.velocity = velocity()
           state = .Began
         }
+
       case .Possible:
-        initialData.timestamp = timestampForTouches(panningTouches)
-        initialData.centroid = centroidForTouches(panningTouches)
-        MSLogDebug(".Possible: initialData = \(initialData)")
+        initialData = data
+
       case .Began, .Changed:
         previousData = currentData
         currentData = data
-        let delta = CGFloat(currentData.timestamp - previousData.timestamp)
-        currentData.velocity = CGVector((currentData.centroid - previousData.centroid) / delta)
-        MSLogDebug(".Began, .Changed: previousData = \(previousData), currentData = \(currentData)")
+        currentData.velocity = velocity()
         if filteredVector(currentData.velocity).absolute.max > 0 {
           state = .Changed
         }
+
       case .Ended, .Failed, .Cancelled:
-        MSLogDebug(".Ended, .Failed, .Cancelled")
         break
+
     }
 
   }
@@ -202,7 +234,7 @@ public class PanGesture: ConfiningBlockActionGesture {
     initialData.reset()
     currentData.reset()
     previousData.reset()
-    panRecognized = false
+    regressionData.reset()
   }
 
   /**
@@ -253,11 +285,12 @@ public class PanGesture: ConfiningBlockActionGesture {
   - parameter event: UIEvent
   */
   public override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent) {
-    guard panRecognized && panningTouches.intersect(touches).count > 0 else { return }
+    guard panningTouches.intersect(touches).count > 0 else { return }
     guard validateTouchLocations(panningTouches, withEvent: event) else { state = .Failed; return }
 
-//    updateData()
-    MSLogDebug("final data = \(currentData)")
-    state = .Ended
+    if centroidForTouches(panningTouches) != currentData.centroid { updateData() }
+    if state != .Failed {
+      state = .Ended
+    }
   }
 }

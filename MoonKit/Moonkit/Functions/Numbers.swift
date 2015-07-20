@@ -8,6 +8,18 @@
 
 import Foundation
 
+public protocol ArithmeticType {
+  func +(lhs: Self, rhs: Self) -> Self
+  func -(lhs: Self, rhs: Self) -> Self
+  func *(lhs: Self, rhs: Self) -> Self
+  func /(lhs: Self, rhs: Self) -> Self
+  init()
+}
+
+extension Float: ArithmeticType {}
+extension Double: ArithmeticType {}
+extension CGFloat: ArithmeticType {}
+
 public func half(x: CGFloat) -> CGFloat { return x * 0.5                 }
 public func half(x: Float)   -> Float   { return x * 0.5                 }
 public func half(x: Float80) -> Float80 { return x * Float80(0.5)        }

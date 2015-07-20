@@ -56,6 +56,8 @@ extension CGPoint: Unpackable2 {
 
 extension CGPoint: CustomStringConvertible { public var description: String { return NSStringFromCGPoint(self) } }
 
+extension CGPoint: ArithmeticType {}
+
 public func -(lhs: CGPoint, rhs: CGPoint) -> CGPoint {
   return lhs.isNull ? rhs : (rhs.isNull ? lhs : CGPoint(x: lhs.x - rhs.x, y: lhs.y - rhs.y))
 }
@@ -77,9 +79,13 @@ public func +<T:Unpackable2 where T.Element == CGFloat>(lhs: CGPoint, rhs: T) ->
 public func -=(inout lhs: CGPoint, rhs: CGPoint) { lhs = lhs - rhs }
 public func +=(inout lhs: CGPoint, rhs: CGPoint) { lhs = lhs + rhs }
 public func /(lhs: CGPoint, rhs: CGFloat) -> CGPoint { return CGPoint(x: lhs.x / rhs, y: lhs.y / rhs) }
+public func /(lhs: CGPoint, rhs: CGPoint) -> CGPoint { return CGPoint(x: lhs.x / rhs.x, y: lhs.y / rhs.y) }
 public func /=(inout lhs: CGPoint, rhs: CGFloat) { lhs = lhs / rhs }
+public func /=(inout lhs: CGPoint, rhs: CGPoint) { lhs = lhs / rhs }
 public func *(lhs: CGPoint, rhs: CGFloat) -> CGPoint { return CGPoint(x: lhs.x * rhs, y: lhs.y * rhs) }
+public func *(lhs: CGPoint, rhs: CGPoint) -> CGPoint { return CGPoint(x: lhs.x * rhs.x, y: lhs.y * rhs.y) }
 public func *=(inout lhs: CGPoint, rhs: CGFloat) { lhs = lhs * rhs }
+public func *=(inout lhs: CGPoint, rhs: CGPoint) { lhs = lhs * rhs }
 
 extension CGVector {
   public init?(_ string: String?) { if let s = string { self = CGVectorFromString(s) } else { return nil } }

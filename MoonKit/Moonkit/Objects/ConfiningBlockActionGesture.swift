@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import UIKit.UIGestureRecognizerSubclass
+//import UIKit.UIGestureRecognizerSubclass
 
 public class ConfiningBlockActionGesture: BlockActionGesture {
 

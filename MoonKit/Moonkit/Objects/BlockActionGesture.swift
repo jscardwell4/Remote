@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import UIKit.UIGestureRecognizerSubclass
+//import UIKit.UIGestureRecognizerSubclass
 
 @objc public class BlockActionGesture: UIGestureRecognizer {
 

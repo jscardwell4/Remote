@@ -242,6 +242,7 @@ class BankCollectionCell: UICollectionViewCell {
         previousState = pan.state
       })
       gesture.confineToView = true
+      gesture.axis = .Horizontal
       self.addGestureRecognizer(gesture)
       return gesture
       }()

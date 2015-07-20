@@ -15,6 +15,10 @@ public extension SequenceType where Generator.Element:IntegerArithmeticType, Gen
   }
 }
 
+public extension SequenceType where Generator.Element:ArithmeticType {
+  public var sum: Generator.Element { return reduce(Generator.Element.init(), combine: +) }
+}
+
 public extension SequenceType where Generator.Element:CGFloatable {
   public var sum: CGFloat {
     let initial: CGFloat = 0
