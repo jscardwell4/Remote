@@ -11,7 +11,7 @@ import UIKit
 import MoonKit
 import DataModel
 
-class BankModelDetailDelegate {
+class BankModelDetailDelegate: ItemCreationTransactionProvider {
 
   typealias Section = BankCollectionDetailSection
   typealias SectionKey = String
@@ -27,4 +27,5 @@ class BankModelDetailDelegate {
     sections = item.sectionIndexForController(controller)
   }
 
+  var transactions: [ItemCreationTransaction] { return [] }
 }

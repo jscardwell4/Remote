@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public final class Form: CustomStringConvertible {
+@objc public final class Form: CustomStringConvertible {
 
   public var fields: OrderedDictionary<String, Field>
   public var changeHandler: ((Form, Field, String) -> Void)?

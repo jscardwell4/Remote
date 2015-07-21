@@ -24,6 +24,34 @@ class BankCollectionDetailController: UICollectionViewController {
 
   let itemDelegate: BankModelDetailDelegate
 
+  var creationContext: NSManagedObjectContext? { return itemDelegate.item.managedObjectContext }
+
+  /** Set by the bank when bottom toolbar items are generated */
+  weak var createItemBarButton: ToggleBarButtonItem?
+
+  /** Set by the bank when bottom toolbar items are generated */
+  weak var discoverItemBarButton: ToggleBarButtonItem?
+
+  /** The creation mode supported by the controller's collection delegate */
+  var creationMode: Bank.CreationMode {
+    var canCreate = false
+    var canDiscover = false
+
+    func testTransaction(transaction: ItemCreationTransaction) {
+      switch transaction {
+      case is FormTransaction, is CustomTransaction: canCreate = true
+      case is DiscoveryTransaction:                  canDiscover = true
+      default:                                       break
+      }
+    }
+
+    // TODO: Turn BankModelDetailDelegate into a transaction provider
+
+    return .None
+  }
+
+  private let itemCreationDelegate = BankItemCreationDelegate()
+
   private(set) var didCancel: Bool = false
 
   // MARK: - Initializers
@@ -38,6 +66,7 @@ class BankCollectionDetailController: UICollectionViewController {
     let layout = BankCollectionDetailLayout()
     super.init(collectionViewLayout: layout)
     layout.delegate = self
+    itemCreationDelegate.presentingController = self
     hidesBottomBarWhenPushed = true
   }
 
@@ -326,6 +355,21 @@ extension BankCollectionDetailController: UITextFieldDelegate {
     else { textField.text = itemDelegate.item.name }
   }
 
+}
+
+// MARK: - Item creation
+
+extension BankCollectionDetailController: BankItemCreationController {
+
+  /** discoverBankItem */
+  func discoverBankItem() {
+    if discoverItemBarButton?.isToggled == false { itemCreationDelegate.endDiscovery() }
+    else { itemCreationDelegate.discoverBankItemWithProvider(itemDelegate) }
+  }
+
+  /** createBankItem */
+  func createBankItem() { itemCreationDelegate.createBankItemWithProvider(itemDelegate) }
+  
 }
 
 // MARK: - Utility functions

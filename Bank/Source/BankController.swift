@@ -55,36 +55,36 @@ public class BankController: UIViewController, BankItemImportExportController {
       switch rootCategory {
         case .Presets:
           collectionDelegate = BankModelDelegate(name: "Presets", context: context)
-          collectionDelegate.itemTransaction = BankModelDelegate.createTransactionWithLabel("Category",
-                                                                              creatableType: PresetCategory.self,
-                                                                                    context: context)
+          collectionDelegate.itemTransaction = FormTransaction(label:"Category",
+                                                               creatableType: PresetCategory.self,
+                                                               context: context)
         collectionDelegate.fetchedCollections = PresetCategory.objectsInContext(context,
                                                                   withPredicate: ∀"parentCategory == NULL",
                                                                        sortedBy: "name")
         case .NetworkDevices:
           collectionDelegate = BankModelDelegate(name: "Network Devices", context: context)
           collectionDelegate.fetchedItems = NetworkDevice.objectsInContext(context, sortedBy: "name")
-          collectionDelegate.itemTransaction = BankModelDelegate.discoverTransactionWithLabel("Network Device",
-                                                                             discoverableType: NetworkDevice.self,
-                                                                                      context: context)
+          collectionDelegate.itemTransaction = DiscoveryTransaction(label: "Network Device",
+                                                                    discoverableType: NetworkDevice.self,
+                                                                    context: context)
 
         case .ComponentDevices:
           collectionDelegate = BankModelDelegate(name: "Component Devices", context: context)
           collectionDelegate.fetchedItems = ComponentDevice.objectsInContext(context, sortedBy: "name")
-          collectionDelegate.itemTransaction = BankModelDelegate.createTransactionWithLabel("Component Device",
-                                                                              creatableType: ComponentDevice.self,
-                                                                                    context: context)
+          collectionDelegate.itemTransaction = FormTransaction(label: "Component Device",
+                                                               creatableType: ComponentDevice.self,
+                                                               context: context)
         case .Manufacturers:
           collectionDelegate = BankModelDelegate(name: "Manufacturers", context: context)
-          collectionDelegate.itemTransaction = BankModelDelegate.createTransactionWithLabel("Manufacturer",
-                                                                              creatableType: Manufacturer.self,
-                                                                                    context: context)
+          collectionDelegate.itemTransaction = FormTransaction(label: "Manufacturer",
+                                                               creatableType: Manufacturer.self,
+                                                               context: context)
           collectionDelegate.fetchedItems = Manufacturer.objectsInContext(context, sortedBy: "name")
         case .Images:
           collectionDelegate = BankModelDelegate(name: "Images", context: context)
-          collectionDelegate.itemTransaction = BankModelDelegate.createTransactionWithLabel("Category",
-                                                                              creatableType: ImageCategory.self,
-                                                                                    context: context)
+          collectionDelegate.itemTransaction = FormTransaction(label: "Category",
+                                                               creatableType: ImageCategory.self,
+                                                               context: context)
           collectionDelegate.fetchedCollections = ImageCategory.objectsInContext(context,
                                                                    withPredicate: ∀"parentCategory == NULL",
                                                                         sortedBy: "name")

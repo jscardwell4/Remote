@@ -83,8 +83,8 @@ import DataModel
     }
 
     let didSubmit: FormSubmission = {
-      if transaction.processedForm($0) {
-        DataManager.propagatingSaveFromContext(presentingController.creationContext)
+      if transaction.processedForm($0), let context = presentingController.creationContext {
+        DataManager.propagatingSaveFromContext(context)
       }
       dismissController()
     }
@@ -111,7 +111,9 @@ import DataModel
     }
 
     let didCreate: (ModelObject) -> Void = { _ in
-      DataManager.propagatingSaveFromContext(presentingController.creationContext)
+      if let context = presentingController.creationContext {
+        DataManager.propagatingSaveFromContext(context)
+      }
       dismissController()
     }
 
@@ -143,8 +145,8 @@ import DataModel
 
       let didSubmit: FormSubmission = {
         _ in
-        if processedForm(form) {
-          DataManager.propagatingSaveFromContext(presentingController.creationContext)
+        if processedForm(form), let context = presentingController.creationContext {
+          DataManager.propagatingSaveFromContext(context)
         }
         dismissController()
       }

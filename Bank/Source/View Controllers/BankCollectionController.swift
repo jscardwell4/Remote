@@ -75,7 +75,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
     }
   }
 
-  var creationContext: NSManagedObjectContext { return collectionDelegate.managedObjectContext }
+  var creationContext: NSManagedObjectContext? { return collectionDelegate.managedObjectContext }
 
   /** Whether model changes should be saved up to persistent store */
   var propagateChanges = true

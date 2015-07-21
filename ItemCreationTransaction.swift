@@ -15,16 +15,209 @@ struct CustomTransaction: ItemCreationTransaction {
 
   let label: String
   let controller: CustomController
+
+  /**
+  Memberwise initializer
+
+  - parameter label: String
+  - parameter controller: CustomController
+  */
+  init(label: String, controller: CustomController) { self.label = label; self.controller = controller }
+
+  /**
+  Generates a `CustomTransaction` given a `CustomCreatable` type, a label, and a managed object context
+
+  - parameter label: String
+  - parameter customType: T.Type
+  - parameter context: NSManagedObjectContext
+  */
+  init<T:CustomCreatable>(label: String, customType: T.Type, context: NSManagedObjectContext) {
+    let controller: CustomController = {
+      didCancel, didCreate -> UIViewController in
+      let handler: (ModelObject) -> Void = {
+        object in
+
+        let (_, error) = DataManager.saveContext(context)
+        MSHandleError(error)
+        didCreate(object)
+      }
+      return customType.creationControllerWithContext(context, cancellationHandler: didCancel, creationHandler: handler)
+    }
+    self.init(label: label, controller: controller)
+  }
+
+  /**
+  Transaction for creating a new item for the specified collection
+
+  - parameter collection: T
+  */
+  init<T:BankModelCollection where T:CustomCreatableItemBankModelCollection>(newItemFor collection: T) {
+    assert(collection.managedObjectContext != nil)
+    self.init(label: collection.itemLabel) {
+      didCancel, didCreate -> UIViewController in
+
+      let handler: (ModelObject) -> Void = {
+        object in
+        let (_, error) = DataManager.saveContext(collection.managedObjectContext!)
+        MSHandleError(error)
+        didCreate(object)
+      }
+      return collection.itemCreationControllerWithContext(collection.managedObjectContext!,
+                                      cancellationHandler: didCancel,
+                                          creationHandler: handler)
+    }
+  }
+
+  /**
+  Transaction for creating a new collection for the specified collection
+
+  - parameter collection: T
+  */
+  init<T:BankModelCollection where T:CustomCreatableCollectionBankModelCollection>(newCollectionFor collection: T) {
+    assert(collection.managedObjectContext != nil)
+    self.init(label: collection.collectionLabel) {
+      didCancel, didCreate -> UIViewController in
+
+      let handler: (ModelObject) -> Void = {
+        object in
+        let (_, error) = DataManager.saveContext(collection.managedObjectContext!)
+        MSHandleError(error)
+        didCreate(object)
+      }
+      return collection.collectionCreationControllerWithContext(collection.managedObjectContext!,
+                                            cancellationHandler: didCancel,
+                                                creationHandler: handler)
+    }
+  }
 }
 
 struct FormTransaction: ItemCreationTransaction {
   let label: String
   let form: Form
   let processedForm: ProcessedForm
+
+  /**
+  Memberwise initializer
+
+  - parameter label: String
+  - parameter form: Form
+  - parameter processedForm: ProcessedForm
+  */
+  init(label: String, form: Form, processedForm: ProcessedForm) {
+    self.label = label
+    self.form = form
+    self.processedForm = processedForm
+  }
+
+  /**
+  Generates a `FormTransaction` given a label, a `FormCreatable` type, and a managed object context
+
+  - parameter label: String
+  - parameter creatableType: T.Type
+  - parameter context: NSManagedObjectContext
+  */
+  init<T:FormCreatable>(label: String, creatableType: T.Type, context: NSManagedObjectContext) {
+    let form = creatableType.creationForm(context: context)
+    let processedForm: ProcessedForm = { f in
+      let (success, error) = DataManager.saveContext(context) {_ = creatableType.createWithForm(f, context: $0)}
+      MSHandleError(error, message: "failed to save new \(toString(creatableType))")
+      return success
+    }
+    self.init(label: label, form: form, processedForm: processedForm)
+  }
+
+  /**
+  Transaction for creating a new item for the specified collection
+
+  - parameter collection: T
+  */
+  init<T:BankModelCollection where T:FormCreatableItemBankModelCollection>(newItemFor collection: T) {
+    assert(collection.managedObjectContext != nil)
+    self.init(label: collection.itemLabel, form: collection.itemCreationForm(context: collection.managedObjectContext!)) {
+      f in
+
+      let (success, error) = DataManager.saveContext(collection.managedObjectContext!) {
+        _ = collection.createItemWithForm(f, context: $0)
+      }
+      MSHandleError(error)
+      return success
+    }
+
+  }
+
+  /**
+  Transaction for creating a new collection for the specified collection
+
+  - parameter collection: T
+  */
+  init<T:BankModelCollection where T:FormCreatableCollectionBankModelCollection>(newCollectionFor collection: T) {
+    assert(collection.managedObjectContext != nil)
+    self.init(label: collection.collectionLabel, form: collection.collectionCreationForm(context: collection.managedObjectContext!)) {
+      f in
+
+      let (success, error) = DataManager.saveContext(collection.managedObjectContext!) {
+        _ = collection.createCollectionWithForm(f, context: $0)
+      }
+      MSHandleError(error)
+      return success
+    }
+
+  }
 }
 
 struct DiscoveryTransaction: ItemCreationTransaction {
+
+  typealias BeginAction = ((Form, ProcessedForm) -> Void) -> Void
+  typealias EndAction = () -> Void
+
   let label: String
-  let beginDiscovery: ((Form, ProcessedForm) -> Void) -> Void
-  let endDiscovery: () -> Void
+  let beginDiscovery: BeginAction
+  let endDiscovery: EndAction
+
+
+  /**
+  Memberwise initializer
+
+  - parameter label: String
+  - parameter begin: BeginAction
+  - parameter end: EndAction
+  */
+  init(label: String, begin: BeginAction, end: EndAction) { self.label = label; beginDiscovery = begin; endDiscovery = end }
+
+  /**
+  Generates a `DiscoverTransaction` given a label, a `DiscoverCreatable` type, and a managed object context
+
+  - parameter label: String
+  - parameter discoverableType: T.Type
+  - parameter context: NSManagedObjectContext
+  */
+  init<T:DiscoverCreatable>(label: String, discoverableType: T.Type, context: NSManagedObjectContext) {
+    let begin: BeginAction = { discoverableType.beginDiscovery(context: context, presentForm: $0) }
+    let end: EndAction = {discoverableType.endDiscovery()}
+    self.init(label: label, begin: begin, end: end)
+  }
+
+  /**
+  Transaction for discovering a new item for the specified collection
+
+  - parameter collection: T
+  */
+  init<T:BankModelCollection where T:DiscoverCreatableItemBankModelCollection>(discoverItemFor collection: T) {
+    assert(collection.managedObjectContext != nil)
+    self.init(label: collection.itemLabel,
+              begin: {collection.beginItemDiscovery(context: collection.managedObjectContext!, presentForm: $0)},
+              end: {collection.endItemDiscovery()})
+  }
+
+  /**
+  Transaction for discovering a new collection for the specified collection
+
+  - parameter collection: T
+  */
+  init<T:BankModelCollection where T:DiscoverCreatableCollectionBankModelCollection>(discoverCollectionFor collection: T) {
+    assert(collection.managedObjectContext != nil)
+    self.init(label: collection.collectionLabel,
+      begin: {collection.beginCollectionDiscovery(context: collection.managedObjectContext!, presentForm: $0)},
+      end: {collection.endCollectionDiscovery()})
+  }
 }

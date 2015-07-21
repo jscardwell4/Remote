@@ -78,7 +78,7 @@ final class BankModelCollectionDelegate: BankModelDelegate {
   - returns: NSFetchedResultsController
   */
   private func fetchedResultsForEntity(entity: NSEntityDescription,
-    withAttributeName name: String) -> NSFetchedResultsController
+                     withAttributeName name: String) -> NSFetchedResultsController
   {
     let request = NSFetchRequest()
     request.entity = entity
@@ -124,8 +124,29 @@ final class BankModelCollectionDelegate: BankModelDelegate {
 
         super.init(name: c.name, context: context)
 
-        itemTransaction = BankModelCollectionDelegate.itemTransactionForCollection(collection)
-        collectionTransaction = BankModelCollectionDelegate.collectionTransactionForCollection(collection)
+        // create new item transaction
+        switch c {
+          case let c as FormCreatableItemBankModelCollection:
+            itemTransaction = FormTransaction(newItemFor: c)
+          case let c as DiscoverCreatableItemBankModelCollection:
+            itemTransaction = DiscoveryTransaction(discoverItemFor: c)
+          case let c as CustomCreatableItemBankModelCollection:
+            itemTransaction = CustomTransaction(newItemFor: c)
+          default:
+            itemTransaction = nil
+        }
+
+        // create new collection transaction
+        switch c {
+          case let c as FormCreatableItemBankModelCollection:
+            collectionTransaction = FormTransaction(newItemFor: c)
+          case let c as DiscoverCreatableItemBankModelCollection:
+            collectionTransaction = DiscoveryTransaction(discoverItemFor: c)
+          case let c as CustomCreatableItemBankModelCollection:
+            collectionTransaction = CustomTransaction(newItemFor: c)
+          default:
+            collectionTransaction = nil
+        }
 
         if let entity = itemType?.entityDescription, name = itemToRootAttributeName {
           fetchedItems = fetchedResultsForEntity(entity, withAttributeName: name)
@@ -158,103 +179,6 @@ final class BankModelCollectionDelegate: BankModelDelegate {
       super.init(name: c.name, context: NSManagedObjectContext())
       return nil
     }
-  }
-
-  /**
-  itemTransactionForCollection:
-
-  - parameter collection: C
-
-  - returns: ItemCreationTransaction?
-  */
-  private static func itemTransactionForCollection(collection: BankModelCollection) -> ItemCreationTransaction? {
-
-    if let context = collection.managedObjectContext {
-
-      let label = collection.itemLabel ?? "New Item"
-
-      switch collection {
-
-      case let c as FormCreatableItemBankModelCollection:
-        return FormTransaction(label: label, form: c.itemCreationForm(context: context)) {
-          form in
-          let (success, error) = DataManager.saveContext(context) {_ = c.createItemWithForm(form, context: $0)}
-          MSHandleError(error)
-          return success
-        }
-
-      case let c as DiscoverCreatableItemBankModelCollection:
-        return DiscoveryTransaction(label: label,
-          beginDiscovery: {c.beginItemDiscovery(context: context, presentForm: $0)},
-          endDiscovery: {c.endItemDiscovery()})
-
-      case let c as CustomCreatableItemBankModelCollection:
-        return CustomTransaction(label: label) {
-          didCancel, didCreate -> UIViewController in
-
-          let handler: (ModelObject) -> Void = {
-            object in
-            let (_, error) = DataManager.saveContext(context)
-            MSHandleError(error)
-            didCreate(object)
-          }
-          return c.itemCreationControllerWithContext(context, cancellationHandler: didCancel, creationHandler: handler)
-        }
-
-      default: return nil
-      }
-
-    } else { return nil }
-  }
-
-
-  /**
-  collectionTransactionForCollection:
-
-  - parameter collection: C
-
-  - returns: ItemCreationTransaction?
-  */
-  private static func collectionTransactionForCollection(collection: BankModelCollection) -> ItemCreationTransaction? {
-
-    if let context = collection.managedObjectContext {
-
-      let label = collection.collectionLabel ?? "New Collection"
-
-      switch collection {
-
-      case let c as FormCreatableCollectionBankModelCollection:
-        return FormTransaction(label: label, form: c.collectionCreationForm(context: context)) {
-          form in
-          let (success, error) = DataManager.saveContext(context) {_ = c.createCollectionWithForm(form, context: $0)}
-          MSHandleError(error)
-          return success
-        }
-
-      case let c as DiscoverCreatableCollectionBankModelCollection:
-        return DiscoveryTransaction(label: label,
-          beginDiscovery: {c.beginCollectionDiscovery(context: context, presentForm: $0)},
-          endDiscovery: {c.endCollectionDiscovery()})
-
-      case let c as CustomCreatableCollectionBankModelCollection:
-        return CustomTransaction(label: label) {
-          didCancel, didCreate -> UIViewController in
-
-          let handler: (ModelObject) -> Void = {
-            object in
-            let (_, error) = DataManager.saveContext(context)
-            MSHandleError(error)
-            didCreate(object)
-          }
-          return c.collectionCreationControllerWithContext(context,
-            cancellationHandler: didCancel,
-            creationHandler: handler)
-        }
-
-      default: return nil
-      }
-
-    } else { return nil }
   }
 
 }

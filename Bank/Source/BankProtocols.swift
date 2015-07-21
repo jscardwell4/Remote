@@ -61,31 +61,38 @@ protocol CustomCreatable: Model {
 
 /** Protocol for models that implement `BankItemCollection` */
 @objc protocol BankModelCollection: BankItemCollection, NamedModel {}
-protocol FormCreatableItemBankModelCollection: BankModelCollection {
+@objc protocol FormCreatableItemBankModelCollection: BankModelCollection {
   func itemCreationForm(context context: NSManagedObjectContext) -> Form
   func createItemWithForm(form: Form, context: NSManagedObjectContext) -> Bool
+  var itemLabel: String { get }
 }
-protocol FormCreatableCollectionBankModelCollection: BankModelCollection {
+@objc protocol FormCreatableCollectionBankModelCollection: BankModelCollection {
   func collectionCreationForm(context context: NSManagedObjectContext) -> Form
   func createCollectionWithForm(form: Form, context: NSManagedObjectContext) -> Bool
+  var collectionLabel: String { get }
 }
-protocol DiscoverCreatableItemBankModelCollection: BankModelCollection {
+@objc protocol DiscoverCreatableItemBankModelCollection: BankModelCollection {
   func beginItemDiscovery(context context: NSManagedObjectContext, presentForm: (Form, ProcessedForm) -> Void) -> Bool
   func endItemDiscovery()
+  var itemLabel: String { get }
+
 }
-protocol DiscoverCreatableCollectionBankModelCollection: BankModelCollection {
+@objc protocol DiscoverCreatableCollectionBankModelCollection: BankModelCollection {
   func beginCollectionDiscovery(context context: NSManagedObjectContext, presentForm: (Form, ProcessedForm) -> Void) -> Bool
   func endCollectionDiscovery()
+  var collectionLabel: String { get }
 }
-protocol CustomCreatableItemBankModelCollection: BankModelCollection {
+@objc protocol CustomCreatableItemBankModelCollection: BankModelCollection {
   func itemCreationControllerWithContext(context: NSManagedObjectContext,
                    cancellationHandler didCancel: () -> Void,
                        creationHandler didCreate: (ModelObject) -> Void) -> UIViewController
+  var itemLabel: String { get }
 }
-protocol CustomCreatableCollectionBankModelCollection: BankModelCollection {
+@objc protocol CustomCreatableCollectionBankModelCollection: BankModelCollection {
   func collectionCreationControllerWithContext(context: NSManagedObjectContext,
                          cancellationHandler didCancel: () -> Void,
                              creationHandler didCreate: (ModelObject) -> Void) -> UIViewController
+  var collectionLabel: String { get }
 }
 
 // MARK: - View controller related protocols
@@ -116,7 +123,7 @@ protocol BankItemImportExportController: class {
 /** Protocol for types that want create bar button item in bottom toolbar */
 protocol BankItemCreationController: class {
   var creationMode: Bank.CreationMode { get } // Whether new items are created manually, via discovery, both, or neither
-  var creationContext: NSManagedObjectContext { get } // Context used in creation transactions
+  var creationContext: NSManagedObjectContext? { get } // Context used in creation transactions
   func discoverBankItem()                     // Called from create item bar button action when creationMode == .Discovery
   func createBankItem()                       // Called from create item bar button action when creationMode == .Manual
   weak var createItemBarButton: ToggleBarButtonItem? { get set }
