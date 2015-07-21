@@ -37,6 +37,8 @@
 		C2194AA01AFE58CA009B19B7 /* Elysio.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2194A5E1AFE4FF1009B19B7 /* Elysio.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */; };
 		C21C43041A80015E004F8DA8 /* MainMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21C43031A80015E004F8DA8 /* MainMenuController.swift */; };
+		C21E9AB01B5DB9EB0045F49A /* BankItemCreationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21E9AAF1B5DB9EB0045F49A /* BankItemCreationDelegate.swift */; };
+		C21E9AB21B5DCB210045F49A /* ItemCreationTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21E9AB11B5DCB210045F49A /* ItemCreationTransaction.swift */; };
 		C21F10661AC62D7200CD877B /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2C3B91E1AC5DA7D001DC6CC /* CocoaLumberjack.framework */; };
 		C21F10671AC62D7200CD877B /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2C3B91E1AC5DA7D001DC6CC /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C21F10681AC62D8100CD877B /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2C3B91E1AC5DA7D001DC6CC /* CocoaLumberjack.framework */; };
@@ -1131,6 +1133,8 @@
 		C21B4239170B31E700FAE00E /* REEditingCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REEditingCollectionViewLayout.h; sourceTree = "<group>"; };
 		C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REEditingCollectionViewLayout.m; sourceTree = "<group>"; };
 		C21C43031A80015E004F8DA8 /* MainMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuController.swift; sourceTree = "<group>"; };
+		C21E9AAF1B5DB9EB0045F49A /* BankItemCreationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankItemCreationDelegate.swift; sourceTree = "<group>"; };
+		C21E9AB11B5DCB210045F49A /* ItemCreationTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemCreationTransaction.swift; sourceTree = "<group>"; };
 		C21F07CB1AA378E700F1F8DD /* ActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
 		C221159B1AC58A980071F2D0 /* BankProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankProtocols.swift; sourceTree = "<group>"; };
 		C22E1BD819C12FB800A93D61 /* Remote-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Remote-Bridging-Header.h"; path = "Source/Remote-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -2368,6 +2372,7 @@
 		C26BAE9F16DC10FE0093D5B4 = {
 			isa = PBXGroup;
 			children = (
+				C21E9AB11B5DCB210045F49A /* ItemCreationTransaction.swift */,
 				C26BBA9916DC19C50093D5B4 /* Resources */,
 				C26BAEB316DC10FE0093D5B4 /* Remote */,
 				C2CA769519BA1E1800ACCD76 /* ISYClient */,
@@ -3061,6 +3066,7 @@
 				C26834131B12740100A359A8 /* PhotoCollectionLayout.swift */,
 				C268340F1B11503000A359A8 /* PhotoCollectionBrowser.swift */,
 				C26834101B11503000A359A8 /* PhotoCollectionBrowser.xib */,
+				C21E9AAF1B5DB9EB0045F49A /* BankItemCreationDelegate.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -4814,7 +4820,9 @@
 				C2EEBA211B08087D0041B1B1 /* ImageCategory+Bank.swift in Sources */,
 				C2FE79AA1B1E18B00087F72C /* BankCollectionDetailImageCell.swift in Sources */,
 				C2EEBA1F1B08087D0041B1B1 /* ComponentDevice+Bank.swift in Sources */,
+				C21E9AB21B5DCB210045F49A /* ItemCreationTransaction.swift in Sources */,
 				C2EEBA281B08087D0041B1B1 /* PresetCategory+Bank.swift in Sources */,
+				C21E9AB01B5DB9EB0045F49A /* BankItemCreationDelegate.swift in Sources */,
 				C285D8661AC4BF6300C527F6 /* BankCollectionCategoryCell.swift in Sources */,
 				C26834141B12740100A359A8 /* PhotoCollectionLayout.swift in Sources */,
 				C2FE79D11B1E19350087F72C /* BankCollectionDetailRow.swift in Sources */,

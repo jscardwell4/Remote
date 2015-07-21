@@ -165,9 +165,9 @@ final class BankModelCollectionDelegate: BankModelDelegate {
 
   - parameter collection: C
 
-  - returns: BankItemCreationControllerTransaction?
+  - returns: ItemCreationTransaction?
   */
-  private static func itemTransactionForCollection(collection: BankModelCollection) -> BankItemCreationControllerTransaction? {
+  private static func itemTransactionForCollection(collection: BankModelCollection) -> ItemCreationTransaction? {
 
     if let context = collection.managedObjectContext {
 
@@ -176,7 +176,7 @@ final class BankModelCollectionDelegate: BankModelDelegate {
       switch collection {
 
       case let c as FormCreatableItemBankModelCollection:
-        return CreationTransaction(label: label, form: c.itemCreationForm(context: context)) {
+        return FormTransaction(label: label, form: c.itemCreationForm(context: context)) {
           form in
           let (success, error) = DataManager.saveContext(context) {_ = c.createItemWithForm(form, context: $0)}
           MSHandleError(error)
@@ -213,9 +213,9 @@ final class BankModelCollectionDelegate: BankModelDelegate {
 
   - parameter collection: C
 
-  - returns: BankItemCreationControllerTransaction?
+  - returns: ItemCreationTransaction?
   */
-  private static func collectionTransactionForCollection(collection: BankModelCollection) -> BankItemCreationControllerTransaction? {
+  private static func collectionTransactionForCollection(collection: BankModelCollection) -> ItemCreationTransaction? {
 
     if let context = collection.managedObjectContext {
 
@@ -224,7 +224,7 @@ final class BankModelCollectionDelegate: BankModelDelegate {
       switch collection {
 
       case let c as FormCreatableCollectionBankModelCollection:
-        return CreationTransaction(label: label, form: c.collectionCreationForm(context: context)) {
+        return FormTransaction(label: label, form: c.collectionCreationForm(context: context)) {
           form in
           let (success, error) = DataManager.saveContext(context) {_ = c.createCollectionWithForm(form, context: $0)}
           MSHandleError(error)

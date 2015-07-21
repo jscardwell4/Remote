@@ -116,14 +116,19 @@ protocol BankItemImportExportController: class {
 /** Protocol for types that want create bar button item in bottom toolbar */
 protocol BankItemCreationController: class {
   var creationMode: Bank.CreationMode { get } // Whether new items are created manually, via discovery, both, or neither
+  var creationContext: NSManagedObjectContext { get } // Context used in creation transactions
   func discoverBankItem()                     // Called from create item bar button action when creationMode == .Discovery
   func createBankItem()                       // Called from create item bar button action when creationMode == .Manual
   weak var createItemBarButton: ToggleBarButtonItem? { get set }
   weak var discoverItemBarButton: ToggleBarButtonItem? { get set }
 }
 
-protocol BankItemCreationControllerTransaction {
+protocol ItemCreationTransaction {
   var label: String { get }
+}
+
+protocol ItemCreationTransactionProvider {
+  var transactions: [ItemCreationTransaction] { get }
 }
 
 /** Protocol for types that want search bar button item in bottom toolbar */

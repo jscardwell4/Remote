@@ -13,31 +13,14 @@ import MoonKit
 
 @objc class BankModelDelegate: NSObject {
 
-  struct CustomTransaction: BankItemCreationControllerTransaction {
-    let label: String
-    let controller: CustomController
-  }
 
-  struct DiscoveryTransaction: BankItemCreationControllerTransaction {
-    let label: String
-    let beginDiscovery: ((Form, ProcessedForm) -> Void) -> Void
-    let endDiscovery: () -> Void
-  }
-
-  struct CreationTransaction: BankItemCreationControllerTransaction {
-    let label: String
-    let form: Form
-    let processedForm: ProcessedForm
-  }
-
-  typealias CustomController = (didCancel: () -> Void, didCreate: (ModelObject) -> Void) -> UIViewController
   typealias BeginEndChangeCallback = (BankModelDelegate) -> Void
   typealias ChangeCallback = (BankModelDelegate, Change) -> Void
 
   // MARK: - Transactions
 
-  var itemTransaction: BankItemCreationControllerTransaction?
-  var collectionTransaction: BankItemCreationControllerTransaction?
+  var itemTransaction: ItemCreationTransaction?
+  var collectionTransaction: ItemCreationTransaction?
 
   /**
   Generates a `CreateTransaction` given a label, a `FormCreatable` type, and a managed object context
@@ -50,9 +33,9 @@ import MoonKit
   */
   class func createTransactionWithLabel<T:FormCreatable>(label: String,
                                               creatableType: T.Type,
-                                              context: NSManagedObjectContext) -> CreationTransaction
+                                              context: NSManagedObjectContext) -> FormTransaction
   {
-    return CreationTransaction(label: label, form: creatableType.creationForm(context: context)) {
+    return FormTransaction(label: label, form: creatableType.creationForm(context: context)) {
       form in
         let (success, error) = DataManager.saveContext(context) {_ = creatableType.createWithForm(form, context: $0)}
         MSHandleError(error, message: "failed to save new \(toString(creatableType))")
@@ -239,6 +222,11 @@ import MoonKit
     return result
   }
 
+}
+
+// MARK: - ItemCreationTransactionProvider
+extension BankModelDelegate: ItemCreationTransactionProvider {
+  var transactions: [ItemCreationTransaction] { return compressed([itemTransaction, collectionTransaction]) }
 }
 
 // MARK: - NSFetchedResultsControllerDelegate methods

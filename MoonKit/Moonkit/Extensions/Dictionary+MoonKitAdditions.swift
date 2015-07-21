@@ -92,7 +92,7 @@ public func formattedDescription<C: KeyValueCollectionType where C.Generator: Ke
   return "\n".join(components)
 }
 
-extension Dictionary {
+public extension Dictionary {
   /**
   init:Value)]:
 

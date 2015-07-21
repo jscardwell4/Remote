@@ -34,6 +34,8 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   /** Object expecting to receive a callback when the user selects a bank item from our collection */
   var selectionDelegate: BankItemSelectionDelegate?
 
+  private let itemCreationDelegate = BankItemCreationDelegate()
+
   /** Whether viewing mode segmented control should be displayed */
   var selectiveViewingEnabled: Bool { return collectionDelegate.previewable == true }
 
@@ -50,12 +52,12 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
     var canCreate = false
     var canDiscover = false
 
-    func testTransaction(transaction: BankItemCreationControllerTransaction) {
+    func testTransaction(transaction: ItemCreationTransaction) {
       switch transaction {
-        case is BankModelDelegate.CreationTransaction,
-             is BankModelDelegate.CustomTransaction:
+        case is FormTransaction,
+             is CustomTransaction:
           canCreate = true
-        case is BankModelDelegate.DiscoveryTransaction:
+        case is DiscoveryTransaction:
           canDiscover = true
         default:
           break
@@ -73,7 +75,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
     }
   }
 
-  private var endDiscovery: (() -> Void)?
+  var creationContext: NSManagedObjectContext { return collectionDelegate.managedObjectContext }
 
   /** Whether model changes should be saved up to persistent store */
   var propagateChanges = true
@@ -188,6 +190,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
     d.beginCollectionsChanges = beginDelegateCollectionsChanges
     d.endCollectionsChanges = endDelegateCollectionsChanges
     d.collectionsDidChange = delegateCollectionsDidChange
+    itemCreationDelegate.presentingController = self
     if mode == .Default {
 	    exportButton = Bank.exportBarButtonItemForController(self)
 	    selectAllButton = Bank.selectAllButtonForController(self)
@@ -401,185 +404,20 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
     }
   }
 
-  // MARK: Private actions
-
-  /**
-  Creates a fresh `PopOverView` with the specified actions
-
-  - parameter actions: [String:(PopOverView) -> Void]
-
-  - returns: PopOverView
-  */
-  private func popOverWithActions(actions: [String:(PopOverView) -> Void], location: PopOverView.Location) -> PopOverView {
-    let popOverView = PopOverView(autolayout: true)
-    popOverView.location = location
-    popOverView.highlightedTextColor = Bank.actionColor
-    apply(actions) {popOverView.addLabel(label: $0, withAction: $1)}
-    return popOverView
-  }
-
-  /**
-  presentPopOverWithActions:
-
-  - parameter actions: [String:(PopOverView) -> Void]
-  - parameter button: UIBarButtonItem
-  */
-  private func presentPopOverWithActions(actions: [String:(PopOverView) -> Void], above button: UIBarButtonItem) {
-    // TODO: Add animation and more appearance customization
-    let popOverView = popOverWithActions(actions, location: .Bottom)
-
-    if let presentingView = createItemBarButton?.customView {
-      view.window?.addSubview(popOverView)
-      view.window?.constrain(popOverView.centerX => presentingView.centerX, popOverView.bottom => presentingView.top)
-    }
-  }
-
-  /**
-  presentPopOverWithActions:below:
-
-  - parameter actions: [String:(PopOverView) -> Void]
-  - parameter button: UIBarButtonItem
-  */
-  private func presentPopOverWithActions(actions: [String:(PopOverView) -> Void], below button: UIBarButtonItem) {
-    // TODO: Add animation and more appearance customization
-    let popOverView = popOverWithActions(actions, location: .Top)
-
-    if let presentingView = button.customView {
-      view.window?.addSubview(popOverView)
-      view.window?.constrain(popOverView.centerX => presentingView.centerX, popOverView.top => presentingView.bottom)
-    }
-  }
-
-
 }
 
 // MARK: - Item creation
 
 extension BankCollectionController: BankItemCreationController {
 
-  private func transact(transaction: BankModelDelegate.CreationTransaction) { MSLogDebug(""); presentForm(transaction) }
-  private func transact(transaction: BankModelDelegate.DiscoveryTransaction) { MSLogDebug(""); beginDiscoveryTransaction(transaction) }
-  private func transact(transaction: BankModelDelegate.CustomTransaction) { MSLogDebug(""); presentCustom(transaction) }
-  private func transact(transaction: BankItemCreationControllerTransaction) {
-    MSLogDebug("")
-    switch transaction {
-      case let t as BankModelDelegate.CreationTransaction:  presentForm(t)
-      case let t as BankModelDelegate.CustomTransaction:    presentCustom(t)
-      case let t as BankModelDelegate.DiscoveryTransaction: beginDiscoveryTransaction(t)
-      default:                                              break
-    }
-  }
-
-
-  /**
-  presentCustom:
-
-  - parameter transaction: BankModelDelegate.CustomTransaction
-  */
-  private func presentCustom(transaction: BankModelDelegate.CustomTransaction) {
-    let dismissController = {self.dismissViewControllerAnimated(true) {self.createItemBarButton?.isToggled = false}}
-    let didCreate: (ModelObject) -> Void = { _ in
-      DataManager.propagatingSaveFromContext(self.collectionDelegate.managedObjectContext)
-      dismissController()
-    }
-    let controller = transaction.controller(didCancel: dismissController, didCreate: didCreate)
-    presentViewController(controller, animated: true, completion: nil)
-  }
-
-  /**
-  Presents a `FormViewController` using the specifed creation transaction
-
-  - parameter transaction: BankModelDelegate.CreationTransaction
-  */
-  private func presentForm(transaction: BankModelDelegate.CreationTransaction) {
-    let dismissController = {self.dismissViewControllerAnimated(true) {self.createItemBarButton?.isToggled = false}}
-    let didSubmit: FormSubmission = {
-      if transaction.processedForm($0) {
-        DataManager.propagatingSaveFromContext(self.collectionDelegate.managedObjectContext)
-      }
-      dismissController()
-    }
-    let formViewController = FormViewController(form: transaction.form, didSubmit: didSubmit, didCancel: dismissController)
-    presentViewController(formViewController, animated: true, completion: nil)
-  }
-
-  /**
-  beginDiscoveryTransaction:
-
-  - parameter transaction: BankModelDelegate.DiscoveryTransaction
-  */
-  private func beginDiscoveryTransaction(transaction: BankModelDelegate.DiscoveryTransaction) {
-    endDiscovery = transaction.endDiscovery
-    let context = collectionDelegate.managedObjectContext
-    let formPresentation: (Form, ProcessedForm) -> Void = {
-      form, processedForm in
-
-        let dismissController = {
-          self.dismissViewControllerAnimated(true) { self.discoverItemBarButton?.isToggled = false }
-        }
-        let didSubmit: FormSubmission = {
-          _ in
-          if processedForm(form) { DataManager.propagatingSaveFromContext(context) }
-          dismissController()
-        }
-        let formViewController = FormViewController(form: form, didSubmit: didSubmit, didCancel: dismissController)
-        self.presentViewController(formViewController, animated: true, completion: nil)
-    }
-    transaction.beginDiscovery(formPresentation)
-  }
-
   /** discoverBankItem */
   func discoverBankItem() {
-
-    if discoverItemBarButton?.isToggled == false {
-      endDiscovery?()
-      endDiscovery = nil
-    } else {
-      switch (collectionDelegate.itemTransaction as? BankModelDelegate.DiscoveryTransaction,
-              collectionDelegate.collectionTransaction as? BankModelDelegate.DiscoveryTransaction)
-      {
-
-        // Display popover if there are multiple valid discover transactions
-        case let (discoverItem, discoverCollection) where discoverItem != nil && discoverCollection != nil:
-        if let button = discoverItemBarButton {
-          presentPopOverWithActions([discoverItem!.label:
-                                       {$0.removeFromSuperview(); self.transact(discoverItem!)},
-                                     discoverCollection!.label:
-                                       {$0.removeFromSuperview(); self.transact(discoverCollection!)}],
-                              above: button)
-        }
-
-        case let (discoverItem, discoverCollection) where discoverItem != nil && discoverCollection == nil:
-          transact(discoverItem!)
-
-        case let (discoverItem, discoverCollection) where discoverItem == nil && discoverCollection != nil:
-          transact(discoverCollection!)
-
-        // Don't do anything if we have no valid create transactions
-        default:
-          assert(false, "discover bar button item should only be enabled if delegate has at least one valid transaction")
-      }
-    }
+    if discoverItemBarButton?.isToggled == false { itemCreationDelegate.endDiscovery() }
+    else { itemCreationDelegate.discoverBankItemWithProvider(collectionDelegate) }
   }
 
   /** createBankItem */
-  func createBankItem() {
-    switch (collectionDelegate.itemTransaction, collectionDelegate.collectionTransaction) {
-
-      case let (.Some(item), .Some(collection)):
-        if let button = createItemBarButton {
-          presentPopOverWithActions([item.label: {$0.removeFromSuperview(); self.transact(item)},
-                                     collection.label: {$0.removeFromSuperview(); self.transact(collection)}],
-                              above: button)
-        }
-      case let (.Some(item), nil):               transact(item)
-      case let (nil,         .Some(collection)): transact(collection)
-
-      // Don't do anything if we have no valid create transactions
-      default:
-        assert(false, "create bar button item should only be enabled if delegate has at least one valid transaction")
-    }
-  }
+  func createBankItem() { itemCreationDelegate.createBankItemWithProvider(collectionDelegate) }
 
 }
 

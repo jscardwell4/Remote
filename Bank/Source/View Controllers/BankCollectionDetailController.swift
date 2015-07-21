@@ -199,6 +199,8 @@ class BankCollectionDetailController: UICollectionViewController {
     return itemDelegate.sections.values.map({$0.title != nil ? $0.identifier : nil})
   }
 
+  private var endDiscovery: (() -> Void)?
+
 }
 
 // MARK: - UICollectionViewDataSource
@@ -326,8 +328,7 @@ extension BankCollectionDetailController: UITextFieldDelegate {
 
 }
 
-
-/// MARK: - Utility functions
+// MARK: - Utility functions
 
 extension BankCollectionDetailController {
 
