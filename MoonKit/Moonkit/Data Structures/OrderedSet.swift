@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct OrderedSet<Element:Equatable> : MutableCollectionType, Sliceable {
+public struct OrderedSet<Element:Equatable> : MutableCollectionType {
 
   private var storage: [Element] {
     didSet {

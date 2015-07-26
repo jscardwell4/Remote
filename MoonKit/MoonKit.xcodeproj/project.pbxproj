@@ -26,6 +26,7 @@
 		C20650051A13C8FB00342FDE /* Generic.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592EE19C8E04200920F8D /* Generic.swift */; };
 		C20650061A13C90A00342FDE /* FontAwesomeIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592F019C8E04200920F8D /* FontAwesomeIcon.swift */; };
 		C20650071A13C99500342FDE /* GestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63DD19FEC06A00F54626 /* GestureManager.swift */; };
+		C20CBBEC1B5FF7960008F538 /* PopoverListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20CBBEB1B5FF7960008F538 /* PopoverListController.swift */; };
 		C210E9921AF27E3C0026A51D /* ViewProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C210E9911AF27E3C0026A51D /* ViewProxy.swift */; };
 		C211C2C21B4607E5004A24E4 /* InlinePickerViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C211C2C11B4607E5004A24E4 /* InlinePickerViewLayout.swift */; };
 		C211C2C41B4607FD004A24E4 /* InlinePickerViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C211C2C31B4607FD004A24E4 /* InlinePickerViewCell.swift */; };
@@ -109,7 +110,6 @@
 		C2358F4519C78E0C00920F8D /* NSURL+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88A218138CF700555D63 /* NSURL+MSKitAdditions.m */; };
 		C2358F4619C78E0C00920F8D /* NSUserDefaults+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88A418138CF700555D63 /* NSUserDefaults+MSKitAdditions.m */; };
 		C2358F4719C78E0C00920F8D /* NSValue+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88A618138CF700555D63 /* NSValue+MSKitAdditions.m */; };
-		C2358F4819C78E0C00920F8D /* UIAlertView+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88A818138CF700555D63 /* UIAlertView+MSKitAdditions.m */; };
 		C2358F4919C78E0C00920F8D /* UICollectionViewFlowLayout+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88AA18138CF700555D63 /* UICollectionViewFlowLayout+MSKitAdditions.m */; };
 		C2358F4A19C78E0C00920F8D /* UIColor+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88AC18138CF700555D63 /* UIColor+MSKitAdditions.m */; };
 		C2358F4B19C78E0C00920F8D /* UIControl+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE88AE18138CF700555D63 /* UIControl+MSKitAdditions.m */; };
@@ -191,7 +191,6 @@
 		C2358F9D19C78E3F00920F8D /* NSURL+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88A118138CF700555D63 /* NSURL+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358F9E19C78E3F00920F8D /* NSUserDefaults+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88A318138CF700555D63 /* NSUserDefaults+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358F9F19C78E3F00920F8D /* NSValue+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88A518138CF700555D63 /* NSValue+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C2358FA019C78E3F00920F8D /* UIAlertView+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88A718138CF700555D63 /* UIAlertView+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358FA119C78E3F00920F8D /* UICollectionViewFlowLayout+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88A918138CF700555D63 /* UICollectionViewFlowLayout+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358FA219C78E3F00920F8D /* UIColor+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88AB18138CF700555D63 /* UIColor+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358FA319C78E3F00920F8D /* UIControl+MSKitAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C2CE88AD18138CF700555D63 /* UIControl+MSKitAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -348,7 +347,7 @@
 		C2CEFF281A32236B00F3BE24 /* HexIntegerInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CEFF271A32236B00F3BE24 /* HexIntegerInputView.swift */; };
 		C2CEFF2A1A32807E00F3BE24 /* TextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CEFF291A32807E00F3BE24 /* TextInputView.swift */; };
 		C2CEFF2C1A328B2000F3BE24 /* FloatInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CEFF2B1A328B2000F3BE24 /* FloatInputView.swift */; };
-		C2CF986A1B0FD12900E32E41 /* PopOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CF98691B0FD12900E32E41 /* PopOverView.swift */; };
+		C2CF986A1B0FD12900E32E41 /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CF98691B0FD12900E32E41 /* PopoverView.swift */; };
 		C2E7C8321A1AA3F0006BC80E /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E7C8311A1AA3F0006BC80E /* Protocols.swift */; };
 		C2E8C8B71AE7325300F8AC45 /* UITableViewCell+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8C8B61AE7325300F8AC45 /* UITableViewCell+MoonKitAdditions.swift */; };
 		C2E937001ACE04D4003EB3E8 /* JSONParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E936FF1ACE04D4003EB3E8 /* JSONParser.swift */; };
@@ -383,6 +382,7 @@
 		C205852A1A1BA22A00212759 /* LongPressGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LongPressGesture.swift; sourceTree = "<group>"; };
 		C205852C1A1BEC2000212759 /* BlockActionGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockActionGesture.swift; sourceTree = "<group>"; };
 		C2064FF91A13C05900342FDE /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
+		C20CBBEB1B5FF7960008F538 /* PopoverListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverListController.swift; sourceTree = "<group>"; };
 		C20FF1F119AEB67100D11F33 /* MSNotificationReceptionist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSNotificationReceptionist.h; sourceTree = "<group>"; };
 		C20FF1F219AEB67100D11F33 /* MSNotificationReceptionist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSNotificationReceptionist.m; sourceTree = "<group>"; };
 		C210E9911AF27E3C0026A51D /* ViewProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewProxy.swift; sourceTree = "<group>"; };
@@ -688,7 +688,7 @@
 		C2CEFF271A32236B00F3BE24 /* HexIntegerInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HexIntegerInputView.swift; sourceTree = "<group>"; };
 		C2CEFF291A32807E00F3BE24 /* TextInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextInputView.swift; sourceTree = "<group>"; };
 		C2CEFF2B1A328B2000F3BE24 /* FloatInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatInputView.swift; sourceTree = "<group>"; };
-		C2CF98691B0FD12900E32E41 /* PopOverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopOverView.swift; sourceTree = "<group>"; };
+		C2CF98691B0FD12900E32E41 /* PopoverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverView.swift; sourceTree = "<group>"; };
 		C2E076A31B4EF7420063D057 /* WTF.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = WTF.playground; path = Moonkit/WTF.playground; sourceTree = "<group>"; };
 		C2E3777F181C2F900066ACDB /* MSLogMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSLogMacros.h; sourceTree = "<group>"; };
 		C2E37782181CCEC40066ACDB /* NSAssertionHandler+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAssertionHandler+MSKitAdditions.h"; sourceTree = "<group>"; };
@@ -960,7 +960,8 @@
 				C2EEBA081B06BFD10041B1B1 /* NotificationReceptionist.swift */,
 				C28A61EA1B0CEA2100612469 /* LabeledStepper.swift */,
 				C2143B761B0D5DAE007863F0 /* ImageButtonView.swift */,
-				C2CF98691B0FD12900E32E41 /* PopOverView.swift */,
+				C2CF98691B0FD12900E32E41 /* PopoverView.swift */,
+				C20CBBEB1B5FF7960008F538 /* PopoverListController.swift */,
 				C26834091B10C24100A359A8 /* LabelButton.swift */,
 				C27978E31B17FF9E00B36BAD /* ZoomingCollectionViewLayout.swift */,
 				C2C17D491B5813EB00D9E9A6 /* Identifier.swift */,
@@ -1390,7 +1391,6 @@
 				C2358F9D19C78E3F00920F8D /* NSURL+MSKitAdditions.h in Headers */,
 				C2358F9E19C78E3F00920F8D /* NSUserDefaults+MSKitAdditions.h in Headers */,
 				C2358F9F19C78E3F00920F8D /* NSValue+MSKitAdditions.h in Headers */,
-				C2358FA019C78E3F00920F8D /* UIAlertView+MSKitAdditions.h in Headers */,
 				C2358FA119C78E3F00920F8D /* UICollectionViewFlowLayout+MSKitAdditions.h in Headers */,
 				C2358FA219C78E3F00920F8D /* UIColor+MSKitAdditions.h in Headers */,
 				C2358FA319C78E3F00920F8D /* UIControl+MSKitAdditions.h in Headers */,
@@ -1740,7 +1740,6 @@
 				C24A22911ADB3B3C0065E7EA /* MappingOperations.swift in Sources */,
 				C2EEBA091B06BFD10041B1B1 /* NotificationReceptionist.swift in Sources */,
 				C2358F4719C78E0C00920F8D /* NSValue+MSKitAdditions.m in Sources */,
-				C2358F4819C78E0C00920F8D /* UIAlertView+MSKitAdditions.m in Sources */,
 				C23592F419C8E04200920F8D /* BitArray.swift in Sources */,
 				C2358F4919C78E0C00920F8D /* UICollectionViewFlowLayout+MSKitAdditions.m in Sources */,
 				C24A22931ADB43620065E7EA /* SetOperations.swift in Sources */,
@@ -1791,7 +1790,8 @@
 				C2BE96E81A467E85007599B2 /* NSManagedObjectModel+MoonKitAdditions.swift in Sources */,
 				C2358F5B19C78E0C00920F8D /* MSPickerInputButton.m in Sources */,
 				C2358F5C19C78E0C00920F8D /* MSPopupBarButton.m in Sources */,
-				C2CF986A1B0FD12900E32E41 /* PopOverView.swift in Sources */,
+				C20CBBEC1B5FF7960008F538 /* PopoverListController.swift in Sources */,
+				C2CF986A1B0FD12900E32E41 /* PopoverView.swift in Sources */,
 				C23592F519C8E04200920F8D /* OrderedDictionary.swift in Sources */,
 				C28E50991A13CB1E00DF3206 /* IntegerInputView.swift in Sources */,
 				C2358F5D19C78E0C00920F8D /* MSPopupBarButtonItem.m in Sources */,

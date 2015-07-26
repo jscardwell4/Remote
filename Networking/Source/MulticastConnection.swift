@@ -11,7 +11,7 @@ import MoonKit
 
 
 
-@objc class MulticastConnection: GCDAsyncUdpSocketDelegate {
+class MulticastConnection: GCDAsyncUdpSocketDelegate {
 
   let address: String
   let port: UInt16
@@ -103,7 +103,7 @@ import MoonKit
   - parameter address: NSData!
   - parameter filterContext: AnyObject!
   */
-  func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!,
+  @objc func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!,
     withFilterContext filterContext: AnyObject!)
   {
     callback?(NSString(data: data) as String)

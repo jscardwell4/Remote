@@ -70,11 +70,11 @@ final public class PresetCategory: EditableModelObject, CollectedModel {
 }
 
 extension PresetCategory: ModelCollection {
-  public var items: [CollectedModel] { return sortedByName(presets) }
+  public var items: [CollectedModel] { return presets.sortByName() }
 }
 
 extension PresetCategory: NestingModelCollection {
-  public var collections: [ModelCollection] { return sortedByName(childCategories) }
+  public var collections: [ModelCollection] { return childCategories.sortByName() }
 }
 
 extension PresetCategory: DefaultingModelCollection {

@@ -322,6 +322,48 @@ public func MSHandleError(error: NSError?,
 }
 
 /**
+logError:message:function:line:
+
+- parameter e: E
+- parameter message: String? = nil
+- parameter function: String = __FUNCTION__
+- parameter line: Int32 = __LINE__
+*/
+public func logError<E: ErrorType>(e: E,
+                                   message: String? = nil,
+                                   function: String = __FUNCTION__,
+                                   line: Int32 = __LINE__)
+{
+  let error = e as NSError
+  let errorDescription = detailedDescriptionForError(error, depth: 0)
+
+  var logMessage = "-Error- "
+  if let message = message { logMessage += message + "\n" }
+  logMessage += errorDescription
+
+  MSLogError(logMessage, function: function, line: line)
+}
+
+/**
+MSHandleError:message:function:line:
+
+- parameter error: E?
+- parameter message: String? = nil
+- parameter function: String = __FUNCTION__
+- parameter line: Int32 = __LINE__
+
+- returns: Bool
+*/
+public func MSHandleError<E:ErrorType>(error: E?,
+                 message: String? = nil,
+                function: String = __FUNCTION__,
+                    line: Int32 = __LINE__) -> Bool
+{
+  guard let e = error as? NSError else { return error != nil }
+  return MSHandleError(e, message: message, function: function, line: line)
+}
+
+/**
 recursiveDescription<T>:description:subelements:
 
 - parameter base: [T]

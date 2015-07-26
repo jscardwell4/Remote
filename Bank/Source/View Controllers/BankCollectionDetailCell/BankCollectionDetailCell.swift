@@ -16,24 +16,10 @@ class BankCollectionDetailCell: UICollectionViewCell {
 
   /** A simple string-based enum to establish valid reuse identifiers for use with styling the cell */
   enum Identifier: String, EnumerableType {
-    case Cell            = "BankCollectionDetailCell"
-    case AttributedText  = "BankCollectionDetailAttributedTextCell"
-    case Label           = "BankCollectionDetailLabelCell"
-    case List            = "BankCollectionDetailListCell"
-    case Button          = "BankCollectionDetailButtonCell"
-    case Image           = "BankCollectionDetailImageCell"
-    case LabeledImage    = "BankCollectionDetailLabeledImageCell"
-    case Switch          = "BankCollectionDetailSwitchCell"
-    case Color           = "BankCollectionDetailColorCell"
-    case Slider          = "BankCollectionDetailSliderCell"
-    case TwoToneSlider   = "BankCollectionDetailTwoToneSliderCell"
-    case Picker          = "BankCollectionDetailPickerCell"
-    case Stepper         = "BankCollectionDetailStepperCell"
-    case TextView        = "BankCollectionDetailTextViewCell"
-    case TextField       = "BankCollectionDetailTextFieldCell"
-    case Custom          = "BankCollectionDetailCustomCell"
+    case Cell, AttributedText, Label, List, Button, Image, LabeledImage, Switch, Color, Slider, TwoToneSlider, Picker, Stepper,
+         TextView, TextField, Custom
 
-    static var all: [Identifier] {
+    static var allCases: [BankCollectionDetailCell.Identifier] {
       return [.AttributedText, .Label, .List, .Button, .Image, .LabeledImage, .Switch, .Custom,
               .Color, .Slider, .TwoToneSlider, .Picker, .Stepper, .TextView, .TextField, .Cell]
     }
@@ -58,13 +44,6 @@ class BankCollectionDetailCell: UICollectionViewCell {
         case .Custom:          return BankCollectionDetailCustomCell.self
       }
     }
-
-    /**
-    enumerate:
-
-    - parameter block: (Identifier) -> Void
-    */
-    static func enumerate(block: (Identifier) -> Void) { apply(all, block) }
 
     /**
     registerWithCollectionView:
@@ -293,6 +272,7 @@ class BankCollectionDetailCell: UICollectionViewCell {
 
   var editing: Bool = false
 
+  /** updateConstraints */
   override func updateConstraints() {
     super.updateConstraints()
     let id = MoonKit.Identifier(self, "ContentView")

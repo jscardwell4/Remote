@@ -108,7 +108,8 @@ extension Image: CustomCreatable {
               context.performBlock {
                 let imageModel = Image(image: image, context: context)
                 imageModel.name = name
-                didCreate(imageModel)
+                DataManager.propagatingSaveFromContext(context)
+//                didCreate(imageModel)
               }
             } else { didCancel() }
           }

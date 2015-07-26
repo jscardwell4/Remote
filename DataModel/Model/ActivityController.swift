@@ -45,7 +45,9 @@ public final class ActivityController: ModelObject {
   @NSManaged public var homeRemote: Remote
   @NSManaged public var topToolbar: ButtonGroup
 
-  public var activities: [Activity] { return sortedByName(Activity.objectsInContext(managedObjectContext!) as? [Activity] ?? []) }
+  public var activities: [Activity] {
+    return (Activity.objectsInContext(managedObjectContext!) as? [Activity] ?? []).sortByName()
+  }
 
   /**
   sharedController:

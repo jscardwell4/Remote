@@ -9,7 +9,7 @@
 import Foundation
 import MoonKit
 
-@objc public class ModelIndex: RawRepresentable, JSONValueConvertible, JSONValueInitializable, StringValueConvertible, CustomStringConvertible {
+@objc public class ModelIndex: NSObject, RawRepresentable, JSONValueConvertible, JSONValueInitializable, StringValueConvertible {
   public let pathIndex: PathIndex?
   public let uuidIndex: UUIDIndex?
   public init(_ index: PathIndex) { pathIndex = index; uuidIndex = nil }
@@ -30,7 +30,7 @@ import MoonKit
       return nil
     }
   }
-  public var description: String { return rawValue }
+  public override var description: String { return rawValue }
 }
 
 /**
@@ -176,7 +176,7 @@ extension PathIndex: CustomStringConvertible, CustomDebugStringConvertible {
 }
 
 // MARK: Sliceable
-extension PathIndex: Sliceable {
+extension PathIndex: CollectionType {
   /**
   subscript:
 
@@ -188,7 +188,7 @@ extension PathIndex: Sliceable {
 }
 
 // MARK: MutableCollectionType
-extension PathIndex: CollectionType, MutableCollectionType {
+extension PathIndex: MutableCollectionType {
 
   public var startIndex: Int { return pathComponents.startIndex }
   public var endIndex: Int { return pathComponents.endIndex }

@@ -21,7 +21,7 @@ import MoonKit
  from the iTach device are passed up to the connection manager.
 
  */
-@objc class ITachDeviceConnection: GCDAsyncSocketDelegate {
+class ITachDeviceConnection: GCDAsyncSocketDelegate {
 
   typealias Callback = ConnectionManager.Callback
 
@@ -229,7 +229,7 @@ import MoonKit
   - parameter host: String
   - parameter port: UInt16
   */
-  func socket(sock: GCDAsyncSocket, didConnectToHost host: String, port: UInt16) {
+  @objc func socket(sock: GCDAsyncSocket, didConnectToHost host: String, port: UInt16) {
     MSLogDebug("connected to host '\(host)' over port '\(port)'")
     connecting = false
     connected = true
@@ -246,7 +246,7 @@ import MoonKit
   - parameter data: NSData
   - parameter tag: Int
   */
-  func socket(sock: GCDAsyncSocket, didReadData data: NSData, withTag tag: Int) {
+  @objc func socket(sock: GCDAsyncSocket, didReadData data: NSData, withTag tag: Int) {
     // TODO: Tag numbers are still getting all out of whack
 
     let message = NSString(data: data) as String
@@ -303,7 +303,7 @@ import MoonKit
   - parameter sock: GCDAsyncSocket
   - parameter tag: Int
   */
-  func socket(sock: GCDAsyncSocket, didWriteDataWithTag tag: Int) {
+  @objc func socket(sock: GCDAsyncSocket, didWriteDataWithTag tag: Int) {
 
     // Take the message sent out of our pending collection
     if let entry = messagesSending.removeValueForKey(tag) {
@@ -325,7 +325,7 @@ import MoonKit
   - parameter sock: GCDAsyncSocket
   - parameter error: NSError?
   */
-  func socketDidDisconnect(sock: GCDAsyncSocket, withError error: NSError?) {
+  @objc func socketDidDisconnect(sock: GCDAsyncSocket, withError error: NSError?) {
     MSLogDebug("socket disconnected with error: \(toString(descriptionForError(error)))")
     disconnectCallback?(true, error)
     disconnectCallback = nil

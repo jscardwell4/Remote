@@ -17,7 +17,7 @@ import DataModel
   optional func rollbackInvokedForTitleAttributesDelegate(titleAttributesDelegate: TitleAttributesDelegate)
 }
 
-@objc final class TitleAttributesDelegate: Editable {
+@objc final class TitleAttributesDelegate: NSObject, Editable {
 
   var titleAttributes: TitleAttributes
 

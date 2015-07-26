@@ -86,7 +86,7 @@ final public class IRCodeSet: EditableModelObject, CollectedModel {
 }
 
 extension IRCodeSet: ModelCollection {
-  public var items: [CollectedModel] { return sortedByName(codes) }
+  public var items: [CollectedModel] { return codes.sortByName() }
 }
 
 extension IRCodeSet: DefaultingModelCollection {

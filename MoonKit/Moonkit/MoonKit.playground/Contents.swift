@@ -3,8 +3,13 @@ import Foundation
 import UIKit
 import MoonKit
 
-let nullPoint = CGPoint.nullPoint
-nullPoint
-nullPoint.isNull
-nullPoint == CGPoint.nullPoint
+enum Inty: Int, RawEnumerableType { case OneInt, TwoInt, ThreeInt, FourInt }
+
+
+
+Inty.OneInt
+Inty.OneInt.rawValue
+
+//Inty.allCases
+
 

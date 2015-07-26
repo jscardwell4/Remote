@@ -19,7 +19,7 @@ class BankCollectionDetailSectionHeader: UICollectionReusableView {
     case Header           = "BankCollectionDetailSectionHeader"
     case FilteringHeader  = "BankCollectionFilteringDetailSectionHeader"
 
-    static var all: [Identifier] { return [.Header, .FilteringHeader] }
+    static var allCases: [BankCollectionDetailSectionHeader.Identifier] { return [.Header, .FilteringHeader] }
 
     var headerType: BankCollectionDetailSectionHeader.Type {
       switch self {
@@ -33,7 +33,7 @@ class BankCollectionDetailSectionHeader: UICollectionReusableView {
 
     - parameter block: (Identifier) -> Void
     */
-    static func enumerate(block: (Identifier) -> Void) { apply(all, block) }
+    static func enumerate(block: (Identifier) -> Void) { apply(allCases, block) }
 
     /**
     registerWithCollectionView:

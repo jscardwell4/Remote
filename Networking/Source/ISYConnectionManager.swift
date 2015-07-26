@@ -12,7 +12,7 @@ import class DataModel.HTTPCommand
 import class DataModel.ISYDevice
 import class DataModel.DataManager
 
-@objc final class ISYConnectionManager {
+final class ISYConnectionManager {
 
   typealias Callback = ConnectionManager.Callback
   typealias Error = ConnectionManager.Error

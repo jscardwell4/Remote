@@ -42,9 +42,10 @@ class BankCollectionDetailRow {
     }
   }
 
-  static func selectPushableItem(pushableItem: protocol<EditableModel, DelegateDetailable>?) -> Void -> Void {
+  typealias PushableItem = protocol<EditableModel, DelegateDetailable>
+
+  static func selectPushableItem(pushableItem: PushableItem?) -> Void -> Void {
     return {
-//      MSLogDebug("selectPushableItem: where pushable item = \(pushableItem)")
       if let item = pushableItem,
         nav = UIApplication.sharedApplication().keyWindow?.rootViewController as? UINavigationController
       {
@@ -53,6 +54,9 @@ class BankCollectionDetailRow {
       }
     }
   }
+
+  /** reconfigureCell */
+  func reconfigureCell() { guard let cell = cell else { return }; configureCell(cell) }
 
   /**
   super.configureCell:

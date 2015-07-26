@@ -9,6 +9,7 @@
 import Foundation
 
 public enum FieldTemplate {
+
   case Text     (value: String, placeholder: String?, validation: ((String?) -> Bool)?, editable: Bool)
   case Switch   (value: Bool, editable: Bool)
   case Slider   (value: Float, min: Float, max: Float, editable: Bool)
@@ -35,6 +36,7 @@ public enum FieldTemplate {
 }
 
 public class Field: NSObject {
+
   public enum Type { case Undefined, Text, Switch, Slider, Stepper, Picker, Checkbox }
 
   var control: UIView { return UIView() }
@@ -49,6 +51,11 @@ public class Field: NSObject {
   public var type: Type { return .Undefined }
   public var changeHandler: ((Field) -> Void)?
 
+  /**
+  valueDidChange:
+
+  - parameter sender: AnyObject
+  */
   func valueDidChange(sender: AnyObject) {
     switch sender {
       case let text as UITextField:       value = text.text
@@ -62,28 +69,38 @@ public class Field: NSObject {
     changeHandler?(self)
   }
 
+  /**
+  fieldWithTemplate:
+
+  - parameter template: FieldTemplate
+
+  - returns: Field
+  */
   public static func fieldWithTemplate(template: FieldTemplate) -> Field {
     switch template {
-    case let .Text(value, placeholder, validation, editable):
-      return TextField(value: value, placeholder: placeholder, validation: validation, editable: editable)
-    case let .Switch(value, editable):
-      return SwitchField(value: value, editable: editable)
-    case let .Slider(value, min, max, editable):
-      return SliderField(value: value, min: min, max: max, editable: editable)
-    case let .Stepper(value, min, max, step, editable):
-      return StepperField(value: value, min: min, max: max, step: step, editable: editable)
-    case let .Picker(value, choices, editable) where choices.count > 0 && choices.contains(value):
-      return PickerField(value: value, choices: choices, editable: editable)
-    case .Picker:
-      return PickerField()
-    case let .Checkbox(value, editable):
-      return CheckboxField(value: value, editable: editable)
+      case let .Text(value, placeholder, validation, editable):
+        return TextField(value: value, placeholder: placeholder, validation: validation, editable: editable)
+      case let .Switch(value, editable):
+        return SwitchField(value: value, editable: editable)
+      case let .Slider(value, min, max, editable):
+        return SliderField(value: value, min: min, max: max, editable: editable)
+      case let .Stepper(value, min, max, step, editable):
+        return StepperField(value: value, min: min, max: max, step: step, editable: editable)
+      case let .Picker(value, choices, editable) where choices.count > 0 && choices.contains(value):
+        return PickerField(value: value, choices: choices, editable: editable)
+      case .Picker:
+        return PickerField()
+      case let .Checkbox(value, editable):
+        return CheckboxField(value: value, editable: editable)
     }
   }
 
   private final class TextField: Field, UITextFieldDelegate {
+
     var _value: String = ""
+
     override var type: Type { return .Text }
+
     override var value: Any? {
       get { return _value }
       set {
@@ -93,16 +110,23 @@ public class Field: NSObject {
         }
       }
     }
+
     override var valid: Bool { return validation?(_value) ?? true }
+
     var placeholder: String?
     var validation: ((String?) -> Bool)?
+
     override var font: UIFont? { didSet { if let font = font { _control?.font = font } } }
     override var color: UIColor? { didSet { if let color = color { _control?.textColor = color } } }
+
     init(value: String, placeholder: String?, validation: ((String?) -> Bool)?, editable: Bool = true) {
       _value = value; self.placeholder = placeholder; self.validation = validation; super.init()
     }
+
     weak var _control: UITextField?
+
     override var editable: Bool { didSet { _control?.userInteractionEnabled = editable } }
+
     override var control: UIView {
       if _control != nil { return _control! }
       let control = UITextField(autolayout: true)
@@ -122,6 +146,7 @@ public class Field: NSObject {
       _control = control
       return control
     }
+
     @objc func textFieldShouldReturn(textField: UITextField) -> Bool {
       textField.resignFirstResponder()
       return false
@@ -156,8 +181,11 @@ public class Field: NSObject {
   }
 
   private final class SliderField: Field {
+
     var _value: Float = 0
+
     override var type: Type { return .Slider }
+
     override var value: Any? {
       get { return _value }
       set {
@@ -167,13 +195,18 @@ public class Field: NSObject {
         }
       }
     }
+
     var min: Float = 0
     var max: Float = 1
+
     init(value: Float, min: Float, max: Float, editable: Bool = true) {
       _value = value; self.min = min; self.max = max; super.init()
     }
+
     weak var _control: UISlider?
+
     override var editable: Bool { didSet { _control?.userInteractionEnabled = editable } }
+
     override var control: UIView {
       if _control != nil { return _control! }
       let control = UISlider(autolayout: true)
@@ -187,8 +220,11 @@ public class Field: NSObject {
   }
 
   private final class StepperField: Field {
+
     var _value = 0.0
+
     override var type: Type { return .Stepper }
+
     override var value: Any? {
       get { return _value }
       set {
@@ -198,16 +234,21 @@ public class Field: NSObject {
         }
       }
     }
+
     var min = 0.0
     var max = 100.0
     var step = 1.0
     var autorepeat = false
     var wraps = true
+
     init(value: Double, min: Double, max: Double, step: Double, editable: Bool = true) {
       _value = value; self.min = min; self.max = max; self.step = step; super.init()
     }
+
     weak var _control: LabeledStepper?
+
     override var editable: Bool { didSet { _control?.userInteractionEnabled = editable } }
+
     override var control: UIView {
       if _control != nil { return _control! }
       let control = LabeledStepper(autolayout: true)
@@ -227,9 +268,12 @@ public class Field: NSObject {
     }
   }
 
-  private final class PickerField: Field, AKPickerViewDelegate, AKPickerViewDataSource {
+  private final class PickerField: Field {
+
     var _value = ""
+
     override var type: Type { return .Picker }
+
     override var value: Any? {
       get { return _value }
       set {
@@ -239,41 +283,45 @@ public class Field: NSObject {
         }
       }
     }
+
     var choices: [String] = []
+
     override init() { super.init() }
-    init(value: String, choices: [String], editable: Bool = true) {
-      _value = value; self.choices = choices; super.init()
-    }
+
+    init(value: String, choices: [String], editable: Bool = true) { _value = value; self.choices = choices; super.init() }
+
     override var font: UIFont? { didSet { if let font = font { _control?.font = font } } }
-    override var selectedFont: UIFont? { didSet { if let font = selectedFont { _control?.highlightedFont = font } } }
+    override var selectedFont: UIFont? { didSet { if let font = selectedFont { _control?.selectedFont = font } } }
     override var color: UIColor? { didSet { if let color = color { _control?.textColor = color } } }
-    override var selectedColor: UIColor? { didSet { if let color = selectedColor { _control?.highlightedTextColor = color } } }
-    weak var _control: AKPickerView?
+    override var selectedColor: UIColor? { didSet { if let color = selectedColor { _control?.selectedTextColor = color } } }
+
+    weak var _control: InlinePickerView?
+
     override var editable: Bool { didSet { _control?.userInteractionEnabled = editable } }
+
     override var control: UIView {
       if _control != nil { return _control! }
-      let control = AKPickerView(autolayout: true)
+      let control = InlinePickerView(labels: choices)
       control.nametag = "picker"
       control.userInteractionEnabled = editable
+      control.editing = true
+      control.didSelectItem = { [unowned self] _, idx in self._value = self.choices[idx]; self.valueDidChange(self) }
       if let font = font { control.font = font }
       if let color = color { control.textColor = color }
-      if let font = selectedFont { control.highlightedFont = font }
-      if let color = selectedColor { control.highlightedTextColor = color }
-      control.delegate = self
-      control.dataSource = self
-      if let idx = choices.indexOf(_value) { control.selectItem(idx) }
-      control.interitemSpacing = 20.0
+      if let font = selectedFont { control.selectedFont = font }
+      if let color = selectedColor { control.selectedTextColor = color }
+      if let idx = choices.indexOf(_value) { control.selectItem(idx, animated: false) }
       _control = control
       return control
     }
-    @objc func numberOfItemsInPickerView(pickerView: AKPickerView) -> Int { return choices.count }
-    @objc func pickerView(pickerView: AKPickerView, titleForItem item: Int) -> String { return choices[item] }
-    @objc func pickerView(pickerView: AKPickerView, didSelectItem item: Int) { _value = choices[item]; valueDidChange(self) }
   }
 
   private final class CheckboxField: Field {
+
     var _value = false
+
     override var type: Type { return .Checkbox }
+
     override var value: Any? {
       get { return _value }
       set {
@@ -283,9 +331,13 @@ public class Field: NSObject {
         }
       }
     }
+
     init(value: Bool, editable: Bool = true) { _value = value; super.init() }
+
     weak var _control: Checkbox?
+
     override var editable: Bool { didSet { _control?.userInteractionEnabled = editable } }
+
     override var control: UIView {
       if _control != nil { return _control! }
       let control = Checkbox(autolayout: true)
@@ -338,6 +390,7 @@ final class FieldView: UIView {
   /**
   Initialize the view with a name and field
 
+  - oarameter t: Int
   - parameter n: String
   - parameter f: Field
   */
@@ -351,10 +404,20 @@ final class FieldView: UIView {
   private var label: UILabel?
   private var control: UIView?
 
+  /**
+  init:
+
+  - parameter aDecoder: NSCoder
+  */
   required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
   // MARK: - Constraints
 
+  /**
+  requiresConstraintBasedLayout
+
+  - returns: Bool
+  */
   override class func requiresConstraintBasedLayout() -> Bool { return true }
 
   /**
@@ -370,6 +433,7 @@ final class FieldView: UIView {
     } else { return CGSize(square: UIViewNoIntrinsicMetric) }
   }
 
+  /** updateConstraints */
   override func updateConstraints() {
     super.updateConstraints()
     let id = Identifier(self, "Internal")

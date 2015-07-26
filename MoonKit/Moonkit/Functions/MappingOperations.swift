@@ -117,7 +117,7 @@ public func flattened<S:SequenceType, T>(sequence: S) -> [T] {
     return result
   }
 
-  var flattenSwiftTypes: (MirrorType -> [T])!
+  var flattenSwiftTypes: (_MirrorType -> [T])!
   flattenSwiftTypes = {
     mirror in
 //    let valueMirror = reflect(mirror.value)
@@ -140,9 +140,9 @@ public func flattened<S:SequenceType, T>(sequence: S) -> [T] {
   }
   var result: [T] = []
   for element in sequence {
-    let mirror = reflect(element)
+    let mirror = _reflect(element)
     if let e = element as? T where mirror.count == 0 { result.append(e) }
-    else { result.extend(flattenSwiftTypes(reflect(element))) }
+    else { result.extend(flattenSwiftTypes(_reflect(element))) }
   }
   return result
 }

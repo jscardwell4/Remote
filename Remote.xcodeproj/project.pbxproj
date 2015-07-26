@@ -498,27 +498,6 @@
 		C2B691841AFBB23B0041CE11 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2B6917E1AFBB20E0041CE11 /* Images.xcassets */; };
 		C2B691861AFBB2460041CE11 /* LearnerAppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B691801AFBB20E0041CE11 /* LearnerAppViewController.swift */; };
 		C2C482C819C9F968002E84A9 /* Remote_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2C482C719C9F968002E84A9 /* Remote_Tests.m */; };
-		C2CA769019BA1E1800ACCD76 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA766519BA099000ACCD76 /* Foundation.framework */; };
-		C2CA769219BA1E1800ACCD76 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA769119BA1E1800ACCD76 /* CoreGraphics.framework */; };
-		C2CA769419BA1E1800ACCD76 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA769319BA1E1800ACCD76 /* UIKit.framework */; };
-		C2CA769A19BA1E1800ACCD76 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C2CA769819BA1E1800ACCD76 /* InfoPlist.strings */; };
-		C2CA769C19BA1E1800ACCD76 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CA769B19BA1E1800ACCD76 /* main.m */; };
-		C2CA76A019BA1E1800ACCD76 /* ISYClientAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CA769F19BA1E1800ACCD76 /* ISYClientAppDelegate.m */; };
-		C2CA76A319BA1E1800ACCD76 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76A119BA1E1800ACCD76 /* Main.storyboard */; };
-		C2CA76A619BA1E1800ACCD76 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CA76A519BA1E1800ACCD76 /* ViewController.m */; };
-		C2CA76A819BA1E1800ACCD76 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76A719BA1E1800ACCD76 /* Images.xcassets */; };
-		C2CA76CD19BA1FE200ACCD76 /* DSType - User-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76C419BA1FE200ACCD76 /* DSType - User-Bold.otf */; };
-		C2CA76CE19BA1FE200ACCD76 /* DSType - User-ExtraLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76C519BA1FE200ACCD76 /* DSType - User-ExtraLight.otf */; };
-		C2CA76CF19BA1FE200ACCD76 /* DSType - User-ExtraLightCameo.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76C619BA1FE200ACCD76 /* DSType - User-ExtraLightCameo.otf */; };
-		C2CA76D019BA1FE200ACCD76 /* DSType - User-Hairline.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76C719BA1FE200ACCD76 /* DSType - User-Hairline.otf */; };
-		C2CA76D119BA1FE200ACCD76 /* DSType - User-HairlineCameo.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76C819BA1FE200ACCD76 /* DSType - User-HairlineCameo.otf */; };
-		C2CA76D219BA1FE200ACCD76 /* DSType - User-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76C919BA1FE200ACCD76 /* DSType - User-Light.otf */; };
-		C2CA76D319BA1FE200ACCD76 /* DSType - User-LightCameo.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76CA19BA1FE200ACCD76 /* DSType - User-LightCameo.otf */; };
-		C2CA76D419BA1FE200ACCD76 /* DSType - User-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76CB19BA1FE200ACCD76 /* DSType - User-Medium.otf */; };
-		C2CA76D519BA1FE200ACCD76 /* DSType - User-MediumCameo.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76CC19BA1FE200ACCD76 /* DSType - User-MediumCameo.otf */; };
-		C2CA76D719BA211100ACCD76 /* DSType - User-BoldCameo.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76D619BA211100ACCD76 /* DSType - User-BoldCameo.otf */; };
-		C2CA76DA19BA34A500ACCD76 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA76D919BA34A500ACCD76 /* libicucore.dylib */; };
-		C2CA76DF19BA98A100ACCD76 /* Main-iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76DE19BA98A100ACCD76 /* Main-iPad.storyboard */; };
 		C2CC4E5A1AF550EB007E7620 /* DrawingKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CC4E591AF550EB007E7620 /* DrawingKit.swift */; };
 		C2CDB8F61AD74BC8006DF88C /* Button_Simple.json in Resources */ = {isa = PBXBuildFile; fileRef = C2CDB8F31AD74BC8006DF88C /* Button_Simple.json */; };
 		C2CDB8F71AD74BC8006DF88C /* ButtonGroup_Simple.json in Resources */ = {isa = PBXBuildFile; fileRef = C2CDB8F41AD74BC8006DF88C /* ButtonGroup_Simple.json */; };
@@ -533,70 +512,36 @@
 		C2D50CCC1AFD952D00DCDAB0 /* Networking.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C24A06041AE5CB4900C9255E /* Networking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C2DD7E5E1AE560AD004A6449 /* Bank.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C293C7441AC3164700408D35 /* Bank.framework */; };
 		C2DF48A91AFC092400C0E391 /* MulticastConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2DF48A81AFC092400C0E391 /* MulticastConnection.swift */; };
-		C2E8D99919BCBF6800E6098E /* 1067-gray-enter-fullscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99519BCBF6800E6098E /* 1067-gray-enter-fullscreen.png */; };
-		C2E8D99A19BCBF6800E6098E /* 1067-gray-enter-fullscreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99619BCBF6800E6098E /* 1067-gray-enter-fullscreen@2x.png */; };
-		C2E8D99B19BCBF6800E6098E /* 1068-gray-exit-fullscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99719BCBF6800E6098E /* 1068-gray-exit-fullscreen.png */; };
-		C2E8D99C19BCBF6800E6098E /* 1068-gray-exit-fullscreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99819BCBF6800E6098E /* 1068-gray-exit-fullscreen@2x.png */; };
 		C2E8D9BC19BCD5C400E6098E /* 1_fam.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99E19BCD5C400E6098E /* 1_fam.xml */; };
-		C2E8D9BD19BCD5C400E6098E /* 1_fam.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99E19BCD5C400E6098E /* 1_fam.xml */; };
 		C2E8D9BE19BCD5C400E6098E /* 3_fam.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99F19BCD5C400E6098E /* 3_fam.xml */; };
-		C2E8D9BF19BCD5C400E6098E /* 3_fam.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99F19BCD5C400E6098E /* 3_fam.xml */; };
 		C2E8D9C019BCD5C400E6098E /* 7_fam.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A019BCD5C400E6098E /* 7_fam.xml */; };
-		C2E8D9C119BCD5C400E6098E /* 7_fam.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A019BCD5C400E6098E /* 7_fam.xml */; };
 		C2E8D9C219BCD5C400E6098E /* 8_fam.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A119BCD5C400E6098E /* 8_fam.xml */; };
-		C2E8D9C319BCD5C400E6098E /* 8_fam.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A119BCD5C400E6098E /* 8_fam.xml */; };
 		C2E8D9C419BCD5C400E6098E /* cat.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A219BCD5C400E6098E /* cat.xml */; };
-		C2E8D9C519BCD5C400E6098E /* cat.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A219BCD5C400E6098E /* cat.xml */; };
 		C2E8D9C619BCD5C400E6098E /* elkobjs.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A319BCD5C400E6098E /* elkobjs.xsd */; };
-		C2E8D9C719BCD5C400E6098E /* elkobjs.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A319BCD5C400E6098E /* elkobjs.xsd */; };
 		C2E8D9C819BCD5C400E6098E /* family.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A419BCD5C400E6098E /* family.xsd */; };
-		C2E8D9C919BCD5C400E6098E /* family.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A419BCD5C400E6098E /* family.xsd */; };
 		C2E8D9CA19BCD5C400E6098E /* insteon.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A519BCD5C400E6098E /* insteon.xsd */; };
-		C2E8D9CB19BCD5C400E6098E /* insteon.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A519BCD5C400E6098E /* insteon.xsd */; };
 		C2E8D9CC19BCD5C400E6098E /* insterr.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A619BCD5C400E6098E /* insterr.xml */; };
-		C2E8D9CD19BCD5C400E6098E /* insterr.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A619BCD5C400E6098E /* insterr.xml */; };
 		C2E8D9CE19BCD5C400E6098E /* log.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A719BCD5C400E6098E /* log.xsd */; };
-		C2E8D9CF19BCD5C400E6098E /* log.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A719BCD5C400E6098E /* log.xsd */; };
 		C2E8D9D019BCD5C400E6098E /* loginfo.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A819BCD5C400E6098E /* loginfo.xml */; };
-		C2E8D9D119BCD5C400E6098E /* loginfo.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A819BCD5C400E6098E /* loginfo.xml */; };
 		C2E8D9D219BCD5C400E6098E /* netstat.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A919BCD5C400E6098E /* netstat.xml */; };
-		C2E8D9D319BCD5C400E6098E /* netstat.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9A919BCD5C400E6098E /* netstat.xml */; };
 		C2E8D9D419BCD5C400E6098E /* sepobjs.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AA19BCD5C400E6098E /* sepobjs.xsd */; };
-		C2E8D9D519BCD5C400E6098E /* sepobjs.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AA19BCD5C400E6098E /* sepobjs.xsd */; };
 		C2E8D9D619BCD5C400E6098E /* smtperr.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AB19BCD5C400E6098E /* smtperr.xml */; };
-		C2E8D9D719BCD5C400E6098E /* smtperr.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AB19BCD5C400E6098E /* smtperr.xml */; };
 		C2E8D9D819BCD5C400E6098E /* udi3.0.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AC19BCD5C400E6098E /* udi3.0.wsdl */; };
-		C2E8D9D919BCD5C400E6098E /* udi3.0.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AC19BCD5C400E6098E /* udi3.0.wsdl */; };
 		C2E8D9DA19BCD5C400E6098E /* udielkws.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AD19BCD5C400E6098E /* udielkws.wsdl */; };
-		C2E8D9DB19BCD5C400E6098E /* udielkws.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AD19BCD5C400E6098E /* udielkws.wsdl */; };
 		C2E8D9DC19BCD5C400E6098E /* udielkws1.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AE19BCD5C400E6098E /* udielkws1.wsdl */; };
-		C2E8D9DD19BCD5C400E6098E /* udielkws1.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AE19BCD5C400E6098E /* udielkws1.wsdl */; };
 		C2E8D9DE19BCD5C400E6098E /* udievnts.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AF19BCD5C400E6098E /* udievnts.xsd */; };
-		C2E8D9DF19BCD5C400E6098E /* udievnts.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9AF19BCD5C400E6098E /* udievnts.xsd */; };
 		C2E8D9E019BCD5C400E6098E /* udiobjs.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B019BCD5C400E6098E /* udiobjs.xsd */; };
-		C2E8D9E119BCD5C400E6098E /* udiobjs.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B019BCD5C400E6098E /* udiobjs.xsd */; };
 		C2E8D9E219BCD5C400E6098E /* udisepws.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B119BCD5C400E6098E /* udisepws.wsdl */; };
-		C2E8D9E319BCD5C400E6098E /* udisepws.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B119BCD5C400E6098E /* udisepws.wsdl */; };
 		C2E8D9E419BCD5C400E6098E /* udisepws1.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B219BCD5C400E6098E /* udisepws1.wsdl */; };
-		C2E8D9E519BCD5C400E6098E /* udisepws1.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B219BCD5C400E6098E /* udisepws1.wsdl */; };
 		C2E8D9E619BCD5C400E6098E /* udiupb1.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B319BCD5C400E6098E /* udiupb1.wsdl */; };
-		C2E8D9E719BCD5C400E6098E /* udiupb1.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B319BCD5C400E6098E /* udiupb1.wsdl */; };
 		C2E8D9E819BCD5C400E6098E /* udiws30-all.html in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B419BCD5C400E6098E /* udiws30-all.html */; };
-		C2E8D9E919BCD5C400E6098E /* udiws30-all.html in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B419BCD5C400E6098E /* udiws30-all.html */; };
 		C2E8D9EA19BCD5C400E6098E /* udiws30-justdoc.html in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B519BCD5C400E6098E /* udiws30-justdoc.html */; };
-		C2E8D9EB19BCD5C400E6098E /* udiws30-justdoc.html in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B519BCD5C400E6098E /* udiws30-justdoc.html */; };
 		C2E8D9EC19BCD5C400E6098E /* udiws30.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B619BCD5C400E6098E /* udiws30.wsdl */; };
-		C2E8D9ED19BCD5C400E6098E /* udiws30.wsdl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B619BCD5C400E6098E /* udiws30.wsdl */; };
 		C2E8D9EE19BCD5C400E6098E /* upb.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B719BCD5C400E6098E /* upb.xsd */; };
-		C2E8D9EF19BCD5C400E6098E /* upb.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B719BCD5C400E6098E /* upb.xsd */; };
 		C2E8D9F019BCD5C400E6098E /* upberr.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B819BCD5C400E6098E /* upberr.xml */; };
-		C2E8D9F119BCD5C400E6098E /* upberr.xml in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B819BCD5C400E6098E /* upberr.xml */; };
 		C2E8D9F219BCD5C400E6098E /* wsdl-viewer-mod.xsl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B919BCD5C400E6098E /* wsdl-viewer-mod.xsl */; };
-		C2E8D9F319BCD5C400E6098E /* wsdl-viewer-mod.xsl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B919BCD5C400E6098E /* wsdl-viewer-mod.xsl */; };
 		C2E8D9F419BCD5C400E6098E /* wsdl-viewer.xsl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9BA19BCD5C400E6098E /* wsdl-viewer.xsl */; };
-		C2E8D9F519BCD5C400E6098E /* wsdl-viewer.xsl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9BA19BCD5C400E6098E /* wsdl-viewer.xsl */; };
 		C2E8D9F619BCD5C400E6098E /* zigbee.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9BB19BCD5C400E6098E /* zigbee.xsd */; };
-		C2E8D9F719BCD5C400E6098E /* zigbee.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9BB19BCD5C400E6098E /* zigbee.xsd */; };
 		C2E9F3EC1ABC9797007581F2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F3EB1ABC9797007581F2 /* AppDelegate.swift */; };
 		C2E9F3F31ABC9797007581F2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F3F21ABC9797007581F2 /* Images.xcassets */; };
 		C2E9F41B1ABC9A63007581F2 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F41A1ABC9A62007581F2 /* Default-568h@2x.png */; };
@@ -692,30 +637,6 @@
 		C2F4C5B71AC6E9E500DB3695 /* MoonKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C24E0EBE1AC61E080044248E /* MoonKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C2F4C5B81AC6E9EF00DB3695 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2C3B91E1AC5DA7D001DC6CC /* CocoaLumberjack.framework */; };
 		C2F4C5B91AC6E9EF00DB3695 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2C3B91E1AC5DA7D001DC6CC /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C2F940F819BE5E90007B5CC1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA766519BA099000ACCD76 /* Foundation.framework */; };
-		C2F940F919BE5E90007B5CC1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA769119BA1E1800ACCD76 /* CoreGraphics.framework */; };
-		C2F940FA19BE5E90007B5CC1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA769319BA1E1800ACCD76 /* UIKit.framework */; };
-		C2F9410019BE5E90007B5CC1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C2F940FE19BE5E90007B5CC1 /* InfoPlist.strings */; };
-		C2F9410219BE5E90007B5CC1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F9410119BE5E90007B5CC1 /* main.m */; };
-		C2F9410619BE5E90007B5CC1 /* MSAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F9410519BE5E90007B5CC1 /* MSAppDelegate.m */; };
-		C2F9410919BE5E90007B5CC1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C2F9410719BE5E90007B5CC1 /* Main.storyboard */; };
-		C2F9410C19BE5E90007B5CC1 /* MSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F9410B19BE5E90007B5CC1 /* MSViewController.m */; };
-		C2F9410E19BE5E90007B5CC1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2F9410D19BE5E90007B5CC1 /* Images.xcassets */; };
-		C2F9412819BE5ED7007B5CC1 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CA76D919BA34A500ACCD76 /* libicucore.dylib */; };
-		C2F9412B19BE5FD4007B5CC1 /* DSType - User-BoldCameo.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76D619BA211100ACCD76 /* DSType - User-BoldCameo.otf */; };
-		C2F9412C19BE5FD4007B5CC1 /* DSType - User-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76C419BA1FE200ACCD76 /* DSType - User-Bold.otf */; };
-		C2F9412D19BE5FD4007B5CC1 /* DSType - User-ExtraLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76C519BA1FE200ACCD76 /* DSType - User-ExtraLight.otf */; };
-		C2F9412E19BE5FD4007B5CC1 /* DSType - User-ExtraLightCameo.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76C619BA1FE200ACCD76 /* DSType - User-ExtraLightCameo.otf */; };
-		C2F9412F19BE5FD4007B5CC1 /* DSType - User-Hairline.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76C719BA1FE200ACCD76 /* DSType - User-Hairline.otf */; };
-		C2F9413019BE5FD4007B5CC1 /* DSType - User-HairlineCameo.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76C819BA1FE200ACCD76 /* DSType - User-HairlineCameo.otf */; };
-		C2F9413119BE5FD4007B5CC1 /* DSType - User-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76C919BA1FE200ACCD76 /* DSType - User-Light.otf */; };
-		C2F9413219BE5FD4007B5CC1 /* DSType - User-LightCameo.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76CA19BA1FE200ACCD76 /* DSType - User-LightCameo.otf */; };
-		C2F9413319BE5FD4007B5CC1 /* DSType - User-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76CB19BA1FE200ACCD76 /* DSType - User-Medium.otf */; };
-		C2F9413419BE5FD4007B5CC1 /* DSType - User-MediumCameo.otf in Resources */ = {isa = PBXBuildFile; fileRef = C2CA76CC19BA1FE200ACCD76 /* DSType - User-MediumCameo.otf */; };
-		C2F9413519BE6418007B5CC1 /* 1067-gray-enter-fullscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99519BCBF6800E6098E /* 1067-gray-enter-fullscreen.png */; };
-		C2F9413619BE6418007B5CC1 /* 1067-gray-enter-fullscreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99619BCBF6800E6098E /* 1067-gray-enter-fullscreen@2x.png */; };
-		C2F9413719BE6418007B5CC1 /* 1068-gray-exit-fullscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99719BCBF6800E6098E /* 1068-gray-exit-fullscreen.png */; };
-		C2F9413819BE6418007B5CC1 /* 1068-gray-exit-fullscreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D99819BCBF6800E6098E /* 1068-gray-exit-fullscreen@2x.png */; };
 		C2FA4B891AC5E2FC0071429E /* Bank.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C293C7441AC3164700408D35 /* Bank.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C2FA4B8B1AC5E3250071429E /* DataModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* DataModel.framework */; };
 		C2FA4B8C1AC5E3250071429E /* DataModel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C215CBFF1ABB102F00E8077E /* DataModel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1594,7 +1515,6 @@
 		C2C482C619C9F968002E84A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2C482C719C9F968002E84A9 /* Remote_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Remote_Tests.m; sourceTree = "<group>"; };
 		C2CA766519BA099000ACCD76 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		C2CA768F19BA1E1800ACCD76 /* ISYClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ISYClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2CA769119BA1E1800ACCD76 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		C2CA769319BA1E1800ACCD76 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C2CA769719BA1E1800ACCD76 /* ISYClient-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ISYClient-Info.plist"; sourceTree = "<group>"; };
@@ -1804,7 +1724,6 @@
 		C2F4C5941AC6E95300DB3695 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C2F4C5961AC6E95300DB3695 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		C2F4C5991AC6E95300DB3695 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		C2F940F719BE5E90007B5CC1 /* iTachClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iTachClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2F940FD19BE5E90007B5CC1 /* iTachClient-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iTachClient-Info.plist"; sourceTree = "<group>"; };
 		C2F940FF19BE5E90007B5CC1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C2F9410119BE5E90007B5CC1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -2001,17 +1920,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C2CA768C19BA1E1800ACCD76 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C2CA76DA19BA34A500ACCD76 /* libicucore.dylib in Frameworks */,
-				C2CA769219BA1E1800ACCD76 /* CoreGraphics.framework in Frameworks */,
-				C2CA769419BA1E1800ACCD76 /* UIKit.framework in Frameworks */,
-				C2CA769019BA1E1800ACCD76 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C2E9F3E41ABC9797007581F2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -2033,17 +1941,6 @@
 				C2F4C5B61AC6E9E500DB3695 /* MoonKit.framework in Frameworks */,
 				C2F4C5B81AC6E9EF00DB3695 /* CocoaLumberjack.framework in Frameworks */,
 				C2F4C5B11AC6E9C900DB3695 /* DataModel.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C2F940F419BE5E90007B5CC1 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C2F9412819BE5ED7007B5CC1 /* libicucore.dylib in Frameworks */,
-				C2F940F919BE5E90007B5CC1 /* CoreGraphics.framework in Frameworks */,
-				C2F940FA19BE5E90007B5CC1 /* UIKit.framework in Frameworks */,
-				C2F940F819BE5E90007B5CC1 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2394,8 +2291,6 @@
 			isa = PBXGroup;
 			children = (
 				C26BAEA816DC10FE0093D5B4 /* Remote.app */,
-				C2CA768F19BA1E1800ACCD76 /* ISYClient.app */,
-				C2F940F719BE5E90007B5CC1 /* iTachClient.app */,
 				C2C482C319C9F968002E84A9 /* Remote Tests.xctest */,
 				C215CBFF1ABB102F00E8077E /* DataModel.framework */,
 				C2E9F3E71ABC9797007581F2 /* BankApp.app */,
@@ -3762,23 +3657,6 @@
 			productReference = C2C482C319C9F968002E84A9 /* Remote Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		C2CA768E19BA1E1800ACCD76 /* ISYClient */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C2CA76BC19BA1E1900ACCD76 /* Build configuration list for PBXNativeTarget "ISYClient" */;
-			buildPhases = (
-				C2CA768B19BA1E1800ACCD76 /* Sources */,
-				C2CA768C19BA1E1800ACCD76 /* Frameworks */,
-				C2CA768D19BA1E1800ACCD76 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = ISYClient;
-			productName = ISYClient;
-			productReference = C2CA768F19BA1E1800ACCD76 /* ISYClient.app */;
-			productType = "com.apple.product-type.application";
-		};
 		C2E9F3E61ABC9797007581F2 /* BankApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C2E9F4031ABC9797007581F2 /* Build configuration list for PBXNativeTarget "BankApp" */;
@@ -3819,23 +3697,6 @@
 			name = DataModelApp;
 			productName = DataModelApp;
 			productReference = C2F4C58B1AC6E95300DB3695 /* DataModelApp.app */;
-			productType = "com.apple.product-type.application";
-		};
-		C2F940F619BE5E90007B5CC1 /* iTachClient */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C2F9412119BE5E90007B5CC1 /* Build configuration list for PBXNativeTarget "iTachClient" */;
-			buildPhases = (
-				C2F940F319BE5E90007B5CC1 /* Sources */,
-				C2F940F419BE5E90007B5CC1 /* Frameworks */,
-				C2F940F519BE5E90007B5CC1 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = iTachClient;
-			productName = iTachClient;
-			productReference = C2F940F719BE5E90007B5CC1 /* iTachClient.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -3930,8 +3791,6 @@
 			projectRoot = "";
 			targets = (
 				C26BAEA716DC10FE0093D5B4 /* Remote */,
-				C2CA768E19BA1E1800ACCD76 /* ISYClient */,
-				C2F940F619BE5E90007B5CC1 /* iTachClient */,
 				C2C482C219C9F968002E84A9 /* Remote Tests */,
 				C215CBFE1ABB102F00E8077E /* DataModel */,
 				C2E9F3E61ABC9797007581F2 /* BankApp */,
@@ -4450,61 +4309,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C2CA768D19BA1E1800ACCD76 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C2CA76D719BA211100ACCD76 /* DSType - User-BoldCameo.otf in Resources */,
-				C2CA76D019BA1FE200ACCD76 /* DSType - User-Hairline.otf in Resources */,
-				C2E8D9C719BCD5C400E6098E /* elkobjs.xsd in Resources */,
-				C2E8D9DD19BCD5C400E6098E /* udielkws1.wsdl in Resources */,
-				C2E8D99919BCBF6800E6098E /* 1067-gray-enter-fullscreen.png in Resources */,
-				C2E8D9C319BCD5C400E6098E /* 8_fam.xml in Resources */,
-				C2E8D9F519BCD5C400E6098E /* wsdl-viewer.xsl in Resources */,
-				C2E8D9E119BCD5C400E6098E /* udiobjs.xsd in Resources */,
-				C2E8D99B19BCBF6800E6098E /* 1068-gray-exit-fullscreen.png in Resources */,
-				C2E8D99C19BCBF6800E6098E /* 1068-gray-exit-fullscreen@2x.png in Resources */,
-				C2CA76D119BA1FE200ACCD76 /* DSType - User-HairlineCameo.otf in Resources */,
-				C2E8D9F319BCD5C400E6098E /* wsdl-viewer-mod.xsl in Resources */,
-				C2E8D9C919BCD5C400E6098E /* family.xsd in Resources */,
-				C2E8D9BF19BCD5C400E6098E /* 3_fam.xml in Resources */,
-				C2E8D9E519BCD5C400E6098E /* udisepws1.wsdl in Resources */,
-				C2E8D9EB19BCD5C400E6098E /* udiws30-justdoc.html in Resources */,
-				C2CA76D319BA1FE200ACCD76 /* DSType - User-LightCameo.otf in Resources */,
-				C2E8D9BD19BCD5C400E6098E /* 1_fam.xml in Resources */,
-				C2E8D9C519BCD5C400E6098E /* cat.xml in Resources */,
-				C2E8D99A19BCBF6800E6098E /* 1067-gray-enter-fullscreen@2x.png in Resources */,
-				C2E8D9DF19BCD5C400E6098E /* udievnts.xsd in Resources */,
-				C2E8D9D519BCD5C400E6098E /* sepobjs.xsd in Resources */,
-				C2E8D9CB19BCD5C400E6098E /* insteon.xsd in Resources */,
-				C2CA76D419BA1FE200ACCD76 /* DSType - User-Medium.otf in Resources */,
-				C2CA76D519BA1FE200ACCD76 /* DSType - User-MediumCameo.otf in Resources */,
-				C2E8D9E719BCD5C400E6098E /* udiupb1.wsdl in Resources */,
-				C2E8D9CD19BCD5C400E6098E /* insterr.xml in Resources */,
-				C2E8D9D119BCD5C400E6098E /* loginfo.xml in Resources */,
-				C2E8D9E919BCD5C400E6098E /* udiws30-all.html in Resources */,
-				C2E8D9F719BCD5C400E6098E /* zigbee.xsd in Resources */,
-				C2E8D9CF19BCD5C400E6098E /* log.xsd in Resources */,
-				C2CA76D219BA1FE200ACCD76 /* DSType - User-Light.otf in Resources */,
-				C2E8D9F119BCD5C400E6098E /* upberr.xml in Resources */,
-				C2CA76CE19BA1FE200ACCD76 /* DSType - User-ExtraLight.otf in Resources */,
-				C2E8D9D719BCD5C400E6098E /* smtperr.xml in Resources */,
-				C2E8D9E319BCD5C400E6098E /* udisepws.wsdl in Resources */,
-				C2CA76CF19BA1FE200ACCD76 /* DSType - User-ExtraLightCameo.otf in Resources */,
-				C2E8D9D919BCD5C400E6098E /* udi3.0.wsdl in Resources */,
-				C2CA76DF19BA98A100ACCD76 /* Main-iPad.storyboard in Resources */,
-				C2E8D9ED19BCD5C400E6098E /* udiws30.wsdl in Resources */,
-				C2E8D9C119BCD5C400E6098E /* 7_fam.xml in Resources */,
-				C2CA76CD19BA1FE200ACCD76 /* DSType - User-Bold.otf in Resources */,
-				C2CA76A819BA1E1800ACCD76 /* Images.xcassets in Resources */,
-				C2E8D9EF19BCD5C400E6098E /* upb.xsd in Resources */,
-				C2CA769A19BA1E1800ACCD76 /* InfoPlist.strings in Resources */,
-				C2E8D9DB19BCD5C400E6098E /* udielkws.wsdl in Resources */,
-				C2CA76A319BA1E1800ACCD76 /* Main.storyboard in Resources */,
-				C2E8D9D319BCD5C400E6098E /* netstat.xml in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C2E9F3E51ABC9797007581F2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -4521,30 +4325,6 @@
 				C2F4C5951AC6E95300DB3695 /* Main.storyboard in Resources */,
 				C2F4C59A1AC6E95300DB3695 /* LaunchScreen.xib in Resources */,
 				C2F4C5971AC6E95300DB3695 /* Images.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C2F940F519BE5E90007B5CC1 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C2F9413019BE5FD4007B5CC1 /* DSType - User-HairlineCameo.otf in Resources */,
-				C2F9410E19BE5E90007B5CC1 /* Images.xcassets in Resources */,
-				C2F9413319BE5FD4007B5CC1 /* DSType - User-Medium.otf in Resources */,
-				C2F9412D19BE5FD4007B5CC1 /* DSType - User-ExtraLight.otf in Resources */,
-				C2F9412C19BE5FD4007B5CC1 /* DSType - User-Bold.otf in Resources */,
-				C2F9413119BE5FD4007B5CC1 /* DSType - User-Light.otf in Resources */,
-				C2F9413819BE6418007B5CC1 /* 1068-gray-exit-fullscreen@2x.png in Resources */,
-				C2F9413719BE6418007B5CC1 /* 1068-gray-exit-fullscreen.png in Resources */,
-				C2F9410019BE5E90007B5CC1 /* InfoPlist.strings in Resources */,
-				C2F9413219BE5FD4007B5CC1 /* DSType - User-LightCameo.otf in Resources */,
-				C2F9413519BE6418007B5CC1 /* 1067-gray-enter-fullscreen.png in Resources */,
-				C2F9412B19BE5FD4007B5CC1 /* DSType - User-BoldCameo.otf in Resources */,
-				C2F9413619BE6418007B5CC1 /* 1067-gray-enter-fullscreen@2x.png in Resources */,
-				C2F9412E19BE5FD4007B5CC1 /* DSType - User-ExtraLightCameo.otf in Resources */,
-				C2F9413419BE5FD4007B5CC1 /* DSType - User-MediumCameo.otf in Resources */,
-				C2F9410919BE5E90007B5CC1 /* Main.storyboard in Resources */,
-				C2F9412F19BE5FD4007B5CC1 /* DSType - User-Hairline.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4854,16 +4634,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C2CA768B19BA1E1800ACCD76 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C2CA76A619BA1E1800ACCD76 /* ViewController.m in Sources */,
-				C2CA76A019BA1E1800ACCD76 /* ISYClientAppDelegate.m in Sources */,
-				C2CA769C19BA1E1800ACCD76 /* main.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C2E9F3E31ABC9797007581F2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -4878,16 +4648,6 @@
 			files = (
 				C2F4C5921AC6E95300DB3695 /* ViewController.swift in Sources */,
 				C2F4C5901AC6E95300DB3695 /* AppDelegate.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C2F940F319BE5E90007B5CC1 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C2F9410619BE5E90007B5CC1 /* MSAppDelegate.m in Sources */,
-				C2F9410C19BE5E90007B5CC1 /* MSViewController.m in Sources */,
-				C2F9410219BE5E90007B5CC1 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5204,6 +4964,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = DataModel/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -5256,6 +5017,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = DataModel/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -5309,6 +5071,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = DataModel/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -5362,6 +5125,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = DataModel/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -5420,6 +5184,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Elysio/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -5470,6 +5235,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Elysio/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -5520,6 +5286,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Elysio/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -5570,6 +5337,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Elysio/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -5622,6 +5390,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = UI/App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -5665,6 +5434,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = UI/App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -5708,6 +5478,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = UI/App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -5751,6 +5522,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = UI/App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -5804,6 +5576,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Settings/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -5854,6 +5627,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Settings/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -5904,6 +5678,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Settings/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -5954,6 +5729,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Settings/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -6183,6 +5959,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = UI/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -6233,6 +6010,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = UI/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -6283,6 +6061,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = UI/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -6333,6 +6112,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = UI/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -6563,6 +6343,7 @@
 				INFOPLIST_FILE = Networking/Info.plist;
 				INIT_ROUTINE = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -6614,6 +6395,7 @@
 				INFOPLIST_FILE = Networking/Info.plist;
 				INIT_ROUTINE = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -6665,6 +6447,7 @@
 				INFOPLIST_FILE = Networking/Info.plist;
 				INIT_ROUTINE = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -6716,6 +6499,7 @@
 				INFOPLIST_FILE = Networking/Info.plist;
 				INIT_ROUTINE = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -6939,6 +6723,7 @@
 				GCC_PREFIX_HEADER = "Remote/Source/Remote-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				INFOPLIST_FILE = "Remote/Remote-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -6974,6 +6759,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Remote/Source/Remote-Prefix.pch";
 				INFOPLIST_FILE = "Remote/Remote-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -7019,6 +6805,7 @@
 				GCC_PREFIX_HEADER = "Remote/Source/Remote-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				INFOPLIST_FILE = "Remote/Remote-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -7034,106 +6821,6 @@
 				STRIP_STYLE = "non-global";
 				SWIFT_OBJC_BRIDGING_HEADER = "Remote/Source/Remote-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-			};
-			name = Verbose;
-		};
-		C272040E19DB3A47008DC4C8 /* Verbose */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ISYClient/ISYClient-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "ISYClient/ISYClient-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 2;
-				WRAPPER_EXTENSION = app;
-			};
-			name = Verbose;
-		};
-		C272040F19DB3A47008DC4C8 /* Verbose */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "iTachClient/iTachClient-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "iTachClient/iTachClient-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 1;
-				WRAPPER_EXTENSION = app;
 			};
 			name = Verbose;
 		};
@@ -7211,6 +6898,7 @@
 				GCC_PREFIX_HEADER = "Remote/Source/Remote-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				INFOPLIST_FILE = "Remote/Remote-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -7226,106 +6914,6 @@
 				STRIP_STYLE = "non-global";
 				SWIFT_OBJC_BRIDGING_HEADER = "Remote/Source/Remote-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-			};
-			name = Info;
-		};
-		C272041319DB3A58008DC4C8 /* Info */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ISYClient/ISYClient-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "ISYClient/ISYClient-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 2;
-				WRAPPER_EXTENSION = app;
-			};
-			name = Info;
-		};
-		C272041419DB3A58008DC4C8 /* Info */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "iTachClient/iTachClient-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "iTachClient/iTachClient-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 1;
-				WRAPPER_EXTENSION = app;
 			};
 			name = Info;
 		};
@@ -7418,6 +7006,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Glyphish/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -7467,6 +7056,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Glyphish/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -7516,6 +7106,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Glyphish/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -7565,6 +7156,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Glyphish/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -7775,6 +7367,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Bank/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -7827,6 +7420,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Bank/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -7879,6 +7473,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Bank/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -7931,6 +7526,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Bank/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -7982,6 +7578,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Networking/Apps/LearnerApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -8022,6 +7619,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Networking/Apps/LearnerApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -8062,6 +7660,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Networking/Apps/LearnerApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -8102,6 +7701,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Networking/Apps/LearnerApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -8196,98 +7796,6 @@
 			};
 			name = Release;
 		};
-		C2CA76BD19BA1E1900ACCD76 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ISYClient/ISYClient-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "ISYClient/ISYClient-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 2;
-				WRAPPER_EXTENSION = app;
-			};
-			name = Debug;
-		};
-		C2CA76BE19BA1E1900ACCD76 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ISYClient/ISYClient-Prefix.pch";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "ISYClient/ISYClient-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 2;
-				VALIDATE_PRODUCT = YES;
-				WRAPPER_EXTENSION = app;
-			};
-			name = Release;
-		};
 		C2E9F4041ABC9797007581F2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -8325,6 +7833,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Bank/App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -8369,6 +7878,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Bank/App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -8413,6 +7923,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Bank/App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -8457,6 +7968,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Bank/App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -8504,6 +8016,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = DataModel/App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -8545,6 +8058,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = DataModel/App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -8586,6 +8100,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = DataModel/App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
@@ -8627,107 +8142,12 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = DataModel/App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		C2F9412219BE5E90007B5CC1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "iTachClient/iTachClient-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "iTachClient/iTachClient-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 1;
-				WRAPPER_EXTENSION = app;
-			};
-			name = Debug;
-		};
-		C2F9412319BE5E90007B5CC1 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "iTachClient/iTachClient-Prefix.pch";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "iTachClient/iTachClient-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.moondeerstudios.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 1;
-				VALIDATE_PRODUCT = YES;
-				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
 		};
@@ -8910,17 +8330,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C2CA76BC19BA1E1900ACCD76 /* Build configuration list for PBXNativeTarget "ISYClient" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C2CA76BD19BA1E1900ACCD76 /* Debug */,
-				C272041319DB3A58008DC4C8 /* Info */,
-				C272040E19DB3A47008DC4C8 /* Verbose */,
-				C2CA76BE19BA1E1900ACCD76 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		C2E9F4031ABC9797007581F2 /* Build configuration list for PBXNativeTarget "BankApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -8939,17 +8348,6 @@
 				C2F4C5A91AC6E95300DB3695 /* Info */,
 				C2F4C5AA1AC6E95300DB3695 /* Verbose */,
 				C2F4C5AB1AC6E95300DB3695 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C2F9412119BE5E90007B5CC1 /* Build configuration list for PBXNativeTarget "iTachClient" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C2F9412219BE5E90007B5CC1 /* Debug */,
-				C272041419DB3A58008DC4C8 /* Info */,
-				C272040F19DB3A47008DC4C8 /* Verbose */,
-				C2F9412319BE5E90007B5CC1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

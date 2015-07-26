@@ -31,8 +31,9 @@ public class ImageButtonView: UIImageView {
 
   public required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
 
-  public convenience init(image: UIImage, highlightedImage: UIImage, action: Action? = nil) {
-    self.init(image: image, highlightedImage: highlightedImage)
+  public init(image: UIImage?, highlightedImage: UIImage?, action: Action? = nil) {
+    super.init(image: image, highlightedImage: highlightedImage)
+    initializeIVARs()
     if let action = action { actions.append(action) }
   }
 

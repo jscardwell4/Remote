@@ -14,7 +14,7 @@ import Settings
 import Elysio
 import Glyphish
 
-@objc final public class Bank {
+final public class Bank {
 
   // MARK: - ViewingMode type
 
@@ -26,7 +26,13 @@ import Glyphish
 
   // MARK: - CreationMode type
 
-  enum CreationMode { case None, Manual, Discovery, Both }
+  struct CreationMode: OptionSetType {
+    let rawValue: Int
+    static let None      = CreationMode(rawValue: 0)
+    static let Manual    = CreationMode(rawValue: 1)
+    static let Discovery = CreationMode(rawValue: 2)
+    static let Both      = CreationMode(rawValue: 3)
+   }
 
   static func initialize() {
     SettingsManager.registerSettingWithKey(Bank.ViewingModeKey,
@@ -236,19 +242,19 @@ import Glyphish
 
       let createBarItem: ToggleImageBarButtonItem?, discoverBarItem: ToggleImageBarButtonItem?
       switch creationController.creationMode {
-        case .Manual:
+        case CreationMode.Manual:
           discoverBarItem = nil
           createBarItem =
             ToggleImageBarButtonItem(image: createBarItemImage, toggledImage: createBarItemImageSelected) {
               _ in creationController.createBankItem()
           }
-        case .Discovery:
+        case CreationMode.Discovery:
           createBarItem = nil
           discoverBarItem =
             ToggleImageBarButtonItem(image: discoverBarItemImage, toggledImage: discoverBarItemImageSelected) {
               _ in creationController.discoverBankItem()
             }
-        case .Both:
+        case CreationMode.Both:
           createBarItem =
             ToggleImageBarButtonItem(image: createBarItemImage, toggledImage: createBarItemImageSelected) {
               _ in creationController.createBankItem()
@@ -257,7 +263,7 @@ import Glyphish
             ToggleImageBarButtonItem(image: discoverBarItemImage, toggledImage: discoverBarItemImageSelected) {
               _ in creationController.discoverBankItem()
             }
-        case .None:
+        default:
           createBarItem = nil
           discoverBarItem = nil
       }

@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 import MoonKit
 
-@objc public final class DataManager {
+public final class DataManager {
 
   // MARK: - Setup
 
@@ -112,7 +112,7 @@ import MoonKit
   static private(set) public var dataFlag = DataManager.databaseOperations
 
   /** Model flags parsed from command line */
-  static public let modelFlags: [ModelFlag] = ModelFlag.all
+  static public let modelFlags: [ModelFlag] = ModelFlag.allCases
 
    /** URL for the user's persistent store */
   public static let databaseStoreURL: NSURL = {
@@ -841,7 +841,7 @@ import MoonKit
     }
 
     /** An array of all possible flag keys for which an argument has been passed */
-    static public var all: [ModelFlag] = [.Manufacturers, .ComponentDevices, .Images, .Activities,
+    static public var allCases: [ModelFlag] = [.Manufacturers, .ComponentDevices, .Images, .Activities,
                                    .NetworkDevices, .Presets, .Remotes, .Controller].filter {
                                     ModelFlag.arguments[$0.rawValue] != nil
                                   }
@@ -851,7 +851,7 @@ import MoonKit
 
     - parameter block: (ModelFlag) -> Void
     */
-    static public func enumerate(block: (ModelFlag) -> Void) { all ➤ block }
+    static public func enumerate(block: (ModelFlag) -> Void) { allCases ➤ block }
 
 
     public var description: String { return "\(rawValue):\n\t" + "\n\t".join(markers.map({$0.description})) }

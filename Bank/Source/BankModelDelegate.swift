@@ -159,6 +159,7 @@ import MoonKit
 
 // MARK: - ItemCreationTransactionProvider
 extension BankModelDelegate: ItemCreationTransactionProvider {
+  var creationMode: Bank.CreationMode { return transactions.reduce(Bank.CreationMode.None) { $0.union($1.creationMode) } }
   var transactions: [ItemCreationTransaction] { return compressed([itemTransaction, collectionTransaction]) }
 }
 

@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-@objc public class LayerProxy {
+public class LayerProxy {
   let callback: (CGContext) -> Void
   public init(callback: (CGContext) -> Void) { self.callback = callback }
   func drawLayer(layer: CALayer, inContext ctx: CGContext) { callback(ctx) }

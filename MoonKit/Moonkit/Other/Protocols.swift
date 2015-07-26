@@ -86,8 +86,25 @@ public protocol Divisible {
 }
 
 public protocol EnumerableType {
-  static func enumerate(block: (Self) -> Void)
-  static var all: [Self] { get }
+  static var allCases: [Self] { get }
+}
+
+//public extension EnumerableType where Self:RawRepresentable, Self.RawValue: ForwardIndexType {
+//  static var allCases: [Self] {
+//    return Array(rawRange.generate()).flatMap({Self.init(rawValue: $0)})
+//  }
+//}
+
+//public extension EnumerableType where Self:RawRepresentable, Self.RawValue == Int  {
+//  static var allCases: [Self] {
+//    var idx = 0
+//    return Array(anyGenerator { Self.init(rawValue: idx++) })
+//    return []
+//  }
+//}
+
+public extension EnumerableType {
+  static func enumerate(block: (Self) -> Void) { allCases.apply(block) }
 }
 
 // causes ambiguity

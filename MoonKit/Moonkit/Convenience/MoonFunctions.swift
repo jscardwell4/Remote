@@ -10,7 +10,7 @@ import Foundation
 
 private let fileManager = NSFileManager.defaultManager()
 
-@objc public class MoonFunctions {
+public class MoonFunctions {
 
   // MARK: - File paths
 

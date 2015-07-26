@@ -34,7 +34,7 @@ extension IRCode: DelegateDetailable {
         let irCode = self
         let manufacturers = Manufacturer.objectsInContext(irCode.managedObjectContext!,
                                                    sortBy: "name") as? [Manufacturer] ?? []
-        let codeSets = sortedByName(irCode.manufacturer.codeSets)
+        let codeSets = irCode.manufacturer.codeSets.sortByName()
 
         let section = BankCollectionDetailSection(section: 0)
 

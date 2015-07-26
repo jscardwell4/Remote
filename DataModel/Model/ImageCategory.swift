@@ -72,11 +72,11 @@ final public class ImageCategory: EditableModelObject, CollectedModel {
 }
 
 extension ImageCategory: ModelCollection {
-  public var items: [CollectedModel] { return sortedByName(images) }
+  public var items: [CollectedModel] { return images.sortByName() }
 }
 
 extension ImageCategory: NestingModelCollection {
-  public var collections: [ModelCollection] { return sortedByName(childCategories) }
+  public var collections: [ModelCollection] { return childCategories.sortByName() }
 }
 
 extension ImageCategory: DefaultingModelCollection {

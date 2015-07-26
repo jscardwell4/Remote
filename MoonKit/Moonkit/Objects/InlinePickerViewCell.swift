@@ -26,8 +26,18 @@ class InlinePickerViewCell: UICollectionViewCell {
     }
   }
 
+  /**
+  initWithFrame:
+
+  - parameter frame: CGRect
+  */
   override init(frame: CGRect) { super.init(frame: frame); initializeIVARs() }
 
+  /**
+  init:
+
+  - parameter aDecoder: NSCoder
+  */
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     text = aDecoder.decodeObjectForKey("InlinePickerViewCellText") as? NSAttributedString
@@ -35,8 +45,14 @@ class InlinePickerViewCell: UICollectionViewCell {
     initializeIVARs()
   }
 
+  /**
+  applyLayoutAttributes:
+
+  - parameter layoutAttributes: UICollectionViewLayoutAttributes
+  */
   override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {
     super.applyLayoutAttributes(layoutAttributes)
+
     layer.zPosition = (layoutAttributes as? InlinePickerViewLayout.Attributes)?.zPosition ?? 0.0
   }
 
@@ -46,11 +62,13 @@ class InlinePickerViewCell: UICollectionViewCell {
     return result
   }
 
+  /** initializeIVARs */
   private func initializeIVARs() {
     layer.doubleSided = false
     layer.shouldRasterize = true
     layer.rasterizationScale = UIScreen.mainScreen().scale
 
+    label.adjustsFontSizeToFitWidth = true
     label.numberOfLines = 1
     label.lineBreakMode = .ByTruncatingTail
 
@@ -61,8 +79,14 @@ class InlinePickerViewCell: UICollectionViewCell {
     contentView.addSubview(label)
   }
 
+  /**
+  requiresConstraintBasedLayout
+
+  - returns: Bool
+  */
   override class func requiresConstraintBasedLayout() -> Bool { return true }
 
+  /** updateConstraints */
   override func updateConstraints() {
     removeAllConstraints()
     super.updateConstraints()

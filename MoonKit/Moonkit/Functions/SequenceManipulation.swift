@@ -26,6 +26,11 @@ public extension SequenceType where Generator.Element:CGFloatable {
   }
 }
 
+public extension SequenceType where Generator.Element: Named {
+  public func sortByName() -> [Generator.Element] {
+    return sort { $0.name < $1.name }
+  }
+}
 
 public struct InfiniteSequenceOf<T>: SequenceType {
   private let value: T

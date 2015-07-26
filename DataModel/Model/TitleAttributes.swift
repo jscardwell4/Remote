@@ -518,12 +518,10 @@ extension NSUnderlineStyle: StringValueConvertible {
 }
 
 extension NSUnderlineStyle: EnumerableType {
-  public static var all: [NSUnderlineStyle] {
+  public static var allCases: [NSUnderlineStyle] {
     return [.StyleNone, .StyleSingle, .StyleThick, .StyleDouble, .PatternDot, .PatternDash,
       .PatternDashDot, .PatternDashDotDot, .ByWord]
   }
-
-  public static func enumerate(block: (NSUnderlineStyle) -> Void) { apply(all, block) }
 
 }
 
@@ -560,11 +558,10 @@ extension NSLineBreakMode: StringValueConvertible {
 }
 
 extension NSLineBreakMode: EnumerableType {
-  public static var all: [NSLineBreakMode] {
+  public static var allCases: [NSLineBreakMode] {
     return [.ByWordWrapping, .ByCharWrapping, .ByClipping, .ByTruncatingHead, .ByTruncatingTail, .ByTruncatingMiddle]
   }
 
-  public static func enumerate(block: (NSLineBreakMode) -> Void) { apply(all, block) }
 }
 
 extension NSTextAlignment: JSONValueConvertible {
@@ -599,8 +596,8 @@ extension NSTextAlignment: StringValueConvertible {
 
 
 extension NSTextAlignment: EnumerableType {
-  public static var all: [NSTextAlignment] { return [.Left, .Right, .Center, .Justified, .Natural] }
-  public static func enumerate(block: (NSTextAlignment) -> Void) { apply(all, block) }
+  public static var allCases: [NSTextAlignment] { return [.Left, .Right, .Center, .Justified, .Natural] }
+
 }
 
 extension TitleAttributes {
@@ -632,8 +629,8 @@ extension TitleAttributes.IconTextOrderSpecification: StringValueConvertible {
 
 
 extension TitleAttributes.IconTextOrderSpecification: EnumerableType {
-  public static var all: [TitleAttributes.IconTextOrderSpecification] { return [.IconText, .TextIcon] }
-  public static func enumerate(block: (TitleAttributes.IconTextOrderSpecification) -> Void) { apply(all, block) }
+  public static var allCases: [TitleAttributes.IconTextOrderSpecification] { return [.IconText, .TextIcon] }
+  public static func enumerate(block: (TitleAttributes.IconTextOrderSpecification) -> Void) { apply(allCases, block) }
 
 }
 
@@ -773,7 +770,7 @@ extension TitleAttributes {
 
 extension TitleAttributes.PropertyKey: EnumerableType {
 
-  public static var all: [TitleAttributes.PropertyKey] {
+  public static var allCases: [TitleAttributes.PropertyKey] {
     return [.IconName, .Text, .IconTextOrder] + attributeKeys + paragraphKeys
   }
 
@@ -788,7 +785,7 @@ extension TitleAttributes.PropertyKey: EnumerableType {
       .Kern]
   }
 
-  public static func enumerate(block: (TitleAttributes.PropertyKey) -> Void) { apply(all, block) }
+  public static func enumerate(block: (TitleAttributes.PropertyKey) -> Void) { apply(allCases, block) }
   public static func enumerateParagraphPropertyKeys(block: (TitleAttributes.PropertyKey) -> Void) { paragraphKeys ➤ block }
   public static func enumerateAttributePropertyKeys(block: (TitleAttributes.PropertyKey) -> Void) { attributeKeys ➤ block }
 }

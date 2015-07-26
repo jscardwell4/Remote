@@ -45,7 +45,7 @@ extension ImageCategory: FormCreatable {
   }
 }
 
-extension ImageCategory: CustomCreatableItemBankModelCollection {
+extension ImageCategory: CustomCreatableItem {
   func itemCreationControllerWithContext(context: NSManagedObjectContext,
                      cancellationHandler didCancel: () -> Void,
                          creationHandler didCreate: (ModelObject) -> Void) -> UIViewController
@@ -55,7 +55,7 @@ extension ImageCategory: CustomCreatableItemBankModelCollection {
   }
 }
 
-extension ImageCategory: FormCreatableCollectionBankModelCollection {
+extension ImageCategory: FormCreatableCollection {
   func collectionCreationForm(context context: NSManagedObjectContext) -> Form { return ImageCategory.creationForm(context: context) }
   func createCollectionWithForm(form: Form, context: NSManagedObjectContext) -> Bool {
     var success = false

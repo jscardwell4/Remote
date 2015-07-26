@@ -26,9 +26,15 @@ public class InlinePickerView: UIView {
   */
   required public init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder); initializeIVARs() }
 
+  /**
+  initWithLabels:
+
+  - parameter labels: [String]
+  */
+  public init(labels: [String]) { super.init(frame: CGRect.zeroRect); self.labels = labels; initializeIVARs() }
+
   /** initializeIVARs */
   private func initializeIVARs() {
-//    MSLogDebug("")
     setContentCompressionResistancePriority(750, forAxis: .Horizontal)
     setContentCompressionResistancePriority(1000, forAxis: .Vertical)
     translatesAutoresizingMaskIntoConstraints = false
@@ -55,6 +61,7 @@ public class InlinePickerView: UIView {
     collectionView.reloadData()
   }
 
+  /** updateConstraints */
   override public func updateConstraints() {
     removeAllConstraints()
     super.updateConstraints()
@@ -65,7 +72,18 @@ public class InlinePickerView: UIView {
   private let collectionView = UICollectionView(frame: CGRect.zeroRect, collectionViewLayout: InlinePickerViewLayout())
   private var layout: InlinePickerViewLayout { return collectionView.collectionViewLayout as! InlinePickerViewLayout }
 
+  /**
+  requiresConstraintBasedLayout
+
+  - returns: Bool
+  */
   override public class func requiresConstraintBasedLayout() -> Bool { return true }
+
+  /**
+  intrinsicContentSize
+
+  - returns: CGSize
+  */
   override public func intrinsicContentSize() -> CGSize { return CGSize(width: UIViewNoIntrinsicMetric, height: itemHeight) }
 
   override public var description: String {
@@ -98,8 +116,8 @@ public class InlinePickerView: UIView {
     }
   }
 
+  /** layoutSubviews */
   public override func layoutSubviews() {
-//    MSLogDebug("")
     super.layoutSubviews()
     if selection > -1 { selectItem(selection, animated: false) }
   }
@@ -107,53 +125,13 @@ public class InlinePickerView: UIView {
   public var labels: [String] = [] { didSet { reloadData() } }
   public var didSelectItem: ((InlinePickerView, Int) -> Void)?
 
-  public var font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody) //{
-//    didSet {
-//      (collectionView.visibleCells() as? [InlinePickerViewCell])?.apply {
-//        [unowned font = self.font] in
-//        if let text = $0.text { $0.text = text | font }
-//      }
-//      if   font.pointSize > selectedFont.pointSize
-//        || (oldValue.pointSize > selectedFont.pointSize && oldValue.pointSize > font.pointSize)
-//      {
-//        reloadData()
-//      }
-//    }
-//  }
+  public var font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
+  public var textColor = UIColor.darkTextColor()
+  public var selectedFont = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
+  public var selectedTextColor = UIColor.darkTextColor()
 
-  public var textColor = UIColor.darkTextColor() //{
-//    didSet {
-//      (collectionView.visibleCells() as? [InlinePickerViewCell])?.apply {
-//        [unowned textColor = self.textColor] in
-//        if let text = $0.text { $0.text = text | textColor }
-//      }
-//    }
-//  }
-  public var selectedFont = UIFont.preferredFontForTextStyle(UIFontTextStyleBody) //{
-//    didSet {
-//      (collectionView.visibleCells() as? [InlinePickerViewCell])?.apply {
-//        [unowned selectedFont = self.selectedFont] in
-//        if let selectedText = $0.selectedText { $0.selectedText = selectedText | selectedFont }
-//      }
-//      if    selectedFont.pointSize > font.pointSize
-//        || (oldValue.pointSize > font.pointSize && oldValue.pointSize > selectedFont.pointSize)
-//      {
-//        reloadData()
-//      }
-//    }
-//  }
-
-  public var selectedTextColor = UIColor.darkTextColor() //{
-//    didSet {
-//      (collectionView.visibleCells() as? [InlinePickerViewCell])?.apply {
-//        [unowned selectedTextColor = self.selectedTextColor] in
-//        if let selectedText = $0.selectedText { $0.selectedText = selectedText | selectedTextColor }
-//      }
-//    }
-//  }
-
+  /** reloadData */
   public func reloadData() {
-//    MSLogDebug("")
     layout.invalidateLayout()
     setNeedsLayout()
     collectionView.setNeedsLayout()
@@ -172,33 +150,42 @@ public class InlinePickerView: UIView {
   var selection: Int = -1
 
   public var selectedItemFrame: CGRect? {
-    if selection > -1,
+    guard selection > -1,
       let cell = collectionView.cellForItemAtIndexPath(NSIndexPath(forItem: selection, inSection: 0)) where cell.selected
-    {
-      var frame = cell.frame
-      frame.origin = frame.origin - collectionView.contentOffset
-      return frame
-    } else { return nil }
+    else { return nil }
+
+    var frame = cell.frame
+    frame.origin = frame.origin - collectionView.contentOffset
+    return frame
   }
 
-  public var editing = false {
-    didSet {
-//      MSLogDebug("edting = \(editing)")
-//      layout.invalidateLayout()
-//      setNeedsLayout()
-//      layoutIfNeeded()
-      collectionView.scrollEnabled = editing
-      reloadData()
-    }
-  }
+  public var editing = false { didSet { collectionView.scrollEnabled = editing; reloadData() } }
 }
 
 // MARK: - UICollectionViewDataSource
 extension InlinePickerView: UICollectionViewDataSource {
 
 
-  public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { return labels.count }
+  /**
+  collectionView:numberOfItemsInSection:
 
+  - parameter collectionView: UICollectionView
+  - parameter section: Int
+
+  - returns: Int
+  */
+  public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return labels.count
+  }
+
+  /**
+  collectionView:cellForItemAtIndexPath:
+
+  - parameter collectionView: UICollectionView
+  - parameter indexPath: NSIndexPath
+
+  - returns: UICollectionViewCell
+  */
   public func collectionView(collectionView: UICollectionView,
       cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
   {
@@ -206,7 +193,6 @@ extension InlinePickerView: UICollectionViewDataSource {
     let text = labels[indexPath.item]
     cell.text = text ¶| [font, textColor]
     cell.selectedText = text ¶| [selectedFont, selectedTextColor]
-//    MSLogDebug("cell = \(cell.description)")
     return cell
   }
 }
@@ -245,7 +231,6 @@ extension InlinePickerView: UICollectionViewDelegate {
   - parameter indexPath: NSIndexPath
   */
   public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-//    MSLogDebug("")
     didSelectItem?(self, indexPath.item)
   }
 
@@ -272,7 +257,6 @@ extension InlinePickerView: UIScrollViewDelegate {
   - parameter scrollView: UIScrollView
   */
   public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-//    MSLogDebug("")
     guard let item = collectionView.indexPathsForSelectedItems()?.first?.item else {
       MSLogVerbose("failed to get index path for selected cell")
       return
@@ -296,6 +280,7 @@ extension InlinePickerView: UIScrollViewDelegate {
       MSLogVerbose("failed to get index path for cell at point \(offset)")
       return
     }
+
     // update selection
     MSLogVerbose("selecting cell for item \(selection) with label '\(labels[item]) where offset = \(offset)")
     selection = item

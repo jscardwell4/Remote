@@ -15,7 +15,7 @@ import class DataModel.ITachDevice
 import class DataModel.DataManager
 import class DataModel.NetworkDevice
 
-@objc final class ITachConnectionManager {
+final class ITachConnectionManager {
 
   // MARK: - Typealiases and address, port property declarations
 

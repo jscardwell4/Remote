@@ -136,7 +136,7 @@ extension ISYDevice: DelegateDetailable {
         ////////////////////////////////////////////////////////////////////////////////
 
         let nodesSection = BankCollectionDetailSection(section: 3, title: "Nodes")
-        for (idx, node) in sortedByName(iSYDevice.nodes).enumerate() {
+        for (idx, node) in iSYDevice.nodes.sortByName().enumerate() {
           nodesSection.addRow({
             let row = BankCollectionDetailListRow()
             row.info = node
@@ -156,7 +156,7 @@ extension ISYDevice: DelegateDetailable {
         ////////////////////////////////////////////////////////////////////////////////
 
         let groupsSection = BankCollectionDetailSection(section: 4, title: "Groups")
-        for (idx, group) in sortedByName(iSYDevice.groups).enumerate() {
+        for (idx, group) in iSYDevice.groups.sortByName().enumerate() {
           groupsSection.addRow({
             let row = BankCollectionDetailListRow()
             row.info = group
@@ -176,7 +176,7 @@ extension ISYDevice: DelegateDetailable {
         ////////////////////////////////////////////////////////////////////////////////
 
         let componentDevicesSection = BankCollectionDetailSection(section: 5, title: "Component Devices")
-        for (idx, device) in sortedByName(iSYDevice.componentDevices).enumerate() {
+        for (idx, device) in iSYDevice.componentDevices.sortByName().enumerate() {
           componentDevicesSection.addRow({
             let row = BankCollectionDetailListRow()
             row.info = device

@@ -15,6 +15,7 @@ struct CustomTransaction: ItemCreationTransaction {
 
   let label: String
   let controller: CustomController
+  let creationMode = Bank.CreationMode.Manual
 
   /**
   Memberwise initializer
@@ -51,7 +52,7 @@ struct CustomTransaction: ItemCreationTransaction {
 
   - parameter collection: T
   */
-  init<T:BankModelCollection where T:CustomCreatableItemBankModelCollection>(newItemFor collection: T) {
+  init<T:BankModelCollection where T:CustomCreatableItem>(newItemFor collection: T) {
     assert(collection.managedObjectContext != nil)
     self.init(label: collection.itemLabel) {
       didCancel, didCreate -> UIViewController in
@@ -73,7 +74,7 @@ struct CustomTransaction: ItemCreationTransaction {
 
   - parameter collection: T
   */
-  init<T:BankModelCollection where T:CustomCreatableCollectionBankModelCollection>(newCollectionFor collection: T) {
+  init<T:BankModelCollection where T:CustomCreatableCollection>(newCollectionFor collection: T) {
     assert(collection.managedObjectContext != nil)
     self.init(label: collection.collectionLabel) {
       didCancel, didCreate -> UIViewController in
@@ -95,6 +96,7 @@ struct FormTransaction: ItemCreationTransaction {
   let label: String
   let form: Form
   let processedForm: ProcessedForm
+  let creationMode = Bank.CreationMode.Manual
 
   /**
   Memberwise initializer
@@ -131,7 +133,7 @@ struct FormTransaction: ItemCreationTransaction {
 
   - parameter collection: T
   */
-  init<T:BankModelCollection where T:FormCreatableItemBankModelCollection>(newItemFor collection: T) {
+  init<T:BankModelCollection where T:FormCreatableItem>(newItemFor collection: T) {
     assert(collection.managedObjectContext != nil)
     self.init(label: collection.itemLabel, form: collection.itemCreationForm(context: collection.managedObjectContext!)) {
       f in
@@ -150,7 +152,7 @@ struct FormTransaction: ItemCreationTransaction {
 
   - parameter collection: T
   */
-  init<T:BankModelCollection where T:FormCreatableCollectionBankModelCollection>(newCollectionFor collection: T) {
+  init<T:BankModelCollection where T:FormCreatableCollection>(newCollectionFor collection: T) {
     assert(collection.managedObjectContext != nil)
     self.init(label: collection.collectionLabel, form: collection.collectionCreationForm(context: collection.managedObjectContext!)) {
       f in
@@ -173,7 +175,7 @@ struct DiscoveryTransaction: ItemCreationTransaction {
   let label: String
   let beginDiscovery: BeginAction
   let endDiscovery: EndAction
-
+  let creationMode = Bank.CreationMode.Discovery
 
   /**
   Memberwise initializer
@@ -202,7 +204,7 @@ struct DiscoveryTransaction: ItemCreationTransaction {
 
   - parameter collection: T
   */
-  init<T:BankModelCollection where T:DiscoverCreatableItemBankModelCollection>(discoverItemFor collection: T) {
+  init<T:BankModelCollection where T:DiscoverCreatableItem>(discoverItemFor collection: T) {
     assert(collection.managedObjectContext != nil)
     self.init(label: collection.itemLabel,
               begin: {collection.beginItemDiscovery(context: collection.managedObjectContext!, presentForm: $0)},
@@ -214,7 +216,7 @@ struct DiscoveryTransaction: ItemCreationTransaction {
 
   - parameter collection: T
   */
-  init<T:BankModelCollection where T:DiscoverCreatableCollectionBankModelCollection>(discoverCollectionFor collection: T) {
+  init<T:BankModelCollection where T:DiscoverCreatableCollection>(discoverCollectionFor collection: T) {
     assert(collection.managedObjectContext != nil)
     self.init(label: collection.collectionLabel,
       begin: {collection.beginCollectionDiscovery(context: collection.managedObjectContext!, presentForm: $0)},

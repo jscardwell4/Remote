@@ -52,7 +52,7 @@ final public class Manufacturer: EditableModelObject {
 }
 
 extension Manufacturer: NestingModelCollection {
-  public var collections: [ModelCollection] { return sortedByName(codeSets) }
+  public var collections: [ModelCollection] { return codeSets.sortByName() }
 }
 
 extension Manufacturer: ModelCollection, DefaultingModelCollection {

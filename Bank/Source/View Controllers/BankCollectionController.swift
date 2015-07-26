@@ -48,32 +48,7 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   }
 
   /** The creation mode supported by the controller's collection delegate */
-  var creationMode: Bank.CreationMode {
-    var canCreate = false
-    var canDiscover = false
-
-    func testTransaction(transaction: ItemCreationTransaction) {
-      switch transaction {
-        case is FormTransaction,
-             is CustomTransaction:
-          canCreate = true
-        case is DiscoveryTransaction:
-          canDiscover = true
-        default:
-          break
-      }
-    }
-
-    if let transaction = collectionDelegate.itemTransaction { testTransaction(transaction) }
-    if let transaction = collectionDelegate.collectionTransaction { testTransaction(transaction) }
-
-    switch (canCreate, canDiscover) {
-      case (true, true):   return .Both
-      case (true, false) : return .Manual
-      case (false, true):  return .Discovery
-      default:             return .None
-    }
-  }
+  var creationMode: Bank.CreationMode { return collectionDelegate.creationMode }
 
   var creationContext: NSManagedObjectContext? { return collectionDelegate.managedObjectContext }
 

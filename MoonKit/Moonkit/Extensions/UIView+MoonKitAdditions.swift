@@ -11,6 +11,27 @@ import UIKit
 
 public extension UIView {
 
+  /**
+  blurredSnapshotWithRadius:tintColor:saturationDeltaFactor:maskImage:
+
+  - parameter radius: CGFloat
+  - parameter tintColor: UIColor
+  - parameter factor: CGFloat
+  - parameter maskImage: UIImage?
+
+  - returns: UIImage
+  */
+  public func blurredSnapshotWithRadius(radius: CGFloat = 3,
+                    tintColor: UIColor = UIColor(white: 1.0, alpha: 0.5),
+        saturationDeltaFactor factor: CGFloat = 1,
+                    maskImage: UIImage? = nil) -> UIImage
+  {
+    return snapshot().applyBlurWithRadius(radius,
+                                tintColor: tintColor,
+                    saturationDeltaFactor: factor,
+                                maskImage: maskImage)
+  }
+
   // MARK: - Initializers
 
   /**

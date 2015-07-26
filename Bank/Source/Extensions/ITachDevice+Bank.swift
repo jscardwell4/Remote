@@ -104,7 +104,7 @@ extension ITachDevice: DelegateDetailable {
         ////////////////////////////////////////////////////////////////////////////////
 
         let componentDevicesSection = BankCollectionDetailSection(section: 1, title: "Component Devices")
-        for (idx, device) in sortedByName(iTachDevice.componentDevices).enumerate() {
+        for (idx, device) in iTachDevice.componentDevices.sortByName().enumerate() {
           componentDevicesSection.addRow({
            let row = BankCollectionDetailListRow()
            row.info = device

@@ -24,31 +24,11 @@ class BankCollectionDetailController: UICollectionViewController {
 
   let itemDelegate: BankModelDetailDelegate
 
-  var creationContext: NSManagedObjectContext? { return itemDelegate.item.managedObjectContext }
-
   /** Set by the bank when bottom toolbar items are generated */
   weak var createItemBarButton: ToggleBarButtonItem?
 
   /** Set by the bank when bottom toolbar items are generated */
   weak var discoverItemBarButton: ToggleBarButtonItem?
-
-  /** The creation mode supported by the controller's collection delegate */
-  var creationMode: Bank.CreationMode {
-    var canCreate = false
-    var canDiscover = false
-
-    func testTransaction(transaction: ItemCreationTransaction) {
-      switch transaction {
-      case is FormTransaction, is CustomTransaction: canCreate = true
-      case is DiscoveryTransaction:                  canDiscover = true
-      default:                                       break
-      }
-    }
-
-    // TODO: Turn BankModelDetailDelegate into a transaction provider
-
-    return .None
-  }
 
   private let itemCreationDelegate = BankItemCreationDelegate()
 
@@ -137,7 +117,7 @@ class BankCollectionDetailController: UICollectionViewController {
     if let indexPaths = collectionView?.indexPathsForVisibleItems(),
       cells = collectionView?.visibleCells() as? [Cell]
     {
-      apply(zip(indexPaths, cells)) { indexPath, cell in self[indexPath]?.configureCell(cell) }
+      zip(indexPaths, cells).apply { indexPath, cell in self[indexPath]?.configureCell(cell) }
     }
   }
 
@@ -156,13 +136,12 @@ class BankCollectionDetailController: UICollectionViewController {
                                            : nil
       navigationItem.rightBarButtonItem?.title  = editing ? "Save" : "Edit"
       navigationItem.rightBarButtonItem?.action = editing ? "save" : "edit"
-      if !editing { view.endEditing(true) }
-//      if let textField = navigationItem.titleView as? UITextField {
-//        textField.userInteractionEnabled = editing
-//        if textField.isFirstResponder() { textField.resignFirstResponder() }
-//      }
+      navigationController?.setToolbarHidden(!(editing && toolbarItems != nil && toolbarItems!.count > 0), animated: true)
+      if !editing {
+        navigationItem.titleView?.endEditing(true)
+        DataManager.saveRootContext()
+      }
       if let cells = collectionView?.visibleCells() as? [Cell] { apply(cells) {$0.editing = editing} }
-      // TODO: Need to propagate changes here when editing has been completed
       super.setEditing(editing, animated: animated)
     }
   }
@@ -200,7 +179,8 @@ class BankCollectionDetailController: UICollectionViewController {
   - returns: Section?
   */
   subscript(section: Int) -> Section? {
-    return section < itemDelegate.sections.count ? itemDelegate.sections.values[section] : nil
+    guard (0..<itemDelegate.sections.count).contains(section) else { return nil }
+    return itemDelegate.sections.values[section]
   }
 
   /**
@@ -357,9 +337,15 @@ extension BankCollectionDetailController: UITextFieldDelegate {
 
 }
 
-// MARK: - Item creation
+// MARK: - BankItemCreationController
 
 extension BankCollectionDetailController: BankItemCreationController {
+
+  /** Context used to create new items */
+  var creationContext: NSManagedObjectContext? { return itemDelegate.item.managedObjectContext }
+
+  /** The creation mode supported by the controller's item delegate */
+  var creationMode: Bank.CreationMode { return itemDelegate.creationMode }
 
   /** discoverBankItem */
   func discoverBankItem() {

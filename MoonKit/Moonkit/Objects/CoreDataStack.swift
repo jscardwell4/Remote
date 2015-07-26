@@ -49,7 +49,7 @@ public class CoreDataStack {
       MSLogDebug("\(nametag) initialized")
     } catch {
       MSHandleError(error as NSError)
-      persistentStore = NSPersistentStore()
+      persistentStore = NSPersistentStore(persistentStoreCoordinator: nil, configurationName: nil, URL: NSURL(), options: nil)
       rootContext = NSManagedObjectContext()
       throw error
     }

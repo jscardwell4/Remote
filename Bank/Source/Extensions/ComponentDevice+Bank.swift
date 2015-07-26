@@ -12,6 +12,7 @@ import CoreData
 import MoonKit
 
 extension ComponentDevice: DelegateDetailable {
+
   /**
   sectionIndexForController:
 
@@ -22,25 +23,12 @@ extension ComponentDevice: DelegateDetailable {
   func sectionIndexForController(controller: BankCollectionDetailController) -> BankModelDetailDelegate.SectionIndex {
 
     var sections: BankModelDetailDelegate.SectionIndex = [:]
-    let componentDevice = self
-    guard let moc = componentDevice.managedObjectContext else { return sections }
+    
+    guard let moc = managedObjectContext else { return sections }
 
-    struct SectionKey {
-      static let Manufacturer  = "Manufacturer"
-      static let NetworkDevice = "Network Device"
-      static let Power         = "Power"
-      static let Inputs        = "Inputs"
-    }
+    enum SectionKey: String { case Manufacturer, NetworkDevice, Power, Inputs }
 
-    struct RowKey {
-      static let Manufacturer  = "Manufacturer"
-      static let CodeSet       = "Code Set"
-      static let NetworkDevice = "Network Device"
-      static let Port          = "Port"
-      static let On            = "On"
-      static let Off           = "Off"
-      static let InputPowersOn = "Input Powers On"
-    }
+    enum RowKey: String { case Manufacturer, CodeSet, NetworkDevice, Port, On, Off, InputPowersOn }
 
      /** loadManufacturerSection */
       func loadManufacturerSection() {
@@ -50,47 +38,42 @@ extension ComponentDevice: DelegateDetailable {
         manufacturerSection.addRow({
           let row = BankCollectionDetailButtonRow()
           row.name = "Manufacturer"
-          row.info = componentDevice.manufacturer
-          row.select = BankCollectionDetailRow.selectPushableItem(componentDevice.manufacturer)
-
+          row.select = BankCollectionDetailRow.selectPushableItem(self.manufacturer)
           row.nilItem = .NilItem(title: "No Manufacturer")
-          row.didSelectItem = {
+          row.didSelectItem = { [unowned controller] in
             if !controller.didCancel,
-              let manufacturer = $0 as? Manufacturer where componentDevice.manufacturer != manufacturer
+              let manufacturer = $0 as? Manufacturer where self.manufacturer != manufacturer
             {
-              componentDevice.manufacturer = manufacturer
+              self.manufacturer = manufacturer
+              if let indexPath = manufacturerSection[RowKey.CodeSet.rawValue]?.indexPath {
+                controller.reloadItemAtIndexPath(indexPath)
+              }
             }
           }
-          let data = sortedByName((Manufacturer.objectsInContext(moc) as? [Manufacturer] ?? []))
-          row.data = data
-          row.info = componentDevice.manufacturer
+          row.data = (Manufacturer.objectsInContext(moc) as? [Manufacturer])?.sortByName()
+          row.info = self.manufacturer
 
           return row
-        }, forKey: RowKey.Manufacturer)
-        manufacturerSection.addRow({
+        }, forKey: RowKey.Manufacturer.rawValue)
+        manufacturerSection.addRow({ [unowned controller] in
 
           let row = BankCollectionDetailButtonRow()
           row.name = "Code Set"
-          row.info = componentDevice.codeSet
-          row.select = BankCollectionDetailRow.selectPushableCollection(componentDevice.codeSet)
-
+          row.select = BankCollectionDetailRow.selectPushableCollection(self.codeSet)
           row.nilItem = .NilItem(title: "No Code Set")
           row.didSelectItem = {
             if !controller.didCancel {
-              componentDevice.codeSet = $0 as? IRCodeSet
-//              controller.reloadItemAtIndexPath(NSIndexPath(forRow: 0, inSection: 0))
-//              controller.cellDisplayingPicker?.info = $0
-//              row.info = $0
+              self.codeSet = $0 as? IRCodeSet
+              if let powerSection = sections[SectionKey.Power.rawValue] { controller.reloadSection(powerSection) }
             }
           }
-          let data = sortedByName(componentDevice.manufacturer.codeSets)
-          row.data = data
-          row.info = componentDevice.codeSet
+          row.data = self.manufacturer.codeSets.sortByName()
+          row.info = self.codeSet
 
           return row
-        }, forKey: RowKey.CodeSet)
+        }, forKey: RowKey.CodeSet.rawValue)
 
-        sections[SectionKey.Manufacturer] = manufacturerSection
+        sections[SectionKey.Manufacturer.rawValue] = manufacturerSection
       }
 
       /** loadNetworkDeviceSection */
@@ -98,45 +81,36 @@ extension ComponentDevice: DelegateDetailable {
 
         let networkDeviceSection = BankCollectionDetailSection(section: 1, title: "Network Device")
 
-        networkDeviceSection.addRow({
+        networkDeviceSection.addRow({ [unowned controller] in
           let row = BankCollectionDetailButtonRow()
-          row.info = componentDevice.networkDevice ?? "No Network Device"
           row.name = "Network Device"
-          row.select = {
-              if let networkDevice = componentDevice.networkDevice as? DelegateDetailable {
-                controller.navigationController?.pushViewController(BankCollectionDetailController(itemDelegate: BankModelDetailDelegate(item: networkDevice)), animated: true)
-              }
-            }
-
+          row.select = BankCollectionDetailRow.selectPushableItem(self.networkDevice as? BankCollectionDetailRow.PushableItem)
           row.nilItem = .NilItem(title: "No Network Device")
           row.didSelectItem = {
             if !controller.didCancel {
-              componentDevice.networkDevice = $0 as? NetworkDevice
-//              controller.cellDisplayingPicker?.info = $0
-//              row.info = $0
+              self.networkDevice = $0 as? NetworkDevice
             }
           }
-          let data = sortedByName(NetworkDevice.objectsInContext(moc) as? [NetworkDevice] ?? [])
-          row.data = data
-          row.info = componentDevice.networkDevice
+          row.data = (NetworkDevice.objectsInContext(moc) as? [NetworkDevice])?.sortByName()
+          row.info = self.networkDevice
 
           return row
-        }, forKey: RowKey.NetworkDevice)
+        }, forKey: RowKey.NetworkDevice.rawValue)
 
         networkDeviceSection.addRow({
           let row = BankCollectionDetailStepperRow()
           row.name = "Port"
           row.infoDataType = .IntData(1...3)
-          row.info = NSNumber(short: componentDevice.port)
+          row.info = NSNumber(short: self.port)
           row.stepperMinValue = 1
           row.stepperMaxValue = 3
           row.stepperWraps = true
-          row.valueDidChange = { if let n = $0 as? NSNumber { componentDevice.port = n.shortValue } }
+          row.valueDidChange = { if let n = $0 as? NSNumber { self.port = n.shortValue } }
 
           return row
-        }, forKey: RowKey.Port)
+        }, forKey: RowKey.Port.rawValue)
 
-        sections[SectionKey.NetworkDevice] = networkDeviceSection
+        sections[SectionKey.NetworkDevice.rawValue] = networkDeviceSection
       }
 
       /** loadPowerSection */
@@ -144,72 +118,58 @@ extension ComponentDevice: DelegateDetailable {
 
         let powerSection = BankCollectionDetailSection(section: 2, title: "Power")
 
-        powerSection.addRow({
+        powerSection.addRow({ [unowned controller] in
           let row = BankCollectionDetailButtonRow()
           row.name = "On"
-          row.info = componentDevice.onCommand ?? "No On Command"
-
           row.nilItem = .NilItem(title: "No On Command")
           row.didSelectItem = {
             (selection: AnyObject?) -> Void in
               if !controller.didCancel {
                 moc.performBlock {
-                  if let code = selection as? IRCode {
-                    if let command = componentDevice.onCommand {
-                      command.code = code
-                    } else {
-                      let command = ITachIRCommand(context: moc)
-                      command.code = code
-                      componentDevice.onCommand = command
-                    }
+                  guard let code = selection as? IRCode else { self.onCommand = nil; return }
+                  if let command = self.onCommand {
+                    command.code = code
                   } else {
-                    componentDevice.onCommand = nil
+                    let command = ITachIRCommand(context: moc)
+                    command.code = code
+                    self.onCommand = command
                   }
                 }
-//                controller.cellDisplayingPicker?.info = selection
-//                row.info = selection
               }
           }
-          let data = sortedByName(componentDevice.codeSet?.codes)
-          row.data = data
-          row.info = componentDevice.onCommand?.code
+          row.data = self.codeSet?.codes.sortByName()
+          row.info = self.onCommand?.code
 
           return row
-        }, forKey: RowKey.On)
+        }, forKey: RowKey.On.rawValue)
 
-        powerSection.addRow({
+        // ???: Why does on command show up but not off command?
+        powerSection.addRow({ [unowned controller] in
           let row = BankCollectionDetailButtonRow()
           row.name = "Off"
-          row.info = componentDevice.offCommand ?? "No Off Command"
-
           row.nilItem = .NilItem(title: "No Off Command")
           row.didSelectItem = {
             (selection: AnyObject?) -> Void in
               if !controller.didCancel {
                 moc.performBlock {
-                  if let code = selection as? IRCode {
-                    if let command = componentDevice.offCommand {
-                      command.code = code
-                    } else {
-                      let command = ITachIRCommand(context: moc)
-                      command.code = code
-                      componentDevice.offCommand = command
-                    }
+                  guard let code = selection as? IRCode else { self.offCommand = nil; return }
+                  if let command = self.offCommand {
+                    command.code = code
                   } else {
-                    componentDevice.offCommand = nil
+                    let command = ITachIRCommand(context: moc)
+                    command.code = code
+                    self.offCommand = command
                   }
                 }
-//                controller.cellDisplayingPicker?.info = selection
-//                row.info = selection
               }
           }
-          let data = sortedByName(componentDevice.codeSet?.codes)
-          row.data = data
-          row.info = componentDevice.offCommand?.code
+          row.data = self.codeSet?.codes.sortByName()
+          row.info = self.offCommand?.code
 
           return row
-        }, forKey: RowKey.Off)
+        }, forKey: RowKey.Off.rawValue)
 
+        sections[SectionKey.Power.rawValue] = powerSection
       }
 
       /** loadInputsSection */
@@ -220,23 +180,23 @@ extension ComponentDevice: DelegateDetailable {
         inputsSection.addRow({
           let row = BankCollectionDetailSwitchRow()
           row.name = "Inputs Power On Device"
-          row.info = NSNumber(bool: componentDevice.inputPowersOn)
-          row.valueDidChange = { componentDevice.inputPowersOn = $0 as! Bool }
+          row.info = NSNumber(bool: self.inputPowersOn)
+          row.valueDidChange = { self.inputPowersOn = $0 as! Bool }
 
           return row
-        }, forKey: RowKey.InputPowersOn)
+        }, forKey: RowKey.InputPowersOn.rawValue)
 
-        for (idx, input) in sortedByName(componentDevice.inputs).enumerate() {
+        for (idx, input) in self.inputs.sortByName().enumerate() {
           inputsSection.addRow({
             let row = BankCollectionDetailListRow()
             row.info = input
             row.select = BankCollectionDetailRow.selectPushableItem(input)
             row.delete = {input.delete()}
             return row
-            }, forKey: "\(SectionKey.Inputs)\(idx)")
+            }, forKey: "\(SectionKey.Inputs.rawValue)\(idx)")
         }
 
-        sections[SectionKey.Inputs] = inputsSection
+        sections[SectionKey.Inputs.rawValue] = inputsSection
       }
 
       loadManufacturerSection()
@@ -246,6 +206,46 @@ extension ComponentDevice: DelegateDetailable {
 
       return sections
     }
+}
+
+extension ComponentDevice: RelatedItemCreatable {
+
+  var relatedItemCreationTransactions: [ItemCreationTransaction] {
+    var transactions: [ItemCreationTransaction] = []
+    if let context = managedObjectContext {
+      let createManufacturer = FormTransaction(
+        label: "Manufacturer",
+        form: Manufacturer.creationForm(context: context),
+        processedForm: {
+          [unowned self] form in
+          let (success, _) = DataManager.saveContext(context) {
+            if let manufacturer = Manufacturer.createWithForm(form, context: $0) {
+              self.manufacturer = manufacturer
+            }
+          }
+          return success
+        })
+      transactions.append(createManufacturer)
+      let createCodeSet = FormTransaction(
+        label: "Code Set",
+        form: IRCodeSet.creationForm(context: context),
+        processedForm: {
+          [unowned self] form in
+          let (success, _) = DataManager.saveContext(context) {
+            if let codeSet = IRCodeSet.createWithForm(form, context: $0) {
+              self.codeSet = codeSet
+            }
+          }
+          return success
+        })
+      transactions.append(createCodeSet)
+      // TODO: Add `NetworkDevice`
+      // TODO: Add power commands
+      // TODO: Add inputs
+    }
+    return transactions
+  }
+
 }
 
 extension ComponentDevice: FormCreatable {

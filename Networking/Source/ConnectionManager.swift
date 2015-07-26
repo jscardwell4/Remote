@@ -17,7 +17,7 @@ import class DataModel.ITachDevice
 import class DataModel.HTTPCommand
 
 /** The `ConnectionManager` class oversee all device-related network activity. */
-@objc public final class ConnectionManager {
+public final class ConnectionManager {
 
   class func initialize() {
     SettingsManager.registerBoolSettingWithKey(AutoConnectExistingKey, withDefaultValue: true)
@@ -163,12 +163,14 @@ import class DataModel.HTTPCommand
         }
         else if simulateCommandSuccess { simulateSuccess() }
         else {
-          let request = NSURLRequest(URL: httpCommand.url)
-          NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) {
-            (response: NSURLResponse?, data: NSData?, connectionError: NSError?) in
-            MSLogDebug("response: \(response)\ndata: \(data)")
-            completion?(true, connectionError)
-          }
+          NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+            .dataTaskWithURL(httpCommand.url)
+              {
+                (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+
+                MSLogDebug("response: \(response)\ndata: \(data)")
+                dispatchToMain { completion?(true, error) }
+              } .resume()
         }
       }
     }

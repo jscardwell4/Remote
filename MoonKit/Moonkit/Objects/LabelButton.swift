@@ -35,6 +35,13 @@ public class LabelButton: UILabel {
 
   public var actions: [Action] = []
 
+  public convenience init(action: Action) {
+    self.init(frame: CGRect.zeroRect)
+    actions.append(action)
+    translatesAutoresizingMaskIntoConstraints = false
+    initializeIVARs()
+  }
+
   public override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
     if trackingTouch == nil { trackingTouch = touches.first }
   }

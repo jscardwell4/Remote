@@ -13,7 +13,7 @@ import Foundation
 public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType {
 
   public typealias Index = Int
-  typealias SelfType = OrderedDictionary<Key, Value>
+  public typealias SelfType = OrderedDictionary<Key, Value>
 
   private(set) public var dictionary: [Key:Value]
   private(set) var _keys: [Key]

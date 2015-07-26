@@ -8,6 +8,12 @@
 
 import Foundation
 
+public extension MutableCollectionType where Index:RandomAccessIndexType, Generator.Element:Named {
+  public mutating func sortByNameInPlace() {
+    sortInPlace { $0.name < $1.name }
+  }
+}
+
 /**
 spliced:newElements:atIndex:
 
@@ -21,7 +27,7 @@ public func spliced<C : RangeReplaceableCollectionType, S : CollectionType
   where C.Generator.Element == S.Generator.Element>(x: C, newElements: S, atIndex i: C.Index) -> C
 {
   var xPrime = x
-  splice(&xPrime, newElements, atIndex: i)
+  xPrime.splice(newElements, atIndex: i)
   return xPrime
 }
 
@@ -35,7 +41,7 @@ removedAtIndex:index:
 */
 public func removedAtIndex<C : RangeReplaceableCollectionType>(x: C, index: C.Index) -> C {
   var xPrime = x
-  removeAtIndex(&xPrime, index)
+  xPrime.removeAtIndex(index)
   return xPrime
 }
 

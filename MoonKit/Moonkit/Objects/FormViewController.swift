@@ -23,13 +23,17 @@ public class FormViewController: UIViewController {
   - parameter submit: Submission? = nil
   - parameter cancel: Cancellation? = nil
   */
-  public init(form f: Form, didSubmit submit: Submission? = nil, didCancel cancel: Cancellation? = nil)
-  {
+  public init(form f: Form, didSubmit submit: Submission? = nil, didCancel cancel: Cancellation? = nil) {
     form = f; didSubmit = submit; didCancel = cancel
     super.init(nibName: nil, bundle: nil)
     modalTransitionStyle = .CrossDissolve
   }
 
+  /**
+  init:
+
+  - parameter aDecoder: NSCoder
+  */
   public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
   // MARK: Customizing the form's appearance
@@ -74,6 +78,11 @@ public class FormViewController: UIViewController {
 
   // MARK: - Loading/updating the controller's view
 
+  /**
+  prefersStatusBarHidden
+
+  - returns: Bool
+  */
   public override func prefersStatusBarHidden() -> Bool { return true }
 
   /** loadView */
@@ -106,6 +115,11 @@ public class FormViewController: UIViewController {
 
   }
 
+  /**
+  viewWillAppear:
+
+  - parameter animated: Bool
+  */
   public override func viewWillAppear(animated: Bool) {
     if isBeingPresented(), let controller = presentingViewController where controller.isViewLoaded() {
       let snapshot = controller.view.snapshotViewAfterScreenUpdates(false)
@@ -120,18 +134,17 @@ public class FormViewController: UIViewController {
   public override func updateViewConstraints() {
     super.updateViewConstraints()
     let id = Identifier(self, "Internal")
-    if view.constraintsWithIdentifier(id).count == 0, let effect = effectView, form = formView, tool = toolbar {
-      view.constrain([𝗛|effect|𝗛, 𝗩|effect|𝗩] --> id)
-      view.constrain([form.centerX => effect.centerX, form.centerY => effect.centerY] --> id)
-      view.constrain([tool.left => form.left, tool.right => form.right, tool.top => form.bottom] --> id)
-      view.constrain([
-        form.left ≥ view.left + 4,
-        form.right ≤ view.right - 4,
-        form.top ≥ view.top + 4,
-        form.bottom ≤ view.bottom - 4
-        ] --> id)
-    }
-//    MSLogDebug(view.recursiveConstraintsDescription())
+    guard view.constraintsWithIdentifier(id).count == 0, let effect = effectView, form = formView, tool = toolbar else { return }
+
+    view.constrain([𝗛|effect|𝗛, 𝗩|effect|𝗩] --> id)
+    view.constrain([form.centerX => effect.centerX, form.centerY => effect.centerY] --> id)
+    view.constrain([tool.left => form.left, tool.right => form.right, tool.top => form.bottom] --> id)
+    view.constrain([
+      form.left ≥ view.left + 4,
+      form.right ≤ view.right - 4,
+      form.top ≥ view.top + 4,
+      form.bottom ≤ view.bottom - 4
+    ] --> id)
   }
 
   // MARK: - Actions

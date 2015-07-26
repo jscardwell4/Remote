@@ -27,7 +27,7 @@ final class BankCollectionDetailButtonRow: BankCollectionDetailRow {
   */
   override func configureCell(cell: BankCollectionDetailCell) {
     if let buttonCell = cell as? BankCollectionDetailButtonCell {
-      // Set picker properties first so data is there when `info` gets set by `super`
+      // Set picker data first so it is there when `info` gets set by `super`
       buttonCell.titleForInfo = titleForInfo
       buttonCell.nilItem = nilItem
       buttonCell.createItem = createItem

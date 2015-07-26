@@ -27,5 +27,7 @@ class BankModelDetailDelegate: ItemCreationTransactionProvider {
     sections = item.sectionIndexForController(controller)
   }
 
-  var transactions: [ItemCreationTransaction] { return [] }
+  lazy var creationMode: Bank.CreationMode = self.transactions.reduce(Bank.CreationMode.None) { $0.union($1.creationMode) }
+
+  lazy var transactions: [ItemCreationTransaction] = (self.item as? RelatedItemCreatable)?.relatedItemCreationTransactions ?? []
 }

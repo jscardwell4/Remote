@@ -41,7 +41,7 @@ extension Manufacturer: DelegateDetailable {
       ////////////////////////////////////////////////////////////////////////////////////////////////////
 
       let devicesSection = BankCollectionDetailSection(section: 0, title: "Devices")
-      for (idx, device) in sortedByName(manufacturer.devices).enumerate() {
+      for (idx, device) in manufacturer.devices.sortByName().enumerate() {
         devicesSection.addRow({
           let row = BankCollectionDetailListRow()
           row.info = device
@@ -63,7 +63,7 @@ extension Manufacturer: DelegateDetailable {
       ////////////////////////////////////////////////////////////////////////////////////////////////////
 
       let codeSetsSection = BankCollectionDetailSection(section: 1, title: "Code Sets")
-      for (idx, codeSet) in sortedByName(manufacturer.codeSets).enumerate() {
+      for (idx, codeSet) in manufacturer.codeSets.sortByName().enumerate() {
         codeSetsSection.addRow({
           let row = BankCollectionDetailListRow()
           row.info = codeSet

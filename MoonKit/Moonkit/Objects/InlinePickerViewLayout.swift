@@ -12,15 +12,33 @@ import UIKit
 class InlinePickerViewLayout: UICollectionViewLayout {
 
   class Attributes: UICollectionViewLayoutAttributes {
+
     var zPosition: CGFloat = 0
+
+    /**
+    isEqual:
+
+    - parameter object: AnyObject?
+
+    - returns: Bool
+    */
     override func isEqual(object: AnyObject?) -> Bool {
       return super.isEqual(object) && (object as? Attributes)?.zPosition == zPosition
     }
+
+    /**
+    copyWithZone:
+
+    - parameter zone: NSZone
+
+    - returns: AnyObject
+    */
     override func copyWithZone(zone: NSZone) -> AnyObject {
       let result: Attributes = super.copyWithZone(zone) as! Attributes
       result.zPosition = zPosition
       return result
     }
+
     override var description: String {
       return "{\n\t" + "\n\t".join(
         "item: \(indexPath.item)",
@@ -70,7 +88,9 @@ class InlinePickerViewLayout: UICollectionViewLayout {
 
   // MARK: - UICollectionViewLayout method overrides
 
-  var attributesDescription: String { return "{\n\t" + ",\n".join(storedAttributes.values.map {$0.description.indentedBy(8)}) + "\n}" }
+  var attributesDescription: String {
+    return "{\n\t" + ",\n".join(storedAttributes.values.map {$0.description.indentedBy(8)}) + "\n}"
+  }
 
   override var description: String {
     var result = super.description + "\n"
@@ -84,7 +104,6 @@ class InlinePickerViewLayout: UICollectionViewLayout {
 
   /** clearCache */
   private func clearCache() {
-//    MSLogDebug("")
     values = .zeroValues
     contentSize = CGSize.zeroSize
     rawFrames.removeAll(keepCapacity: true)
@@ -100,6 +119,11 @@ class InlinePickerViewLayout: UICollectionViewLayout {
   */
   override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool { return true }
 
+  /**
+  layoutAttributesClass
+
+  - returns: AnyClass
+  */
   override class func layoutAttributesClass() -> AnyClass { return Attributes.self }
 
   /** prepareLayout */
@@ -150,8 +174,6 @@ class InlinePickerViewLayout: UICollectionViewLayout {
     values.padding = delegate.itemPadding
     values.height = delegate.itemHeight
 
-//    MSLogDebug("values seem valid … performing initial calculations …")
-
     performInitialCalculations()
 
     guard rawFrames.count == itemCount else {
@@ -164,8 +186,8 @@ class InlinePickerViewLayout: UICollectionViewLayout {
     let offsetXAlignment = rawFrames[selection].midX - rect.midX
 
     if !interactiveSelectionInProgress && offsetXAlignment != 0 {
-      MSLogVerbose("collection view is stationary and the collection view's x offset (\(rect.origin.x)) does not match selected " +
-                 "item's x offset (\(rawFrames[selection].midX)) … adjusting by \(offsetXAlignment)")
+      MSLogVerbose("collection view is stationary and the collection view's x offset (\(rect.origin.x)) does not match " +
+                   "selected item's x offset (\(rawFrames[selection].midX)) … adjusting by \(offsetXAlignment)")
       values.rect.origin.x += offsetXAlignment
       collectionView.setContentOffset(values.rect.origin, animated: false)
     }
@@ -175,7 +197,6 @@ class InlinePickerViewLayout: UICollectionViewLayout {
         ($0, self.layoutAttributesForItemAtIndexPath($0)!)
       }
     )
-//    MSLogDebug(description)
   }
 
   /** performInitialCalculations */
@@ -188,12 +209,15 @@ class InlinePickerViewLayout: UICollectionViewLayout {
     let widths = values.widths
     let height = values.height
     let visibleHeight = values.rect.height
+    let visibleWidth = values.rect.width
 
     let sumOfWidths = widths.sum
     let sumOfCellPadding = CGFloat(widths.count - 1) * padding
 
     contentPadding = (sumOfWidths + sumOfCellPadding) / 2
-    contentSize = CGSize(width: (sumOfWidths + sumOfCellPadding) * 2, height: height)
+    let contentWidth = sumOfWidths + sumOfCellPadding + contentPadding * 2
+
+    contentSize = CGSize(width: max(contentWidth, visibleWidth * 2), height: height)
 
     rawFrames.removeAll(keepCapacity: true)
     var x = contentPadding
@@ -201,17 +225,6 @@ class InlinePickerViewLayout: UICollectionViewLayout {
       rawFrames.append(CGRect(x: x, y: (visibleHeight - height) / 2, width: width, height: height))
       x += width + padding
     }
-
-//    MSLogDebug("\n".join(
-//      "padding = \(padding)",
-//      "widths = \(widths)",
-//      "height = \(height)",
-//      "visibleHeight = \(visibleHeight)",
-//      "sumOfWidths = \(sumOfWidths)",
-//      "sumOfCellPadding = \(sumOfCellPadding)",
-//      "contentPadding = \(contentPadding)",
-//      "rawFrames = \(rawFrames)"
-//      ))
   }
 
   /**
@@ -230,7 +243,6 @@ class InlinePickerViewLayout: UICollectionViewLayout {
   */
   override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
     let attributes = storedAttributes.values.filter { $0.frame.intersects(rect) }.array
-//    MSLogDebug("attributes = {\n\t" + ",\n".join(attributes.map {$0.description.indentedBy(8)}) + "\n}")
     return attributes.count > 0 ? attributes : nil
   }
 
@@ -250,9 +262,7 @@ class InlinePickerViewLayout: UICollectionViewLayout {
     let attributes = Attributes(forCellWithIndexPath: indexPath)
     attributes.frame = rawFrames[indexPath.item]
 
-//    MSLogDebug("pre-transform attributes = \(attributes)")
     applyTransformToAttributes(attributes)
-//    MSLogDebug("post-transform attributes = \(attributes)")
 
     return attributes
   }
@@ -277,20 +287,6 @@ class InlinePickerViewLayout: UICollectionViewLayout {
     let theta = !editing && values.selection == item ? 0 : (CGFloat(M_PI_2) - sigma) * (values.rect.width / contentSize.width)
 
     let tx = !editing && values.selection == item ? values.rect.maxX - frame.maxX : 0
-
-//    MSLogDebug("\n".join(
-//      "item = \(item)",
-//      "frame = \(frame)",
-//      "d = \(d)",
-//      "r = \(r)",
-//      "L = \(L)",
-//      "l = \(l)",
-//      "alpha = \(alpha)",
-//      "sigma = \(sigma)",
-//      "true 'theta' in degrees = \(RadiansToDegrees(CGFloat(M_PI_2) - sigma))",
-//      "applied 'theta' in degrees = \(RadiansToDegrees(theta))",
-//      "tx = \(tx)"
-//      ))
 
     attributes.transform3D = CATransform3D(
       m11: cos(theta), m12: 0, m13: -sin(theta), m14: 0,
@@ -320,7 +316,6 @@ class InlinePickerViewLayout: UICollectionViewLayout {
       MSLogVerbose("failed to calculate an offset for item at index \(idx), returning proposed value: \(offset)")
       return offset
     }
-//    MSLogDebug("calculatedOffset = \(calculatedOffset)")
     return calculatedOffset
   }
 
@@ -336,7 +331,6 @@ class InlinePickerViewLayout: UICollectionViewLayout {
       MSLogVerbose("cannot generate an offset for an item which has no attributes stored")
       return nil
     }
-//    MSLogDebug("calculating offset with item frame = \(attributes.frame) and visible rect = \(values.rect)")
     return CGPoint(x: attributes.frame.midX - values.rect.width / 2, y: 0)
   }
 
@@ -379,7 +373,6 @@ class InlinePickerViewLayout: UICollectionViewLayout {
       }
     }
 
-//    MSLogDebug("the index of the item nearest an offset of \(offset) is \(result)")
     return result
   }
 
@@ -391,9 +384,7 @@ class InlinePickerViewLayout: UICollectionViewLayout {
   - returns: CGPoint
   */
   override func targetContentOffsetForProposedContentOffset(proposedContentOffset: CGPoint) -> CGPoint {
-    let offset = offsetForProposedOffset(proposedContentOffset)
-//    MSLogDebug("proposedContentOffset = \(proposedContentOffset), offset = \(offset)")
-    return offset
+    return offsetForProposedOffset(proposedContentOffset)
   }
 
   /**
@@ -407,9 +398,7 @@ class InlinePickerViewLayout: UICollectionViewLayout {
   override func targetContentOffsetForProposedContentOffset(proposedContentOffset: CGPoint,
                                       withScrollingVelocity velocity: CGPoint) -> CGPoint
   {
-    let offset = offsetForProposedOffset(proposedContentOffset)
-//    MSLogDebug("proposedContentOffset = \(proposedContentOffset), velocity = \(velocity), offset = \(offset)")
-    return offset
+    return offsetForProposedOffset(proposedContentOffset)
   }
 
 }

@@ -9,18 +9,36 @@
 import Foundation
 import UIKit
 
-@objc public final class Form: CustomStringConvertible {
+public final class Form: NSObject {
 
   public var fields: OrderedDictionary<String, Field>
   public var changeHandler: ((Form, Field, String) -> Void)?
 
+  /**
+  initWithTemplates:
+
+  - parameter templates: OrderedDictionary<String, FieldTemplate>
+  */
   public init(templates: OrderedDictionary<String, FieldTemplate>) {
     fields = templates.map {Field.fieldWithTemplate($2)}
+    super.init()
     apply(fields) {$2.changeHandler = self.didChangeField}
   }
 
+  /**
+  didChangeField:
+
+  - parameter field: Field
+  */
   func didChangeField(field: Field) { if let name = nameForField(field) { changeHandler?(self, field, name) } }
 
+  /**
+  nameForField:
+
+  - parameter field: Field
+
+  - returns: String?
+  */
   func nameForField(field: Field) -> String? {
     if let idx = fields.values.indexOf(field) { return fields.keys[idx] } else { return nil }
   }
@@ -39,7 +57,7 @@ import UIKit
     return values
   }
 
-  public var description: String {
+  public override var description: String {
     return "Form: {\n\t" + "\n\t".join(fields.map {"\($0): \($1) = \(String($2.value))"}) + "\n}"
   }
 
@@ -88,6 +106,11 @@ final class FormView: UIView {
     }
   }
 
+  /**
+  init:
+
+  - parameter aDecoder: NSCoder
+  */
   required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
   // MARK: - Field views
@@ -99,8 +122,14 @@ final class FormView: UIView {
 
   // MARK: - Constraints
 
+  /**
+  requiresConstraintBasedLayout
+
+  - returns: Bool
+  */
   override class func requiresConstraintBasedLayout() -> Bool { return true }
 
+  /** updateConstraints */
   override func updateConstraints() {
     super.updateConstraints()
     let id = Identifier(self, "Internal")
@@ -121,6 +150,11 @@ final class FormView: UIView {
     }
   }
 
+  /**
+  intrinsicContentSize
+
+  - returns: CGSize
+  */
   override func intrinsicContentSize() -> CGSize {
     let fieldSizes = fieldViews.map {$0.intrinsicContentSize()}
     let w = min(fieldSizes.map {$0.width}.maxElement()!, UIScreen.mainScreen().bounds.width - 8)

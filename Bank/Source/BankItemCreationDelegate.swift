@@ -10,7 +10,7 @@ import Foundation
 import MoonKit
 import DataModel
 
-@objc class BankItemCreationDelegate {
+class BankItemCreationDelegate {
 
   weak var presentingController: BankItemCreationController?
 
@@ -24,7 +24,7 @@ import DataModel
     switch transactions.count {
       case 0:  return
       case 1:  transact(transactions[0])
-      default: presentPopOverForTransactions(transactions)
+      default: presentPopoverForTransactions(transactions)
     }
   }
 
@@ -43,7 +43,7 @@ import DataModel
     switch transactions.count {
       case 0:  return
       case 1:  transact(transactions[0])
-      default: presentPopOverForTransactions(transactions)
+      default: presentPopoverForTransactions(transactions)
     }
   }
 
@@ -160,57 +160,51 @@ import DataModel
   }
 
   // MARK: Creating a popover view
-
-  typealias PopOverActions = [String:(PopOverView) -> Void]
+  typealias PopoverItem = PopoverView.LabelData
 
   /**
-  presentPopOverForTransactions:
+  presentPopoverForTransactions:
 
   - parameter transactions: [ItemCreationTransaction]
   */
-  private func presentPopOverForTransactions(transactions: [ItemCreationTransaction]) {
-    let actions = PopOverActions(
-      transactions.map {
-        [unowned self] (transaction:ItemCreationTransaction) -> (String, (PopOverView) -> Void) in
-          return (transaction.label, {$0.removeFromSuperview(); self.transact(transaction)})
-      }
-    )
-    guard actions.count > 0 else { return }
-    presentPopOverWithActions(actions, location: .Top)
-  }
-
-  /**
-  Creates a fresh `PopOverView` with the specified actions
-
-  - parameter actions: PopOverActions
-
-  - returns: PopOverView
-  */
-  private func popOverWithActions(actions: PopOverActions, location: PopOverView.Location) -> PopOverView {
-    let popOverView = PopOverView(autolayout: true)
-    popOverView.location = location
-    popOverView.highlightedTextColor = Bank.actionColor
-    apply(actions) {popOverView.addLabel(label: $0, withAction: $1)}
-    return popOverView
-  }
-
-
-  /**
-  presentPopOverWithActions:button:location:
-
-  - parameter actions: PopOverActions
-  - parameter location: PopOverView.Location
-  */
-  private func presentPopOverWithActions(actions: PopOverActions, location: PopOverView.Location) {
-    // TODO: Add animation and more appearance customization
-    let popOverView = popOverWithActions(actions, location: location)
-
-    if let presentingView = presentingController?.createItemBarButton?.customView,
-      view = (presentingController as? UIViewController)?.view
-    {
-      view.window?.addSubview(popOverView)
-      view.window?.constrain(popOverView.centerX => presentingView.centerX, popOverView.bottom => presentingView.top)
+  private func presentPopoverForTransactions(transactions: [ItemCreationTransaction]) {
+    let actions = transactions.map {
+      [unowned self] t in
+        PopoverItem(text: t.label, action: { $0.removeFromSuperview(); self.transact(t) })
     }
+
+    guard actions.count > 0,
+      let window = (presentingController as? UIViewController)?.view.window,
+          presentingButton = presentingController?.createItemBarButton,
+          presentingView = presentingButton.customView else { return }
+
+    let popoverView = PopoverView(labelData: actions) { [unowned presentingButton] _ in presentingButton.isToggled = false }
+    popoverView.nametag = "popover"
+    popoverView.highlightedTextColor = Bank.actionColor
+
+    window.addSubview(popoverView)
+
+    let id = MoonKit.Identifier(self, "Popover")
+
+    let necessaryWidth = (popoverView.intrinsicContentSize().width / 2) + 2
+    let windowWidth = window.bounds.width
+    let presentingViewFrame = presentingView.frame
+    let halfPresentingViewWidth = presentingViewFrame.width / 2
+    let spaceToLeft = presentingViewFrame.minX + halfPresentingViewWidth
+    let spaceToRight = windowWidth - presentingViewFrame.maxX + halfPresentingViewWidth
+
+    let offset: CGFloat
+    switch (spaceToLeft > necessaryWidth, spaceToRight > necessaryWidth) {
+      case (true, false):                offset = necessaryWidth - spaceToRight
+      case (false, true):                offset = necessaryWidth - spaceToLeft
+      case (true, true), (false, false): offset = 0
+    }
+
+    popoverView.xOffset = offset
+    window.constrain(
+      popoverView.centerX => presentingView.centerX - offset --> id,
+      popoverView.bottom => presentingView.top --> id
+    )
 
   }
 

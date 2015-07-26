@@ -126,11 +126,11 @@ final class BankModelCollectionDelegate: BankModelDelegate {
 
         // create new item transaction
         switch c {
-          case let c as FormCreatableItemBankModelCollection:
+          case let c as FormCreatableItem:
             itemTransaction = FormTransaction(newItemFor: c)
-          case let c as DiscoverCreatableItemBankModelCollection:
+          case let c as DiscoverCreatableItem:
             itemTransaction = DiscoveryTransaction(discoverItemFor: c)
-          case let c as CustomCreatableItemBankModelCollection:
+          case let c as CustomCreatableItem:
             itemTransaction = CustomTransaction(newItemFor: c)
           default:
             itemTransaction = nil
@@ -138,11 +138,11 @@ final class BankModelCollectionDelegate: BankModelDelegate {
 
         // create new collection transaction
         switch c {
-          case let c as FormCreatableItemBankModelCollection:
+          case let c as FormCreatableItem:
             collectionTransaction = FormTransaction(newItemFor: c)
-          case let c as DiscoverCreatableItemBankModelCollection:
+          case let c as DiscoverCreatableItem:
             collectionTransaction = DiscoveryTransaction(discoverItemFor: c)
-          case let c as CustomCreatableItemBankModelCollection:
+          case let c as CustomCreatableItem:
             collectionTransaction = CustomTransaction(newItemFor: c)
           default:
             collectionTransaction = nil
@@ -176,7 +176,7 @@ final class BankModelCollectionDelegate: BankModelDelegate {
       collectionType = nil;
       itemToRootAttributeName = nil;
       collectionToRootAttributeName = nil
-      super.init(name: c.name, context: NSManagedObjectContext())
+      super.init(name: c.name, context: NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType))
       return nil
     }
   }

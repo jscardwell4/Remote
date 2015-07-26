@@ -62,7 +62,7 @@ FOUNDATION_EXPORT const unsigned char MoonKitVersionString[];
 #import <MoonKit/NSValue+MSKitAdditions.h>
 #import <MoonKit/MSKVOReceptionist.h>
 #import <MoonKit/MSLog.h>
-#import <MoonKit/UIAlertView+MSKitAdditions.h>
+//#import <MoonKit/UIAlertView+MSKitAdditions.h>
 #import <MoonKit/MSLogMacros.h>
 #import <MoonKit/UICollectionViewFlowLayout+MSKitAdditions.h>
 #import <MoonKit/MSNetworkReachability.h>

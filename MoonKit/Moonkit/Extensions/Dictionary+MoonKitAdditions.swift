@@ -35,7 +35,7 @@ keys:
 */
 public func keys<C: KeyValueCollectionType where C.Generator: KeyValueCollectionTypeGenerator>(x: C) -> [C.Key] {
   var keys: [C.Key] = []
-  for entry in x { if let key = reflect(entry)[0].1.value as? C.Key { keys.append(key) } }
+  for entry in x { if let key = _reflect(entry)[0].1.value as? C.Key { keys.append(key) } }
   return keys
 }
 
@@ -48,7 +48,7 @@ values:
 */
 public func values<C: KeyValueCollectionType where C.Generator: KeyValueCollectionTypeGenerator>(x: C) -> [C.Value] {
   var values: [C.Value] = []
-  for entry in x { if let value = reflect(entry)[1].1.value as? C.Value { values.append(value) } }
+  for entry in x { if let value = _reflect(entry)[1].1.value as? C.Value { values.append(value) } }
   return values
 }
 

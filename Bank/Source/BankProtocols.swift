@@ -17,6 +17,10 @@ protocol DelegateDetailable: NamedModel, EditableModel {
   func sectionIndexForController(controller: BankCollectionDetailController) -> BankModelDetailDelegate.SectionIndex
 }
 
+protocol RelatedItemCreatable: DelegateDetailable {
+  var relatedItemCreationTransactions: [ItemCreationTransaction] { get }
+}
+
 // MARK: - Previewable protocol
 
 /** Protocol for objects that can supply an image representation */
@@ -61,34 +65,40 @@ protocol CustomCreatable: Model {
 
 /** Protocol for models that implement `BankItemCollection` */
 @objc protocol BankModelCollection: BankItemCollection, NamedModel {}
-@objc protocol FormCreatableItemBankModelCollection: BankModelCollection {
+
+@objc protocol FormCreatableItem: BankModelCollection {
   func itemCreationForm(context context: NSManagedObjectContext) -> Form
   func createItemWithForm(form: Form, context: NSManagedObjectContext) -> Bool
   var itemLabel: String { get }
 }
-@objc protocol FormCreatableCollectionBankModelCollection: BankModelCollection {
+
+@objc protocol FormCreatableCollection: BankModelCollection {
   func collectionCreationForm(context context: NSManagedObjectContext) -> Form
   func createCollectionWithForm(form: Form, context: NSManagedObjectContext) -> Bool
   var collectionLabel: String { get }
 }
-@objc protocol DiscoverCreatableItemBankModelCollection: BankModelCollection {
+
+@objc protocol DiscoverCreatableItem: BankModelCollection {
   func beginItemDiscovery(context context: NSManagedObjectContext, presentForm: (Form, ProcessedForm) -> Void) -> Bool
   func endItemDiscovery()
   var itemLabel: String { get }
 
 }
-@objc protocol DiscoverCreatableCollectionBankModelCollection: BankModelCollection {
+
+@objc protocol DiscoverCreatableCollection: BankModelCollection {
   func beginCollectionDiscovery(context context: NSManagedObjectContext, presentForm: (Form, ProcessedForm) -> Void) -> Bool
   func endCollectionDiscovery()
   var collectionLabel: String { get }
 }
-@objc protocol CustomCreatableItemBankModelCollection: BankModelCollection {
+
+@objc protocol CustomCreatableItem: BankModelCollection {
   func itemCreationControllerWithContext(context: NSManagedObjectContext,
                    cancellationHandler didCancel: () -> Void,
                        creationHandler didCreate: (ModelObject) -> Void) -> UIViewController
   var itemLabel: String { get }
 }
-@objc protocol CustomCreatableCollectionBankModelCollection: BankModelCollection {
+
+@objc protocol CustomCreatableCollection: BankModelCollection {
   func collectionCreationControllerWithContext(context: NSManagedObjectContext,
                          cancellationHandler didCancel: () -> Void,
                              creationHandler didCreate: (ModelObject) -> Void) -> UIViewController
@@ -132,10 +142,13 @@ protocol BankItemCreationController: class {
 
 protocol ItemCreationTransaction {
   var label: String { get }
+  var creationMode: Bank.CreationMode { get } // Whether new items are created manually, via discovery, both, or neither
 }
 
 protocol ItemCreationTransactionProvider {
-  var transactions: [ItemCreationTransaction] { get }
+  var transactions: [ItemCreationTransaction] { get } // All available creation transactions
+  var creationMode: Bank.CreationMode         { get } // Whether new items are created manually, via discovery, both, or neither
+
 }
 
 /** Protocol for types that want search bar button item in bottom toolbar */

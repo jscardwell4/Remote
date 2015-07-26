@@ -71,6 +71,15 @@ class BankCollectionDetailSection {
   }
 
   /**
+  Access a cached row by key
+
+  - parameter key: Key
+
+  - returns: Row?
+  */
+  subscript(key: Key) -> Row? { return cache[key] }
+
+  /**
   Insert a row by wrapping in a creation block that simply returns the row
 
   - parameter row: Row
