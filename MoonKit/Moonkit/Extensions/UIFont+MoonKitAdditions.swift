@@ -52,27 +52,26 @@ extension UIFont: JSONValueConvertible {
 
 extension UIFont /*: JSONValueInitializable */ {
   public convenience init?(_ jsonValue: JSONValue?) {
-    if let string = String(jsonValue) {
-      let captures = disperse2(string.matchFirst("^([^@]*)@?([0-9]*\\.?[0-9]*)"))
+    guard let string = String(jsonValue) else {
+      self.init()
+      return nil
+    }
 
-      if let name = captures.0 where UIFont.familyNames() as [String] ∋ name {
+    let regex = ~/"^([^@]*)@?([0-9]*\\.?[0-9]*)"
+    let match = regex.firstMatch(string)
 
-        let size: CGFloat
+    guard let name = match?.captures[1]?.string where UIFont.familyNames() ∋ name else {
+      self.init()
+      return nil
+    }
 
-        if captures.1 != nil {
-          var s: Float = 0.0
-          let scanner = NSScanner(string: captures.1!)
-          if scanner.scanFloat(&s) { size = CGFloat(s) }
-          else { self.init(); return nil }
-        }
-        else if captures.1 == nil { size = UIFont.systemFontSize() }
-        else { self.init(); return nil }
+    let size: CGFloat
 
-        self.init(name: name, size: size)
+    if let capturedSize = match?.captures[2]?.string, sizeFromString = Double(capturedSize) { size = CGFloat(sizeFromString) }
+    else { size = UIFont.systemFontSize() }
 
-      } else { self.init(); return nil }
-      
-    } else { self.init(); return nil }
+    self.init(name: name, size: size)
+
   }
 }
 

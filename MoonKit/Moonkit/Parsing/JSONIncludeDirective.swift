@@ -9,7 +9,7 @@
 import Foundation
 
 internal class JSONIncludeDirective {
-  let location: Range<Int>
+  let location: Range<String.Index>
   let file: IncludeFile!
 
   private let _parameters: String?
@@ -25,12 +25,14 @@ internal class JSONIncludeDirective {
 
   let subdirectives: [JSONIncludeDirective]
 
-  init?(_ string: String, location loc: Range<Int>, directory: String) {
+  init?(_ string: String, location loc: Range<String.Index>, directory: String) {
     location = loc
-    let captures = string.matchFirst("<@include\\s+([^>]+\\.json)(?:,([^>]+))?>")
-    assert(captures.count == 2, "unexpected number of capture groups for regular expression")
-    _parameters = captures[1]
-    if let fileName = captures[0], includeFile = IncludeFile("\(directory)/\(fileName)") {
+    let regex = ~/"<@include\\s+([^>]+\\.json)(?:,([^>]+))?>"
+    let match = regex.firstMatch(string)
+
+    assert(match?.captures.count == 3, "unexpected number of capture groups for regular expression")
+    _parameters = match?.captures[2]?.string
+    if let fileName = match?.captures[1]?.string, includeFile = IncludeFile("\(directory)/\(fileName)") {
       file = includeFile
       subdirectives = JSONIncludeDirective.parseDirectives(file.content, directory: directory)
     } else { file = nil; subdirectives = []; return nil }
@@ -38,18 +40,20 @@ internal class JSONIncludeDirective {
 
   static func stringByParsingDirectivesInString(string: String, directory: String) -> String {
     var result = ""
-    var i = 0
+    var i = string.startIndex
     for directive in parseDirectives(string, directory: directory) {
       result += string[i..<directive.location.startIndex]
       result += directive.content
       i = directive.location.endIndex
     }
-    if i < string.length { result += string[i..<string.length] }
+    if i < string.endIndex { result += string[i..<string.endIndex] }
     return result
   }
 
   private static func parseDirectives(string: String, directory: String) -> [JSONIncludeDirective] {
-    let ranges = compressed(string.rangesForCapture(1, byMatching: ~/"(<@include[^>]+>)"))
+    let regex = ~/"(<@include[^>]+>)"
+    let matches = regex.match(string)
+    let ranges = matches.flatMap { $0.captures[1]?.range }
     let directives = compressedMap(ranges, {JSONIncludeDirective(string[$0], location: $0, directory: directory)})
     return directives
   }
@@ -73,13 +77,13 @@ internal class JSONIncludeDirective {
     let fileContent = file.content
     if subdirectives.count == 0 { result = fileContent }
     else {
-      var i = 0
+      var i = fileContent.startIndex
       for subdirective in subdirectives.sort({$0.location.startIndex < $1.location.startIndex}) {
         result += fileContent[i..<subdirective.location.startIndex]
         result += subdirective.content
         i = subdirective.location.endIndex
       }
-      if i < fileContent.length { result += fileContent[i..<fileContent.length] }
+      if i < fileContent.endIndex { result += fileContent[i..<fileContent.endIndex] }
     }
     if let p = parameters {
       result = p.reduce(result, combine: {$0.stringByReplacingOccurrencesOfString("<#\($1.0)#>", withString: $1.1)})
@@ -93,7 +97,10 @@ internal class JSONIncludeDirective {
     let path: String
     let content: String
     private(set) lazy var parameters: Set<String> = {
-      return Set(flattened(self.content.matchAll(~/"<#([A-Z]+)#>").map({compressed($0)})))
+      let regex = ~/"<#([A-Z]+)#>"
+      let matches = regex.match(self.content)
+      let strings = matches.flatMap { match in match.captures.flatMap { $0?.string } }
+      return Set(strings)
       }()
 
     init?(_ p: String) {

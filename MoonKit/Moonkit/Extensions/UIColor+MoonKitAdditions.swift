@@ -36,7 +36,7 @@ extension UIColor {
   public convenience init?(string: String) {
     if let color = UIColor(name: string), let (r, g, b, a) = color.rgba {
       self.init(red: r, green: g, blue: b, alpha: a)
-    } else if string.matchesRegEx("@.*%") {
+    } else if string ~= "@.*%" {
       let (base, alpha) = disperse2("@".split(string))
       if let color = UIColor(name: base), let (r, g, b, _) = color.rgba {
         self.init(red: r, green: g, blue: b, alpha: CGFloat((String(dropLast(alpha.characters)) as NSString).floatValue / 100.0))
@@ -118,7 +118,7 @@ extension UIColor {
   public var rgbaHexString: String? {
     if let hex = rgbaHex {
       var hexString = String(hex, radix: 16, uppercase: true)
-      while hexString.characterCount < 8 { hexString = "0" + hexString }
+      while hexString.count < 8 { hexString = "0" + hexString }
       return "#\(hexString)"
     } else {
       return nil
@@ -128,7 +128,7 @@ extension UIColor {
   public var rgbHexString: String? {
     if let hex = rgbHex {
       var hexString = String(hex, radix: 16, uppercase: true)
-      while hexString.characterCount < 6 { hexString = "0" + hexString }
+      while hexString.count < 6 { hexString = "0" + hexString }
       return "#\(hexString)"
     } else {
       return nil

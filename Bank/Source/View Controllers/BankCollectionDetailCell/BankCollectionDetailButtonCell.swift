@@ -50,7 +50,6 @@ final class BankCollectionDetailButtonCell: BankCollectionDetailCell {
 
   /** prepareForReuse */
   override func prepareForReuse() {
-    MSLogDebug("")
     super.prepareForReuse()
     _data.removeAll()
     dataItems.removeAll()

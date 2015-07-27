@@ -94,7 +94,9 @@ public class ModelObject: NSManagedObject, Model, JSONValueConvertible {
   /** Entity description retrieved from the managed object model */
   public class var entityDescription: NSEntityDescription {
     let entities = DataManager.managedObjectModel.entities as [NSEntityDescription]
-    let name = className().substringForCapture(1, inFirstMatchFor: ~/"^([^_0-9]+)")
+    let regex = ~/"^([^_0-9]+)"
+    guard let match = regex.firstMatch(className()),
+              name = match.captures[1]?.string else { fatalError("unable to get valid entity name") }
     if let entity = findFirst(entities, {$0.managedObjectClassName == name}) { return entity }
     else { fatalError("unable to locate entity for class '\(className())'") }
   }

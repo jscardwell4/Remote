@@ -296,6 +296,7 @@
 		C256F09D1ABE005F005B7CB3 /* NSError+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21D7AE31AA60E3F000DE8A3 /* NSError+MoonKitAdditions.swift */; };
 		C256F09E1ABE0089005B7CB3 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C482E419CA0225002E84A9 /* Stack.swift */; };
 		C25E63E11A00427100F54626 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63E01A00427100F54626 /* OrderedSet.swift */; };
+		C266A6F01B6523BB00EEA1C4 /* String+RegularExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = C266A6EF1B6523BB00EEA1C4 /* String+RegularExpression.swift */; };
 		C268340A1B10C24100A359A8 /* LabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26834091B10C24100A359A8 /* LabelButton.swift */; };
 		C268340C1B11159E00A359A8 /* Chameleon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C268340B1B11159E00A359A8 /* Chameleon.framework */; };
 		C2683F7B1AF142E60081C74B /* UIBezierPath+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2683F7A1AF142E60081C74B /* UIBezierPath+MoonKitAdditions.swift */; };
@@ -339,6 +340,7 @@
 		C2C3B91F1AC5DA7D001DC6CC /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2C3B91E1AC5DA7D001DC6CC /* CocoaLumberjack.framework */; };
 		C2C482E519CA0225002E84A9 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C482E419CA0225002E84A9 /* Stack.swift */; };
 		C2C4B72C1AA951D700912951 /* NSManagedObject+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C4B72B1AA951D700912951 /* NSManagedObject+MoonKitAdditions.swift */; };
+		C2C9EB701B65C5C70051BACF /* Range+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C9EB6F1B65C5C70051BACF /* Range+MoonKitAdditions.swift */; };
 		C2CDB8FA1AD77617006DF88C /* example6.json in Resources */ = {isa = PBXBuildFile; fileRef = C2CDB8F91AD77617006DF88C /* example6.json */; };
 		C2CE82751AD07D0400406CE7 /* example2.json in Resources */ = {isa = PBXBuildFile; fileRef = C2CE82741AD07D0400406CE7 /* example2.json */; };
 		C2CE82771AD08D8F00406CE7 /* example3.json in Resources */ = {isa = PBXBuildFile; fileRef = C2CE82761AD08D8F00406CE7 /* example3.json */; };
@@ -476,6 +478,7 @@
 		C25E63E01A00427100F54626 /* OrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
 		C264338D18162E8A005E0105 /* NSPointerArray+MSKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPointerArray+MSKitAdditions.h"; sourceTree = "<group>"; };
 		C264338E18162E8A005E0105 /* NSPointerArray+MSKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPointerArray+MSKitAdditions.m"; sourceTree = "<group>"; };
+		C266A6EF1B6523BB00EEA1C4 /* String+RegularExpression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+RegularExpression.swift"; sourceTree = "<group>"; };
 		C26834091B10C24100A359A8 /* LabelButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelButton.swift; sourceTree = "<group>"; };
 		C268340B1B11159E00A359A8 /* Chameleon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Chameleon.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Build/Products/Debug-iphoneos/Chameleon.framework"; sourceTree = "<group>"; };
 		C2683F7A1AF142E60081C74B /* UIBezierPath+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+MoonKitAdditions.swift"; sourceTree = "<group>"; };
@@ -524,6 +527,7 @@
 		C2C482E619CA2985002E84A9 /* NSCharacterSet+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSCharacterSet+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C2C482E819CA2997002E84A9 /* NSScanner+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSScanner+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C2C4B72B1AA951D700912951 /* NSManagedObject+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+MoonKitAdditions.swift"; sourceTree = "<group>"; };
+		C2C9EB6F1B65C5C70051BACF /* Range+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Range+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C2CDB8F91AD77617006DF88C /* example6.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = example6.json; sourceTree = "<group>"; };
 		C2CE82741AD07D0400406CE7 /* example2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = example2.json; sourceTree = "<group>"; };
 		C2CE82761AD08D8F00406CE7 /* example3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = example3.json; sourceTree = "<group>"; };
@@ -836,6 +840,8 @@
 				C236937F1B161ED600CBE460 /* PrintableExtensions.swift */,
 				C2FE79E51B1E62590087F72C /* NSIndexPath+MoonKitAdditions.swift */,
 				C2A5B6F11B482F4700F34491 /* NSParagraphStyle+MoonKitAdditions.swift */,
+				C266A6EF1B6523BB00EEA1C4 /* String+RegularExpression.swift */,
+				C2C9EB6F1B65C5C70051BACF /* Range+MoonKitAdditions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1833,6 +1839,7 @@
 				C2358F6F19C78E0C00920F8D /* MSLog.m in Sources */,
 				C211C2C41B4607FD004A24E4 /* InlinePickerViewCell.swift in Sources */,
 				C20650031A13C73900342FDE /* UIFont+MoonKitAdditions.swift in Sources */,
+				C2C9EB701B65C5C70051BACF /* Range+MoonKitAdditions.swift in Sources */,
 				C2358F7019C78E0C00920F8D /* MSNetworkReachability.m in Sources */,
 				C2064FFB1A13C6F000342FDE /* MoonFunctions.swift in Sources */,
 				C2064FFC1A13C70200342FDE /* Logging.swift in Sources */,
@@ -1867,6 +1874,7 @@
 				C27372851A1FC0750079624D /* UIColor+MoonKitAdditions.swift in Sources */,
 				C2358F7F19C78E0C00920F8D /* MSMultiselectView.m in Sources */,
 				C2358F8019C78E0C00920F8D /* MSNumberPadView.m in Sources */,
+				C266A6F01B6523BB00EEA1C4 /* String+RegularExpression.swift in Sources */,
 				C2358F8119C78E0C00920F8D /* MSPickerInputView.m in Sources */,
 				C2358F8219C78E0C00920F8D /* MSPopupBarButtonView.m in Sources */,
 				C2358F8319C78E0C00920F8D /* MSReflectingView.m in Sources */,

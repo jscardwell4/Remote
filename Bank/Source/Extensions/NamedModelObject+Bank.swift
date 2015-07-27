@@ -21,7 +21,8 @@ extension NamedModelObject {
   - returns: FieldTemplate
   */
   static func nameFormFieldTemplate(context context: NSManagedObjectContext) -> FieldTemplate {
-    let placeholder = "The " + entityDescription.name!.dashcaseString.subbed("-", " ") + "'s name"
+    let entity = " ".join(entityDescription.name!.split(~/"(?=\\p{Lu}\\p{Ll})"))
+    let placeholder = "The \(entity)'s name"
     let validation: (String?) -> Bool = {
       !($0 == nil   ||
         $0!.isEmpty ||

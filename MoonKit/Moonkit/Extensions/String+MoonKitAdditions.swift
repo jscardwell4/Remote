@@ -42,75 +42,60 @@ public extension String {
   public static let Quote:       String = "'"
   public static let DoubleQuote: String = "\""
 
-  public var length: Int { return self.characters.count }
+  public var length: Int { return characters.count }
+  public var count: Int { return characters.count }
 
-  public var dashcaseString: String {
-    if isDashcase { return self }
-    else if isCamelcase {
-      var s = ""
-      var offset = 0
-      for range in compressed(rangesForCapture(0, byMatching: ~/"[a-z][A-Z]")) {
-        s += self[offset...range.startIndex] + "-" + self[range.startIndex + 1...range.endIndex]
-        offset = range.endIndex + 1
-      }
-      s += self[offset..<length]
-      return s.lowercaseString
-    } else { return camelcaseString.dashcaseString }
+  /** Returns the string converted to 'dash-case' */
+  public var dashCaseString: String {
+    guard !isDashCase else { return self }
+    if isCamelCase { return "-".join(split(~/"(?<=\\p{Ll})(?=\\p{Lu})").map {$0.lowercaseString}) }
+    else { return camelCaseString.dashCaseString }
   }
 
-  public var titlecaseString: String {
-    if isTitlecase { return self }
-    else if isDashcase { return String(self.characters.map{$0 == "-" ? " " : $0}).capitalizedString }
-    else if isCamelcase {
-      var s = String(self[startIndex]).uppercaseString
-      for c in String(String(dropFirst(self.characters))).unicodeScalars {
-        switch c.value {
-          case 65...90: s += " "; s.append(c)
-          default: s.append(c)
-        }
-      }
-      return s
-    } else {
-      return capitalizedString
-    }
+  /** Returns the string with the first character converted to lowercase */
+  public var lowercaseFirst: String {
+    guard count > 1 else { return lowercaseString }
+    return self[startIndex ..< advance(startIndex, 1)].lowercaseString + self[advance(startIndex, 1) ..< endIndex]
   }
 
-  public var camelcaseString: String {
-    if isCamelcase { return self }
-    else if isTitlecase {
-      var s = String(self[startIndex]).lowercaseString
-      let characters: CharacterView = dropFirst(self.characters)
-      let filteredCharacters = characters.filter({(c: Character) -> Bool in return c != " "})
-      s += String(filteredCharacters)
-      return s
-    } else if isDashcase {
-      var s = String(self[startIndex]).lowercaseString
-      var previousCharacterWasDash = false
-      for c in String(String(dropFirst(self.characters))).unicodeScalars {
-        switch c.value {
-          case 45: previousCharacterWasDash = true
-          default:
-            if previousCharacterWasDash {
-              s += String(c).uppercaseString
-              previousCharacterWasDash = false
-            } else {
-              s += String(c).lowercaseString
-            }
-        }
-      }
-      return s
-    } else {
-      return capitalizedString
-    }
+  /** Returns the string with the first character converted to uppercase */
+  public var uppercaseFirst: String {
+    guard count > 1 else { return uppercaseString }
+    return self[startIndex ..< advance(startIndex, 1)].uppercaseString + self[advance(startIndex, 1) ..< endIndex]
+  }
+
+  /** Returns the string converted to 'camelCase' */
+  public var camelCaseString: String {
+
+    guard !isCamelCase else { return self }
+
+    var components = split(~/"(?<=\\p{Ll})(?=\\p{Lu})|(?<=\\p{Lu})(?=\\p{Lu})|(\\p{Z}|\\p{P})")
+
+    guard components.count > 0 else { return self }
+
+    var i = 0
+    while i < components.count && components[i] ~= ~/"^\\p{Lu}$" { components[i] = components[i++].lowercaseString }
+
+    if i++ == 0 { components[0] = components[0].lowercaseFirst }
+
+    for j in i ..< components.count where components[j] ~= ~/"^\\p{Ll}" { components[j] = components[j].uppercaseFirst }
+
+    return "".join(components)
+  }
+
+  /** Returns the string converted to 'PascalCase' */
+  public var pascalCaseString: String {
+    guard !isPascalCase else { return self }
+    return camelCaseString.sub(~/"^(\\p{Ll}+)", {$0.string.uppercaseString})
   }
 
   public var isQuoted: Bool { return hasPrefix("\"") && hasSuffix("\"") }
   public var quoted: String { return isQuoted ? self : "\"\(self)\"" }
   public var unquoted: String { return isQuoted ? self[1..<length - 1] : self }
 
-  public var isCamelcase: Bool { return ~/"^\\p{Ll}+((?:\\p{Lu}|[0-9])+\\p{Ll}*)*$" ~= self }
-  public var isDashcase: Bool { return ~/"^\\p{Ll}+(-\\p{Ll}*)*$" ~= self }
-  public var isTitlecase: Bool { return ~/"^(?:\\p{Lu}\\p{Ll}*)*$" ~= self }
+  public var isCamelCase: Bool { return ~/"^\\p{Ll}+((?:\\p{Lu}|\\p{N})+\\p{Ll}*)*$" ~= self }
+  public var isPascalCase: Bool { return ~/"^\\p{Lu}+((?:\\p{Ll}|\\p{N})+\\p{Lu}*)*$" ~= self }
+  public var isDashCase: Bool { return ~/"^\\p{Ll}+(-\\p{Ll}*)*$" ~= self }
 
   public var pathEncoded: String { return self.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding) ?? self }
   public var urlFragmentEncoded: String {
@@ -133,9 +118,17 @@ public extension String {
 
   public var pathDecoded: String { return self.stringByRemovingPercentEncoding ?? self }
 
-  public var forwardSlashEncoded: String { return subbed("/", "%2F") }
-  public var forwardSlashDecoded: String { return subbed("%2F", "/").subbed("%2f", "/") }
+  public var forwardSlashEncoded: String { return sub("/", "%2F") }
+  public var forwardSlashDecoded: String { return sub("%2F", "/").sub("%2f", "/") }
 
+  /**
+  Returns the string with the specified amount of leading space in the form of space characters
+
+  - parameter indent: Int
+  - parameter preserveFirst: Bool = false
+
+  - returns: String
+  */
   public func indentedBy(indent: Int, preserveFirstLineIndent preserveFirst: Bool = false) -> String {
     let spacer = " " * indent
     let result = "\n\(spacer)".join("\n".split(self))
@@ -143,7 +136,7 @@ public extension String {
   }
 
   /**
-  join:
+  Convenience for using variadic parameter to pass strings
 
   - parameter strings: String...
 
@@ -152,7 +145,7 @@ public extension String {
   public func join(strings: String...) -> String { return join(strings) }
 
   /**
-  sandwhich:
+  Returns a string wrapped by `self`
 
   - parameter string: String
 
@@ -168,6 +161,19 @@ public extension String {
   - returns: [String]
   */
   public func split(string: String) -> [String] { return string.componentsSeparatedByString(self) }
+
+  /**
+  split:
+
+  - parameter regex: RegularExpression
+
+  - returns: [String]
+  */
+  public func split(regex: RegularExpression) -> [String] {
+    let ranges = regex.matchRanges(self)
+    guard ranges.count > 0 else { return [self] }
+    return indices.split(ranges, noImplicitJoin: true).flatMap { $0.isEmpty ? nil : self[$0] }
+  }
 
   public var pathStack: Stack<String> { return Stack(Array(pathComponents.reverse())) }
   public var keypathStack: Stack<String> { return Stack(Array(".".split(self).reverse())) }
@@ -217,44 +223,6 @@ public extension String {
     } else { throw error }
   }
 
-  // MARK: - Regular Expressions
-
-  /**
-  sub:replacement:
-
-  - parameter target: String
-  - parameter replacement: String
-
-  - returns: String
-  */
-  public func subbed(target: String, _ replacement: String) -> String {
-    return stringByReplacingOccurrencesOfString(target,
-                                     withString: replacement,
-                                        options: [],
-                                          range: startIndex..<endIndex)
-  }
-
-  /**
-  sub:replacement:
-
-  - parameter target: String
-  - parameter replacement: String
-  */
-  public mutating func sub(target: String, _ replacement: String) {
-    if let range = rangeForCapture(0, inFirstMatchFor: ~/target) {
-      replaceRange(range, with: replacement.characters)
-    }
-  }
-
-  /**
-  substringFromRange:
-
-  - parameter range: Range<Int>
-
-  - returns: String
-  */
-  public func substringFromRange(range: Range<Int>) -> String { return self[range] }
-
   /**
   subscript:
 
@@ -277,6 +245,16 @@ public extension String {
     let range = indexRangeFromIntRange(subRange)
     replaceRange(range, with: newElements)
   }
+
+  /**
+  substringFromRange:
+
+  - parameter range: Range<Int>
+
+  - returns: String
+  */
+  public func substringFromRange(range: Range<Int>) -> String { return self[range] }
+  
 
   /**
   subscript:
@@ -318,229 +296,35 @@ public extension String {
     return self[range]
   }
 
-  /**
-  matchFirst:
-
-  - parameter pattern: String
-  - returns: [String?]
-  */
-  public func matchFirst(pattern: String) -> [String?] { return matchFirst(~/pattern) }
+  public var indices: Range<String.Index> { return characters.indices }
+  public var range: NSRange { return NSRange(location: 0, length: count) }
 
   /**
-  matchesRegEx:
+  Convert a `Range` to an `NSRange` over the string
 
-  - parameter regex: NSRegularExpression
+  - parameter r: Range<String.Index>
 
-  - returns: Bool
+  - returns: NSRange
   */
-  public func matchesRegEx(regex: RegularExpression) -> Bool {
-    return match(regex)
+  public func convertRange(r: Range<String.Index>) -> NSRange {
+    let location = distance(startIndex, r.startIndex)
+    let length = distance(startIndex, r.endIndex) - location
+    return NSRange(location: location, length: length)
   }
 
   /**
-  matchesRegEx:
+  Convert an `NSRange` to a `Range` over the string
 
-  - parameter regex: String
+  - parameter r: NSRange
 
-  - returns: Bool
+  - returns: Range<String.Index>?
   */
-  public func matchesRegEx(regex: String) -> Bool { return matchesRegEx(~/regex) }
-
-  /**
-  substringFromFirstMatchForRegEx:
-
-  - parameter regex: NSRegularExpression
-
-  - returns: String?
-  */
-  public func substringFromFirstMatchForRegEx(regex: RegularExpression) -> String? {
-    var matchString: String?
-    let range = NSRange(location: 0, length: self.characters.count)
-    if let match = regex.regex?.firstMatchInString(self, options: [], range: range) {
-      let matchRange = match.rangeAtIndex(0)
-      precondition(matchRange.location != NSNotFound, "didn't expect a match object with no overall match range")
-      matchString = self[matchRange]
-    }
-    return matchString
+  public func convertRange(r: NSRange) -> Range<String.Index>? {
+    guard r.location < count && NSMaxRange(r) < count else { return nil }
+    let start = advance(startIndex, r.location)
+    let end = advance(startIndex, r.location + r.length)
+    return Range(start: start, end: end)
   }
-
-  public var indices: Range<String.Index> { return startIndex..<endIndex }
-
-  /**
-  stringByReplacingMatchesForRegEx:withTemplate:
-
-  - parameter regex: NSRegularExpression
-  - parameter template: String
-
-  - returns: String
-  */
-  public func stringByReplacingMatchesForRegEx(regex: RegularExpression, withTemplate template: String) -> String {
-    return regex.regex?.stringByReplacingMatchesInString(self,
-                                          options: [],
-                                            range: NSRange(location: 0, length: characterCount),
-                                     withTemplate: template) ?? self
-  }
-
-  /**
-  replaceMatchesForRegEx:withTemplate:
-
-  - parameter regex: NSRegularExpression
-  - parameter template: String
-
-  - returns: String
-  */
-  public mutating func replaceMatchesForRegEx(regex: RegularExpression, withTemplate template: String) {
-    self = stringByReplacingMatchesForRegEx(regex, withTemplate: template)
-  }
-
-  public var characterCount: Int { return self.characters.count }
-
-  /**
-  substringForCapture:inFirstMatchFor:
-
-  - parameter capture: Int
-  - parameter regex: NSRegularExpression
-
-  - returns: String?
-  */
-  public func substringForCapture(capture: Int, inFirstMatchFor regex: RegularExpression) -> String? {
-    let captures = matchFirst(regex)
-    return capture >= 0 && capture <= (regex.regex?.numberOfCaptureGroups ?? -1) ? captures[capture - 1] : nil
-  }
-
-  /**
-  matchingSubstringsForRegEx:
-
-  - parameter regex: NSRegularExpression
-
-  - returns: [String]
-  */
-  public func matchingSubstringsForRegEx(regex: RegularExpression) -> [String] {
-    var substrings: [String] = []
-    let range = NSRange(location: 0, length: self.characters.count)
-    if let matches = regex.regex?.matchesInString(self, options: [], range: range) {
-      for match in matches {
-        let matchRange = match.rangeAtIndex(0)
-        precondition(matchRange.location != NSNotFound, "didn't expect a match object with no overall match range")
-        let substring = self[matchRange]
-        substrings.append(substring)
-      }
-    }
-    return substrings
-  }
-
-  /**
-  rangesForCapture:byMatching:
-
-  - parameter capture: Int
-  - parameter pattern: String
-
-  - returns: [Range<Int>?]
-  */
-  public func rangesForCapture(capture: Int, byMatching pattern: String) -> [Range<Int>?] {
-    return rangesForCapture(capture, byMatching: ~/pattern)
-  }
-
-  /**
-  rangeForCapture:inFirstMatchFor:
-
-  - parameter capture: Int
-  - parameter regex: NSRegularExpression
-
-  - returns: Range<Int>?
-  */
-  public func rangeForCapture(capture: Int, inFirstMatchFor regex: RegularExpression) -> Range<Int>? {
-    var range: Range<Int>?
-    if let match = regex.regex?.firstMatchInString(self, options: [], range: NSRange(location: 0, length: self.characters.count)) {
-      if capture >= 0 && capture <= regex.regex!.numberOfCaptureGroups {
-        let matchRange = match.rangeAtIndex(capture)
-        if matchRange.location != NSNotFound {
-          range = matchRange.location..<NSMaxRange(matchRange)
-        }
-      }
-    }
-    return range
-  }
-
-  /**
-  rangesForCapture:byMatching:
-
-  - parameter capture: Int
-  - parameter regex: NSRegularExpression
-
-  - returns: [Range<Int>?]
-  */
-  public func rangesForCapture(capture: Int, byMatching regex: RegularExpression) -> [Range<Int>?] {
-    var ranges: [Range<Int>?] = []
-    let r = NSRange(location: 0, length: self.characters.count)
-    if let matches = regex.regex?.matchesInString(self, options: [], range: r) {
-      for match in matches {
-        var range: Range<Int>?
-        if capture >= 0 && capture <= regex.regex!.numberOfCaptureGroups {
-          let matchRange = match.rangeAtIndex(capture)
-          if matchRange.location != NSNotFound {
-            range = matchRange.location..<NSMaxRange(matchRange)
-          }
-        }
-        ranges.append(range)
-      }
-    }
-    return ranges
-  }
-
-  /**
-  toRegEx
-
-  - returns: NSRegularExpression?
-  */
-  public func toRegEx() -> RegularExpression {
-    return RegularExpression(pattern: self.characters.count > 0 ? self : "(?:)", options: [])
-  }
-
-  /**
-  matchFirst:
-
-  - parameter regex: NSRegularExpression
-  - returns: [String?]
-  */
-  public func matchFirst(regex: RegularExpression) -> [String?] {
-  	var captures: [String?] = []
-    if let match: NSTextCheckingResult? = regex.regex?.firstMatchInString(self, options: [], range: NSRange(0..<length)) {
-      for i in 1...regex.regex!.numberOfCaptureGroups {
-        if let range = match?.rangeAtIndex(i) { captures.append(range.location != NSNotFound ? self[range] : nil) }
-        else { captures.append(nil) }
-      }
-    }
-
-    return captures
-  }
-
-  /**
-  matchAll:
-
-  - parameter regex: RegularExpression
-
-  - returns: [[String?]]
-  */
-  public func matchAll(regex: RegularExpression) -> [[String?]] {
-    var result: [[String?]] = []
-    if let matches = regex.regex?.matchesInString(self, options: [], range: NSRange(0..<length)),
-      captureCount = regex.regex?.numberOfCaptureGroups
-    {
-      for match in matches {
-        var matchCaptures: [String?] = []
-        for i in 1...captureCount {
-          let range = match.rangeAtIndex(i)
-          let substring: String? = range.location == NSNotFound ? nil : self[range]
-          matchCaptures.append(substring)
-        }
-        result.append(matchCaptures)
-      }
-    }
-
-    return result
-  }
-
 
   /**
   indexRangeFromIntRange:
@@ -557,19 +341,6 @@ public extension String {
 
 }
 
-// MARK: - RegularExpressionMatchable
-
- extension String: RegularExpressionMatchable {
-  public func match(regex: RegularExpression) -> Bool { return regex.match(self) }
-}
-
-public func enumerateMatches(pattern: String,
-                             string: String,
-                             block: (NSTextCheckingResult?, NSMatchingFlags, UnsafeMutablePointer<ObjCBool>) -> Void)
-{
-  (~/pattern).regex?.enumerateMatchesInString(string, options: [], range: NSRange(0..<string.length), usingBlock: block)
-}
-
 // MARK: - Operators
 
 /** predicates */
@@ -579,66 +350,5 @@ public prefix func ∀(predicate: (String, [AnyObject]?)) -> NSPredicate! {
   return NSPredicate(format: predicate.0, argumentArray: predicate.1)
 }
 
-/** pattern matching operator */
-public func ~=(lhs: String, rhs: RegularExpression) -> Bool { return rhs ~= lhs }
-public func ~=(lhs: RegularExpression, rhs: String) -> Bool { return rhs.matchesRegEx(lhs) }
-public func ~=(lhs: String, rhs: String) -> Bool { return lhs.matchesRegEx(rhs) }
-
-infix operator /~ { associativity left precedence 140 }
-infix operator /≈ { associativity left precedence 140 }
-
-/** func for an operator that returns the first matching substring for a pattern */
-public func /~(lhs: String, rhs: RegularExpression) -> String? { return rhs /~ lhs }
-public func /~(lhs: RegularExpression, rhs: String) -> String? { return rhs.substringFromFirstMatchForRegEx(lhs) }
-
-/** func for an operator that returns an array of matching substrings for a pattern */
-public func /≈(lhs: String, rhs: RegularExpression) -> [String] { return rhs /≈ lhs }
-public func /≈(lhs: RegularExpression, rhs: String) -> [String] { return rhs.matchingSubstringsForRegEx(lhs) }
-
-infix operator /…~ { associativity left precedence 140 }
-infix operator /…≈ { associativity left precedence 140 }
-
-//infix operator |≈| { associativity left precedence 140 }
-
-/** func for an operator that returns the range of the first match in a string for a pattern */
-public func /…~(lhs: String, rhs: RegularExpression) -> Range<Int>? { return rhs /…~ lhs }
-public func /…~(lhs: RegularExpression, rhs: String) -> Range<Int>? { return lhs /…~ (rhs, 0) }
-
-/** func for an operator that returns the range of the specified capture for the first match in a string for a pattern */
-public func /…~(lhs: (String, Int), rhs: RegularExpression) -> Range<Int>? { return rhs /…~ lhs }
-public func /…~(lhs: RegularExpression, rhs: (String, Int)) -> Range<Int>? {
-  return rhs.0.rangeForCapture(rhs.1, inFirstMatchFor: lhs)
-}
-
-/** func for an operator that returns the ranges of all matches in a string for a pattern */
-public func /…≈(lhs: String, rhs: RegularExpression) -> [Range<Int>?] { return rhs /…≈ lhs }
-public func /…≈(lhs: RegularExpression, rhs: String) -> [Range<Int>?] { return lhs /…≈ (rhs, 0) }
-
-/** func for an operator that returns the ranges of the specified capture for all matches in a string for a pattern */
-public func /…≈(lhs: (String, Int), rhs: RegularExpression) -> [Range<Int>?] { return rhs /…≈ lhs }
-public func /…≈(lhs: RegularExpression, rhs: (String, Int)) -> [Range<Int>?] {
-  return rhs.0.rangesForCapture(rhs.1, byMatching: lhs)
-}
-
-
-/** func for an operator that returns the specified capture for the first match in a string for a pattern */
-public func /~(lhs: (String, Int), rhs: RegularExpression) -> String? { return rhs /~ lhs }
-public func /~(lhs: RegularExpression, rhs: (String, Int)) -> String? {
-  return rhs.0.substringForCapture(rhs.1, inFirstMatchFor: lhs)
-}
-
 /** func for an operator that creates a string by repeating a string multiple times */
 public func *(lhs: String, var rhs: Int) -> String { var s = ""; while rhs-- > 0 { s += lhs }; return s }
-
-prefix operator ~/ {}
-
-/** func for an operator that creates a regular expression from a string */
-public prefix func ~/(pattern: String) -> RegularExpression { return RegularExpression(pattern: pattern) }
-
-infix operator +⁈ { associativity left precedence 140 }
-
-/** functions for combining a string with an optional string */
-public func +⁈(lhs:String, rhs:String?) -> String? { if let r = rhs { return lhs + r } else { return nil } }
-public func +⁈(lhs:String, rhs:String) -> String? { return lhs + rhs }
-public func +⁈(lhs:String?, rhs:String?) -> String? { if let l = lhs { if let r = rhs { return l + r } }; return nil }
-

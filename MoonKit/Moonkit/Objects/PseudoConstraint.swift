@@ -167,19 +167,32 @@ public struct PseudoConstraint {
     let p = "(?:@ *\(number))"
     let id = "(?:'([\\w ]+)' *)"
     let pattern = "^ *\(id)?\(item)\(relatedBy)(?:\(item)\(m)?)? *\(number)? *\(p)? *$"
+    let regex = ~/pattern
 
-    for capture in format.matchFirst(pattern).enumerate().filter({$1 != nil}).map({($0, $1!)}) {
-      switch capture {
-        case (0, let s): identifier = s
-        case (1, let s): firstItem = s
-        case (2, let s): if let a = Attribute(rawValue: s) { firstAttribute = a } else { return nil }
-        case (3, let s): if let r = Relation(rawValue: s) { relation = r } else { return nil }
-        case (4, let s): secondItem = s
-        case (5, let s): if let a = Attribute(rawValue: s) { secondAttribute = a } else { return nil }
-        case (6, let s): let sc = NSScanner(string: s); if !sc.scanFloat(&multiplier) { return nil }
-        case (7, let s): let sc = NSScanner(string: String(s.characters.filter({$0 != " "}))); if !sc.scanFloat(&constant) { return nil }
-        case (8, let s): let sc = NSScanner(string: s); if !sc.scanFloat(&priority) { return nil }
-        default: assert(false, "should be unreachable")
+    guard let match = regex.firstMatch(format) else { return }
+
+    for case let .Some(capture) in match.captures {
+      switch capture.group {
+        case 1:
+          identifier = capture.string
+        case 2:
+          firstItem = capture.string
+        case 3:
+          if let a = Attribute(rawValue: capture.string) { firstAttribute = a } else { return nil }
+        case 4:
+          if let r = Relation(rawValue: capture.string) { relation = r } else { return nil }
+        case 5:
+          secondItem = capture.string
+        case 6:
+          if let a = Attribute(rawValue: capture.string) { secondAttribute = a } else { return nil }
+        case 7:
+          if !NSScanner(string: capture.string).scanFloat(&multiplier) { return nil }
+        case 8:
+          if !NSScanner(string: String(capture.string.characters.filter({$0 != " "}))).scanFloat(&constant) { return nil }
+        case 9:
+          if !NSScanner(string: capture.string).scanFloat(&priority) { return nil }
+        default:
+          assert(false, "should be unreachable")
       }
     }
 
@@ -327,7 +340,7 @@ extension PseudoConstraint: CustomStringConvertible {
     let firstItemString: String
 
     if let f = firstItem { firstItemString = f }
-    else if let f = firstObject as? Named { firstItemString = f.name.camelcaseString }
+    else if let f = firstObject as? Named { firstItemString = f.name.camelCaseString }
     else { firstItemString = "firstItem" }
 
     result += "\(firstItemString).\(firstAttribute.rawValue) \(relation.rawValue)"
@@ -335,7 +348,7 @@ extension PseudoConstraint: CustomStringConvertible {
     if secondAttribute != .NotAnAttribute {
       let secondItemString: String
       if let s = secondItem { secondItemString = s }
-      else if let s = secondObject as? Named { secondItemString = s.name.camelcaseString }
+      else if let s = secondObject as? Named { secondItemString = s.name.camelCaseString }
       else { secondItemString = "secondItem" }
       result += " \(secondItemString).\(secondAttribute.rawValue)"
     }

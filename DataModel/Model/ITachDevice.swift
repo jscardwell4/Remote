@@ -112,9 +112,11 @@ public class ITachDevice: NetworkDevice {
   - parameter context: NSManagedObjectContext
   */
   public init?(beacon: String, context: NSManagedObjectContext) {
-    let entries = beacon.matchingSubstringsForRegEx(~/"(?<=<-)(.*?)(?=>)")
+    let regex = ~/"(?<=<-)(.*?)(?=>)"
+    let matches = regex.match(beacon)
+    let entries: [String] = matches.flatMap { let capture = $0.captures[0]; return capture?.string }
     var attributes: [String:String] = [:]
-    apply(entries) {
+    entries.apply {
       let components = "=".split($0)
       if components.count == 2, let prop = BeaconProperty(rawValue: components[0]) {
         attributes[prop.deviceProperty] = components[1]
@@ -141,7 +143,9 @@ public class ITachDevice: NetworkDevice {
   - parameter beacon: String
   */
   public func updateWithBeacon(beacon: String) {
-    let entries = beacon.matchingSubstringsForRegEx(~/"(?<=<-)(.*?)(?=>)")
+    let regex = ~/"(?<=<-)(.*?)(?=>)"
+    let matches = regex.match(beacon)
+    let entries: [String] = matches.flatMap { let capture = $0.captures[0]; return capture?.string }
     var attributes: [String:String] = [:]
     apply(entries) {
       let components = "=".split($0)

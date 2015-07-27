@@ -139,7 +139,7 @@ class BankCollectionDetailController: UICollectionViewController {
       navigationController?.setToolbarHidden(!(editing && toolbarItems != nil && toolbarItems!.count > 0), animated: true)
       if !editing {
         navigationItem.titleView?.endEditing(true)
-        DataManager.saveRootContext()
+        if itemDelegate.item.managedObjectContext?.hasChanges == true { DataManager.saveRootContext() }
       }
       if let cells = collectionView?.visibleCells() as? [Cell] { apply(cells) {$0.editing = editing} }
       super.setEditing(editing, animated: animated)

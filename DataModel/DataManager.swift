@@ -616,6 +616,11 @@ public final class DataManager {
                    completion: completion)
   }
 
+  /**
+  propagatingSaveFromContext:
+
+  - parameter context: NSManagedObjectContext
+  */
   public class func propagatingSaveFromContext(context: NSManagedObjectContext) {
     MSLogDebug("starting context = \(toString(context.nametag))")
     var currentContext = context

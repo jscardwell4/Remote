@@ -27,7 +27,7 @@ extension UIControlState: JSONValueConvertible {
 
 extension UIControlState: JSONValueInitializable {
   public init?(_ jsonValue: JSONValue?) {
-    let flags = "-".split(String(jsonValue)?.dashcaseString ?? "")
+    let flags = "-".split(String(jsonValue)?.dashCaseString ?? "")
     if !(1...3).contains(flags.count) { return nil }
     var state = UIControlState.Normal
     for flag in flags {
@@ -69,7 +69,7 @@ extension UIControlState {
   /** Corresponding property name suitable for use in methods such as `valueForKey:` */
   public var controlStateSetProperty: String? {
     let string = jsonValue.value as! String
-    return string.characters.count > 0 ? string.camelcaseString : nil
+    return string.characters.count > 0 ? string.camelCaseString : nil
   }
 
   /**

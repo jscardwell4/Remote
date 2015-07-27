@@ -199,8 +199,8 @@ public final class Constraint: ModelObject, CustomDebugStringConvertible {
 
   override public var description: String {
     var pseudo = pseudoConstraint
-    pseudo.firstItem = firstItem?.name.camelcaseString ?? firstItemIdentifier ?? "firstElement"
-    pseudo.secondItem = secondItem?.name.camelcaseString ?? secondItemIdentifier ?? "secondElement"
+    pseudo.firstItem = firstItem?.name.camelCaseString ?? firstItemIdentifier ?? "firstElement"
+    pseudo.secondItem = secondItem?.name.camelCaseString ?? secondItemIdentifier ?? "secondElement"
     return pseudo.description
   }
 

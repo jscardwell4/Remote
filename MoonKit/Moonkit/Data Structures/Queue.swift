@@ -65,4 +65,26 @@ public struct Queue<T> {
   public private(set) var count: Int = 0
 
   public init() {}
+  public init<S:SequenceType where S.Generator.Element == T>(_ elements: S) {
+    self.init()
+    for element in elements { enqueue(element) }
+  }
+}
+
+extension Queue: ArrayLiteralConvertible {
+  public init(arrayLiteral elements: T...) {
+    self.init(elements)
+  }
+}
+
+extension Queue: CustomStringConvertible {
+  public var description: String {
+    var elementDescriptions: [String] = []
+    var n = head
+    while let element = n?.value {
+      elementDescriptions.append(String(element))
+      n = n?.next
+    }
+    return "[" + ", ".join(elementDescriptions) + "]"
+  }
 }

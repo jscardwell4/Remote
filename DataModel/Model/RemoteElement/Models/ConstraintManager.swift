@@ -65,24 +65,22 @@ public final class ConstraintManager: NSObject {
     identifiers.extend(remoteElement.subelements.map{$0.identifier})
 
     let regex = ~/"\\$([0-9]+)"
-
+    let matches = regex.match(format)
+    let matchingRanges = matches.flatMap { $0.captures[0]?.range }
     var replacementFormat = format
-    let matchingRanges = regex /…≈ format
     var removeCount = 0
     var insertCount = 0
     for r in matchingRanges {
-      if let matchRange = r {
-        let matchedSubstring = format[matchRange]
-        let i = Int(String(dropFirst(matchedSubstring.characters)))!
-        let replacement = identifiers[i]
-        let start = advance(replacementFormat.startIndex, matchRange.startIndex + insertCount - removeCount)
-        let end = advance(replacementFormat.startIndex, matchRange.endIndex + insertCount - removeCount)
-        let indexRange = Range<String.Index>(start: start, end: end)
+      let matchedSubstring = format[r]
+      let i = Int(String(dropFirst(matchedSubstring.characters)))!
+      let replacement = identifiers[i]
+      let start = advance(replacementFormat.startIndex, distance(format.startIndex, r.startIndex) + insertCount - removeCount)
+      let end = advance(replacementFormat.startIndex, distance(format.startIndex, r.endIndex) + insertCount - removeCount)
+      let indexRange = Range<String.Index>(start: start, end: end)
 
-        replacementFormat.replaceRange(indexRange, with: identifiers[i])
-        removeCount += matchedSubstring.characters.count
-        insertCount += replacement.characters.count
-      }
+      replacementFormat.replaceRange(indexRange, with: identifiers[i])
+      removeCount += matchedSubstring.characters.count
+      insertCount += replacement.characters.count
     }
     let result = replacementFormat.stringByReplacingOccurrencesOfString("self", withString: remoteElement.identifier)
     return result

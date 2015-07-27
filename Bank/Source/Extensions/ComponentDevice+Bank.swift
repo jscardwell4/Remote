@@ -217,7 +217,7 @@ extension ComponentDevice: RelatedItemCreatable {
         label: "Manufacturer",
         form: Manufacturer.creationForm(context: context),
         processedForm: {
-          [unowned self] form in
+          [unowned self, unowned context] form in
           let (success, _) = DataManager.saveContext(context) {
             if let manufacturer = Manufacturer.createWithForm(form, context: $0) {
               self.manufacturer = manufacturer

@@ -36,7 +36,7 @@ public struct Identifier: MutableSliceable {
 
   - returns: Tag
   */
-  private func filteredTag(tag: Tag) -> Tag { return tag.subbed(Identifier.tagSeparator, "\(Identifier.tagSeparator)") }
+  private func filteredTag(tag: Tag) -> Tag { return tag.sub(~/Identifier.tagSeparator, "\(Identifier.tagSeparator)") }
 
   /**
   filteredTags:

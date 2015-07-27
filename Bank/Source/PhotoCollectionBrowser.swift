@@ -237,7 +237,6 @@ class PhotoCollectionBrowser: UIViewController, PhotoCollectionLayoutDelegate, U
     aspectControl.toggleAction = {[unowned self]
       control in
 
-        MSLogDebug("aspect change muthafucka!!!")
         self.aspect = Aspect(rawValue: control.selectedSegmentIndex)!
     }
 
