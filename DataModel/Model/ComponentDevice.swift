@@ -44,6 +44,18 @@ public final class ComponentDevice: EditableModelObject {
 
   private var ignoreNextPowerCommand = false
 
+  /** willSave */
+  public override func willSave() {
+    super.willSave()
+
+    guard !deleted else { return }
+
+    guard let codeSet = codeSet else { onCommand = nil; offCommand = nil; return }
+
+    if let onCommand = onCommand where onCommand.code.codeSet != codeSet { self.onCommand = nil }
+    if let offCommand = offCommand where offCommand.code.codeSet != codeSet { self.offCommand = nil }
+  }
+
   /**
   requiresUniqueNaming
 

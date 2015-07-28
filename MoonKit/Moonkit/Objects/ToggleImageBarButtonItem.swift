@@ -15,21 +15,18 @@ public class ToggleImageBarButtonItem: ToggleBarButtonItem {
   public override var isToggled: Bool { didSet { imageView?.highlighted = isToggled } }
 
   /** override `image` property to utilize the item's custom view */
-  public override var image: UIImage? { get { return imageView.image } set { imageView.image = newValue } }
+  public override var image: UIImage? { get { return imageView?.image } set { imageView?.image = newValue } }
 
   /** computed property for accessing the custom view's highlighted image property */
   public var highlightedImage: UIImage? {
-    get { return imageView.highlightedImage }
-    set { imageView.highlightedImage = newValue }
+    get { return imageView?.highlightedImage }
+    set { imageView?.highlightedImage = newValue }
   }
 
   public var disabledTintColor = UIColor.lightGrayColor()
 
   override public var enabled: Bool { didSet { imageView?.tintColor = enabled ? nil : disabledTintColor } }
 
-
-  /** init */
-  public override init() { super.init() }
 
   /**
   initWithImage:toggledImage:action:
@@ -38,7 +35,7 @@ public class ToggleImageBarButtonItem: ToggleBarButtonItem {
   - parameter toggledImage: UIImage
   - parameter action: (ToggleBarButtonItem) -> Void
   */
-  public convenience init(image: UIImage, toggledImage: UIImage, action: (ToggleBarButtonItem) -> Void) {
+  public init(image: UIImage, toggledImage: UIImage, action: (ToggleBarButtonItem) -> Void) {
 
     // create a view to hold the image view for padding purposes
     let container = UIView(frame: CGRect(origin: CGPoint.zeroPoint, size: CGSize(width: 44.0, height: 44.0)))
@@ -57,7 +54,7 @@ public class ToggleImageBarButtonItem: ToggleBarButtonItem {
                         imageView.top ≥ container.top + 8, imageView.bottom ≤ container.bottom - 8)
 
     // call super's initializer with our custom view
-    self.init(customView: container)
+    super.init(customView: container)
 
     // add a gesture for triggering our action
     imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "toggle:"))

@@ -17,28 +17,19 @@ extension Manufacturer: BankModelCollection {
 }
 
 extension Manufacturer: DelegateDetailable {
+
   func sectionIndexForController(controller: BankCollectionDetailController) -> BankModelDetailDelegate.SectionIndex {
 
     var sections: BankModelDetailDelegate.SectionIndex = [:]
 
-    struct SectionKey {
-      static let Devices  = "Devices"
-      static let CodeSets = "Code Sets"
-    }
+    enum SectionKey: String { case Devices, CodeSets }
 
-    struct RowKey {
-      static let Devices  = "Devices"
-      static let CodeSets = "Code Sets"
-    }
+    enum RowKey: String { case Devices, CodeSets }
 
     /** loadDevicesSection */
     func loadDevicesSection() {
 
       let manufacturer = self
-
-      // Devices
-      // section 0 - row 0
-      ////////////////////////////////////////////////////////////////////////////////////////////////////
 
       let devicesSection = BankCollectionDetailSection(section: 0, title: "Devices")
       for (idx, device) in manufacturer.devices.sortByName().enumerate() {
@@ -47,20 +38,16 @@ extension Manufacturer: DelegateDetailable {
           row.info = device
           row.select = BankCollectionDetailRow.selectPushableItem(device)
           return row
-          }, forKey: "\(RowKey.Devices)\(idx)")
+          }, forKey: "\(RowKey.Devices.rawValue)\(idx)")
       }
 
-      sections[SectionKey.Devices] = devicesSection
+      sections[SectionKey.Devices.rawValue] = devicesSection
     }
 
     /** loadCodeSetsSection */
     func loadCodeSetsSection() {
 
       let manufacturer = self
-
-      // Code Sets
-      // section 1 - row 0
-      ////////////////////////////////////////////////////////////////////////////////////////////////////
 
       let codeSetsSection = BankCollectionDetailSection(section: 1, title: "Code Sets")
       for (idx, codeSet) in manufacturer.codeSets.sortByName().enumerate() {
@@ -69,13 +56,10 @@ extension Manufacturer: DelegateDetailable {
           row.info = codeSet
           row.select = BankCollectionDetailRow.selectPushableCollection(codeSet)
           return row
-          }, forKey: "\(RowKey.CodeSets)\(idx)")
+          }, forKey: "\(RowKey.CodeSets.rawValue)\(idx)")
       }
 
-      /// Create the sections
-      ////////////////////////////////////////////////////////////////////////////////
-
-      sections[SectionKey.CodeSets] = codeSetsSection
+      sections[SectionKey.CodeSets.rawValue] = codeSetsSection
 
     }
 
@@ -84,6 +68,67 @@ extension Manufacturer: DelegateDetailable {
 
     return sections
   }
+}
+
+extension Manufacturer: RelatedItemCreatable {
+
+  var relatedItemCreationTransactions: [ItemCreationTransaction] {
+
+    var transactions: [ItemCreationTransaction] = []
+
+    if let context = managedObjectContext {
+
+      // Component device transaction
+      let componentDeviceForm = ComponentDevice.creationForm(context: context)
+
+      if let manufacturerField = componentDeviceForm.fields["Manufacturer"] {
+        manufacturerField.value = name
+        manufacturerField.editable = false
+      }
+
+      let createComponentDevice = FormTransaction(
+        label: "Component Device",
+        form: componentDeviceForm,
+        processedForm: {
+          form in
+
+          let (success, _) = DataManager.saveContext(context) {
+            _ = ComponentDevice.createWithForm(form, context: $0)
+          }
+
+          return success
+
+      })
+
+      transactions.append(createComponentDevice)
+
+      // Code set transaction
+      let codeSetForm = IRCodeSet.creationForm(context: context)
+
+      if let manufacturerField = codeSetForm.fields["Manufacturer"] {
+        manufacturerField.value = name
+        manufacturerField.editable = false
+      }
+
+      let createCodeSet = FormTransaction(
+        label: "Code Set",
+        form: codeSetForm,
+        processedForm: {
+          form in
+
+          let (success, _) = DataManager.saveContext(context) {
+            _ = IRCodeSet.createWithForm(form, context: $0)
+          }
+
+          return success
+
+      })
+
+      transactions.append(createCodeSet)
+    }
+    return transactions
+  }
+  
 }
 
 extension Manufacturer: FormCreatable {

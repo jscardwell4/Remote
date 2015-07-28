@@ -175,7 +175,6 @@ final public class Bank {
               ImportToggleActionProperties.fileController = nil
             }
             if let rootViewController =  UIApplication.sharedApplication().keyWindow?.rootViewController {
-//              let rootView = rootViewController.view
               rootViewController.addChildViewController(fileController!)
               fileController!.view.translatesAutoresizingMaskIntoConstraints = false
               if rootViewController is UINavigationController {

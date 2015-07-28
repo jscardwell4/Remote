@@ -198,3 +198,5 @@ extension ISYDevice: DelegateDetailable {
       return sections
     }
 }
+
+extension ISYDevice: RelatedItemCreatable {}

@@ -449,7 +449,7 @@ extension  OrderedDictionary: CustomStringConvertible, CustomDebugStringConverti
 
   public var description: String {
     var description = "{\n\t"
-    description += "\n\t".join(keyValuePairs.map({toString($0) + ": " + toString($1)}))
+    description += "\n\t".join(keyValuePairs.map({String(prettyNil: $0) + ": " + String(prettyNil: $1)}))
     description += "\n}"
     return description
   }

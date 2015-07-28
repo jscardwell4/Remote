@@ -166,6 +166,35 @@ extension IRCode: DelegateDetailable {
     }
 }
 
+extension IRCode: RelatedItemCreatable {
+
+  var relatedItemCreationTransactions: [ItemCreationTransaction] {
+    var transactions: [ItemCreationTransaction] = []
+
+    if let context = managedObjectContext {
+
+      // Code set transaction
+      let createCodeSet = FormTransaction(
+        label: "Code Set",
+        form: IRCodeSet.creationForm(context: context),
+        processedForm: {
+          [unowned self] form in
+          let (success, _) = DataManager.saveContext(context) {
+            if let codeSet = IRCodeSet.createWithForm(form, context: $0) {
+              self.codeSet = codeSet
+            }
+          }
+          return success
+        })
+      transactions.append(createCodeSet)
+
+    }
+
+    return transactions
+  }
+}
+
+
 // TODO: Fill out stubs for `FormCreatable`
 extension IRCode: FormCreatable {
 

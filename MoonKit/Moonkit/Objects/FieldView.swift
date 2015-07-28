@@ -40,11 +40,11 @@ public class Field: NSObject {
   public enum Type { case Undefined, Text, Switch, Slider, Stepper, Picker, Checkbox }
 
   var control: UIView { return UIView() }
-  var editable = true
-  var font: UIFont?
-  var selectedFont: UIFont?
-  var color: UIColor?
-  var selectedColor: UIColor?
+  public var editable = true
+  public var font: UIFont?
+  public var selectedFont: UIFont?
+  public var color: UIColor?
+  public var selectedColor: UIColor?
 
   public var value: Any?
   public var valid: Bool { return true }
@@ -297,14 +297,13 @@ public class Field: NSObject {
 
     weak var _control: InlinePickerView?
 
-    override var editable: Bool { didSet { _control?.userInteractionEnabled = editable } }
+    override var editable: Bool { didSet { _control?.editing = editable; } }
 
     override var control: UIView {
       if _control != nil { return _control! }
       let control = InlinePickerView(labels: choices)
       control.nametag = "picker"
-      control.userInteractionEnabled = editable
-      control.editing = true
+      control.editing = editable
       control.didSelectItem = { [unowned self] _, idx in self._value = self.choices[idx]; self.valueDidChange(self) }
       if let font = font { control.font = font }
       if let color = color { control.textColor = color }

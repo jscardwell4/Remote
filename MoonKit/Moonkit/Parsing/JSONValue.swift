@@ -94,7 +94,7 @@ public enum JSONValue {
       else { return nil }
     }
     else if let x = v as? NSDictionary {
-      let keys = x.allKeys.map({toString($0)})
+      let keys = x.allKeys.map({Swift.String($0)})
       let values = compressedMap(x.allValues, {JSONValue($0)})
       if keys.count == values.count { self = Object(OrderedDictionary(Swift.Array(zip(keys, values)))) }
       else { return nil }
@@ -260,9 +260,9 @@ public enum JSONValue {
 extension JSONValue: RawRepresentable {
   public var rawValue: Swift.String {
     switch self {
-      case .Boolean(let b): return toString(b)
+      case .Boolean(let b): return Swift.String(b)
       case .Null:           return "null"
-      case .Number(let n):  return toString(n)
+      case .Number(let n):  return Swift.String(n)
       case .String(let s):  return "\"".sandwhich(s)
       case .Array(let a):   return "[" + ",".join(a.map({$0.rawValue})) + "]"
       case .Object(let o):  return "{" + ",".join(o.keyValuePairs.map({"\"\($0)\":\($1.rawValue)"})) + "}"
@@ -331,7 +331,7 @@ extension JSONValue: StringLiteralConvertible {
 // MARK: StringInterpolationConvertible
 extension JSONValue: StringInterpolationConvertible {
   public init(stringInterpolation strings: JSONValue...) { self = String(strings.reduce("", combine: {$0 + ($1.stringValue ?? "")})) }
-  public init<T>(stringInterpolationSegment expr: T) { self = String(toString(expr)) }
+  public init<T>(stringInterpolationSegment expr: T) { self = String(Swift.String(expr)) }
 }
 
 // MARK: Streamable

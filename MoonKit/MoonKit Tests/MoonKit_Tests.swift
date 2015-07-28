@@ -180,8 +180,8 @@ class MoonKit_Tests: XCTestCase {
 
   func testJSONValueInflateKeyPaths() {
     if let object = JSONValue(["key1": "value1", "key.two.has.paths": "value2"]) {
-      XCTAssert(toString(object) == "{\"key1\":\"value1\",\"key.two.has.paths\":\"value2\"}")
-      XCTAssert(toString(object.inflatedValue) == "{\"key1\":\"value1\",\"key\":{\"two\":{\"has\":{\"paths\":\"value2\"}}}}")
+      XCTAssert(String(prettyNil: object) == "{\"key1\":\"value1\",\"key.two.has.paths\":\"value2\"}")
+      XCTAssert(String(prettyNil: object.inflatedValue) == "{\"key1\":\"value1\",\"key\":{\"two\":{\"has\":{\"paths\":\"value2\"}}}}")
     }
   }
 

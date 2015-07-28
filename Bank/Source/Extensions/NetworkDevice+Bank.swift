@@ -52,6 +52,37 @@ extension NetworkDevice: DiscoverCreatable {
 
 extension NetworkDevice {
 
+  var relatedItemCreationTransactions: [ItemCreationTransaction] {
+    var transactions: [ItemCreationTransaction] = []
+
+    if let context = managedObjectContext {
+
+      let componentDeviceForm = ComponentDevice.creationForm(context: context)
+      if let networkDeviceField = componentDeviceForm.fields["Network Device"] {
+        networkDeviceField.value = name
+        networkDeviceField.editable = false
+      }
+      let componentDeviceTransaction = FormTransaction(
+        label: "Component Device",
+        form: componentDeviceForm,
+        processedForm: {
+          [unowned context] form in
+          let (success, _) = DataManager.saveContext(context) {
+            _ = ComponentDevice.createWithForm(form, context: $0)
+          }
+
+          return success
+
+        })
+      transactions.append(componentDeviceTransaction)
+    }
+    return transactions
+  }
+}
+
+
+extension NetworkDevice {
+
   /**
   discoveryConfirmationFormFields
 

@@ -122,3 +122,5 @@ extension ITachDevice: DelegateDetailable {
       return sections
     }
 }
+
+extension ITachDevice: RelatedItemCreatable {}

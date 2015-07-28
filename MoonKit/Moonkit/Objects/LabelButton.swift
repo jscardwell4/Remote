@@ -24,7 +24,7 @@ public class LabelButton: UILabel {
 
   private func initializeIVARs() {
     userInteractionEnabled = true
-    MSLogDebug("tintColor = \(toString(tintColor))")
+    MSLogDebug("tintColor = \(String(prettyNil: tintColor))")
     highlightedTextColor = tintColor // Store initial tintColor into highlightedTextColor
     opaque = false
   }

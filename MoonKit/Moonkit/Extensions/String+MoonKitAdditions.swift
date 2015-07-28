@@ -186,15 +186,19 @@ public extension String {
 
     switch precision {
     case Int.min ... -1:
-      self = toString(d)
+      self = String(prettyNil: d)
     case 0:
-      self = toString(Int(d))
+      self = String(prettyNil: Int(d))
     default:
-      let string = toString(d)
+      let string = String(prettyNil: d)
       if let decimal = string.characters.indexOf(".") {
         self = ".".join(string[..<decimal], String(prefix(string[advance(decimal, 1)..<].characters, precision)))
       } else { self = string }
     }
+  }
+
+  public init<T>(prettyNil x: T?) {
+    if let x = x { self = String(x) } else { self = "nil" }
   }
 
   /**

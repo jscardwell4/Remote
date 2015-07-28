@@ -22,7 +22,10 @@ public class CoreDataStack {
   public let persistentStore: NSPersistentStore
   public let persistentStoreCoordinator: NSPersistentStoreCoordinator
   public let rootContext: NSManagedObjectContext
-  public var nametag: String { return "<stack\(toString(stackInstances[ObjectIdentifier(self)]))>" }
+  public var nametag: String {
+    guard let stack = stackInstances[ObjectIdentifier(self)] else { return "<stack>" }
+    return "<stack\(String(stack))>"
+  }
 
   /**
   initWithManagedObjectModel:persistentStoreURL:options:
@@ -30,8 +33,13 @@ public class CoreDataStack {
   - parameter managedObjectModel: NSManagedObjectModel
   - parameter persistentStoreURL: NSURL
   - parameter options: [NSObject:AnyObject]? = nil
+  
+  - throws: Any error encountered while adding a peristent store for the specified url
   */
-  public init(managedObjectModel: NSManagedObjectModel, persistentStoreURL: NSURL?, options: [NSObject:AnyObject]? = nil) throws {
+  public init(managedObjectModel: NSManagedObjectModel,
+              persistentStoreURL: NSURL?,
+              options: [NSObject:AnyObject]? = nil) throws
+  {
     self.managedObjectModel = managedObjectModel
     persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
 
@@ -56,7 +64,7 @@ public class CoreDataStack {
   }
 
   /**
-  mainContext
+  Generates child context that executes on the main queue
 
   - returns: NSManagedObjectContext
   */
@@ -64,12 +72,12 @@ public class CoreDataStack {
     let context = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
     context.parentContext = rootContext
     context.nametag = "\(nametag)<main\(++mainContextCount)>"
-    MSLogDebug("context created: \(toString(context.nametag))")
+    MSLogDebug("context created: \(String(prettyNil: context.nametag))")
     return context
   }
 
   /**
-  isolatedContext
+  Generates a context not related to any other contexts save for the `persistentStoreCoordinator`
 
   - returns: NSManagedObjectContext
   */
@@ -77,11 +85,11 @@ public class CoreDataStack {
     let context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
     context.persistentStoreCoordinator = persistentStoreCoordinator
     context.nametag = "\(nametag)<isolated\(++isolatedContextCount)>"
-    MSLogDebug("context created: \(toString(context.nametag))")
+    MSLogDebug("context created: \(String(prettyNil: context.nametag))")
     return context
   }
   /**
-  privateContext
+  Generates a child context that executes on a private queue
 
   - returns: NSManagedObjectContext
   */
@@ -89,10 +97,110 @@ public class CoreDataStack {
     let context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
     context.parentContext = rootContext
     context.nametag = "\(nametag)<private\(++privateContextCount)>"
-    MSLogDebug("context created: \(toString(context.nametag))")
+    MSLogDebug("context created: \(String(prettyNil: context.nametag))")
     return context
   }
 
+  public struct ContextSaveOptions: OptionSetType {
+    public let rawValue: Int
+    public init(rawValue value: Int) { rawValue = value }
+
+    public static let Default             = ContextSaveOptions(rawValue: 0)
+    public static let NonBlocking         = ContextSaveOptions(rawValue: 1)
+    public static let BackgroundExecution = ContextSaveOptions(rawValue: 2)
+    public static let Propagating         = ContextSaveOptions(rawValue: 4)
+  }
+
+  public typealias PerformBlock = (NSManagedObjectContext) -> Void
+  public typealias CompletionBlock = (ErrorType?) -> Void
+
+  /**
+  saveContext:withBlock:options:completion:
+
+  - parameter context: NSManagedObjectContext
+  - parameter block: PerformBlock? = nil
+  - parameter options: ContextSaveOptions
+  - parameter completion: CompletionBlock? = nil
+  
+  - throws: Any error saving a context, if options does not contain `NonBlocking`
+  */
+  public func saveContext(context: NSManagedObjectContext,
+                withBlock block: PerformBlock? = nil,
+                  options: ContextSaveOptions,
+               completion: CompletionBlock? = nil) throws
+  {
+    var saveError: ErrorType?
+
+    let performWithContext = options.contains(.NonBlocking)
+                               ? NSManagedObjectContext.performBlock
+                               : NSManagedObjectContext.performBlockAndWait
+
+    let perform: (NSManagedObjectContext, PerformBlock) -> Void = {
+      context, work in
+
+      performWithContext(context) ({ work(context) })
+    }
+
+    let save: (NSManagedObjectContext) throws -> Void = {
+      $0.processPendingChanges()
+      guard $0.hasChanges else { return }
+
+      MSLogDebug("saving context '\($0.nametag)'")
+
+      try $0.save()
+    }
+
+    let propagate: (NSManagedObjectContext) throws -> Void = {
+      var currentContext = $0
+      while let parentContext = currentContext.parentContext {
+        try save(parentContext)
+        currentContext = parentContext
+      }
+    }
+
+    // Create a child context if flagged for background execution
+    if options.contains(.BackgroundExecution) {
+
+      let child = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+      child.nametag = "child of \(context.nametag)"
+      child.parentContext = context
+      child.undoManager = nil
+
+      perform(child) {
+        context in
+
+        block?(context)
+        do { try save(context) } catch { saveError = error }
+
+        let parentContext = context.parentContext!
+
+        if saveError == nil { do { try save(parentContext) } catch { saveError = error } }
+
+        if saveError == nil && options.contains(.Propagating) {
+          do { try propagate(parentContext) } catch { saveError = error }
+        }
+
+        completion?(saveError)
+      }
+    } else {
+      perform(context) {
+        context in
+
+        block?(context)
+
+        do { try save(context) } catch { saveError = error }
+
+        if saveError == nil, let parentContext = context.parentContext where options.contains(.Propagating) {
+          do { try propagate(parentContext) } catch { saveError = error }
+        }
+
+        completion?(saveError)
+      }
+    }
+
+    if let error = saveError where !options.contains(.NonBlocking) { throw error }
+  }
+  
 
   /**
   saveContext:withBlock::propagate:nonBlocking:completion:
@@ -126,7 +234,7 @@ public class CoreDataStack {
       if let moc = context {
         moc.processPendingChanges()
         if moc.hasChanges == true {
-          MSLogDebug("saving context '\(toString(moc.nametag))'")
+          MSLogDebug("saving context '\(String(prettyNil: moc.nametag))'")
           do {
             try moc.save()
             success = true
@@ -150,7 +258,7 @@ public class CoreDataStack {
     // Create a child context if flagged for background execution
     if backgroundExecution {
       let childContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-      childContext.nametag = "child of \(toString(context.nametag))"
+      childContext.nametag = "child of \(String(prettyNil: context.nametag))"
       childContext.parentContext = context
       childContext.undoManager = nil
       perform(childContext) {

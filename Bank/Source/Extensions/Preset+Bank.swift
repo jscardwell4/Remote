@@ -22,6 +22,39 @@ extension Preset: DelegateDetailable {
     }
 }
 
+extension Preset: RelatedItemCreatable {
+
+  var relatedItemCreationTransactions: [ItemCreationTransaction] {
+    var transactions: [ItemCreationTransaction] = []
+
+    if let context = managedObjectContext {
+
+      let categoryTransaction = FormTransaction(
+        label: "Category",
+        form: PresetCategory.creationForm(context: context),
+        processedForm: {
+
+          [unowned self, unowned context] form in
+
+          let (success, _) = DataManager.saveContext(context) {
+            if let category = PresetCategory.createWithForm(form, context: $0) {
+              self.presetCategory = category
+            }
+          }
+
+          return success
+
+        })
+
+      transactions.append(categoryTransaction)
+      
+    }
+
+    return transactions
+  }
+}
+
+
 // TODO: Fill out `FormCreatable` stubs
 extension Preset: FormCreatable {
 

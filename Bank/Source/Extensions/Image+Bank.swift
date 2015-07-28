@@ -87,6 +87,38 @@ extension Image: DelegateDetailable {
     }
 }
 
+extension Image: RelatedItemCreatable {
+
+  var relatedItemCreationTransactions: [ItemCreationTransaction] {
+    var transactions: [ItemCreationTransaction] = []
+
+    if let context = managedObjectContext {
+
+      let categoryTransaction = FormTransaction(
+        label: "Category",
+        form: ImageCategory.creationForm(context: context),
+        processedForm: {
+
+          [unowned self, unowned context] form in
+
+          let (success, _) = DataManager.saveContext(context) {
+            if let category = ImageCategory.createWithForm(form, context: $0) {
+              self.imageCategory = category
+            }
+          }
+
+          return success
+
+        })
+
+      transactions.append(categoryTransaction)
+
+    }
+
+    return transactions
+  }
+}
+
 extension Image: CustomCreatable {
   static func creationControllerWithContext(context: NSManagedObjectContext,
                         cancellationHandler didCancel: () -> Void,

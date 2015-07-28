@@ -213,6 +213,8 @@ extension ComponentDevice: RelatedItemCreatable {
   var relatedItemCreationTransactions: [ItemCreationTransaction] {
     var transactions: [ItemCreationTransaction] = []
     if let context = managedObjectContext {
+
+      // Manufacturer transaction
       let createManufacturer = FormTransaction(
         label: "Manufacturer",
         form: Manufacturer.creationForm(context: context),
@@ -226,9 +228,16 @@ extension ComponentDevice: RelatedItemCreatable {
           return success
         })
       transactions.append(createManufacturer)
+
+      // Code set transaction
+      let codeSetForm = IRCodeSet.creationForm(context: context)
+      if let manufacturerField = codeSetForm.fields["Manufacturer"] {
+        manufacturerField.value = manufacturer.name
+        manufacturerField.editable = false
+      }
       let createCodeSet = FormTransaction(
         label: "Code Set",
-        form: IRCodeSet.creationForm(context: context),
+        form: codeSetForm,
         processedForm: {
           [unowned self] form in
           let (success, _) = DataManager.saveContext(context) {

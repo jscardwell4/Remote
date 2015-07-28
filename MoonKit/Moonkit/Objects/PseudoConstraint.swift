@@ -367,10 +367,10 @@ extension PseudoConstraint: CustomStringConvertible {
 extension PseudoConstraint: CustomDebugStringConvertible {
   public var debugDescription: String {
     return "\n".join(description,
-      "firstItem: \(toString(firstItem))",
-      "firstObject: \(toString(firstObject))",
-      "secondItem: \(toString(secondItem))",
-      "secondObject: \(toString(secondObject))",
+      "firstItem: \(String(prettyNil: firstItem))",
+      "firstObject: \(String(prettyNil: firstObject))",
+      "secondItem: \(String(prettyNil: secondItem))",
+      "secondObject: \(String(prettyNil: secondObject))",
       "firstAttribute: \(firstAttribute.rawValue)",
       "secondAttribute: \(secondAttribute.rawValue)",
       "relation: \(relation.rawValue)",
