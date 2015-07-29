@@ -540,80 +540,25 @@ public final class DataManager {
   public typealias PerformBlock = (NSManagedObjectContext) -> Void
   public typealias CompletionCallback = (Bool, NSError?) -> Void
 
-  /**
-  Wraps save action with error handling, only to be called from within an appropriate 'perform' block
-
-  - parameter context: NSManagedObjectContext
-  
-  - returns: (Bool, NSError?)
-  */
-  private class func saveContext(context: NSManagedObjectContext) -> (Bool, NSError?) {
-    do {
-      try context.save()
-      return (true, nil)
-    } catch {
-      return (false, error as NSError)
-    }
-  }
+  public typealias ContextSaveOptions = CoreDataStack.ContextSaveOptions
 
   /**
-  Invokes `performBlockAndWait:` on the specified context, within which the optional block is invoked followed by a save
+  saveContext:withBlock:options:completion:
 
   - parameter context: NSManagedObjectContext
   - parameter block: PerformBlock? = nil
+  - parameter options: ContextSaveOptions = [.Default]
+  - parameter completion: ((ErrorType?) -> Void) = nil
   
-  - returns: (Bool, NSError?)
-  */
-  public class func saveContext(context: NSManagedObjectContext,
-               withBlockAndWait block: PerformBlock? = nil) -> (Bool, NSError?)
-  {
-    MSLogDebug("saving context \(toString(context.nametag))")
-    var (success, error): (Bool, NSError?) = (false, nil)
-    context.performBlockAndWait { block?(context); (success, error) = DataManager.saveContext(context) }
-    return (success, error)
-  }
-
-  /**
-  Invokes `performBlock:` on the specified context, within which the optional block is invoked followed by a save
-
-  - parameter context: NSManagedObjectContext
-  - parameter block: PerformBlock? = nil
+  - throws: Any error thrown by `CoreDataStack` save method
   */
   public class func saveContext(context: NSManagedObjectContext,
                       withBlock block: PerformBlock? = nil,
-                     completion: CompletionCallback? = nil)
-  {
-    MSLogDebug("saving context \(toString(context.nametag))")
-    context.performBlock {
-      block?(context)
-      let (success, error) = DataManager.saveContext(context)
-      completion?(success, error)
-    }
-  }
-
-  /**
-  saveContext:withBlock::propagate:nonBlocking:completion:
-
-  - parameter moc: NSManagedObjectContext
-  - parameter block: ((NSManagedObjectContext) -> Void)? = nil
-  - parameter propagate: Bool = false
-  - parameter nonBlocking: Bool = false
-  - parameter completion: ((Bool, NSError?) -> Void)? = nil
-  */
-  public class func saveContext(context: NSManagedObjectContext,
-               withBlock block: PerformBlock? = nil,
-               propagate: Bool = false,
-             nonBlocking: Bool = false,
-     backgroundExecution: Bool = false,
-              completion: ((Bool, NSError?) -> Void)? = nil)
+                        options: ContextSaveOptions = [.Default],
+                     completion: ((ErrorType?) -> Void)? = nil) throws
   {
     MSLogDebug("saving context '\(toString(context.nametag))")
-    stack.saveContext(context,
-                    withBlock: block,
-                    propagate: propagate,
-                  nonBlocking: nonBlocking,
-          backgroundExecution: backgroundExecution,
-                   completion: completion)
+    try stack.saveContext(context, withBlock: block, options: options, completion: completion)
   }
 
   /**
@@ -622,13 +567,8 @@ public final class DataManager {
   - parameter context: NSManagedObjectContext
   */
   public class func propagatingSaveFromContext(context: NSManagedObjectContext) {
-    MSLogDebug("starting context = \(toString(context.nametag))")
-    var currentContext = context
-    while let parentContext = currentContext.parentContext {
-      MSLogDebug("saving context \(toString(parentContext.nametag))")
-      parentContext.performBlockAndWait {DataManager.saveContext(parentContext)}
-      currentContext = parentContext
-    }
+    guard let parentContext = context.parentContext else { return }
+    do { try saveContext(parentContext, options: [.Propagating]) } catch { logError(error) }
   }
 
 
@@ -638,16 +578,13 @@ public final class DataManager {
   - parameter completion: ((Bool, NSError?) -> Void)? = nil
   */
   public class func saveRootContext(completion: ((Bool, NSError?) -> Void)? = nil) {
-    rootContext.performBlock {
-      MSLogDebug("saving context '\(String(self.rootContext.nametag))'")
-      do {
-        try self.rootContext.save()
-        MSLogDebug("context saved successfully")
-        completion?(true, nil)
-      } catch {
-        MSHandleError(error as NSError, message: "error occurred while saving context")
-        completion?(false, error as NSError)
-      }
+    MSLogDebug("saving context '\(String(self.rootContext.nametag))'")
+    do {
+      try stack.saveContext(rootContext, options: [.NonBlocking])
+      completion?(true, nil)
+    } catch {
+      logError(error, message: "error occurred while saving context")
+      completion?(false, error as NSError)
     }
   }
 

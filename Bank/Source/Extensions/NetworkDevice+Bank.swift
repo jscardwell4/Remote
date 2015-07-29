@@ -28,9 +28,13 @@ extension NetworkDevice: DiscoverCreatable {
             presentForm(networkDevice.discoveryConfirmationForm()) {
               form in
               if let name = form.values?["Name"] as? String { networkDevice.name = name }
-              let (success, error) = DataManager.saveContext(context)
-              MSHandleError(error)
-              return success
+              do {
+                try DataManager.saveContext(context)
+                return true
+              } catch {
+                logError(error)
+                return false
+              }
             }
           }
         }
@@ -67,12 +71,15 @@ extension NetworkDevice {
         form: componentDeviceForm,
         processedForm: {
           [unowned context] form in
-          let (success, _) = DataManager.saveContext(context) {
-            _ = ComponentDevice.createWithForm(form, context: $0)
+          do {
+            try DataManager.saveContext(context, withBlock: {
+              _ = ComponentDevice.createWithForm(form, context: $0)
+              })
+            return true
+          } catch {
+            logError(error)
+            return false
           }
-
-          return success
-
         })
       transactions.append(componentDeviceTransaction)
     }

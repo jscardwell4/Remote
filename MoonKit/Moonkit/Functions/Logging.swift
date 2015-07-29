@@ -324,15 +324,15 @@ public func MSHandleError(error: NSError?,
 /**
 logError:message:function:line:
 
-- parameter e: E
+- parameter e: ErrorType
 - parameter message: String? = nil
 - parameter function: String = __FUNCTION__
 - parameter line: Int32 = __LINE__
 */
-public func logError<E: ErrorType>(e: E,
-                                   message: String? = nil,
-                                   function: String = __FUNCTION__,
-                                   line: Int32 = __LINE__)
+public func logError(e: ErrorType,
+                     message: String? = nil,
+                     function: String = __FUNCTION__,
+                     line: Int32 = __LINE__)
 {
   let error = e as NSError
   let errorDescription = detailedDescriptionForError(error, depth: 0)

@@ -50,7 +50,7 @@ public final class ComponentDevice: EditableModelObject {
 
     guard !deleted else { return }
 
-    guard let codeSet = codeSet else { onCommand = nil; offCommand = nil; return }
+    guard let codeSet = codeSet else { /*onCommand = nil; offCommand = nil;*/ return }
 
     if let onCommand = onCommand where onCommand.code.codeSet != codeSet { self.onCommand = nil }
     if let offCommand = offCommand where offCommand.code.codeSet != codeSet { self.offCommand = nil }

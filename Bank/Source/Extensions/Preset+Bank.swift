@@ -35,15 +35,15 @@ extension Preset: RelatedItemCreatable {
         processedForm: {
 
           [unowned self, unowned context] form in
-
-          let (success, _) = DataManager.saveContext(context) {
-            if let category = PresetCategory.createWithForm(form, context: $0) {
-              self.presetCategory = category
-            }
+          do {
+            try DataManager.saveContext(context, withBlock: {
+              if let category = PresetCategory.createWithForm(form, context: $0) { self.presetCategory = category }
+              })
+            return true
+          } catch {
+            logError(error)
+            return false
           }
-
-          return success
-
         })
 
       transactions.append(categoryTransaction)

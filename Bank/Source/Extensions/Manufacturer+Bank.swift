@@ -91,13 +91,15 @@ extension Manufacturer: RelatedItemCreatable {
         form: componentDeviceForm,
         processedForm: {
           form in
-
-          let (success, _) = DataManager.saveContext(context) {
-            _ = ComponentDevice.createWithForm(form, context: $0)
+          do {
+            try DataManager.saveContext(context, withBlock: {
+              _ = ComponentDevice.createWithForm(form, context: $0)
+              })
+            return true
+          } catch {
+            logError(error)
+            return false
           }
-
-          return success
-
       })
 
       transactions.append(createComponentDevice)
@@ -115,13 +117,15 @@ extension Manufacturer: RelatedItemCreatable {
         form: codeSetForm,
         processedForm: {
           form in
-
-          let (success, _) = DataManager.saveContext(context) {
-            _ = IRCodeSet.createWithForm(form, context: $0)
+          do {
+            try DataManager.saveContext(context, withBlock: {
+               _ = IRCodeSet.createWithForm(form, context: $0)
+              })
+            return true
+          } catch {
+            logError(error)
+            return false
           }
-
-          return success
-
       })
 
       transactions.append(createCodeSet)

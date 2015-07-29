@@ -37,9 +37,12 @@ struct CustomTransaction: ItemCreationTransaction {
       didCancel, didCreate -> UIViewController in
       let handler: (ModelObject) -> Void = {
         object in
+        do {
+          try DataManager.saveContext(context)
+        } catch {
+          logError(error)
+        }
 
-        let (_, error) = DataManager.saveContext(context)
-        MSHandleError(error)
         didCreate(object)
       }
       return customType.creationControllerWithContext(context, cancellationHandler: didCancel, creationHandler: handler)
@@ -59,8 +62,12 @@ struct CustomTransaction: ItemCreationTransaction {
 
       let handler: (ModelObject) -> Void = {
         object in
-        let (_, error) = DataManager.saveContext(collection.managedObjectContext!)
-        MSHandleError(error)
+        do {
+          try DataManager.saveContext(collection.managedObjectContext!)
+        } catch {
+          logError(error)
+        }
+
         didCreate(object)
       }
       return collection.itemCreationControllerWithContext(collection.managedObjectContext!,
@@ -81,8 +88,12 @@ struct CustomTransaction: ItemCreationTransaction {
 
       let handler: (ModelObject) -> Void = {
         object in
-        let (_, error) = DataManager.saveContext(collection.managedObjectContext!)
-        MSHandleError(error)
+        do {
+          try DataManager.saveContext(collection.managedObjectContext!)
+        } catch {
+          logError(error)
+        }
+
         didCreate(object)
       }
       return collection.collectionCreationControllerWithContext(collection.managedObjectContext!,
@@ -120,10 +131,16 @@ struct FormTransaction: ItemCreationTransaction {
   */
   init<T:FormCreatable>(label: String, creatableType: T.Type, context: NSManagedObjectContext) {
     let form = creatableType.creationForm(context: context)
-    let processedForm: ProcessedForm = { f in
-      let (success, error) = DataManager.saveContext(context) {_ = creatableType.createWithForm(f, context: $0)}
-      MSHandleError(error, message: "failed to save new \(toString(creatableType))")
-      return success
+    let processedForm: ProcessedForm = {
+      f in
+
+      do {
+        try DataManager.saveContext(context, withBlock: {_ = creatableType.createWithForm(f, context: $0)})
+        return true
+      } catch {
+        logError(error, message: "failed to save new \(toString(creatableType))")
+        return false
+      }
     }
     self.init(label: label, form: form, processedForm: processedForm)
   }
@@ -137,12 +154,13 @@ struct FormTransaction: ItemCreationTransaction {
     assert(collection.managedObjectContext != nil)
     self.init(label: collection.itemLabel, form: collection.itemCreationForm(context: collection.managedObjectContext!)) {
       f in
-
-      let (success, error) = DataManager.saveContext(collection.managedObjectContext!) {
-        _ = collection.createItemWithForm(f, context: $0)
+      do {
+        try DataManager.saveContext(collection.managedObjectContext!, withBlock: {_ = collection.createItemWithForm(f, context: $0)})
+        return true
+      } catch {
+        logError(error)
+        return false
       }
-      MSHandleError(error)
-      return success
     }
 
   }
@@ -156,12 +174,13 @@ struct FormTransaction: ItemCreationTransaction {
     assert(collection.managedObjectContext != nil)
     self.init(label: collection.collectionLabel, form: collection.collectionCreationForm(context: collection.managedObjectContext!)) {
       f in
-
-      let (success, error) = DataManager.saveContext(collection.managedObjectContext!) {
-        _ = collection.createCollectionWithForm(f, context: $0)
+      do {
+        try DataManager.saveContext(collection.managedObjectContext!, withBlock: {_ = collection.createCollectionWithForm(f, context: $0)})
+        return true
+      } catch {
+        logError(error)
+        return false
       }
-      MSHandleError(error)
-      return success
     }
 
   }

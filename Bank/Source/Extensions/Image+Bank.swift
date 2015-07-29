@@ -98,17 +98,17 @@ extension Image: RelatedItemCreatable {
         label: "Category",
         form: ImageCategory.creationForm(context: context),
         processedForm: {
-
           [unowned self, unowned context] form in
 
-          let (success, _) = DataManager.saveContext(context) {
-            if let category = ImageCategory.createWithForm(form, context: $0) {
-              self.imageCategory = category
-            }
+          do {
+            try DataManager.saveContext(context, withBlock: {
+              if let category = ImageCategory.createWithForm(form, context: $0) { self.imageCategory = category }
+            })
+            return true
+          } catch {
+            logError(error)
+            return false
           }
-
-          return success
-
         })
 
       transactions.append(categoryTransaction)

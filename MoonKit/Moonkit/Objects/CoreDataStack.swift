@@ -105,10 +105,10 @@ public class CoreDataStack {
     public let rawValue: Int
     public init(rawValue value: Int) { rawValue = value }
 
-    public static let Default             = ContextSaveOptions(rawValue: 0)
-    public static let NonBlocking         = ContextSaveOptions(rawValue: 1)
-    public static let BackgroundExecution = ContextSaveOptions(rawValue: 2)
-    public static let Propagating         = ContextSaveOptions(rawValue: 4)
+    public static let Default             = ContextSaveOptions(rawValue: 0b000)
+    public static let NonBlocking         = ContextSaveOptions(rawValue: 0b001)
+    public static let BackgroundExecution = ContextSaveOptions(rawValue: 0b010)
+    public static let Propagating         = ContextSaveOptions(rawValue: 0b100)
   }
 
   public typealias PerformBlock = (NSManagedObjectContext) -> Void
@@ -190,8 +190,8 @@ public class CoreDataStack {
 
         do { try save(context) } catch { saveError = error }
 
-        if saveError == nil, let parentContext = context.parentContext where options.contains(.Propagating) {
-          do { try propagate(parentContext) } catch { saveError = error }
+        if saveError == nil && options.contains(.Propagating) {
+          do { try propagate(context) } catch { saveError = error }
         }
 
         completion?(saveError)
@@ -211,6 +211,7 @@ public class CoreDataStack {
   - parameter nonBlocking: Bool = false
   - parameter completion: ((Bool, NSError?) -> Void)? = nil
   */
+  @available(*, unavailable, message = "saveContext:WithBlock:propagate:nonBlocking:backgroundExecution:completion: is unavailable, use saveContext:withBlock:options:completion: instead")
   public func saveContext(context: NSManagedObjectContext,
                 withBlock block: ((NSManagedObjectContext) -> Void)? = nil,
                 propagate: Bool = false,

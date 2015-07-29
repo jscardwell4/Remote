@@ -179,12 +179,18 @@ extension IRCode: RelatedItemCreatable {
         form: IRCodeSet.creationForm(context: context),
         processedForm: {
           [unowned self] form in
-          let (success, _) = DataManager.saveContext(context) {
-            if let codeSet = IRCodeSet.createWithForm(form, context: $0) {
-              self.codeSet = codeSet
-            }
+
+          do {
+            try DataManager.saveContext(context, withBlock: {
+              if let codeSet = IRCodeSet.createWithForm(form, context: $0) {
+                self.codeSet = codeSet
+              }
+            })
+            return true
+          } catch {
+            logError(error)
+            return false
           }
-          return success
         })
       transactions.append(createCodeSet)
 

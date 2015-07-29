@@ -14,18 +14,22 @@ public class EditableModelObject: IndexedModelObject, EditableModel {
   @NSManaged public var user: Bool
 
   /** save */
-  public func save() { if let moc = managedObjectContext { DataManager.saveContext(moc, propagate: true) } }
+  public func save() {
+    guard let moc = managedObjectContext else { return }
+    do { try DataManager.saveContext(moc, options: [.Propagating]) } catch { logError(error) }
+  }
 
   /** delete */
   public func delete() {
-    if let moc = self.managedObjectContext { DataManager.saveContext(moc, withBlockAndWait: {$0.deleteObject(self)}) }
+    guard let moc = managedObjectContext else { return }
+    do { try DataManager.saveContext(moc, withBlock: {$0.deleteObject(self)}) } catch { logError(error) }
   }
 
   // TODO: Returning true for all Editable model objects, this should not be the case when shipping app
   public var editable: Bool { return true } //user }
 
   /** rollback */
-  public func rollback() { if let moc = self.managedObjectContext { moc.performBlockAndWait { moc.rollback() } } }
+  public func rollback() { guard let moc = managedObjectContext else { return }; moc.performBlockAndWait { moc.rollback() } }
   
   /**
   updateWithData:
