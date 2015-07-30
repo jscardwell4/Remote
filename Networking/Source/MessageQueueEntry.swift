@@ -17,7 +17,7 @@ protocol MessageData {
 
 struct MessageQueueEntry<T:MessageData> {
 
-  typealias Callback = ConnectionManager.Callback
+  typealias Callback = (Bool, ErrorType?) -> Void
 
   var messageData: T
 
@@ -28,21 +28,22 @@ struct MessageQueueEntry<T:MessageData> {
   var data: NSData { return messageData.data }
 
   /** Generalized storage space */
-  var userInfo: [NSObject:AnyObject]
+  var info: [String:Any]
 
   /** Optional callback to invoke after a corresponding response has been received for the message */
   let completion: Callback?
 
   /**
-  initWithMessage:completion:
+  initWithMessageData:info:completion:
 
-  - parameter message: String
-  - parameter completion: ((Bool, String, NSError?) -> Void)? = nil
+  - parameter d: T
+  - parameter i: [String:Any]
+  - parameter c: Callback? = nil
   */
-  init(messageData: T, userInfo: [NSObject:AnyObject] = [:], completion: Callback? = nil) {
-    self.messageData = messageData
-    self.userInfo = userInfo
-    self.completion = completion
+  init(messageData d: T, info i: [String:Any] = [:], completion c: Callback? = nil) {
+    messageData = d
+    info = i
+    completion = c
   }
 
 }

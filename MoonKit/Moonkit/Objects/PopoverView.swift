@@ -73,7 +73,7 @@ public class PopoverView: UIView {
 
   /** Method for updating the shape layer's path according to the views `bounds` and `location` */
   private func refreshShape() {
-    let (w, h) = bounds.size.unpack()
+    let (w, h) = bounds.size.unpack
     guard w > arrowWidth && h > arrowHeight else { return }
 
     let mid = round(half(w) + xOffset)

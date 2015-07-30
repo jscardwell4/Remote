@@ -51,7 +51,7 @@ extension CGPoint: NilLiteralConvertible {
 }
 
 extension CGPoint: Unpackable2 {
-  public func unpack() -> (CGFloat, CGFloat) { return (x, y) }
+  public var unpack: (CGFloat, CGFloat) { return (x, y) }
 }
 
 extension CGPoint: CustomStringConvertible { public var description: String { return NSStringFromCGPoint(self) } }
@@ -65,7 +65,7 @@ public func -(lhs: CGPoint, rhs: (CGFloat, CGFloat)) -> CGPoint {
   return lhs.isNull ? CGPoint(x: rhs.0, y: rhs.1) : CGPoint(x: lhs.x - rhs.0, y: lhs.y - rhs.1)
 }
 public func -<T:Unpackable2 where T.Element == CGFloat>(lhs: CGPoint, rhs: T) -> CGPoint {
-  return lhs - rhs.unpack()
+  return lhs - rhs.unpack
 }
 public func +(lhs: CGPoint, rhs: (CGFloat, CGFloat)) -> CGPoint {
   return lhs.isNull ? CGPoint(x: rhs.0, y: rhs.1) : CGPoint(x: lhs.x + rhs.0, y: lhs.y + rhs.1)
@@ -74,7 +74,7 @@ public func +(lhs: CGPoint, rhs: CGPoint) -> CGPoint {
   return lhs.isNull ? rhs : (rhs.isNull ? lhs : CGPoint(x: lhs.x + rhs.x, y: lhs.y + rhs.y))
 }
 public func +<T:Unpackable2 where T.Element == CGFloat>(lhs: CGPoint, rhs: T) -> CGPoint {
-  return lhs + rhs.unpack()
+  return lhs + rhs.unpack
 }
 public func -=(inout lhs: CGPoint, rhs: CGPoint) { lhs = lhs - rhs }
 public func +=(inout lhs: CGPoint, rhs: CGPoint) { lhs = lhs + rhs }
@@ -111,7 +111,7 @@ extension CGVector: CustomStringConvertible {
 }
 
 extension CGVector: Unpackable2 {
-  public func unpack() -> (CGFloat, CGFloat) { return (dx, dy) }
+  public var unpack: (CGFloat, CGFloat) { return (dx, dy) }
 }
 
 public func -(lhs: CGVector, rhs: CGVector) -> CGVector {
@@ -155,7 +155,7 @@ extension CGSize {
   }
 
   public func ratioForFittingSize(size: CGSize) -> Ratio {
-    let (w, h) = min(aspectMappedToWidth(size.width), s2: aspectMappedToHeight(size.height)).unpack()
+    let (w, h) = min(aspectMappedToWidth(size.width), s2: aspectMappedToHeight(size.height)).unpack
     return Ratio(width/w, height/h)
   }
 
@@ -177,7 +177,7 @@ extension CGSize {
 }
 extension CGSize: CustomStringConvertible { public var description: String { return NSStringFromCGSize(self) } }
 extension CGSize: Unpackable2 {
-  public func unpack() -> (CGFloat, CGFloat) { return (width, height) }
+  public var unpack: (CGFloat, CGFloat) { return (width, height) }
 }
 
 public func max(s1: CGSize, s2: CGSize) -> CGSize { return s1 > s2 ? s1 : s2 }
@@ -219,7 +219,7 @@ extension UIEdgeInsets: CustomStringConvertible {
 }
 
 extension UIEdgeInsets: Unpackable4 {
-  public func unpack() -> (CGFloat, CGFloat, CGFloat, CGFloat) { return (top, left, bottom, right) }
+  public var unpack: (CGFloat, CGFloat, CGFloat, CGFloat) { return (top, left, bottom, right) }
 }
 
 extension UIOffset {
@@ -269,7 +269,7 @@ extension CGRect {
   	return rect
   }
   public mutating func proportionallyInsetX(dx: CGFloat) {
-    let (w, h) = size.unpack()
+    let (w, h) = size.unpack
     let ww = w - 2 * dx
     let ratio = ww / w
     let hh = h * ratio
@@ -283,7 +283,7 @@ extension CGRect {
     var r = self; r.proportionallyInsetX(dx); return r
   }
   public mutating func proportionallyInsetY(dy: CGFloat) {
-    let (w, h) = size.unpack()
+    let (w, h) = size.unpack
     let hh = h - 2 * dy
     let ratio = hh / h
     let ww = w * ratio
@@ -348,7 +348,7 @@ extension CGRect {
 extension CGRect: CustomStringConvertible { public var description: String { return NSStringFromCGRect(self) } }
 
 extension CGRect: Unpackable4 {
-  public func unpack() -> (CGFloat, CGFloat, CGFloat, CGFloat) { return (origin.x, origin.y, size.width, size.height) }
+  public var unpack: (CGFloat, CGFloat, CGFloat, CGFloat) { return (origin.x, origin.y, size.width, size.height) }
 }
 
 public func ∪(lhs: CGRect, rhs: CGRect) -> CGRect { return lhs.rectByUnion(rhs) }

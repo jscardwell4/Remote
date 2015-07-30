@@ -234,7 +234,7 @@ class PhotoCollectionLayout: UICollectionViewLayout {
     let attributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
     let col = CGFloat(indexPath.row % itemsPerRow)
     let row = CGFloat(indexPath.row / itemsPerRow)
-    let (w, h) = itemScale.itemSize.unpack()
+    let (w, h) = itemScale.itemSize.unpack
     attributes.frame = CGRect(x: col * w, y: row * h, width: w, height: h)
     return attributes
   }

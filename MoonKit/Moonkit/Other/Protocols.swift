@@ -21,6 +21,10 @@ public protocol JSONExport {
   var jsonString: String { get }
 }
 
+public protocol WrappedErrorType: ErrorType {
+  var underlyingError: ErrorType? { get }
+}
+
 public protocol KeyValueCollectionType: CollectionType {
   typealias Key: Hashable
   typealias Value
@@ -122,17 +126,29 @@ public protocol OptionalSubscriptingCollectionType: CollectionType {
 
 public protocol Unpackable2 {
   typealias Element
-  func unpack() -> (Element, Element)
+  var unpack: (Element, Element) { get }
+}
+
+public extension Unpackable2 {
+  var unpackArray: [Element] { let tuple = unpack; return [tuple.0, tuple.1] }
 }
 
 public protocol Unpackable3 {
   typealias Element
-  func unpack() -> (Element, Element, Element)
+  var unpack: (Element, Element, Element) { get }
+}
+
+public extension Unpackable3 {
+  var unpackArray: [Element] { let tuple = unpack; return [tuple.0, tuple.1, tuple.2] }
 }
 
 public protocol Unpackable4 {
   typealias Element
-  func unpack() -> (Element, Element, Element, Element)
+  var unpack: (Element, Element, Element, Element) { get }
+}
+
+public extension Unpackable4 {
+  var unpackArray: [Element] { let tuple = unpack; return [tuple.0, tuple.1, tuple.2, tuple.3] }
 }
 
 /** Protocol for an object guaranteed to have a name */

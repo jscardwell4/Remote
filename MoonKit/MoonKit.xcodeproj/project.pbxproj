@@ -354,6 +354,7 @@
 		C2E8C8B71AE7325300F8AC45 /* UITableViewCell+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E8C8B61AE7325300F8AC45 /* UITableViewCell+MoonKitAdditions.swift */; };
 		C2E937001ACE04D4003EB3E8 /* JSONParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E936FF1ACE04D4003EB3E8 /* JSONParser.swift */; };
 		C2E937041ACF0736003EB3E8 /* JSONSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E937031ACF0736003EB3E8 /* JSONSerialization.swift */; };
+		C2E9A42F1B693CEB0006AFA8 /* InsettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9A42D1B693CEB0006AFA8 /* InsettingViewController.swift */; };
 		C2EB15771A1D45C100B64D84 /* ConfiningBlockActionGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EB15761A1D45C100B64D84 /* ConfiningBlockActionGesture.swift */; };
 		C2EEBA091B06BFD10041B1B1 /* NotificationReceptionist.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EEBA081B06BFD10041B1B1 /* NotificationReceptionist.swift */; };
 		C2F01E1B1A02E080007F6966 /* MSColorInputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2F01E1A1A02E080007F6966 /* MSColorInputView.xib */; };
@@ -701,6 +702,7 @@
 		C2E8C8B61AE7325300F8AC45 /* UITableViewCell+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C2E936FF1ACE04D4003EB3E8 /* JSONParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = JSONParser.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C2E937031ACF0736003EB3E8 /* JSONSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONSerialization.swift; sourceTree = "<group>"; };
+		C2E9A42D1B693CEB0006AFA8 /* InsettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = InsettingViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C2EB15761A1D45C100B64D84 /* ConfiningBlockActionGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfiningBlockActionGesture.swift; sourceTree = "<group>"; };
 		C2EEBA081B06BFD10041B1B1 /* NotificationReceptionist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationReceptionist.swift; sourceTree = "<group>"; };
 		C2EEBA2B1B0961CE0041B1B1 /* Fields.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = Fields.playground; path = Moonkit/Fields.playground; sourceTree = "<group>"; };
@@ -971,6 +973,7 @@
 				C26834091B10C24100A359A8 /* LabelButton.swift */,
 				C27978E31B17FF9E00B36BAD /* ZoomingCollectionViewLayout.swift */,
 				C2C17D491B5813EB00D9E9A6 /* Identifier.swift */,
+				C2E9A42D1B693CEB0006AFA8 /* InsettingViewController.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -1736,6 +1739,7 @@
 				C2F094471A32AA8600681AB3 /* KeyInputButton.swift in Sources */,
 				C28E98EE1AD196B800E78711 /* NSNumber+MoonKitAdditions.swift in Sources */,
 				C2358F4419C78E0C00920F8D /* NSString+MSKitAdditions.m in Sources */,
+				C2E9A42F1B693CEB0006AFA8 /* InsettingViewController.swift in Sources */,
 				C2358F4519C78E0C00920F8D /* NSURL+MSKitAdditions.m in Sources */,
 				C2A6261F1A33598300152E97 /* Slider.swift in Sources */,
 				C28E35BA1A451E3800438CCF /* CoreDataStack.swift in Sources */,

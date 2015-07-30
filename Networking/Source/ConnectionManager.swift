@@ -20,109 +20,100 @@ import class DataModel.HTTPCommand
 public final class ConnectionManager {
 
   class func initialize() {
-    SettingsManager.registerBoolSettingWithKey(AutoConnectExistingKey, withDefaultValue: true)
-    SettingsManager.registerBoolSettingWithKey(AutoConnectDiscoveredKey, withDefaultValue: false)
-    SettingsManager.registerBoolSettingWithKey(StopAfterUpdatedDeviceKey, withDefaultValue: true)
-    SettingsManager.registerBoolSettingWithKey(StopAfterUpdatedDeviceKey, withDefaultValue: false)
+    SettingsManager.registerBoolSettingWithKey(SettingKey.AutoConnectExisting,  withDefaultValue: true)
+    SettingsManager.registerBoolSettingWithKey(SettingKey.AutoConnectDiscovery, withDefaultValue: false)
+    SettingsManager.registerBoolSettingWithKey(SettingKey.StopAfterDiscovered,  withDefaultValue: true)
+    SettingsManager.registerBoolSettingWithKey(SettingKey.StopAfterUpdated,     withDefaultValue: false)
   }
 
-  public typealias Callback = (Bool, NSError?) -> Void
+  public typealias Callback = (Bool, ErrorType?) -> Void
 
   // MARK: - Connection manager error type
 
   /** Enumeration to encapsulate connection errors */
-  public enum Error: Int {
+  public enum Error: ErrorType {
     case NoWifi
-    case InvalidID
+//    case InvalidID
     case CommandEmpty
-    case CommandHalted
-    case ConnectionExists
-    case InvalidNetworkDevice
-    case ConnectionInProgress
-    case NetworkDeviceError
-    case Aggregate
+//    case CommandHalted
+    case InvalidCommand
+    case Response (NSError)
+//    case ConnectionExists
+//    case InvalidNetworkDevice
+//    case ConnectionInProgress
+//    case NetworkDeviceError
+//    case Aggregate
 
-    static let domain = "ConnectionManagerErrorDomain"
-
-    /**
-    error:
-
-    - parameter userInfo: [NSObject AnyObject]? = nil
-
-    - returns: NSError
-    */
-    func error(userInfo: [NSObject:AnyObject]? = nil) -> NSError {
-      return NSError(domain: Error.domain, code: rawValue, userInfo: userInfo)
-    }
   }
 
   // MARK: - Flag, notification, and key property declarations
 
   /** Whether to simulate send operations */
-  static let simulateCommandSuccess = NSUserDefaults.standardUserDefaults().boolForKey("simulate")
+  static let simulate = NSUserDefaults.standardUserDefaults().boolForKey("simulate")
 
-  private static let simulatedCommandDelay = Int64(0.5 * Double(NSEC_PER_SEC))
+  private static let simulatedCommandDelay = 0.5
 
-  public static let ConnectionStatusNotification = "ConnectionManagerConnectionStatusNotification"
-  public static let NetworkDeviceDiscoveryNotification = "ConnectionManagerNetworkDeviceDiscoveryNotification"
-  public static let NetworkDeviceUpdatedNotification = "ConnectionManagerNetworkDeviceUpdatedNotification"
+  public enum Notification {
+    case ConnectionStatus (wifiAvailable: Bool)
+    case NetworkDeviceDiscovery (uuid: String)
+    case NetworkDeviceUpdated (uuid: String)
 
-  public static let AutoConnectExistingKey = "ConnectionManagerAutoConnectExistingKey"
-  public static let AutoConnectDiscoveredKey = "ConnectionManagerAutoConnectDiscoveredKey"
-  public static let StopAfterUpdatedDeviceKey = "StopAfterUpdatedDeviceKey"
-  public static let StopAfterDiscoveredDeviceKey = "StopAfterDiscoveredDeviceKey"
+    public enum NotificationName: String { case ConnectionStatus, NetworkDeviceDiscovery, NetworkDeviceUpdated }
 
-  public static let WifiAvailableKey = "ConnectionManaagerWifiAvailableKey"
-  public static let NetworkDeviceKey = "ConnectionManagerNetworkDeviceKey"
-  public static let AutoConnectDeviceKey = "ConnectionManagerAutoConnectDeviceKey"
+    public enum InfoKey: String { case WifiAvailable, NetworkDevice, AutoConnectDevice }
+
+    public var name: NotificationName {
+      switch self {
+        case .ConnectionStatus: return .ConnectionStatus
+        case .NetworkDeviceDiscovery: return .NetworkDeviceDiscovery
+        case .NetworkDeviceUpdated: return .NetworkDeviceUpdated
+      }
+    }
+
+    private func post() {
+      let userInfo: [NSObject:AnyObject]?
+      switch self {
+        case .ConnectionStatus(let wifi):       userInfo = [InfoKey.WifiAvailable.rawValue: wifi]
+        case .NetworkDeviceDiscovery(let uuid): userInfo = [InfoKey.NetworkDevice.rawValue: uuid]
+        case .NetworkDeviceUpdated(let uuid):   userInfo = [InfoKey.NetworkDevice.rawValue: uuid]
+      }
+      NSNotificationCenter.defaultCenter().postNotificationName(name.rawValue, object: ConnectionManager.self, userInfo: userInfo)
+    }
+  }
+
+  public enum NotificationKey: String {
+    case WifiAvailable
+    case NetworkDevice
+    case AutoConnectDevice
+  }
+
+  public enum SettingKey: String { case AutoConnectExisting, AutoConnectDiscovery, StopAfterUpdated, StopAfterDiscovered  }
 
 
   // MARK: - Wifi availability
 
   /** Monitors changes in connectivity */
-  private static let reachability = MSNetworkReachability(callback: {[cm = ConnectionManager.self]
-    (flags: SCNetworkReachabilityFlags) -> Void in
-      let name = cm.ConnectionStatusNotification
-      let userInfo: [NSObject:AnyObject] = [cm.WifiAvailableKey: cm.flagsIndicateWifiAvailable(flags)]
-      NSNotificationCenter.defaultCenter().postNotificationName(name, object: cm, userInfo: userInfo)
-      MSLogDebug("posted notification for changes in reachability")
-    })
-
-  /**
-  flagsIndicateWifiAvailable:
-
-  - parameter flags: SCNetworkReachabilityFlags
-
-  - returns: Bool
-  */
-  private static func flagsIndicateWifiAvailable(flags: SCNetworkReachabilityFlags) -> Bool {
-    return flags.contains(.IsDirect) && flags.contains(.Reachable)
+  private static let reachability = NetworkReachability {
+    Notification.ConnectionStatus(wifiAvailable: $0.isSupersetOf([.IsDirect, .Reachable])).post()
   }
 
   /** Indicates wifi availability */
-  public static var wifiAvailable: Bool {
-    reachability.refreshFlags()
-    return flagsIndicateWifiAvailable(reachability.flags)
-  }
+  public static var wifiAvailable: Bool { reachability.refreshFlags(); return reachability.wifiAvailable }
+
+  private static let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
 
   // MARK: - Background, foreground receptionists
 
-  /** Handles backgrounded notification */
-  private static let backgroundReceptionist =
-    MSNotificationReceptionist(observer: ConnectionManager.self,
-                     forObject: UIApplication.sharedApplication(),
-              notificationName: UIApplicationDidEnterBackgroundNotification,
-                         queue: NSOperationQueue.mainQueue(),
-                       handler: {_ in ITachConnectionManager.suspend(); ISYConnectionManager.suspend()})
-
-  /** Handles foregrounded notification */
-  private static let foregroundReceptionist =
-    MSNotificationReceptionist(observer: ConnectionManager.self,
-                     forObject: UIApplication.sharedApplication(),
-              notificationName: UIApplicationWillEnterForegroundNotification,
-                         queue: NSOperationQueue.mainQueue(),
-                       handler: {_ in ITachConnectionManager.resume(); ISYConnectionManager.resume()})
-
+  /** Handles backgrounded and foregrounded application notification */
+  private static let notifcationReceptionist = NotificationReceptionist(
+    callbacks: [
+      UIApplicationDidEnterBackgroundNotification :
+        .Block(nil, { _ in ITachConnectionManager.suspend(); ISYConnectionManager.suspend() }),
+      UIApplicationWillEnterForegroundNotification :
+        .Block(nil, { _ in do { try ITachConnectionManager.resume(); try ISYConnectionManager.resume() } catch { logError(error) } })
+    ],
+    object: UIApplication.sharedApplication()
+  )
 
   // MARK: - Sending commands
 
@@ -131,57 +122,44 @@ public final class ConnectionManager {
 
   - parameter commandID: NSManagedObjectID ID of the command to send
   - parameter completion: Callback? = nil Block to be executed upon completion of the send operation
+  - throws: ConnectionManager.Error
   */
-  public static func sendCommandWithID(commandID: NSManagedObjectID, completion: Callback? = nil) {
-    MSLogInfo("sending command…")
+  public static func sendCommandWithID(commandID: NSManagedObjectID, completion: Callback? = nil) throws {
 
-    let simulateSuccess: () -> Void = {
-      let time = dispatch_time(DISPATCH_TIME_NOW, self.simulatedCommandDelay)
-      let queue = dispatch_get_main_queue()
-      dispatch_after(time, queue, {completion?(true, nil)})
+    // Check if we should simulate the command instead of executing it
+    guard !simulate else { delayedDispatchToMain(ConnectionManager.simulatedCommandDelay) { completion?(true, nil) }; return }
+
+    // Make sure we have wifi
+    guard wifiAvailable else { throw Error.NoWifi }
+
+    switch try DataManager.rootContext.existingObjectWithID(commandID) {
+
+      case let command as ITachIRCommand:
+        try ITachConnectionManager.sendCommand(command, completion: completion)
+
+      case let command as HTTPCommand where command.url.absoluteString.isEmpty:
+        throw Error.CommandEmpty
+
+      case let command as HTTPCommand:
+        NSURLSession(configuration: sessionConfiguration).dataTaskWithURL(command.url, completionHandler: {
+          let success = (200 ..< 300).contains(($1 as? NSHTTPURLResponse)?.statusCode ?? -1)
+          let error: Error? = $2 != nil ? .Response($2!) : nil
+          completion?(success, error)
+        }).resume()
+
+      default:
+        throw Error.InvalidCommand
+
     }
 
-    // Check for wifi or a simulated environment flag
-    if !(wifiAvailable || simulateCommandSuccess) { MSLogWarn("wifi not available"); completion?(false, Error.NoWifi.error()) }
-
-    // Otherwise continue sending command
-    else {
-      let command: NSManagedObject?
-      do {
-        command = try DataManager.rootContext.existingObjectWithID(commandID)
-      } catch {
-        completion?(false, Error.InvalidID.error([NSUnderlyingErrorKey: error as NSError]))
-        command = nil
-      }
-      if let irCommand = command as? ITachIRCommand {
-        if simulateCommandSuccess { simulateSuccess() }
-        else { ITachConnectionManager.sendCommand(irCommand, completion: completion) }
-      } else if let httpCommand = command as? HTTPCommand {
-        if httpCommand.url.absoluteString.isEmpty {
-          MSLogError("cannot send command with an empty url")
-          completion?(false, Error.CommandEmpty.error())
-        }
-        else if simulateCommandSuccess { simulateSuccess() }
-        else {
-          NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
-            .dataTaskWithURL(httpCommand.url)
-              {
-                (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
-
-                MSLogDebug("response: \(response)\ndata: \(data)")
-                dispatchToMain { completion?(true, error) }
-              } .resume()
-        }
-      }
-    }
   }
 
   // MARK: - Network device discovery
 
-  public typealias DiscoveryCallback = (NetworkDevice) -> Void
+  public typealias DiscoveryCallback = (device: NetworkDevice?, cancelled: Bool) -> Void
   public typealias DiscoveryCallbackToken = Int
 
-  private static var discoveryCallbacks: [DiscoveryCallback] = []
+  private static var discoveryCallbacks: [DiscoveryCallbackToken:DiscoveryCallback] = [:]
 
   /**
   Join multicast group and listen for beacons broadcast by supported network devices, optionally providing a callback in the
@@ -189,33 +167,39 @@ public final class ConnectionManager {
 
   - parameter context: NSManagedObjectContext = DataManager.rootContext
   - parameter discovery: ((NetworkDevice) -> Void)? = nil
+  - throws: `ItachConnectionManager.Error`
   */
   public static func startDetectingNetworkDevices(context context: NSManagedObjectContext = DataManager.rootContext,
-                                        discovery: DiscoveryCallback? = nil) -> DiscoveryCallbackToken
+                                         callback: DiscoveryCallback? = nil) throws -> DiscoveryCallbackToken
   {
-    var token = -1
-    if let discovery = discovery {
-      token = discoveryCallbacks.count; discoveryCallbacks.append(discovery)
-      MSLogDebug("discovery appended to discoveryCallbacks, token = \(token)")
-    }
-    ITachConnectionManager.startDetectingNetworkDevices(context)
-    ISYConnectionManager.startDetectingNetworkDevices(context)
+    if let callback = callback { discoveryCallbacks[discoveryCallbacks.count] = callback }
+
+    try ITachConnectionManager.startDetectingNetworkDevices(context)
+    try ISYConnectionManager.startDetectingNetworkDevices(context)
+
     MSLogInfo("listening for network devices…")
-    return token
+
+    return discoveryCallbacks.count - 1
   }
 
-  /** Leave multicast group. */
-  public static func stopDetectingNetworkDevices(discoveryCallbackToken: DiscoveryCallbackToken = -1) {
-    if 0 ..< discoveryCallbacks.count ∋ discoveryCallbackToken {
-      MSLogDebug("removing discovery callback for token \(discoveryCallbackToken)")
-      _ = discoveryCallbacks.removeAtIndex(discoveryCallbackToken)
+  /**
+  Leave multicast groups
+
+  - parameter token: DiscoveryCallbackToken = -1
+  */
+  public static func stopDetectingNetworkDevices(token: DiscoveryCallbackToken = -1) {
+
+    if (0 ..< discoveryCallbacks.count).contains(token) {
+      discoveryCallbacks.removeValueForKey(token)?(device: nil, cancelled: true)
     }
-    if discoveryCallbacks.count == 0 {
-      MSLogDebug("discoveryCallbacks is empty, stopping device detection…")
-      ITachConnectionManager.stopDetectingNetworkDevices()
-      ISYConnectionManager.stopDetectingNetworkDevices()
-      MSLogInfo("no longer listening for network devices…")
-    }
+
+    guard discoveryCallbacks.count == 0 else { return }
+
+    ITachConnectionManager.stopDetectingNetworkDevices()
+    ISYConnectionManager.stopDetectingNetworkDevices()
+
+    MSLogInfo("no longer listening for network devices…")
+
   }
 
   /** Whether network devices are currently being detected */
@@ -228,11 +212,7 @@ public final class ConnectionManager {
 
   - parameter device: NetworkDevice
   */
-  static func updatedDevice(device: NetworkDevice) {
-    NSNotificationCenter.defaultCenter().postNotificationName(NetworkDeviceUpdatedNotification,
-                                                       object: self,
-                                                     userInfo: [NetworkDeviceKey:device.uuid])
-  }
+  static func updatedDevice(device: NetworkDevice) { Notification.NetworkDeviceUpdated(uuid: device.uuid).post() }
 
   /**
   Invoked by specializing connection manager classes when a new device is has been detected
@@ -240,16 +220,8 @@ public final class ConnectionManager {
   - parameter device: NetworkDevice
   */
   static func discoveredDevice(device: NetworkDevice) {
-    var i = 0
-    apply(discoveryCallbacks) {
-      MSLogDebug("invoking discovery callback \(i++)")
-      $0(device)
-    }
-    MSLogDebug("removing discovery callbacks and posting notification…")
-    discoveryCallbacks.removeAll()
-    NSNotificationCenter.defaultCenter().postNotificationName(NetworkDeviceDiscoveryNotification,
-                                                       object: self,
-                                                     userInfo: [NetworkDeviceKey:device.uuid])
+    discoveryCallbacks.keys.apply { self.discoveryCallbacks.removeValueForKey($0)?(device: device, cancelled: false) }
+    Notification.NetworkDeviceDiscovery(uuid: device.uuid).post()
   }
 
 }

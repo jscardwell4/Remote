@@ -44,29 +44,38 @@ extension ITachDeviceConnection {
 
     init?(response: String) {
       switch response {
+        
         case ~/"^unknowncommand,ERR_[0-9]{2}\\r$":
           if let err = ITachError(rawValue: response[15...20]) { self = .UnknownCommand(err) }
           else { return nil }
+        
         case ~/"^IR Learner Enabled\\r$":
           self = .LearnerEnabled
+        
         case ~/"^IR Learner Disabled\\r$":
           self = .LearnerDisabled
+        
         case ~/"^IR Learner Unavailabler":
           self = .LearnerUnavailable
+        
         case ~/"^completeir,1:[1-3],[0-9]+\\r$":
           if let port = Int(response[13...13]), tagString = ",".split(response).last, tag = Int(tagString) {
             self = .CompleteIR(port, tag)
           } else { return nil }
+        
         case ~/"^busyIR,1:[1-3],[0-9]+\\r$":
           if let port = Int(response[13...13]), tagString = ",".split(response).last, tag = Int(tagString) {
             self = .BusyIR(port, tag)
           } else { return nil }
+        
         case ~/"^IR,1:[1-3],[A-Z_]+\\r$":
           if let port = Int(response[5...5]), raw = ",".split(response).last, mode = IRMode(rawValue: raw) {
             self = .IRConfig(port, mode)
           } else { return nil }
+        
         case ~/"^stopir,1:[1-3]\r":
           if let port = Int(response[9...9]) { self = StopIR(port) } else { return nil }
+        
         case ~/"^version,(?:[0-1],)?[0-9.]+\\r$":
           let components = ",".split(response)
           if components.count == 3, let module = Int(components[1]) {
@@ -74,8 +83,10 @@ extension ITachDeviceConnection {
           }
           else if components.count == 2 { self = .Version(nil, response[8 ..< response.length - 2]) }
           else { return nil}
+        
         case ~/"^endlistdevices\\r$":
           self = .EndListDevices
+        
         case ~/"^device,[0-1],[0-3],[A-Z 13]+\\r$":
           let components = ",".split(response)
           if let module = Int(components[1]),
@@ -84,11 +95,14 @@ extension ITachDeviceConnection {
           {
             self = .Device(module, port, type)
           } else { return nil }
+        
         case ~/"^NET,0:1,(?:UN)?LOCKED,(?:DHCP|STATIC),[0-9.]+,[0-9.]+,[0-9]+\\r$":
           let components = ",".split(response[0 ..< response.length - 2])
           self = .Network(components[2] == "LOCKED", components[3], components[4], components[5], components[6])
+        
         case ~/"^sendir.*\\r$":
           self = .CapturedCommand(response)
+       
         default:
           return nil
       }

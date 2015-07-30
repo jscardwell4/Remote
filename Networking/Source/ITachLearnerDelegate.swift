@@ -52,7 +52,7 @@ public class ITachLearnerDelegate {
     MSLogDebug("")
     if isLearnerAvailable {
       learnerEnabledCallback = callback
-      connection?.enqueueCommand(.GetIRL)
+      do { try connection?.enqueueCommand(.GetIRL) } catch { logError(error) }
     }
   }
 
@@ -65,7 +65,7 @@ public class ITachLearnerDelegate {
     MSLogDebug("")
     if isLearnerEnabled {
       learnerDisabledCallback = callback
-      connection?.enqueueCommand(.StopIRL)
+      do { try connection?.enqueueCommand(.StopIRL) } catch { logError(error) }
     }
   }
 

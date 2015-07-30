@@ -10,10 +10,6 @@ import UIKit
 
 public class LabelButton: UILabel {
 
-  private var visualEffect = false
-
-  public override func didMoveToSuperview() { visualEffect = superview?.superview is UIVisualEffectView }
-
   private var trackingTouch: UITouch? { didSet { _highlighted = trackingTouch != nil } }
 
   private var _highlighted = false { didSet { super.highlighted = _highlighted; setNeedsDisplay() } }
@@ -24,7 +20,6 @@ public class LabelButton: UILabel {
 
   private func initializeIVARs() {
     userInteractionEnabled = true
-    MSLogDebug("tintColor = \(String(prettyNil: tintColor))")
     highlightedTextColor = tintColor // Store initial tintColor into highlightedTextColor
     opaque = false
   }
@@ -56,7 +51,7 @@ public class LabelButton: UILabel {
 
   public override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
     if let trackingTouch = trackingTouch where touches.contains(trackingTouch) {
-      if pointInside(trackingTouch.locationInView(self), withEvent: event) { apply(actions) {[unowned self] in $0(self)} }
+      if pointInside(trackingTouch.locationInView(self), withEvent: event) { actions.apply {[unowned self] in $0(self)} }
       self.trackingTouch = nil
     }
   }

@@ -11,6 +11,7 @@ import MoonKit
 import CoreData
 import DataModel
 
+// MARK: - DelegateDetailable
 extension ITachDevice: DelegateDetailable {
     func sectionIndexForController(controller: BankCollectionDetailController) -> BankModelDetailDelegate.SectionIndex {
       var sections: BankModelDetailDelegate.SectionIndex = [:]
@@ -123,4 +124,5 @@ extension ITachDevice: DelegateDetailable {
     }
 }
 
+// MARK: - RelatedItemCreatable
 extension ITachDevice: RelatedItemCreatable {}

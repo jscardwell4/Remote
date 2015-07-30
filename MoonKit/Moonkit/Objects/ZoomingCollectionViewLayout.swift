@@ -317,7 +317,7 @@ public class ZoomingCollectionViewLayout: UICollectionViewLayout {
     let itemsPerRow = itemsPerRowInSection(indexPath.section)
     let col = CGFloat(indexPath.row % itemsPerRow)
     let row = CGFloat(indexPath.row / itemsPerRow)
-    let (w, h) = itemScaleForSection(indexPath.section).size.unpack()
+    let (w, h) = itemScaleForSection(indexPath.section).size.unpack
 
     attributes.frame = CGRect(x: col * w, y: row * h + yOffset, width: w, height: h)
 

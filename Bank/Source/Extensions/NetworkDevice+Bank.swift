@@ -14,6 +14,7 @@ import Networking
 
 private var discoveryCallbackToken: ConnectionManager.DiscoveryCallbackToken?
 
+// MARK: - DiscoverCreatable
 extension NetworkDevice: DiscoverCreatable {
 
   /** beginDiscovery */
@@ -21,26 +22,30 @@ extension NetworkDevice: DiscoverCreatable {
     if !ConnectionManager.wifiAvailable || discoveryCallbackToken != nil { return false }
     else {
       let discoveryCallback: ConnectionManager.DiscoveryCallback = {
-        (networkDevice: NetworkDevice) -> Void in
-        if discoveryCallbackToken != nil {
-          self.endDiscovery()
-          dispatchToMain {
-            presentForm(networkDevice.discoveryConfirmationForm()) {
-              form in
-              if let name = form.values?["Name"] as? String { networkDevice.name = name }
-              do {
-                try DataManager.saveContext(context)
-                return true
-              } catch {
-                logError(error)
-                return false
-              }
+        (networkDevice: NetworkDevice?, cancelled: Bool) -> Void in
+        guard !cancelled && discoveryCallbackToken != nil, let networkDevice = networkDevice else { return }
+        self.endDiscovery()
+        dispatchToMain {
+          presentForm(networkDevice.discoveryConfirmationForm()) {
+            form in
+            if let name = form.values?["Name"] as? String { networkDevice.name = name }
+            do {
+              try DataManager.saveContext(context)
+              return true
+            } catch {
+              logError(error)
+              return false
             }
           }
         }
       }
-      discoveryCallbackToken = ConnectionManager.startDetectingNetworkDevices(context: context, discovery: discoveryCallback)
-      return true
+      do {
+        discoveryCallbackToken = try ConnectionManager.startDetectingNetworkDevices(context: context, callback: discoveryCallback)
+        return true
+      } catch {
+        logError(error)
+        return false
+      }
     }
   }
 
@@ -130,4 +135,27 @@ extension NetworkDevice {
     return Form(templates: fields)
   }
 
+}
+
+// MARK: - CustomCreatable
+extension NetworkDevice: CustomCreatable {
+
+  /**
+  creationControllerWithContext:cancellationHandler:creationHandler:
+
+  - parameter context: NSManagedObjectContext
+  - parameter didCancel: () -> Void
+  - parameter didCreate: (ModelObject) -> Void
+
+  - returns: UIViewController
+  */
+  static func creationControllerWithContext(context: NSManagedObjectContext,
+                        cancellationHandler didCancel: () -> Void,
+                            creationHandler didCreate: (ModelObject) -> Void) -> UIViewController
+  {
+    let controller = InsettingViewController()
+    controller.selfSizing = true
+    controller.childViewController = DiscoveryViewController(didCancel: didCancel, didSubmit: didCreate)
+    return controller
+  }
 }

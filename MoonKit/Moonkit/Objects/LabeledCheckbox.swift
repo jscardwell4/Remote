@@ -114,7 +114,7 @@ public class LabeledCheckbox: Checkbox {
                                 (textOuterShadow.shadowColor as! UIColor).CGColor)
 
 
-    let (w, h) = rect.size.unpack()
+    let (w, h) = rect.size.unpack
 
     let iconSize = self.iconSize
     let offset = checkedIconSize.width - iconSize.width

@@ -87,6 +87,7 @@ extension Image: DelegateDetailable {
     }
 }
 
+// MARK: - RelatedItemCreatable
 extension Image: RelatedItemCreatable {
 
   var relatedItemCreationTransactions: [ItemCreationTransaction] {
@@ -119,6 +120,7 @@ extension Image: RelatedItemCreatable {
   }
 }
 
+// MARK: - CustomCreatable
 extension Image: CustomCreatable {
   static func creationControllerWithContext(context: NSManagedObjectContext,
                         cancellationHandler didCancel: () -> Void,
@@ -133,17 +135,19 @@ extension Image: CustomCreatable {
       controller, selection in
 
         // Create the image if a selection has been made
-        if let data = selection?.data, image = UIImage(data: data) {
+        if let data = selection?.data, img = UIImage(data: data) {
           let form = Form(templates: ["Name": self.nameFormFieldTemplate(context: context)])
           let didSubmit: FormViewController.Submission = {
-            if let name = $0.values?["Name"] as? String {
-              context.performBlock {
-                let imageModel = Image(image: image, context: context)
-                imageModel.name = name
-                DataManager.propagatingSaveFromContext(context)
-//                didCreate(imageModel)
-              }
-            } else { didCancel() }
+            guard let n = $0.values?["Name"] as? String else { didCancel(); return }
+            do {
+              var i: Image?
+              try DataManager.saveContext(context,
+                                withBlock: { i = Image(image: img, context: $0); i?.name = n },
+                                  options: [.Propagating],
+                               completion: {if $0 == nil, let i = i { didCreate(i) }})
+            } catch {
+              logError(error)
+            }
           }
           let formViewController = FormViewController(form: form, didSubmit: didSubmit, didCancel: didCancel)
           controller.presentViewController(formViewController, animated: true, completion: nil)

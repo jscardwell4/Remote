@@ -41,6 +41,21 @@ public final class SettingsManager {
   }
 
   /**
+  registerSettingWithKey:fromDefaults:toDefaults:
+
+  - parameter key: K
+  - parameter fromDefaults: (AnyObject?) -> T?
+  - parameter toDefaults: (T) -> AnyObject?
+  */
+  public static func registerSettingWithKey<T, K:RawRepresentable where K.RawValue == String>(key: K,
+                              withDefaultValue value: T? = nil,
+                                  fromDefaults: (AnyObject?) -> T?,
+                                    toDefaults: (T) -> AnyObject?)
+  {
+    registerSettingWithKey(key.rawValue, withDefaultValue: value, fromDefaults: fromDefaults, toDefaults: toDefaults)
+  }
+
+  /**
   registerBoolSettingWithKey:withDefaultValue:
 
   - parameter key: String
@@ -49,6 +64,18 @@ public final class SettingsManager {
   public static func registerBoolSettingWithKey(key: String, withDefaultValue value: Bool) {
     registeredSettings[key] = Box<Any>(Transformer<Bool>(fromUserDefaults: {($0 as? NSNumber)?.boolValue},
                                                          toUserDefaults: {$0}))
+  }
+
+  /**
+  registerBoolSettingWithKey:withDefaultValue:
+
+  - parameter key: K
+  - parameter value: Bool
+  */
+  public static func registerBoolSettingWithKey<K:RawRepresentable where K.RawValue == String>(key: K,
+                               withDefaultValue value: Bool)
+  {
+    registerBoolSettingWithKey(key.rawValue, withDefaultValue: value)
   }
 
   /**
@@ -68,6 +95,16 @@ public final class SettingsManager {
   }
 
   /**
+  setValue:forSetting:
+
+  - parameter value: T
+  - parameter setting: K
+  */
+  public static func setValue<T, K:RawRepresentable where K.RawValue == String>(value: T, forSetting setting: K) {
+    setValue(value, forSetting: setting.rawValue)
+  }
+
+  /**
   valueForSetting:
 
   - parameter setting: String
@@ -78,6 +115,17 @@ public final class SettingsManager {
     if let transformer = (registeredSettings[setting]?.unbox as? Transformer<T>)?.fromUserDefaults {
       return transformer(NSUserDefaults.standardUserDefaults().valueForKey(setting))
     } else { return nil }
+  }
+
+  /**
+  valueForSetting:
+
+  - parameter setting: K
+
+  - returns: T?
+  */
+  public static func valueForSetting<T, K:RawRepresentable where K.RawValue == String>(setting: K) -> T? {
+    return valueForSetting(setting.rawValue)
   }
 
 }

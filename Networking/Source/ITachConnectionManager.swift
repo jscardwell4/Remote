@@ -20,8 +20,11 @@ final class ITachConnectionManager {
   // MARK: - Typealiases and address, port property declarations
 
   typealias Callback = ConnectionManager.Callback
-  typealias Error = ConnectionManager.Error
   typealias Connection = ITachDeviceConnection
+
+  enum Error: ErrorType {
+    case CommandEmpty
+  }
 
   typealias Device = ITachDevice
   typealias DeviceIdentifier = String
@@ -56,23 +59,22 @@ final class ITachConnectionManager {
   Join multicast group and listen for beacons broadcast by iTach devices.
 
   - parameter context: NSManagedObjectContext = DataManager.rootContext
+  
+  - throws: `MulticastConnection.Error`
   */
-  class func startDetectingNetworkDevices(context: NSManagedObjectContext = DataManager.rootContext) {
-    if !detectingNetworkDevices {
-      self.context = context
-      detectingNetworkDevices = true
-      do {
-        try multicastConnection.listen()
-      } catch _ {
-      }
-      MSLogDebug("listening for iTach devices…")
-    }
+  class func startDetectingNetworkDevices(context: NSManagedObjectContext = DataManager.rootContext) throws {
+    guard !detectingNetworkDevices else { return }
+    self.context = context
+    detectingNetworkDevices = true
+    try multicastConnection.listen()
+    MSLogDebug("listening for iTach devices…")
   }
 
   /** Cease listening for beacon broadcasts and release resources. */
   class func stopDetectingNetworkDevices() {
-    detectingNetworkDevices = false
+    guard detectingNetworkDevices else { return }
     multicastConnection.stopListening()
+    detectingNetworkDevices = false
     MSLogDebug("no longer listening for iTach devices")
   }
 
@@ -86,26 +88,28 @@ final class ITachConnectionManager {
   - returns: Connection
   */
   class func connectionForDevice(device: Device) -> Connection {
-    let result: Connection
-    if let connection = connections[device.uniqueIdentifier] { result = connection }
-    else { result = Connection(device: device); connections[device.uniqueIdentifier] = result }
-    return result
+    return connections[device.uniqueIdentifier] ?? {
+      let connection = Connection(device: device); connections[device.uniqueIdentifier] = connection; return connection
+    }()
   }
 
   /** Suspend active connections */
   class func suspend() {
     if detectingNetworkDevices { multicastConnection.stopListening() }
+    activeConnections.apply { self.connections[$0]?.disconnect() }
     activeConnections.removeAll(keepCapacity: true)
-    apply(connections) { if $1.connected { ITachConnectionManager.activeConnections.insert($0); $1.disconnect() } }
   }
 
-  /** Resume multicast connection and any device connections that were active on suspension */
-  class func resume() {
-    if detectingNetworkDevices { do {
-        try multicastConnection.listen()
-      } catch _ {
-      } }
-    apply(connections) { if ITachConnectionManager.activeConnections ∋ $0 { $1.connect() } }
+  /** 
+  Resume multicast connection and any device connections that were active on suspension 
+  
+  - throws: `MulticastConnection.Error` and any error encountered reconnecting previously active connections
+  */
+  class func resume() throws {
+    guard detectingNetworkDevices else { return }
+    try multicastConnection.listen()
+
+    for (_, connection) in connections.filter({ id, _ in self.activeConnections ∋ id}) { try connection.connect() }
   }
 
   // MARK: - Sending and receiving messages
@@ -119,49 +123,27 @@ final class ITachConnectionManager {
 
     MSLogDebug("message received over multicast connection:\n\(message)\n")
 
-    if let uniqueIdentifier = message.stringByMatchingFirstOccurrenceOfRegEx("(?<=UUID=)[^<]+(?=>)")
-     where beaconsReceived ∌ uniqueIdentifier
-    {
-      assert(connections[uniqueIdentifier] == nil)
-      beaconsReceived.insert(uniqueIdentifier)
+    guard let uniqueIdentifier = (~/"UUID=([a-zA-Z_0-9]+)").firstMatch(message)?.captures[1]?.string
+      where beaconsReceived ∌ uniqueIdentifier else { return }
 
-      let device: Device?
-      let notify: ((NetworkDevice) -> Void)?
-      let shouldStopKey: String?
-      let shouldConnectKey: String?
+    beaconsReceived.insert(uniqueIdentifier)
 
-      if let existingDevice = Device.objectWithValue(uniqueIdentifier, forAttribute: "uniqueIdentifier", context: context) {
-        existingDevice.updateWithBeacon(message)
-        device = existingDevice
-        notify = ConnectionManager.updatedDevice
-        shouldStopKey = ConnectionManager.StopAfterUpdatedDeviceKey
-        shouldConnectKey = ConnectionManager.AutoConnectExistingKey
-      } else if let newDevice = Device(beacon: message, context: context) {
-        device = newDevice
-        notify = ConnectionManager.discoveredDevice
-        shouldStopKey = ConnectionManager.StopAfterDiscoveredDeviceKey
-        shouldConnectKey = ConnectionManager.AutoConnectDiscoveredKey
-      } else {
-        device = nil
-        notify = nil
-        shouldStopKey = nil
-        shouldConnectKey = nil
-      }
+    let isUpdate = Device.objectExistsInContext(context, withValue: uniqueIdentifier, forAttribute: "uniqueIdentifier")
 
-      if let device = device, notify = notify, shouldStopKey = shouldStopKey, shouldConnectKey = shouldConnectKey {
-        notify(device)
+    guard let device = Device.deviceFromBeacon(message, context: context) else { return }
 
-        // Stop if appropriate
-        if SettingsManager.valueForSetting(shouldStopKey) == true { stopDetectingNetworkDevices() }
+    let notify = isUpdate ? ConnectionManager.updatedDevice : ConnectionManager.discoveredDevice
+    let shouldStopKey: ConnectionManager.SettingKey = isUpdate ? .StopAfterUpdated : .StopAfterDiscovered
+    let shouldConnectKey: ConnectionManager.SettingKey = isUpdate ? .AutoConnectExisting : .AutoConnectDiscovery
 
-        // Connect if appropriate
-        if SettingsManager.valueForSetting(shouldConnectKey) == true {
-          connections[uniqueIdentifier] = Connection(device: device)
-        }
-      }
+    notify(device)
 
-    }
+    // Stop if appropriate
+    if SettingsManager.valueForSetting(shouldStopKey) == true { stopDetectingNetworkDevices() }
 
+    // Connect if appropriate
+    if SettingsManager.valueForSetting(shouldConnectKey) == true { connections[uniqueIdentifier] = Connection(device: device) }
+    
   }
 
  /**
@@ -169,17 +151,16 @@ final class ITachConnectionManager {
   Sends an IR command to the device identified by the specified `uuid`.
 
   - parameter command: ITachIRCommand The command to execute
-
   - parameter completion: The block to execute upon task completion
 
+  - throws: `ConnectionManager.Error.CommandEmpty`
   */
-  class func sendCommand(command: ITachIRCommand, completion: Callback? = nil) {
-    if command.commandString.isEmpty {
-      MSLogError("cannot send empty or nil command")
-      completion?(false, NSError(domain: Error.domain, code: Error.CommandEmpty.rawValue, userInfo: nil))
-    } else if let device = command.networkDevice as? Device {
-      connectionForDevice(device).enqueueCommand(command, completion: completion)
-    }
+  class func sendCommand(command: ITachIRCommand, completion: Callback? = nil) throws {
+    guard !command.commandString.isEmpty else { MSLogError("cannot send empty or nil command"); throw Error.CommandEmpty }
+
+    guard  let device = command.networkDevice as? Device  else { return }
+
+    try connectionForDevice(device).enqueueCommand(command, completion: completion)
   }
 
 }

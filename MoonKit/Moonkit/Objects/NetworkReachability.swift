@@ -39,6 +39,8 @@ public class NetworkReachability: NSObject {
     callback(flags)
   }
 
+  public var wifiAvailable: Bool { return flags.isSupersetOf([.IsDirect, .Reachable]) }
+  
   public init(callout: Callback) {
     callback = callout
 

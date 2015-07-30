@@ -269,14 +269,14 @@ public final class Painter {
         let halfRadii = attrs.radii * 0.5
         return UIBezierPath(rect: attrs.rect.rectByInsetting(dx: halfRadii.width, dy: halfRadii.height))
       case .Oval:
-        let (w, h) = attrs.rect.size.unpack()
+        let (w, h) = attrs.rect.size.unpack
         return UIBezierPath(rect: attrs.rect.rectByInsetting(dx: sqrt(w * 2.0) * 0.5, dy: sqrt(h * 2.0) * 0.5))
       case .Triangle:
         let size = attrs.rect.size * 0.5
         let origin = CGPoint(x: 0.5 * size.width, y: size.height)
         return UIBezierPath(rect: CGRect(origin: origin, size: size))
       case .Diamond:
-        let (dx, dy) = (attrs.rect.size * 0.25).unpack()
+        let (dx, dy) = (attrs.rect.size * 0.25).unpack
         return UIBezierPath(rect: attrs.rect.rectByInsetting(dx: dx, dy: dy))
       default:
         return UIBezierPath(rect: attrs.rect)

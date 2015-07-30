@@ -42,35 +42,24 @@ final class ISYConnectionManager {
 
   - parameter context: NSManagedObjectContext = DataManager.rootContext
   */
-  class func startDetectingNetworkDevices(context: NSManagedObjectContext = DataManager.rootContext) {
+  class func startDetectingNetworkDevices(context: NSManagedObjectContext = DataManager.rootContext) throws {
+    guard !detectingNetworkDevices else { return }
+    try multicastConnection.listen()
     detectingNetworkDevices = true
-    do {
-      try multicastConnection.listen()
-    } catch _ {
-    }
   }
 
   /** Cease listening for beacon broadcasts and release resources. */
-  class func stopDetectingNetworkDevices() { detectingNetworkDevices = false; multicastConnection.stopListening() }
-
-  /**
-  Sends an IR command to the device identified by the specified `uuid`.
-
-  - parameter command: HTTPCommand The command to execute
-  - parameter completion: Callback? = nil The block to execute upon task completion
-  */
-  class func sendCommand(command: HTTPCommand, completion: Callback? = nil) {
-    // ???: Not used because `ConnectionManager` sends the `HTTPCommand`?
+  class func stopDetectingNetworkDevices() {
+    guard detectingNetworkDevices else { return }
+    multicastConnection.stopListening()
+    detectingNetworkDevices = false
   }
 
   /** Suspend active connections */
-  class func suspend() { if detectingNetworkDevices { multicastConnection.stopListening() } }
+  class func suspend() { guard detectingNetworkDevices else { return }; multicastConnection.stopListening() }
 
   /** Resume previously active connections */
-  class func resume() { if detectingNetworkDevices { do {
-        try multicastConnection.listen()
-      } catch _ {
-      } } }
+  class func resume() throws { guard detectingNetworkDevices else { return };  try multicastConnection.listen() }
 
   /**
   Processes messages received through `NetworkDeviceConnection` objects.
@@ -79,27 +68,22 @@ final class ISYConnectionManager {
   */
   class func messageReceived(message: String) {
 
-    MSLogVerbose("message received over multicast connection:\n\(message.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding))\n")
-
-    let entryStrings = message.matchingSubstringsForRegEx("^[A-Z]+:.*(?=\\r)") as! [String]
-    MSLogVerbose("entryStrings = \(entryStrings)")
-
-    var entries: [String:String] = [:]
-    apply(entryStrings) {
-      let components = ":".split($0)
-      if components.count == 2 { entries[components[0]] = components[1] }
-    }
+    let entries: [String:String] = Dictionary((~/"^[A-Z]+:.*(?=\\r)").match(message).flatMap {
+      let components = "=".split($0.string); return components.count == 2 ? (components[0], components[1]) : nil
+    })
 
     if let location = entries["LOCATION"] where location.hasSuffix("/desc") && beaconsReceived ∌ location,
-      let baseURL = NSURL(string: location[0..<location.length - 5])
+      let baseURL = NSURL(string: location[0 ..< location.characters.count - 5])
     {
       beaconsReceived.insert(location)
       ISYDeviceConnection.connectionWithBaseURL(baseURL) {
-        if let connection = $0 {
-          ISYConnectionManager.connections.insert(connection)
-          self.networkDevices.insert(connection.device)
-          ISYConnectionManager.stopDetectingNetworkDevices()
-        } else { MSHandleError($1) }
+
+        guard let connection = $0  else { MSHandleError($1); return }
+
+        ISYConnectionManager.connections.insert(connection)
+        self.networkDevices.insert(connection.device)
+        ISYConnectionManager.stopDetectingNetworkDevices()
+        
       }
 
     }

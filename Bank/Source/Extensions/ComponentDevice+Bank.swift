@@ -251,7 +251,13 @@ extension ComponentDevice: RelatedItemCreatable {
           } catch { logError(error); return false }
         })
       transactions.append(createCodeSet)
-      // TODO: Add `NetworkDevice`
+
+      // Network device transaction
+      let discoverNetworkDevice = CustomTransaction(label: "Network Device") {
+        NetworkDevice.creationControllerWithContext(context, cancellationHandler: $0, creationHandler: $1)
+      }
+      transactions.append(discoverNetworkDevice)
+
       // TODO: Add power commands
       // TODO: Add inputs
     }

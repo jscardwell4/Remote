@@ -75,28 +75,73 @@ public class ITachDevice: NetworkDevice {
 
   // MARK: - BeaconProperty enumeration
 
-  enum BeaconProperty: String {
-    case ConfigURL        = "Config-URL"
-    case Make             = "Make"
-    case Model            = "Model"
-    case PCB              = "PCB_PN"
-    case SDK              = "SDKClass"
-    case Status           = "Status"
-    case Revision         = "Revision"
-    case Pkg              = "Pkg_Level"
-    case UniqueIdentifier = "UUID"
+  enum BeaconProperty: RawRepresentable {
+    case ConfigURL (String)
+    case Make (String)
+    case Model (String)
+    case PCB (String)
+    case SDK (String)
+    case Status (String)
+    case Revision (String)
+    case Pkg (String)
+    case UniqueIdentifier (String)
 
+    init?(rawValue: String) {
+      let components = "=".split(rawValue)
+      guard case let (property?, value?) = (components.first, components.last) where property != value else { return nil}
+      switch property {
+        case "Config-URL": self = ConfigURL(value)
+        case "Make":       self = Make(value)
+        case "Model":      self = Model(value)
+        case "PCB_PN":     self = PCB(value)
+        case "SDKClass":   self = SDK(value)
+        case "Status":     self = Status(value)
+        case "Revision":   self = Revision(value)
+        case "Pkg_Level":  self = Pkg(value)
+        case "UUID":       self = UniqueIdentifier(value)
+        default:           return nil
+      }
+    }
+
+    var rawValue: String {
+      switch self {
+        case .ConfigURL (let value):        return "Config-URL=\(value)"
+        case .Make (let value):             return "Make=\(value)"
+        case .Model (let value):            return "Model=\(value)"
+        case .PCB (let value):              return "PCB_PN=\(value)"
+        case .SDK (let value):              return "SDKClass=\(value)"
+        case .Status (let value):           return "Status=\(value)"
+        case .Revision (let value):         return "Revision=\(value)"
+        case .Pkg (let value):              return "Pkg_Level=\(value)"
+        case .UniqueIdentifier (let value): return "UUID=\(value)"
+      }
+    }
+
+    var value: String {
+     switch self {
+        case .ConfigURL (let value):        return value
+        case .Make (let value):             return value
+        case .Model (let value):            return value
+        case .PCB (let value):              return value
+        case .SDK (let value):              return value
+        case .Status (let value):           return value
+        case .Revision (let value):         return value
+        case .Pkg (let value):              return value
+        case .UniqueIdentifier (let value): return value
+      }
+   }
+    
     var deviceProperty: String {
       switch self {
-      case .ConfigURL:        return "configURL"
-      case .Make:             return "make"
-      case .Model:            return "model"
-      case .PCB:              return "pcbPN"
-      case .SDK:              return "sdkClass"
-      case .Status:           return "status"
-      case .Revision:         return "revision"
-      case .Pkg:              return "pkgLevel"
-      case .UniqueIdentifier: return "uniqueIdentifier"
+        case .ConfigURL:        return "configURL"
+        case .Make:             return "make"
+        case .Model:            return "model"
+        case .PCB:              return "pcbPN"
+        case .SDK:              return "sdkClass"
+        case .Status:           return "status"
+        case .Revision:         return "revision"
+        case .Pkg:              return "pkgLevel"
+        case .UniqueIdentifier: return "uniqueIdentifier"
       }
     }
   }
@@ -112,29 +157,43 @@ public class ITachDevice: NetworkDevice {
   - parameter context: NSManagedObjectContext
   */
   public init?(beacon: String, context: NSManagedObjectContext) {
-    let regex = ~/"(?<=<-)(.*?)(?=>)"
-    let matches = regex.match(beacon)
-    let entries: [String] = matches.flatMap { let capture = $0.captures[0]; return capture?.string }
-    var attributes: [String:String] = [:]
-    entries.apply {
-      let components = "=".split($0)
-      if components.count == 2, let prop = BeaconProperty(rawValue: components[0]) {
-        attributes[prop.deviceProperty] = components[1]
-      }
-    }
-    if let uniqueIdentifier = attributes[BeaconProperty.UniqueIdentifier.deviceProperty]
+    let properties = (~/"(?<=<-)(.*?)(?=>)").match(beacon).flatMap { BeaconProperty(rawValue: $0.string) }
+    let index = Dictionary(properties.map { ($0.deviceProperty, $0.value) })
+    guard let uniqueIdentifier = index["uniqueIdentifier"]
       where !NetworkDevice.objectExistsInContext(context, withValue: uniqueIdentifier, forAttribute: "uniqueIdentifier")
+    else
     {
-      super.init(context: context)
-      setValuesForKeysWithDictionary(attributes)
-    } else {
       super.init(context: nil)
       return nil
     }
+
+    super.init(context: context)
+    setValuesForKeysWithDictionary(index)
   }
 
   required public init?(data: ObjectJSONValue, context: NSManagedObjectContext) {
     super.init(data: data, context: context)
+  }
+
+  /**
+  deviceFromBeacon:context:
+
+  - parameter beacon: String
+  - parameter context: NSManagedObjectContext
+
+  - returns: ITachDevice?
+  */
+  public class func deviceFromBeacon(beacon: String, context: NSManagedObjectContext) -> ITachDevice? {
+    if let id = (~/"UUID=([a-zA-Z_0-9]+)").firstMatch(beacon)?.captures[1]?.string,
+                device = objectWithValue(id, forAttribute: "uniqueIdentifier", context: context)
+    {
+      device.updateWithBeacon(beacon)
+      return device
+    } else if let device = ITachDevice(beacon: beacon, context: context) {
+      return device
+    } else {
+      return nil
+    }
   }
 
   /**
@@ -143,25 +202,16 @@ public class ITachDevice: NetworkDevice {
   - parameter beacon: String
   */
   public func updateWithBeacon(beacon: String) {
-    let regex = ~/"(?<=<-)(.*?)(?=>)"
-    let matches = regex.match(beacon)
-    let entries: [String] = matches.flatMap { let capture = $0.captures[0]; return capture?.string }
-    var attributes: [String:String] = [:]
-    apply(entries) {
-      let components = "=".split($0)
-      if components.count == 2, let prop = BeaconProperty(rawValue: components[0]) {
-        attributes[prop.deviceProperty] = components[1]
-      }
-    }
-    if let uniqueIdentifier = attributes[BeaconProperty.UniqueIdentifier.deviceProperty]
-      where self.uniqueIdentifier == nil || self.uniqueIdentifier == uniqueIdentifier
-    {
-      setValuesForKeysWithDictionary(attributes)
-      do {
-        try managedObjectContext?.save()
-      } catch {
-        MSHandleError(error as NSError, message: "failed to update from beacon '\(beacon)'")
-      }
+    let properties = (~/"(?<=<-)(.*?)(?=>)").match(beacon).flatMap { BeaconProperty(rawValue: $0.string) }
+    let index = Dictionary(properties.map { ($0.deviceProperty, $0.value) })
+
+    guard let id = index["uniqueIdentifier"] where uniqueIdentifier == nil || uniqueIdentifier == id,
+          let moc = managedObjectContext else { return }
+
+    do {
+      try DataManager.saveContext(moc, withBlock: { _ in self.setValuesForKeysWithDictionary(index) }, options: [.Propagating])
+    } catch {
+      MSHandleError(error as NSError, message: "failed to update from beacon '\(beacon)'")
     }
   }
 

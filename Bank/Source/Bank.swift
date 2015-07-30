@@ -36,7 +36,7 @@ final public class Bank {
 
   static func initialize() {
     SettingsManager.registerSettingWithKey(Bank.ViewingModeKey,
-                          withDefaultValue: .List,
+                          withDefaultValue: ViewingMode.List,
                               fromDefaults: {ViewingMode(rawValue: ($0 as? NSNumber)?.integerValue ?? 0)},
                                 toDefaults: {$0.rawValue})
     Image.registerBundle(Bank.bundle, forLocationValue: "$bank")

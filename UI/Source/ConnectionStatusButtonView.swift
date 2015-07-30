@@ -25,13 +25,13 @@ public final class ConnectionStatusButtonView: ButtonView {
     receptionist = MSNotificationReceptionist(
       observer: self,
       forObject: ConnectionManager.self,
-      notificationName: ConnectionManager.ConnectionStatusNotification,
+      notificationName: ConnectionManager.Notification.NotificationName.ConnectionStatus.rawValue,
       queue: NSOperationQueue.mainQueue(),
       handler: {
         (receptionist: MSNotificationReceptionist!) -> Void in
           if let v = receptionist.observer as? ConnectionStatusButtonView {
             let currentlyConnected = v.connected
-            if let wifiAvailable = receptionist.notification.userInfo?[ConnectionManager.WifiAvailableKey] as? Bool {
+            if let wifiAvailable = receptionist.notification.userInfo?[ConnectionManager.Notification.InfoKey.WifiAvailable.rawValue] as? Bool {
               if currentlyConnected != wifiAvailable { v.connected = !currentlyConnected; v.setNeedsDisplay() }
             }
           }

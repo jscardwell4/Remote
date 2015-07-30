@@ -23,6 +23,23 @@ class MulticastConnection: GCDAsyncUdpSocketDelegate {
   private let socket: GCDAsyncUdpSocket
   private static let queue = dispatch_queue_create("com.moondeerstudios.networking.multicast", DISPATCH_QUEUE_SERIAL)
 
+  enum Error: WrappedErrorType { 
+    
+    case JoinGroup (ErrorType)
+    case LeaveGroup (ErrorType)
+    case BindPort (ErrorType)
+    case BeginReceiving (ErrorType)
+
+    var underlyingError: ErrorType? {
+      switch self { 
+        case .JoinGroup(let error): return error
+        case .BindPort(let error):  return error
+        case .LeaveGroup(let error): return error
+        case .BeginReceiving(let error):  return error
+      }
+    }
+  }
+
   /**
   init:port:
 
@@ -38,60 +55,46 @@ class MulticastConnection: GCDAsyncUdpSocketDelegate {
 
 
   /**
-  joinGroup
+  Open socket connection to multicast group
+
+  - throws: `MulticastConnection.Error.BindPort` or `MulticastConnection.Error.JoinGroup`
   */
   func joinGroup() throws {
-    if !joinedGroup {
-      var errorMessage: String?
-      do {
-        try socket.bindToPort(port)
-        do {
-          try socket.joinMulticastGroup(address)
-          joinedGroup = true
-        } catch {
-          errorMessage = "failed to join group \(address)"
-          throw error
-        }
-      } catch {
-        if errorMessage == nil { errorMessage = "failed to bind port \(port)" }
-        MSHandleError(error as NSError, message: errorMessage)
-        throw error
-      }
-    }
+
+    guard !joinedGroup else { return }
+    
+    do { try socket.bindToPort(port) }            catch { throw Error.BindPort(error) }
+    do { try socket.joinMulticastGroup(address) } catch { throw Error.JoinGroup(error) }
+    
+    joinedGroup = true
   }
 
   /**
-  leaveGroup:
+  Close socket connection to multicast group
 
-  - parameter error: NSErrorPointer
-
-  - returns: Bool
+  - throws: `MulticastConnection.Error.LeaveGroup`
   */
   func leaveGroup() throws {
-    if joinedGroup {
-      try socket.leaveMulticastGroup(address)
-      joinedGroup = false
-    }
+    guard joinedGroup else { return }
+    do { try socket.leaveMulticastGroup(address) } catch { throw Error.LeaveGroup(error) }
+    joinedGroup = false
   }
 
   /**
-  listen:
+  Begin receiving over socket, joining group first if necessary
 
-  - parameter error: NSErrorPointer = nil
-
-  - returns: Bool
+  - throws: `MulticastConnection.Error.JoinGroup`, `MulticastConnection.Error.BindPort`, 
+             or `MulticastConnection.Error.BeginReceiving`
   */
   func listen() throws {
+    guard !listening else { return }
     if !joinedGroup { try joinGroup() }
-
-    if joinedGroup && !listening {
-      try socket.beginReceiving()
-      listening = true
-    }
+    do { try socket.beginReceiving() } catch { throw Error.BeginReceiving(error) }
+    listening = true
   }
 
   /** Pauses the receiving of packets if socket is listening */
-  func stopListening() { if listening { socket.pauseReceiving(); listening = false } }
+  func stopListening() { guard listening else { return };  socket.pauseReceiving(); listening = false }
 
   // MARK: - GCDAsyncUdpSocketDelegate
 
@@ -106,7 +109,8 @@ class MulticastConnection: GCDAsyncUdpSocketDelegate {
   @objc func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!,
     withFilterContext filterContext: AnyObject!)
   {
-    callback?(NSString(data: data) as String)
+    guard let dataString = String(data: data) else { return }
+    callback?(dataString)
   }
 
 }

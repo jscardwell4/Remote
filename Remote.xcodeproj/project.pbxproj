@@ -542,6 +542,7 @@
 		C2E8D9F219BCD5C400E6098E /* wsdl-viewer-mod.xsl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9B919BCD5C400E6098E /* wsdl-viewer-mod.xsl */; };
 		C2E8D9F419BCD5C400E6098E /* wsdl-viewer.xsl in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9BA19BCD5C400E6098E /* wsdl-viewer.xsl */; };
 		C2E8D9F619BCD5C400E6098E /* zigbee.xsd in Resources */ = {isa = PBXBuildFile; fileRef = C2E8D9BB19BCD5C400E6098E /* zigbee.xsd */; };
+		C2E9A4321B699C260006AFA8 /* DiscoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9A4311B699C260006AFA8 /* DiscoveryViewController.swift */; };
 		C2E9F3EC1ABC9797007581F2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E9F3EB1ABC9797007581F2 /* AppDelegate.swift */; };
 		C2E9F3F31ABC9797007581F2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F3F21ABC9797007581F2 /* Images.xcassets */; };
 		C2E9F41B1ABC9A63007581F2 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E9F41A1ABC9A62007581F2 /* Default-568h@2x.png */; };
@@ -1055,7 +1056,7 @@
 		C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REEditingCollectionViewLayout.m; sourceTree = "<group>"; };
 		C21C43031A80015E004F8DA8 /* MainMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuController.swift; sourceTree = "<group>"; };
 		C21E9AAF1B5DB9EB0045F49A /* BankItemCreationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankItemCreationDelegate.swift; sourceTree = "<group>"; };
-		C21E9AB11B5DCB210045F49A /* ItemCreationTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemCreationTransaction.swift; sourceTree = "<group>"; };
+		C21E9AB11B5DCB210045F49A /* ItemCreationTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ItemCreationTransaction.swift; path = ../../ItemCreationTransaction.swift; sourceTree = "<group>"; };
 		C21F07CB1AA378E700F1F8DD /* ActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
 		C221159B1AC58A980071F2D0 /* BankProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankProtocols.swift; sourceTree = "<group>"; };
 		C22E1BD819C12FB800A93D61 /* Remote-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Remote-Bridging-Header.h"; path = "Source/Remote-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -1244,8 +1245,6 @@
 		C23F070F1AD5A54F003BD28B /* PresetCategory_Simple.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PresetCategory_Simple.json; sourceTree = "<group>"; };
 		C23F07101AD5A54F003BD28B /* TitleAttributes_Simple.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TitleAttributes_Simple.json; sourceTree = "<group>"; };
 		C23F3BEB1AF853E200626FDC /* PanelDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanelDelegate.swift; sourceTree = "<group>"; };
-		C240DD5D170485F2005CC390 /* IRLearner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRLearner.h; sourceTree = "<group>"; };
-		C240DD5E170485F2005CC390 /* IRLearner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRLearner.m; sourceTree = "<group>"; };
 		C24844541AE955FB004FCADD /* Remote.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Remote.sqlite; sourceTree = "<group>"; };
 		C24844551AE955FB004FCADD /* Remote.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Remote.sqlite-shm"; sourceTree = "<group>"; };
 		C24844561AE955FB004FCADD /* Remote.sqlite-wal */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Remote.sqlite-wal"; sourceTree = "<group>"; };
@@ -1600,6 +1599,7 @@
 		C2E8DA0319BCE03C00E6098E /* config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = config.json; sourceTree = "<group>"; };
 		C2E8DA0419BCE03C00E6098E /* desc.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = desc.json; sourceTree = "<group>"; };
 		C2E8DA0519BCE03C00E6098E /* nodes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = nodes.json; sourceTree = "<group>"; };
+		C2E9A4311B699C260006AFA8 /* DiscoveryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryViewController.swift; sourceTree = "<group>"; };
 		C2E9F3E71ABC9797007581F2 /* BankApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BankApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2E9F3EA1ABC9797007581F2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2E9F3EB1ABC9797007581F2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -2269,7 +2269,6 @@
 		C26BAE9F16DC10FE0093D5B4 = {
 			isa = PBXGroup;
 			children = (
-				C21E9AB11B5DCB210045F49A /* ItemCreationTransaction.swift */,
 				C26BBA9916DC19C50093D5B4 /* Resources */,
 				C26BAEB316DC10FE0093D5B4 /* Remote */,
 				C2CA769519BA1E1800ACCD76 /* ISYClient */,
@@ -2370,8 +2369,6 @@
 				C208D62F1AFA87DA00AE83C1 /* ITachConnectionManager.swift */,
 				C26863791AF9CE2200D664E8 /* ITachDeviceConnection.swift */,
 				C26863731AF990D600D664E8 /* MessageQueueEntry.swift */,
-				C240DD5D170485F2005CC390 /* IRLearner.h */,
-				C240DD5E170485F2005CC390 /* IRLearner.m */,
 				C2DF48A81AFC092400C0E391 /* MulticastConnection.swift */,
 				C29EECF51AFC379500660EE6 /* ITachLearnerDelegate.swift */,
 				C2D50CB41AFD3DB600DCDAB0 /* ITachDeviceConnection.DeviceResponse.swift */,
@@ -2962,6 +2959,8 @@
 				C268340F1B11503000A359A8 /* PhotoCollectionBrowser.swift */,
 				C26834101B11503000A359A8 /* PhotoCollectionBrowser.xib */,
 				C21E9AAF1B5DB9EB0045F49A /* BankItemCreationDelegate.swift */,
+				C21E9AB11B5DCB210045F49A /* ItemCreationTransaction.swift */,
+				C2E9A4311B699C260006AFA8 /* DiscoveryViewController.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -4558,6 +4557,7 @@
 				C2FE79B41B1E18B00087F72C /* BankCollectionDetailTextViewCell.swift in Sources */,
 				C26D84B71AC33752000230B9 /* ImportExportFileManager.swift in Sources */,
 				C2EEBA271B08087D0041B1B1 /* Preset+Bank.swift in Sources */,
+				C2E9A4321B699C260006AFA8 /* DiscoveryViewController.swift in Sources */,
 				C2A12B951B0D3CA6003C17F8 /* BankController.swift in Sources */,
 				C2EEBA251B08087D0041B1B1 /* ITachDevice+Bank.swift in Sources */,
 				C2FE79A91B1E18B00087F72C /* BankCollectionDetailCustomCell.swift in Sources */,

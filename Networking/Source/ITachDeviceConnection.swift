@@ -21,9 +21,22 @@ import MoonKit
  from the iTach device are passed up to the connection manager.
 
  */
-class ITachDeviceConnection: GCDAsyncSocketDelegate {
+final class ITachDeviceConnection {
 
   typealias Callback = ConnectionManager.Callback
+
+  enum Error: WrappedErrorType {
+    case NoSocketConnection
+    case ConnectionInProgress
+    case ConnectionExists
+    case EmptyMessage
+    case DeviceError (ITachError)
+    case CommandHalted
+    case InvalidResponse
+    case ConnectionError (ErrorType)
+
+    var underlyingError: ErrorType? { if case .ConnectionError(let error) = self { return error } else { return nil } }
+  }
 
   // MARK: - Static properties
 
@@ -33,17 +46,20 @@ class ITachDeviceConnection: GCDAsyncSocketDelegate {
 
   static let TCPPort: UInt16 = 4998
 
-  typealias Error = ConnectionManager.Error
+  // typealias Error = ConnectionManager.Error
+  typealias MessageQueue = Queue<MessageQueueEntry<Command>>
+  typealias MessageTag = Int
+  typealias TaggedMessageIndex = OrderedDictionary<MessageTag, MessageQueueEntry<Command>>
 
   static let ITachQueue = dispatch_queue_create("com.moondeerstudios.remote.itach", DISPATCH_QUEUE_CONCURRENT)
 
   // MARK: - Instance properties
 
   /** Messages being sent */
-  private var messagesSending: OrderedDictionary<Int, MessageQueueEntry<Command>> = [:]
+  private var messagesSending: TaggedMessageIndex = [:]
 
   /** Messages awaiting response */
-  private var messagesSent: OrderedDictionary<Int, MessageQueueEntry<Command>> = [:]
+  private var messagesSent: TaggedMessageIndex = [:]
 
   /** Connection in progress */
   private(set) var connecting = false { willSet { if newValue && connecting { MSLogWarn("already connecting") } } }
@@ -52,13 +68,13 @@ class ITachDeviceConnection: GCDAsyncSocketDelegate {
   let device: ITachDevice
 
   /** Message send buffer */
-  private var messageQueue: Queue<MessageQueueEntry<Command>> = Queue()
+  private var messageQueue: MessageQueue = Queue()
 
   /** Connection to device */
   private let socket: GCDAsyncSocket
 
   /** Current tag for new messages */
-  private var currentTag: Int = 0
+  private var currentTag: MessageTag = 0
 
   /** Executed on connect */
   private var connectCallback: Callback?
@@ -68,19 +84,7 @@ class ITachDeviceConnection: GCDAsyncSocketDelegate {
 
   private(set) var connected = false { willSet { if newValue && connected { MSLogWarn("already connected") } } }
 
-  weak var learnerDelegate: ITachLearnerDelegate? {
-    willSet {
-      if learnerDelegate != nil {
-        MSLogDebug("removing existing learner delegate from connection")
-      }
-    }
-    didSet {
-      learnerDelegate?.connection = self
-      if learnerDelegate != nil {
-        MSLogDebug("learner delegate added to connection")
-      }
-    }
-  }
+  weak var learnerDelegate: ITachLearnerDelegate? { didSet { learnerDelegate?.connection = self } }
 
   // MARK: - Initialization
 
@@ -97,30 +101,29 @@ class ITachDeviceConnection: GCDAsyncSocketDelegate {
 
   // MARK: - Sending and Receiving
 
-  /** sendNextMessage */
-  func sendNextMessage() {
-    if !connected { MSLogError("cannot send messages without a socket connection") }
+  /** 
+  sendNextMessage 
+  
+  - throws: `ITachDeviceConnection.Error.NoSocketConnection`
+  */
+  func sendNextMessage() throws {
 
-    else if var entry = messageQueue.dequeue() {
+    guard connected else { throw Error.NoSocketConnection }
 
-      let tag = currentTag++ // Should be the ONLY place the tag is incremented
+    guard var entry = messageQueue.dequeue() else { try receiveNextMessage(); return }
 
-      var message = entry.messageData
+    let tag = currentTag++ // Should be the ONLY place the tag is incremented
 
-      switch message {
-        case .SendIR(_, let command): message = .SendIR(tag, command)
-        default: break
-      }
+    var message = entry.messageData
 
-      entry.messageData = message
+    if case .SendIR(_, let command) = message { message = .SendIR(tag, command) }
 
-      // Send the message
-      receiveNextMessage(tag)
-      socket.writeData(entry.data, withTimeout: -1, tag: tag)
-      messagesSending[tag] = entry
-    }
+    entry.messageData = message
 
-    else { receiveNextMessage() }
+    // Send the message
+    try receiveNextMessage(tag)
+    socket.writeData(entry.data, withTimeout: -1, tag: tag)
+    messagesSending[tag] = entry
 
   }
 
@@ -128,16 +131,17 @@ class ITachDeviceConnection: GCDAsyncSocketDelegate {
   receiveNextMessage:
 
   - parameter tag: Int = -1
+
+  - throws: `ITachDeviceConnection.Error.NoSocketConnection`
   */
-  func receiveNextMessage(tag: Int = -1) {
-    if connected {
-      socket.readDataToData(GCDAsyncSocket.CRData(),
-                withTimeout: -1,
-                     buffer: nil,
-               bufferOffset: 0,
-                  maxLength: 0,
-                        tag: tag)
-    }
+  func receiveNextMessage(tag: Int = -1) throws {
+    guard connected else { throw Error.NoSocketConnection }
+    socket.readDataToData(GCDAsyncSocket.CRData(),
+              withTimeout: -1,
+                   buffer: nil,
+             bufferOffset: 0,
+                maxLength: 0,
+                      tag: tag)
   }
 
 
@@ -147,10 +151,10 @@ class ITachDeviceConnection: GCDAsyncSocketDelegate {
   - parameter command: ITachIRCommand
   - parameter completion: Callback? = nil
   */
-  func enqueueCommand(command: ITachIRCommand, completion: Callback? = nil) {
-    enqueueEntry(MessageQueueEntry(messageData: .SendIR(-1, command),
-                                   userInfo: [ITachDeviceConnection.PortKey:Int(command.port)],
-                                   completion: completion))
+  func enqueueCommand(command: ITachIRCommand, completion: Callback? = nil) throws {
+    try enqueueEntry(MessageQueueEntry(messageData: .SendIR(-1, command),
+                                       info: [ITachDeviceConnection.PortKey:Int(command.port)],
+                                       completion: completion))
   }
 
   /**
@@ -159,25 +163,30 @@ class ITachDeviceConnection: GCDAsyncSocketDelegate {
   - parameter command: Command
   - parameter completion: Callback? = nil
   */
-  func enqueueCommand(command: Command, completion: Callback? = nil) {
-    enqueueEntry(MessageQueueEntry(messageData: command,
-                                   userInfo: [ITachDeviceConnection.ExpectResponseKey: command.expectResponse],
-                                   completion: completion))
+  func enqueueCommand(command: Command, completion: Callback? = nil) throws {
+    try enqueueEntry(MessageQueueEntry(messageData: command,
+                                       info: [ITachDeviceConnection.ExpectResponseKey: command.expectResponse],
+                                       completion: completion))
   }
 
   /**
   enqueueEntry:completion:
 
   - parameter entry: MessageQueueEntry
+  
+  - throws: Empty message error or any error attempting to send next message
   */
-  private func enqueueEntry(entry: MessageQueueEntry<Command>) {
-    if entry.message.isEmpty {
-      entry.completion?(false, Error.CommandEmpty.error())
-    } else {
-      messageQueue.enqueue(entry)
-      if (!connected || connecting) { connect() {[unowned self] success, _ in if success { self.sendNextMessage() } } }
-      else { sendNextMessage() }
+  private func enqueueEntry(entry: MessageQueueEntry<Command>) throws {
+    guard !entry.message.isEmpty else { throw Error.EmptyMessage }
+
+    messageQueue.enqueue(entry)
+
+    guard connected || connecting else {
+      try connect {[unowned self] success, _ in if success { try! self.sendNextMessage() } }
+      return
     }
+
+    try sendNextMessage()
   }
 
   // MARK: - Connecting
@@ -186,24 +195,18 @@ class ITachDeviceConnection: GCDAsyncSocketDelegate {
   connect:
 
   - parameter completion: Callback? = nil
+
+  - throws: `ITachDeviceConnection.Error.ConnectionInProgress`, `ITachDeviceConnection.Error.ConnectionExists`, 
+            or any error encountered connecting to host
   */
-  func connect(completion: Callback? = nil) {
-    if connecting { completion?(false, Error.ConnectionInProgress.error()) }
+  func connect(completion: Callback? = nil) throws {
+    guard !connecting else { throw Error.ConnectionInProgress }
+    guard !connected else { throw Error.ConnectionExists }
 
-    // Or if we are already connected
-    else if connected { completion?(false, Error.ConnectionExists.error()) }
+    try socket.connectToHost(device.configURL, onPort:ITachDeviceConnection.TCPPort)
 
-    // Otherwise set the flag
-    else {
-      connecting = true
-      connectCallback = completion
-      do {
-        try socket.connectToHost(device.configURL, onPort:ITachDeviceConnection.TCPPort)
-      } catch {
-        completion?(false, error as NSError)
-        connectCallback = nil
-      }
-    }
+    connecting = true
+    connectCallback = completion
   }
 
   /**
@@ -212,15 +215,16 @@ class ITachDeviceConnection: GCDAsyncSocketDelegate {
   - parameter completion: Callback? = nil
   */
   func disconnect(completion: Callback? = nil) {
-    if connected {
-      disconnectCallback = completion
-      socket.disconnectAfterReadingAndWriting()
-    } else {
-      completion?(true, nil)
-    }
+    guard connected else { completion?(true, nil); return }
+    disconnectCallback = completion
+    socket.disconnectAfterReadingAndWriting()
   }
 
-  // MARK: - GCGAsyncSocketDelegate
+}
+
+// MARK: - GCGAsyncSocketDelegate
+
+extension ITachDeviceConnection: GCDAsyncSocketDelegate {
 
   /**
   socket:didConnectToHost:port:
@@ -230,13 +234,13 @@ class ITachDeviceConnection: GCDAsyncSocketDelegate {
   - parameter port: UInt16
   */
   @objc func socket(sock: GCDAsyncSocket, didConnectToHost host: String, port: UInt16) {
-    MSLogDebug("connected to host '\(host)' over port '\(port)'")
+    MSLogInfo("connected to host '\(host)' over port '\(port)'")
     connecting = false
     connected = true
     connectCallback?(true, nil)
     connectCallback = nil
 
-    sendNextMessage()
+    do { try sendNextMessage() } catch { logError(error) }
   }
 
   /**
@@ -247,52 +251,43 @@ class ITachDeviceConnection: GCDAsyncSocketDelegate {
   - parameter tag: Int
   */
   @objc func socket(sock: GCDAsyncSocket, didReadData data: NSData, withTag tag: Int) {
-    // TODO: Tag numbers are still getting all out of whack
+    // TODO: Tag numbers are still getting all out of whack (7/30/15 -- Still?)
 
-    let message = NSString(data: data) as String
+    guard let message = String(data: data) else { MSLogWarn("failed to turn received data into a string"); return }
 
     let completion: Callback?
     let entry: MessageQueueEntry? = messagesSent[tag]
     let expected = entry?.messageData.expectResponse
 
-
-    if let expect = expected?.first where expected!.count == 1 && message ~= ~/expect {
-      completion = messagesSent.removeValueForKey(tag)?.completion
-    } else if let expect = expected?.first where expected!.count == 2 && message ~= ~/expect {
-      completion = nil
-    } else if let expect = expected?.last where expected!.count == 2 && message ~= ~/expect {
-      completion = messagesSent.removeValueForKey(tag)?.completion
-    } else {
-      completion = nil
-      receiveNextMessage(tag)
+    switch expected?.count {
+      case 1 where message ~= expected!.first!: fallthrough
+      case 2 where message ~= expected!.first!: completion = messagesSent.removeValueForKey(tag)?.completion
+      case 2 where message ~= expected!.first!: do { try receiveNextMessage(tag) } catch { logError(error) }; completion = nil
+      default:                                  completion = nil
     }
-    
+
     MSLogDebug("response received '\(message)' with tag '\(tag)'")
 
-    if let response = Response(response: message) {
-      switch response {
-        case .UnknownCommand (let e):
-          completion?(false, Error.NetworkDeviceError.error([NSLocalizedFailureReasonErrorKey:e.reason]))
-        case .BusyIR(_, let t) where t == tag:
-          messagesSending[t] = entry
-          sendNextMessage()
-        case .StopIR(let t) where t == tag:
-          completion?(false, Error.CommandHalted.error())
-        case .CapturedCommand(let c):
-          learnerDelegate?.commandCaptured(c)
-        case .LearnerEnabled:
-          learnerDelegate?.learnerEnabled()
-        case .LearnerDisabled:
-          learnerDelegate?.learnerDisabled()
-        case .LearnerUnavailable:
-          learnerDelegate?.learnerUnavailable()
-        case .CompleteIR, .Device, .EndListDevices, .Version, .Network, .IRConfig:
-          completion?(true, nil)
-        default:
-          completion?(false, nil)
-      }
-    } else {
-      completion?(false, nil)
+
+    guard let response = Response(response: message) else { completion?(false, Error.InvalidResponse); return }
+
+    switch response {
+
+      case .UnknownCommand (let e):         completion?(false, Error.DeviceError(e))
+      case .BusyIR(_, let t) where t == tag: messagesSending[t] = entry; do { try sendNextMessage() } catch { logError(error) }
+      case .StopIR(let t) where t == tag:    completion?(false, Error.CommandHalted)
+      case .CapturedCommand(let c):          learnerDelegate?.commandCaptured(c)
+      case .LearnerEnabled:                  learnerDelegate?.learnerEnabled()
+      case .LearnerDisabled:                 learnerDelegate?.learnerDisabled()
+      case .LearnerUnavailable:              learnerDelegate?.learnerUnavailable()
+      case .CompleteIR,
+           .Device,
+           .EndListDevices,
+           .Version,
+           .Network,
+           .IRConfig:                        completion?(true, nil)
+      default:                               completion?(false, Error.InvalidResponse)
+
     }
 
   }
@@ -306,16 +301,15 @@ class ITachDeviceConnection: GCDAsyncSocketDelegate {
   @objc func socket(sock: GCDAsyncSocket, didWriteDataWithTag tag: Int) {
 
     // Take the message sent out of our pending collection
-    if let entry = messagesSending.removeValueForKey(tag) {
+    guard let entry = messagesSending.removeValueForKey(tag) else { return }
 
-      MSLogDebug("entry written with message '\(entry.message)' and tag '\(tag)'")
+    MSLogDebug("entry written with message '\(entry.message)' and tag '\(tag)'")
 
-      // Insert it into our delivered collection
-      messagesSent[tag] = entry
+    // Insert it into our delivered collection
+    messagesSent[tag] = entry
 
-      // Send next if queue is not empty
-      sendNextMessage()
-    }
+    // Send next if queue is not empty
+    do { try sendNextMessage() } catch { logError(error) }
 
   }
 
@@ -326,40 +320,19 @@ class ITachDeviceConnection: GCDAsyncSocketDelegate {
   - parameter error: NSError?
   */
   @objc func socketDidDisconnect(sock: GCDAsyncSocket, withError error: NSError?) {
-    MSLogDebug("socket disconnected with error: \(toString(descriptionForError(error)))")
-    disconnectCallback?(true, error)
+    guard let callback = disconnectCallback else { return }
+
+    let connectionError: Error? = error == nil ? nil : Error.ConnectionError(error!)
+
+    callback(connectionError == nil, connectionError)
     disconnectCallback = nil
   }
 
   // MARK: - ITachError enumeration
   enum ITachError: String {
-    case ERR_01 = "ERR_01"
-    case ERR_02 = "ERR_02"
-    case ERR_03 = "ERR_03"
-    case ERR_04 = "ERR_04"
-    case ERR_05 = "ERR_05"
-    case ERR_06 = "ERR_06"
-    case ERR_07 = "ERR_07"
-    case ERR_08 = "ERR_08"
-    case ERR_09 = "ERR_09"
-    case ERR_10 = "ERR_10"
-    case ERR_11 = "ERR_11"
-    case ERR_12 = "ERR_12"
-    case ERR_13 = "ERR_13"
-    case ERR_14 = "ERR_14"
-    case ERR_15 = "ERR_15"
-    case ERR_16 = "ERR_16"
-    case ERR_17 = "ERR_17"
-    case ERR_18 = "ERR_18"
-    case ERR_19 = "ERR_19"
-    case ERR_20 = "ERR_20"
-    case ERR_21 = "ERR_21"
-    case ERR_22 = "ERR_22"
-    case ERR_23 = "ERR_23"
-    case ERR_24 = "ERR_24"
-    case ERR_25 = "ERR_25"
-    case ERR_26 = "ERR_26"
-    case ERR_27 = "ERR_27"
+    case ERR_01, ERR_02, ERR_03, ERR_04, ERR_05, ERR_06, ERR_07, ERR_08, ERR_09, ERR_10, ERR_11, ERR_12, ERR_13, 
+         ERR_14, ERR_15, ERR_16, ERR_17, ERR_18, ERR_19, ERR_20, ERR_21, ERR_22, ERR_23, ERR_24, ERR_25, ERR_26, 
+         ERR_27
 
     var reason: String {
       switch self {
