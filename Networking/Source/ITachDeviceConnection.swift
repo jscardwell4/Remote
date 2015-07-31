@@ -24,25 +24,10 @@ import MoonKit
 final class ITachDeviceConnection {
 
   typealias Callback = ConnectionManager.Callback
-
-  enum Error: WrappedErrorType {
-    case NoSocketConnection
-    case ConnectionInProgress
-    case ConnectionExists
-    case EmptyMessage
-    case DeviceError (ITachError)
-    case CommandHalted
-    case InvalidResponse
-    case ConnectionError (ErrorType)
-
-    var underlyingError: ErrorType? { if case .ConnectionError(let error) = self { return error } else { return nil } }
-  }
+  typealias Error = ConnectionManager.Error
 
   // MARK: - Static properties
-
-  static let TagKey = "tag"
-  static let PortKey = "port"
-  static let ExpectResponseKey = "expectResponse"
+  enum InfoKey: String { case Port, ExpectResponse }
 
   static let TCPPort: UInt16 = 4998
 
@@ -152,9 +137,10 @@ final class ITachDeviceConnection {
   - parameter completion: Callback? = nil
   */
   func enqueueCommand(command: ITachIRCommand, completion: Callback? = nil) throws {
-    try enqueueEntry(MessageQueueEntry(messageData: .SendIR(-1, command),
-                                       info: [ITachDeviceConnection.PortKey:Int(command.port)],
-                                       completion: completion))
+    let entry = MessageQueueEntry(messageData: Command.SendIR(-1, command),
+                                  info: [InfoKey.Port.rawValue:Int(command.port)],
+                                  completion: completion)
+    try enqueueEntry(entry)
   }
 
   /**
@@ -164,9 +150,10 @@ final class ITachDeviceConnection {
   - parameter completion: Callback? = nil
   */
   func enqueueCommand(command: Command, completion: Callback? = nil) throws {
-    try enqueueEntry(MessageQueueEntry(messageData: command,
-                                       info: [ITachDeviceConnection.ExpectResponseKey: command.expectResponse],
-                                       completion: completion))
+    let entry = MessageQueueEntry(messageData: command,
+                                  info: [InfoKey.ExpectResponse.rawValue: command.expectResponse],
+                                  completion: completion)
+    try enqueueEntry(entry)
   }
 
   /**
@@ -328,45 +315,46 @@ extension ITachDeviceConnection: GCDAsyncSocketDelegate {
     disconnectCallback = nil
   }
 
-  // MARK: - ITachError enumeration
-  enum ITachError: String {
-    case ERR_01, ERR_02, ERR_03, ERR_04, ERR_05, ERR_06, ERR_07, ERR_08, ERR_09, ERR_10, ERR_11, ERR_12, ERR_13, 
-         ERR_14, ERR_15, ERR_16, ERR_17, ERR_18, ERR_19, ERR_20, ERR_21, ERR_22, ERR_23, ERR_24, ERR_25, ERR_26, 
-         ERR_27
+}
 
-    var reason: String {
-      switch self {
-        case .ERR_01: return "Invalid command. Command not found"
-        case .ERR_02: return "Invalid module address (does not exist)"
-        case .ERR_03: return "Invalid connector address (does not exist)"
-        case .ERR_04: return "Invalid ID value"
-        case .ERR_05: return "Invalid frequency value"
-        case .ERR_06: return "Invalid repeat value"
-        case .ERR_07: return "Invalid offset value"
-        case .ERR_08: return "Invalid pulse count"
-        case .ERR_09: return "Invalid pulse data"
-        case .ERR_10: return "Uneven amount of <on|off> statements"
-        case .ERR_11: return "No carriage return found"
-        case .ERR_12: return "Repeat count exceeded"
-        case .ERR_13: return "IR command sent to input connector"
-        case .ERR_14: return "Blaster command sent to non-blaster connector"
-        case .ERR_15: return "No carriage return before buffer full"
-        case .ERR_16: return "No carriage return"
-        case .ERR_17: return "Bad command syntax"
-        case .ERR_18: return "Sensor command sent to non-input connector"
-        case .ERR_19: return "Repeated IR transmission failure"
-        case .ERR_20: return "Above designated IR <on|off> pair limit"
-        case .ERR_21: return "Symbol odd boundary"
-        case .ERR_22: return "Undefined symbol"
-        case .ERR_23: return "Unknown option"
-        case .ERR_24: return "Invalid baud rate setting"
-        case .ERR_25: return "Invalid flow control setting"
-        case .ERR_26: return "Invalid parity setting"
-        case .ERR_27: return "Settings are locked"
-      }
+// MARK: - ITachError enumeration
+public enum ITachError: String, ErrorType, CustomStringConvertible {
+  case ERR_01, ERR_02, ERR_03, ERR_04, ERR_05, ERR_06, ERR_07, ERR_08, ERR_09, ERR_10, ERR_11, ERR_12, ERR_13, 
+       ERR_14, ERR_15, ERR_16, ERR_17, ERR_18, ERR_19, ERR_20, ERR_21, ERR_22, ERR_23, ERR_24, ERR_25, ERR_26, 
+       ERR_27
+
+  public var description: String {
+    switch self {
+      case .ERR_01: return "Invalid command. Command not found"
+      case .ERR_02: return "Invalid module address (does not exist)"
+      case .ERR_03: return "Invalid connector address (does not exist)"
+      case .ERR_04: return "Invalid ID value"
+      case .ERR_05: return "Invalid frequency value"
+      case .ERR_06: return "Invalid repeat value"
+      case .ERR_07: return "Invalid offset value"
+      case .ERR_08: return "Invalid pulse count"
+      case .ERR_09: return "Invalid pulse data"
+      case .ERR_10: return "Uneven amount of <on|off> statements"
+      case .ERR_11: return "No carriage return found"
+      case .ERR_12: return "Repeat count exceeded"
+      case .ERR_13: return "IR command sent to input connector"
+      case .ERR_14: return "Blaster command sent to non-blaster connector"
+      case .ERR_15: return "No carriage return before buffer full"
+      case .ERR_16: return "No carriage return"
+      case .ERR_17: return "Bad command syntax"
+      case .ERR_18: return "Sensor command sent to non-input connector"
+      case .ERR_19: return "Repeated IR transmission failure"
+      case .ERR_20: return "Above designated IR <on|off> pair limit"
+      case .ERR_21: return "Symbol odd boundary"
+      case .ERR_22: return "Undefined symbol"
+      case .ERR_23: return "Unknown option"
+      case .ERR_24: return "Invalid baud rate setting"
+      case .ERR_25: return "Invalid flow control setting"
+      case .ERR_26: return "Invalid parity setting"
+      case .ERR_27: return "Settings are locked"
     }
-
-
   }
 
+
 }
+

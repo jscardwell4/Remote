@@ -23,7 +23,7 @@ final class ITachConnectionManager {
   typealias Connection = ITachDeviceConnection
 
   enum Error: ErrorType {
-    case CommandEmpty
+    case EmptyCommand
   }
 
   typealias Device = ITachDevice
@@ -51,7 +51,7 @@ final class ITachConnectionManager {
   /** Multicast group connection */
   static private var multicastConnection = MulticastConnection(address: ITachConnectionManager.MulticastAddress,
                                                                port: ITachConnectionManager.MulticastPort,
-                                                               callback: ITachConnectionManager.messageReceived)
+                                                               didReceiveMessage: ITachConnectionManager.messageReceived)
 
   // MARK: - Network device detection
 
@@ -153,10 +153,10 @@ final class ITachConnectionManager {
   - parameter command: ITachIRCommand The command to execute
   - parameter completion: The block to execute upon task completion
 
-  - throws: `ConnectionManager.Error.CommandEmpty`
+  - throws: `ConnectionManager.Error.EmptyCommand`
   */
   class func sendCommand(command: ITachIRCommand, completion: Callback? = nil) throws {
-    guard !command.commandString.isEmpty else { MSLogError("cannot send empty or nil command"); throw Error.CommandEmpty }
+    guard !command.commandString.isEmpty else { MSLogError("cannot send empty or nil command"); throw Error.EmptyCommand }
 
     guard  let device = command.networkDevice as? Device  else { return }
 

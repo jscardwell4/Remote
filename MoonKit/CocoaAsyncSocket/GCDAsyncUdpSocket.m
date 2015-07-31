@@ -350,14 +350,14 @@ enum GCDAsyncUdpSocketConfig
 	return [self initWithDelegate:nil delegateQueue:NULL socketQueue:sq];
 }
 
-- (id)initWithDelegate:(id)aDelegate delegateQueue:(dispatch_queue_t)dq
+- (id)initWithDelegate:(nullable id)aDelegate delegateQueue:(nullable dispatch_queue_t)dq
 {
 	LogTrace();
 	
 	return [self initWithDelegate:aDelegate delegateQueue:dq socketQueue:NULL];
 }
 
-- (id)initWithDelegate:(id)aDelegate delegateQueue:(dispatch_queue_t)dq socketQueue:(dispatch_queue_t)sq
+- (id)initWithDelegate:(nullable id)aDelegate delegateQueue:(nullable dispatch_queue_t)dq socketQueue:(nullable dispatch_queue_t)sq
 {
 	LogTrace();
 	
@@ -2745,7 +2745,7 @@ enum GCDAsyncUdpSocketConfig
 	return [self bindToPort:port interface:nil error:errPtr];
 }
 
-- (BOOL)bindToPort:(uint16_t)port interface:(NSString *)interface error:(NSError **)errPtr
+- (BOOL)bindToPort:(uint16_t)port interface:(nullable NSString *)interface error:(NSError **)errPtr
 {
 	__block BOOL result = NO;
 	__block NSError *err = nil;
@@ -3323,7 +3323,7 @@ enum GCDAsyncUdpSocketConfig
 	return [self joinMulticastGroup:group onInterface:nil error:errPtr];
 }
 
-- (BOOL)joinMulticastGroup:(NSString *)group onInterface:(NSString *)interface error:(NSError **)errPtr
+- (BOOL)joinMulticastGroup:(NSString *)group onInterface:(nullable NSString *)interface error:(NSError **)errPtr
 {
     // IP_ADD_MEMBERSHIP == IPV6_JOIN_GROUP
     return [self performMulticastRequest:IP_ADD_MEMBERSHIP forGroup:group onInterface:interface error:errPtr];
@@ -3334,7 +3334,7 @@ enum GCDAsyncUdpSocketConfig
 	return [self leaveMulticastGroup:group onInterface:nil error:errPtr];
 }
 
-- (BOOL)leaveMulticastGroup:(NSString *)group onInterface:(NSString *)interface error:(NSError **)errPtr
+- (BOOL)leaveMulticastGroup:(NSString *)group onInterface:(nullable NSString *)interface error:(NSError **)errPtr
 {
     // IP_DROP_MEMBERSHIP == IPV6_LEAVE_GROUP
     return [self performMulticastRequest:IP_DROP_MEMBERSHIP forGroup:group onInterface:interface error:errPtr];
@@ -5318,12 +5318,12 @@ Failed:
 	return (af == AF_INET6);
 }
 
-+ (BOOL)getHost:(NSString **)hostPtr port:(uint16_t *)portPtr fromAddress:(NSData *)address
++ (BOOL)getHost:(NSString * __nonnull * __nullable)hostPtr port:(uint16_t * __nullable )portPtr fromAddress:(NSData *)address
 {
 	return [self getHost:hostPtr port:portPtr family:NULL fromAddress:address];
 }
 
-+ (BOOL)getHost:(NSString **)hostPtr port:(uint16_t *)portPtr family:(int *)afPtr fromAddress:(NSData *)address
++ (BOOL)getHost:(NSString * __nonnull * __nullable)hostPtr port:(uint16_t * __nullable)portPtr family:(int * __nullable)afPtr fromAddress:(NSData *)address
 {
 	if ([address length] >= sizeof(struct sockaddr))
 	{

@@ -32,7 +32,7 @@ final class ISYConnectionManager {
   /** Multicast group connection */
   static let multicastConnection = MulticastConnection(address:ISYConnectionManager.MulticastAddress,
                                                        port: ISYConnectionManager.MulticastPort,
-                                                       callback: ISYConnectionManager.messageReceived)
+                                                       didReceiveMessage: ISYConnectionManager.messageReceived)
 
   /** Whether socket is open to receive multicast group broadcast messages */
   static private(set) var detectingNetworkDevices = false

@@ -15,7 +15,7 @@ class MulticastConnection: GCDAsyncUdpSocketDelegate {
 
   let address: String
   let port: UInt16
-  let callback: ((String) -> Void)?
+  let didReceiveMessage: ((String) -> Void)?
 
   private var listening = false
   private var joinedGroup = false
@@ -23,31 +23,17 @@ class MulticastConnection: GCDAsyncUdpSocketDelegate {
   private let socket: GCDAsyncUdpSocket
   private static let queue = dispatch_queue_create("com.moondeerstudios.networking.multicast", DISPATCH_QUEUE_SERIAL)
 
-  enum Error: WrappedErrorType { 
-    
-    case JoinGroup (ErrorType)
-    case LeaveGroup (ErrorType)
-    case BindPort (ErrorType)
-    case BeginReceiving (ErrorType)
-
-    var underlyingError: ErrorType? {
-      switch self { 
-        case .JoinGroup(let error): return error
-        case .BindPort(let error):  return error
-        case .LeaveGroup(let error): return error
-        case .BeginReceiving(let error):  return error
-      }
-    }
-  }
+  typealias Error = ConnectionManager.Error
 
   /**
-  init:port:
+  Default initializer
 
   - parameter a: String
   - parameter p: UInt16
+  - parameter callback: ((String) -> Void)? = nil
   */
-  init(address: String, port: UInt16, callback: ((String) -> Void)? = nil) {
-    self.address = address; self.port = port; self.callback = callback
+  init(address a: String, port p: UInt16, didReceiveMessage callback: ((String) -> Void)? = nil) {
+    address = a; port = p; didReceiveMessage = callback
     socket = GCDAsyncUdpSocket()
     socket.setDelegate(self)
     socket.setDelegateQueue(MulticastConnection.queue)
@@ -101,16 +87,18 @@ class MulticastConnection: GCDAsyncUdpSocketDelegate {
   /**
   udpSocket:didReceiveData:fromAddress:withFilterContext:
 
-  - parameter sock: GCDAsyncUdpSocket!
-  - parameter data: NSData!
-  - parameter address: NSData!
-  - parameter filterContext: AnyObject!
+  - parameter sock: GCDAsyncUdpSocket
+  - parameter data: NSData
+  - parameter address: NSData
+  - parameter filterContext: AnyObject
   */
-  @objc func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!,
-    withFilterContext filterContext: AnyObject!)
+  @objc func udpSocket(sock: GCDAsyncUdpSocket,
+        didReceiveData data: NSData,
+           fromAddress address: NSData,
+     withFilterContext filterContext: AnyObject)
   {
     guard let dataString = String(data: data) else { return }
-    callback?(dataString)
+    didReceiveMessage?(dataString)
   }
 
 }

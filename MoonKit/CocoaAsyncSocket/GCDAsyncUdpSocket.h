@@ -13,22 +13,22 @@
 #import <TargetConditionals.h>
 #import <Availability.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 extern NSString *const GCDAsyncUdpSocketException;
 extern NSString *const GCDAsyncUdpSocketErrorDomain;
 
 extern NSString *const GCDAsyncUdpSocketQueueName;
 extern NSString *const GCDAsyncUdpSocketThreadName;
 
-enum GCDAsyncUdpSocketError
-{
-	GCDAsyncUdpSocketNoError = 0,          // Never used
-	GCDAsyncUdpSocketBadConfigError,       // Invalid configuration
-	GCDAsyncUdpSocketBadParamError,        // Invalid parameter was passed
-	GCDAsyncUdpSocketSendTimeoutError,     // A send operation timed out
-	GCDAsyncUdpSocketClosedError,          // The socket was closed
-	GCDAsyncUdpSocketOtherError,           // Description provided in userInfo
+typedef NS_ENUM (NSInteger, GCDAsyncUdpSocketError ) {
+  GCDAsyncUdpSocketNoError = 0,          // Never used
+  GCDAsyncUdpSocketBadConfigError,       // Invalid configuration
+  GCDAsyncUdpSocketBadParamError,        // Invalid parameter was passed
+  GCDAsyncUdpSocketSendTimeoutError,     // A send operation timed out
+  GCDAsyncUdpSocketClosedError,          // The socket was closed
+  GCDAsyncUdpSocketOtherError,           // Description provided in userInfo
 };
-typedef enum GCDAsyncUdpSocketError GCDAsyncUdpSocketError;
 
 /**
  * You may optionally set a receive filter for the socket.
@@ -78,7 +78,7 @@ typedef enum GCDAsyncUdpSocketError GCDAsyncUdpSocketError;
  * [udpSocket setReceiveFilter:filter withQueue:myParsingQueue];
  * 
 **/
-typedef BOOL (^GCDAsyncUdpSocketReceiveFilterBlock)(NSData *data, NSData *address, id *context);
+typedef BOOL (^GCDAsyncUdpSocketReceiveFilterBlock)(NSData *data, NSData *address, id __nullable * __nullable context);
 
 /**
  * You may optionally set a send filter for the socket.
@@ -128,8 +128,8 @@ typedef BOOL (^GCDAsyncUdpSocketSendFilterBlock)(NSData *data, NSData *address, 
 **/
 - (id)init;
 - (id)initWithSocketQueue:(dispatch_queue_t)sq;
-- (id)initWithDelegate:(id)aDelegate delegateQueue:(dispatch_queue_t)dq;
-- (id)initWithDelegate:(id)aDelegate delegateQueue:(dispatch_queue_t)dq socketQueue:(dispatch_queue_t)sq;
+- (id)initWithDelegate:(nullable id)aDelegate delegateQueue:(nullable dispatch_queue_t)dq;
+- (id)initWithDelegate:(nullable id)aDelegate delegateQueue:(nullable dispatch_queue_t)dq socketQueue:(nullable dispatch_queue_t)sq;
 
 #pragma mark Configuration
 
@@ -141,7 +141,7 @@ typedef BOOL (^GCDAsyncUdpSocketSendFilterBlock)(NSData *data, NSData *address, 
 - (void)setDelegateQueue:(dispatch_queue_t)delegateQueue;
 - (void)synchronouslySetDelegateQueue:(dispatch_queue_t)delegateQueue;
 
-- (void)getDelegate:(id *)delegatePtr delegateQueue:(dispatch_queue_t *)delegateQueuePtr;
+- (void)getDelegate:(id __nullable * __nullable)delegatePtr delegateQueue:(dispatch_queue_t __nullable * __nullable)delegateQueuePtr;
 - (void)setDelegate:(id)delegate delegateQueue:(dispatch_queue_t)delegateQueue;
 - (void)synchronouslySetDelegate:(id)delegate delegateQueue:(dispatch_queue_t)delegateQueue;
 
@@ -319,7 +319,7 @@ typedef BOOL (^GCDAsyncUdpSocketSendFilterBlock)(NSData *data, NSData *address, 
  * On success, returns YES.
  * Otherwise returns NO, and sets errPtr. If you don't care about the error, you can pass NULL for errPtr.
 **/
-- (BOOL)bindToPort:(uint16_t)port interface:(NSString *)interface error:(NSError **)errPtr;
+- (BOOL)bindToPort:(uint16_t)port interface:(nullable NSString *)interface error:(NSError **)errPtr;
 
 /**
  * Binds the UDP socket to the given address, specified as a sockaddr structure wrapped in a NSData object.
@@ -418,10 +418,10 @@ typedef BOOL (^GCDAsyncUdpSocketSendFilterBlock)(NSData *data, NSData *address, 
  * On success, returns YES.
  * Otherwise returns NO, and sets errPtr. If you don't care about the error, you can pass nil for errPtr.
 **/
-- (BOOL)joinMulticastGroup:(NSString *)group onInterface:(NSString *)interface error:(NSError **)errPtr;
+- (BOOL)joinMulticastGroup:(NSString *)group onInterface:(nullable NSString *)interface error:(NSError **)errPtr;
 
 - (BOOL)leaveMulticastGroup:(NSString *)group error:(NSError **)errPtr;
-- (BOOL)leaveMulticastGroup:(NSString *)group onInterface:(NSString *)interface error:(NSError **)errPtr;
+- (BOOL)leaveMulticastGroup:(NSString *)group onInterface:(nullable NSString *)interface error:(NSError **)errPtr;
 
 #pragma mark Broadcast
 
@@ -744,7 +744,7 @@ typedef BOOL (^GCDAsyncUdpSocketSendFilterBlock)(NSData *data, NSData *address, 
  * then you cannot perform any tasks which may invoke dispatch_sync on the socket queue.
  * For example, you can't query properties on the socket.
 **/
-- (void)setReceiveFilter:(GCDAsyncUdpSocketReceiveFilterBlock)filterBlock
+- (void)setReceiveFilter:(nullable GCDAsyncUdpSocketReceiveFilterBlock)filterBlock
                withQueue:(dispatch_queue_t)filterQueue
           isAsynchronous:(BOOL)isAsynchronous;
 
@@ -938,8 +938,8 @@ typedef BOOL (^GCDAsyncUdpSocketSendFilterBlock)(NSData *data, NSData *address, 
 + (BOOL)isIPv4Address:(NSData *)address;
 + (BOOL)isIPv6Address:(NSData *)address;
 
-+ (BOOL)getHost:(NSString **)hostPtr port:(uint16_t *)portPtr fromAddress:(NSData *)address;
-+ (BOOL)getHost:(NSString **)hostPtr port:(uint16_t *)portPtr family:(int *)afPtr fromAddress:(NSData *)address;
++ (BOOL)getHost:(NSString * __nullable * __nullable)hostPtr port:(uint16_t * __nullable)portPtr fromAddress:(NSData *)address;
++ (BOOL)getHost:(NSString * __nonnull * __nullable)hostPtr port:(uint16_t * __nullable)portPtr family:(int * __nullable)afPtr fromAddress:(NSData *)address;
 
 @end
 
@@ -990,7 +990,8 @@ typedef BOOL (^GCDAsyncUdpSocketSendFilterBlock)(NSData *data, NSData *address, 
 /**
  * Called when the socket is closed.
 **/
-- (void)udpSocketDidClose:(GCDAsyncUdpSocket *)sock withError:(NSError *)error;
+- (void)udpSocketDidClose:(GCDAsyncUdpSocket *)sock withError:(nullable NSError *)error;
 
 @end
 
+NS_ASSUME_NONNULL_END

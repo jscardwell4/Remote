@@ -8,6 +8,7 @@
 
 import Foundation
 
+extension GCDAsyncUdpSocketError: ErrorType {}
 
 public protocol JSONValueConvertible {
   var jsonValue: JSONValue { get }

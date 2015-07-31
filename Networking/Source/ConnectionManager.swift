@@ -31,19 +31,35 @@ public final class ConnectionManager {
   // MARK: - Connection manager error type
 
   /** Enumeration to encapsulate connection errors */
-  public enum Error: ErrorType {
+  public enum Error: WrappedErrorType {
     case NoWifi
-//    case InvalidID
-    case CommandEmpty
-//    case CommandHalted
+    case EmptyCommand
     case InvalidCommand
     case Response (NSError)
-//    case ConnectionExists
-//    case InvalidNetworkDevice
-//    case ConnectionInProgress
-//    case NetworkDeviceError
-//    case Aggregate
+    case JoinGroup (ErrorType)
+    case LeaveGroup (ErrorType)
+    case BindPort (ErrorType)
+    case BeginReceiving (ErrorType)
+    case NoSocketConnection
+    case ConnectionInProgress
+    case ConnectionExists
+    case EmptyMessage
+    case DeviceError (ITachError)
+    case CommandHalted
+    case InvalidResponse
+    case ConnectionError (ErrorType)
 
+    public var underlyingError: ErrorType? {
+      switch self {
+        case .JoinGroup(let error):       return error
+        case .BindPort(let error):        return error
+        case .LeaveGroup(let error):      return error
+        case .BeginReceiving(let error):  return error
+        case .ConnectionError(let error): return error
+        case .DeviceError(let error):     return error
+        default:                          return nil
+      }
+    }
   }
 
   // MARK: - Flag, notification, and key property declarations
@@ -105,15 +121,24 @@ public final class ConnectionManager {
   // MARK: - Background, foreground receptionists
 
   /** Handles backgrounded and foregrounded application notification */
-  private static let notifcationReceptionist = NotificationReceptionist(
-    callbacks: [
-      UIApplicationDidEnterBackgroundNotification :
-        .Block(nil, { _ in ITachConnectionManager.suspend(); ISYConnectionManager.suspend() }),
-      UIApplicationWillEnterForegroundNotification :
-        .Block(nil, { _ in do { try ITachConnectionManager.resume(); try ISYConnectionManager.resume() } catch { logError(error) } })
-    ],
+  private static let notificationReceptionist = NotificationReceptionist(
+    callbacks: [ UIApplicationDidEnterBackgroundNotification:  .Block(nil, { _ in ConnectionManager.suspend() }),
+                 UIApplicationWillEnterForegroundNotification: .Block(nil, { _ in ConnectionManager.resume() }) ],
     object: UIApplication.sharedApplication()
   )
+
+  /** suspend */
+  private static func suspend() { ITachConnectionManager.suspend(); ISYConnectionManager.suspend() }
+
+  /** resume */
+  private static func resume() {
+    do {
+      try ITachConnectionManager.resume()
+      try ISYConnectionManager.resume()
+    } catch {
+      logError(error)
+    }
+  }
 
   // MARK: - Sending commands
 
@@ -138,7 +163,7 @@ public final class ConnectionManager {
         try ITachConnectionManager.sendCommand(command, completion: completion)
 
       case let command as HTTPCommand where command.url.absoluteString.isEmpty:
-        throw Error.CommandEmpty
+        throw Error.EmptyCommand
 
       case let command as HTTPCommand:
         NSURLSession(configuration: sessionConfiguration).dataTaskWithURL(command.url, completionHandler: {

@@ -334,8 +334,8 @@ public func logError(e: ErrorType,
                      function: String = __FUNCTION__,
                      line: Int32 = __LINE__)
 {
-  let error = e as NSError
-  let errorDescription = detailedDescriptionForError(error, depth: 0)
+  var errorDescription = "\(e)"
+  if let e = e as? WrappedErrorType, u = e.underlyingError { errorDescription += "underlying error: \(u)" }
 
   var logMessage = "-Error- "
   if let message = message { logMessage += message + "\n" }
