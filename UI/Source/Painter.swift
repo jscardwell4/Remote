@@ -203,9 +203,9 @@ public final class Painter {
 
   // MARK: - Static properties
 
-  public static let defaultBackgroundColor = UIColor(r: 41, g: 40, b: 39, a: 255)!
+  public static let defaultBackgroundColor = UIColor(r: 41, g: 40, b: 39, a: 255)
   public static let defaultForegroundColor = white
-  public static let blueAccentColor = UIColor(r: 50, g: 143, b: 239, a: 255)!
+  public static let blueAccentColor = UIColor(r: 50, g: 143, b: 239, a: 255)
   public static let defaultRadii = CGSize(width: 10, height: 20)
   public static let defaultCorners: UIRectCorner = .AllCorners
   public static let defaultFont = UIFont.systemFontOfSize(24.0)

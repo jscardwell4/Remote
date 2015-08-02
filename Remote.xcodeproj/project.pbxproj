@@ -37,6 +37,8 @@
 		C2194AA01AFE58CA009B19B7 /* Elysio.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2194A5E1AFE4FF1009B19B7 /* Elysio.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C21B423B170B31E700FAE00E /* REEditingCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */; };
 		C21C43041A80015E004F8DA8 /* MainMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21C43031A80015E004F8DA8 /* MainMenuController.swift */; };
+		C21DE25D1B6D93A40003A00C /* DiscoveryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21DE25C1B6D93A40003A00C /* DiscoveryView.swift */; };
+		C21DE25F1B6D93CE0003A00C /* DiscoveryAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21DE25E1B6D93CE0003A00C /* DiscoveryAnimationView.swift */; };
 		C21E9AB01B5DB9EB0045F49A /* BankItemCreationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21E9AAF1B5DB9EB0045F49A /* BankItemCreationDelegate.swift */; };
 		C21E9AB21B5DCB210045F49A /* ItemCreationTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21E9AB11B5DCB210045F49A /* ItemCreationTransaction.swift */; };
 		C21F10661AC62D7200CD877B /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2C3B91E1AC5DA7D001DC6CC /* CocoaLumberjack.framework */; };
@@ -1055,6 +1057,8 @@
 		C21B4239170B31E700FAE00E /* REEditingCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REEditingCollectionViewLayout.h; sourceTree = "<group>"; };
 		C21B423A170B31E700FAE00E /* REEditingCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REEditingCollectionViewLayout.m; sourceTree = "<group>"; };
 		C21C43031A80015E004F8DA8 /* MainMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuController.swift; sourceTree = "<group>"; };
+		C21DE25C1B6D93A40003A00C /* DiscoveryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryView.swift; sourceTree = "<group>"; };
+		C21DE25E1B6D93CE0003A00C /* DiscoveryAnimationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryAnimationView.swift; sourceTree = "<group>"; };
 		C21E9AAF1B5DB9EB0045F49A /* BankItemCreationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankItemCreationDelegate.swift; sourceTree = "<group>"; };
 		C21E9AB11B5DCB210045F49A /* ItemCreationTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ItemCreationTransaction.swift; path = ../../ItemCreationTransaction.swift; sourceTree = "<group>"; };
 		C21F07CB1AA378E700F1F8DD /* ActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
@@ -2961,6 +2965,8 @@
 				C21E9AAF1B5DB9EB0045F49A /* BankItemCreationDelegate.swift */,
 				C21E9AB11B5DCB210045F49A /* ItemCreationTransaction.swift */,
 				C2E9A4311B699C260006AFA8 /* DiscoveryViewController.swift */,
+				C21DE25C1B6D93A40003A00C /* DiscoveryView.swift */,
+				C21DE25E1B6D93CE0003A00C /* DiscoveryAnimationView.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -4589,6 +4595,7 @@
 				C2FE79D61B1E19350087F72C /* BankCollectionDetailTextInputRow.swift in Sources */,
 				C2FE79A51B1E18B00087F72C /* BankCollectionDetailAttributedTextCell.swift in Sources */,
 				C2FE79E11B1E20920087F72C /* BankCollectionFilteringDetailSection.swift in Sources */,
+				C21DE25D1B6D93A40003A00C /* DiscoveryView.swift in Sources */,
 				C2FE79E41B1E2ED10087F72C /* BankModelDetailDelegate.swift in Sources */,
 				C2EEBA261B08087D0041B1B1 /* Manufacturer+Bank.swift in Sources */,
 				C2FE79D81B1E19350087F72C /* BankCollectionDetailTwoToneSliderRow.swift in Sources */,
@@ -4609,6 +4616,7 @@
 				C26A16441B0E1941001FC95F /* NetworkDevice+Bank.swift in Sources */,
 				C285D8671AC4BF9800C527F6 /* BankCollectionItemCell.swift in Sources */,
 				C2FE79E01B1E20920087F72C /* BankCollectionDetailSectionHeader.swift in Sources */,
+				C21DE25F1B6D93CE0003A00C /* DiscoveryAnimationView.swift in Sources */,
 				C2FE79CE1B1E19350087F72C /* BankCollectionDetailLabelRow.swift in Sources */,
 				C2EEBA241B08087D0041B1B1 /* ISYDevice+Bank.swift in Sources */,
 				C2FE79A71B1E18B00087F72C /* BankCollectionDetailCell.swift in Sources */,

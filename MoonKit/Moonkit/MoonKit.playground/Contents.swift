@@ -3,14 +3,5 @@ import Foundation
 import UIKit
 import MoonKit
 
-enum CustomError: ErrorType {
-  case ThingOneGotFucked
-  case ThingTwoGotFucked
-}
-
-let error = CustomError.ThingOneGotFucked
-
-let nserror = error as NSError
-
-
-String(String)
+UIColor(r: 59, g: 60, b: 64, a:255)
+UIColor(r:159, g:160, b:164, a:255)

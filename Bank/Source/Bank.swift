@@ -74,10 +74,10 @@ final public class Bank {
   public static let sectionHeaderSubFont    = Elysio.mediumFontWithSize(12)
 
   // Colors
-  public static let labelColor            = UIColor(r: 59, g: 60, b: 64, a:255)!
-  public static let infoColor             = UIColor(r:159, g:160, b:164, a:255)!
+  public static let labelColor            = UIColor(r: 59, g: 60, b: 64, a:255)
+  public static let infoColor             = UIColor(r:159, g:160, b:164, a:255)
   public static let backgroundColor       = UIColor.whiteColor()
-  public static let actionColor           = UIColor(r: 0,   g: 175, b: 255, a: 255)!
+  public static let actionColor           = UIColor(r: 0,   g: 175, b: 255, a: 255)
   public static let formLabelTextColor    = UIColor(white: 0.2, alpha: 1.0)
   public static let formControlTextColor  = UIColor(white: 0.49019608, alpha: 1.0)
   public static let sectionHeaderSubColor = UIColor(red: 0.937, green: 0.937, blue: 0.957, alpha: 1)

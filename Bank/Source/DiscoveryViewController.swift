@@ -12,6 +12,7 @@ import DataModel
 
 final class DiscoveryViewController: UIViewController {
 
+
   private weak var discoveryView: UIView!
   private weak var toolbar: UIToolbar!
 
@@ -53,12 +54,7 @@ final class DiscoveryViewController: UIViewController {
   override func loadView() {
     view = UIView(autolayout: true)
 
-    let discoveryView = UIView(autolayout: true)
-    discoveryView.backgroundColor = UIColor.whiteColor()
-    discoveryView.layer.shadowOpacity = 0.75
-    discoveryView.layer.shadowRadius = 8
-    discoveryView.layer.shadowOffset = CGSize(width: 1, height: 3)
-
+    let discoveryView = DiscoveryView(autolayout: true)
     view.addSubview(discoveryView)
     self.discoveryView = discoveryView
 
@@ -67,10 +63,13 @@ final class DiscoveryViewController: UIViewController {
     toolbar.setBackgroundImage(UIImage(), forToolbarPosition: .Any, barMetrics: .Default)
     toolbar.tintColor = UIColor(white: 0.5, alpha: 1)
     toolbar.items = [
+      UIBarButtonItem.fixedSpace(16),
       UIBarButtonItem(title: "Cancel", style: .Plain, target: self, action: "cancelAction"),
       UIBarButtonItem.flexibleSpace(),
-      UIBarButtonItem(title: "Submit", style: .Done, target: self, action: "submitAction")
+      UIBarButtonItem(title: "Submit", style: .Done, target: self, action: "submitAction"),
+      UIBarButtonItem.fixedSpace(16)
     ]
+    toolbar.items?[2].enabled = false
     view.addSubview(toolbar)
     self.toolbar = toolbar
 
@@ -87,11 +86,20 @@ final class DiscoveryViewController: UIViewController {
     guard view.constraintsWithIdentifier(id).count == 0 else { return }
 
     view.constrain(
-      [view.width => 300, view.height => 344] --> id,
+      [view.width => 280, view.height => 300] --> id,
       𝗩|discoveryView--toolbar|𝗩 --> id,
       𝗛|discoveryView|𝗛 --> id,
       [toolbar.left => discoveryView.left, toolbar.right => discoveryView.right] --> id
     )
+  }
+
+  /**
+  discoveredDevice:
+
+  - parameter device: NetworkDevice
+  */
+  func discoveredDevice(device: NetworkDevice) {
+
   }
 }
 

@@ -48,7 +48,7 @@ extension ImageCategory: FormCreatable {
 extension ImageCategory: CustomCreatableItem {
   func itemCreationControllerWithContext(context: NSManagedObjectContext,
                      cancellationHandler didCancel: () -> Void,
-                         creationHandler didCreate: (ModelObject) -> Void) -> UIViewController
+                         creationHandler didCreate: (ModelObject) -> Void) -> UIViewController?
   {
     return Image.creationControllerWithContext(context,
                            cancellationHandler: didCancel) {($0 as! Image).imageCategory = self; didCreate($0) }

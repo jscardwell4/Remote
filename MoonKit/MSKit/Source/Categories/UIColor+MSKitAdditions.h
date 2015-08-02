@@ -35,8 +35,8 @@
 #define UIColorMake(r,g,b,a)   [UIColor colorWithRed:r green:g blue:b alpha:a]
 
 
-NSString * NSStringFromCGColorSpaceModel(CGColorSpaceModel model);
-NSString * NSStringFromCGColorRenderingIntent(CGColorRenderingIntent intent);
+NSString  * _Nonnull   NSStringFromCGColorSpaceModel(CGColorSpaceModel model);
+NSString * _Nonnull NSStringFromCGColorRenderingIntent(CGColorRenderingIntent intent);
 //NSString * NSStringFromUIColor(UIColor * color);
 
 @interface UIColor (MSKitAdditions)
@@ -54,7 +54,7 @@ NSString * NSStringFromCGColorRenderingIntent(CGColorRenderingIntent intent);
 //@property (nonatomic, readonly) UIColor         * rgbColor;
 //@property (nonatomic, readonly) UIColor         * invertedColor;
 //@property (nonatomic, readonly) UIColor         * luminanceMappedColor;
-@property (nonatomic, readonly) NSString        * colorName;
+@property (nonatomic, readonly, nullable) NSString        * colorName;
 //@property (nonatomic, readonly) NSString        * rgbHexString;
 //@property (nonatomic, readonly) NSString        * rgbaHexString;
 //@property (nonatomic, readonly) NSString        * string;
@@ -77,17 +77,17 @@ NSString * NSStringFromCGColorRenderingIntent(CGColorRenderingIntent intent);
 //- (UIColor *)colorByDarkeningTo:(CGFloat)f;
 //- (UIColor *)colorByDarkeningToColor:(UIColor *)color;
 
-+ (UIColor *)colorWithRGBHex:(uint32_t)hex;
-+ (UIColor *)colorWithRGBAHex:(uint32_t)hex;
-+ (UIColor *)colorWithR:(uint8_t)r G:(uint8_t)g B:(uint8_t)b A:(uint8_t)a;
-+ (UIColor *)colorWithRGBHexString:(NSString *)string;
-+ (UIColor *)colorWithRGBAHexString:(NSString *)string;
++ (nonnull UIColor *)colorWithRGBHex:(uint32_t)hex;
++ (nonnull UIColor *)colorWithRGBAHex:(uint32_t)hex;
++ (nonnull UIColor *)colorWithR:(uint8_t)r G:(uint8_t)g B:(uint8_t)b A:(uint8_t)a;
++ (null_unspecified UIColor *)colorWithRGBHexString:(null_unspecified NSString *)string;
++ (null_unspecified UIColor *)colorWithRGBAHexString:(null_unspecified NSString *)string;
 
-+ (UIColor *)colorWithName:(NSString *)name;
-+ (NSArray *)colorNames;
-+ (NSString *)nameForColor:(UIColor *)color ignoreAlpha:(BOOL)ignoreAlpha;
-+ (UIColor *)colorWithString:(NSString *)string;
-+ (UIColor *)colorWithJSONValue:(NSString *)string;
++ (nullable UIColor *)colorWithName:(null_unspecified NSString *)name;
++ (nonnull NSArray *)colorNames;
++ (nullable NSString *)nameForColor:(null_unspecified UIColor *)color ignoreAlpha:(BOOL)ignoreAlpha;
++ (nullable UIColor *)colorWithString:(null_unspecified NSString *)string;
++ (null_unspecified UIColor *)colorWithJSONValue:(null_unspecified NSString *)string;
 
 //+ (UIColor *)randomColor;
 

@@ -150,6 +150,19 @@ public class ITachDevice: NetworkDevice {
     super.init(context: context)
   }
 
+  override public var summaryItems: OrderedDictionary<String, String> {
+    var items = super.summaryItems
+    items["Config URL"] = configURL
+    items["Make"] = make
+    items["Model"] = model
+    items["PCB-PN"] = pcbPN
+    items["SDK Class"] = sdkClass
+    items["Revision"] = revision
+    items["PKG Level"] = pkgLevel
+    items["Status"] = status
+    return items
+  }
+
   /**
   initWithBeacon:context:
 

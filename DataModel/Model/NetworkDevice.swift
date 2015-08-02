@@ -41,6 +41,10 @@ public class NetworkDevice: EditableModelObject {
     )
   }
 
+  public var summaryItems: OrderedDictionary<String, String> {
+    return ["Unique Identifier": uniqueIdentifier]
+  }
+
   /**
   importObjectWithData:context:
 

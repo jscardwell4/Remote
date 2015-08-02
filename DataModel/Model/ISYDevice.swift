@@ -76,47 +76,54 @@ public class ISYDevice: NetworkDevice {
   @NSManaged public var groups: Set<ISYDeviceGroup>
   @NSManaged public var nodes: Set<ISYDeviceNode>
 
-/**
-updateWithData:
+  /**
+  updateWithData:
 
-- parameter data: ObjectJSONValue
-*/
-override public func updateWithData(data: ObjectJSONValue) {
-  super.updateWithData(data)
-  if let modelNumber       = String(data["modelNumber"]) { self.modelNumber = modelNumber }
-  if let modelName         = String(data["modelName"]) { self.modelName = modelName }
-  if let modelDescription  = String(data["modelDescription"]) { self.modelDescription = modelDescription }
-  if let manufacturerURL   = String(data["manufacturerURL"]) { self.manufacturerURL = manufacturerURL }
-  if let manufacturer      = String(data["manufacturer"]) { self.manufacturer = manufacturer }
-  if let friendlyName      = String(data["friendlyName"]) { self.friendlyName = friendlyName }
-  if let deviceType        = String(data["deviceType"]) { self.deviceType = deviceType }
-  if let baseURL           = String(data["baseURL"]) { self.baseURL = baseURL }
+  - parameter data: ObjectJSONValue
+  */
+  override public func updateWithData(data: ObjectJSONValue) {
+    super.updateWithData(data)
+    if let modelNumber       = String(data["modelNumber"]) { self.modelNumber = modelNumber }
+    if let modelName         = String(data["modelName"]) { self.modelName = modelName }
+    if let modelDescription  = String(data["modelDescription"]) { self.modelDescription = modelDescription }
+    if let manufacturerURL   = String(data["manufacturerURL"]) { self.manufacturerURL = manufacturerURL }
+    if let manufacturer      = String(data["manufacturer"]) { self.manufacturer = manufacturer }
+    if let friendlyName      = String(data["friendlyName"]) { self.friendlyName = friendlyName }
+    if let deviceType        = String(data["deviceType"]) { self.deviceType = deviceType }
+    if let baseURL           = String(data["baseURL"]) { self.baseURL = baseURL }
 
-  updateRelationshipFromData(data, forAttribute: "nodes")
-  updateRelationshipFromData(data, forAttribute: "groups")
-}
+    updateRelationshipFromData(data, forAttribute: "nodes")
+    updateRelationshipFromData(data, forAttribute: "groups")
+  }
 
-/**
-detailController
+  override public var summaryItems: OrderedDictionary<String, String> {
+    var items = super.summaryItems
+    items["URL"] = baseURL
+    items["Friendly Name"] = friendlyName
+    items["Device Type"] = deviceType
+    items["Model Name"] = modelName
+    items["Model Number"] = modelNumber
+    items["Model Description"] = modelDescription
+    items["Manufacturer"] = manufacturer
+    items["Manufacturer URL"] = manufacturerURL
 
-- returns: UIViewController
-*/
-//  func detailController() -> UIViewController { return ISYDeviceDetailController(model: self) }
+    return items
+  }
 
-override public var jsonValue: JSONValue {
-  var obj = ObjectJSONValue(super.jsonValue)!
-  obj["modelNumber"] = modelNumber.jsonValue
-  obj["modelName"] = modelName.jsonValue
-  obj["modelDescription"] = modelDescription.jsonValue
-  obj["manufacturerURL"] = manufacturerURL.jsonValue
-  obj["manufacturer"] = manufacturer.jsonValue
-  obj["friendlyName"] = friendlyName.jsonValue
-  obj["deviceType"] = deviceType.jsonValue
-  obj["baseURL"] = baseURL.jsonValue
-  obj["nodes"] = JSONValue(nodes)
-  obj["groups"] = JSONValue(groups)
-  obj["type"] = "isy"
-  return obj.jsonValue
-}
-
+  override public var jsonValue: JSONValue {
+    var obj = ObjectJSONValue(super.jsonValue)!
+    obj["modelNumber"] = modelNumber.jsonValue
+    obj["modelName"] = modelName.jsonValue
+    obj["modelDescription"] = modelDescription.jsonValue
+    obj["manufacturerURL"] = manufacturerURL.jsonValue
+    obj["manufacturer"] = manufacturer.jsonValue
+    obj["friendlyName"] = friendlyName.jsonValue
+    obj["deviceType"] = deviceType.jsonValue
+    obj["baseURL"] = baseURL.jsonValue
+    obj["nodes"] = JSONValue(nodes)
+    obj["groups"] = JSONValue(groups)
+    obj["type"] = "isy"
+    return obj.jsonValue
+  }
+  
 }
