@@ -128,8 +128,8 @@ final class BankModelCollectionDelegate: BankModelDelegate {
         switch c {
           case let c as FormCreatableItem:
             itemTransaction = FormTransaction(newItemFor: c)
-          case let c as DiscoverCreatableItem:
-            itemTransaction = DiscoveryTransaction(discoverItemFor: c)
+//          case let c as DiscoverCreatableItem:
+//            itemTransaction = DiscoveryTransaction(discoverItemFor: c)
           case let c as CustomCreatableItem:
             itemTransaction = CustomTransaction(newItemFor: c)
           default:
@@ -140,8 +140,8 @@ final class BankModelCollectionDelegate: BankModelDelegate {
         switch c {
           case let c as FormCreatableItem:
             collectionTransaction = FormTransaction(newItemFor: c)
-          case let c as DiscoverCreatableItem:
-            collectionTransaction = DiscoveryTransaction(discoverItemFor: c)
+//          case let c as DiscoverCreatableItem:
+//            collectionTransaction = DiscoveryTransaction(discoverItemFor: c)
           case let c as CustomCreatableItem:
             collectionTransaction = CustomTransaction(newItemFor: c)
           default:

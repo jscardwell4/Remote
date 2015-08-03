@@ -23,10 +23,16 @@ final class DiscoveryView: UIView {
 
     guard constraintsWithIdentifier(id).count == 0 else { return }
 
-    constrain([[𝗩|-statusView], 𝗩|animationView-|𝗩, 𝗛|-statusView-|𝗛, 𝗛|-animationView|𝗛] --> id)
+    constrain([
+      𝗩|-statusView--deviceView-|𝗩,
+      𝗩|animationView-|𝗩,
+      𝗛|-statusView-|𝗛,
+      𝗛|-animationView|𝗛,
+      𝗛|-deviceView-|𝗛
+    ] --> id)
   }
 
-  let deviceView = UILabel(autolayout: true)
+  let deviceView = UIStackView(arrangedSubviews: [])
 
   enum Status {
     case Idle
@@ -52,43 +58,60 @@ final class DiscoveryView: UIView {
   var status = Status.Idle {
     didSet {
       guard status != oldValue else { return }
+
       statusView.attributedText = status.text
+
       switch status {
         case .Searching:
-          animationView.hidden = false
+          animationView.alpha = 1
           animationView.animating = true
         case .Discovery(let device):
-          decorateDeviceViewWithDevice(device)
-          fallthrough
+          for (_, k, v) in device.summaryItems {
+            let label = UILabel(autolayout: true)
+            label.attributedText = "\(k):" ¶| [Bank.formLabelFont, Bank.formLabelTextColor]
+            let value = UILabel(autolayout: true)
+            value.attributedText = v ¶| [Bank.formControlFont, Bank.formControlTextColor]
+            let stack = UIStackView(arrangedSubviews: [label, value])
+            deviceView.addArrangedSubview(stack)
+          }
+          deviceView.alpha = 1
         default:
-          animationView.hidden = true
+          break
+      }
+
+      switch oldValue {
+        case .Searching:
+          animationView.alpha = 0
           animationView.animating = false
+        case .Discovery:
+          deviceView.alpha = 0
+          deviceView.arrangedSubviews.apply { self.deviceView.removeArrangedSubview($0) }
+        default: break
       }
     }
   }
 
-  /**
-  decorateDeviceViewWithDevice:
-
-  - parameter device: NetworkDevice
-  */
-  private func decorateDeviceViewWithDevice(device: NetworkDevice) {
-    // TODO: Fill out stub
-  }
-
+  /** initializeIVARs */
   func initializeIVARs() {
     backgroundColor = UIColor.whiteColor()
     layer.shadowOpacity = 0.75
     layer.shadowRadius = 8
     layer.shadowOffset = CGSize(width: 1, height: 3)
 
-    animationView.hidden = true
+    animationView.nametag = "animationView"
     addSubview(animationView)
 
+    statusView.nametag = "statusView"
     statusView.attributedText = status.text
     statusView.numberOfLines = 0
     statusView.backgroundColor = UIColor.clearColor()
     addSubview(statusView)
+
+    deviceView.translatesAutoresizingMaskIntoConstraints = false
+    deviceView.axis = .Vertical
+    deviceView.nametag = "deviceView"
+    deviceView.baselineRelativeArrangement = true
+    addSubview(deviceView)
 
   }
 

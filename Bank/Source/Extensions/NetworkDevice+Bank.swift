@@ -12,52 +12,52 @@ import DataModel
 import CoreData
 import Networking
 
-private var discoveryCallbackToken: ConnectionManager.DiscoveryCallbackToken?
+//private var discoveryCallbackToken: ConnectionManager.DiscoveryCallbackToken?
 
 // MARK: - DiscoverCreatable
-extension NetworkDevice: DiscoverCreatable {
-
-  /** beginDiscovery */
-  static func beginDiscovery(context context: NSManagedObjectContext, presentForm: (Form, ProcessedForm) -> Void) -> Bool {
-    guard ConnectionManager.wifiAvailable && discoveryCallbackToken == nil else { return false }
-
-    let discoveryCallback: ConnectionManager.DiscoveryCallback = {
-      (networkDevice: NetworkDevice?, cancelled: Bool) -> Void in
-      guard !cancelled && discoveryCallbackToken != nil, let networkDevice = networkDevice else { return }
-      self.endDiscovery()
-      dispatchToMain {
-        presentForm(networkDevice.discoveryConfirmationForm()) {
-          form in
-          if let name = form.values?["Name"] as? String { networkDevice.name = name }
-          do {
-            try DataManager.saveContext(context)
-            return true
-          } catch {
-            logError(error)
-            return false
-          }
-        }
-      }
-    }
-
-    do {
-      discoveryCallbackToken = try ConnectionManager.startDetectingNetworkDevices(context: context, callback: discoveryCallback)
-      return true
-    } catch {
-      logError(error)
-      return false
-    }
-  }
-
-  /** endDiscovery */
-  static func endDiscovery() {
-    MSLogDebug("discoveryCallbackToken = \(toString(discoveryCallbackToken))")
-    if discoveryCallbackToken != nil {
-      ConnectionManager.stopDetectingNetworkDevices(discoveryCallbackToken!)
-      discoveryCallbackToken = nil
-    }
-  }
-}
+//extension NetworkDevice: DiscoverCreatable {
+//
+//  /** beginDiscovery */
+//  static func beginDiscovery(context context: NSManagedObjectContext, presentForm: (Form, ProcessedForm) -> Void) -> Bool {
+//    guard ConnectionManager.wifiAvailable && discoveryCallbackToken == nil else { return false }
+//
+//    let discoveryCallback: ConnectionManager.DiscoveryCallback = {
+//      (networkDevice: NetworkDevice?, cancelled: Bool) -> Void in
+//      guard !cancelled && discoveryCallbackToken != nil, let networkDevice = networkDevice else { return }
+//      self.endDiscovery()
+//      dispatchToMain {
+//        presentForm(networkDevice.discoveryConfirmationForm()) {
+//          form in
+//          if let name = form.values?["Name"] as? String { networkDevice.name = name }
+//          do {
+//            try DataManager.saveContext(context)
+//            return true
+//          } catch {
+//            logError(error)
+//            return false
+//          }
+//        }
+//      }
+//    }
+//
+//    do {
+//      discoveryCallbackToken = try ConnectionManager.startDetectingNetworkDevices(context: context, callback: discoveryCallback)
+//      return true
+//    } catch {
+//      logError(error)
+//      return false
+//    }
+//  }
+//
+//  /** endDiscovery */
+//  static func endDiscovery() {
+//    MSLogDebug("discoveryCallbackToken = \(toString(discoveryCallbackToken))")
+//    if discoveryCallbackToken != nil {
+//      ConnectionManager.stopDetectingNetworkDevices(discoveryCallbackToken!)
+//      discoveryCallbackToken = nil
+//    }
+//  }
+//}
 
 extension NetworkDevice {
 
@@ -153,23 +153,38 @@ extension NetworkDevice: CustomCreatable {
                         cancellationHandler didCancel: () -> Void,
                             creationHandler didCreate: (ModelObject) -> Void) -> UIViewController?
   {
-    guard ConnectionManager.wifiAvailable && discoveryCallbackToken == nil else { return nil }
+    guard ConnectionManager.wifiAvailable else { return nil }
 
+    var token: ConnectionManager.DiscoveryCallbackToken?
 
-    let discoveryController = DiscoveryViewController(didCancel: didCancel, didSubmit: didCreate)
+    let didCancelWrapper: () -> Void = {
+      didCancel()
+      guard let token = token else { return }
+      ConnectionManager.stopDetectingNetworkDevices(token)
+    }
+
+    let didCreateWrapper: (ModelObject) -> Void = {
+      didCreate($0)
+      guard let token = token else { return }
+      ConnectionManager.stopDetectingNetworkDevices(token)
+    }
+
+    let discoveryController = DiscoveryViewController(didCancel: didCancelWrapper, didSubmit: didCreateWrapper)
 
 
     let discoveryCallback: ConnectionManager.DiscoveryCallback = {
       [unowned discoveryController] (networkDevice: NetworkDevice?, cancelled: Bool) -> Void in
 
-      if cancelled { discoveryController.cancelAction() }
-      else if let device = networkDevice { discoveryController.discoveredDevice(device) }
+      dispatchToMain {
+        if cancelled { discoveryController.cancelAction() }
+        else if let device = networkDevice { discoveryController.status = .Discovery(device) }
+      }
 
     }
 
     do {
-      discoveryCallbackToken = try ConnectionManager.startDetectingNetworkDevices(context: context,
-                                                                         callback: discoveryCallback)
+      token = try ConnectionManager.startDetectingNetworkDevices(context: context, callback: discoveryCallback)
+      discoveryController.status = .Searching
       let controller = InsettingViewController()
       controller.selfSizing = true
       controller.childViewController = discoveryController

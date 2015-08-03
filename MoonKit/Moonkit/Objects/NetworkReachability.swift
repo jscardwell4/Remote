@@ -9,29 +9,22 @@
 import Foundation
 import SystemConfiguration
 
+// typealias SCNetworkReachabilityCallback = (SCNetworkReachability, SCNetworkReachabilityFlags, UnsafeMutablePointer<Void>) -> Void
+
 private let IN_LINKLOCALNETNUM = UInt32(0xA9FE000)
 
-private(set) var contextInfo = UnsafeMutablePointer<Void>.alloc(1)
+final public class NetworkReachability: NSObject {
 
-private let block: @convention(block) (SCNetworkReachability!, SCNetworkReachabilityFlags, UnsafeMutablePointer<Void>) -> Void = {
-  _, flags, context in
-
-  UnsafeMutablePointer<NetworkReachability>(context).memory.callback(flags)
-}
-private let imp = imp_implementationWithBlock(unsafeBitCast(block, AnyObject.self))
-private let handler = unsafeBitCast(imp, SCNetworkReachabilityCallBack.self)
-
-
-public class NetworkReachability: NSObject {
-
-  public typealias Callback = (SCNetworkReachabilityFlags) -> Void
+  public typealias Flags = SCNetworkReachabilityFlags
+  public typealias Callback = (Flags) -> Void
 
   private let callback: Callback
-
   private static let queue = dispatch_queue_create("com.moondeerstudios.moonkit.reachability", DISPATCH_QUEUE_SERIAL)
+  private static var clientIndex: [NetworkReachability:SCNetworkReachability] = [:]
 
-  public private(set) var flags = SCNetworkReachabilityFlags()
+  public private(set) var flags: Flags = []
 
+  /** refreshFlags */
   public func refreshFlags() {
     var flags = SCNetworkReachabilityFlags()
     SCNetworkReachabilityGetFlags(reachability, &flags)
@@ -39,8 +32,26 @@ public class NetworkReachability: NSObject {
     callback(flags)
   }
 
-  public var wifiAvailable: Bool { return flags.isSupersetOf([.IsDirect, .Reachable]) }
+  private static let handler: @convention(c) (SCNetworkReachability, SCNetworkReachabilityFlags, UnsafeMutablePointer<Void>) -> Void = {
+    reachability, flags, context in
+
+    print("reachability = \(String(reflecting: reachability)), flags = \(flags), info = \(context)")
+
+    for (client, address) in NetworkReachability.clientIndex where String(reflecting: address) == String(reflecting: reachability) {
+      print("client = \(client)")
+      client.callback(flags)
+    }
+
+  }
+
+
+  public var wifiAvailable: Bool { return flags.contains(.Reachable) }
   
+  /**
+  initWithCallout:
+
+  - parameter callout: Callback
+  */
   public init(callout: Callback) {
     callback = callout
 
@@ -52,17 +63,22 @@ public class NetworkReachability: NSObject {
     var addr = unsafeBitCast(addrIn, sockaddr.self)
 
     reachability = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, &addr)!
+    print("reachability = \(String(reflecting: reachability))")
 
     super.init()
-    var info = self
-    var context = SCNetworkReachabilityContext(version: 0, info: &info, retain: nil, release: nil, copyDescription: nil)
+    NetworkReachability.clientIndex[self] = reachability
 
+    guard SCNetworkReachabilitySetCallback(reachability, NetworkReachability.handler, nil) != 0 else {
+      fatalError("failed to set reachability callback")
+    }
 
-    var success = SCNetworkReachabilitySetCallback(reachability, handler, &context)
-    assert(success != 0)
+    guard SCNetworkReachabilitySetDispatchQueue(reachability, NetworkReachability.queue) != 0 else {
+      fatalError("failed to set reachability queue")
+    }
+  }
 
-    success = SCNetworkReachabilitySetDispatchQueue(reachability, NetworkReachability.queue)
-    assert(success != 0)
+  deinit {
+    NetworkReachability.clientIndex[self] = nil
   }
 
   private let reachability: SCNetworkReachability

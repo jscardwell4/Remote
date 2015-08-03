@@ -64,9 +64,12 @@ public class BankController: UIViewController, BankItemImportExportController {
         case .NetworkDevices:
           collectionDelegate = BankModelDelegate(name: "Network Devices", context: context)
           collectionDelegate.fetchedItems = NetworkDevice.objectsInContext(context, sortedBy: "name")
-          collectionDelegate.itemTransaction = DiscoveryTransaction(label: "Network Device",
-                                                                    discoverableType: NetworkDevice.self,
-                                                                    context: context)
+          collectionDelegate.itemTransaction = CustomTransaction(label: "Network Device",
+                                                                 customType: NetworkDevice.self,
+                                                                 context: context)
+//            DiscoveryTransaction(label: "Network Device",
+//                                                                    discoverableType: NetworkDevice.self,
+//                                                                    context: context)
 
         case .ComponentDevices:
           collectionDelegate = BankModelDelegate(name: "Component Devices", context: context)

@@ -26,9 +26,15 @@ final class DiscoveryAnimationView: UIView {
   var animating = false {
     didSet {
       guard oldValue != animating else { return }
-      if animating && animationTimer == nil { animationTimer = createAnimationTimer() }
-      guard let timer = animationTimer else { return }
-      if animating { dispatch_resume(timer) } else { dispatch_suspend(timer) }
+      switch animating {
+        case true:
+          assert(animationTimer == nil)
+          animationTimer = createAnimationTimer()
+        case false:
+          assert(animationTimer != nil)
+          dispatch_source_cancel(animationTimer!)
+          animationTimer = nil
+      }
     }
   }
 
@@ -44,8 +50,8 @@ final class DiscoveryAnimationView: UIView {
     guard let timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue()) else { return nil }
 
     dispatch_source_set_timer(timer, dispatch_walltime(nil, 0), UInt64(Double(1/30.0) * Double(NSEC_PER_SEC)), 0)
-    dispatch_source_set_event_handler(timer) { [unowned self] in self.animationFrame++ }
-
+    dispatch_source_set_event_handler(timer) { [weak self] in self?.animationFrame++ }
+    dispatch_resume(timer)
     return timer
   }
 

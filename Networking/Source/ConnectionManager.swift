@@ -93,6 +93,7 @@ public final class ConnectionManager {
         case .NetworkDeviceDiscovery(let uuid): userInfo = [InfoKey.NetworkDevice.rawValue: uuid]
         case .NetworkDeviceUpdated(let uuid):   userInfo = [InfoKey.NetworkDevice.rawValue: uuid]
       }
+      MSLogDebug("posting notification \(String(reflecting: self))")
       NSNotificationCenter.defaultCenter().postNotificationName(name.rawValue, object: ConnectionManager.self, userInfo: userInfo)
     }
   }
@@ -202,7 +203,7 @@ public final class ConnectionManager {
     try ITachConnectionManager.startDetectingNetworkDevices(context)
     try ISYConnectionManager.startDetectingNetworkDevices(context)
 
-    MSLogInfo("listening for network devices…")
+    MSLogDebug("listening for network devices…")
 
     return discoveryCallbacks.count - 1
   }
@@ -223,7 +224,7 @@ public final class ConnectionManager {
     ITachConnectionManager.stopDetectingNetworkDevices()
     ISYConnectionManager.stopDetectingNetworkDevices()
 
-    MSLogInfo("no longer listening for network devices…")
+    MSLogDebug("no longer listening for network devices…")
 
   }
 

@@ -146,6 +146,21 @@ public class ITachDevice: NetworkDevice {
     }
   }
 
+  /**
+  initWithEntity:insertIntoManagedObjectContext:
+
+  - parameter entity: NSEntityDescription
+  - parameter context: NSManagedObjectContext?
+  */
+  override public init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+    super.init(entity: entity, insertIntoManagedObjectContext: context)
+  }
+
+  /**
+  initWithContext:
+
+  - parameter context: NSManagedObjectContext?
+  */
   override public init(context: NSManagedObjectContext?) {
     super.init(context: context)
   }
@@ -184,6 +199,12 @@ public class ITachDevice: NetworkDevice {
     setValuesForKeysWithDictionary(index)
   }
 
+  /**
+  initWithData:context:
+
+  - parameter data: ObjectJSONValue
+  - parameter context: NSManagedObjectContext
+  */
   required public init?(data: ObjectJSONValue, context: NSManagedObjectContext) {
     super.init(data: data, context: context)
   }

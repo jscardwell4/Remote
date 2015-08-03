@@ -212,11 +212,11 @@ struct DiscoveryTransaction: ItemCreationTransaction {
   - parameter discoverableType: T.Type
   - parameter context: NSManagedObjectContext
   */
-  init<T:DiscoverCreatable>(label: String, discoverableType: T.Type, context: NSManagedObjectContext) {
-    let begin: BeginAction = { discoverableType.beginDiscovery(context: context, presentForm: $0) }
-    let end: EndAction = {discoverableType.endDiscovery()}
-    self.init(label: label, begin: begin, end: end)
-  }
+//  init<T:DiscoverCreatable>(label: String, discoverableType: T.Type, context: NSManagedObjectContext) {
+//    let begin: BeginAction = { discoverableType.beginDiscovery(context: context, presentForm: $0) }
+//    let end: EndAction = {discoverableType.endDiscovery()}
+//    self.init(label: label, begin: begin, end: end)
+//  }
 
   /**
   Transaction for discovering a new item for the specified collection
