@@ -38,13 +38,13 @@ public class FormViewController: UIViewController {
 
   // MARK: Customizing the form's appearance
 
-  struct Appearance {
-    let labelFont: UIFont
-    let controlFont: UIFont
-    let controlSelectedFont: UIFont
-    let labelTextColor: UIColor
-    let controlTextColor: UIColor
-    let controlSelectedTextColor: UIColor
+  public struct Appearance {
+    public let labelFont: UIFont
+    public let controlFont: UIFont
+    public let controlSelectedFont: UIFont
+    public let labelTextColor: UIColor
+    public let controlTextColor: UIColor
+    public let controlSelectedTextColor: UIColor
   }
 
   public let form: Form
@@ -56,7 +56,7 @@ public class FormViewController: UIViewController {
   public dynamic var controlTextColor:         UIColor = UIColor.blackColor()
   public dynamic var controlSelectedTextColor: UIColor = UIColor.blackColor()
 
-  var formAppearance: Appearance {
+  public var formAppearance: Appearance {
     return Appearance(
       labelFont: labelFont,
       controlFont: controlFont,

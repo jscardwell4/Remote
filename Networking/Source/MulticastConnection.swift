@@ -100,5 +100,4 @@ class MulticastConnection: GCDAsyncUdpSocketDelegate {
     guard let dataString = String(data: data) else { return }
     didReceiveMessage?(dataString)
   }
-
 }

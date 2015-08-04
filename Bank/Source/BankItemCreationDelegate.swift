@@ -20,7 +20,7 @@ class BankItemCreationDelegate {
   - parameter provider: ItemCreationTransactionProvider
   */
   func createBankItemWithProvider(provider: ItemCreationTransactionProvider) {
-    let transactions = provider.transactions.filter {$0 is DiscoveryTransaction == false }
+    let transactions = provider.transactions
     switch transactions.count {
       case 0:  return
       case 1:  transact(transactions[0])
@@ -34,26 +34,6 @@ class BankItemCreationDelegate {
   func endDiscovery() { _endDiscovery?(); _endDiscovery = nil }
 
   /**
-  discoverBankItemWithProvider:
-
-  - parameter provider: ItemCreationTransactionProvider
-  */
-  func discoverBankItemWithProvider(provider: ItemCreationTransactionProvider) {
-    let transactions = provider.transactions.filter {$0 is DiscoveryTransaction == true }
-    switch transactions.count {
-      case 0:  return
-      case 1:  transact(transactions[0])
-      default: presentPopoverForTransactions(transactions)
-    }
-  }
-
-  /** toggleDiscovery */
-  func toggleDiscovery(transaction: DiscoveryTransaction? = nil) {
-    guard let presentingController = presentingController else { return }
-    if presentingController.discoverItemBarButton?.isToggled == false { endDiscovery() }
-    else if let transaction = transaction { transact(transaction) }
-  }
-  /**
   transact:
 
   - parameter transaction: ItemCreationTransaction
@@ -62,7 +42,6 @@ class BankItemCreationDelegate {
     switch transaction {
       case is FormTransaction:      presentFormTransaction(transaction as! FormTransaction)
       case is CustomTransaction:    presentCustomTransaction(transaction as! CustomTransaction)
-      case is DiscoveryTransaction: beginDiscoveryTransaction(transaction as! DiscoveryTransaction)
       default:                      break
     }
   }
@@ -121,42 +100,6 @@ class BankItemCreationDelegate {
       viewController.presentViewController(customController, animated: true, completion: nil)
     }
 
-  }
-
-  /**
-  beginDiscoveryTransaction:
-
-  - parameter transaction: DiscoveryTransaction
-  */
-  private func beginDiscoveryTransaction(transaction: DiscoveryTransaction) {
-    guard let presentingController = presentingController,
-              viewController = presentingController as? UIViewController else { return }
-
-    _endDiscovery = transaction.endDiscovery
-
-    let formPresentation: (Form, ProcessedForm) -> Void = {
-      form, processedForm in
-
-      let dismissController = {
-        viewController.dismissViewControllerAnimated(true) {
-          presentingController.discoverItemBarButton?.isToggled = false
-        }
-      }
-
-      let didSubmit: FormSubmission = {
-        _ in
-        if processedForm(form), let context = presentingController.creationContext {
-          DataManager.propagatingSaveFromContext(context)
-        }
-        dismissController()
-      }
-
-      let formViewController = FormViewController(form: form, didSubmit: didSubmit, didCancel: dismissController)
-
-      viewController.presentViewController(formViewController, animated: true, completion: nil)
-    }
-
-    transaction.beginDiscovery(formPresentation)
   }
 
   // MARK: Creating a popover view

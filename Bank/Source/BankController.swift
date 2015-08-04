@@ -50,7 +50,7 @@ public class BankController: UIViewController, BankItemImportExportController {
   */
   private func buttonAction(button: ImageButtonView) {
     if let rootCategory = RootCategory(rawValue: button.tag) {
-//      MSLogDebug("rootCategory = \(rootCategory)")
+
       let collectionDelegate: BankModelDelegate
       switch rootCategory {
         case .Presets:
@@ -67,9 +67,6 @@ public class BankController: UIViewController, BankItemImportExportController {
           collectionDelegate.itemTransaction = CustomTransaction(label: "Network Device",
                                                                  customType: NetworkDevice.self,
                                                                  context: context)
-//            DiscoveryTransaction(label: "Network Device",
-//                                                                    discoverableType: NetworkDevice.self,
-//                                                                    context: context)
 
         case .ComponentDevices:
           collectionDelegate = BankModelDelegate(name: "Component Devices", context: context)

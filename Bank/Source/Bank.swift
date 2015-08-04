@@ -30,8 +30,6 @@ final public class Bank {
     let rawValue: Int
     static let None      = CreationMode(rawValue: 0)
     static let Manual    = CreationMode(rawValue: 1)
-    static let Discovery = CreationMode(rawValue: 2)
-    static let Both      = CreationMode(rawValue: 3)
    }
 
   static func initialize() {
@@ -67,8 +65,8 @@ final public class Bank {
   public static let infoFont                = Elysio.lightFontWithSize(15)
   public static let infoSelectedFont        = Elysio.lightItalicFontWithSize(15)
   public static let actionFont              = Elysio.regularItalicFontWithSize(15)
-  public static let formLabelFont           = Elysio.regularFontWithSize(16)
-  public static let formControlFont         = Elysio.regularItalicFontWithSize(16)
+  public static let formLabelFont           = Elysio.regularFontWithSize(15)
+  public static let formControlFont         = Elysio.regularItalicFontWithSize(15)
   public static let formControlSelectedFont = Elysio.boldItalicFontWithSize(16)
   public static let sectionHeaderFont       = Elysio.mediumFontWithSize(18)
   public static let sectionHeaderSubFont    = Elysio.mediumFontWithSize(12)
@@ -239,49 +237,24 @@ final public class Bank {
 
     if let creationController = controller as? BankItemCreationController {
 
-      let createBarItem: ToggleImageBarButtonItem?, discoverBarItem: ToggleImageBarButtonItem?
+      let createBarItem: ToggleImageBarButtonItem?
       switch creationController.creationMode {
         case CreationMode.Manual:
-          discoverBarItem = nil
           createBarItem =
             ToggleImageBarButtonItem(image: createBarItemImage, toggledImage: createBarItemImageSelected) {
               _ in creationController.createBankItem()
           }
-        case CreationMode.Discovery:
-          createBarItem = nil
-          discoverBarItem =
-            ToggleImageBarButtonItem(image: discoverBarItemImage, toggledImage: discoverBarItemImageSelected) {
-              _ in creationController.discoverBankItem()
-            }
-        case CreationMode.Both:
-          createBarItem =
-            ToggleImageBarButtonItem(image: createBarItemImage, toggledImage: createBarItemImageSelected) {
-              _ in creationController.createBankItem()
-          }
-          discoverBarItem =
-            ToggleImageBarButtonItem(image: discoverBarItemImage, toggledImage: discoverBarItemImageSelected) {
-              _ in creationController.discoverBankItem()
-            }
         default:
           createBarItem = nil
-          discoverBarItem = nil
       }
 
-      if let createBarItem = createBarItem, discoverBarItem = discoverBarItem {
-        createBarItem.width = rightOutterItemWidth
-        discoverBarItem.width = rightOutterItemWidth
-        toolbarItems += [negativeSpacer, discoverBarItem, negativeSpacer, createBarItem]
-      } else if let createBarItem = createBarItem {
+      if let createBarItem = createBarItem {
         createBarItem.width = ceil(rightOutterItemWidth * 2)
         toolbarItems += [negativeSpacer, createBarItem]
-      } else if let discoverBarItem = discoverBarItem {
-        discoverBarItem.width = ceil(rightOutterItemWidth * 2)
-        toolbarItems += [negativeSpacer, discoverBarItem]
       } else {
         toolbarItems.append(UIBarButtonItem.fixedSpace(floor(2 * rightOutterItemWidth)))
       }
       creationController.createItemBarButton = createBarItem
-      creationController.discoverItemBarButton = discoverBarItem
     } else {
       toolbarItems.append(UIBarButtonItem.fixedSpace(floor(2 * rightOutterItemWidth)))
     }

@@ -211,14 +211,19 @@ extension ComponentDevice: DelegateDetailable {
 extension ComponentDevice: RelatedItemCreatable {
 
   var relatedItemCreationTransactions: [ItemCreationTransaction] {
+
     var transactions: [ItemCreationTransaction] = []
+
     if let context = managedObjectContext {
 
       // Manufacturer transaction
-      let createManufacturer = FormTransaction(
-        label: "Manufacturer",
-        form: Manufacturer.creationForm(context: context),
-        processedForm: {
+      let createManufacturer = { () -> FormTransaction in
+
+        let label = "Manufacturer"
+
+        let form = Manufacturer.creationForm(context: context)
+
+        let processedForm: (Form) -> Bool = {
           [unowned self, unowned context] form in
           do {
             try DataManager.saveContext(context, withBlock: {
@@ -229,33 +234,67 @@ extension ComponentDevice: RelatedItemCreatable {
             logError(error)
             return false
           }
-        })
+        }
+
+        return FormTransaction(label: label, form: form, processedForm: processedForm)
+
+      }()
+
       transactions.append(createManufacturer)
 
       // Code set transaction
-      let codeSetForm = IRCodeSet.creationForm(context: context)
-      if let manufacturerField = codeSetForm.fields["Manufacturer"] {
-        manufacturerField.value = manufacturer.name
-        manufacturerField.editable = false
-      }
-      let createCodeSet = FormTransaction(
-        label: "Code Set",
-        form: codeSetForm,
-        processedForm: {
+      let createCodeSet = { () -> FormTransaction in
+
+        let label = "Code Set"
+
+        let form = IRCodeSet.creationForm(context: context)
+        if let manufacturerField = form.fields["Manufacturer"] {
+          manufacturerField.value = self.manufacturer.name
+          manufacturerField.editable = false
+        }
+
+        let processedForm: (Form) -> Bool = {
           [unowned self] form in
           do {
             try DataManager.saveContext(context, withBlock: {
-              if let codeSet = IRCodeSet.createWithForm(form, context: $0) { self.codeSet = codeSet }
-              })
+              guard let codeSet = IRCodeSet.createWithForm(form, context: $0) else { return }
+              self.codeSet = codeSet
+            })
             return true
           } catch { logError(error); return false }
-        })
+        }
+
+        return FormTransaction(label: label, form: form, processedForm: processedForm)
+        
+      }()
+
       transactions.append(createCodeSet)
 
       // Network device transaction
-      let discoverNetworkDevice = CustomTransaction(label: "Network Device") {
-        NetworkDevice.creationControllerWithContext(context, cancellationHandler: $0, creationHandler: $1)
-      }
+      let discoverNetworkDevice = { () -> CustomTransaction in
+
+        let label = "Network Device"
+
+        let controller = {
+          [unowned self] (didCancel: () -> Void, didCreate: (ModelObject) -> Void) -> UIViewController? in
+
+          let didCreateWrapper = {
+            [unowned self] (model: ModelObject) -> Void in
+
+            guard let networkDevice = model as? NetworkDevice else { didCreate(model); return }
+            self.networkDevice = networkDevice
+            didCreate(model)
+
+          }
+          return NetworkDevice.creationControllerWithContext(context,
+                                         cancellationHandler: didCancel,
+                                             creationHandler: didCreateWrapper)
+        }
+
+        return CustomTransaction(label: label, controller: controller)
+
+      }()
+
       transactions.append(discoverNetworkDevice)
 
       // TODO: Add power commands

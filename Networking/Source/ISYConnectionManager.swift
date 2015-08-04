@@ -19,15 +19,16 @@ final class ISYConnectionManager {
 
   static let MulticastAddress = "239.255.255.250"
   static let MulticastPort: UInt16 = 1900
+  static let MulticastSearchMessage = "M-SEARCH * HTTP/1.1\rHOST:239.255.255.250:1900\rMAN:\"ssdp.discover\"\rMX:1\rST:urn:udi-com:device:X_Insteon_Lighting_Device:1"
 
   /** Previously discovered devices. */
   static private(set) var networkDevices = Set(ISYDevice.objectsInContext(DataManager.rootContext) as! [ISYDevice])
 
   /** Currently connected devices. */
-  static var connections = Set<ISYDeviceConnection>()
+  static var connections: Set<ISYDeviceConnection> = []
 
   /** Uuids  from processed beacons. */
-  static private var beaconsReceived = Set<String>()
+  static private var beaconsReceived: Set<String> = []
 
   /** Multicast group connection */
   static let multicastConnection = MulticastConnection(address:ISYConnectionManager.MulticastAddress,
@@ -44,8 +45,9 @@ final class ISYConnectionManager {
   */
   class func startDetectingNetworkDevices(context: NSManagedObjectContext = DataManager.rootContext) throws {
     guard !detectingNetworkDevices else { return }
-    try multicastConnection.listen()
     detectingNetworkDevices = true
+    try multicastConnection.listen()
+    MSLogDebug("listening for ISY devices…")
   }
 
   /** Cease listening for beacon broadcasts and release resources. */
@@ -53,6 +55,7 @@ final class ISYConnectionManager {
     guard detectingNetworkDevices else { return }
     multicastConnection.stopListening()
     detectingNetworkDevices = false
+    MSLogDebug("no longer listening for ISY devices")
   }
 
   /** Suspend active connections */
@@ -68,9 +71,10 @@ final class ISYConnectionManager {
   */
   class func messageReceived(message: String) {
 
-    let entries: [String:String] = Dictionary((~/"^[A-Z]+:.*(?=\\r)").match(message).flatMap {
-      let components = "=".split($0.string); return components.count == 2 ? (components[0], components[1]) : nil
-    })
+    MSLogDebug("message received over multicast connection:\n\(message)\n")
+
+    let entries = Dictionary((~/"(?m)^([A-Z]+):(.*)(?=\\r)").match(message).map { ($0.captures[1]!.string, $0.captures[2]!.string) })
+    MSLogDebug("entries = \(entries)")
 
     if let location = entries["LOCATION"] where location.hasSuffix("/desc") && beaconsReceived ∌ location,
       let baseURL = NSURL(string: location[0 ..< location.characters.count - 5])

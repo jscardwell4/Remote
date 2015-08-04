@@ -347,12 +347,6 @@ extension BankCollectionDetailController: BankItemCreationController {
   /** The creation mode supported by the controller's item delegate */
   var creationMode: Bank.CreationMode { return itemDelegate.creationMode }
 
-  /** discoverBankItem */
-  func discoverBankItem() {
-    if discoverItemBarButton?.isToggled == false { itemCreationDelegate.endDiscovery() }
-    else { itemCreationDelegate.discoverBankItemWithProvider(itemDelegate) }
-  }
-
   /** createBankItem */
   func createBankItem() { itemCreationDelegate.createBankItemWithProvider(itemDelegate) }
   

@@ -39,11 +39,6 @@ protocol FormCreatable: Model {
   static func createWithForm(form: Form, context: NSManagedObjectContext) -> Self?
 }
 
-protocol DiscoverCreatable: Model {
-  static func beginDiscovery(context context: NSManagedObjectContext, presentForm: (Form, ProcessedForm) -> Void) -> Bool
-  static func endDiscovery()
-}
-
 protocol CustomCreatable: Model {
   static func creationControllerWithContext(context: NSManagedObjectContext,
                         cancellationHandler didCancel: () -> Void,
@@ -75,19 +70,6 @@ protocol CustomCreatable: Model {
 @objc protocol FormCreatableCollection: BankModelCollection {
   func collectionCreationForm(context context: NSManagedObjectContext) -> Form
   func createCollectionWithForm(form: Form, context: NSManagedObjectContext) -> Bool
-  var collectionLabel: String { get }
-}
-
-@objc protocol DiscoverCreatableItem: BankModelCollection {
-  func beginItemDiscovery(context context: NSManagedObjectContext, presentForm: (Form, ProcessedForm) -> Void) -> Bool
-  func endItemDiscovery()
-  var itemLabel: String { get }
-
-}
-
-@objc protocol DiscoverCreatableCollection: BankModelCollection {
-  func beginCollectionDiscovery(context context: NSManagedObjectContext, presentForm: (Form, ProcessedForm) -> Void) -> Bool
-  func endCollectionDiscovery()
   var collectionLabel: String { get }
 }
 
@@ -134,10 +116,8 @@ protocol BankItemImportExportController: class {
 protocol BankItemCreationController: class {
   var creationMode: Bank.CreationMode { get } // Whether new items are created manually, via discovery, both, or neither
   var creationContext: NSManagedObjectContext? { get } // Context used in creation transactions
-  func discoverBankItem()                     // Called from create item bar button action when creationMode == .Discovery
   func createBankItem()                       // Called from create item bar button action when creationMode == .Manual
   weak var createItemBarButton: ToggleBarButtonItem? { get set }
-  weak var discoverItemBarButton: ToggleBarButtonItem? { get set }
 }
 
 protocol ItemCreationTransaction {

@@ -11,8 +11,10 @@ import UIKit
 
 public final class Form: NSObject {
 
+  public typealias ChangeHandler = (Form, Field, String) -> Void
+
   public var fields: OrderedDictionary<String, Field>
-  public var changeHandler: ((Form, Field, String) -> Void)?
+  public var changeHandler: ChangeHandler?
 
   /**
   initWithTemplates:
@@ -63,17 +65,17 @@ public final class Form: NSObject {
 
 }
 
-final class FormView: UIView {
+public final class FormView: UIView {
 
-  typealias Appearance = FormViewController.Appearance
+  public typealias Appearance = FormViewController.Appearance
 
   // MARK: - Form type
 
-  let form: Form
+  public let form: Form
 
   // MARK: - Customizing appearance
 
-  let fieldAppearance: Appearance?
+  public let fieldAppearance: Appearance?
 
   // MARK: - Initializing the view
 
@@ -83,7 +85,7 @@ final class FormView: UIView {
   - parameter form: Form
   - parameter appearance: Appearance? = nil
   */
-  init(form f: Form, appearance: Appearance? = nil) {
+  public init(form f: Form, appearance: Appearance? = nil) {
     form = f; fieldAppearance = appearance
     super.init(frame: CGRect.zeroRect)
     translatesAutoresizingMaskIntoConstraints = false
@@ -111,12 +113,12 @@ final class FormView: UIView {
 
   - parameter aDecoder: NSCoder
   */
-  required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+  public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
   // MARK: - Field views
 
   /** Limit subviews to instances of `FieldView` */
-  override func addSubview(view: UIView) { if let fieldView = view as? FieldView { super.addSubview(fieldView) } }
+  public override func addSubview(view: UIView) { if let fieldView = view as? FieldView { super.addSubview(fieldView) } }
 
   var fieldViews: [FieldView] { return subviews as! [FieldView] }
 
@@ -127,10 +129,10 @@ final class FormView: UIView {
 
   - returns: Bool
   */
-  override class func requiresConstraintBasedLayout() -> Bool { return true }
+  public override class func requiresConstraintBasedLayout() -> Bool { return true }
 
   /** updateConstraints */
-  override func updateConstraints() {
+  public override func updateConstraints() {
     super.updateConstraints()
     let id = Identifier(self, "Internal")
     guard constraintsWithIdentifier(id).count == 0 else { return }
@@ -155,7 +157,7 @@ final class FormView: UIView {
 
   - returns: CGSize
   */
-  override func intrinsicContentSize() -> CGSize {
+  public override func intrinsicContentSize() -> CGSize {
     let fieldSizes = fieldViews.map {$0.intrinsicContentSize()}
     let w = min(fieldSizes.map {$0.width}.maxElement()!, UIScreen.mainScreen().bounds.width - 8)
     let h = sum(fieldSizes.map {$0.height}) + CGFloat(fieldSizes.count + 1) * CGFloat(10)

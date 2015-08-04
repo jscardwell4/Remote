@@ -27,33 +27,14 @@ final class DiscoveryAnimationView: UIView {
     didSet {
       guard oldValue != animating else { return }
       switch animating {
-        case true:
-          assert(animationTimer == nil)
-          animationTimer = createAnimationTimer()
-        case false:
-          assert(animationTimer != nil)
-          dispatch_source_cancel(animationTimer!)
-          animationTimer = nil
+        case true:  timer.start()
+        case false: timer.stop()
       }
     }
   }
 
   /// Triggers increment of `animationFrame` value
-  private var animationTimer: dispatch_source_t?
-
-  /**
-  createAnimationTimer
-
-  - returns: dispatch_source_t?
-  */
-  private func createAnimationTimer() -> dispatch_source_t? {
-    guard let timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue()) else { return nil }
-
-    dispatch_source_set_timer(timer, dispatch_walltime(nil, 0), UInt64(Double(1/30.0) * Double(NSEC_PER_SEC)), 0)
-    dispatch_source_set_event_handler(timer) { [weak self] in self?.animationFrame++ }
-    dispatch_resume(timer)
-    return timer
-  }
+  private let timer = Timer(interval: 1 / 30, leeway: 0)
 
   /**
   initWithFrame:
@@ -64,6 +45,7 @@ final class DiscoveryAnimationView: UIView {
     beamWidth = beamPath.bounds.width
     super.init(frame: frame)
     backgroundColor = UIColor.clearColor()
+    timer.handler = { [weak self] _ in self?.animationFrame++ }
   }
 
   /**
@@ -71,7 +53,11 @@ final class DiscoveryAnimationView: UIView {
 
   - parameter aDecoder: NSCoder
   */
-  required init?(coder aDecoder: NSCoder) { beamWidth = beamPath.bounds.width; super.init(coder: aDecoder) }
+  required init?(coder aDecoder: NSCoder) {
+    beamWidth = beamPath.bounds.width
+    super.init(coder: aDecoder)
+    timer.handler = { [weak self] _ in self?.animationFrame++ }
+  }
 
   private let dishPath: UIBezierPath = {
     let dishPath = UIBezierPath()

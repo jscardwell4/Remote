@@ -81,6 +81,11 @@
 			<key>orderHint</key>
 			<integer>20</integer>
 		</dict>
+		<key>NetworkingISYApp.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>30</integer>
+		</dict>
 		<key>Remote.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -149,6 +154,11 @@
 			<true/>
 		</dict>
 		<key>C2194A671AFE4FF1009B19B7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C22F5FEA1B6FFECC006D225A</key>
 		<dict>
 			<key>primary</key>
 			<true/>

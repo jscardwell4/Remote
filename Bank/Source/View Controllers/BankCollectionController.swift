@@ -61,9 +61,6 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
   /** Set by the bank when bottom toolbar items are generated */
   weak var createItemBarButton: ToggleBarButtonItem?
 
-  /** Set by the bank when bottom toolbar items are generated */
-  weak var discoverItemBarButton: ToggleBarButtonItem?
-
   // MARK: Private
 
   /** Enumeration for specifying the controller's current role, browsing or selecting */
@@ -384,12 +381,6 @@ final class BankCollectionController: UICollectionViewController, BankItemSelect
 // MARK: - Item creation
 
 extension BankCollectionController: BankItemCreationController {
-
-  /** discoverBankItem */
-  func discoverBankItem() {
-    if discoverItemBarButton?.isToggled == false { itemCreationDelegate.endDiscovery() }
-    else { itemCreationDelegate.discoverBankItemWithProvider(collectionDelegate) }
-  }
 
   /** createBankItem */
   func createBankItem() { itemCreationDelegate.createBankItemWithProvider(collectionDelegate) }

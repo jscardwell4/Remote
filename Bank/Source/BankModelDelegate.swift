@@ -133,7 +133,7 @@ import MoonKit
         do {
           try fetchedCollections?.performFetch()
         } catch {
-          MSHandleError(error as NSError)
+          logError(error)
         }
       }
     }
@@ -167,18 +167,35 @@ extension BankModelDelegate: ItemCreationTransactionProvider {
 
 extension BankModelDelegate: NSFetchedResultsControllerDelegate {
 
+  /**
+  controllerWillChangeContent:
+
+  - parameter controller: NSFetchedResultsController
+  */
   func controllerWillChangeContent(controller: NSFetchedResultsController) {
-//    MSLogDebug("")
     if controller === fetchedItems { beginItemsChanges?(self) }
     else if controller === fetchedCollections { beginCollectionsChanges?(self) }
   }
 
+  /**
+  controllerDidChangeContent:
+
+  - parameter controller: NSFetchedResultsController
+  */
   func controllerDidChangeContent(controller: NSFetchedResultsController) {
-//    MSLogDebug("")
     if controller === fetchedItems { endItemsChanges?(self) }
     else if controller === fetchedCollections { endCollectionsChanges?(self) }
   }
 
+  /**
+  controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:
+
+  - parameter controller: NSFetchedResultsController
+  - parameter anObject: NSManagedObject
+  - parameter indexPath: NSIndexPath?
+  - parameter type: NSFetchedResultsChangeType
+  - parameter newIndexPath: NSIndexPath?
+  */
   func controller(controller: NSFetchedResultsController,
   didChangeObject anObject: NSManagedObject,
       atIndexPath indexPath: NSIndexPath?,
@@ -188,18 +205,6 @@ extension BankModelDelegate: NSFetchedResultsControllerDelegate {
     let change: Change = (type: type, indexPath: indexPath, newIndexPath: newIndexPath)
     if controller === fetchedItems { itemsDidChange?(self, change) }
     else if controller === fetchedCollections { collectionsDidChange?(self, change) }
-
-//    MSLogDebug(", ".join("object = \((anObject as! NamedModel).name)",
-//                        "indexPath = \(toString(indexPath)), type = \(type)",
-//                        "newIndexPath = \(toString(newIndexPath))"))
-  }
-
-  func controller(controller: NSFetchedResultsController,
- didChangeSection sectionInfo: NSFetchedResultsSectionInfo,
-          atIndex sectionIndex: Int,
-    forChangeType type: NSFetchedResultsChangeType)
-  {
-//    MSLogDebug("sectionInfo = \(toString(sectionInfo)), sectionIndex = \(sectionIndex), type = \(type)")
   }
 
 }

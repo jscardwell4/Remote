@@ -88,6 +88,8 @@
 		C22734521AE15CEE00641CC3 /* TitleAttributes_Default_Icon.json in Resources */ = {isa = PBXBuildFile; fileRef = C227343D1AE15CEE00641CC3 /* TitleAttributes_Default_Icon.json */; };
 		C22734531AE15CEE00641CC3 /* TitleAttributes_Default_Text.json in Resources */ = {isa = PBXBuildFile; fileRef = C227343E1AE15CEE00641CC3 /* TitleAttributes_Default_Text.json */; };
 		C22734541AE15CEE00641CC3 /* TitleEdgeInsets_Default.json in Resources */ = {isa = PBXBuildFile; fileRef = C227343F1AE15CEE00641CC3 /* TitleEdgeInsets_Default.json */; };
+		C22F5FE41B6FC753006D225A /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22F5FE31B6FC753006D225A /* Dispatch.swift */; };
+		C22F5FE61B6FCF73006D225A /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22F5FE51B6FCF73006D225A /* Timer.swift */; };
 		C2304E0A1AEECE1C0090D889 /* LayerProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2304E091AEECE1C0090D889 /* LayerProxy.swift */; };
 		C2358F1B19C78D6D00920F8D /* MoonKit.h in Headers */ = {isa = PBXBuildFile; fileRef = C2358F1A19C78D6D00920F8D /* MoonKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2358F3219C78E0C00920F8D /* CALayer+MSKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CE887A18138CF700555D63 /* CALayer+MSKitAdditions.m */; };
@@ -295,6 +297,7 @@
 		C256F09C1ABE0052005B7CB3 /* String+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23592E919C8E04200920F8D /* String+MoonKitAdditions.swift */; };
 		C256F09D1ABE005F005B7CB3 /* NSError+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21D7AE31AA60E3F000DE8A3 /* NSError+MoonKitAdditions.swift */; };
 		C256F09E1ABE0089005B7CB3 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C482E419CA0225002E84A9 /* Stack.swift */; };
+		C25D6A871B703E0C00EB7125 /* UILabel+MoonKitAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25D6A861B703E0C00EB7125 /* UILabel+MoonKitAdditions.swift */; };
 		C25E63E11A00427100F54626 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E63E01A00427100F54626 /* OrderedSet.swift */; };
 		C266A6F01B6523BB00EEA1C4 /* String+RegularExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = C266A6EF1B6523BB00EEA1C4 /* String+RegularExpression.swift */; };
 		C268340A1B10C24100A359A8 /* LabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26834091B10C24100A359A8 /* LabelButton.swift */; };
@@ -428,6 +431,8 @@
 		C227343E1AE15CEE00641CC3 /* TitleAttributes_Default_Text.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TitleAttributes_Default_Text.json; sourceTree = "<group>"; };
 		C227343F1AE15CEE00641CC3 /* TitleEdgeInsets_Default.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TitleEdgeInsets_Default.json; sourceTree = "<group>"; };
 		C22734571AE1622E00641CC3 /* JSON.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = JSON.playground; path = Moonkit/JSON.playground; sourceTree = "<group>"; };
+		C22F5FE31B6FC753006D225A /* Dispatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dispatch.swift; sourceTree = "<group>"; };
+		C22F5FE51B6FCF73006D225A /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		C2304E091AEECE1C0090D889 /* LayerProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayerProxy.swift; sourceTree = "<group>"; };
 		C2358F1619C78D6D00920F8D /* MoonKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoonKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2358F1919C78D6D00920F8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -474,6 +479,7 @@
 		C256F07E1ABDFFE5005B7CB3 /* MoonKitOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MoonKitOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C256F0811ABDFFE5005B7CB3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C256F0821ABDFFE5005B7CB3 /* MoonKitOSX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoonKitOSX.h; sourceTree = "<group>"; };
+		C25D6A861B703E0C00EB7125 /* UILabel+MoonKitAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+MoonKitAdditions.swift"; sourceTree = "<group>"; };
 		C25E63D819FDBE7100F54626 /* Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
 		C25E63DD19FEC06A00F54626 /* GestureManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureManager.swift; sourceTree = "<group>"; };
 		C25E63E01A00427100F54626 /* OrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
@@ -844,6 +850,7 @@
 				C2A5B6F11B482F4700F34491 /* NSParagraphStyle+MoonKitAdditions.swift */,
 				C266A6EF1B6523BB00EEA1C4 /* String+RegularExpression.swift */,
 				C2C9EB6F1B65C5C70051BACF /* Range+MoonKitAdditions.swift */,
+				C25D6A861B703E0C00EB7125 /* UILabel+MoonKitAdditions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -863,6 +870,7 @@
 				C29EECF71AFD010B00660EE6 /* MiscellaneousFunctions.swift */,
 				C238A6531B04DC8B00898DB8 /* SortingFunctions.swift */,
 				C238A6551B04DDA100898DB8 /* Numbers.swift */,
+				C22F5FE31B6FC753006D225A /* Dispatch.swift */,
 			);
 			path = Functions;
 			sourceTree = "<group>";
@@ -974,6 +982,7 @@
 				C27978E31B17FF9E00B36BAD /* ZoomingCollectionViewLayout.swift */,
 				C2C17D491B5813EB00D9E9A6 /* Identifier.swift */,
 				C2E9A42D1B693CEB0006AFA8 /* InsettingViewController.swift */,
+				C22F5FE51B6FCF73006D225A /* Timer.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -1717,6 +1726,7 @@
 				C2358F3A19C78E0C00920F8D /* NSManagedObject+MSKitAdditions.m in Sources */,
 				C2064FFE1A13C71700342FDE /* UIView+MoonKitAdditions.swift in Sources */,
 				C2358F3B19C78E0C00920F8D /* NSManagedObjectContext+MSKitAdditions.m in Sources */,
+				C22F5FE61B6FCF73006D225A /* Timer.swift in Sources */,
 				C2358F3C19C78E0C00920F8D /* NSMapTable+MSKitAdditions.m in Sources */,
 				C2358F3D19C78E0C00920F8D /* NSNull+MSKitAdditions.m in Sources */,
 				C2358F3E19C78E0C00920F8D /* NSNumber+MSKitAdditions.m in Sources */,
@@ -1854,6 +1864,7 @@
 				C2358F7419C78E0C00920F8D /* MSSingletonController.m in Sources */,
 				C28E35BE1A45DBF300438CCF /* Array+MoonKitAdditions.swift in Sources */,
 				C2A5B6F21B482F4700F34491 /* NSParagraphStyle+MoonKitAdditions.swift in Sources */,
+				C22F5FE41B6FC753006D225A /* Dispatch.swift in Sources */,
 				C24E0EB91AC6141B0044248E /* Bool+MoonKitAdditions.swift in Sources */,
 				C21493BF1A35285A00D274A2 /* ColorSwatch.swift in Sources */,
 				C28E50951A13CA7300DF3206 /* ToggleImageSegmentedControl.swift in Sources */,
@@ -1863,6 +1874,7 @@
 				C211C2C21B4607E5004A24E4 /* InlinePickerViewLayout.swift in Sources */,
 				C238A6561B04DDA100898DB8 /* Numbers.swift in Sources */,
 				C2358F7619C78E0C00920F8D /* MSValueTransformers.m in Sources */,
+				C25D6A871B703E0C00EB7125 /* UILabel+MoonKitAdditions.swift in Sources */,
 				C2358F7A19C78E0C00920F8D /* MSNotificationReceptionist.m in Sources */,
 				C2358F7B19C78E0C00920F8D /* MSXMLParserDelegate.m in Sources */,
 				C20650001A13C72600342FDE /* UIBarButtonItem+MoonKitAdditions.swift in Sources */,
