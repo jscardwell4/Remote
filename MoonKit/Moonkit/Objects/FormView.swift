@@ -9,65 +9,7 @@
 import Foundation
 import UIKit
 
-public final class Form: NSObject {
-
-  public typealias ChangeHandler = (Form, Field, String) -> Void
-
-  public var fields: OrderedDictionary<String, Field>
-  public var changeHandler: ChangeHandler?
-
-  /**
-  initWithTemplates:
-
-  - parameter templates: OrderedDictionary<String, FieldTemplate>
-  */
-  public init(templates: OrderedDictionary<String, FieldTemplate>) {
-    fields = templates.map {Field.fieldWithTemplate($2)}
-    super.init()
-    apply(fields) {$2.changeHandler = self.didChangeField}
-  }
-
-  /**
-  didChangeField:
-
-  - parameter field: Field
-  */
-  func didChangeField(field: Field) { if let name = nameForField(field) { changeHandler?(self, field, name) } }
-
-  /**
-  nameForField:
-
-  - parameter field: Field
-
-  - returns: String?
-  */
-  func nameForField(field: Field) -> String? {
-    if let idx = fields.values.indexOf(field) { return fields.keys[idx] } else { return nil }
-  }
-
-  public var invalidFields: [(Int, String, Field)] {
-    var result: [(Int, String, Field)] = []
-    for (idx, name, field) in fields { if !field.valid { result.append((idx, name, field)) } }
-    return result
-  }
-
-  public var valid: Bool { return invalidFields.count == 0 }
-
-  public var values: OrderedDictionary<String, Any>? {
-    var values: OrderedDictionary<String, Any> = [:]
-    for (_, n, f) in fields { if f.valid, let value: Any = f.value { values[n] = value } else { return nil } }
-    return values
-  }
-
-  public override var description: String {
-    return "Form: {\n\t" + "\n\t".join(fields.map {"\($0): \($1) = \(String($2.value))"}) + "\n}"
-  }
-
-}
-
 public final class FormView: UIView {
-
-  public typealias Appearance = FormViewController.Appearance
 
   // MARK: - Form type
 
@@ -75,7 +17,42 @@ public final class FormView: UIView {
 
   // MARK: - Customizing appearance
 
-  public let fieldAppearance: Appearance?
+  public var labelFont: UIFont  = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline) {
+    didSet {
+      fieldViews.apply { $0.labelFont = self.labelFont }
+    }
+  }
+  public var controlFont: UIFont  = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline) {
+    didSet {
+      fieldViews.apply { $0.controlFont = self.controlFont }
+    }
+  }
+
+  public var controlSelectedFont: UIFont  = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline) {
+    didSet {
+      fieldViews.apply { $0.controlSelectedFont = self.controlSelectedFont }
+    }
+  }
+
+  public var labelTextColor: UIColor = UIColor.blackColor() {
+    didSet {
+      fieldViews.apply { $0.labelTextColor = self.labelTextColor }
+    }
+  }
+
+  public var controlTextColor: UIColor = UIColor.blackColor() {
+    didSet {
+      fieldViews.apply { $0.controlTextColor = self.controlTextColor }
+    }
+  }
+
+  public var controlSelectedTextColor: UIColor = UIColor.blackColor() {
+    didSet {
+      fieldViews.apply { $0.controlSelectedTextColor = self.controlSelectedTextColor }
+    }
+  }
+
+  public enum Style { case Plain, Shadow }
 
   // MARK: - Initializing the view
 
@@ -83,28 +60,20 @@ public final class FormView: UIView {
   initWithForm:appearance:
 
   - parameter form: Form
-  - parameter appearance: Appearance? = nil
   */
-  public init(form f: Form, appearance: Appearance? = nil) {
-    form = f; fieldAppearance = appearance
+  public init(form f: Form, style: Style = .Plain) {
+    form = f
     super.init(frame: CGRect.zeroRect)
     translatesAutoresizingMaskIntoConstraints = false
-    backgroundColor = UIColor(white: 0.9, alpha: 0.75)
-    layer.shadowOpacity = 0.75
-    layer.shadowRadius = 8
-    layer.shadowOffset = CGSize(width: 1.0, height: 3.0)
-    f.fields.apply {
+    if case .Shadow = style {
+      backgroundColor = UIColor(white: 0.9, alpha: 0.75)
+      layer.shadowOpacity = 0.75
+      layer.shadowRadius = 8
+      layer.shadowOffset = CGSize(width: 1.0, height: 3.0)
+    }
+    form.fields.apply {
       (idx: Int, name: String, field: Field) -> Void in
-      let fieldView = FieldView(tag: idx, name: name, field: field)
-      if let appearance = appearance {
-        field.font = appearance.controlFont
-        field.selectedFont = appearance.controlSelectedFont
-        field.color = appearance.controlTextColor
-        field.selectedColor = appearance.controlSelectedTextColor
-        fieldView.labelFont = appearance.labelFont
-        fieldView.labelTextColor = appearance.labelTextColor
-      }
-      self.addSubview(fieldView)
+      self.addSubview(FieldView(tag: idx, name: name, field: field))
     }
   }
 

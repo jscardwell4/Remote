@@ -145,7 +145,7 @@ extension Manufacturer: FormCreatable {
   - returns: Form
   */
   static func creationForm(context context: NSManagedObjectContext) -> Form {
-    return Form(templates: OrderedDictionary<String, FieldTemplate>(["Name": nameFormFieldTemplate(context: context)]))
+    return Form(templates: OrderedDictionary<String, Field.Template>(["Name": nameFormFieldTemplate(context: context)]))
   }
 
   /**

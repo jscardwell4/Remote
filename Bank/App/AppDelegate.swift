@@ -17,6 +17,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
   override class func initialize() {
     LogManager.addConsoleLoggers()
+//    LogManager.logLevel = .Verbose
     MSLogDebug("main bundle: '\(NSBundle.mainBundle().bundlePath)'")
   }
 

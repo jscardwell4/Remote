@@ -9,7 +9,7 @@
 import Foundation
 
 internal class JSONIncludeDirective {
-  let location: Range<String.Index>
+  let location: Range<String.UTF16Index>
   let file: IncludeFile!
 
   private let _parameters: String?
@@ -25,34 +25,34 @@ internal class JSONIncludeDirective {
 
   let subdirectives: [JSONIncludeDirective]
 
-  init?(_ string: String, location loc: Range<String.Index>, directory: String) {
+  init?(_ string: String.UTF16View, location loc: Range<String.UTF16Index>, directory: String) {
     location = loc
     let regex = ~/"<@include\\s+([^>]+\\.json)(?:,([^>]+))?>"
-    let match = regex.firstMatch(string)
+    let match = regex.firstMatch(String(string))
 
     assert(match?.captures.count == 3, "unexpected number of capture groups for regular expression")
     _parameters = match?.captures[2]?.string
     if let fileName = match?.captures[1]?.string, includeFile = IncludeFile("\(directory)/\(fileName)") {
       file = includeFile
-      subdirectives = JSONIncludeDirective.parseDirectives(file.content, directory: directory)
+      subdirectives = JSONIncludeDirective.parseDirectives(file.content.utf16, directory: directory)
     } else { file = nil; subdirectives = []; return nil }
   }
 
-  static func stringByParsingDirectivesInString(string: String, directory: String) -> String {
+  static func stringByParsingDirectivesInString(string: String.UTF16View, directory: String) -> String {
     var result = ""
     var i = string.startIndex
     for directive in parseDirectives(string, directory: directory) {
-      result += string[i..<directive.location.startIndex]
+      result += String(string[i..<directive.location.startIndex])
       result += directive.content
       i = directive.location.endIndex
     }
-    if i < string.endIndex { result += string[i..<string.endIndex] }
+    if i < string.endIndex { result += String(string[i..<string.endIndex]) }
     return result
   }
 
-  private static func parseDirectives(string: String, directory: String) -> [JSONIncludeDirective] {
+  private static func parseDirectives(string: String.UTF16View, directory: String) -> [JSONIncludeDirective] {
     let regex = ~/"(<@include[^>]+>)"
-    let matches = regex.match(string)
+    let matches = regex.match(String(string))
     let ranges = matches.flatMap { $0.captures[1]?.range }
     let directives = compressedMap(ranges, {JSONIncludeDirective(string[$0], location: $0, directory: directory)})
     return directives
@@ -74,16 +74,16 @@ internal class JSONIncludeDirective {
       return cachedContent
     }
     var result: String = ""
-    let fileContent = file.content
-    if subdirectives.count == 0 { result = fileContent }
+    let fileContent = file.content.utf16
+    if subdirectives.count == 0 { result = String(fileContent) }
     else {
       var i = fileContent.startIndex
       for subdirective in subdirectives.sort({$0.location.startIndex < $1.location.startIndex}) {
-        result += fileContent[i..<subdirective.location.startIndex]
+        result += String(fileContent[i..<subdirective.location.startIndex])
         result += subdirective.content
         i = subdirective.location.endIndex
       }
-      if i < fileContent.endIndex { result += fileContent[i..<fileContent.endIndex] }
+      if i < fileContent.endIndex { result += String(fileContent[i..<fileContent.endIndex]) }
     }
     if let p = parameters {
       result = p.reduce(result, combine: {$0.stringByReplacingOccurrencesOfString("<#\($1.0)#>", withString: $1.1)})

@@ -65,7 +65,6 @@ public struct OrderedDictionary<Key : Hashable, Value> : KeyValueCollectionType 
     if let kArray = typeCast(dict.allKeys, Array<Key>.self) { _keys = kArray }
   }
 
-
   /**
   Initialize with a dictionary
 

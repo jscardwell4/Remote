@@ -145,6 +145,15 @@ public extension String {
   public func join(strings: String...) -> String { return join(strings) }
 
   /**
+  Convenience for joining string representations of `elements`
+
+  - parameter elements: [T]
+
+  - returns: String
+  */
+  public func join<T>(elements: [T]) -> String { return join(elements.map { String($0) }) }
+
+  /**
   Returns a string wrapped by `self`
 
   - parameter string: String
@@ -172,7 +181,7 @@ public extension String {
   public func split(regex: RegularExpression) -> [String] {
     let ranges = regex.matchRanges(self)
     guard ranges.count > 0 else { return [self] }
-    return indices.split(ranges, noImplicitJoin: true).flatMap { $0.isEmpty ? nil : self[$0] }
+    return utf16.indices.split(ranges, noImplicitJoin: true).flatMap{String(utf16[$0])}
   }
 
   public var pathStack: Stack<String> { return Stack(Array(pathComponents.reverse())) }
@@ -311,7 +320,7 @@ public extension String {
   }
 
   public var indices: Range<String.Index> { return characters.indices }
-  public var range: NSRange { return NSRange(location: 0, length: count) }
+  public var range: NSRange { return NSRange(location: 0, length: utf16.count) }
 
   /**
   Convert a `Range` to an `NSRange` over the string
@@ -321,8 +330,8 @@ public extension String {
   - returns: NSRange
   */
   public func convertRange(r: Range<String.Index>) -> NSRange {
-    let location = distance(startIndex, r.startIndex)
-    let length = distance(startIndex, r.endIndex) - location
+    let location = r.startIndex == startIndex ? 0 : self[startIndex ..< r.startIndex].utf16.count
+    let length = self[r].count
     return NSRange(location: location, length: length)
   }
 
@@ -334,10 +343,11 @@ public extension String {
   - returns: Range<String.Index>?
   */
   public func convertRange(r: NSRange) -> Range<String.Index>? {
-    guard r.location < count && NSMaxRange(r) < count else { return nil }
-    let start = advance(startIndex, r.location)
-    let end = advance(startIndex, r.location + r.length)
-    return Range(start: start, end: end)
+    let range = Range(start: UTF16Index(r.location), end: advance(UTF16Index(r.location), r.length))
+    guard let lhs = String(utf16[utf16.startIndex ..< range.startIndex]), rhs = String(utf16[range]) else { return nil }
+    let start = advance(startIndex, distance(lhs.startIndex, lhs.endIndex))
+    let end = advance(start, distance(rhs.startIndex, rhs.endIndex))
+    return start ..< end
   }
 
   /**
@@ -348,6 +358,7 @@ public extension String {
   - returns: Range<String
   */
   public func indexRangeFromIntRange(range: Range<Int>) -> Range<String.Index> {
+    assert(false, "we shouldn't be using this")
     let s = advance(startIndex, range.startIndex)
     let e = advance(startIndex, range.endIndex)
     return Range<String.Index>(start: s, end: e)

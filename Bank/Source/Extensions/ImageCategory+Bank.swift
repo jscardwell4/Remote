@@ -29,7 +29,7 @@ extension ImageCategory: FormCreatable {
   - returns: Form
   */
   static func creationForm(context context: NSManagedObjectContext) -> Form {
-    return Form(templates: OrderedDictionary<String, FieldTemplate>(["Name": nameFormFieldTemplate(context: context)]))
+    return Form(templates: OrderedDictionary<String, Field.Template>(["Name": nameFormFieldTemplate(context: context)]))
   }
 
   /**
@@ -48,7 +48,7 @@ extension ImageCategory: FormCreatable {
 extension ImageCategory: CustomCreatableItem {
   func itemCreationControllerWithContext(context: NSManagedObjectContext,
                      cancellationHandler didCancel: () -> Void,
-                         creationHandler didCreate: (ModelObject) -> Void) -> UIViewController?
+                         creationHandler didCreate: (ModelObject) -> Void) -> UIViewController
   {
     return Image.creationControllerWithContext(context,
                            cancellationHandler: didCancel) {($0 as! Image).imageCategory = self; didCreate($0) }

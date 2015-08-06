@@ -106,11 +106,11 @@ public class RemoteElementView: UIView, Named {
   override public func updateConstraints() {
     //TODO: Modify to use model constraint uuids to update only where necessary
 
-    let identifier = createIdentifier(self, "Model")
-    removeConstraintsWithIdentifier(identifier)
+    let identifier = MoonKit.Identifier(self, "Model")
+    removeConstraints(constraintsWithIdentifier(identifier))
     apply(model.constraints) {
       if let constraint = RemoteElementViewConstraint.constraintWithModel($0, owningView: self) {
-        constraint.identifier = identifier
+        constraint.identifier = identifier.string
         self.addConstraint(constraint)
       }
     }

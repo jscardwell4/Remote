@@ -22,18 +22,18 @@ public final class RockerView: ButtonGroupView {
   private var panLength: CGFloat = 0.0
   private var blockPan = false
 
-  static let ConstraintIdentifier = createIdentifier(self, ["Internal"])
+  static let ConstraintIdentifier = MoonKit.Identifier(self, "Internal")
 
   /** updateConstraints */
   override public func updateConstraints() {
     super.updateConstraints()
 
-    let identifier = createIdentifier(self, ["Internal"])
+    let identifier = MoonKit.Identifier(self, "Internal")
     if constraintsWithIdentifier(identifier).count == 0 {
       let format = "\n".join("labelContainer.centerY = self.centerY",
                              "labelContainer.height = self.height * 0.34",
                              "labelContainer.left = self.left")
-      constrain(format, views: ["labelContainer": labelContainer], identifier: identifier)
+      constrain(format, views: ["labelContainer": labelContainer], identifier: identifier.string)
       let predicate = NSPredicate(format: "firstItem == %@" +
                                           "AND secondItem == %@ " +
                                           "AND firstAttribute == \(NSLayoutAttribute.Left.rawValue)" +

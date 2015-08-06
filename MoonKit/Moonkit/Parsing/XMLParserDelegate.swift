@@ -18,11 +18,11 @@ import Foundation
   public var foundElement:            ((NSXMLParser, String, String) -> Void)?
   public var foundInternal:           ((NSXMLParser, String, String?) -> Void)?
   public var foundExternal:           ((NSXMLParser, String, String?, String?) -> Void)?
-  public var startElement:            ((NSXMLParser, String, String?, String?, [NSObject:AnyObject]) -> Void)?
+  public var startElement:            ((NSXMLParser, String, String?, String?, [String:String]) -> Void)?
   public var endElement:              ((NSXMLParser, String, String?, String?) -> Void)?
   public var startMapping:            ((NSXMLParser, String, String) -> Void)?
   public var endMapping:              ((NSXMLParser, String) -> Void)?
-  public var foundCharacters:         ((NSXMLParser, String?) -> Void)?
+  public var foundCharacters:         ((NSXMLParser, String) -> Void)?
   public var foundIgnorable:          ((NSXMLParser, String) -> Void)?
   public var foundProcessing:         ((NSXMLParser, String, String?) -> Void)?
   public var foundComment:            ((NSXMLParser, String?) -> Void)?

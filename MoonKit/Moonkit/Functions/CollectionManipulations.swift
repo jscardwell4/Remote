@@ -47,6 +47,6 @@ public func removedAtIndex<C : RangeReplaceableCollectionType>(x: C, index: C.In
 
 public func valuesForKey<C: KeyValueCollectionType, K:Hashable, V where C.Key == K>(key: K, container: C) -> [V] {
   let containers: [C] = flattened(container)
-  return compressedMap(containers) { $0[key] as? V }
+  return containers.flatMap { $0[key] as? V }
 }
 

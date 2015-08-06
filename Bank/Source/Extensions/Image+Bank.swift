@@ -124,7 +124,7 @@ extension Image: RelatedItemCreatable {
 extension Image: CustomCreatable {
   static func creationControllerWithContext(context: NSManagedObjectContext,
                         cancellationHandler didCancel: () -> Void,
-                            creationHandler didCreate: (ModelObject) -> Void) -> UIViewController?
+                            creationHandler didCreate: (ModelObject) -> Void) -> UIViewController
   {
     let userPhotoLibrary =
       PHAssetCollection.fetchAssetCollectionsWithType(.SmartAlbum,

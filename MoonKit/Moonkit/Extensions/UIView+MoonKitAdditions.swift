@@ -249,7 +249,7 @@ public extension UIView {
   - returns: [NSLayoutConstraint]
   */
   public func constraintsWithIdentifierTag(tag: String) -> [NSLayoutConstraint] {
-    return constraints.filter { tagsFromIdentifier($0.identifier) ∋ tag }
+    return constraints.filter { Identifier($0.identifier) ∋ tag }
   }
 
   /**
@@ -273,7 +273,7 @@ public extension UIView {
   @nonobjc public func constraintsWithTag(tag: Identifier.Tag) -> [NSLayoutConstraint] {
     return constraints.filter {
       guard let id = $0.identifier else { return false }
-      return Identifier(id).tags ∋ tag
+      return Identifier(id) ∋ tag
     }
   }
 
@@ -287,7 +287,7 @@ public extension UIView {
   public func constraintsWithTags(tags: [Identifier.Tag]) -> [NSLayoutConstraint] {
     return constraints.filter {
       guard let id = $0.identifier else { return false }
-      return Set(Identifier(id).tags) ⊇ tags
+      return Set(Identifier(id)) ⊇ tags
     }
   }
   /**
@@ -300,7 +300,7 @@ public extension UIView {
   public func constraintsWithPrefixTag(tag: Identifier.Tag) -> [NSLayoutConstraint] {
     return constraints.filter {
       guard let id = $0.identifier else { return false }
-      return Identifier(id).tags.first == tag
+      return Identifier(id).first == tag
     }
   }
 
@@ -314,7 +314,7 @@ public extension UIView {
   public func constraintsWithPrefixTags(tags: [Identifier.Tag]) -> [NSLayoutConstraint] {
     return constraints.filter {
       guard let id = $0.identifier else { return false }
-      return Identifier(id).tags.startsWith(tags)
+      return Identifier(id).startsWith(tags)
     }
   }
 
@@ -328,7 +328,7 @@ public extension UIView {
   public func constraintsWithSuffixTag(tag: Identifier.Tag) -> [NSLayoutConstraint] {
     return constraints.filter {
       guard let id = $0.identifier else { return false }
-      return Identifier(id).tags.last == tag
+      return Identifier(id).last == tag
     }
   }
 
@@ -342,7 +342,7 @@ public extension UIView {
   public func constraintsWithSuffixTags(tags: [Identifier.Tag]) -> [NSLayoutConstraint] {
     return constraints.filter {
       guard let id = $0.identifier else { return false }
-      return Identifier(id).tags.reverse().startsWith(tags.reverse())
+      return Identifier(id).reverse().startsWith(tags.reverse())
     }
   }
 

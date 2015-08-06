@@ -30,24 +30,29 @@ final class BankCollectionCategoryCell: BankCollectionCell {
   /** updateConstraints */
   override func updateConstraints() {
 
-    let identifierBase = createIdentifier(self, "Internal")
-    let identifier = createIdentifierGenerator(identifierBase)
+    let identifierBase = MoonKit.Identifier(self, "Internal")
+    let identifier = { (tags: [String]) -> MoonKit.Identifier in
+      var id = identifierBase
+      id.extend(tags)
+      return id
+    }
 
-    removeConstraintsWithIdentifierPrefix(identifierBase)
+
+    removeConstraintsWithIdentifierPrefix(identifierBase.string)
     
     super.updateConstraints()
 
-    constrain(indicator--20--label--8--chevron --> identifier("Spacing", "Horizontal"))
+    constrain(indicator--20--label--8--chevron --> identifier(["Spacing", "Horizontal"]))
     constrain(
       label.centerY => contentView.centerY
-        --> identifier("Label", "Vertical"),
+        --> identifier(["Label", "Vertical"]),
       indicator.centerY => contentView.centerY
-        --> identifier("Indicator", "Vertical"),
+        --> identifier(["Indicator", "Vertical"]),
       indicator.right => contentView.left + (indicatorImage == nil ? 0 : 40)
-        --> identifier("Indicator", "Horizontal")
+        --> identifier(["Indicator", "Horizontal"])
     )
 
-    indicatorConstraint = constraintWithIdentifier(identifier("Indicator", "Horizontal"))
+    indicatorConstraint = constraintWithIdentifier(identifier(["Indicator", "Horizontal"]).string)
   }
 
   /** initializeIVARs */

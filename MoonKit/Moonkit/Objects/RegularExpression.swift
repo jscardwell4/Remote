@@ -26,7 +26,7 @@ public struct RegularExpression {
   /** Struct to hold text checking result data */
   public struct Match: CustomStringConvertible {
     public let captures: [Capture?]
-    public var range: Range<String.Index> {
+    public var range: Range<String.UTF16Index> {
       guard let fullCapture = captures[0] else {
         fatalError("all match values should have a capture representing overall match")
       }
@@ -59,7 +59,8 @@ public struct RegularExpression {
   public struct Capture: CustomStringConvertible {
 
     public let group: Int
-    public let range: Range<String.Index>
+    public let range: Range<String.UTF16Index>
+    public let _string: String.UTF16View
     public let string: String
 
     public var description: String { return "{group: \(group), range: \(range), string: \(string)}" }
@@ -72,12 +73,15 @@ public struct RegularExpression {
     - parameter s: String The full string
     */
     public init?(group g: Int, range r: NSRange, string s: String) {
-      guard r.location != NSNotFound && r.location + r.length <= s.count else { return nil }
+      guard r.location != NSNotFound && r.location + r.length <= s.utf16.count else { return nil }
       group = g
-      let start = advance(s.startIndex, r.location)
-      let end = advance(s.startIndex, r.location + r.length)
-      range = Range(start: start, end: end)
-      string = s[range]
+
+      let start = String.UTF16Index(r.location)
+      let end = advance(start, r.length)
+      range = start ..< end
+      _string = s.utf16[range]
+      guard let string = String(_string) else { return nil }
+      self.string = string
     }
 
   }
@@ -121,6 +125,7 @@ public struct RegularExpression {
   */
   private func range(r: Range<String.Index>?, overString s: String) -> NSRange {
     guard let r = r else { return s.range }
+
     return s.convertRange(r)
   }
 
@@ -214,7 +219,7 @@ public struct RegularExpression {
 
   - returns: [Range<String.Index>]
   */
-  func matchRanges(s: String, anchored a: Bool = false, range r: Range<String.Index>? = nil) -> [Range<String.Index>] {
+  func matchRanges(s: String, anchored a: Bool = false, range r: Range<String.Index>? = nil) -> [Range<String.UTF16Index>] {
     return match(s, anchored: a, range: r).map { $0.range }
   }
 
@@ -287,9 +292,30 @@ public struct RegularExpression {
                                   usingBlock block: (Match) -> String) -> String
   {
     var result = s
+    var offset = 0
+
     enumerateMatchesInString(s, anchored: a, range: r) {
       (match: Match, _) -> Void in
-      result.replaceRange(match.range, with: block(match))
+
+      let currentUTF16View = result.utf16
+
+      let beforeCount = currentUTF16View.count
+
+      let range = match.range
+      let offsetRange = advance(range, amount: offset)
+
+      let lhs = String(currentUTF16View[currentUTF16View.startIndex ..< offsetRange.startIndex])!
+      let rhs = String(currentUTF16View[offsetRange.endIndex ..< currentUTF16View.endIndex])!
+      let middle = block(match)
+
+      result = lhs + middle + rhs
+
+      let afterCount = result.utf16.count
+
+      let delta = afterCount - beforeCount
+
+      offset += delta
+
     }
     return result
   }

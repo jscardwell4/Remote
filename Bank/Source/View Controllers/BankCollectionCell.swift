@@ -97,8 +97,13 @@ class BankCollectionCell: UICollectionViewCell {
   /** updateConstraints */
   override func updateConstraints() {
 
-    let identifierBase = createIdentifier(self, "Internal")
-  	let identifier = createIdentifierGenerator(identifierBase)
+    let identifierBase = MoonKit.Identifier(self, "Internal")
+    let identifier = {
+      (tags: [String]) -> MoonKit.Identifier in
+        var id = identifierBase
+        id.extend(tags)
+        return id
+    }
 
     // Refresh our constraints
     removeAllConstraints()
@@ -108,36 +113,36 @@ class BankCollectionCell: UICollectionViewCell {
     removeAllConstraints()
 
     constrain(
-      𝗛|contentView|𝗛 --> identifier("ContainContent", "Horizontal"),
-      𝗩|contentView|𝗩 --> identifier("ContainContent", "Vertical")
+      𝗛|contentView|𝗛 --> identifier(["ContainContent", "Horizontal"]),
+      𝗩|contentView|𝗩 --> identifier(["ContainContent", "Vertical"])
     )
     constrain(
-      contentView.width => contentSize.width   --> identifier("Content", "Width"),
-      contentView.height => contentSize.height --> identifier("Content", "Height")
+      contentView.width => contentSize.width   --> identifier(["Content", "Width"]),
+      contentView.height => contentSize.height --> identifier(["Content", "Height"])
     )
 
     if !suppressDeleteConstraints {
       constrain(
-        deleteButton.right => right                                       --> identifier("DeleteButton", "Right"),
-        deleteButton.top => top                                           --> identifier("DeleteButton", "Top"),
-        deleteButton.width => Float(BankCollectionCell.deleteButtonWidth) --> identifier("DeleteButton", "Width"),
-        deleteButton.bottom => bottom                                     --> identifier("DeleteButton", "Bottom")
+        deleteButton.right => right                                       --> identifier(["DeleteButton", "Right"]),
+        deleteButton.top => top                                           --> identifier(["DeleteButton", "Top"]),
+        deleteButton.width => Float(BankCollectionCell.deleteButtonWidth) --> identifier(["DeleteButton", "Width"]),
+        deleteButton.bottom => bottom                                     --> identifier(["DeleteButton", "Bottom"])
       )
     }
 
     if !suppressChevronConstraints {
       constrain(
-        chevron.centerY => contentView.centerY --> identifier("Chevron", "Vertical"),
-        chevron.right => right - 20            --> identifier("Chevron", "Right"),
-        chevron.width ≤ chevron.height         --> identifier("Chevron", "Proportion"),
-        chevron.height => 22                   --> identifier("Chevron", "Size")
+        chevron.centerY => contentView.centerY --> identifier(["Chevron", "Vertical"]),
+        chevron.right => right - 20            --> identifier(["Chevron", "Right"]),
+        chevron.width ≤ chevron.height         --> identifier(["Chevron", "Proportion"]),
+        chevron.height => 22                   --> identifier(["Chevron", "Size"])
       )
     }
 
     if !suppressIndicatorConstraints {
       constrain(
-        indicator.width ≤ indicator.height --> identifier("Indicator", "Proportion"),
-        indicator.height => 22             --> identifier("Indicator", "Size")
+        indicator.width ≤ indicator.height --> identifier(["Indicator", "Proportion"]),
+        indicator.height => 22             --> identifier(["Indicator", "Size"])
       )
     }
 

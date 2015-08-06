@@ -20,7 +20,7 @@ extension NamedModelObject {
 
   - returns: FieldTemplate
   */
-  static func nameFormFieldTemplate(context context: NSManagedObjectContext) -> FieldTemplate {
+  static func nameFormFieldTemplate(context context: NSManagedObjectContext) -> Field.Template {
     let entity = " ".join(entityDescription.name!.split(~/"(?=\\p{Lu}\\p{Ll})"))
     let placeholder = "The \(entity)'s name"
     let validation: (String?) -> Bool = {
@@ -40,7 +40,7 @@ extension NamedModelObject {
   */
   static func pickerFormFieldTemplate(context context: NSManagedObjectContext,
                              optional: Bool = true,
-                             editable: Bool = true) -> FieldTemplate
+                             editable: Bool = true) -> Field.Template
   {
     var allValues = allValuesForAttribute("name", context: context) as! [String]
     allValues.sortInPlace(<)

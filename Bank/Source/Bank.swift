@@ -306,12 +306,12 @@ final public class Bank {
 
   - parameter form: FormViewController
   */
-  static func decorateForm(form: FormViewController) {
+  static func decorateForm(form: FormView) {
     form.labelFont           = formLabelFont
     form.labelTextColor      = formLabelTextColor
     form.controlFont         = formControlFont
     form.controlTextColor    = formControlTextColor
     form.controlSelectedFont = formControlSelectedFont
-
   }
+  
 }

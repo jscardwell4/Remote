@@ -46,6 +46,23 @@ public protocol KeySearchable {
   var allValues: [Any] { get }
 }
 
+//public extension KeySearchable where Self:KeyedContainer {
+//  public func valuesForKey(key: Key) -> [Any] {
+//    var result: [Any] = []
+//    if let v = valueForKey(key) { result.append(v) }
+//
+////    func nestedContainer<T:KeySearchable where T:KeyedContainer, T.Key == Key>(x: T) -> T { return x }
+////
+////    func nestedContainer<T>(x: Any) -> T { return x }
+//
+//    for case let nested as KeySearchable in allValues  {
+//      MSLogDebug("nested = \(nested)")
+////      result.extend(nested.valuesForKey(key))
+//    }
+//    return result
+//  }
+//}
+
 public protocol NestingContainer {
   var topLevelObjects: [Any] { get }
   func topLevelObjects<T>(type: T.Type) -> [T]

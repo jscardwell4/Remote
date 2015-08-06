@@ -27,7 +27,7 @@ public class JSONSerialization {
     do {
       let string = try String(contentsOfFile: filePath, encoding: NSUTF8StringEncoding)
       let directory = filePath.stringByDeletingLastPathComponent
-      let result = JSONIncludeDirective.stringByParsingDirectivesInString(string, directory: directory)
+      let result = JSONIncludeDirective.stringByParsingDirectivesInString(string.utf16, directory: directory)
       if JSONIncludeDirective.cacheSize > 100 { JSONIncludeDirective.emptyCache() }
       return result
     } catch {

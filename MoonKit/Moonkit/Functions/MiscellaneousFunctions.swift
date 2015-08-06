@@ -42,65 +42,6 @@ public func delayedDispatchToMain(delay: Double, _ block: dispatch_block_t) {
 }
 
 /**
-append:toIdentifier:
-
-- parameter s: String
-- parameter identifier: String
-
-- returns: String
-*/
-public func append(s: String, toIdentifier identifier: String) -> String { return "-".join(s, identifier) }
-
-/**
-createIdentifierGenerator:suffixes:
-
-- parameter base: String
-- parameter suffixes: String...
-
-- returns: String
-*/
-public func createIdentifierGenerator(base: String)(_ suffixes: String...) -> String {
-  return "-".join([base] + suffixes)
-}
-
-/**
-createIdentifier:suffix:
-
-- parameter object: Any
-- parameter suffix: String? = nil
-
-- returns: String
-*/
-public func createIdentifier(object: Any, _ suffix: String? = nil) -> String {
-  return createIdentifier(object, suffix == nil ? nil : [suffix!])
-}
-
-/**
-createIdentifier:suffix:
-
-- parameter object: Any
-- parameter suffix: String...
-
-- returns: String
-*/
-public func createIdentifier(object: Any, _ suffix: String...) -> String {
-  return _stdlib_getDemangledTypeName(object) + "-" + "-".join(suffix)
-}
-
-/**
-createIdentifier:suffix:
-
-- parameter object: Any
-- parameter suffix: [String]? = nil
-
-- returns: String
-*/
-public func createIdentifier(object: Any, _ suffix: [String]? = nil) -> String {
-  let identifier = typeName(object)
-  return suffix == nil ? identifier : "-".join([identifier] + suffix!)
-}
-
-/**
 typeName:
 
 - parameter object: Any
@@ -108,13 +49,4 @@ typeName:
 - returns: String
 */
 public func typeName(object: Any) -> String { return _stdlib_getDemangledTypeName(object) }
-
-/**
-tagsFromIdentifier:
-
-- parameter identifier: String?
-
-- returns: [String]
-*/
-public func tagsFromIdentifier(identifier: String?) -> [String] { return "-".split(identifier ?? "") }
 

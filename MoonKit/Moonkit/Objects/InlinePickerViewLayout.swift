@@ -219,6 +219,8 @@ class InlinePickerViewLayout: UICollectionViewLayout {
 
     contentSize = CGSize(width: max(contentWidth, visibleWidth * 2), height: height)
 
+    if case let delta = contentSize.width - contentWidth where delta != 0 { contentPadding += delta / 2 }
+
     rawFrames.removeAll(keepCapacity: true)
     var x = contentPadding
     for width in values.widths {
@@ -243,6 +245,7 @@ class InlinePickerViewLayout: UICollectionViewLayout {
   */
   override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
     let attributes = storedAttributes.values.filter { $0.frame.intersects(rect) }.array
+    MSLogVerbose("current values…\n\(description)")
     return attributes.count > 0 ? attributes : nil
   }
 

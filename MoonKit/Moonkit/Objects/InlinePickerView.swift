@@ -35,6 +35,7 @@ public class InlinePickerView: UIView {
 
   /** initializeIVARs */
   private func initializeIVARs() {
+
     setContentCompressionResistancePriority(750, forAxis: .Horizontal)
     setContentCompressionResistancePriority(1000, forAxis: .Vertical)
     translatesAutoresizingMaskIntoConstraints = false
@@ -160,6 +161,7 @@ public class InlinePickerView: UIView {
   }
 
   public var editing = false { didSet { collectionView.scrollEnabled = editing; reloadData() } }
+
 }
 
 // MARK: - UICollectionViewDataSource
@@ -245,7 +247,10 @@ extension InlinePickerView: UICollectionViewDelegate {
              willDisplayCell cell: UICollectionViewCell,
           forItemAtIndexPath indexPath: NSIndexPath)
   {
-    if indexPath.item == selection { cell.selected = true }
+    if indexPath.item == selection {
+      collectionView.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
+      cell.selected = true
+    }
     if editing && cell.hidden { cell.hidden = false }
   }
 }
@@ -281,9 +286,13 @@ extension InlinePickerView: UIScrollViewDelegate {
       return
     }
 
+    guard item != selection else { MSLogVerbose("item already selected"); return }
+
     // update selection
-    MSLogVerbose("selecting cell for item \(selection) with label '\(labels[item]) where offset = \(offset)")
+    MSLogVerbose("selecting cell for item \(item) with label '\(labels[item]) where offset = \(offset)")
+
+    if selection > -1 { collectionView.deselectItemAtIndexPath(NSIndexPath(forItem: selection, inSection: 0), animated: true) }
     selection = item
-    collectionView.selectItemAtIndexPath(NSIndexPath(forItem: item, inSection: 0), animated: false, scrollPosition:.None)
+    collectionView.selectItemAtIndexPath(NSIndexPath(forItem: item, inSection: 0), animated: true, scrollPosition:.None)
   }
 }

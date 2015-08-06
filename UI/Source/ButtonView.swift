@@ -122,9 +122,9 @@ public class ButtonView: RemoteElementView {
 	override public func updateConstraints() {
 		super.updateConstraints()
 
-    let identifier = createIdentifier(self, ["Button", "Internal"])
+    let identifier = MoonKit.Identifier(self, "Button", "Internal")
     if constraintsWithIdentifier(identifier).count == 0 {
-      constrain(identifier: identifier, activityIndicator.centerX => self.centerX, activityIndicator.centerY => self.centerY)
+      constrain([activityIndicator.centerX => self.centerX, activityIndicator.centerY => self.centerY] --> identifier)
     }
 	}
 

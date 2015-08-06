@@ -25,13 +25,14 @@ public class ButtonGroupView: RemoteElementView {
   override public func updateConstraints() {
     super.updateConstraints()
 
-    let identifier = createIdentifier(self, "Internal", "Label")
-    removeConstraintsWithIdentifier(identifier)
-    constrain(identifier: identifier,
-              label.left => self.left,
-              label.right => self.right,
-              label.top => self.top,
-              label.bottom => self.bottom)
+    let identifier = MoonKit.Identifier(self, "Internal", "Label")
+    removeConstraints(constraintsWithIdentifier(identifier))
+    constrain([
+      label.left => self.left,
+      label.right => self.right,
+      label.top => self.top,
+      label.bottom => self.bottom
+    ] --> identifier)
   }
 
   /**

@@ -16,6 +16,8 @@ public class NetworkDevice: EditableModelObject {
   @NSManaged public var uniqueIdentifier: String!
   @NSManaged public var componentDevices: Set<ComponentDevice>
 
+  public enum DeviceType: String { case iTach, ISY }
+
   /**
   deviceExistsWithIdentifier:
 

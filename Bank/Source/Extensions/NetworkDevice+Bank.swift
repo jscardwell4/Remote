@@ -54,7 +54,7 @@ extension NetworkDevice {
   - returns: Form
   */
   func discoveryConfirmationForm() -> Form {
-    var fields: OrderedDictionary<String, FieldTemplate> = [:]
+    var fields: OrderedDictionary<String, Field.Template> = [:]
     if let moc = managedObjectContext {
       let validation = self.dynamicType.nameFormFieldTemplate(context: moc).values["validation"] as? (String?) -> Bool
       fields["Name"] = .Text(value: "", placeholder: uniqueIdentifier, validation: validation, editable: true)
@@ -104,47 +104,11 @@ extension NetworkDevice: CustomCreatable {
   */
   static func creationControllerWithContext(context: NSManagedObjectContext,
                         cancellationHandler didCancel: () -> Void,
-                            creationHandler didCreate: (ModelObject) -> Void) -> UIViewController?
+                            creationHandler didCreate: (ModelObject) -> Void) -> UIViewController
   {
-    guard ConnectionManager.wifiAvailable else { return nil }
-
-    var token: ConnectionManager.DiscoveryCallbackToken?
-
-    let didCancelWrapper: () -> Void = {
-      didCancel()
-      guard let token = token else { return }
-      ConnectionManager.stopDetectingNetworkDevices(token)
-    }
-
-    let didCreateWrapper: (ModelObject) -> Void = {
-      didCreate($0)
-      guard let token = token else { return }
-      ConnectionManager.stopDetectingNetworkDevices(token)
-    }
-
-    let discoveryController = DiscoveryViewController(didCancel: didCancelWrapper, didSubmit: didCreateWrapper)
-
-
-    let discoveryCallback: ConnectionManager.DiscoveryCallback = {
-      [unowned discoveryController] (networkDevice: NetworkDevice?, cancelled: Bool) -> Void in
-
-      dispatchToMain {
-        if cancelled { discoveryController.cancelAction() }
-        else if let device = networkDevice { discoveryController.status = .Discovery(device) }
-      }
-
-    }
-
-    do {
-      token = try ConnectionManager.startDetectingNetworkDevices(context: context, callback: discoveryCallback)
-      discoveryController.status = .Searching
-      let controller = InsettingViewController()
-      controller.selfSizing = true
-      controller.childViewController = discoveryController
-      return controller
-    } catch {
-      logError(error)
-      return nil
-    }
+    let controller = InsettingViewController()
+    controller.selfSizing = true
+    controller.childViewController = DiscoveryViewController(context: context, didCancel: didCancel, didSubmit: didCreate)
+    return controller
   }
 }

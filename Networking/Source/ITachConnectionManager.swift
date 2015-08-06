@@ -22,9 +22,7 @@ final class ITachConnectionManager {
   typealias Callback = ConnectionManager.Callback
   typealias Connection = ITachDeviceConnection
 
-  enum Error: ErrorType {
-    case EmptyCommand
-  }
+  typealias Error = ConnectionManager.Error
 
   typealias Device = ITachDevice
   typealias DeviceIdentifier = String
@@ -144,6 +142,15 @@ final class ITachConnectionManager {
     // Connect if appropriate
     if SettingsManager.valueForSetting(shouldConnectKey) == true { connections[uniqueIdentifier] = Connection(device: device) }
     
+  }
+
+  /**
+  connectWithDeviceAtLocation:
+
+  - parameter location: String
+  */
+  class func connectWithDeviceAtLocation(location: String) {
+    MSLogDebug("location = \(location)")
   }
 
  /**

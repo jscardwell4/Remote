@@ -42,7 +42,7 @@ protocol FormCreatable: Model {
 protocol CustomCreatable: Model {
   static func creationControllerWithContext(context: NSManagedObjectContext,
                         cancellationHandler didCancel: () -> Void,
-                            creationHandler didCreate: (ModelObject) -> Void) -> UIViewController?
+                            creationHandler didCreate: (ModelObject) -> Void) -> UIViewController
 }
 
 // MARK: - Bank colleciton protocols
@@ -76,14 +76,14 @@ protocol CustomCreatable: Model {
 @objc protocol CustomCreatableItem: BankModelCollection {
   func itemCreationControllerWithContext(context: NSManagedObjectContext,
                    cancellationHandler didCancel: () -> Void,
-                       creationHandler didCreate: (ModelObject) -> Void) -> UIViewController?
+                       creationHandler didCreate: (ModelObject) -> Void) -> UIViewController
   var itemLabel: String { get }
 }
 
 @objc protocol CustomCreatableCollection: BankModelCollection {
   func collectionCreationControllerWithContext(context: NSManagedObjectContext,
                          cancellationHandler didCancel: () -> Void,
-                             creationHandler didCreate: (ModelObject) -> Void) -> UIViewController?
+                             creationHandler didCreate: (ModelObject) -> Void) -> UIViewController
   var collectionLabel: String { get }
 }
 

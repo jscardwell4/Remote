@@ -39,6 +39,15 @@ class MulticastConnection: GCDAsyncUdpSocketDelegate {
     socket.setDelegateQueue(MulticastConnection.queue)
   }
 
+  /**
+  sendMessage:
+
+  - parameter message: String
+  */
+  func sendMessage(message: String) {
+    guard let data = (message as NSString).dataUsingEncoding(NSUTF8StringEncoding) else { return }
+    socket.sendData(data, toHost: address, port: port, withTimeout: 60, tag: 0)
+  }
 
   /**
   Open socket connection to multicast group
@@ -83,6 +92,16 @@ class MulticastConnection: GCDAsyncUdpSocketDelegate {
   func stopListening() { guard listening else { return };  socket.pauseReceiving(); listening = false }
 
   // MARK: - GCDAsyncUdpSocketDelegate
+
+  /**
+  udpSocket:didSendDataWithTag:
+
+  - parameter sock: GCDAsyncUdpSocket
+  - parameter tag: Int
+  */
+  @objc func udpSocket(sock: GCDAsyncUdpSocket, didSendDataWithTag tag: Int) {
+    MSLogDebug("tag = \(tag)")
+  }
 
   /**
   udpSocket:didReceiveData:fromAddress:withFilterContext:

@@ -276,7 +276,7 @@ extension ComponentDevice: RelatedItemCreatable {
         let label = "Network Device"
 
         let controller = {
-          [unowned self] (didCancel: () -> Void, didCreate: (ModelObject) -> Void) -> UIViewController? in
+          [unowned self] (didCancel: () -> Void, didCreate: (ModelObject) -> Void) -> UIViewController in
 
           let didCreateWrapper = {
             [unowned self] (model: ModelObject) -> Void in
@@ -316,7 +316,7 @@ extension ComponentDevice: FormCreatable {
   */
   static func creationForm(context context: NSManagedObjectContext) -> Form {
 
-    var fields: OrderedDictionary<String, FieldTemplate> = [:]
+    var fields: OrderedDictionary<String, Field.Template> = [:]
 
     fields["Name"]            = nameFormFieldTemplate(context: context)
     fields["Manufacturer"]    = Manufacturer.pickerFormFieldTemplate(context: context)

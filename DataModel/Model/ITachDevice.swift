@@ -22,7 +22,7 @@ public class ITachDevice: NetworkDevice {
     }
     set {
       willChangeValueForKey("configURL")
-      setPrimitiveValue(newValue.hasPrefix("http://") ? newValue[7..<newValue.length] : newValue, forKey: "configURL")
+      setPrimitiveValue(newValue.hasPrefix("http://") ? newValue[advance(newValue.startIndex, 7) ..< newValue.endIndex] : newValue, forKey: "configURL")
       didChangeValueForKey("configURL")
     }
   }

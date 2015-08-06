@@ -202,11 +202,11 @@ public final class ActivityViewController: UIViewController {
   override public func updateViewConstraints() {
     super.updateViewConstraints()
 
-    let identifier = createIdentifier(self, "Internal")
-    view.removeConstraintsWithIdentifier(identifier)
+    let identifier = MoonKit.Identifier(self, "Internal")
+    view.removeConstraintsWithIdentifier(identifier.string)
 
     if remoteView != nil && topToolbarView != nil {
-      view.constrain(identifier: identifier,
+      view.constrain(identifier: identifier.string,
         remoteView.centerX => view.centerX,
         remoteView.bottom => view.bottom,
         remoteView.top => view.top,

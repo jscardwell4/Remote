@@ -11,7 +11,7 @@ import MoonKit
 import DataModel
 
 struct CustomTransaction: ItemCreationTransaction {
-  typealias CustomController = (didCancel: () -> Void, didCreate: (ModelObject) -> Void) -> UIViewController?
+  typealias CustomController = (didCancel: () -> Void, didCreate: (ModelObject) -> Void) -> UIViewController
 
   let label: String
   let controller: CustomController
@@ -34,7 +34,7 @@ struct CustomTransaction: ItemCreationTransaction {
   */
   init<T:CustomCreatable>(label: String, customType: T.Type, context: NSManagedObjectContext) {
     let controller: CustomController = {
-      didCancel, didCreate -> UIViewController? in
+      didCancel, didCreate -> UIViewController in
       let handler: (ModelObject) -> Void = {
         object in
         do {
@@ -58,7 +58,7 @@ struct CustomTransaction: ItemCreationTransaction {
   init<T:BankModelCollection where T:CustomCreatableItem>(newItemFor collection: T) {
     assert(collection.managedObjectContext != nil)
     self.init(label: collection.itemLabel) {
-      didCancel, didCreate -> UIViewController? in
+      didCancel, didCreate -> UIViewController in
 
       let handler: (ModelObject) -> Void = {
         object in
@@ -84,7 +84,7 @@ struct CustomTransaction: ItemCreationTransaction {
   init<T:BankModelCollection where T:CustomCreatableCollection>(newCollectionFor collection: T) {
     assert(collection.managedObjectContext != nil)
     self.init(label: collection.collectionLabel) {
-      didCancel, didCreate -> UIViewController? in
+      didCancel, didCreate -> UIViewController in
 
       let handler: (ModelObject) -> Void = {
         object in

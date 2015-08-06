@@ -250,4 +250,18 @@ public final class ConnectionManager {
     Notification.NetworkDeviceDiscovery(uuid: device.uuid).post()
   }
 
+  /**
+  connectToDeviceOfType:location:
+
+  - parameter type: NetworkDevice.DeviceType
+  - parameter location: String
+  */
+  public static func connectToDeviceOfType(type: NetworkDevice.DeviceType, location: String) {
+    MSLogDebug("type: \(type.rawValue), location: \(location)")
+    switch type {
+      case .iTach: ITachConnectionManager.connectWithDeviceAtLocation(location)
+      case .ISY:   break
+    }
+  }
+
 }

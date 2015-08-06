@@ -98,11 +98,19 @@ final class BankCollectionItemCell: BankCollectionCell {
   /** updateConstraints */
   override func updateConstraints() {
 
-    let identifierBase = createIdentifier(self, "Internal")
-    let listIdentifier      = createIdentifierGenerator(createIdentifier(self, "Internal", "List"))
-    let thumbnailIdentifier = createIdentifierGenerator(createIdentifier(self, "Internal", "Thumbnail"))
+    let identifierBase = MoonKit.Identifier(self, "Internal")
+    let listIdentifier = { (tags: [String]) -> MoonKit.Identifier in
+      var identifier = MoonKit.Identifier(self, "Internal", "List")
+      identifier.extend(tags)
+      return identifier
+    }
+    let thumbnailIdentifier = { (tags: [String]) -> MoonKit.Identifier in
+      var identifier = MoonKit.Identifier(self, "Internal", "Thumbnail")
+      identifier.extend(tags)
+      return identifier
+    }
 
-    removeConstraintsWithIdentifierPrefix(identifierBase)
+    removeConstraintsWithIdentifierPrefix(identifierBase.string)
 
     super.updateConstraints()
 
@@ -112,49 +120,49 @@ final class BankCollectionItemCell: BankCollectionCell {
 
         constrain(
           nameLabel.centerY => contentView.centerY
-            --> listIdentifier("Label", "Vertical"),
+            --> listIdentifier(["Label", "Vertical"]),
           nameLabel.height => contentView.height
-            --> listIdentifier("Label", "Height"),
+            --> listIdentifier(["Label", "Height"]),
           chevron.left => nameLabel.right + 8
-            --> listIdentifier("Chevron", "Label", "Spacing", "Horizontal"),
+            --> listIdentifier(["Chevron", "Label", "Spacing", "Horizontal"]),
           indicator.centerY => contentView.centerY
-            --> listIdentifier("Indicator", "Vertical"),
+            --> listIdentifier(["Indicator", "Vertical"]),
           indicator.right => contentView.left + (indicatorImage == nil ? 0 : 40)
-            --> listIdentifier("Indicator", "Left")
+            --> listIdentifier(["Indicator", "Left"])
         )
 
         if previewable {
           constrain(
             thumbnailImageView.left => indicator.right + 20
-              --> listIdentifier("Thumbnail", "Indicator", "Spacing", "Horizontal"),
+              --> listIdentifier(["Thumbnail", "Indicator", "Spacing", "Horizontal"]),
             thumbnailImageView.height => contentView.height - 8
-              --> listIdentifier("Thumbnail", "Height"),
+              --> listIdentifier(["Thumbnail", "Height"]),
             thumbnailImageView.width => thumbnailImageView.height
-              --> listIdentifier("Thumbnail", "Width"),
+              --> listIdentifier(["Thumbnail", "Width"]),
             thumbnailImageView.centerY => contentView.centerY
-              --> listIdentifier("Thumbnail", "Vertical"),
+              --> listIdentifier(["Thumbnail", "Vertical"]),
             nameLabel.left => thumbnailImageView.right + 8
-              --> listIdentifier("Label", "Thumbnail", "Spacing", "Horizontal")
+              --> listIdentifier(["Label", "Thumbnail", "Spacing", "Horizontal"])
           )
         } else {
           constrain(
             nameLabel.left => indicator.right + 20
-              --> listIdentifier("Label", "Indicator", "Spacing", "Horizontal")
+              --> listIdentifier(["Label", "Indicator", "Spacing", "Horizontal"])
           )
         }
 
-        indicatorConstraint = constraintWithIdentifier(listIdentifier("Indicator", "Left"))
+        indicatorConstraint = constraintWithIdentifier(listIdentifier(["Indicator", "Left"]).string)
 
       case .Thumbnail:
         constrain(
           𝗛|thumbnailImageView|𝗛
-            --> thumbnailIdentifier("Thumbnail", "Spacing", "Horizontal"),
+            --> thumbnailIdentifier(["Thumbnail", "Spacing", "Horizontal"]),
           [thumbnailImageView.height => thumbnailImageView.width
-            --> thumbnailIdentifier("Thumbnail", "Proportion"),
+            --> thumbnailIdentifier(["Thumbnail", "Proportion"]),
            indicator.left => contentView.left + 8
-            --> thumbnailIdentifier("Indicator", "Left"),
+            --> thumbnailIdentifier(["Indicator", "Left"]),
            indicator.top => contentView.top + 8
-            --> thumbnailIdentifier("Indicator", "Top")]
+            --> thumbnailIdentifier(["Indicator", "Top"])]
         )
 
     }

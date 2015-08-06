@@ -96,9 +96,8 @@ class BankItemCreationDelegate {
       dismissController()
     }
 
-    if let customController = transaction.controller(didCancel: dismissController, didCreate: didCreate) {
-      viewController.presentViewController(customController, animated: true, completion: nil)
-    }
+    let customController = transaction.controller(didCancel: dismissController, didCreate: didCreate)
+    viewController.presentViewController(customController, animated: true, completion: nil)
 
   }
 

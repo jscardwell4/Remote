@@ -36,36 +36,7 @@ public class FormViewController: UIViewController {
   */
   public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
-  // MARK: Customizing the form's appearance
-
-  public struct Appearance {
-    public let labelFont: UIFont
-    public let controlFont: UIFont
-    public let controlSelectedFont: UIFont
-    public let labelTextColor: UIColor
-    public let controlTextColor: UIColor
-    public let controlSelectedTextColor: UIColor
-  }
-
   public let form: Form
-
-  public dynamic var labelFont:                UIFont  = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
-  public dynamic var controlFont:              UIFont  = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
-  public dynamic var controlSelectedFont:      UIFont  = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
-  public dynamic var labelTextColor:           UIColor = UIColor.blackColor()
-  public dynamic var controlTextColor:         UIColor = UIColor.blackColor()
-  public dynamic var controlSelectedTextColor: UIColor = UIColor.blackColor()
-
-  public var formAppearance: Appearance {
-    return Appearance(
-      labelFont: labelFont,
-      controlFont: controlFont,
-      controlSelectedFont: controlSelectedFont,
-      labelTextColor: labelTextColor,
-      controlTextColor: controlTextColor,
-      controlSelectedTextColor: controlSelectedTextColor
-    )
-  }
 
   // MARK: - The controller's private properties
   private let didSubmit: Submission?
@@ -73,7 +44,7 @@ public class FormViewController: UIViewController {
 
   private weak var snapshotView: UIView?
   private weak var effectView: UIVisualEffectView?
-  private weak var formView: FormView?
+  public private(set) weak var formView: FormView?
   private weak var toolbar: UIToolbar?
 
   // MARK: - Loading/updating the controller's view
@@ -96,7 +67,7 @@ public class FormViewController: UIViewController {
     view.addSubview(effectView)
     self.effectView = effectView
 
-    let formView = FormView(form: form, appearance: formAppearance)
+    let formView = FormView(form: form, style: .Shadow)
     effectView.contentView.addSubview(formView)
     formView.nametag = "formView"
     self.formView = formView

@@ -44,10 +44,10 @@ class PanelDelegate {
     if l == location { view = v } else if l == opposingLocation { opposingView = v }
   }
 
-  static let ViewTuckedIdentifier = createIdentifier(PanelDelegate.self, "View", "Tucked")
-  static let ViewUntuckedIdentifier = createIdentifier(PanelDelegate.self, "View", "Untucked")
-  static let OpposingViewTuckedIdentifier = createIdentifier(PanelDelegate.self, "OpposingView", "Tucked")
-  static let OpposingViewUntuckedIdentifier = createIdentifier(PanelDelegate.self, "OpposingView", "Untucked")
+  static let ViewTuckedIdentifier = MoonKit.Identifier(PanelDelegate.self, "View", "Tucked")
+  static let ViewUntuckedIdentifier = MoonKit.Identifier(PanelDelegate.self, "View", "Untucked")
+  static let OpposingViewTuckedIdentifier = MoonKit.Identifier(PanelDelegate.self, "OpposingView", "Tucked")
+  static let OpposingViewUntuckedIdentifier = MoonKit.Identifier(PanelDelegate.self, "OpposingView", "Untucked")
 
   weak var view: ButtonGroupView? {
     didSet {
@@ -139,16 +139,16 @@ class PanelDelegate {
   }
 
   var viewTuckedConstraint: NSLayoutConstraint? {
-    didSet { viewTuckedConstraint?.identifier = PanelDelegate.ViewTuckedIdentifier }
+    didSet { viewTuckedConstraint?.identifier = PanelDelegate.ViewTuckedIdentifier.string }
   }
   var viewUntuckedConstraint: NSLayoutConstraint? {
-    didSet { viewUntuckedConstraint?.identifier = PanelDelegate.ViewUntuckedIdentifier }
+    didSet { viewUntuckedConstraint?.identifier = PanelDelegate.ViewUntuckedIdentifier.string }
   }
   var opposingViewTuckedConstraint: NSLayoutConstraint? {
-    didSet { opposingViewTuckedConstraint?.identifier = PanelDelegate.OpposingViewTuckedIdentifier }
+    didSet { opposingViewTuckedConstraint?.identifier = PanelDelegate.OpposingViewTuckedIdentifier.string }
   }
   var opposingViewUntuckedConstraint: NSLayoutConstraint? {
-    didSet { opposingViewUntuckedConstraint?.identifier = PanelDelegate.OpposingViewUntuckedIdentifier }
+    didSet { opposingViewUntuckedConstraint?.identifier = PanelDelegate.OpposingViewUntuckedIdentifier.string }
   }
 
   /** updateGestures */

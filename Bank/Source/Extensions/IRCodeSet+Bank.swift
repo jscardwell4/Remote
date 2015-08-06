@@ -27,7 +27,7 @@ extension IRCodeSet: FormCreatable {
   */
   static func creationForm(context context: NSManagedObjectContext) -> Form {
 
-    var fields: OrderedDictionary<String, FieldTemplate> = [:]
+    var fields: OrderedDictionary<String, Field.Template> = [:]
 
     fields["Name"]         = nameFormFieldTemplate(context: context)
     fields["Manufacturer"] = Manufacturer.pickerFormFieldTemplate(context: context, optional: false)

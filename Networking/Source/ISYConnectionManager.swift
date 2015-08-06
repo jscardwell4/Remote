@@ -7,27 +7,35 @@
 //
 
 import Foundation
+import CoreData
 import MoonKit
+import Settings
 import class DataModel.HTTPCommand
 import class DataModel.ISYDevice
 import class DataModel.DataManager
+import class DataModel.NetworkDevice
 
 final class ISYConnectionManager {
 
   typealias Callback = ConnectionManager.Callback
   typealias Error = ConnectionManager.Error
+  typealias Device = ISYDevice
+  typealias DeviceIdentifier = String
+  typealias Connection = ISYDeviceConnection
 
   static let MulticastAddress = "239.255.255.250"
   static let MulticastPort: UInt16 = 1900
   static let MulticastSearchMessage = "M-SEARCH * HTTP/1.1\rHOST:239.255.255.250:1900\rMAN:\"ssdp.discover\"\rMX:1\rST:urn:udi-com:device:X_Insteon_Lighting_Device:1"
 
+  static private var context: NSManagedObjectContext = DataManager.rootContext
+
   /** Previously discovered devices. */
   static private(set) var networkDevices = Set(ISYDevice.objectsInContext(DataManager.rootContext) as! [ISYDevice])
 
-  /** Currently connected devices. */
-  static var connections: Set<ISYDeviceConnection> = []
+  /** Current/previous device connections */
+  static private var connections: [DeviceIdentifier:Connection] = [:]
 
-  /** Uuids  from processed beacons. */
+  /** Uuids from processed beacons. */
   static private var beaconsReceived: Set<String> = []
 
   /** Multicast group connection */
@@ -45,8 +53,10 @@ final class ISYConnectionManager {
   */
   class func startDetectingNetworkDevices(context: NSManagedObjectContext = DataManager.rootContext) throws {
     guard !detectingNetworkDevices else { return }
+    self.context = context
     detectingNetworkDevices = true
     try multicastConnection.listen()
+    multicastConnection.sendMessage(MulticastSearchMessage)
     MSLogDebug("listening for ISY devices…")
   }
 
@@ -73,24 +83,36 @@ final class ISYConnectionManager {
 
     MSLogDebug("message received over multicast connection:\n\(message)\n")
 
-    let entries = Dictionary((~/"(?m)^([A-Z]+):(.*)(?=\\r)").match(message).map { ($0.captures[1]!.string, $0.captures[2]!.string) })
-    MSLogDebug("entries = \(entries)")
+    guard let uniqueIdentifier = (~/"USN:(uuid:[0-9a-f:]{17})").firstMatch(message)?.captures[1]?.string
+      where beaconsReceived ∌ uniqueIdentifier else { return }
 
-    if let location = entries["LOCATION"] where location.hasSuffix("/desc") && beaconsReceived ∌ location,
-      let baseURL = NSURL(string: location[0 ..< location.characters.count - 5])
-    {
-      beaconsReceived.insert(location)
-      ISYDeviceConnection.connectionWithBaseURL(baseURL) {
+    beaconsReceived.insert(uniqueIdentifier)
 
-        guard let connection = $0  else { MSHandleError($1); return }
+    guard let location = (~/"LOCATION:(http://[0-9.]+/desc)").firstMatch(message)?.captures[1]?.string,
+      descURL = NSURL(string: location) else { return }
 
-        ISYConnectionManager.connections.insert(connection)
-        self.networkDevices.insert(connection.device)
-        ISYConnectionManager.stopDetectingNetworkDevices()
-        
-      }
+    NSURLSession(configuration: NSURLSessionConfiguration.ephemeralSessionConfiguration()).dataTaskWithURL(descURL) {
+      (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
 
-    }
+      guard let data = data else { MSHandleError(error); return }
+      
+      let isUpdate = Device.objectExistsInContext(context, withValue: uniqueIdentifier, forAttribute: "uniqueIdentifier")
+
+      guard let device = Device.deviceFromDesc(data, context: context) else { return }
+
+      let notify = isUpdate ? ConnectionManager.updatedDevice : ConnectionManager.discoveredDevice
+      let shouldStopKey: ConnectionManager.SettingKey = isUpdate ? .StopAfterUpdated : .StopAfterDiscovered
+      let shouldConnectKey: ConnectionManager.SettingKey = isUpdate ? .AutoConnectExisting : .AutoConnectDiscovery
+
+      notify(device)
+
+      // Stop if appropriate
+      if SettingsManager.valueForSetting(shouldStopKey) == true { stopDetectingNetworkDevices() }
+
+      // Connect if appropriate
+      if SettingsManager.valueForSetting(shouldConnectKey) == true { connections[uniqueIdentifier] = Connection(device: device) }
+    } .resume()
 
   }
+
 }
