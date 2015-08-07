@@ -976,7 +976,7 @@ NSData *scaledImageDataFromImageData(NSData *imageData, NSUInteger bytesPerRow, 
 
 + (UIImage *)embossImage:(UIImage *)image
 {
-    assert(NO);
+//    assert(NO);
 
     ImageInfo imageInfo = image.imageInfo;
     NSData *bitmapData = vImageConformantDataForImage(image);

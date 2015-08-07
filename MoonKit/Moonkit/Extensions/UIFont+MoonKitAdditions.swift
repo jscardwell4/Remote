@@ -27,7 +27,7 @@ extension UIFont {
   /** initialize */
   public override class func initialize() {
     if self === UIFont.self {
-      let seconds = Int64(2 * Double(NSEC_PER_SEC))
+      let seconds = Int64(2.0 * Double(NSEC_PER_SEC))
       let when = dispatch_time(DISPATCH_TIME_NOW, seconds)
       dispatch_after(when, dispatch_get_main_queue()) { self.loadFontAwesome() }
     }

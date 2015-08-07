@@ -22,6 +22,30 @@ extension Float: ArithmeticType {}
 extension Double: ArithmeticType {}
 extension CGFloat: ArithmeticType {}
 
+//public func +(lhs: CGFloat, rhs: CGFloatable) -> CGFloat { return lhs + rhs.CGFloatValue }
+//public func -(lhs: CGFloat, rhs: CGFloatable) -> CGFloat { return lhs - rhs.CGFloatValue }
+//
+//public func +=(inout lhs: CGFloat, rhs: CGFloatable) {lhs += rhs }
+//public func -=(inout lhs: CGFloat, rhs: CGFloatable) {lhs -= rhs }
+//
+//public func *(lhs: CGFloat, rhs: CGFloatable) -> CGFloat { return lhs * rhs.CGFloatValue }
+//public func /(lhs: CGFloat, rhs: CGFloatable) -> CGFloat { return lhs / rhs.CGFloatValue }
+//
+//public func *=(inout lhs: CGFloat, rhs: CGFloatable) {lhs *= rhs }
+//public func /=(inout lhs: CGFloat, rhs: CGFloatable) {lhs /= rhs }
+//
+//public func +(lhs: CGFloatable, rhs: CGFloat) -> CGFloat { return lhs.CGFloatValue + rhs }
+//public func -(lhs: CGFloatable, rhs: CGFloat) -> CGFloat { return lhs.CGFloatValue - rhs }
+//
+//public func +=(inout lhs: CGFloatable, rhs: CGFloat) {lhs += rhs }
+//public func -=(inout lhs: CGFloatable, rhs: CGFloat) {lhs -= rhs }
+//
+//public func *(lhs: CGFloatable, rhs: CGFloat) -> CGFloat { return lhs.CGFloatValue * rhs }
+//public func /(lhs: CGFloatable, rhs: CGFloat) -> CGFloat { return lhs.CGFloatValue / rhs }
+//
+//public func *=(inout lhs: CGFloatable, rhs: CGFloat) {lhs *= rhs }
+//public func /=(inout lhs: CGFloatable, rhs: CGFloat) {lhs /= rhs }
+
 public func half(x: CGFloat) -> CGFloat { return x * 0.5                 }
 public func half(x: Float)   -> Float   { return x * 0.5                 }
 public func half(x: Float80) -> Float80 { return x * Float80(0.5)        }
